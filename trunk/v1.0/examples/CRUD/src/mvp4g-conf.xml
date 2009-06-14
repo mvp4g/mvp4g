@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<mvp4g>
+	
+		<presenters>
+			<presenter name="rootPresenter" class="com.mvc4g.example.client.presenter.RootPresenter" />
+			<presenter name="createUserPresenter" class="com.mvc4g.example.client.presenter.UserCreatePresenter" />
+			<presenter name="displayUserPresenter" class="com.mvc4g.example.client.presenter.UserDisplayPresenter" />						
+		</presenters>
+		<events>
+			<event type="createUser" functionCalled="onCreateUser" handlers="displayUserPresenter" />			
+			<event type="changeBody" functionCalled="onChangeBody" handlers="rootPresenter" />
+			<event type="displayMessage" functionCalled="onDisplayMessage" handlers="rootPresenter" />
+			<event type="start" functionCalled="onStart" handlers="rootPresenter, createUserPresenter" />
+		</events>
+		
+		<start eventType="start" />
+	
+</mvp4g>		
