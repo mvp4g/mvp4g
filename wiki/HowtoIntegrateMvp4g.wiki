@@ -1,0 +1,51 @@
+#summary How to integrate Mvp4g to your project
+
+== Introduction ==
+To integrate Mvp4g to your project, the following steps need to be done
+  # Add needed library to your project
+  # Modify your GWT configuration file (`*`.gwt.xml) and your entry point  
+  # Create your presenters and set your events 
+  # Create a Mvp4g configuration file for your project
+        
+
+== Library ==
+
+Add the following libraries to your project:
+  * Commons Lang ([http://commons.apache.org/downloads/download_lang.cgi Download here])
+  * Commons Configuration ([http://commons.apache.org/downloads/download_configuration.cgi Download here])
+  * Mvp4g ([http://code.google.com/p/mvc4g/downloads/list Download here])  
+
+
+== GWT configuration file ==
+
+Insert Mvp4g module to your project:
+{{{
+<inherits name='com.mvp4g.Mvp4gModule'/>
+}}}
+
+Add the following line to your entry-point
+{{{
+Mvp4gStarter starter = GWT.create(Mvp4gStarter.class);
+starter.start();
+}}}
+
+
+== Mvp4g Presenters ==
+Create your project presenters(s). See how to create a view [Mvp4gBasics here].
+
+== Mvp4g configuration file == 
+Create in your project source directory a file mvp4g-conf.xml. Your file must start with and end by the tag `<mvp4g>`.
+{{{
+YourGWTModule
+     |--- src
+          |--- mvp4g-conf.xml
+}}}
+
+===Presenters===
+to be done...          
+
+===Events===
+to be done...
+
+===Start (optional)===
+to be done...
