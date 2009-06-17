@@ -54,3 +54,15 @@ UserBean user = new UserBean();
 user.setName("John Smith");
 new Event("CreateUser", user);
 }}}
+
+Each event that can be sent by presenters need to be declared inside the mvp4g configuration file:
+{{{
+<event type="createUser" functionCalled="onCreateUser" handlers="displayUserPresenter,listUserPresenter" />
+}}}
+For this tag, you find the following attributes:
+ * type: type of the event
+ * functionCalled: this is the function that the event bus will call to dispatch the event to the handlers. Presenters that handle this type of event must implement a function with this name that one Object parameter. For this example, handlers of the event need to implement the following function:
+{{{
+public void onCreateUser(Object form))
+}}}
+ * handlers: name of the presenters that handles this event. Each presenter name must be separate by a coma.
