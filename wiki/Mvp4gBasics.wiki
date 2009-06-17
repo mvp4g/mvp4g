@@ -1,0 +1,17 @@
+#summary How Mvp4g works
+
+= Introduction =
+= Introduction =
+The main idea of the Mvc4g framework is to help the developper to use the GWT best pratices (Event bus, MVP and Dependency Injection) when building his application.
+
+The framework will help the developper to:
+  * Set an event bus without having to use the GWT Handler and to create two classes/interfaces for each event (one for the event, one for the handler). This event bus will be easily configurable thanks to a xml file.
+  * Set dependency injection thanks to the xml file (in progress, not implemented yet)
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
