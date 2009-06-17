@@ -44,7 +44,14 @@ The way the event bus dispatches events can be easily configured thanks to a xml
 
 = Presenter =
 Presenters correspond to the presenter of the MVP pattern. The Mvp4g framework doesn't force you to implement this pattern even if it's strongly suggested.
+
 Presenters can sent events to the event bus and handle events from it.
+
+To create a presenter, you need to:
+ * implement the interface com.mvp4g.client.Presenter or extend the class com.mvp4g.client.Presenter
+ * have a default constructor with no argument
+
+
 Each presenter need to be declared inside the Mvp4g configuration file:
 {{{
 <presenter name="createUserPresenter" class="com.mvc4g.example.client.presenter.UserCreatePresenter" />
