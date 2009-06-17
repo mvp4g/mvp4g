@@ -42,7 +42,13 @@ The way the event bus dispatches events can be easily configured thanks to a xml
 }}}
 
 
-
+= Presenter =
+Presenters correspond to the presenter of the MVP pattern. The Mvp4g framework doesn't force you to implement this pattern even if it's strongly suggested.
+Presenters can sent events to the event bus and handle events from it.
+Each presenter need to be declared inside the Mvp4g configuration file:
+{{{
+<presenter name="createUserPresenter" class="com.mvc4g.example.client.presenter.UserCreatePresenter" />
+}}}
 
 = Event =
 Events are created by presenters and send to event bus that dispatch it to other presenters that can handle them. Events contain two pieces of information:
@@ -55,7 +61,7 @@ user.setName("John Smith");
 new Event("CreateUser", user);
 }}}
 
-Each event that can be sent by presenters need to be declared inside the mvp4g configuration file:
+Each event that can be sent by presenters need to be declared inside the Mvp4g configuration file:
 {{{
 <event type="createUser" functionCalled="onCreateUser" handlers="displayUserPresenter,listUserPresenter" />
 }}}
@@ -66,3 +72,22 @@ For this tag, you find the following attributes:
 public void onCreateUser(Object form))
 }}}
  * handlers: name of the presenters that handles this event. Each presenter name must be separate by a coma.
+
+
+= Event Bus=
+The event bus is in charged of dispatching events to the presenters that handles them. This dispatch is done thanks to the configuration file.
+
+With the following line in the Mvpg4 configuration file:
+{{{
+<event type="createUser" functionCalled="onCreateUser" handlers="displayUserPresenter,listUserPresenter" />
+}}}
+
+When the following event is sent:
+{{{
+new Event("CreateUser", newUser)
+}}}
+The following code is executed:
+{{{
+displayUserPresenter.onCreateUser(newUser);
+listUserPresenter.onCreateUser(newUser);
+}}}
