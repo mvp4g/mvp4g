@@ -40,3 +40,17 @@ The way the event bus dispatches events can be easily configured thanks to a xml
 	<start eventType="start" />
 </mvp4g>
 }}}
+
+
+
+
+= Event =
+Events are created by presenters and send to event bus that dispatch it to other presenters that can handle them. Events contain two pieces of information:
+    * Type of the event
+    * Object linked with this event 
+
+{{{
+UserBean user = new UserBean();
+user.setName("John Smith");
+new Event("CreateUser", user);
+}}}
