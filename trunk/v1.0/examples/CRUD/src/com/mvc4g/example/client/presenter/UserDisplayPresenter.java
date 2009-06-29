@@ -6,8 +6,8 @@ import com.mvc4g.example.client.Constants;
 import com.mvc4g.example.client.bean.UserBean;
 import com.mvc4g.example.client.presenter.view_interface.UserViewInterface;
 import com.mvc4g.example.client.view.UserDisplayView;
-import com.mvp4g.client.Event;
-import com.mvp4g.client.Presenter;
+import com.mvp4g.client.event.Event;
+import com.mvp4g.client.presenter.Presenter;
 
 public class UserDisplayPresenter extends Presenter implements Constants{
 	
@@ -39,8 +39,7 @@ public class UserDisplayPresenter extends Presenter implements Constants{
 		eventBus.dispatch(e);		
 	}
 	
-	public void onCreateUser(Object form){
-		UserBean user = (UserBean) form;
+	public void onCreateUser(UserBean user){
 		setUserBean(user);
 		display();		
 	}

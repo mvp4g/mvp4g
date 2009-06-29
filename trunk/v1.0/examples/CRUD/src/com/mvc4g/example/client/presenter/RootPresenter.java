@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvc4g.example.client.presenter.view_interface.RootViewInterface;
 import com.mvc4g.example.client.view.RootView;
-import com.mvp4g.client.Presenter;
+import com.mvp4g.client.presenter.Presenter;
 
 
 public class RootPresenter extends Presenter{
@@ -17,17 +17,17 @@ public class RootPresenter extends Presenter{
 		RootPanel.get().add(view.getViewWidget());
 	}
 	
-	public void onChangeBody(Object form){
+	public void onChangeBody(Widget newPage){
 		Panel body = view.getBody();
 		body.clear();
-		body.add((Widget) form);		
+		body.add(newPage);		
 	}
 	
-	public void onDisplayMessage(Object form){
-		view.getMessage().setValue((String) form);
+	public void onDisplayMessage(String message){
+		view.getMessage().setValue(message);
 	}
 	
-	public void onStart(Object form){
+	public void onStart(){
 		view.getMessage().setValue("");
 	}
 

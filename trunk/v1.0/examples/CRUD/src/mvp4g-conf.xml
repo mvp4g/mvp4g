@@ -7,9 +7,9 @@
 			<presenter name="displayUserPresenter" class="com.mvc4g.example.client.presenter.UserDisplayPresenter" />						
 		</presenters>
 		<events>
-			<event type="createUser" functionCalled="onCreateUser" handlers="displayUserPresenter" />			
-			<event type="changeBody" functionCalled="onChangeBody" handlers="rootPresenter" />
-			<event type="displayMessage" functionCalled="onDisplayMessage" handlers="rootPresenter" />
+			<event type="createUser" functionCalled="onCreateUser" eventObjectClass="com.mvc4g.example.client.bean.UserBean" handlers="displayUserPresenter" />			
+			<event type="changeBody" functionCalled="onChangeBody" handlers="rootPresenter" eventObjectClass="com.google.gwt.user.client.ui.Widget"/>
+			<event type="displayMessage" functionCalled="onDisplayMessage" handlers="rootPresenter" eventObjectClass="java.lang.String" />
 			<event type="start" functionCalled="onStart" handlers="rootPresenter, createUserPresenter" />
 		</events>
 		
