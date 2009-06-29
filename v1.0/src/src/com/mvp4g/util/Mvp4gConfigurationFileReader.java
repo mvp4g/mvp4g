@@ -27,7 +27,7 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.user.rebind.SourceWriter;
 
 /**
- * This class reads the mvc4g-conf.xml
+ * This class reads the mvp4g-conf.xml
  * 
  * @author plcoirier
  * 
@@ -38,7 +38,7 @@ public class Mvp4gConfigurationFileReader {
 	private TreeLogger logger = null;
 
 	/**
-	 * Create a Mvc4gConfigurationFileReader object
+	 * Create a Mvp4gConfigurationFileReader object
 	 * 
 	 * @param sourceWriter
 	 * @param logger
@@ -50,7 +50,7 @@ public class Mvp4gConfigurationFileReader {
 	}
 
 	/**
-	 * Parses the mvc4g-conf.xml and write the information in the source writer
+	 * Parses the mvp4g-conf.xml and write the information in the source writer
 	 * 
 	 * @throws UnableToCompleteException
 	 *             exception thrown if the configuratin file is not correct
@@ -80,6 +80,14 @@ public class Mvp4gConfigurationFileReader {
 
 	}
 
+	/**
+	 * Write the presenters included in the configuration file
+	 * 
+	 * @param presentersConf
+	 * 			List of presenters tag included in the configuration file
+	 * @throws UnableToCompleteException
+	 * 			thrown if the presenters tag aren't correct.
+	 */
 	private void writePresenters(List<HierarchicalConfiguration> presentersConf)
 			throws UnableToCompleteException {
 
@@ -113,16 +121,25 @@ public class Mvp4gConfigurationFileReader {
 
 	}
 
-	private void writeEvents(List<HierarchicalConfiguration> presentersConf)
+	/**
+	 * Write the events included in the configuration file
+	 * 
+	 * @param eventsConf
+	 * 			List of events tag included in the configuration file
+	 * @throws UnableToCompleteException
+	 * 			thrown if the events tag aren't correct.
+	 */	
+	private void writeEvents(List<HierarchicalConfiguration> eventsConf)
 			throws UnableToCompleteException {
 
 		String type = null;
 		String functionCalled = null;
+		String objectClass = null;
 		String[] handlers = null;
 
 		HierarchicalConfiguration eventConf = null;
 
-		Iterator<HierarchicalConfiguration> it = presentersConf.iterator();
+		Iterator<HierarchicalConfiguration> it = eventsConf.iterator();
 		while (it.hasNext()) {
 			eventConf = it.next();
 
@@ -132,6 +149,16 @@ public class Mvp4gConfigurationFileReader {
 			functionCalled = eventConf.getString("[@functionCalled]");
 			sendErrorIfNull(functionCalled, "Event " + type
 					+ ": functionCalled is missing");
+			
+			objectClass = eventConf.getString("[@eventObjectClass]");			
+			String param = null;			
+			if(objectClass == null){
+				objectClass = Object.class.getName();
+				param = "();";
+			}
+			else{
+				param = "(form);";
+			}
 
 			handlers = eventConf.getStringArray("[@handlers]");
 			if ((handlers == null) || (handlers.length == 0)) {
@@ -142,17 +169,20 @@ public class Mvp4gConfigurationFileReader {
 
 			sourceWriter.print("Command cmd");
 			sourceWriter.print(type);
-			sourceWriter.println(" = new Command(){");
+			sourceWriter.print(" = new Command<");
+			sourceWriter.print(objectClass);
+			sourceWriter.println(">(){");
 			sourceWriter.indent();
-			sourceWriter.println("public void execute(Object form) {");
+			sourceWriter.print("public void execute(");
+			sourceWriter.print(objectClass);
+			sourceWriter.println(" form) {");
 			sourceWriter.indent();
 			int nbHandlers = handlers.length;
 			for (int i = 0; i < nbHandlers; i++) {
 				sourceWriter.print(handlers[i]);
 				sourceWriter.print(".");
 				sourceWriter.print(functionCalled);
-				sourceWriter.println("(form);");
-
+				sourceWriter.println(param);
 			}
 			sourceWriter.outdent();
 			sourceWriter.println("}");
@@ -167,6 +197,14 @@ public class Mvp4gConfigurationFileReader {
 
 	}
 
+	/**
+	 * Write the start event tag included in the configuration file
+	 * 
+	 * @param start
+	 * 			start event tag included in the configuration file
+	 * @throws UnableToCompleteException
+	 * 			thrown if the start event tag isn't correct.
+	 */	
 	private void writeStartEvent(HierarchicalConfiguration start)
 			throws UnableToCompleteException {
 
@@ -178,7 +216,17 @@ public class Mvp4gConfigurationFileReader {
 				+ "\"));");
 
 	}
-
+	
+	/**
+	 * Send an exception if the value is null
+	 * 
+	 * @param value
+	 * 			value to test
+	 * @param message
+	 * 			message to throw with the exception
+	 * @throws UnableToCompleteException
+	 * 			thrown if the value is null
+	 */
 	private void sendErrorIfNull(Object value, String message)
 			throws UnableToCompleteException {
 		if (value == null) {

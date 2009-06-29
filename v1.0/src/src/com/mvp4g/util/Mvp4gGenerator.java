@@ -27,7 +27,7 @@ import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 
 /**
- * Class uses to create the implementation class of Mvc4gStarter
+ * Class uses to create the implementation class of Mvp4gStarter
  * 
  * @author plcoirier
  *
@@ -88,9 +88,9 @@ public class Mvp4gGenerator extends Generator {
 		ClassSourceFileComposerFactory classFactory = new ClassSourceFileComposerFactory(
 				packageName, generatedClassName);
 		classFactory.addImplementedInterface(originalType.getName());
-		classFactory.addImport("com.mvp4g.client.EventBus");
-		classFactory.addImport("com.mvp4g.client.Event");
-		classFactory.addImport("com.mvp4g.client.Command");
+		classFactory.addImport("com.mvp4g.client.event.EventBus");
+		classFactory.addImport("com.mvp4g.client.event.Event");
+		classFactory.addImport("com.mvp4g.client.event.Command");
 
 		PrintWriter printWriter = context.tryCreate(logger, packageName,
 				generatedClassName);

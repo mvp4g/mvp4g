@@ -13,38 +13,46 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.mvp4g.client;
+package com.mvp4g.client.event;
 
 /**
- * Event sent by view to controller in order to execute an action
+ * Event sent by presenter to event bus in order to trigger other presenters.<br/><br/>
+ * 
+ * Events are defined by two attributes: <ul>
+ * <li>their type, defined by a string</li>
+ * <li>the object linked to the event. this object will be used as parameter of 
+ * the handlers method</li>
+ * </ul>
+ * 
  * 
  * @author plcoirier
  *
  */
 public class Event {
 
+	//type of the object
 	private String type = null;
+	//object used as parameter of the handlers method
 	private Object form = null;
 
 	/**
-	 * Create an event with the name of the action to execute and information to pass to the action 
-	 * 
+	 * Create an event with only a type.<br/>
+	 * No object will be used by the handlers method.
+	 *  
 	 * @param type
-	 * 			type of the Event
-	 * @param form
-	 * 			information to pass to the action
+	 * 		type of the event
 	 */
 	public Event(String type) {
 		this.type = type;		
 	}
 	
 	/**
-	 * Create an event with the name of the action to execute and information to pass to the action 
+	 * Create an event with a type and an object to be used by handlers method. 
 	 * 
 	 * @param type
 	 * 			type of the Event
 	 * @param form
-	 * 			information to pass to the action
+	 * 			object to pass to the handlers method
 	 */
 	public Event(String type, Object form) {
 		this.type = type;
@@ -54,7 +62,7 @@ public class Event {
 	/**
 	 * 
 	 * @return
-	 * 		the name of the action to execute	
+	 * 		the type of the event	
 	 */
 	public String getType() {
 		return type;
@@ -63,7 +71,7 @@ public class Event {
 	/**
 	 * 
 	 * @return
-	 * 		the information to pass to the action	
+	 * 		the object to be used by the handlers method
 	 */
 	public Object getForm() {
 		return form;
