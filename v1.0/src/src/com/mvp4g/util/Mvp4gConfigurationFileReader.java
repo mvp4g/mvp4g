@@ -250,8 +250,8 @@ public class Mvp4gConfigurationFileReader {
 		
 		if ( start.hasEventType() ) {
 			String eventType = start.getEventType();
-			sourceWriter.println("eventBus.dispatch(new Event(\"" + eventType
-					+ "\"));");
+			sourceWriter.println("eventBus.dispatch(\"" + eventType
+					+ "\");");
 		}
 	}
 	
