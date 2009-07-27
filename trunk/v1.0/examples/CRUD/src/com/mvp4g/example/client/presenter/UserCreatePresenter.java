@@ -3,7 +3,6 @@ package com.mvp4g.example.client.presenter;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.event.Event;
 import com.mvp4g.client.presenter.Presenter;
 import com.mvp4g.example.client.Constants;
 import com.mvp4g.example.client.bean.UserBean;
@@ -36,18 +35,16 @@ public class UserCreatePresenter extends Presenter<UserViewInterface> implements
             }
 
             public void onSuccess( UserBean user ) {
-				Event e = new Event(USER_CREATED, user);
-				eventBus.dispatch(e);
+				eventBus.dispatch(USER_CREATED, user);
             }
         };
         userService.create( user, callback );
 	}
 	
 	public void onStart(){
-		Event e = new Event(CHANGE_BODY, view.getViewWidget() );
 		view.getLastName().setValue("");
 		view.getFirstName().setValue("");
-		eventBus.dispatch(e);
+		eventBus.dispatch(CHANGE_BODY, view.getViewWidget());
 	}
 	
 	
