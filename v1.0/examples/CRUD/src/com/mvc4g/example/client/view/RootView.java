@@ -16,7 +16,6 @@ public class RootView extends Composite implements RootViewInterface{
 	
 	public RootView(){
 		VerticalPanel mainPanel = new VerticalPanel();
-		message.setValue("Test");
 		mainPanel.add(message);
 		mainPanel.add(body);
 		initWidget(mainPanel);		

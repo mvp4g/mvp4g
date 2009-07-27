@@ -5,19 +5,12 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.mvc4g.example.client.Constants;
 import com.mvc4g.example.client.bean.UserBean;
 import com.mvc4g.example.client.presenter.view_interface.UserViewInterface;
-import com.mvc4g.example.client.view.UserDisplayView;
 import com.mvp4g.client.event.Event;
 import com.mvp4g.client.presenter.Presenter;
 
-public class UserDisplayPresenter extends Presenter implements Constants{
+public class UserDisplayPresenter extends Presenter<UserViewInterface> implements Constants{
 	
-	private UserViewInterface view = null;
-	
-	public UserDisplayPresenter(){
-		this.view = new UserDisplayView();
-		bind();		
-	}
-	
+	@Override
 	public void bind(){
 		view.getButton().addClickHandler(new ClickHandler(){
 
@@ -30,16 +23,20 @@ public class UserDisplayPresenter extends Presenter implements Constants{
 	}
 	
 	public void setUserBean(UserBean user){
+		view.getId().setText(user.getId().toString());
 		view.getLastName().setValue(user.getLastName());
 		view.getFirstName().setValue(user.getFirstName());
 	}
 	
 	public void display(){
-		Event e = new Event(CHANGE_BODY, view);
-		eventBus.dispatch(e);		
+		Event e = new Event(CHANGE_BODY, view.getViewWidget() );
+		eventBus.dispatch(e);
+		
+		Event e2 = new Event(DISPLAY_MESSAGE, "User created");
+		eventBus.dispatch(e2);
 	}
 	
-	public void onCreateUser(UserBean user){
+	public void onUserCreated(UserBean user){
 		setUserBean(user);
 		display();		
 	}

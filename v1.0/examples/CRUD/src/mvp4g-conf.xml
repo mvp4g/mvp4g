@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <mvp4g>
+	<views package="com.mvc4g.example.client.view" >
+		<view name="rootView" class="RootView" />
+		<view name="userCreateView" class="UserCreateView" />
+		<view name="userDisplayView" class="UserDisplayView"/>
+	</views>
+	<services package="com.mvc4g.example.client.service" >
+		<service name="userService" class="UserService" />
+	</services>
+	<presenters package="com.mvc4g.example.client.presenter" >
+		<presenter name="rootPresenter" class="RootPresenter" view="rootView" />
+		<presenter name="createUserPresenter" class="UserCreatePresenter" view="userCreateView" services="userService" />
+		<presenter name="displayUserPresenter" class="UserDisplayPresenter" view="userDisplayView" />						
+	</presenters>
+	<events>
+		<event type="userCreated" functionCalled="onUserCreated" eventObjectClass="com.mvc4g.example.client.bean.UserBean" handlers="displayUserPresenter" />			
+		<event type="changeBody" functionCalled="onChangeBody" handlers="rootPresenter" eventObjectClass="com.google.gwt.user.client.ui.Widget"/>
+		<event type="displayMessage" functionCalled="onDisplayMessage" handlers="rootPresenter" eventObjectClass="java.lang.String" />
+		<event type="start" functionCalled="onStart" handlers="rootPresenter, createUserPresenter" />
+	</events>
 	
-		<presenters>
-			<presenter name="rootPresenter" class="com.mvc4g.example.client.presenter.RootPresenter" />
-			<presenter name="createUserPresenter" class="com.mvc4g.example.client.presenter.UserCreatePresenter" />
-			<presenter name="displayUserPresenter" class="com.mvc4g.example.client.presenter.UserDisplayPresenter" />						
-		</presenters>
-		<events>
-			<event type="createUser" functionCalled="onCreateUser" eventObjectClass="com.mvc4g.example.client.bean.UserBean" handlers="displayUserPresenter" />			
-			<event type="changeBody" functionCalled="onChangeBody" handlers="rootPresenter" eventObjectClass="com.google.gwt.user.client.ui.Widget"/>
-			<event type="displayMessage" functionCalled="onDisplayMessage" handlers="rootPresenter" eventObjectClass="java.lang.String" />
-			<event type="start" functionCalled="onStart" handlers="rootPresenter, createUserPresenter" />
-		</events>
-		
-		<start eventType="start" />
+	<start view="rootView" eventType="start" />
 	
 </mvp4g>		

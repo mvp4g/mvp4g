@@ -10,4 +10,15 @@
     <welcome-file>TestMvp4g.html</welcome-file>
   </welcome-file-list>
 
+  <servlet>
+    <servlet-name>userService</servlet-name>
+    <servlet-class>com.mvc4g.example.server.UserServiceImpl</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>userService</servlet-name>
+    <url-pattern>/testmvp4g/users.rpc</url-pattern>
+  </servlet-mapping>
+
+
 </web-app>
