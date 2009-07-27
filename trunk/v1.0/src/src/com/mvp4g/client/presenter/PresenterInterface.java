@@ -11,7 +11,7 @@ import com.mvp4g.client.event.EventBus;
  * @author plcoirier
  *
  */
-public interface PresenterInterface {
+public interface PresenterInterface<V> {
 	
 	/**
 	 * Set an event bus to the presenter
@@ -20,5 +20,29 @@ public interface PresenterInterface {
 	 * 			event bus to set
 	 */
 	public void setEventBus(EventBus eventBus);
+	
+	/**
+	 * Sets the view associated with the presenter.
+	 * 
+	 * @param view 
+	 * 			view to set
+	 */
+	public void setView( V view );
+	
+	/**
+	 * Gets the view associated with the presenter.
+	 * 
+	 * @return view manipulated by the presenter.
+	 */
+	public V getView();
+	
+	
+	/**
+	 * Performs required bindings between this Presenter and its View.</p>
+	 * 
+	 * This is automatically invoked when the View is wired into the Presenter.
+	 * 
+	 */
+	public void bind();
 
 }

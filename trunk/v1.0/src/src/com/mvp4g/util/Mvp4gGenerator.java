@@ -91,6 +91,8 @@ public class Mvp4gGenerator extends Generator {
 		classFactory.addImport("com.mvp4g.client.event.EventBus");
 		classFactory.addImport("com.mvp4g.client.event.Event");
 		classFactory.addImport("com.mvp4g.client.event.Command");
+		classFactory.addImport("com.google.gwt.user.client.ui.RootPanel");
+		classFactory.addImport("com.google.gwt.core.client.GWT");
 
 		PrintWriter printWriter = context.tryCreate(logger, packageName,
 				generatedClassName);
