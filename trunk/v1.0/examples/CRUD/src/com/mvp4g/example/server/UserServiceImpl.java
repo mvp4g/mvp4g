@@ -1,10 +1,10 @@
-package com.mvc4g.example.server;
+package com.mvp4g.example.server;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.mvc4g.example.client.bean.UserBean;
-import com.mvc4g.example.client.service.UserService;
+import com.mvp4g.example.client.bean.UserBean;
+import com.mvp4g.example.client.service.UserService;
 
 @SuppressWarnings("serial")
 public class UserServiceImpl extends RemoteServiceServlet implements UserService {
