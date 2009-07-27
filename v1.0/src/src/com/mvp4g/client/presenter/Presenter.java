@@ -29,9 +29,34 @@ import com.mvp4g.client.event.EventBus;
  * @author plcoirier
  *
  */
-public class Presenter implements PresenterInterface {
+public class Presenter<V> implements PresenterInterface<V> {
 
 	protected EventBus eventBus = null;
+	protected V view = null;
+	
+	public Presenter() {
+	}
+	
+	public Presenter(V view, EventBus eventBus) {
+		this.eventBus = eventBus;
+		this.view = view;
+	}
+	
+	public V getView() {
+		return view;
+	}
+
+	public void setView(V view) {
+		this.view = view;
+		bind();
+	}
+	
+	public void bind() {
+		/*
+		 * Default implementation does nothing: extensions are responsible for
+		 * (optionally) defining binding specifics.
+		 */
+	}
 
 	public void setEventBus(EventBus eventBus) {
 		this.eventBus = eventBus;
