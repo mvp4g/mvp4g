@@ -1,33 +1,38 @@
 package com.mvp4g.client.presenter;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+
+import org.junit.Test;
 
 import com.mvp4g.client.event.EventBus;
 
-public class PresenterTest extends TestCase {
+public class PresenterTest {
 
+	@Test
 	public void testDefaultConstructor() {
 		PresenterForTest<Object> p = new PresenterForTest<Object>();
-		assertNull(p.getView());
-		assertNull(p.getEventBus());
+		assertNull( p.getView() );
+		assertNull( p.getEventBus() );
 	}
 
+	@Test
 	public void testConstructorWithArgument() {
 		String view = "View";
 		final EventBus bus = new EventBus();
-		PresenterForTest<String> p = new PresenterForTest<String>(view, bus);
-		assertSame(p.getView(), view);
-		assertSame(p.getEventBus(), bus);
+		PresenterForTest<String> p = new PresenterForTest<String>( view, bus );
+		assertSame( p.getView(), view );
+		assertSame( p.getEventBus(), bus );
 	}
 
 	public void testSetter() {
 		String view = "View";
 		final EventBus bus = new EventBus();
 		PresenterForTest<String> p = new PresenterForTest<String>();
-		p.setEventBus(bus);
-		p.setView(view);
-		assertSame(p.getView(), view);
-		assertSame(p.getEventBus(), bus);
+		p.setEventBus( bus );
+		p.setView( view );
+		assertSame( p.getView(), view );
+		assertSame( p.getEventBus(), bus );
 	}
 
 	public void testBindCalledBySetView() {
@@ -38,8 +43,8 @@ public class PresenterTest extends TestCase {
 			}
 		};
 
-		p.setView("view");
-		assertSame(p.getView(), "bind");
+		p.setView( "view" );
+		assertSame( p.getView(), "bind" );
 	}
 
 	private class PresenterForTest<V> extends Presenter<V> {
@@ -48,8 +53,8 @@ public class PresenterTest extends TestCase {
 			super();
 		}
 
-		public PresenterForTest(V view, EventBus eventBus) {
-			super(view, eventBus);
+		public PresenterForTest( V view, EventBus eventBus ) {
+			super( view, eventBus );
 		}
 
 		public EventBus getEventBus() {
