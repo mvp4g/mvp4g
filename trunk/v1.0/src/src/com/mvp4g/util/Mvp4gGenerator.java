@@ -30,7 +30,7 @@ import com.google.gwt.user.rebind.SourceWriter;
  * Class uses to create the implementation class of Mvp4gStarter
  * 
  * @author plcoirier
- *
+ * 
  */
 public class Mvp4gGenerator extends Generator {
 
@@ -38,78 +38,71 @@ public class Mvp4gGenerator extends Generator {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.google.gwt.core.ext.Generator#generate(com.google.gwt.core.ext.TreeLogger, com.google.gwt.core.ext.GeneratorContext, java.lang.String)
+	 * 
+	 * @see com.google.gwt.core.ext.Generator#generate(com.google.gwt.core.ext.TreeLogger,
+	 * com.google.gwt.core.ext.GeneratorContext, java.lang.String)
 	 */
 	@Override
-	public String generate(TreeLogger logger, GeneratorContext context,
-			String typeName) throws UnableToCompleteException {
+	public String generate( TreeLogger logger, GeneratorContext context, String typeName ) throws UnableToCompleteException {
 		String generatedClassQualifiedName;
-		generatedClassQualifiedName = createClass(logger, context, typeName);
+		generatedClassQualifiedName = createClass( logger, context, typeName );
 
-		if (generatedClassQualifiedName == null) {
+		if ( generatedClassQualifiedName == null ) {
 			throw new UnableToCompleteException();
 		}
 		return generatedClassQualifiedName;
 	}
 
-	private String createClass(TreeLogger logger, GeneratorContext context,
-			String typeName) throws UnableToCompleteException {
-		sourceWriter = getSourceWriter(logger, context, typeName);
-		if (sourceWriter != null) {
-			writeClass(logger);
-			sourceWriter.commit(logger);
+	private String createClass( TreeLogger logger, GeneratorContext context, String typeName ) throws UnableToCompleteException {
+		sourceWriter = getSourceWriter( logger, context, typeName );
+		if ( sourceWriter != null ) {
+			writeClass( logger );
+			sourceWriter.commit( logger );
 		}
 
 		TypeOracle typeOracle = context.getTypeOracle();
-		JClassType originalType = typeOracle.findType(typeName);
+		JClassType originalType = typeOracle.findType( typeName );
 		return originalType.getParameterizedQualifiedSourceName() + "Impl";
 	}
 
-	private SourceWriter getSourceWriter(TreeLogger logger,
-			GeneratorContext context, String typeName)
-			throws UnableToCompleteException {
-		logger.log(TreeLogger.INFO, "Generating source for " + typeName, null);
+	private SourceWriter getSourceWriter( TreeLogger logger, GeneratorContext context, String typeName ) throws UnableToCompleteException {
+		logger.log( TreeLogger.INFO, "Generating source for " + typeName, null );
 
 		TypeOracle typeOracle = context.getTypeOracle();
-		JClassType originalType = typeOracle.findType(typeName);
-		if (originalType == null) {
-			logger.log(TreeLogger.ERROR, "Unable to find metadata for type '"
-					+ typeName + "'", null);
+		JClassType originalType = typeOracle.findType( typeName );
+		if ( originalType == null ) {
+			logger.log( TreeLogger.ERROR, "Unable to find metadata for type '" + typeName + "'", null );
 			throw new UnableToCompleteException();
 		}
 
-		logger.log(TreeLogger.INFO, "Generating source for "
-				+ originalType.getQualifiedSourceName(), null);
+		logger.log( TreeLogger.INFO, "Generating source for " + originalType.getQualifiedSourceName(), null );
 
 		String packageName = originalType.getPackage().getName();
 		String originalClassName = originalType.getSimpleSourceName();
 		String generatedClassName = originalClassName + "Impl";
 
-		ClassSourceFileComposerFactory classFactory = new ClassSourceFileComposerFactory(
-				packageName, generatedClassName);
-		classFactory.addImplementedInterface(originalType.getName());
-		classFactory.addImport("com.mvp4g.client.event.EventBus");
-		classFactory.addImport("com.mvp4g.client.event.Command");
-		classFactory.addImport("com.google.gwt.user.client.ui.RootPanel");
-		classFactory.addImport("com.google.gwt.core.client.GWT");
+		ClassSourceFileComposerFactory classFactory = new ClassSourceFileComposerFactory( packageName, generatedClassName );
+		classFactory.addImplementedInterface( originalType.getName() );
+		classFactory.addImport( "com.mvp4g.client.event.EventBus" );
+		classFactory.addImport( "com.mvp4g.client.event.Command" );
+		classFactory.addImport( "com.google.gwt.user.client.ui.RootPanel" );
+		classFactory.addImport( "com.google.gwt.core.client.GWT" );
 
-		PrintWriter printWriter = context.tryCreate(logger, packageName,
-				generatedClassName);
-		if (printWriter == null) {
+		PrintWriter printWriter = context.tryCreate( logger, packageName, generatedClassName );
+		if ( printWriter == null ) {
 			return null;
 		}
 
-		return classFactory.createSourceWriter(context, printWriter);
+		return classFactory.createSourceWriter( context, printWriter );
 	}
 
-	private void writeClass(TreeLogger logger)
-			throws UnableToCompleteException {
+	private void writeClass( TreeLogger logger ) throws UnableToCompleteException {
 
 		sourceWriter.indent();
-		sourceWriter.println("public void start(){");
+		sourceWriter.println( "public void start(){" );
 		sourceWriter.indent();
-		new Mvp4gConfigurationFileReader(sourceWriter, logger).writeConf();
+		new Mvp4gConfigurationFileReader( sourceWriter, logger ).writeConf();
 		sourceWriter.outdent();
-		sourceWriter.println("};");
+		sourceWriter.println( "};" );
 	}
 }

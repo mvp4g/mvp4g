@@ -9,21 +9,20 @@ import org.apache.commons.configuration.XMLConfiguration;
 
 import com.mvp4g.util.config.element.ServiceElement;
 
-
 /**
  * A class responsible for loading all Services defined in the mvp4g-config.xml file.
- *  
+ * 
  * @author javier
- *
+ * 
  */
 public class ServicesLoader extends Mvp4gElementLoader<ServiceElement> {
 
 	static final String[] REQUIRED_ATTRIBUTES = { "name", "class" };
 	static final String[] PARENT_ATTRIBUTES = { "package" };
-	
-	@SuppressWarnings("unchecked")
-	public ServicesLoader(XMLConfiguration xmlConfig) {
-		super(xmlConfig.configurationsAt("services.service"));
+
+	@SuppressWarnings( "unchecked" )
+	public ServicesLoader( XMLConfiguration xmlConfig ) {
+		super( xmlConfig.configurationsAt( "services.service" ) );
 	}
 
 	@Override
@@ -40,17 +39,16 @@ public class ServicesLoader extends Mvp4gElementLoader<ServiceElement> {
 	protected ServiceElement newElement() {
 		return new ServiceElement();
 	}
-	
+
 	@Override
 	protected String[] getParentAttributeNames() {
 		return PARENT_ATTRIBUTES;
 	}
-	
+
 	/**
 	 * Optionally loads any Service elements if present in the configuration.</p>
 	 * 
-	 * @return 
-	 * 			a set of service elements or an empty set if no elements were found.
+	 * @return a set of service elements or an empty set if no elements were found.
 	 */
 	@Override
 	public Set<ServiceElement> loadElements() {

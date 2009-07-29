@@ -19,10 +19,10 @@ package com.mvp4g.client;
  * This interface designs how to start the application
  * 
  * @author plcoirier
- *
+ * 
  */
 public interface Mvp4gStarter {
-	
+
 	/**
 	 * Method called to start the application
 	 */
