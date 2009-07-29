@@ -25,10 +25,11 @@ public class Mvp4gEntryPoint implements EntryPoint {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
 	 */
 	public void onModuleLoad() {
-		Mvp4gStarter entry = (Mvp4gStarter) GWT.create(Mvp4gStarter.class);
+		Mvp4gStarter entry = (Mvp4gStarter)GWT.create( Mvp4gStarter.class );
 		entry.start();
 	}
 }

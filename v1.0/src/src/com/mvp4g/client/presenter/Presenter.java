@@ -20,45 +20,45 @@ import com.mvp4g.client.event.EventBus;
 /**
  * Default implementation of a <code>PresenterInterface</code>.<br/>
  * <br/>
- * This implementation has one attribute:<ul>
- * <li>a default event bus that is protected
- * in order child classes to have access to it.</li>
- * </ul> 
+ * This implementation has one attribute:
+ * <ul>
+ * <li>a default event bus that is protected in order child classes to have access to it.</li>
+ * </ul>
  * You should extend this class to create a presenter.<br/>
  * 
  * @author plcoirier
- *
+ * 
  */
 public class Presenter<V> implements PresenterInterface<V> {
 
 	protected EventBus eventBus = null;
 	protected V view = null;
-	
+
 	public Presenter() {
 	}
-	
-	public Presenter(V view, EventBus eventBus) {
+
+	public Presenter( V view, EventBus eventBus ) {
 		this.eventBus = eventBus;
 		this.view = view;
 	}
-	
+
 	public V getView() {
 		return view;
 	}
 
-	public void setView(V view) {
+	public void setView( V view ) {
 		this.view = view;
 		bind();
 	}
-	
+
 	public void bind() {
 		/*
-		 * Default implementation does nothing: extensions are responsible for
-		 * (optionally) defining binding specifics.
+		 * Default implementation does nothing: extensions are responsible for (optionally) defining
+		 * binding specifics.
 		 */
 	}
 
-	public void setEventBus(EventBus eventBus) {
+	public void setEventBus( EventBus eventBus ) {
 		this.eventBus = eventBus;
 	}
 

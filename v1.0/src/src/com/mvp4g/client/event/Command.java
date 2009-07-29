@@ -16,20 +16,20 @@
 package com.mvp4g.client.event;
 
 /**
- * Command used by the event bus to dispatch an event.<br/><br/>
+ * Command used by the event bus to dispatch an event.<br/>
+ * <br/>
  * 
- * When an event bus wants to dispatch an event, it calls the execute method 
- * of the command. The execute method will then call the right method of the 
- * handlers of the event.  
+ * When an event bus wants to dispatch an event, it calls the execute method of the command. The
+ * execute method will then call the right method of the handlers of the event.
  * 
  * @author plcoirier
- *
+ * 
  * @param <T>
- * 			Class type of the parameter of the handlers method
+ *            Class type of the parameter of the handlers method
  */
 
 public interface Command<T> {
-	
-	public void execute(T form);
+
+	public void execute( T form );
 
 }
