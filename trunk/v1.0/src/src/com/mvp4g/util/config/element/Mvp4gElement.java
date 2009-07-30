@@ -49,10 +49,6 @@ public abstract class Mvp4gElement {
 		return uid == null ? "" : uid;
 	}
 
-	protected Properties getProperties() {
-		return properties;
-	}
-
 	public String getProperty( String name ) {
 		return properties.getProperty( name );
 	}

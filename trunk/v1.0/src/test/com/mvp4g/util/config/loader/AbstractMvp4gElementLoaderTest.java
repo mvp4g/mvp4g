@@ -51,7 +51,7 @@ public abstract class AbstractMvp4gElementLoaderTest<E extends Mvp4gElement, L e
 		List<String> mandMultiValue = convertToList( basicLoader.getMultiValueAttributeNames() );
 		List<String> parent = new ArrayList<String>();
 
-		boolean ok = false;
+		
 		int nbAtt = mandAttributes.size();
 		String temp = null;
 		L loader = null;
@@ -60,15 +60,11 @@ public abstract class AbstractMvp4gElementLoaderTest<E extends Mvp4gElement, L e
 			try {
 				loader = newLoader( xmlBuilder.getConfigAttribute( mandAttributes, mandMultiValue, parent, 1, false, isSingleNode() ) );
 				loader.loadElements();
+				fail();
 			} catch ( InvalidMvp4gConfigurationException e ) {
-				assertTrue( "Wrong error message for missing attribute " + temp, e.getMessage().contains( temp + "' is missing" ) );
-				ok = true;
+				assertTrue( "Wrong error message for missing attribute " + temp, e.getMessage().contains( temp + "' is missing" ) );				
 			}
-			if ( !ok ) {
-				fail( "Exception InvalidMvp4gConfigurationException for mandatory attribute " + temp + "not sent" );
-			} else {
-				ok = false;
-			}
+			
 			mandAttributes.add( temp );
 		}
 	}
@@ -85,7 +81,6 @@ public abstract class AbstractMvp4gElementLoaderTest<E extends Mvp4gElement, L e
 		List<String> mandMultiValue = convertToList( basicLoader.getMultiValueAttributeNames() );
 		List<String> parent = new ArrayList<String>();
 
-		boolean ok = false;
 		int nbAtt = mandMultiValue.size();
 		String temp = null;
 		L loader = null;
@@ -94,14 +89,9 @@ public abstract class AbstractMvp4gElementLoaderTest<E extends Mvp4gElement, L e
 			try {
 				loader = newLoader( xmlBuilder.getConfigAttribute( mandAttributes, mandMultiValue, parent, 1, false, isSingleNode() ) );
 				loader.loadElements();
+				fail();
 			} catch ( InvalidMvp4gConfigurationException e ) {
 				assertTrue( "Wrong error message for missing attribute" + temp, e.getMessage().contains( temp + "' is missing" ) );
-				ok = true;
-			}
-			if ( !ok ) {
-				fail( "Exception InvalidMvp4gConfigurationException for mandatory attribute " + temp + "not sent" );
-			} else {
-				ok = false;
 			}
 			mandMultiValue.add( temp );
 		}
@@ -137,7 +127,7 @@ public abstract class AbstractMvp4gElementLoaderTest<E extends Mvp4gElement, L e
 
 	}
 
-	private List<String> convertToList( String[] tab ) {
+	protected List<String> convertToList( String[] tab ) {
 		List<String> list = new ArrayList<String>();
 		int tabSize = tab.length;
 		for ( int i = 0; i < tabSize; i++ ) {

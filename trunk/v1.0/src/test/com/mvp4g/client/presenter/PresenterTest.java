@@ -25,6 +25,7 @@ public class PresenterTest {
 		assertSame( p.getEventBus(), bus );
 	}
 
+	@Test
 	public void testSetter() {
 		String view = "View";
 		final EventBus bus = new EventBus();
@@ -35,6 +36,7 @@ public class PresenterTest {
 		assertSame( p.getEventBus(), bus );
 	}
 
+	@Test
 	public void testBindCalledBySetView() {
 		Presenter<String> p = new Presenter<String>() {
 			@Override

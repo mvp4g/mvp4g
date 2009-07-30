@@ -25,12 +25,6 @@ public class SimpleMvp4gElement extends Mvp4gElement {
 		super( tagName );
 	}
 
-	public SimpleMvp4gElement( String name, String className ) throws DuplicatePropertyNameException {
-		this();
-		setName( name );
-		setClassName( className );
-	}
-
 	public void setName( String name ) throws DuplicatePropertyNameException {
 		setProperty( "name", name );
 	}
