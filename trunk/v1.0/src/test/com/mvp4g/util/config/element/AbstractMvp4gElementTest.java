@@ -103,7 +103,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 		Method setter = null;
 
 		Object[] noArg = new Object[0];
-		Class[] noParam = new Class[0];
+		Class<?>[] noParam = new Class[0];
 
 		for ( String property : properties ) {
 			setMethodName = "set" + property.substring( 0, 1 ).toUpperCase() + property.substring( 1 );
@@ -140,7 +140,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 		Method setter = null;
 
 		Object[] noArg = new Object[0];
-		Class[] noParam = new Class[0];
+		Class<?>[] noParam = new Class[0];
 
 		for ( String value : values ) {
 			setMethodName = "set" + value.substring( 0, 1 ).toUpperCase() + value.substring( 1 );

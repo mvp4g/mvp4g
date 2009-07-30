@@ -9,7 +9,7 @@ public class ServiceElementTest extends SimpleMvp4gElementTest {
 
 	@Override
 	protected SimpleMvp4gElement newElement() {
-		return new PresenterElement();
+		return new ServiceElement();
 	}
 
 }
