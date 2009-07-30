@@ -16,6 +16,12 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 		assertEquals( "(form);", element.getEventParameterString() );
 	}
 
+	@Test
+	public void testNullEventObjectClass() {
+		assertEquals( Object.class.getName(), element.getEventObjectClass() );
+	}
+
+	@Test
 	public void testToString() {
 		element.setType( "type" );
 		assertEquals( "[type]", element.toString() );

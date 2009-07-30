@@ -44,8 +44,7 @@ public class Mvp4gGenerator extends Generator {
 	 */
 	@Override
 	public String generate( TreeLogger logger, GeneratorContext context, String typeName ) throws UnableToCompleteException {
-		String generatedClassQualifiedName;
-		generatedClassQualifiedName = createClass( logger, context, typeName );
+		String generatedClassQualifiedName = createClass( logger, context, typeName );
 
 		if ( generatedClassQualifiedName == null ) {
 			throw new UnableToCompleteException();

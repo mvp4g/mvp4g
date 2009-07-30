@@ -229,12 +229,8 @@ public class Mvp4gConfiguration {
 	}
 
 	private boolean handlerExists( String handlerName ) {
-		Set<Mvp4gElement> elements = new HashSet<Mvp4gElement>();
-		elements.addAll( presenters );
-		elements.addAll( views );
-		elements.addAll( services );
-
-		for ( Mvp4gElement element : elements ) {
+			
+		for ( Mvp4gElement element : presenters ) {
 			if ( element.getUniqueIdentifier().equals( handlerName ) ) {
 				return true;
 			}

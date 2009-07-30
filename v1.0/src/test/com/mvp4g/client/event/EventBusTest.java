@@ -55,35 +55,35 @@ public class EventBusTest {
 
 	@Test
 	public void testDispatchEventNotHandle() {
-		boolean ok = false;
+
 		try {
 			bus.dispatch( TEST, null );
+			fail();
 		} catch ( Mvp4gException exp ) {
 			assertUnknownEvent( TEST, exp.getMessage() );
-			ok = true;
 		}
-		ok = controlOk( ok );
+
 		try {
 			bus.dispatch( TEST );
+			fail();
 		} catch ( Mvp4gException exp ) {
 			assertUnknownEvent( TEST, exp.getMessage() );
-			ok = true;
 		}
-		ok = controlOk( ok );
+
 		try {
 			bus.dispatch( EventType.TEST_TYPE, null );
+			fail();
 		} catch ( Mvp4gException exp ) {
 			assertUnknownEvent( TEST, exp.getMessage() );
-			ok = true;
 		}
-		ok = controlOk( ok );
+
 		try {
 			bus.dispatch( EventType.TEST_TYPE );
+			fail();
 		} catch ( Mvp4gException exp ) {
 			assertUnknownEvent( TEST, exp.getMessage() );
-			ok = true;
 		}
-		ok = controlOk( ok );
+
 	}
 
 	@Test
@@ -91,25 +91,18 @@ public class EventBusTest {
 		Integer form = new Integer( 3 );
 		addCommand( TEST );
 
-		boolean ok = false;
 		try {
 			bus.dispatch( TEST, form );
+			fail();
 		} catch ( Mvp4gException exp ) {
 			assertIncorrectFormClass( TEST, exp.getMessage() );
-			ok = true;
 		}
-
-		ok = controlOk( ok );
-
 		try {
 			bus.dispatch( EventType.TEST_TYPE, form );
+			fail();
 		} catch ( Mvp4gException exp ) {
 			assertIncorrectFormClass( TEST, exp.getMessage() );
-			ok = true;
 		}
-
-		ok = controlOk( ok );
-
 	}
 
 	private void addAssertCommand( final String formSent ) {
@@ -143,13 +136,6 @@ public class EventBusTest {
 				+ " is incorrect. It should be the same as the one configured in the Mvp4g configuration file.";
 		assertEquals( errorMessage, exceptionMessage );
 
-	}
-
-	private boolean controlOk( boolean ok ) {
-		if ( !ok ) {
-			fail( "Excepted exception not thrown" );
-		}
-		return false;
 	}
 
 }

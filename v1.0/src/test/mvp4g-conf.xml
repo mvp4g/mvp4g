@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<mvp4g>
+	<views package="com.mvp4g.example.client.view" >
+		<view name="rootView" class="RootView" />
+		<view name="userCreateView" class="UserCreateView" />
+		<view name="userDisplayView" class="UserDisplayView" />
+	</views>
+	<services>
+		<service name="userService" class="com.mvp4g.example.client.rpc.UserService" />
+	</services>
+	<presenters package="com.mvp4g.example.client.presenter">
+		<presenter name="rootPresenter" class="RootPresenter" view="rootView" />
+		<presenter name="createUserPresenter" class="UserCreatePresenter" view="userCreateView" services="userService" />
+		<presenter name="displayUserPresenter" class="UserDisplayPresenter" view="userDisplayView" />						
+	</presenters>
+	<events>
+		<event type="userCreated" functionCalled="onUserCreated" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="displayUserPresenter" />			
+		<event type="changeBody" functionCalled="onChangeBody" handlers="rootPresenter" eventObjectClass="com.mvp4g.example.client.view.widget.Page"/>
+		<event type="displayMessage" functionCalled="onDisplayMessage" handlers="rootPresenter" eventObjectClass="java.lang.String" />
+		<event type="start" functionCalled="onStart" handlers="rootPresenter, createUserPresenter" />
+	</events>
+	
+	<start view="rootView" eventType="start" />
+</mvp4g>		
