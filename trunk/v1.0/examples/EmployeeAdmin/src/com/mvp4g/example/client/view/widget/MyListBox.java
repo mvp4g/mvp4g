@@ -6,7 +6,9 @@ import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyList
 public class MyListBox extends ListBox implements MyListBoxInterface {
 
 	public String getSelectedValue() {
-		return getValue( getSelectedIndex() );
+		int selectedIndex = getSelectedIndex();
+		
+		return (selectedIndex == -1) ? null : getValue( getSelectedIndex() );
 	}
 
 	public void setSelectedValue( String value ) {
@@ -19,6 +21,18 @@ public class MyListBox extends ListBox implements MyListBoxInterface {
 				}
 			}
 		}
+	}
+
+	public void removeItem( String item ) {
+		if ( item != null ) {
+			int itemCount = getItemCount();
+			for ( int i = 0; i < itemCount; i++ ) {
+				if(item.equals( getValue(i))){
+					removeItem(i);
+					break;
+				}
+			}
+		}		
 	}
 
 }
