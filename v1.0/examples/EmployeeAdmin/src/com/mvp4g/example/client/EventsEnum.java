@@ -7,6 +7,7 @@ public enum EventsEnum {
 	CHANGE_RIGHT_BOTTOM_WIDGET("changeRightBottomWidget"),
 	CREATE_NEW_USER("createNewUser"),
 	SELECT_USER("selectUser"),
+	UNSELECT_USER("unselectUser"),
 	USER_CREATED("userCreated"),
 	USER_UPDATED("userUpdated");
 		

@@ -2,6 +2,7 @@ package com.mvp4g.example.server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mvp4g.example.client.Constants;
@@ -26,6 +27,9 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		String firstName = null;
 		String lastName = null;
 		String username = null;
+		List<String> roles = null;
+
+		Random random = new Random();
 
 		for ( int i = 0; i < NB_USERS; i++ ) {
 			user = new UserBean();
@@ -40,10 +44,17 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			user.setUsername( username );
 
 			user.setEmail( username + "@real.com" );
-			
-			user.setDepartment( DEPARTMENTS[ i % DEPARTMENTS.length] );
-			
+
+			user.setDepartment( DEPARTMENTS[i % DEPARTMENTS.length] );
+
 			user.setPassword( "1234" );
+
+			roles = new ArrayList<String>();
+			int nbRoles = random.nextInt( ROLES.length );
+			for ( int j = 0; j < nbRoles; j++ ) {
+				roles.add( ROLES[random.nextInt( ROLES.length )] );
+			}
+			user.setRoles( roles );
 
 			users.add( user );
 		}
@@ -61,6 +72,6 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 
 	public void updateUser( UserBean user ) {
 		// update always succeeds		
-	}	
+	}
 
 }

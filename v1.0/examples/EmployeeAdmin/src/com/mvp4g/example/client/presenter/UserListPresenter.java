@@ -106,6 +106,11 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 		users.add( user );
 		displayUser( user, users.size() );
 	}
+	
+	public void onUnselectUser() {
+		view.getListTable().unSelectRow( indexSelected );
+		indexSelected = 0;		
+	}
 
 	public void setUserService( UserServiceAsync service ) {
 		this.service = service;
@@ -139,8 +144,8 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 				users.remove( indexSelected - 1 );
 				view.getListTable().removeRow( indexSelected );
 				view.getDeleteButton().setEnabled( false );
-				indexSelected = 0;
 				setVisibleConfirmDeletion( false );
+				eventBus.dispatch( EventsEnum.UNSELECT_USER );
 			}
 
 		} );

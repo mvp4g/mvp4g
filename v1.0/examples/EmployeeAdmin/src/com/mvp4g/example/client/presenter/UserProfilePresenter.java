@@ -17,6 +17,7 @@ import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyList
 public class UserProfilePresenter extends Presenter<UserProfileViewInterface> implements Constants {
 
 	private boolean toUpdate = true;
+	private boolean enabled = false;
 	private UserBean user = null;
 	private UserBean userCopy = new UserBean();
 
@@ -47,7 +48,7 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		view.getCancelButton().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				init();
+				cancel();
 			}
 
 		} );
@@ -63,13 +64,21 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		view.getUsername().addKeyUpHandler( handler );
 		view.getPassword().addKeyUpHandler( handler );
 		view.getConfirmPassword().addKeyUpHandler( handler );
-		view.getDepartment().addClickHandler( new ClickHandler() {
+		MyListBoxInterface department = view.getDepartment();
+		department.addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
 				enableUpdateButton();
 			}
 
 		} );
+		department.addKeyUpHandler( new KeyUpHandler(){
+
+			public void onKeyUp( KeyUpEvent event ) {
+				enableUpdateButton();				
+			}
+			
+		});
 
 		init();
 	}
@@ -88,6 +97,12 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		update.setEnabled( true );
 		update.setText( "Update" );
 		view.getCancelButton().setEnabled( true );
+		enabled = true;
+	}
+	
+	public void onUnselectUser() {
+		user = null;
+		init();
 	}
 
 	public void onCreateNewUser( UserBean user ) {
@@ -98,11 +113,16 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		update.setText( "Add User" );
 		view.getCancelButton().setEnabled( true );
 		toUpdate = false;
+		enabled = true;
 
 	}
 
 	public void setUserService( UserServiceAsync service ) {
 		this.service = service;
+	}
+	
+	void cancel(){
+		eventBus.dispatch( EventsEnum.UNSELECT_USER );
 	}
 
 	void init() {
@@ -117,6 +137,7 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		update.setEnabled( false );
 		update.setText( "Update" );
 		view.getCancelButton().setEnabled( false );
+		enabled = false;
 	}
 
 	void fillForm() {
@@ -158,7 +179,7 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		service.updateUser( user, new AsyncCallback<Void>() {
 
 			public void onFailure( Throwable caught ) {
-				user = userCopy;
+				user.copy( userCopy );
 			}
 
 			public void onSuccess( Void result ) {
@@ -176,7 +197,7 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		String password = view.getPassword().getValue();
 		String confirm = view.getConfirmPassword().getValue();
 
-		boolean enabled = ( username != null ) && ( username.length() > 0 ) && ( department > 0 ) && ( password != null ) && ( password.length() > 0 )
+		boolean enabled = this.enabled &&( username != null ) && ( username.length() > 0 ) && ( department > 0 ) && ( password != null ) && ( password.length() > 0 )
 				&& ( confirm != null ) && ( confirm.length() > 0 ) && ( confirm.equals( password ) );
 		view.getUpdateButton().setEnabled( enabled );
 	}
