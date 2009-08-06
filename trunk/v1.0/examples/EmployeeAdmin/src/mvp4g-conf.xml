@@ -13,7 +13,7 @@
 		<presenter name="rootTemplate" class="RootTemplatePresenter" view="rootTemplateView" />
 		<presenter name="userList" class="UserListPresenter" view="userListView" services="userService" />
 		<presenter name="userProfile" class="UserProfilePresenter" view="userProfileView" services="userService" />
-		<presenter name="userRole" class="UserRolePresenter" view="userRoleView" />			
+		<presenter name="userRole" class="UserRolePresenter" view="userRoleView"  services="userService" />			
 	</presenters>
 	<events>
 		<event type="changeTopWidget" functionCalled="onChangeTopWidget" eventObjectClass="com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface" handlers="rootTemplate" />
@@ -22,9 +22,9 @@
 		
 		<event type="createNewUser" functionCalled="onCreateNewUser" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="userProfile, userRole" />
 		<event type="selectUser" functionCalled="onSelectUser" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="userProfile, userRole" />
-		<event type="userCreated" functionCalled="onUserCreated" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="userList, userRole" />
+		<event type="unselectUser" functionCalled="onUnselectUser" handlers="userProfile, userRole, userList" />
+		<event type="userCreated" functionCalled="onUserCreated" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="userList" />
 		<event type="userUpdated" functionCalled="onUserUpdated" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="userList, userRole" />
-		
 		
 		<event type="start" functionCalled="onStart" handlers="userList, userProfile, userRole" />
 		
