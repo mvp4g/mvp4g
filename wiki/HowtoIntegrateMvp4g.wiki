@@ -3,7 +3,7 @@
 == Introduction ==
 To integrate Mvp4g to your project, the following steps need to be done
   # Add needed library to your project
-  # Modify your GWT configuration file (`*`.gwt.xml) and your entry point  
+  # Modify your GWT configuration file (`*`.gwt.xml)
   # Create your presenters and set your events 
   # Create a Mvp4g configuration file for your project
         
@@ -22,6 +22,13 @@ Insert Mvp4g module to your project:
 {{{
 <inherits name='com.mvp4g.Mvp4gModule'/>
 }}}
+
+Choose as an entry-point the Mvp4g Entry point
+{{{
+<entry-point class='com.mvp4g.client.Mvp4gEntryPoint'/>
+}}}
+
+or
 
 Add the following line to your entry-point
 {{{
