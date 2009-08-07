@@ -74,4 +74,9 @@ public class UserBean implements IsSerializable {
 
 	}
 
+	@Override
+	public boolean equals(Object user){
+		return user instanceof UserBean;
+	}
+
 }

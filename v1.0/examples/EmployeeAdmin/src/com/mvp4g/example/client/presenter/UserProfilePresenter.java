@@ -48,7 +48,7 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		view.getCancelButton().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				cancel();
+				eventBus.dispatch( EventsEnum.UNSELECT_USER );
 			}
 
 		} );
@@ -72,13 +72,13 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 			}
 
 		} );
-		department.addKeyUpHandler( new KeyUpHandler(){
+		department.addKeyUpHandler( new KeyUpHandler() {
 
 			public void onKeyUp( KeyUpEvent event ) {
-				enableUpdateButton();				
+				enableUpdateButton();
 			}
-			
-		});
+
+		} );
 
 		init();
 	}
@@ -95,11 +95,11 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		fillForm();
 		MyButtonInterface update = view.getUpdateButton();
 		update.setEnabled( true );
-		update.setText( "Update" );
+		view.showUpdateMode();
 		view.getCancelButton().setEnabled( true );
 		enabled = true;
 	}
-	
+
 	public void onUnselectUser() {
 		user = null;
 		init();
@@ -110,7 +110,7 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		init();
 		MyButtonInterface update = view.getUpdateButton();
 		update.setEnabled( false );
-		update.setText( "Add User" );
+		view.showAddMode();
 		view.getCancelButton().setEnabled( true );
 		toUpdate = false;
 		enabled = true;
@@ -120,12 +120,8 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 	public void setUserService( UserServiceAsync service ) {
 		this.service = service;
 	}
-	
-	void cancel(){
-		eventBus.dispatch( EventsEnum.UNSELECT_USER );
-	}
 
-	void init() {
+	private void init() {
 		view.getFirstName().setValue( "" );
 		view.getLastName().setValue( "" );
 		view.getEmail().setValue( "" );
@@ -135,12 +131,12 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		view.getDepartment().setSelectedIndex( 0 );
 		MyButtonInterface update = view.getUpdateButton();
 		update.setEnabled( false );
-		update.setText( "Update" );
+		view.showUpdateMode();
 		view.getCancelButton().setEnabled( false );
 		enabled = false;
 	}
 
-	void fillForm() {
+	private void fillForm() {
 		view.getFirstName().setValue( user.getFirstName() );
 		view.getLastName().setValue( user.getLastName() );
 		view.getEmail().setValue( user.getEmail() );
@@ -150,7 +146,7 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		view.getDepartment().setSelectedValue( user.getDepartment() );
 	}
 
-	void fillBean() {
+	private void fillBean() {
 		user.setFirstName( view.getFirstName().getValue() );
 		user.setLastName( view.getLastName().getValue() );
 		user.setEmail( view.getEmail().getValue() );
@@ -159,7 +155,7 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		user.setDepartment( view.getDepartment().getSelectedValue() );
 	}
 
-	void createUser() {
+	private void createUser() {
 		service.createUser( user, new AsyncCallback<Void>() {
 
 			public void onFailure( Throwable caught ) {
@@ -175,7 +171,7 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		} );
 	}
 
-	void updateUser() {
+	private void updateUser() {
 		service.updateUser( user, new AsyncCallback<Void>() {
 
 			public void onFailure( Throwable caught ) {
@@ -190,15 +186,15 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		} );
 	}
 
-	void enableUpdateButton() {
+	private void enableUpdateButton() {
 
 		String username = view.getUsername().getValue();
 		int department = view.getDepartment().getSelectedIndex();
 		String password = view.getPassword().getValue();
 		String confirm = view.getConfirmPassword().getValue();
 
-		boolean enabled = this.enabled &&( username != null ) && ( username.length() > 0 ) && ( department > 0 ) && ( password != null ) && ( password.length() > 0 )
-				&& ( confirm != null ) && ( confirm.length() > 0 ) && ( confirm.equals( password ) );
+		boolean enabled = this.enabled && ( username != null ) && ( username.length() > 0 ) && ( department > 0 ) && ( password != null )
+				&& ( password.length() > 0 ) && ( confirm != null ) && ( confirm.length() > 0 ) && ( confirm.equals( password ) );
 		view.getUpdateButton().setEnabled( enabled );
 	}
 

@@ -45,6 +45,11 @@ public class UserListView extends Composite implements UserListViewInterface, My
 		userList.setCellPadding( 0 );
 		userList.setCellSpacing( 0 );
 		userList.getRowFormatter().setStyleName( 0, "header" );
+		userList.setText( 0, 0, "Username" );
+		userList.setText( 0, 1, "First Name" );
+		userList.setText( 0, 2, "Last Name" );
+		userList.setText( 0, 3, "Email" );
+		userList.setText( 0, 4, "Department" );
 
 		cpPanel.add( mainPanel );
 
@@ -59,7 +64,7 @@ public class UserListView extends Composite implements UserListViewInterface, My
 		return delete;
 	}
 
-	public MyTableInterface getListTable() {
+	public MyTableInterface getTable() {
 		return userList;
 	}
 

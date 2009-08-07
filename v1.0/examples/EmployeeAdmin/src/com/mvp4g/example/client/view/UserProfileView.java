@@ -100,4 +100,12 @@ public class UserProfileView extends Composite implements UserProfileViewInterfa
 		return this;
 	}
 
+	public void showAddMode() {
+		update.setText( "Add User" );		
+	}
+
+	public void showUpdateMode() {
+		update.setText( "Update" );		
+	}
+
 }

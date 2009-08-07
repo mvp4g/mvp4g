@@ -1,5 +1,6 @@
 package com.mvp4g.example.client.view.widget;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyTableInterface;
 
@@ -12,6 +13,10 @@ public class MyTable extends FlexTable implements MyTableInterface {
 
 	public void unSelectRow( int row ) {
 		getRowFormatter().removeStyleName( row, "selected" );
+	}
+
+	public int getRowForEvent( ClickEvent event ) {
+		return getCellForEvent( event ).getRowIndex();
 	}
 
 }

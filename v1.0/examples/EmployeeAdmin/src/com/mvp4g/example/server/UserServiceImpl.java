@@ -16,8 +16,8 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 	 */
 	private static final long serialVersionUID = 263606265567100312L;
 
-	static private final String[] firstNames = { "Karim", "Cristiano", "Iker", "Sergio" };
-	static private final String[] lastNames = { "Benzema", "Ronaldo", "Casillas", "Ramos" };
+	static private final String[] FIRST_NAMES = { "Karim", "Cristiano", "Iker", "Sergio" };
+	static private final String[] LAST_NAMES = { "Benzema", "Ronaldo", "Casillas", "Ramos" };
 
 	static private int NB_USERS = 4;
 
@@ -34,10 +34,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 		for ( int i = 0; i < NB_USERS; i++ ) {
 			user = new UserBean();
 
-			firstName = firstNames[i % firstNames.length];
+			firstName = FIRST_NAMES[i % FIRST_NAMES.length];
 			user.setFirstName( firstName );
 
-			lastName = lastNames[i % lastNames.length];
+			lastName = LAST_NAMES[i % LAST_NAMES.length];
 			user.setLastName( lastName );
 
 			username = ( firstName.substring( 0, 1 ) + lastName ).toLowerCase();
