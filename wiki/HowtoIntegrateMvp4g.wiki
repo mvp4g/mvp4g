@@ -43,8 +43,8 @@ Create your project Service Interface(s). A service interface must extend the Re
 
 == Mvp4g Presenters ==
 Create your project presenters(s). A presenter needs to:
-*extend Presenter or implement PresenterInterface
-*have a constructor with no parameter
+  * extend Presenter or implement PresenterInterface
+  * have a constructor with no parameter
 
 == Mvp4g configuration file == 
 Create in your project source directory a file mvp4g-conf.xml. Your file must start with and end by the tag `<mvp4g>`.
@@ -64,9 +64,9 @@ Add your views to the configuration file. Only the views declared in this config
 </views>
 }}}
 
-*package: you can precise the package where your views are located in order not to have to give it for each view. If the attribute `class` of the tag `view` contains only the class name, the value of the package attribute will be added to it to generate the view class full name. 
-*name: name of the view. It must be unique amongs views, services and presenters.
-*class: Class of the view. If no package is precised, the package attribute will be added to it to generate the full name of the class.
+ * package: you can precise the package where your views are located in order not to have to give it for each view. If the attribute `class` of the tag `view` contains only the class name, the value of the package attribute will be added to it to generate the view class full name. 
+ * name: name of the view. It must be unique amongs views, services and presenters.
+ * class: Class of the view. If no package is precised, the package attribute will be added to it to generate the full name of the class.
 
 ===Services===
 Add your services to the configuration file. Only the services declared in this configuration can be added to your presenters.
@@ -78,9 +78,16 @@ Add your services to the configuration file. Only the services declared in this 
 </services>
 }}}
 
-*package: you can precise the package where your service interfaces are located in order not to have to give it for each service. If the attribute `class` of the `service` tag contains only the class name, the value of the package attribute will be added to it to generate the service interface full name. 
-*name: name of the service. It must be unique amongs views, services and presenters.
-*class: Interface of the service. If no package is precised, the package attribute will be added to it to generate the full name of the interface.
+ * package: you can precise the package where your service interfaces are located in order not to have to give it for each service. If the attribute `class` of the `service` tag contains only the class name, the value of the package attribute will be added to it to generate the service interface full name. 
+ * name: name of the service. It must be unique amongs views, services and presenters.
+ * class: Interface of the service. If no package is precised, the package attribute will be added to it to generate the full name of the interface.
+
+It is not an instance of the service interface that is injected into the presenter but an instance of the associated Async class
+If a service is injected into the presenter, the presenter must define the appropriate setter method. The name of this method must be equal to "set" + name of the service and the type of the parameter of this method must equals (package if needed) + "." + name of the service (first character being upper case) + "Async". For example, for a presenter to be able to be injected with `service1`, it needs to define the following method:
+{{{
+public void setService1(com.mvp4g.example.client.Service1Async)
+}}}
+
 
 ===Presenters===
 Add your presenters to the configuration file. You have to inject one view to each presenter and can inject one to many services to it.
@@ -90,11 +97,14 @@ Add your presenters to the configuration file. You have to inject one view to ea
 	<presenter name="presenter2" class="com.mvp4g.example.client.presenter.special.Presenter2" view="viewTwo" services="service1, service2" />
 	...
 </presenters>
+}}}
 
-*package: you can precise the package where your presenters are located in order not to have to give it for each presenter. If the attribute `class` of the `presenter` tag contains only the class name, the value of the package attribute will be added to it to generate the presenter class full name. 
-*name: name of the presenter. It must be unique amongs views, services and presenters.
-*class: Class of the presenter. If no package is precised, the package attribute will be added to it to generate the full name of the class.
-*view: 
+ * package: you can precise the package where your presenters are located in order not to have to give it for each presenter. If the attribute `class` of the `presenter` tag contains only the class name, the value of the package attribute will be added to it to generate the presenter class full name. 
+ * name: name of the presenter. It must be unique amongs views, services and presenters.
+ * class: Class of the presenter. If no package is precised, the package attribute will be added to it to generate the full name of the class.
+ * view: name of the view to inject in the presenter. The name must be equal to one of the views' name declared in the configuration file.
+ * service (optional) : name(s) of the service(s) to inject in the presenter. The name(s) of the service(s) must be equal to one of the services' name declared in the configuration file. 
+
 ===Events===
 to be done...
 
