@@ -45,13 +45,21 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 
 		} );
 
-		view.getSelectedRolesListBox().addClickHandler( new ClickHandler() {
+		MyListBoxInterface selectedRoles = view.getSelectedRolesListBox();
+		selectedRoles.addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
 				enableRemoveButton();
 			}
 
 		} );
+		selectedRoles.addKeyUpHandler( new KeyUpHandler(){
+
+			public void onKeyUp( KeyUpEvent event ) {
+				enableRemoveButton();
+			}
+			
+		});
 
 		MyListBoxInterface rolesChoices = view.getRoleChoiceListBox();
 		rolesChoices.addClickHandler( new ClickHandler() {
@@ -95,8 +103,10 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 		MyListBoxInterface rolesChoices = view.getRoleChoiceListBox();
 		rolesChoices.setSelectedIndex( 0 );
 		rolesChoices.setEnabled( true );
+		view.getRemoveButton().setEnabled( false );
+		view.getAddButton().setEnabled( false );
 	}
-	
+
 	public void onUserUpdated( UserBean user ) {
 		user = null;
 		disable();
@@ -116,7 +126,7 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 		this.service = service;
 	}
 
-	void addRole( final String role ) {
+	private void addRole( final String role ) {
 
 		List<String> roles = user.getRoles();
 		if ( roles == null ) {
@@ -142,7 +152,7 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 
 	}
 
-	void deleteRole( final String role ) {
+	private void deleteRole( final String role ) {
 
 		List<String> roles = user.getRoles();
 		roles.remove( role );
@@ -165,13 +175,13 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 
 	}
 
-	void enableRemoveButton() {
-		if ( enabled ) {
+	private void enableRemoveButton() {
+		if ( enabled && ( view.getSelectedRolesListBox().getSelectedValue() != null ) ) {
 			view.getRemoveButton().setEnabled( true );
 		}
 	}
 
-	void enabledAddButton() {
+	private void enabledAddButton() {
 		if ( enabled ) {
 			if ( view.getRoleChoiceListBox().getSelectedIndex() == 0 ) {
 				view.getAddButton().setEnabled( false );
@@ -181,7 +191,7 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 		}
 	}
 
-	void disable() {
+	private void disable() {
 		view.getRemoveButton().setEnabled( false );
 		view.getAddButton().setEnabled( false );
 		view.getSelectedRolesListBox().clear();

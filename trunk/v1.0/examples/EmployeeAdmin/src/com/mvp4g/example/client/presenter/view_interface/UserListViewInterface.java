@@ -8,7 +8,7 @@ import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidg
 public interface UserListViewInterface {
 	
 	public MyWidgetInterface getViewWidget();
-	public MyTableInterface getListTable();
+	public MyTableInterface getTable();
 	public MyButtonInterface getDeleteButton();
 	public MyButtonInterface getNewButton();
 	public MyButtonInterface getYesButton();

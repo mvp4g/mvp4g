@@ -17,5 +17,8 @@ public interface UserProfileViewInterface {
 	public MyListBoxInterface getDepartment();
 	public MyButtonInterface getUpdateButton();
 	public MyButtonInterface getCancelButton();
+	
+	public void showAddMode();
+	public void showUpdateMode();
 
 }

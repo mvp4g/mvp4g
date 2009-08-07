@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.mvp4g.client.presenter.Presenter;
 import com.mvp4g.example.client.EventsEnum;
 import com.mvp4g.example.client.UserServiceAsync;
@@ -39,23 +38,17 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 			}
 
 		} );
-		MyTableInterface table = view.getListTable();
+		MyTableInterface table = view.getTable();
 		table.addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				MyTableInterface table = view.getListTable();
+				MyTableInterface table = view.getTable();
 
-				Cell cell = table.getCellForEvent( event );
-				selectUser( cell.getRowIndex() );
+				selectUser( table.getRowForEvent( event ) );
 
 			}
 
-		} );
-		table.setText( 0, 0, "Username" );
-		table.setText( 0, 1, "First Name" );
-		table.setText( 0, 2, "Last Name" );
-		table.setText( 0, 3, "Email" );
-		table.setText( 0, 4, "Department" );
+		} );		
 
 		view.getYesButton().addClickHandler( new ClickHandler() {
 
@@ -108,7 +101,7 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 	}
 	
 	public void onUnselectUser() {
-		view.getListTable().unSelectRow( indexSelected );
+		view.getTable().unSelectRow( indexSelected );
 		indexSelected = 0;		
 	}
 
@@ -116,8 +109,8 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 		this.service = service;
 	}
 
-	void selectUser( int row ) {
-		MyTableInterface table = view.getListTable();
+	private void selectUser( int row ) {
+		MyTableInterface table = view.getTable();
 
 		if ( row > 0 ) {
 
@@ -132,7 +125,7 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 		}
 	}
 
-	void deleteUser() {
+	private void deleteUser() {
 		service.deleteUser( users.get( indexSelected - 1 ), new AsyncCallback<Void>() {
 
 			public void onFailure( Throwable caught ) {
@@ -142,7 +135,7 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 
 			public void onSuccess( Void result ) {
 				users.remove( indexSelected - 1 );
-				view.getListTable().removeRow( indexSelected );
+				view.getTable().removeRow( indexSelected );
 				view.getDeleteButton().setEnabled( false );
 				setVisibleConfirmDeletion( false );
 				eventBus.dispatch( EventsEnum.UNSELECT_USER );
@@ -151,16 +144,16 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 		} );
 	}
 
-	void displayUser( UserBean user, int row ) {
-		MyTableInterface flexTable = view.getListTable();
-		flexTable.setText( row, 0, user.getUsername() );
-		flexTable.setText( row, 1, user.getFirstName() );
-		flexTable.setText( row, 2, user.getLastName() );
-		flexTable.setText( row, 3, user.getEmail() );
-		flexTable.setText( row, 4, user.getDepartment() );
+	private void displayUser( UserBean user, int row ) {
+		MyTableInterface table = view.getTable();
+		table.setText( row, 0, user.getUsername() );
+		table.setText( row, 1, user.getFirstName() );
+		table.setText( row, 2, user.getLastName() );
+		table.setText( row, 3, user.getEmail() );
+		table.setText( row, 4, user.getDepartment() );
 	}
 
-	void setVisibleConfirmDeletion( boolean visible ) {
+	private void setVisibleConfirmDeletion( boolean visible ) {
 		view.getConfirmText().setVisible( visible );
 		view.getYesButton().setVisible( visible );
 		view.getNoButton().setVisible( visible );
