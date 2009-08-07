@@ -27,9 +27,7 @@ Choose as an entry-point the Mvp4g Entry point
 {{{
 <entry-point class='com.mvp4g.client.Mvp4gEntryPoint'/>
 }}}
-
 or
-
 Add the following line to your entry-point
 {{{
 Mvp4gStarter starter = GWT.create(Mvp4gStarter.class);
@@ -37,8 +35,16 @@ starter.start();
 }}}
 
 
+== Mvp4g Views ==
+Create your project Views(s). A view just needs to have a constructor with no parameter.
+
+== Mvp4g Services ==
+Create your project Service Interface(s). A service interface must extend the RemoteService included in the GWT library.
+
 == Mvp4g Presenters ==
-Create your project presenters(s). See how to create a view [Mvp4gBasics here].
+Create your project presenters(s). A presenter needs to:
+*extend Presenter or implement PresenterInterface
+*have a constructor with no parameter
 
 == Mvp4g configuration file == 
 Create in your project source directory a file mvp4g-conf.xml. Your file must start with and end by the tag `<mvp4g>`.
@@ -48,9 +54,47 @@ YourGWTModule
           |--- mvp4g-conf.xml
 }}}
 
-===Presenters===
-to be done...          
+===Views===
+Add your views to the configuration file. Only the views declared in this configuration file can be added to your presenters.
+{{{
+<views package="com.mvp4g.example.client.view" >
+	<view name="viewOne" class="View1" />
+	<view name="viewTwo" class="com.mvp4g.example.client.view.special.View2" />
+	...
+</views>
+}}}
 
+*package: you can precise the package where your views are located in order not to have to give it for each view. If the attribute `class` of the tag `view` contains only the class name, the value of the package attribute will be added to it to generate the view class full name. 
+*name: name of the view. It must be unique amongs views, services and presenters.
+*class: Class of the view. If no package is precised, the package attribute will be added to it to generate the full name of the class.
+
+===Services===
+Add your services to the configuration file. Only the services declared in this configuration can be added to your presenters.
+{{{
+<services package="com.mvp4g.example.client" >
+	<service name="service1" class="Service1" />
+	<service name="service2" class="com.mvp4g.example.client.service.special.Service2" />
+	...
+</services>
+}}}
+
+*package: you can precise the package where your service interfaces are located in order not to have to give it for each service. If the attribute `class` of the `service` tag contains only the class name, the value of the package attribute will be added to it to generate the service interface full name. 
+*name: name of the service. It must be unique amongs views, services and presenters.
+*class: Interface of the service. If no package is precised, the package attribute will be added to it to generate the full name of the interface.
+
+===Presenters===
+Add your presenters to the configuration file. You have to inject one view to each presenter and can inject one to many services to it.
+{{{
+<presenters package="com.mvp4g.example.client.presenter" >
+	<presenter name="presenter1" class="Presenter1" view="viewOne" />
+	<presenter name="presenter2" class="com.mvp4g.example.client.presenter.special.Presenter2" view="viewTwo" services="service1, service2" />
+	...
+</presenters>
+
+*package: you can precise the package where your presenters are located in order not to have to give it for each presenter. If the attribute `class` of the `presenter` tag contains only the class name, the value of the package attribute will be added to it to generate the presenter class full name. 
+*name: name of the presenter. It must be unique amongs views, services and presenters.
+*class: Class of the presenter. If no package is precised, the package attribute will be added to it to generate the full name of the class.
+*view: 
 ===Events===
 to be done...
 
