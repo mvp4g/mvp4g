@@ -82,8 +82,9 @@ Add your services to the configuration file. Only the services declared in this 
  * name: name of the service. It must be unique amongs views, services and presenters.
  * class: Interface of the service. If no package is precised, the package attribute will be added to it to generate the full name of the interface.
 
-It is not an instance of the service interface that is injected into the presenter but an instance of the associated Async class
-If a service is injected into the presenter, the presenter must define the appropriate setter method. The name of this method must be equal to "set" + name of the service and the type of the parameter of this method must equals (package if needed) + "." + name of the service (first character being upper case) + "Async". For example, for a presenter to be able to be injected with `service1`, it needs to define the following method:
+It is not an instance of the service interface that is injected into the presenter but an instance of the associated Async class.
+
+If a service is injected into the presenter, the presenter must define the appropriate setter method. The name of this method must be equals to: "set" + name of the service and the type of the parameter of this method must be equals to: (package if needed) + "." + name of the service (first character being upper case) + "Async". For example, for a to be able to inject `service1` into a presenter, the presenter needs to define the following method:
 {{{
 public void setService1(com.mvp4g.example.client.Service1Async)
 }}}
