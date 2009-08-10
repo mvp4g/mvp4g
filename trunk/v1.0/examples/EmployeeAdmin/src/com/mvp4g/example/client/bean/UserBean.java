@@ -73,10 +73,4 @@ public class UserBean implements IsSerializable {
 	public void copy( UserBean user ) {
 
 	}
-
-	@Override
-	public boolean equals(Object user){
-		return user instanceof UserBean;
-	}
-
 }

@@ -51,8 +51,12 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 
 			roles = new ArrayList<String>();
 			int nbRoles = random.nextInt( ROLES.length );
+			String role = null;
 			for ( int j = 0; j < nbRoles; j++ ) {
-				roles.add( ROLES[random.nextInt( ROLES.length )] );
+				role = ROLES[random.nextInt( ROLES.length )];
+				if(!roles.contains( role )){
+					roles.add( role );
+				}
 			}
 			user.setRoles( roles );
 
