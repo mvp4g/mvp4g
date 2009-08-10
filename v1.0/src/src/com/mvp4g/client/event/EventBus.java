@@ -56,11 +56,19 @@ public class EventBus {
 	public void dispatch( String eventType, Object form ) {
 		try {
 			commands.get( eventType ).execute( form );
-		} catch ( NullPointerException exp ) {
-			throw new Mvp4gException( "Event " + eventType + " doesn't exist. Have you forgotten to add it to your Mvp4g configuration file?" );
-		} catch ( ClassCastException er ) {
-			throw new Mvp4gException( "Class of the object sent with event " + eventType
-					+ " is incorrect. It should be the same as the one configured in the Mvp4g configuration file." );
+		} catch ( NullPointerException e ) {
+			//if it's a configuration error, it means the error happened in this class 
+			if ( e.getStackTrace()[0].getClassName().equals( EventBus.class.getName() ) ) {
+				throw new Mvp4gException( "Event " + eventType + " doesn't exist. Have you forgotten to add it to your Mvp4g configuration file?" );
+			}
+			throw e;
+		} catch ( ClassCastException e ) {
+			//if it's a configuration error, it means the error happened in the command called by this class
+			if ( e.getStackTrace()[1].getClassName().equals( EventBus.class.getName() ) ) {
+				throw new Mvp4gException( "Class of the object sent with event " + eventType
+						+ " is incorrect. It should be the same as the one configured in the Mvp4g configuration file." );
+			}
+			throw e;
 		}
 	}
 
