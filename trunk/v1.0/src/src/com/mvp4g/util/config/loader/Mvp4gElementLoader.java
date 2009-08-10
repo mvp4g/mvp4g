@@ -212,7 +212,7 @@ abstract class Mvp4gElementLoader<E extends Mvp4gElement> {
 
 		String value = element.getString( "[@" + attributeName + "]" );
 		if ( value == null ) {
-			String err = getElementLabel() + " '" + attributeName + "' is missing";
+			String err = getElementLabel() + ": '" + attributeName + "' is missing";
 			throw new InvalidMvp4gConfigurationException( err );
 		}
 		return value;
@@ -222,7 +222,7 @@ abstract class Mvp4gElementLoader<E extends Mvp4gElement> {
 
 		String[] values = element.getStringArray( "[@" + attributeName + "]" );
 		if ( values == null || values.length == 0 ) {
-			String err = getElementLabel() + " '" + attributeName + "' is missing";
+			String err = getElementLabel() + ": '" + attributeName + "' is missing";
 			throw new InvalidMvp4gConfigurationException( err );
 		}
 		return values;

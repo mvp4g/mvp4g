@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 
-	private static final String[] properties = { "eventObjectClass", "functionCalled", "type" };
+	private static final String[] properties = { "eventObjectClass", "calledMethod", "type" };
 	private static final String[] values = { "handlers" };
 
 	@Test

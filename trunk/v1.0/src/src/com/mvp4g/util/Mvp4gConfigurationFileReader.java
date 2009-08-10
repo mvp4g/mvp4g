@@ -195,7 +195,7 @@ public class Mvp4gConfigurationFileReader {
 
 		for ( EventElement event : configuration.getEvents() ) {
 			String type = event.getType();
-			String functionCalled = event.getFunctionCalled();
+			String calledMethod = event.getCalledMethod();
 			String objectClass = event.getEventObjectClass();
 			String param = event.getEventParameterString();
 			String[] handlers = event.getHandlers();
@@ -214,7 +214,7 @@ public class Mvp4gConfigurationFileReader {
 			for ( int i = 0; i < nbHandlers; i++ ) {
 				sourceWriter.print( handlers[i] );
 				sourceWriter.print( "." );
-				sourceWriter.print( functionCalled );
+				sourceWriter.print( calledMethod );
 				sourceWriter.println( param );
 			}
 			sourceWriter.outdent();
