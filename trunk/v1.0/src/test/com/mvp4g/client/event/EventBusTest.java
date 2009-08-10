@@ -12,12 +12,14 @@ import com.mvp4g.client.Mvp4gException;
 public class EventBusTest {
 
 	private static final String TEST = "Test";
+	private static final String NULL = "Null";
+	private static final String CLASS = "Class";
 
 	private EventBus bus = null;
 
 	private static enum EventType {
 
-		TEST_TYPE(TEST);
+		TEST_TYPE(TEST), TEST_NULL(NULL), TEST_CLASS(CLASS);
 
 		private String type;
 
@@ -87,6 +89,40 @@ public class EventBusTest {
 	}
 
 	@Test
+	public void testNullPointerInsideTheCommand() {
+		addNullCommand();
+
+		try {
+			bus.dispatch( NULL, null );
+			fail();
+		} catch ( NullPointerException exp ) {
+			//nothing to verify
+		}
+
+		try {
+			bus.dispatch( NULL );
+			fail();
+		} catch ( NullPointerException exp ) {
+			//nothing to verify
+		}
+
+		try {
+			bus.dispatch( EventType.TEST_NULL, null );
+			fail();
+		} catch ( NullPointerException exp ) {
+			//nothing to verify
+		}
+
+		try {
+			bus.dispatch( EventType.TEST_NULL );
+			fail();
+		} catch ( NullPointerException exp ) {
+			//nothing to verify
+		}
+
+	}
+
+	@Test
 	public void testDispatchFormClassIncorrect() {
 		Integer form = new Integer( 3 );
 		addCommand( TEST );
@@ -102,6 +138,39 @@ public class EventBusTest {
 			fail();
 		} catch ( Mvp4gException exp ) {
 			assertIncorrectFormClass( TEST, exp.getMessage() );
+		}
+	}
+
+	@Test
+	public void testClassCastErrorInsideHandlers() {
+		addClassCastCommand();
+
+		try {
+			bus.dispatch( CLASS, null );
+			fail();
+		} catch ( ClassCastException exp ) {
+			//nothing to verify
+		}
+
+		try {
+			bus.dispatch( CLASS );
+			fail();
+		} catch ( ClassCastException exp ) {
+			//nothing to verify
+		}
+
+		try {
+			bus.dispatch( EventType.TEST_CLASS, null );
+			fail();
+		} catch ( ClassCastException exp ) {
+			//nothing to verify
+		}
+
+		try {
+			bus.dispatch( EventType.TEST_CLASS );
+			fail();
+		} catch ( ClassCastException exp ) {
+			//nothing to verify
 		}
 	}
 
@@ -123,6 +192,34 @@ public class EventBusTest {
 			}
 
 		} );
+	}
+
+	private void addNullCommand() {
+		bus.addEvent( NULL, new Command<String>() {
+
+			@SuppressWarnings( "null" )
+			public void execute( String form ) {
+				String nullString = null;
+				nullString.length();
+			}
+
+		} );
+	}
+
+	private void addClassCastCommand() {
+		bus.addEvent( CLASS, new Command<String>() {
+
+			public void execute( String form ) {
+				classCastError();
+			}
+
+		} );
+	}
+
+	protected void classCastError() {
+		Object o = new Object();
+		@SuppressWarnings( "unused" )
+		Integer i = (Integer)o;
 	}
 
 	private void assertUnknownEvent( String eventType, String exceptionMessage ) {
