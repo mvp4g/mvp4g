@@ -21,12 +21,12 @@ public class EventElement extends Mvp4gElement {
 		return getProperty( "type" );
 	}
 
-	public void setFunctionCalled( String functionCalled ) throws DuplicatePropertyNameException {
-		setProperty( "functionCalled", functionCalled );
+	public void setCalledMethod( String calledMethod ) throws DuplicatePropertyNameException {
+		setProperty( "calledMethod", calledMethod );
 	}
 
-	public String getFunctionCalled() {
-		return getProperty( "functionCalled" );
+	public String getCalledMethod() {
+		return getProperty( "calledMethod" );
 	}
 
 	public void setEventObjectClass( String eventObjectClass ) throws DuplicatePropertyNameException {
