@@ -137,7 +137,7 @@ public class UserProfilePresenterTest implements Constants {
 
 		fillForm( DEPARTMENTS[1] );
 		update.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		eventBus.assertEvent( EventsEnum.USER_UPDATED.toString(), createUser( DEPARTMENTS[1] ) );
+		eventBus.assertEvent( EventsEnum.USER_UPDATED.toString(), user );
 
 		assertInitForm();
 		assertFalse( update.isEnabled() );
@@ -147,7 +147,7 @@ public class UserProfilePresenterTest implements Constants {
 	
 	@Test
 	public void testOnNewAndCreate() {
-		UserBean user = createUser( DEPARTMENTS[0] );
+		UserBean user = new UserBean();
 		presenter.onCreateNewUser( user );
 		assertInitForm();
 		MyMockButton update = (MyMockButton)view.getUpdateButton();
@@ -158,7 +158,7 @@ public class UserProfilePresenterTest implements Constants {
 		
 		fillForm( DEPARTMENTS[1] );
 		update.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		eventBus.assertEvent( EventsEnum.USER_CREATED.toString(), createUser( DEPARTMENTS[1] ) );
+		eventBus.assertEvent( EventsEnum.USER_CREATED.toString(), user );
 
 		assertInitForm();
 		assertFalse( update.isEnabled() );

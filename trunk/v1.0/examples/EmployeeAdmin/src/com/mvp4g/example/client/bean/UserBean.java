@@ -71,6 +71,12 @@ public class UserBean implements IsSerializable {
 	}
 
 	public void copy( UserBean user ) {
-
+		this.firstName = user.firstName;
+		this.lastName = user.lastName;
+		this.email = user.email;
+		this.username = user.username;
+		this.password = user.password;
+		this.department = user.department;
+		this.roles = user.roles;
 	}
 }
