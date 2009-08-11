@@ -2,6 +2,7 @@ package com.mvp4g.example.client.presenter;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,48 +82,56 @@ public class UserListPresenterTest implements Constants {
 		delete.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
 		assertConfirmDeletionBar( true );
 	}
-	
+
 	@Test
 	public void testNewClick() {
 		MyMockButton newButton = (MyMockButton)view.getNewButton();
 		newButton.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		eventBus.assertEvent( EventsEnum.CREATE_NEW_USER.toString(), new UserBean() );
+		assertEquals( eventBus.getLastDispatchedEventType(), EventsEnum.CREATE_NEW_USER.toString() );
+		UserBean u = (UserBean)eventBus.getLastDispatchedObject();
+
+		assertNull( u.getFirstName() );
+		assertNull( u.getLastName() );
+		assertNull( u.getEmail() );
+		assertNull( u.getUsername() );
+		assertNull( u.getPassword() );
+		assertNull( u.getDepartment() );
+		assertNull( u.getRoles() );
+
 	}
-	
+
 	@Test
 	public void testYesClick() {
-		
-		MyMockTable table = (MyMockTable)view.getTable();		
+
+		MyMockTable table = (MyMockTable)view.getTable();
 		table.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		
+
 		int tableSize = table.getRowCount();
 		int usersSize = users.size();
 		MyMockButton yes = (MyMockButton)view.getYesButton();
 		yes.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
 		assertEquals( tableSize - 1, table.getRowCount() );
-		assertEquals( usersSize - 1, users.size() );		
+		assertEquals( usersSize - 1, users.size() );
 	}
-	
+
 	@Test
 	public void testNoClick() {
 		MyMockButton no = (MyMockButton)view.getNoButton();
 		no.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
 		assertConfirmDeletionBar( false );
 	}
-	
+
 	@Test
-	public void testSelectAndUnselect(){
+	public void testSelectAndUnselect() {
 		MyMockTable table = (MyMockTable)view.getTable();
 		ClickEvent event = MockGwtEvent.CLICK_EVENT;
-		table.getClickHandler().onClick( event );		
+		table.getClickHandler().onClick( event );
 		assertEquals( table.getRowForEvent( event ), table.getLastSelected() );
-		
+
 		presenter.onUnselectUser();
 		assertEquals( -1, table.getLastSelected() );
-		
+
 	}
-	
-	
 
 	private void assertTableRow( int row, UserBean user ) {
 		MyMockTable table = (MyMockTable)view.getTable();
