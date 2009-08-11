@@ -1,6 +1,6 @@
 #summary Mvp4g faq
 
-====What the class diagram of the framework?====
+====What's the class diagram of the framework?====
 http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/mvp4g_class_diagram_overview.png
 
 ====What's a presenter?====
@@ -16,12 +16,11 @@ In the Mvp4 framework, a service is an interface that extends the RemoveService 
 
 ====What's an event bus and how can it dispatch events?====
 The event bus is a Java object part of the Mvp4g library in charge of dispatching events between the presenters.<br/>
-The event bus dispatches events the following way thanks to informations stored in the configuration file:<br/>
+The event bus dispatches events the following way thanks to information stored in the configuration file:<br/>
 http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/mvp4g_event_broadcast.png
 
-====When are presenters, views and services instantiated? How?====
-For each presenter, view and service defined inside the configuration file, one instance is created.
-This instance is created thanks to the following line:
+====When and how are presenters, views and services instantiated? When and how views and services injected into presenters? When is the event bust created and configured?====
+All these actions are done thanks to the following lines:
 {{{
 Mvp4gStarter starter = GWT.create(Mvp4gStarter.class);
 starter.start();
@@ -113,4 +112,7 @@ public class Mvp4gStarterImpl implements Mvp4gStarter {
     };
   }
 }}}
-As you can see, it's the call to the start() method that create all the needed instances.
+As you can see, it's the call to the start method that:
+ # creates one instance for each view, service and presenter.
+ # injects views, services and event bus in the presenters.
+ # creates the event bus and a command for each event. These commands are then added to the event bus.
