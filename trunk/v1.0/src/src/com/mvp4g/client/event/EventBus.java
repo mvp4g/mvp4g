@@ -21,7 +21,7 @@ import java.util.Map;
 import com.mvp4g.client.Mvp4gException;
 
 /**
- * This class is in charged of dispatching an event to the right presenters thanks to commands
+ * This class is in charge of dispatching an event to the right presenters thanks to commands
  * 
  * @author plcoirier
  * 
@@ -29,7 +29,7 @@ import com.mvp4g.client.Mvp4gException;
 @SuppressWarnings( "unchecked" )
 public class EventBus {
 
-	// Associate an event type with the command to execute to dispatch the event
+	// Associate an event type with the command to execute when dispatching the event
 	protected Map<String, Command> commands = new HashMap<String, Command>();
 
 	/**
@@ -80,8 +80,6 @@ public class EventBus {
 	 * 
 	 * @param eventType
 	 *            type of the event to dispatch
-	 * @param form
-	 *            form to forward to the handlers
 	 * @throws Mvp4gException
 	 *             exception thrown in case an error occurs while the event is dispatched.<br/>
 	 *             The most common cases that this error could be thrown is in case:
@@ -141,8 +139,6 @@ public class EventBus {
 	 * 
 	 * @param enumEventType
 	 *            type of the event to dispatch
-	 * @param form
-	 *            form to forward to the handlers
 	 * @throws Mvp4gException
 	 *             exception thrown in case an error occurs while the event is dispatched.<br/>
 	 *             The most common cases that this error could be thrown is in case:
