@@ -1,0 +1,13 @@
+#summary Mvp4g faq
+
+*What the class diagram of the framework?*
+
+http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/mvp4g_class_diagram_overview.png
+
+
+*What's a presenter?*
+
+*What's a view?*
+*What's a service?*
+*What is an event bus and how can it dispatch events?*
+*When are presenters, views and services instantiated? How?*
