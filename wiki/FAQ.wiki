@@ -7,7 +7,17 @@ http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/mvp4g_class_diagram_overvie
 
 *What's a presenter?*
 
+
 *What's a view?*
+
+
 *What's a service?*
-*What is an event bus and how can it dispatch events?*
+In the Mvp4 framework, it's the interface defined to realise RPC calls to the server. For further information, please read:
+
+====What's an event bus and how can it dispatch events?====
+The event bus is a Java object part of the Mvp4g library in charge of dispatching events between the presenters.
+The event bus dispatches events the following way thanks to informations stored in the configuration file:
+
+http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/mvp4g_event_broadcast.png
+
 *When are presenters, views and services instantiated? How?*
