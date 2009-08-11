@@ -5,8 +5,7 @@ import com.mvp4g.client.event.EventBus;
 /**
  * Interface that defines a presenter.<br/>
  * <br/>
- * The only method that a class that wants to be a presenter needs to implement is the setEventBus
- * method that allows to set an event bus to the presenter.
+ * This interface provides getter and setter for a view and an event bus.
  * 
  * @author plcoirier
  * 
@@ -20,6 +19,13 @@ public interface PresenterInterface<V> {
 	 *            event bus to set
 	 */
 	public void setEventBus( EventBus eventBus );
+	
+	/**
+	 * Get the view associated with the presenter
+	 * 
+	 * @return eventBus manipulated by the presenter.
+	 */
+	public EventBus getEventBus();
 
 	/**
 	 * Sets the view associated with the presenter.

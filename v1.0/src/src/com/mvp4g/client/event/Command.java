@@ -27,7 +27,6 @@ package com.mvp4g.client.event;
  * @param <T>
  *            Class type of the parameter of the handlers method
  */
-
 public interface Command<T> {
 
 	public void execute( T form );

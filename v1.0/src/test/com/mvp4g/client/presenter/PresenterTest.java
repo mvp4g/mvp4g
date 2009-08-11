@@ -11,7 +11,7 @@ public class PresenterTest {
 
 	@Test
 	public void testDefaultConstructor() {
-		PresenterForTest<Object> p = new PresenterForTest<Object>();
+		Presenter<Object> p = new Presenter<Object>();
 		assertNull( p.getView() );
 		assertNull( p.getEventBus() );
 	}
@@ -20,7 +20,7 @@ public class PresenterTest {
 	public void testConstructorWithArgument() {
 		String view = "View";
 		final EventBus bus = new EventBus();
-		PresenterForTest<String> p = new PresenterForTest<String>( view, bus );
+		Presenter<String> p = new Presenter<String>( view, bus );
 		assertSame( p.getView(), view );
 		assertSame( p.getEventBus(), bus );
 	}
@@ -29,7 +29,7 @@ public class PresenterTest {
 	public void testSetter() {
 		String view = "View";
 		final EventBus bus = new EventBus();
-		PresenterForTest<String> p = new PresenterForTest<String>();
+		Presenter<String> p = new Presenter<String>();
 		p.setEventBus( bus );
 		p.setView( view );
 		assertSame( p.getView(), view );
@@ -47,22 +47,6 @@ public class PresenterTest {
 
 		p.setView( "view" );
 		assertSame( p.getView(), "bind" );
-	}
-
-	private class PresenterForTest<V> extends Presenter<V> {
-
-		public PresenterForTest() {
-			super();
-		}
-
-		public PresenterForTest( V view, EventBus eventBus ) {
-			super( view, eventBus );
-		}
-
-		public EventBus getEventBus() {
-			return eventBus;
-		}
-
 	}
 
 }

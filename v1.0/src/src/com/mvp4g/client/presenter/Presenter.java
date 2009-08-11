@@ -18,13 +18,18 @@ package com.mvp4g.client.presenter;
 import com.mvp4g.client.event.EventBus;
 
 /**
- * Default implementation of a <code>PresenterInterface</code>.<br/>
+ * Default implementation of <code>PresenterInterface</code>.<br/>
  * <br/>
- * This implementation has one attribute:
+ * This implementation has two attribute:
  * <ul>
- * <li>a default event bus that is protected in order child classes to have access to it.</li>
+ * <li>an event bus</li>
+ * <li>a view</li>
  * </ul>
  * You should extend this class to create a presenter.<br/>
+ * <br/>
+ * 
+ * @param <V>
+ *            Class type of the view injected into the presenter
  * 
  * @author plcoirier
  * 
@@ -60,6 +65,10 @@ public class Presenter<V> implements PresenterInterface<V> {
 
 	public void setEventBus( EventBus eventBus ) {
 		this.eventBus = eventBus;
+	}
+
+	public EventBus getEventBus() {
+		return eventBus;
 	}
 
 }
