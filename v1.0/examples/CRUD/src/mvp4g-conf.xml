@@ -14,10 +14,10 @@
 		<presenter name="displayUserPresenter" class="UserDisplayPresenter" view="userDisplayView" />						
 	</presenters>
 	<events>
-		<event type="userCreated" functionCalled="onUserCreated" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="displayUserPresenter" />			
-		<event type="changeBody" functionCalled="onChangeBody" handlers="rootPresenter" eventObjectClass="com.google.gwt.user.client.ui.Widget"/>
-		<event type="displayMessage" functionCalled="onDisplayMessage" handlers="rootPresenter" eventObjectClass="java.lang.String" />
-		<event type="start" functionCalled="onStart" handlers="rootPresenter, createUserPresenter" />
+		<event type="userCreated" calledMethod="onUserCreated" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="displayUserPresenter" />			
+		<event type="changeBody" calledMethod="onChangeBody" handlers="rootPresenter" eventObjectClass="com.google.gwt.user.client.ui.Widget"/>
+		<event type="displayMessage" calledMethod="onDisplayMessage" handlers="rootPresenter" eventObjectClass="java.lang.String" />
+		<event type="start" calledMethod="onStart" handlers="rootPresenter, createUserPresenter" />
 	</events>
 	
 	<start view="rootView" eventType="start" />
