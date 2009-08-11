@@ -1,23 +1,63 @@
 #summary Mvp4g faq
 
-*What the class diagram of the framework?*
-
+====What the class diagram of the framework?====
 http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/mvp4g_class_diagram_overview.png
 
+====What's a presenter?====
+In a MVP architecture, the presenter is in charge of the logic of the application. It acts upon the model and the view.<br/>
+In the Mvp4g framework, a presenter is an object that implements the PresenterInterface and defined inside a `presenter` tag in the configuration. 
 
-*What's a presenter?*
+====What's a view?====
+In the MVP architecture, a view is an interface that displays the data and routes user commands to the presenter to act upon that data.<br/>
+In the Mvp4g framework, a view is an object defined inside a `view` tag in the configuration file. It doesn't need to implement any interface. The developer is free to use any widgets library he wants.
 
-
-*What's a view?*
-
-
-*What's a service?*
-In the Mvp4 framework, it's the interface defined to realise RPC calls to the server. For further information, please read:
+====What's a service?====
+In the Mvp4 framework, a service is an interface that extends the RemoveService (in order to define a RPC interface) and defined inside a `service` tag in the configuration file.
 
 ====What's an event bus and how can it dispatch events?====
-The event bus is a Java object part of the Mvp4g library in charge of dispatching events between the presenters.
-The event bus dispatches events the following way thanks to informations stored in the configuration file:
-
+The event bus is a Java object part of the Mvp4g library in charge of dispatching events between the presenters.<br/>
+The event bus dispatches events the following way thanks to informations stored in the configuration file:<br/>
 http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/mvp4g_event_broadcast.png
 
-*When are presenters, views and services instantiated? How?*
+====When are presenters, views and services instantiated? How?====
+For each presenter, view and service defined inside the configuration file, one instance is created.
+This instance is created thanks to the following line:
+{{{
+Mvp4gStarter starter = GWT.create(Mvp4gStarter.class);
+starter.start();
+}}}
+
+The first line creates a Java class thanks to the configuration file and a Generator.<br/>
+For example, with the following configuration file:
+{{{
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<mvp4g>
+	<views package="com.mvp4g.example.client.view" >
+		<view name="rootView" class="RootView" />
+		<view name="userCreateView" class="UserCreateView" />
+		<view name="userDisplayView" class="UserDisplayView"/>
+	</views>
+	<services package="com.mvp4g.example.client.service" >
+		<service name="userService" class="UserService" />
+	</services>
+	<presenters package="com.mvp4g.example.client.presenter" >
+		<presenter name="rootPresenter" class="RootPresenter" view="rootView" />
+		<presenter name="createUserPresenter" class="UserCreatePresenter" view="userCreateView" services="userService" />
+		<presenter name="displayUserPresenter" class="UserDisplayPresenter" view="userDisplayView" />						
+	</presenters>
+	<events>
+		<event type="userCreated" calledMethod="onUserCreated" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="displayUserPresenter" />			
+		<event type="changeBody" calledMethod="onChangeBody" handlers="rootPresenter" eventObjectClass="com.google.gwt.user.client.ui.Widget"/>
+		<event type="displayMessage" calledMethod="onDisplayMessage" handlers="rootPresenter" eventObjectClass="java.lang.String" />
+		<event type="start" calledMethod="onStart" handlers="rootPresenter, createUserPresenter" />
+	</events>
+	
+	<start view="rootView" eventType="start" />
+	
+</mvp4g>
+}}}
+
+the following Java file is generated:
+{{{
+
+}}}
