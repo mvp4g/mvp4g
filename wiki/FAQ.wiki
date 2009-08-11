@@ -1,5 +1,8 @@
 #summary Mvp4g faq
 
+If you have other questions about the framework or would like further information about a question, just let me know by leaving a message on the FAQ discusion in the Mvp4g Google group (http://groups.google.com/group/mvp4g/browse_thread/thread/d8ee207598bf02fa).
+
+
 ====What's the class diagram of the framework?====
 http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/mvp4g_class_diagram_overview.png
 
