@@ -5,17 +5,17 @@ http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/mvp4g_class_diagram_overvie
 
 ====What's a presenter?====
 In a MVP architecture, the presenter is in charge of the logic of the application. It acts upon the model and the view.<br/>
-In the Mvp4g framework, a presenter is an object that implements the PresenterInterface and defined inside a `presenter` tag in the configuration. 
+In the Mvp4g framework, a presenter is an object that implements the PresenterInterface and that is defined inside a `presenter` tag in the configuration. 
 
 ====What's a view?====
 In the MVP architecture, a view is an interface that displays the data and routes user commands to the presenter to act upon that data.<br/>
 In the Mvp4g framework, a view is an object defined inside a `view` tag in the configuration file. It doesn't need to implement any interface. The developer is free to use any widgets library he wants.
 
 ====What's a service?====
-In the Mvp4 framework, a service is an interface that extends the RemoveService (in order to define a RPC interface) and defined inside a `service` tag in the configuration file.
+In the Mvp4g framework, a service is an interface that extends the RemoveService (in order to define a RPC interface) and that is defined inside a `service` tag in the configuration file.
 
 ====What's an event bus and how can it dispatch events?====
-The event bus is a Java object part of the Mvp4g library in charge of dispatching events between the presenters.<br/>
+The event bus is a Java object, part of the Mvp4g library in charge of dispatching events between the presenters.<br/>
 The event bus dispatches events the following way thanks to information stored in the configuration file:<br/>
 http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/mvp4g_event_broadcast.png
 
@@ -103,7 +103,7 @@ public class Mvp4gStarterImpl implements Mvp4gStarter {
       eventBus.addEvent("displayMessage", cmddisplayMessage);
       Command cmduserCreated = new Command<com.mvp4g.example.client.bean.UserBean>(){
         public void execute(com.mvp4g.example.client.bean.UserBean form) {
-          displayUserPresenter.onUserCreated2(form);
+          displayUserPresenter.onUserCreated(form);
         }
       };
       eventBus.addEvent("userCreated", cmduserCreated);
@@ -113,6 +113,6 @@ public class Mvp4gStarterImpl implements Mvp4gStarter {
   }
 }}}
 As you can see, it's the call to the start method that:
- # creates one instance for each view, service and presenter.
- # injects views, services and event bus in the presenters.
- # creates the event bus and a command for each event. These commands are then added to the event bus.
+ * creates one instance for each view, service and presenter.
+ * injects views, services and event bus in the presenters.
+ * creates the event bus and a command for each event. These commands are then added to the event bus.
