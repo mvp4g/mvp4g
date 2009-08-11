@@ -110,13 +110,13 @@ Add your presenters to the configuration file. You have to inject one view into 
 Add events that can be sent by presenters in the configuration file.
 {{{
 <events>
-	<event type="event1" methodCalled="onEvent1" eventObjectClass="com.mvp4g.example.client.bean.Bean1" handlers="presenter1,presenter2" />
+	<event type="event1" calledMethod="onEvent1" eventObjectClass="com.mvp4g.example.client.bean.Bean1" handlers="presenter1,presenter2" />
 	...
 </events>
 }}}
 
  * type: type of the event. It must be unique amongst events. This is the type given to the event bus to dispatch an event.
- * methodCalled: method that presenters that handle this event need to define. This method will have only one parameter which class is the one defined in the `eventObjectClass` attribute.
+ * calledMethod: method that presenters that handle this event need to define. This method will have only one parameter which class is the one defined in the `eventObjectClass` attribute.
  * eventObjectClass: class of the object that is sent with the event.
  * handlers: name(s) of the presenter(s) that handle this event. The name(s) of the presenters(s) must be equal to one of the presenters' name declared in the configuration file. Each presenter name must be separated by a coma. Each presenter must implement the handler method called when this type of event is thrown. For example, handlers of `event1` event must implement the following method:
 {{{
