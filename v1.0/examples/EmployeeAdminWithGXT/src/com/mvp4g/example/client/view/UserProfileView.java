@@ -28,25 +28,26 @@ public class UserProfileView extends LayoutContainer implements UserProfileViewI
 
 	public UserProfileView() {
 
-		FormPanel simple = new FormPanel();
-		simple.setHeading( "User Profile" );
+		FormPanel form = new FormPanel();
+		form.setStyleName( "userProfile" );
+		form.setHeading( "User Profile" );
 
 		password.setPassword( true );
 		confirmPassword.setPassword( true );
 
-		simple.add( firstName );
-		simple.add( lastName );
-		simple.add( email );
-		simple.add( username );
-		simple.add( password );
-		simple.add( confirmPassword );
-		simple.add( department );
+		form.add( firstName );
+		form.add( lastName );
+		form.add( email );
+		form.add( username );
+		form.add( password );
+		form.add( confirmPassword );
+		form.add( department );
 
-		simple.addButton( update );
-		simple.addButton( cancel );
-		simple.setButtonAlign( HorizontalAlignment.CENTER );
+		form.addButton( update );
+		form.addButton( cancel );
+		form.setButtonAlign( HorizontalAlignment.CENTER );
 
-		add( simple );
+		add( form );
 	}
 
 	public MyWidgetInterface getViewWidget() {

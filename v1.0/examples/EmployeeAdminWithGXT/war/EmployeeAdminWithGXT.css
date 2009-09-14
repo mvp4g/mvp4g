@@ -16,3 +16,7 @@
 .userList .selected {
 	background:silver;
 }
+
+.userProfile .x-panel-body, .userRoles .x-panel-body{
+	height: 250px;
+}
