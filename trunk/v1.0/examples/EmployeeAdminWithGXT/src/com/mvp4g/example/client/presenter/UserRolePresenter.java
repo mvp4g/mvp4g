@@ -3,21 +3,26 @@ package com.mvp4g.example.client.presenter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FieldEvent;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.form.ListField;
+import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.presenter.Presenter;
 import com.mvp4g.example.client.Constants;
 import com.mvp4g.example.client.EventsEnum;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
+import com.mvp4g.example.client.presenter.gxt.MyListModel;
 import com.mvp4g.example.client.presenter.view_interface.UserRoleViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyListBoxInterface;
 
 public class UserRolePresenter extends Presenter<UserRoleViewInterface> implements Constants {
+
+	private final static String NONE_SELECTED = "--None Selected--";
 
 	private UserBean user = null;
 
@@ -27,58 +32,71 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 
 	@Override
 	public void bind() {
-		MyButtonInterface add = view.getAddButton();
-		add.addClickHandler( new ClickHandler() {
+		Button add = view.getAddButton();
+		add.addListener( Events.Select, new Listener<ButtonEvent>() {
 
-			public void onClick( ClickEvent event ) {
-				addRole( view.getRoleChoiceListBox().getSelectedValue() );
+			public void handleEvent( ButtonEvent be ) {
+				addRole( view.getRoleChoiceListBox().getSimpleValue() );
 			}
 
 		} );
 
-		MyButtonInterface remove = view.getRemoveButton();
-		remove.addClickHandler( new ClickHandler() {
+		Button remove = view.getRemoveButton();
+		remove.addListener( Events.Select, new Listener<ButtonEvent>() {
 
-			public void onClick( ClickEvent event ) {
-				deleteRole( view.getSelectedRolesListBox().getSelectedValue() );
+			public void handleEvent( ButtonEvent be ) {
+				List<MyListModel> selection = view.getSelectedRolesListBox().getSelection();
+				for ( MyListModel data : selection ) {
+					deleteRole( data.getText() );
+				}
+
 			}
 
 		} );
+		/*
+		 * remove.addClickHandler( new ClickHandler() {
+		 * 
+		 * public void onClick( ClickEvent event ) { deleteRole(
+		 * view.getSelectedRolesListBox().getSelectedValue() ); }
+		 * 
+		 * } );
+		 */
 
-		MyListBoxInterface selectedRoles = view.getSelectedRolesListBox();
-		selectedRoles.addClickHandler( new ClickHandler() {
+		ListField<MyListModel> selectedRoles = view.getSelectedRolesListBox();
+		selectedRoles.addListener( Events.Focus, new Listener<FieldEvent>() {
 
-			public void onClick( ClickEvent event ) {
+			public void handleEvent( FieldEvent be ) {
 				enableRemoveButton();
+
 			}
 
 		} );
-		selectedRoles.addKeyUpHandler( new KeyUpHandler(){
+		
+		/*
+		 * selectedRoles.addClickHandler( new ClickHandler() {
+		 * 
+		 * public void onClick( ClickEvent event ) { enableRemoveButton(); }
+		 * 
+		 * } ); selectedRoles.addKeyUpHandler( new KeyUpHandler(){
+		 * 
+		 * public void onKeyUp( KeyUpEvent event ) { enableRemoveButton(); }
+		 * 
+		 * });
+		 */
 
-			public void onKeyUp( KeyUpEvent event ) {
-				enableRemoveButton();
-			}
-			
-		});
+		SimpleComboBox<String> rolesChoices = view.getRoleChoiceListBox();
+		rolesChoices.addListener( Events.Select, new Listener<FieldEvent>() {
 
-		MyListBoxInterface rolesChoices = view.getRoleChoiceListBox();
-		rolesChoices.addClickHandler( new ClickHandler() {
-
-			public void onClick( ClickEvent event ) {
+			public void handleEvent( FieldEvent be ) {
 				enabledAddButton();
+
 			}
 
 		} );
-		rolesChoices.addKeyUpHandler( new KeyUpHandler() {
 
-			public void onKeyUp( KeyUpEvent event ) {
-				enabledAddButton();
-			}
-
-		} );
-		rolesChoices.addItem( "--None Selected--" );
+		rolesChoices.add( NONE_SELECTED );
 		for ( String role : ROLES ) {
-			rolesChoices.addItem( role );
+			rolesChoices.add( role );
 		}
 
 		disable();
@@ -91,17 +109,19 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 
 	public void onSelectUser( UserBean user ) {
 		this.user = user;
-		MyListBoxInterface selectedRoles = view.getSelectedRolesListBox();
-		selectedRoles.clear();
+
+		ListStore<MyListModel> store = view.getSelectedRolesListBox().getStore();
+		store.removeAll();
 		List<String> roles = user.getRoles();
 		if ( roles != null ) {
 			for ( String role : roles ) {
-				selectedRoles.addItem( role );
+				store.add( new MyListModel(role) );
 			}
 		}
+
 		enabled = true;
-		MyListBoxInterface rolesChoices = view.getRoleChoiceListBox();
-		rolesChoices.setSelectedIndex( 0 );
+		SimpleComboBox<String> rolesChoices = view.getRoleChoiceListBox();
+		rolesChoices.setSimpleValue( NONE_SELECTED );
 		rolesChoices.setEnabled( true );
 		view.getRemoveButton().setEnabled( false );
 		view.getAddButton().setEnabled( false );
@@ -144,7 +164,7 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 				}
 
 				public void onSuccess( Void result ) {
-					view.getSelectedRolesListBox().addItem( role );
+					view.getSelectedRolesListBox().getStore().add( new MyListModel(role) );
 				}
 
 			} );
@@ -164,11 +184,9 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 			}
 
 			public void onSuccess( Void result ) {
-				MyListBoxInterface selectedRoles = view.getSelectedRolesListBox();
-				selectedRoles.removeItem( role );
-				if ( selectedRoles.getSelectedValue() == null ) {
-					view.getRemoveButton().setEnabled( false );
-				}
+				ListField<MyListModel> selectedRoles = view.getSelectedRolesListBox();
+				selectedRoles.getStore().remove( selectedRoles.getSelection().get( 0 ) );
+				view.getRemoveButton().setEnabled( false );
 			}
 
 		} );
@@ -176,17 +194,18 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 	}
 
 	private void enableRemoveButton() {
-		if ( enabled && ( view.getSelectedRolesListBox().getSelectedValue() != null ) ) {
+		if ( enabled && ( view.getSelectedRolesListBox().getSelection().size() > 0 ) ) {
 			view.getRemoveButton().setEnabled( true );
 		}
 	}
 
 	private void enabledAddButton() {
+		Button add = view.getAddButton();		
 		if ( enabled ) {
 			if ( view.getRoleChoiceListBox().getSelectedIndex() == 0 ) {
-				view.getAddButton().setEnabled( false );
+				add.setEnabled( false );
 			} else {
-				view.getAddButton().setEnabled( true );
+				add.setEnabled( true );
 			}
 		}
 	}
@@ -194,10 +213,10 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 	private void disable() {
 		view.getRemoveButton().setEnabled( false );
 		view.getAddButton().setEnabled( false );
-		view.getSelectedRolesListBox().clear();
+		view.getSelectedRolesListBox().getStore().removeAll();
 		enabled = false;
-		MyListBoxInterface rolesChoices = view.getRoleChoiceListBox();
-		rolesChoices.setSelectedIndex( 0 );
+		SimpleComboBox<String> rolesChoices = view.getRoleChoiceListBox();
+		rolesChoices.setSimpleValue( NONE_SELECTED );
 		rolesChoices.setEnabled( false );
 	}
 
