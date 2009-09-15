@@ -1,7 +1,9 @@
 package com.mvp4g.example.client.view.gxt;
 
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FieldEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
@@ -46,8 +48,15 @@ public class MyGXTComboBox extends SimpleComboBox<String> implements MyListBoxIn
 		setSimpleValue( value );
 	}
 
-	public HandlerRegistration addClickHandler( ClickHandler handler ) {
-		return addHandler( handler, ClickEvent.getType() );
+	public HandlerRegistration addClickHandler( final ClickHandler handler ) {
+		addListener( Events.Select, new Listener<FieldEvent>(){
+
+			public void handleEvent( FieldEvent be ) {
+				handler.onClick( null );				
+			}
+			
+		});
+		return null;
 	}
 
 	public HandlerRegistration addKeyUpHandler( KeyUpHandler handler ) {
