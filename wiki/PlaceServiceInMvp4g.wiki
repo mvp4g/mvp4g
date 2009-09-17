@@ -1,0 +1,20 @@
+#summary Idea on how Place Service can be integrated in Mvp4g
+
+= Introduction =
+
+This is how I'm thinking on implementing the Place Service. If you have any remarks or questions, just let me know here [http://groups.google.com/group/mvp4g/browse_thread/thread/3d3e1753c43f1270 Place Service Post]
+
+
+= Details =
+
+The place service is the link between GWT History class and the event bus. The place service knows only the event bus and the event bus is the only one to know the place service.
+
+Here is how I see it:
+
+ * When an event is thrown by a presenter and a new token needs to be added to the history stack
+
+http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/place_service.png
+
+ * When the history stack changes and an event needs to be thrown
+
+http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/place_service_reverse.png
