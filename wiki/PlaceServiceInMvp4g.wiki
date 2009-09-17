@@ -1,4 +1,4 @@
-#summary Idea on how Place Service can be integrated in Mvp4g
+#summary Idea on how Place Service can be integrated to Mvp4g
 
 = Introduction =
 
