@@ -5,7 +5,7 @@
 This is how I'm thinking on implementing the Place Service. If you have any remarks or questions, just let me know here [http://groups.google.com/group/mvp4g/browse_thread/thread/3d3e1753c43f1270 Place Service Post]
 
 
-= Details =
+= Implementation =
 
 The place service is the link between GWT History class and the event bus. The place service knows only the event bus and the event bus is the only one to know the place service.
 
@@ -18,3 +18,46 @@ http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/place_service.png
  * When the history stack changes and an event needs to be thrown
 
 http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/place_service_reverse.png
+
+(on these 2 diagrams, commands haven't been represented but they are called by the event bus to dispatch an event as shown [FAQ here])
+
+I made the following choices:
+ * the history token is equals to the name of the event + ? + converted string of the object associated to the event. For example, dispatch(myEvent, new String("myUserName")) could give the following token: #myEvent?username=myUserName
+ * History Converters will be in charge of converting the object associated to event to a string. It will also be in charge of converting the string to an object.
+ * It's during the convertion to a string that information to be stored about the object associated to the event needs to be stored. The developer will be free to store it in token, in cookie, in database...
+ * It's during the convertion to an object that information to build it must be retrieved from token, cookie, database...
+ * A history converter will be able to have references to one-to-many services.
+ * Each event that needs to add an History token must have an associated History converter.
+ * A history converter can be associated to severals events
+ * A new parameter will be added to the dispatch function of the event bus to let the developer decide if a new token should be added to history or not. Default value will be true. For example:
+dispatch(myEvent, myForm) == dispatch(myEvent, myForm, true) => a token will be added to History<br/>
+dispatch(myEvent, myForm, false) => no token will be added to History
+ 
+= Impact on XML Configuration file =
+
+{{{
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<mvp4g>
+	<history package="com.mvp4g.example.client.converter" >
+		<converter name="simpleConverter" class="SimpleConverter" />
+		<converter name="cookieConverter" class="CookieConverter" />
+		<converter name="serviceConverter" class="ServiceConverter" service="userService"/>
+	</history>
+
+	...
+
+	<events>
+		<event type="userCreated" calledMethod="onUserCreated" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="displayUserPresenter" history="simpleConverter"/>			
+		<event type="changeBody" calledMethod="onChangeBody" handlers="rootPresenter" eventObjectClass="com.google.gwt.user.client.ui.Widget" history="simpleConverter"/>
+		<event type="displayMessage" calledMethod="onDisplayMessage" handlers="rootPresenter" eventObjectClass="java.lang.String" history="cookieConverter" />
+		<event type="start" calledMethod="onStart" handlers="rootPresenter, createUserPresenter" />
+	</events>
+	
+	<start view="rootView" eventType="start" history="true" />
+	
+</mvp4g>		
+}}}
+
+A new tag "history" will be added to define the history converter.<br/>
+A new attribute "history" will be added to "event" tag to associate an event with an history converter.<br/>
+A new attribute "history" is added to decide if the current history state should be fired when the application starts.
