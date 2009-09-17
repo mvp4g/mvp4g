@@ -60,4 +60,4 @@ dispatch(myEvent, myForm, false) => no token will be added to History
 
 A new tag "history" will be added to define the history converter.<br/>
 A new attribute "history" will be added to "event" tag to associate an event with an history converter.<br/>
-A new attribute "history" is added to decide if the current history state should be fired when the application starts.
+A new attribute "history" is added to "start" tag to decide if the current history state should be fired when the application starts.
