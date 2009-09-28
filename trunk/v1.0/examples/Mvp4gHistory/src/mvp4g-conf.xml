@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<mvp4g>
+	<views package="com.mvp4g.example.client.view" >
+		<view name="accountView" class="AccountView" />
+		<view name="cartDisplayView" class="CartDisplayView" />
+		<view name="dealDisplayView" class="DealDisplayView" />
+		<view name="loginView" class="LoginView" />
+		<view name="productDisplayView" class="ProductDisplayView" />
+		<view name="rootTemplateView" class="RootTemplateView" />
+		<view name="topBarView" class="TopBarView" />				
+	</views>
+	<services package="com.mvp4g.example.client" >
+		<service name="service" class="Service" />
+	</services>
+	<presenters package="com.mvp4g.example.client.presenter" >
+		<presenter name="account" class="AccountPresenter" view="accountView" services="service"/>
+		<presenter name="cartDisplay" class="CartDisplayPresenter" view="cartDisplayView"/>
+		<presenter name="dealDisplay" class="DealDisplayPresenter" view="dealDisplayView"/>
+		<presenter name="loginPresenter" class="LoginPresenter" view="loginView" />
+		<presenter name="productDisplay" class="ProductDisplayPresenter" view="productDisplayView" />
+		<presenter name="rootTemplate" class="RootTemplatePresenter" view="rootTemplateView" />
+		<presenter name="topBar" class="TopBarPresenter" view="topBarView" services="service"/>
+	</presenters>
+	<events>
+		<event type="changeTopWidget" calledMethod="onChangeTopWidget" eventObjectClass="com.google.gwt.user.client.ui.Widget" handlers="rootTemplate" />
+		<event type="changeBottomWidget" calledMethod="onChangeBottomWidget" eventObjectClass="com.google.gwt.user.client.ui.Widget" handlers="rootTemplate" />
+		<event type="changeMainWidget" calledMethod="onChangeMainWidget" eventObjectClass="com.google.gwt.user.client.ui.Widget" handlers="rootTemplate" />
+		
+		<event type="displayCart" calledMethod="onDisplayCart" eventObjectClass="java.util.List" handlers="cartDisplay" />
+		<event type="displayDeal" calledMethod="onDisplayDeal" eventObjectClass="com.mvp4g.example.client.bean.DealBean" handlers="dealDisplay" />
+		<event type="displayMessage" calledMethod="onDisplayMessage" eventObjectClass="java.lang.String" handlers="rootTemplate" />
+		<event type="displayProduct" calledMethod="onDisplayProduct" eventObjectClass="com.mvp4g.example.client.bean.ProductBean" handlers="productDisplay" />
+		
+		<event type="login" calledMethod="onLogin" eventObjectClass="java.lang.String" handlers="account" />
+				
+		<event type="start" calledMethod="onStart" handlers="topBar, loginPresenter" />		
+	</events>
+	
+	<start view="rootTemplateView" eventType="start" />
+	
+</mvp4g>		
