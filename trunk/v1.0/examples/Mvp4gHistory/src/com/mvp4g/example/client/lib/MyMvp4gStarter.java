@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.mvp4g.client.Mvp4gStarter;
 import com.mvp4g.client.event.Command;
 import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.example.client.Service;
 import com.mvp4g.example.client.ServiceAsync;
 import com.mvp4g.example.client.history.DealHistoryConverter;
@@ -25,6 +26,8 @@ import com.mvp4g.example.client.view.LoginView;
 import com.mvp4g.example.client.view.ProductDisplayView;
 import com.mvp4g.example.client.view.RootTemplateView;
 import com.mvp4g.example.client.view.TopBarView;
+
+
 
 public class MyMvp4gStarter implements Mvp4gStarter {
 
