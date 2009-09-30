@@ -2,9 +2,9 @@ package com.mvp4g.example.client.history;
 
 import com.google.gwt.user.client.Cookies;
 import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.example.client.Constants;
 import com.mvp4g.example.client.EventsEnum;
-import com.mvp4g.example.client.lib.HistoryConverter;
 
 public class ShowCartConverter implements HistoryConverter<Object> {
 

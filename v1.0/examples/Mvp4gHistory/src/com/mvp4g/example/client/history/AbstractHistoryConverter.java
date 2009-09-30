@@ -2,9 +2,9 @@ package com.mvp4g.example.client.history;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.example.client.ServiceAsync;
 import com.mvp4g.example.client.bean.BasicBean;
-import com.mvp4g.example.client.lib.HistoryConverter;
 
 public abstract class AbstractHistoryConverter<T extends BasicBean> implements HistoryConverter<T> {
 
