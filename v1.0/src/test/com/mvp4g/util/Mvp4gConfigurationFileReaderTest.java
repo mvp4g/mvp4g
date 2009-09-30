@@ -221,22 +221,22 @@ public class Mvp4gConfigurationFileReaderTest {
 	private String[] getExpectedEvents() {
 		return new String[]
 		{
-		   "Command cmduserCreated = new Command<com.mvp4g.example.client.bean.UserBean>(){",
+		   "Command<com.mvp4g.example.client.bean.UserBean> cmduserCreated = new Command<com.mvp4g.example.client.bean.UserBean>(){",
 	          "public void execute(com.mvp4g.example.client.bean.UserBean form) {",
 	            "displayUserPresenter.onUserCreated(form);",	       
 	       "eventBus.addEvent(\"userCreated\", cmduserCreated);",
 	       
-	       "Command cmdchangeBody = new Command<com.mvp4g.example.client.view.widget.Page>(){",
+	       "Command<com.mvp4g.example.client.view.widget.Page> cmdchangeBody = new Command<com.mvp4g.example.client.view.widget.Page>(){",
 	          "public void execute(com.mvp4g.example.client.view.widget.Page form) {",
 	            "rootPresenter.onChangeBody(form);",
 	        "eventBus.addEvent(\"changeBody\", cmdchangeBody);",
 	        
-	        "Command cmddisplayMessage = new Command<java.lang.String>(){",
+	        "Command<java.lang.String> cmddisplayMessage = new Command<java.lang.String>(){",
 	          "public void execute(java.lang.String form) {",
 	            "rootPresenter.onDisplayMessage(form);",
 	        "eventBus.addEvent(\"displayMessage\", cmddisplayMessage);",
 
-	        "Command cmdstart = new Command<java.lang.Object>(){",
+	        "Command<java.lang.Object> cmdstart = new Command<java.lang.Object>(){",
 	          "public void execute(java.lang.Object form) {",
 	            "rootPresenter.onStart();",
 	            "createUserPresenter.onStart();",

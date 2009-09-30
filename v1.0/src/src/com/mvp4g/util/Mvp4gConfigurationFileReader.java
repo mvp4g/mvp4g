@@ -23,6 +23,8 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.EventElement;
+import com.mvp4g.util.config.element.HistoryConverterElement;
+import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.config.element.StartElement;
@@ -62,19 +64,33 @@ public class Mvp4gConfigurationFileReader {
 	public void writeConf() throws UnableToCompleteException {
 		try {
 			XMLConfiguration xmlConfig = new XMLConfiguration( "mvp4g-conf.xml" );
-			sendErrorIfNull( xmlConfig, "mvc4p-conf.xml is missing" );
+			sendErrorIfNull( xmlConfig, "mvp4g-conf.xml is missing" );
 
 			loadConfiguration( xmlConfig );
 
 			sourceWriter.println( "EventBus eventBus = new EventBus();" );
+			
+			sourceWriter.println();
 
 			writeViews();
+			
+			sourceWriter.println();
 
 			writeServices();
+			
+			sourceWriter.println();
+			
+			writeHistory();
+			
+			sourceWriter.println();
 
 			writePresenters();
+			
+			sourceWriter.println();
 
 			writeEvents();
+			
+			sourceWriter.println();
 
 			writeStartEvent();
 
@@ -103,6 +119,34 @@ public class Mvp4gConfigurationFileReader {
 	}
 
 	/**
+	 * Write the history converters included in the configuration file.
+	 * 
+	 * Pre-condition: mvp4g configuration has been pre-loaded from configuration file.
+	 * 
+	 */	
+	private void writeHistory(){
+		
+		HistoryElement history = configuration.getHistory();
+		
+		if(history != null){
+			sourceWriter.println("final PlaceService placeService = new PlaceService(eventBus);");
+			sourceWriter.print("placeService.setInitEvent( \"");
+			sourceWriter.print( history.getInitEvent() );
+			sourceWriter.println( "\");");
+			
+			String name = null;			
+						
+			for(HistoryConverterElement converter : configuration.getHistoryConverters()){
+					name = converter.getName();
+					createInstance( name, converter.getClassName() );
+					injectServices( name, converter.getServices() );				
+			}
+			
+		}
+		
+	}
+
+	/**
 	 * Write the views included in the configuration file.
 	 * 
 	 * Pre-condition: mvp4g configuration has been pre-loaded from configuration file.
@@ -111,16 +155,7 @@ public class Mvp4gConfigurationFileReader {
 	private void writeViews() {
 
 		for ( ViewElement view : configuration.getViews() ) {
-			String name = view.getName();
-			String className = view.getClassName();
-
-			sourceWriter.print( "final " );
-			sourceWriter.print( className );
-			sourceWriter.print( " " );
-			sourceWriter.print( name );
-			sourceWriter.print( " = new " );
-			sourceWriter.print( className );
-			sourceWriter.println( "();" );
+			createInstance( view.getName(), view.getClassName() );
 		}
 	}
 
@@ -132,30 +167,21 @@ public class Mvp4gConfigurationFileReader {
 	 */
 	private void writePresenters() {
 
+		String name = null;
+		
 		for ( PresenterElement presenter : configuration.getPresenters() ) {
-			String name = presenter.getName();
-			String className = presenter.getClassName();
-			String view = presenter.getView();
-
-			sourceWriter.print( "final " );
-			sourceWriter.print( className );
-			sourceWriter.print( " " );
-			sourceWriter.print( name );
-			sourceWriter.print( " = new " );
-			sourceWriter.print( className );
-			sourceWriter.println( "();" );
+			name = presenter.getName();
+			
+			createInstance( name, presenter.getClassName() );
 
 			sourceWriter.print( name );
 			sourceWriter.println( ".setEventBus(eventBus);" );
 
 			sourceWriter.print( name );
-			sourceWriter.println( ".setView(" + view + ");" );
+			sourceWriter.println( ".setView(" + presenter.getView() + ");" );
+			
+			injectServices( name, presenter.getServices() );
 
-			for ( String service : presenter.getServices() ) {
-				String methodName = "set" + capitalized( service );
-				sourceWriter.print( name );
-				sourceWriter.println( "." + methodName + "(" + service + ");" );
-			}
 		}
 	}
 
@@ -167,9 +193,12 @@ public class Mvp4gConfigurationFileReader {
 	 */
 	private void writeServices() {
 
+		String name = null;
+		String className = null;
+		
 		for ( ServiceElement service : configuration.getServices() ) {
-			String name = service.getName();
-			String className = service.getClassName();
+			name = service.getName();
+			className = service.getClassName();
 
 			sourceWriter.print( "final " );
 			sourceWriter.print( className + "Async" );
@@ -193,14 +222,26 @@ public class Mvp4gConfigurationFileReader {
 	 */
 	private void writeEvents() throws UnableToCompleteException {
 
+		String type = null;
+		String calledMethod = null;
+		String objectClass = null;
+		String param = null;
+		String[] handlers = null;
+		String history = null;
+		boolean hasHistory = false;
+		
 		for ( EventElement event : configuration.getEvents() ) {
-			String type = event.getType();
-			String calledMethod = event.getCalledMethod();
-			String objectClass = event.getEventObjectClass();
-			String param = event.getEventParameterString();
-			String[] handlers = event.getHandlers();
+			type = event.getType();
+			calledMethod = event.getCalledMethod();
+			objectClass = event.getEventObjectClass();
+			param = event.getEventParameterString();
+			handlers = event.getHandlers();
+			history = event.getHistory();
+			hasHistory = event.hasHistory();
 
-			sourceWriter.print( "Command cmd" );
+			sourceWriter.print( "Command<");
+			sourceWriter.print( objectClass);
+			sourceWriter.print("> cmd" );
 			sourceWriter.print( type );
 			sourceWriter.print( " = new Command<" );
 			sourceWriter.print( objectClass );
@@ -210,6 +251,13 @@ public class Mvp4gConfigurationFileReader {
 			sourceWriter.print( objectClass );
 			sourceWriter.println( " form) {" );
 			sourceWriter.indent();
+			
+			if(hasHistory){
+				sourceWriter.print( "placeService.place( \"");
+				sourceWriter.print( type );
+				sourceWriter.println( "\", form );" );
+			}
+						
 			int nbHandlers = handlers.length;
 			for ( int i = 0; i < nbHandlers; i++ ) {
 				sourceWriter.print( handlers[i] );
@@ -226,6 +274,15 @@ public class Mvp4gConfigurationFileReader {
 			sourceWriter.print( "\", cmd" );
 			sourceWriter.print( type );
 			sourceWriter.println( ");" );
+			
+			if(hasHistory){
+				sourceWriter.print( "placeService.addConverter( \"");
+				sourceWriter.print( type );
+				sourceWriter.print( "\",");
+				sourceWriter.print( history );
+				sourceWriter.print( ");" );
+			}
+			
 		}
 	}
 
@@ -247,6 +304,10 @@ public class Mvp4gConfigurationFileReader {
 		if ( start.hasEventType() ) {
 			String eventType = start.getEventType();
 			sourceWriter.println( "eventBus.dispatch(\"" + eventType + "\");" );
+		}
+		
+		if("true".equalsIgnoreCase( start.getHistory() )){
+			sourceWriter.println( "History.fireCurrentHistoryState();" );
 		}
 	}
 
@@ -275,6 +336,41 @@ public class Mvp4gConfigurationFileReader {
 	 */
 	/* package */String capitalized( String name ) {
 		return name.substring( 0, 1 ).toUpperCase() + name.substring( 1 );
+	}
+	
+	
+	/**
+	 * Write the lines to create a new instance of an element
+	 * 
+	 * @param elementName
+	 * 				name of the element to create
+	 * @param className
+	 * 				class name of the element to create 
+	 */
+	private void createInstance(String elementName, String className){
+		sourceWriter.print( "final " );
+		sourceWriter.print( className );
+		sourceWriter.print( " " );
+		sourceWriter.print( elementName );
+		sourceWriter.print( " = new " );
+		sourceWriter.print( className );
+		sourceWriter.println( "();" );
+	}
+	
+	/**
+	 * Write the lines to inject services into an element
+	 * 
+	 * @param elementName
+	 * 				name of the element where services need to be injected
+	 * @param services
+	 * 				name of the services to inject
+	 */
+	private void injectServices(String elementName, String[] services){
+		for ( String service : services ) {
+			String methodName = "set" + capitalized( service );
+			sourceWriter.print( elementName );
+			sourceWriter.println( "." + methodName + "(" + service + ");" );
+		}		
 	}
 
 }
