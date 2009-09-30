@@ -9,12 +9,16 @@ import java.util.Set;
 import org.apache.commons.configuration.XMLConfiguration;
 
 import com.mvp4g.util.config.element.EventElement;
+import com.mvp4g.util.config.element.HistoryConverterElement;
+import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.Mvp4gElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.config.element.ViewElement;
 import com.mvp4g.util.config.loader.EventsLoader;
+import com.mvp4g.util.config.loader.HistoryConverterLoader;
+import com.mvp4g.util.config.loader.HistoryLoader;
 import com.mvp4g.util.config.loader.PresentersLoader;
 import com.mvp4g.util.config.loader.ServicesLoader;
 import com.mvp4g.util.config.loader.StartLoader;
@@ -35,7 +39,9 @@ public class Mvp4gConfiguration {
 	private Set<ViewElement> views = new HashSet<ViewElement>();
 	private Set<EventElement> events = new HashSet<EventElement>();
 	private Set<ServiceElement> services = new HashSet<ServiceElement>();
+	private Set<HistoryConverterElement> historyConverters = new HashSet<HistoryConverterElement>();
 	private StartElement start = new StartElement();
+	private HistoryElement history = new HistoryElement();
 
 	/**
 	 * Loads all Mvp4g elements from an in-memory representation of the XML configuration.</p>
@@ -71,9 +77,11 @@ public class Mvp4gConfiguration {
 		// Phase 1: load all elements, performing attribute validation
 		loadViews( xmlConfig );
 		loadServices( xmlConfig );
+		loadHistoryConverters( xmlConfig );
 		loadPresenters( xmlConfig );
 		loadEvents( xmlConfig );
 		loadStart( xmlConfig );
+		loadHistory( xmlConfig );
 
 		// Phase 2: perform cross-element validations
 		checkUniquenessOfAllElements();
@@ -139,6 +147,20 @@ public class Mvp4gConfiguration {
 		EventsLoader eventsConfig = new EventsLoader( xmlConfig );
 		events = eventsConfig.loadElements();
 	}
+	
+	/**
+	 * Pre-loads all History Converter in the configuration file.
+	 * 
+	 * @param xmlConfig
+	 *            raw representation of mvp4g-config.xml file.
+	 * 
+	 * @throws InvalidMvp4gConfigurationException
+	 *             if event tags cannot be loaded.
+	 */
+	private void loadHistoryConverters( XMLConfiguration xmlConfig ) throws InvalidMvp4gConfigurationException {
+		HistoryConverterLoader historyConverterConfig = new HistoryConverterLoader( xmlConfig );
+		historyConverters = historyConverterConfig.loadElements();
+	}
 
 	/**
 	 * Pre-loads the Start element in the configuration file.
@@ -153,6 +175,20 @@ public class Mvp4gConfiguration {
 		StartLoader startConfig = new StartLoader( xmlConfig );
 		start = startConfig.loadElement();
 	}
+	
+	/**
+	 * Pre-loads the History element in the configuration file.
+	 * 
+	 * @param xmlConfig
+	 *            raw representation of mvp4g-config.xml file.
+	 * 
+	 * @throws InvalidMvp4gConfigurationException
+	 *             if start tag cannot be loaded.
+	 */
+	private void loadHistory( XMLConfiguration xmlConfig ) throws InvalidMvp4gConfigurationException {
+		HistoryLoader historyConfig = new HistoryLoader( xmlConfig );
+		history = historyConfig.loadElement();
+	}
 
 	/**
 	 * Returns a set of valid Presenters loaded from the configuration file.
@@ -166,6 +202,13 @@ public class Mvp4gConfiguration {
 	 */
 	public Set<ViewElement> getViews() {
 		return views;
+	}
+	
+	/**
+	 * Returns a set of valid History Converters loaded from the configuration file.
+	 */
+	public Set<HistoryConverterElement> getHistoryConverters() {
+		return historyConverters;
 	}
 
 	/**
@@ -190,6 +233,13 @@ public class Mvp4gConfiguration {
 	}
 
 	/**
+	 * Returns the Start element loaded from the configuration file.
+	 */
+	public HistoryElement getHistory() {
+		return history;
+	}	
+
+	/**
 	 * Validates that every mvp4g element has a globally unique identifier.</p>
 	 * 
 	 * @throws NonUniqueIdentifierExcpetion
@@ -197,6 +247,7 @@ public class Mvp4gConfiguration {
 	 */
 	void checkUniquenessOfAllElements() {
 		Set<String> allIds = new HashSet<String>();
+		checkUniquenessOf( historyConverters, allIds );
 		checkUniquenessOf( presenters, allIds );
 		checkUniquenessOf( views, allIds );
 		checkUniquenessOf( events, allIds );

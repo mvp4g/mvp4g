@@ -7,7 +7,7 @@ import com.mvp4g.util.exception.DuplicatePropertyNameException;
  * 
  * @author javier
  */
-public class PresenterElement extends SimpleMvp4gElement {
+public class PresenterElement extends Mvp4gWithServicesElement {
 
 	public PresenterElement() {
 		super( "presenter" );
@@ -21,11 +21,4 @@ public class PresenterElement extends SimpleMvp4gElement {
 		return getProperty( "view" );
 	}
 
-	public void setServices( String[] services ) throws DuplicatePropertyNameException {
-		setValues( "services", services );
-	}
-
-	public String[] getServices() {
-		return getValues( "services" );
-	}
 }

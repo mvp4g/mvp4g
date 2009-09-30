@@ -54,4 +54,12 @@ public class StartElement extends Mvp4gElement {
 		return getEventType() != null;
 	}
 
+	public void setHistory( String history ) throws DuplicatePropertyNameException {
+		setProperty( "history", history );
+	}
+
+	public String getHistory() {
+		return getProperty( "history" );
+	}
+
 }

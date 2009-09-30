@@ -56,6 +56,18 @@ public class EventElement extends Mvp4gElement {
 	public String[] getHandlers() {
 		return getValues( "handlers" );
 	}
+	
+	public void setHistory(String history) throws DuplicatePropertyNameException{
+		setProperty("history", history);
+	}
+	
+	public String getHistory(){
+		return getProperty("history");
+	}
+	
+	public boolean hasHistory(){
+		return getHistory() != null;
+	}
 
 	@Override
 	public String toString() {

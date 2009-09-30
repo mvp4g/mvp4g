@@ -12,6 +12,8 @@ import com.mvp4g.util.exception.DuplicatePropertyNameException;
  * <li/>A <i>class</i> specifying the fully qualified Java class for the element.
  * </ul>
  * 
+ * @author javier
+ * 
  */
 public class SimpleMvp4gElement extends Mvp4gElement {
 
