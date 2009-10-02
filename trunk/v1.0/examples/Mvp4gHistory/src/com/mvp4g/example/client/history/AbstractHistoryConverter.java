@@ -31,7 +31,7 @@ public abstract class AbstractHistoryConverter<T extends BasicBean> implements H
 		}
 	}
 
-	public String convertToToken( T form ) {
+	public String convertToToken( String eventType, T form ) {
 		return "id=" + form.getId();
 	}
 

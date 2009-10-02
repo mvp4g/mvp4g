@@ -18,7 +18,7 @@ public class ShowCartConverter implements HistoryConverter<Object> {
 		}
 	}
 
-	public String convertToToken( Object form ) {
+	public String convertToToken( String eventType, Object form ) {
 		return null;
 	}
 

@@ -18,6 +18,9 @@ public class TopBarPresenter extends Presenter<TopBarViewInterface> {
 
 	private ServiceAsync service = null;
 
+	private ProductBean productSelected = null;
+	private DealBean dealSelected = null;
+
 	public void bind() {
 		view.getShowDealButton().addClickHandler( new ClickHandler() {
 
@@ -31,7 +34,8 @@ public class TopBarPresenter extends Presenter<TopBarViewInterface> {
 					}
 
 					public void onSuccess( DealBean deal ) {
-						eventBus.dispatch( EventsEnum.DISPLAY_DEAL, deal );
+						dealSelected = deal;
+						eventBus.dispatch( EventsEnum.DISPLAY_DEAL, deal, view.getSave().getValue().booleanValue() );
 					}
 
 				} );
@@ -50,8 +54,9 @@ public class TopBarPresenter extends Presenter<TopBarViewInterface> {
 						//do sthg						
 					}
 
-					public void onSuccess( ProductBean deal ) {
-						eventBus.dispatch( EventsEnum.DISPLAY_PRODUCT, deal );
+					public void onSuccess( ProductBean product ) {
+						productSelected = product;
+						eventBus.dispatch( EventsEnum.DISPLAY_PRODUCT, product, view.getSave().getValue().booleanValue() );
 					}
 
 				} );
@@ -76,13 +81,21 @@ public class TopBarPresenter extends Presenter<TopBarViewInterface> {
 					}
 
 					public void onSuccess( List<BasicBean> products ) {
-						fillListBox( view.getProductList(), products );
+						ListBox productsBox = view.getProductList();
+						fillListBox( productsBox, products );
+						if ( productSelected != null ) {
+							selectRightIndex( productsBox, productSelected.getId() );
+						}
 						eventBus.dispatch( EventsEnum.CHANGE_TOP_WIDGET, view );
 					}
 
 				} );
 
-				fillListBox( view.getDealList(), deals );
+				ListBox dealsBox = view.getDealList();
+				fillListBox( dealsBox, deals );
+				if ( dealSelected != null ) {
+					selectRightIndex( dealsBox, dealSelected.getId() );
+				}
 
 			}
 
@@ -93,16 +106,18 @@ public class TopBarPresenter extends Presenter<TopBarViewInterface> {
 		this.service = service;
 	}
 
-	public void onDisplayDeal(DealBean bean){
-		//in case the event is sent by history
-		ListBox deals = view.getDealList();
-		deals.setSelectedIndex( findIndex( deals, bean.getId() ) );		
+	public void onDisplayDeal( DealBean bean ) {
+		if ( ( bean != null ) && ( !bean.equals( dealSelected ) ) ) {
+			selectRightIndex( view.getDealList(), bean.getId() );
+			dealSelected = bean;
+		}
 	}
-	
-	public void onDisplayProduct(ProductBean bean){
-		//in case the event is sent by history
-		ListBox products = view.getProductList();
-		products.setSelectedIndex( findIndex( products, bean.getId() ) );		
+
+	public void onDisplayProduct( ProductBean bean ) {
+		if ( ( bean != null ) && ( !bean.equals( productSelected ) ) ) {
+			selectRightIndex( view.getProductList(), bean.getId() );
+			productSelected = bean;
+		}
 	}
 
 	public void onInit() {
@@ -122,18 +137,14 @@ public class TopBarPresenter extends Presenter<TopBarViewInterface> {
 
 	}
 
-	private int findIndex( ListBox listBox, String value ) {
+	private void selectRightIndex( ListBox listBox, String value ) {
 		int size = listBox.getItemCount();
-		int index = -1;
-		while ( index < size ) {
-			index++;
+		for ( int index = 0; index < size; index++ ) {
 			if ( listBox.getValue( index ).equals( value ) ) {
+				listBox.setSelectedIndex( index );
 				break;
 			}
 		}
-
-		return index;
-
 	}
 
 }
