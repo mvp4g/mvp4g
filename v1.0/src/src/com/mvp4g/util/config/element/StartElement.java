@@ -61,5 +61,9 @@ public class StartElement extends Mvp4gElement {
 	public String getHistory() {
 		return getProperty( "history" );
 	}
+	
+	public boolean hasHistory(){
+		return "true".equalsIgnoreCase( getHistory() );
+	}
 
 }

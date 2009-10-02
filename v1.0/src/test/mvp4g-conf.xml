@@ -1,24 +1,45 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <mvp4g>
-	<views package="com.mvp4g.example.client.view" >
+	<views package="com.mvp4g.example.client.view">
 		<view name="rootView" class="RootView" />
 		<view name="userCreateView" class="UserCreateView" />
 		<view name="userDisplayView" class="UserDisplayView" />
 	</views>
+
 	<services>
 		<service name="userService" class="com.mvp4g.example.client.rpc.UserService" />
 	</services>
+
 	<presenters package="com.mvp4g.example.client.presenter">
 		<presenter name="rootPresenter" class="RootPresenter" view="rootView" />
-		<presenter name="createUserPresenter" class="UserCreatePresenter" view="userCreateView" services="userService" />
-		<presenter name="displayUserPresenter" class="UserDisplayPresenter" view="userDisplayView" />						
+		<presenter name="createUserPresenter" class="UserCreatePresenter"
+			view="userCreateView" services="userService" />
+		<presenter name="displayUserPresenter" class="UserDisplayPresenter"
+			view="userDisplayView" />
 	</presenters>
+
+	<history package="com.mvp4g.example.client.history" initEvent="init">
+		<converter name="userConverter" class="UserHistoryConverter"
+			services="userService" />
+		<converter name="stringConverter" class="StringHistoryConverter" />
+	</history>
+
+
 	<events>
-		<event type="userCreated" calledMethod="onUserCreated" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="displayUserPresenter" />			
-		<event type="changeBody" calledMethod="onChangeBody" handlers="rootPresenter" eventObjectClass="com.mvp4g.example.client.view.widget.Page"/>
-		<event type="displayMessage" calledMethod="onDisplayMessage" handlers="rootPresenter" eventObjectClass="java.lang.String" />
-		<event type="start" calledMethod="onStart" handlers="rootPresenter, createUserPresenter" />
+		<event type="userCreated" calledMethod="onUserCreated"
+			eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="displayUserPresenter" />
+		<event type="userDisplay" calledMethod="onUserDisplay"
+			eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="displayUserPresenter"
+			history="userConverter" />
+		<event type="changeBody" calledMethod="onChangeBody" handlers="rootPresenter"
+			eventObjectClass="com.mvp4g.example.client.view.widget.Page" />
+		<event type="displayMessage" calledMethod="onDisplayMessage"
+			handlers="rootPresenter" eventObjectClass="java.lang.String" history="stringConverter" />
+		<event type="start" calledMethod="onStart"
+			handlers="rootPresenter, createUserPresenter" />
+		<event type="init" calledMethod="onInit"
+			handlers="rootPresenter" />
 	</events>
-	
-	<start view="rootView" eventType="start" />
+
+	<start view="rootView" eventType="start" history="true"/>
 </mvp4g>		

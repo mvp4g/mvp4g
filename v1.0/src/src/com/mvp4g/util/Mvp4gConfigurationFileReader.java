@@ -69,27 +69,27 @@ public class Mvp4gConfigurationFileReader {
 			loadConfiguration( xmlConfig );
 
 			sourceWriter.println( "EventBus eventBus = new EventBus();" );
-			
+
 			sourceWriter.println();
 
 			writeViews();
-			
+
 			sourceWriter.println();
 
 			writeServices();
-			
+
 			sourceWriter.println();
-			
+
 			writeHistory();
-			
+
 			sourceWriter.println();
 
 			writePresenters();
-			
+
 			sourceWriter.println();
 
 			writeEvents();
-			
+
 			sourceWriter.println();
 
 			writeStartEvent();
@@ -123,27 +123,27 @@ public class Mvp4gConfigurationFileReader {
 	 * 
 	 * Pre-condition: mvp4g configuration has been pre-loaded from configuration file.
 	 * 
-	 */	
-	private void writeHistory(){
-		
+	 */
+	private void writeHistory() {
+
 		HistoryElement history = configuration.getHistory();
-		
-		if(history != null){
-			sourceWriter.println("final PlaceService placeService = new PlaceService(eventBus);");
-			sourceWriter.print("placeService.setInitEvent( \"");
+
+		if ( history != null ) {
+			sourceWriter.println( "final PlaceService placeService = new PlaceService(eventBus);" );
+			sourceWriter.print( "placeService.setInitEvent( \"" );
 			sourceWriter.print( history.getInitEvent() );
-			sourceWriter.println( "\");");
-			
-			String name = null;			
-						
-			for(HistoryConverterElement converter : configuration.getHistoryConverters()){
-					name = converter.getName();
-					createInstance( name, converter.getClassName() );
-					injectServices( name, converter.getServices() );				
+			sourceWriter.println( "\");" );
+
+			String name = null;
+
+			for ( HistoryConverterElement converter : configuration.getHistoryConverters() ) {
+				name = converter.getName();
+				createInstance( name, converter.getClassName() );
+				injectServices( name, converter.getServices() );
 			}
-			
+
 		}
-		
+
 	}
 
 	/**
@@ -168,10 +168,10 @@ public class Mvp4gConfigurationFileReader {
 	private void writePresenters() {
 
 		String name = null;
-		
+
 		for ( PresenterElement presenter : configuration.getPresenters() ) {
 			name = presenter.getName();
-			
+
 			createInstance( name, presenter.getClassName() );
 
 			sourceWriter.print( name );
@@ -179,7 +179,7 @@ public class Mvp4gConfigurationFileReader {
 
 			sourceWriter.print( name );
 			sourceWriter.println( ".setView(" + presenter.getView() + ");" );
-			
+
 			injectServices( name, presenter.getServices() );
 
 		}
@@ -195,7 +195,7 @@ public class Mvp4gConfigurationFileReader {
 
 		String name = null;
 		String className = null;
-		
+
 		for ( ServiceElement service : configuration.getServices() ) {
 			name = service.getName();
 			className = service.getClassName();
@@ -229,7 +229,7 @@ public class Mvp4gConfigurationFileReader {
 		String[] handlers = null;
 		String history = null;
 		boolean hasHistory = false;
-		
+
 		for ( EventElement event : configuration.getEvents() ) {
 			type = event.getType();
 			calledMethod = event.getCalledMethod();
@@ -239,9 +239,9 @@ public class Mvp4gConfigurationFileReader {
 			history = event.getHistory();
 			hasHistory = event.hasHistory();
 
-			sourceWriter.print( "Command<");
-			sourceWriter.print( objectClass);
-			sourceWriter.print("> cmd" );
+			sourceWriter.print( "Command<" );
+			sourceWriter.print( objectClass );
+			sourceWriter.print( "> cmd" );
 			sourceWriter.print( type );
 			sourceWriter.print( " = new Command<" );
 			sourceWriter.print( objectClass );
@@ -249,15 +249,19 @@ public class Mvp4gConfigurationFileReader {
 			sourceWriter.indent();
 			sourceWriter.print( "public void execute(" );
 			sourceWriter.print( objectClass );
-			sourceWriter.println( " form) {" );
+			sourceWriter.println( " form, boolean storeInHistory) {" );
 			sourceWriter.indent();
-			
-			if(hasHistory){
-				sourceWriter.print( "placeService.place( \"");
+
+			if ( hasHistory ) {
+				sourceWriter.println( "if(storeInHistory){" );
+				sourceWriter.indent();
+				sourceWriter.print( "placeService.place( \"" );
 				sourceWriter.print( type );
 				sourceWriter.println( "\", form );" );
+				sourceWriter.outdent();
+				sourceWriter.println( "}" );
 			}
-						
+
 			int nbHandlers = handlers.length;
 			for ( int i = 0; i < nbHandlers; i++ ) {
 				sourceWriter.print( handlers[i] );
@@ -274,15 +278,15 @@ public class Mvp4gConfigurationFileReader {
 			sourceWriter.print( "\", cmd" );
 			sourceWriter.print( type );
 			sourceWriter.println( ");" );
-			
-			if(hasHistory){
-				sourceWriter.print( "placeService.addConverter( \"");
+
+			if ( hasHistory ) {
+				sourceWriter.print( "placeService.addConverter( \"" );
 				sourceWriter.print( type );
-				sourceWriter.print( "\",");
+				sourceWriter.print( "\"," );
 				sourceWriter.print( history );
 				sourceWriter.print( ");" );
 			}
-			
+
 		}
 	}
 
@@ -305,8 +309,8 @@ public class Mvp4gConfigurationFileReader {
 			String eventType = start.getEventType();
 			sourceWriter.println( "eventBus.dispatch(\"" + eventType + "\");" );
 		}
-		
-		if("true".equalsIgnoreCase( start.getHistory() )){
+
+		if ( start.hasHistory() ) {
 			sourceWriter.println( "History.fireCurrentHistoryState();" );
 		}
 	}
@@ -337,17 +341,16 @@ public class Mvp4gConfigurationFileReader {
 	/* package */String capitalized( String name ) {
 		return name.substring( 0, 1 ).toUpperCase() + name.substring( 1 );
 	}
-	
-	
+
 	/**
 	 * Write the lines to create a new instance of an element
 	 * 
 	 * @param elementName
-	 * 				name of the element to create
+	 *            name of the element to create
 	 * @param className
-	 * 				class name of the element to create 
+	 *            class name of the element to create
 	 */
-	private void createInstance(String elementName, String className){
+	private void createInstance( String elementName, String className ) {
 		sourceWriter.print( "final " );
 		sourceWriter.print( className );
 		sourceWriter.print( " " );
@@ -356,21 +359,21 @@ public class Mvp4gConfigurationFileReader {
 		sourceWriter.print( className );
 		sourceWriter.println( "();" );
 	}
-	
+
 	/**
 	 * Write the lines to inject services into an element
 	 * 
 	 * @param elementName
-	 * 				name of the element where services need to be injected
+	 *            name of the element where services need to be injected
 	 * @param services
-	 * 				name of the services to inject
+	 *            name of the services to inject
 	 */
-	private void injectServices(String elementName, String[] services){
+	private void injectServices( String elementName, String[] services ) {
 		for ( String service : services ) {
 			String methodName = "set" + capitalized( service );
 			sourceWriter.print( elementName );
 			sourceWriter.println( "." + methodName + "(" + service + ");" );
-		}		
+		}
 	}
 
 }

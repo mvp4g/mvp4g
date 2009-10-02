@@ -41,14 +41,38 @@ public class EventBusTest {
 	@Test
 	public void testAddAndDispatchWithFormOk() {
 		String formValue = "formValue";
-		addAssertCommand( formValue );
+		addAssertCommand( formValue, false );
+		bus.dispatch( TEST, formValue, false );
+		bus.dispatch( EventType.TEST_TYPE, formValue, false );
+	}
+
+	@Test
+	public void testAddAndDispatchWithFormOkAndHistory() {
+		String formValue = "formValue";
+		addAssertCommand( formValue, true );
+		bus.dispatch( TEST, formValue, true );
+		bus.dispatch( EventType.TEST_TYPE, formValue, true );
 		bus.dispatch( TEST, formValue );
 		bus.dispatch( EventType.TEST_TYPE, formValue );
+
 	}
 
 	@Test
 	public void testAddAndDispatchWithNoFormOk() {
-		addAssertCommand( null );
+		addAssertCommand( null, false );
+		bus.dispatch( TEST, null, false );
+		bus.dispatch( TEST, false );
+		bus.dispatch( EventType.TEST_TYPE, null, false );
+		bus.dispatch( EventType.TEST_TYPE, false );
+	}
+
+	@Test
+	public void testAddAndDispatchWithNoFormOkAndHistory() {
+		addAssertCommand( null, true );
+		bus.dispatch( TEST, null, true );
+		bus.dispatch( TEST, true );
+		bus.dispatch( EventType.TEST_TYPE, null, true );
+		bus.dispatch( EventType.TEST_TYPE, true );
 		bus.dispatch( TEST, null );
 		bus.dispatch( TEST );
 		bus.dispatch( EventType.TEST_TYPE, null );
@@ -57,6 +81,34 @@ public class EventBusTest {
 
 	@Test
 	public void testDispatchEventNotHandle() {
+
+		try {
+			bus.dispatch( TEST, null, false );
+			fail();
+		} catch ( Mvp4gException exp ) {
+			assertUnknownEvent( TEST, exp.getMessage() );
+		}
+
+		try {
+			bus.dispatch( TEST, false );
+			fail();
+		} catch ( Mvp4gException exp ) {
+			assertUnknownEvent( TEST, exp.getMessage() );
+		}
+
+		try {
+			bus.dispatch( EventType.TEST_TYPE, null, false );
+			fail();
+		} catch ( Mvp4gException exp ) {
+			assertUnknownEvent( TEST, exp.getMessage() );
+		}
+
+		try {
+			bus.dispatch( EventType.TEST_TYPE, false );
+			fail();
+		} catch ( Mvp4gException exp ) {
+			assertUnknownEvent( TEST, exp.getMessage() );
+		}
 
 		try {
 			bus.dispatch( TEST, null );
@@ -91,6 +143,34 @@ public class EventBusTest {
 	@Test
 	public void testNullPointerInsideTheCommand() {
 		addNullCommand();
+
+		try {
+			bus.dispatch( NULL, null, false );
+			fail();
+		} catch ( NullPointerException exp ) {
+			//nothing to verify
+		}
+
+		try {
+			bus.dispatch( NULL, false );
+			fail();
+		} catch ( NullPointerException exp ) {
+			//nothing to verify
+		}
+
+		try {
+			bus.dispatch( EventType.TEST_NULL, null, false );
+			fail();
+		} catch ( NullPointerException exp ) {
+			//nothing to verify
+		}
+
+		try {
+			bus.dispatch( EventType.TEST_NULL, false );
+			fail();
+		} catch ( NullPointerException exp ) {
+			//nothing to verify
+		}
 
 		try {
 			bus.dispatch( NULL, null );
@@ -128,6 +208,19 @@ public class EventBusTest {
 		addCommand( TEST );
 
 		try {
+			bus.dispatch( TEST, form, false );
+			fail();
+		} catch ( Mvp4gException exp ) {
+			assertIncorrectFormClass( TEST, exp.getMessage() );
+		}
+		try {
+			bus.dispatch( EventType.TEST_TYPE, form, false );
+			fail();
+		} catch ( Mvp4gException exp ) {
+			assertIncorrectFormClass( TEST, exp.getMessage() );
+		}
+
+		try {
 			bus.dispatch( TEST, form );
 			fail();
 		} catch ( Mvp4gException exp ) {
@@ -144,6 +237,34 @@ public class EventBusTest {
 	@Test
 	public void testClassCastErrorInsideHandlers() {
 		addClassCastCommand();
+
+		try {
+			bus.dispatch( CLASS, null, false );
+			fail();
+		} catch ( ClassCastException exp ) {
+			//nothing to verify
+		}
+
+		try {
+			bus.dispatch( CLASS, false );
+			fail();
+		} catch ( ClassCastException exp ) {
+			//nothing to verify
+		}
+
+		try {
+			bus.dispatch( EventType.TEST_CLASS, null, false );
+			fail();
+		} catch ( ClassCastException exp ) {
+			//nothing to verify
+		}
+
+		try {
+			bus.dispatch( EventType.TEST_CLASS, false );
+			fail();
+		} catch ( ClassCastException exp ) {
+			//nothing to verify
+		}
 
 		try {
 			bus.dispatch( CLASS, null );
@@ -174,11 +295,12 @@ public class EventBusTest {
 		}
 	}
 
-	private void addAssertCommand( final String formSent ) {
+	private void addAssertCommand( final String formSent, final boolean expectedStoreInHistory ) {
 		bus.addEvent( TEST, new Command<String>() {
 
-			public void execute( String form ) {
+			public void execute( String form, boolean storeInHistory ) {
 				assertSame( form, formSent );
+				assertSame( storeInHistory, expectedStoreInHistory );
 			}
 
 		} );
@@ -187,7 +309,7 @@ public class EventBusTest {
 	private void addCommand( final String formSent ) {
 		bus.addEvent( TEST, new Command<String>() {
 
-			public void execute( String form ) {
+			public void execute( String form, boolean storeInHistory ) {
 				// Nothing to do
 			}
 
@@ -198,7 +320,7 @@ public class EventBusTest {
 		bus.addEvent( NULL, new Command<String>() {
 
 			@SuppressWarnings( "null" )
-			public void execute( String form ) {
+			public void execute( String form, boolean storeInHistory ) {
 				String nullString = null;
 				nullString.length();
 			}
@@ -209,7 +331,7 @@ public class EventBusTest {
 	private void addClassCastCommand() {
 		bus.addEvent( CLASS, new Command<String>() {
 
-			public void execute( String form ) {
+			public void execute( String form, boolean storeInHistory ) {
 				classCastError();
 			}
 

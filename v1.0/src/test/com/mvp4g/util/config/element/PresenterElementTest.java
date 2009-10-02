@@ -1,9 +1,8 @@
 package com.mvp4g.util.config.element;
 
-public class PresenterElementTest extends SimpleMvp4gElementTest {
+public class PresenterElementTest extends Mvp4gWithServicesElementTest {
 
 	private static final String[] properties = SimpleMvp4gElementTest.addProperties( new String[] { "view" } );
-	private static final String[] values = { "services" };
 
 	@Override
 	protected String[] getProperties() {
@@ -13,11 +12,6 @@ public class PresenterElementTest extends SimpleMvp4gElementTest {
 	@Override
 	protected String getTag() {
 		return "presenter";
-	}
-
-	@Override
-	protected String[] getValues() {
-		return values;
 	}
 
 	@Override

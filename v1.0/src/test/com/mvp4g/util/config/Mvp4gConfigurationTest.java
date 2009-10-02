@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mvp4g.util.config.element.EventElement;
+import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.config.element.ViewElement;
@@ -20,6 +21,7 @@ public class Mvp4gConfigurationTest {
 	private Set<ViewElement> views;
 	private Set<EventElement> events;
 	private Set<ServiceElement> services;
+	private Set<HistoryConverterElement> historyConverters;
 
 	@Before
 	public void setUp() {
@@ -28,6 +30,7 @@ public class Mvp4gConfigurationTest {
 		views = configuration.getViews();
 		events = configuration.getEvents();
 		services = configuration.getServices();
+		historyConverters = configuration.getHistoryConverters();
 	}
 
 	@Test( expected = NonUniqueIdentifierException.class )
@@ -53,6 +56,14 @@ public class Mvp4gConfigurationTest {
 
 		configuration.checkUniquenessOfAllElements();
 	}
+	
+	@Test( expected = NonUniqueIdentifierException.class )
+	public void testUniquenessFailureOnPresenterAndHistoryConverterConflict() {
+		presenters.add( newPresenter( "one" ) );
+		historyConverters.add( newHistoryConverter( "one" ) );
+
+		configuration.checkUniquenessOfAllElements();
+	}
 
 	@Test( expected = NonUniqueIdentifierException.class )
 	public void testUniquenessFailureOnViewAndEventConflict() {
@@ -69,11 +80,35 @@ public class Mvp4gConfigurationTest {
 
 		configuration.checkUniquenessOfAllElements();
 	}
+	
+	@Test( expected = NonUniqueIdentifierException.class )
+	public void testUniquenessFailureOnViewAndHistoryConverterConflict() {
+		views.add( newView( "one" ) );
+		historyConverters.add( newHistoryConverter( "one" ) );
+
+		configuration.checkUniquenessOfAllElements();
+	}
 
 	@Test( expected = NonUniqueIdentifierException.class )
 	public void testUniquenessFailureOnEventAndServiceConflict() {
 		services.add( newService( "three" ) );
 		events.add( newEvent( "three" ) );
+
+		configuration.checkUniquenessOfAllElements();
+	}
+	
+	@Test( expected = NonUniqueIdentifierException.class )
+	public void testUniquenessFailureOnEventAndHistoryConverterConflict() {
+		events.add( newEvent( "one" ) );
+		historyConverters.add( newHistoryConverter( "one" ) );
+
+		configuration.checkUniquenessOfAllElements();
+	}
+	
+	@Test( expected = NonUniqueIdentifierException.class )
+	public void testUniquenessFailureOnServiceAndHistoryConverterConflict() {
+		services.add( newService( "one" ) );
+		historyConverters.add( newHistoryConverter( "one" ) );
 
 		configuration.checkUniquenessOfAllElements();
 	}
@@ -84,6 +119,7 @@ public class Mvp4gConfigurationTest {
 		views.add( newView( "two" ) );
 		events.add( newEvent( "three" ) );
 		services.add( newService( "four" ) );
+		historyConverters.add( newHistoryConverter( "five" ) );
 
 		configuration.checkUniquenessOfAllElements();
 	}
@@ -93,6 +129,7 @@ public class Mvp4gConfigurationTest {
 		views.add( newView( "badHandler" ) );
 		services.add( newService( "badHandler" ) );
 		events.add( newEvent( "badHanlder" ) );
+		historyConverters.add( newHistoryConverter( "badHanlder" ) );
 
 		EventElement event = newEvent( "testEvent" );
 		event.setHandlers( new String[] { "badHandler" } );
@@ -117,6 +154,7 @@ public class Mvp4gConfigurationTest {
 		events.add( newEvent( "badView" ) );
 		services.add( newService( "badView" ) );
 		presenters.add( newPresenter( "badView" ) );
+		historyConverters.add( newHistoryConverter( "badView" ) );
 		
 		PresenterElement presenter = newPresenter( "testPresenter" );
 		presenter.setView( "badView" );
@@ -130,6 +168,7 @@ public class Mvp4gConfigurationTest {
 		events.add( newEvent( "badView" ) );
 		services.add( newService( "badView" ) );
 		presenters.add( newPresenter( "badView" ) );
+		historyConverters.add( newHistoryConverter( "badView" ) );
 		
 		configuration.getStart().setView( "badView" );
 
@@ -150,10 +189,11 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = UnknownConfigurationElementException.class )
-	public void testInjectedServiceValidationFails() {
+	public void testInjectedServiceValidationFailsForPresenter() {
 		events.add( newEvent( "badService" ) );
 		views.add( newView( "badService" ) );
 		presenters.add( newPresenter( "badService" ) );
+		historyConverters.add( newHistoryConverter( "badService" ) );
 		
 		PresenterElement presenter = newPresenter( "testPresenter" );
 		presenter.setServices( new String[] { "badService" } );
@@ -161,6 +201,21 @@ public class Mvp4gConfigurationTest {
 
 		configuration.validateServices();
 	}
+	
+	@Test( expected = UnknownConfigurationElementException.class )
+	public void testInjectedServiceValidationFailsForHistoryConverter() {
+		events.add( newEvent( "badService" ) );
+		views.add( newView( "badService" ) );
+		presenters.add( newPresenter( "badService" ) );
+		historyConverters.add( newHistoryConverter( "badService" ) );
+		
+		HistoryConverterElement historyConverter = newHistoryConverter( "testHistoryConverter" );
+		historyConverter.setServices( new String[] { "badService" } );
+		historyConverters.add( historyConverter );
+
+		configuration.validateServices();
+	}	
+	
 
 	@Test
 	public void testInjectedServiceValidationSucceeds() {
@@ -169,8 +224,71 @@ public class Mvp4gConfigurationTest {
 		PresenterElement presenter = newPresenter( "testPresenter" );
 		presenter.setServices( new String[] { "testService" } );
 		presenters.add( presenter );
+		
+		HistoryConverterElement historyConverter = newHistoryConverter( "testHistoryConverter" );
+		historyConverter.setServices( new String[] { "testService" } );
+		historyConverters.add( historyConverter );
 
 		configuration.validateServices();
+	}
+	
+	@Test( expected = UnknownConfigurationElementException.class )
+	public void testEventHistoryConverterFails(){
+			events.add( newEvent( "badHistoryConverter" ) );
+			services.add( newService( "badHistoryConverter" ) );
+			presenters.add( newPresenter( "badHistoryConverter" ) );
+			views.add( newView( "badHistoryConverter" ) );
+			
+			EventElement event = newEvent( "testEvent" );
+			event.setHistory( "badView" );
+			events.add( event );
+
+			configuration.validateHistoryConverters();
+	}
+	
+	@Test
+	public void testEventHistoryConverterSucceeds(){
+			historyConverters.add( newHistoryConverter( "testHistoryConverter" ));
+			
+			EventElement event = newEvent( "testEvent" );
+			event.setHistory( "testHistoryConverter" );
+			events.add( event );
+
+			configuration.validateHistoryConverters();
+	}	
+	
+	@Test( expected = UnknownConfigurationElementException.class )
+	public void testStartEventFails(){
+		services.add( newService( "badEvent" ) );
+		presenters.add( newPresenter( "badEvent" ) );
+		views.add( newView( "badEvent" ) );
+		historyConverters.add( newHistoryConverter( "badEvent" ));
+		
+		configuration.getStart().setEventType( "badEvent" );
+		
+		configuration.validateEvents();
+		
+	}
+	
+	@Test( expected = UnknownConfigurationElementException.class )
+	public void testHistoryInitEventFails(){
+		services.add( newService( "badEvent" ) );
+		presenters.add( newPresenter( "badEvent" ) );
+		views.add( newView( "badEvent" ) );
+		historyConverters.add( newHistoryConverter( "badEvent" ));
+		
+		configuration.getHistory().setInitEvent( "badEvent" );
+		
+		configuration.validateEvents();
+		
+	}
+	
+	@Test
+	public void testStartSucceeds(){
+		events.add( newEvent( "testEvent" ) );				
+		configuration.getStart().setEventType( "testEvent" );
+		configuration.getHistory().setInitEvent( "testEvent" );		
+		configuration.validateEvents();		
 	}
 	
 	@Test
@@ -200,6 +318,12 @@ public class Mvp4gConfigurationTest {
 		ServiceElement service = new ServiceElement();
 		service.setName( name );
 		return service;
+	}
+	
+	private HistoryConverterElement newHistoryConverter( String name){
+		HistoryConverterElement historyConverter = new HistoryConverterElement();
+		historyConverter.setName( name );
+		return historyConverter;
 	}
 
 }
