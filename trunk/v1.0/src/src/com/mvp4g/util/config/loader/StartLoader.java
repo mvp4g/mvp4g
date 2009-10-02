@@ -20,7 +20,7 @@ import com.mvp4g.util.config.element.StartElement;
 public class StartLoader extends Mvp4gElementLoader<StartElement> {
 
 	static final String[] REQUIRED_ATTRIBUTES = { "view" };
-	static final String[] OPTIONAL_ATTRIBUTES = { "eventType" };
+	static final String[] OPTIONAL_ATTRIBUTES = { "eventType", "history" };
 
 	@SuppressWarnings( "unchecked" )
 	public StartLoader( XMLConfiguration xmlConfig ) {

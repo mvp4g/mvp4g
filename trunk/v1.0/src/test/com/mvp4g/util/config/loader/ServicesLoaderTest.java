@@ -1,5 +1,6 @@
 package com.mvp4g.util.config.loader;
 
+import static org.junit.Assert.*;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.junit.Test;
 
@@ -9,7 +10,7 @@ public class ServicesLoaderTest extends AbstractMvp4gElementLoaderTest<ServiceEl
 
 	@Test
 	public void testEmptyElement() {
-		basicLoader.loadElements();
+		assertEquals( 0, basicLoader.loadElements().size() );		
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class StartElementTest extends AbstractMvp4gElementTest<StartElement> {
 
-	protected static final String[] properties = { "eventType", "view" };
+	protected static final String[] properties = { "eventType", "view", "history" };
 
 	@Test
 	public void testHasEventType() {
@@ -15,6 +15,34 @@ public class StartElementTest extends AbstractMvp4gElementTest<StartElement> {
 		element.setEventType( "test" );
 		assertTrue( element.hasEventType() );
 	}
+	
+	@Test
+	public void testHasHistory(){
+		assertFalse( element.hasHistory() );
+		element.setHistory( "true" );
+		assertTrue( element.hasHistory() );		
+	}
+	
+	@Test
+	public void testHasHistoryUpper(){
+		assertFalse( element.hasHistory() );
+		element.setHistory( "TRUE" );
+		assertTrue( element.hasHistory() );		
+	}
+	
+	@Test
+	public void testHasHistoryFalse(){
+		assertFalse( element.hasHistory() );
+		element.setHistory( "false" );
+		assertFalse( element.hasHistory() );		
+	}
+	
+	@Test
+	public void testHasHistoryAny(){
+		assertFalse( element.hasHistory() );
+		element.setHistory( "laksjd123" );
+		assertFalse( element.hasHistory() );		
+	}		
 
 	@Override
 	protected String[] getProperties() {

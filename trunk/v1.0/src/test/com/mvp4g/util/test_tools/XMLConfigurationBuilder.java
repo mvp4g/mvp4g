@@ -16,9 +16,11 @@ import org.apache.commons.configuration.tree.DefaultConfigurationNode;
 public class XMLConfigurationBuilder {
 
 	private String tagName;
+	private String parentName;
 
-	public XMLConfigurationBuilder( String tagName ) {
+	public XMLConfigurationBuilder( String tagName, String parentName ) {
 		this.tagName = tagName;
+		this.parentName = parentName;
 	}
 
 	public XMLConfiguration getEmptyConf() {
@@ -36,7 +38,7 @@ public class XMLConfigurationBuilder {
 		if ( singleNode ) {
 			xml.addNodes( "", nodes );
 		} else {
-			xml.addNodes( rootTag(), nodes );
+			xml.addNodes( parentName, nodes );
 
 			if ( nbNodes > 0 ) {
 				ConfigurationNode parent = xml.getRoot().getChild( 0 );
@@ -47,10 +49,6 @@ public class XMLConfigurationBuilder {
 		}
 
 		return xml;
-	}
-
-	private String rootTag() {
-		return tagName + "s";
 	}
 
 	private ConfigurationNode createNode( String nodeName, List<String> attList, List<String> multiVal, String end ) {

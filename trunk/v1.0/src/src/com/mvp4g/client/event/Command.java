@@ -29,6 +29,6 @@ package com.mvp4g.client.event;
  */
 public interface Command<T> {
 
-	public void execute( T form );
+	public void execute( T form, boolean storeInHistory );
 
 }

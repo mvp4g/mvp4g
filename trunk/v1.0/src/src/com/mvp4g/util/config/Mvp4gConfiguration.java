@@ -12,6 +12,7 @@ import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.Mvp4gElement;
+import com.mvp4g.util.config.element.Mvp4gWithServicesElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.config.element.StartElement;
@@ -88,6 +89,8 @@ public class Mvp4gConfiguration {
 		validateEventHandlers();
 		validateViews();
 		validateServices();
+		validateHistoryConverters();
+		validateEvents();
 	}
 
 	/**
@@ -147,7 +150,7 @@ public class Mvp4gConfiguration {
 		EventsLoader eventsConfig = new EventsLoader( xmlConfig );
 		events = eventsConfig.loadElements();
 	}
-	
+
 	/**
 	 * Pre-loads all History Converter in the configuration file.
 	 * 
@@ -175,7 +178,7 @@ public class Mvp4gConfiguration {
 		StartLoader startConfig = new StartLoader( xmlConfig );
 		start = startConfig.loadElement();
 	}
-	
+
 	/**
 	 * Pre-loads the History element in the configuration file.
 	 * 
@@ -203,7 +206,7 @@ public class Mvp4gConfiguration {
 	public Set<ViewElement> getViews() {
 		return views;
 	}
-	
+
 	/**
 	 * Returns a set of valid History Converters loaded from the configuration file.
 	 */
@@ -237,7 +240,7 @@ public class Mvp4gConfiguration {
 	 */
 	public HistoryElement getHistory() {
 		return history;
-	}	
+	}
 
 	/**
 	 * Validates that every mvp4g element has a globally unique identifier.</p>
@@ -272,21 +275,11 @@ public class Mvp4gConfiguration {
 	void validateEventHandlers() {
 		for ( EventElement event : events ) {
 			for ( String handlerName : event.getHandlers() ) {
-				if ( !handlerExists( handlerName ) ) {
+				if ( !elementExists( handlerName, presenters ) ) {
 					throw new UnknownConfigurationElementException( handlerName );
 				}
 			}
 		}
-	}
-
-	private boolean handlerExists( String handlerName ) {
-			
-		for ( Mvp4gElement element : presenters ) {
-			if ( element.getUniqueIdentifier().equals( handlerName ) ) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**
@@ -323,29 +316,67 @@ public class Mvp4gConfiguration {
 	}
 
 	/**
-	 * Checks that all service names injected on every presenter correspond to a configured mvp4g
-	 * element.</p>
+	 * Checks that all service names injected on every presenter and history converter correspond to
+	 * a configured mvp4g element.</p>
 	 * 
 	 * @throws UnknownConfigurationElementException
 	 *             if a service cannot be found among the configured elements.
 	 */
 	void validateServices() {
-		for ( PresenterElement presenter : presenters ) {
-			for ( String serviceName : presenter.getServices() ) {
-				if ( !serviceExists( serviceName ) ) {
+
+		Set<Mvp4gWithServicesElement> elements = new HashSet<Mvp4gWithServicesElement>();
+		elements.addAll( presenters );
+		elements.addAll( historyConverters );
+
+		for ( Mvp4gWithServicesElement element : elements ) {
+			for ( String serviceName : element.getServices() ) {
+				if ( !elementExists( serviceName, services ) ) {
 					throw new UnknownConfigurationElementException( serviceName );
 				}
 			}
 		}
+
 	}
 
-	private boolean serviceExists( String serviceName ) {
-		for ( Mvp4gElement element : services ) {
-			if ( element.getUniqueIdentifier().equals( serviceName ) ) {
+	void validateHistoryConverters() {
+
+		String historyConverterName = null;
+		for ( EventElement event : events ) {
+			if ( event.hasHistory() ) {
+				historyConverterName = event.getHistory();
+				if ( !elementExists( historyConverterName, historyConverters ) ) {
+					throw new UnknownConfigurationElementException( historyConverterName );
+				}
+			}
+		}
+
+	}
+
+	private <T extends Mvp4gElement> boolean elementExists( String elementName, Set<T> elements ) {
+		for ( Mvp4gElement element : elements ) {
+			if ( element.getUniqueIdentifier().equals( elementName ) ) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	void validateEvents() {
+		String event = null;
+		if ( start.hasEventType() ) {
+			event = start.getEventType();
+			if ( !elementExists( event, events ) ) {
+				throw new UnknownConfigurationElementException( event );
+			}
+		}
+
+		if ( history != null ) {
+			event = history.getInitEvent();
+			if ( !elementExists( event, events ) ) {
+				throw new UnknownConfigurationElementException( event );
+			}
+		}
+
 	}
 
 }

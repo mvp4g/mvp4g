@@ -23,7 +23,7 @@ public abstract class AbstractMvp4gElementLoaderTest<E extends Mvp4gElement, L e
 
 	protected abstract boolean isSingleNode();
 
-	protected XMLConfigurationBuilder xmlBuilder = new XMLConfigurationBuilder( getTagName() );
+	protected XMLConfigurationBuilder xmlBuilder = new XMLConfigurationBuilder( getTagName(), getParentName() );
 
 	protected L basicLoader = newLoader( xmlBuilder.getEmptyConf() );
 
@@ -51,7 +51,6 @@ public abstract class AbstractMvp4gElementLoaderTest<E extends Mvp4gElement, L e
 		List<String> mandMultiValue = convertToList( basicLoader.getMultiValueAttributeNames() );
 		List<String> parent = new ArrayList<String>();
 
-		
 		int nbAtt = mandAttributes.size();
 		String temp = null;
 		L loader = null;
@@ -62,9 +61,9 @@ public abstract class AbstractMvp4gElementLoaderTest<E extends Mvp4gElement, L e
 				loader.loadElements();
 				fail();
 			} catch ( InvalidMvp4gConfigurationException e ) {
-				assertTrue( "Wrong error message for missing attribute " + temp, e.getMessage().contains( temp + "' is missing" ) );				
+				assertTrue( "Wrong error message for missing attribute " + temp, e.getMessage().contains( temp + "' is missing" ) );
 			}
-			
+
 			mandAttributes.add( temp );
 		}
 	}
@@ -135,4 +134,9 @@ public abstract class AbstractMvp4gElementLoaderTest<E extends Mvp4gElement, L e
 		}
 		return list;
 	}
+
+	protected String getParentName() {
+		return getTagName() + "s";
+	}
+
 }

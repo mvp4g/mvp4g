@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 
-	private static final String[] properties = { "eventObjectClass", "calledMethod", "type" };
+	private static final String[] properties = { "eventObjectClass", "calledMethod", "type", "history" };
 	private static final String[] values = { "handlers" };
 
 	@Test
@@ -14,6 +14,13 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 		assertEquals( "();", element.getEventParameterString() );
 		element.setEventObjectClass( "com.lang.String" );
 		assertEquals( "(form);", element.getEventParameterString() );
+	}
+
+	@Test
+	public void testHasHistory() {
+		assertFalse( element.hasHistory() );
+		element.setHistory( "converter" );
+		assertTrue( element.hasHistory() );
 	}
 
 	@Test
