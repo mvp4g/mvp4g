@@ -20,7 +20,7 @@
 			services="service" />
 		<converter name="cartConverter" class="ShowCartConverter" />
 	</history>
-
+	
 	<presenters package="com.mvp4g.example.client.presenter">
 		<presenter name="account" class="AccountPresenter" view="accountView" />
 		<presenter name="cartDisplay" class="CartDisplayPresenter"
@@ -47,13 +47,13 @@
 		<event type="displayCart" calledMethod="onDisplayCart"
 			eventObjectClass="java.lang.String" handlers="cartDisplay" history="cartConverter" />
 		<event type="displayDeal" calledMethod="onDisplayDeal"
-			eventObjectClass="com.mvp4g.example.client.bean.DealBean" handlers="dealDisplay"
+			eventObjectClass="com.mvp4g.example.client.bean.DealBean" handlers="dealDisplay,topBar"
 			history="dealConverter" />
 		<event type="displayMessage" calledMethod="onDisplayMessage"
 			eventObjectClass="java.lang.String" handlers="rootTemplate" />
 		<event type="displayProduct" calledMethod="onDisplayProduct"
 			eventObjectClass="com.mvp4g.example.client.bean.ProductBean"
-			handlers="productDisplay" history="productConverter" />
+			handlers="productDisplay,topBar" history="productConverter" />
 
 		<event type="init" calledMethod="onInit"
 			handlers="rootTemplate, topBar" />
@@ -64,6 +64,6 @@
 		<event type="start" calledMethod="onStart" handlers="topBar, loginPresenter" />
 	</events>
 
-	<start view="rootTemplateView" eventType="start" />
+	<start view="rootTemplateView" eventType="start" history="true" />
 
 </mvp4g>		
