@@ -8,6 +8,20 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 
 	private static final String[] properties = { "eventObjectClass", "calledMethod", "type", "history" };
 	private static final String[] values = { "handlers" };
+	
+	@Test
+	public void testGetCalledMethod(){
+		element.setType( "display" );
+		assertEquals( "onDisplay", element.getCalledMethod() );
+		element.setCalledMethod( "onDisplayCalled" );
+		assertEquals( "onDisplayCalled", element.getCalledMethod() );
+	}
+	
+	@Test
+	public void testGetCalledMethodOneCharacter(){
+		element.setType( "o" );
+		assertEquals( "onO", element.getCalledMethod() );
+	}
 
 	@Test
 	public void testEventParameterString() {
