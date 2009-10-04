@@ -26,7 +26,20 @@ public class EventElement extends Mvp4gElement {
 	}
 
 	public String getCalledMethod() {
-		return getProperty( "calledMethod" );
+		
+		String calledMethod = getProperty( "calledMethod" );
+		if((calledMethod == null)||(calledMethod.length() == 0)){
+			String type = getType();
+			if(type.length() > 1){
+				type = type.substring( 0, 1 ).toUpperCase() + type.substring( 1 );
+			}
+			else{
+				type = type.toUpperCase();
+			}
+			calledMethod = "on" + type;
+		}
+		
+		return calledMethod;
 	}
 
 	public void setEventObjectClass( String eventObjectClass ) throws DuplicatePropertyNameException {
