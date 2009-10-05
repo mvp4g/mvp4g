@@ -1,4 +1,4 @@
-package com.mvp4g.example.client.presenter;
+package com.mvp4g.example.client.presenter.display;
 
 import com.mvp4g.client.presenter.Presenter;
 import com.mvp4g.example.client.EventsEnum;
