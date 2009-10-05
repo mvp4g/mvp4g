@@ -164,7 +164,7 @@ public class Mvp4gConfigurationFileReaderTest {
 			configReader.getObjectClass( event );
 			fail();
 		} catch ( InvalidMvp4gConfigurationException ex ) {
-			String expected = "Tag " + event.getTagName() + " one: displayUserPresenter handler class: com.mvp4g.example.client.presenter.UserDisplayPresenter is not found";
+			String expected = "Tag " + event.getTagName() + " one: displayUserPresenter handler class: com.mvp4g.example.client.presenter.display.UserDisplayPresenter is not found";
 			assertEquals( expected, ex.getMessage() );
 		}
 
@@ -189,16 +189,17 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		"final com.mvp4g.example.client.view.UserCreateView " + "userCreateView = new com.mvp4g.example.client.view.UserCreateView();",
 
-		"final com.mvp4g.example.client.view.UserDisplayView " + "userDisplayView = new com.mvp4g.example.client.view.UserDisplayView();" };
+		"final com.mvp4g.example.client.view.display.UserDisplayView " + "userDisplayView = new com.mvp4g.example.client.view.display.UserDisplayView();" };
 	}
 
 	private String[] getExpectedHistory() {
 		return new String[] {
 				"final PlaceService placeService = new PlaceService(eventBus);",
 				"placeService.setInitEvent( \"init\");",
-				"final com.mvp4g.example.client.history.UserHistoryConverter userConverter = new com.mvp4g.example.client.history.UserHistoryConverter();",
+				"final com.mvp4g.example.client.history.display.UserHistoryConverter userConverter = new com.mvp4g.example.client.history.display.UserHistoryConverter();",
 				"userConverter.setUserService(userService);",
-				"final com.mvp4g.example.client.history.StringHistoryConverter stringConverter = new com.mvp4g.example.client.history.StringHistoryConverter();" };
+				"final com.mvp4g.example.client.history.StringHistoryConverter stringConverter = new com.mvp4g.example.client.history.StringHistoryConverter();",
+				"final com.mvp4g.example.client.StringHistoryConverter particularConverter = new com.mvp4g.example.client.StringHistoryConverter();"};
 
 	}
 
@@ -216,8 +217,8 @@ public class Mvp4gConfigurationFileReaderTest {
 				"createUserPresenter.setView(userCreateView);",
 				"createUserPresenter.setUserService(userService);",
 
-				"final com.mvp4g.example.client.presenter.UserDisplayPresenter "
-						+ "displayUserPresenter = new com.mvp4g.example.client.presenter.UserDisplayPresenter();",
+				"final com.mvp4g.example.client.presenter.display.UserDisplayPresenter "
+						+ "displayUserPresenter = new com.mvp4g.example.client.presenter.display.UserDisplayPresenter();",
 
 				"displayUserPresenter.setEventBus(eventBus);", "displayUserPresenter.setView(userDisplayView);" };
 	}
@@ -256,6 +257,10 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	private String[] getExpectedServices() {
 		return new String[] { "final com.mvp4g.example.client.rpc.UserServiceAsync "
-				+ "userService = GWT.create(com.mvp4g.example.client.rpc.UserService.class);", };
+				+ "userRpcService = GWT.create(com.mvp4g.example.client.rpc.UserService.class);",
+				"final com.mvp4g.example.client.services.UserServiceAsync "
+				+ "userService = GWT.create(com.mvp4g.example.client.services.UserService.class);",
+				"final com.mvp4g.example.client.services.display.UserServiceAsync "
+				+ "userDisplayService = GWT.create(com.mvp4g.example.client.services.display.UserService.class);"};
 	}
 }
