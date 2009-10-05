@@ -7,7 +7,7 @@
 	</views>
 
 	<services package="com.mvp4g.example.client.services">
-		<service name="userService" class="UserService" />
+		<service name="userService" class="UserService" path="/service/user"/>
 		<service name="userRpcService" class="com.mvp4g.example.client.rpc.UserService" />
 		<service name="userDisplayService" class=".display.UserService" />
 	</services>

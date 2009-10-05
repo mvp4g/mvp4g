@@ -260,6 +260,7 @@ public class Mvp4gConfigurationFileReaderTest {
 				+ "userRpcService = GWT.create(com.mvp4g.example.client.rpc.UserService.class);",
 				"final com.mvp4g.example.client.services.UserServiceAsync "
 				+ "userService = GWT.create(com.mvp4g.example.client.services.UserService.class);",
+				"((ServiceDefTarget) userService).setServiceEntryPoint(\"/service/user\");",
 				"final com.mvp4g.example.client.services.display.UserServiceAsync "
 				+ "userDisplayService = GWT.create(com.mvp4g.example.client.services.display.UserService.class);"};
 	}
