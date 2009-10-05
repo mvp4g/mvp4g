@@ -1,6 +1,6 @@
 package com.mvp4g.util;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -10,6 +10,8 @@ import org.junit.Test;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.dev.util.UnitTestTreeLogger;
+import com.mvp4g.util.config.element.EventElement;
+import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
 import com.mvp4g.util.test_tools.SourceWriterTestStub;
 
 public class Mvp4gConfigurationFileReaderTest {
@@ -108,6 +110,66 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertEquals( expected, configReader.capitalized( input ) );
 	}
 
+	@Test
+	public void testGetObjectClass() throws UnableToCompleteException {
+
+		configReader.writeConf();
+
+		EventElement event = new EventElement();
+		assertNull( configReader.getObjectClass( event ) );
+
+		event = new EventElement();
+		event.setEventObjectClass( String.class.getName() );
+		assertEquals( String.class.getName(), configReader.getObjectClass( event ) );
+
+		event = new EventElement();
+		event.setCalledMethod( "onInit" );
+		event.setHandlers( new String[] { "rootPresenter" } );
+		assertNull( configReader.getObjectClass( event ) );
+
+		event = new EventElement();
+		event.setCalledMethod( "onDisplayMessage" );
+		event.setHandlers( new String[] { "rootPresenter" } );
+		assertEquals( String.class.getName(), configReader.getObjectClass( event ) );
+
+		try {
+			event = new EventElement();
+			event.setType( "one" );
+			event.setCalledMethod( "unknownMethod" );
+			event.setHandlers( new String[] { "rootPresenter" } );
+			configReader.getObjectClass( event );
+			fail();
+		} catch ( InvalidMvp4gConfigurationException ex ) {
+			String expected = "Tag " + event.getTagName() + " one: handler rootPresenter doesn't define a method unknownMethod with 1 or 0 parameter.";
+			assertEquals( expected, ex.getMessage() );
+		}
+		
+		try {
+			event = new EventElement();
+			event.setType( "one" );
+			event.setCalledMethod( "onTest" );
+			event.setHandlers( new String[] { "rootPresenter" } );
+			configReader.getObjectClass( event );
+			fail();
+		} catch ( InvalidMvp4gConfigurationException ex ) {
+			String expected = "Tag " + event.getTagName() + " one: handler rootPresenter doesn't define a method onTest with 1 or 0 parameter.";
+			assertEquals( expected, ex.getMessage() );
+		}
+		
+		try {
+			event = new EventElement();
+			event.setType( "one" );
+			event.setCalledMethod( "onInit" );
+			event.setHandlers( new String[] { "displayUserPresenter" } );
+			configReader.getObjectClass( event );
+			fail();
+		} catch ( InvalidMvp4gConfigurationException ex ) {
+			String expected = "Tag " + event.getTagName() + " one: displayUserPresenter handler class: com.mvp4g.example.client.presenter.UserDisplayPresenter is not found";
+			assertEquals( expected, ex.getMessage() );
+		}
+
+	}
+
 	private void assertOutput( String[] statements, boolean expected ) {
 		String error = null;
 		if ( expected ) {
@@ -123,7 +185,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedViews() {
-		return new String[] { "final com.mvp4g.example.client.view.RootView " + "rootView = new com.mvp4g.example.client.view.RootView();",
+		return new String[] { "final com.mvp4g.util.test_tools.RootView " + "rootView = new com.mvp4g.util.test_tools.RootView();",
 
 		"final com.mvp4g.example.client.view.UserCreateView " + "userCreateView = new com.mvp4g.example.client.view.UserCreateView();",
 
@@ -142,7 +204,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	private String[] getExpectedPresenters() {
 		return new String[] {
-				"final com.mvp4g.example.client.presenter.RootPresenter " + "rootPresenter = new com.mvp4g.example.client.presenter.RootPresenter();",
+				"final com.mvp4g.util.test_tools.RootPresenter " + "rootPresenter = new com.mvp4g.util.test_tools.RootPresenter();",
 
 				"rootPresenter.setEventBus(eventBus);",
 				"rootPresenter.setView(rootView);",
@@ -180,7 +242,7 @@ public class Mvp4gConfigurationFileReaderTest {
 				"if(storeInHistory){", "placeService.place( \"displayMessage\", form )", "eventBus.addEvent(\"displayMessage\", cmddisplayMessage);",
 
 				"Command<java.lang.Object> cmdstart = new Command<java.lang.Object>(){",
-				"public void execute(java.lang.Object form, boolean storeInHistory) {", "rootPresenter.onStart();", "createUserPresenter.onStart();",
+				"public void execute(java.lang.Object form, boolean storeInHistory) {", "rootPresenter.onStart();",
 				"eventBus.addEvent(\"start\", cmdstart);",
 
 				"Command<java.lang.Object> cmdinit = new Command<java.lang.Object>(){",
@@ -189,7 +251,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedStartEvent() {
-		return new String[] { "RootPanel.get().add(rootView);", "eventBus.dispatch(\"start\");","History.fireCurrentHistoryState();" };
+		return new String[] { "RootPanel.get().add(rootView);", "eventBus.dispatch(\"start\");", "History.fireCurrentHistoryState();" };
 	}
 
 	private String[] getExpectedServices() {

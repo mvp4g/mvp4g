@@ -15,6 +15,10 @@
  */
 package com.mvp4g.util;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
 
@@ -43,6 +47,9 @@ public class Mvp4gConfigurationFileReader {
 	private TreeLogger logger = null;
 
 	private Mvp4gConfiguration configuration = new Mvp4gConfiguration();
+
+	//associate a presenter name with its class name
+	private Map<String, String> presenterClasses = new HashMap<String, String>();
 
 	/**
 	 * Create a Mvp4gConfigurationFileReader object
@@ -168,11 +175,15 @@ public class Mvp4gConfigurationFileReader {
 	private void writePresenters() {
 
 		String name = null;
+		String className = null;
 
 		for ( PresenterElement presenter : configuration.getPresenters() ) {
 			name = presenter.getName();
+			className = presenter.getClassName();
 
-			createInstance( name, presenter.getClassName() );
+			presenterClasses.put( name, className );
+
+			createInstance( name, className );
 
 			sourceWriter.print( name );
 			sourceWriter.println( ".setEventBus(eventBus);" );
@@ -233,8 +244,14 @@ public class Mvp4gConfigurationFileReader {
 		for ( EventElement event : configuration.getEvents() ) {
 			type = event.getType();
 			calledMethod = event.getCalledMethod();
-			objectClass = event.getEventObjectClass();
-			param = event.getEventParameterString();
+			objectClass = getObjectClass( event );
+			if(objectClass == null){
+				objectClass = Object.class.getName();
+				param = "();";
+			}
+			else{
+				param = "(form);";
+			}
 			handlers = event.getHandlers();
 			history = event.getHistory();
 			hasHistory = event.hasHistory();
@@ -374,6 +391,50 @@ public class Mvp4gConfigurationFileReader {
 			sourceWriter.print( elementName );
 			sourceWriter.println( "." + methodName + "(" + service + ");" );
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	String getObjectClass( EventElement event ) {
+		String objectClass = event.getEventObjectClass();
+		if ( ( objectClass == null ) || ( objectClass.length() == 0 ) ) {
+			String[] handlers = event.getHandlers();
+			if ( handlers.length == 0 ) {
+				//no handler and no event object class defined, then no class associated to the object
+				objectClass = null;
+			} else {
+				try {
+					Class handlerClass = Class.forName( presenterClasses.get( handlers[0] ) );
+					String eventMethod = event.getCalledMethod();
+					Class[] parameters = null;
+					boolean found = false;
+					int parameterSize = 0;
+					for ( Method method : handlerClass.getMethods() ) {
+						if ( eventMethod.equals( method.getName() ) ) {
+							parameters = method.getParameterTypes();
+							parameterSize = parameters.length;
+							if ( parameterSize == 0 ) {
+								found = true;
+								objectClass = null;
+								break;
+							} else if ( parameterSize == 1 ) {
+								found = true;
+								objectClass = parameters[0].getName();
+								break;
+							}
+						}
+					}
+					if ( !found ) {
+						throw new InvalidMvp4gConfigurationException( "Tag " + event.getTagName() + " " + event.getType() + ": handler "
+								+ handlers[0] + " doesn't define a method " + event.getCalledMethod() + " with 1 or 0 parameter." );
+					}
+
+				} catch ( ClassNotFoundException e ) {
+					throw new InvalidMvp4gConfigurationException( "Tag " + event.getTagName() + " " + event.getType() + ": " + handlers[0]
+							+ " handler class: " + presenterClasses.get( handlers[0] ) +" is not found" );
+				}
+			}
+		}
+		return objectClass;
 	}
 
 }

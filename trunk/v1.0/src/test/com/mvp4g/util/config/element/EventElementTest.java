@@ -23,23 +23,12 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 		assertEquals( "onO", element.getCalledMethod() );
 	}
 
-	@Test
-	public void testEventParameterString() {
-		assertEquals( "();", element.getEventParameterString() );
-		element.setEventObjectClass( "com.lang.String" );
-		assertEquals( "(form);", element.getEventParameterString() );
-	}
 
 	@Test
 	public void testHasHistory() {
 		assertFalse( element.hasHistory() );
 		element.setHistory( "converter" );
 		assertTrue( element.hasHistory() );
-	}
-
-	@Test
-	public void testNullEventObjectClass() {
-		assertEquals( Object.class.getName(), element.getEventObjectClass() );
 	}
 
 	@Test
