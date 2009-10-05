@@ -1,4 +1,4 @@
-package com.mvp4g.example.client.view;
+package com.mvp4g.example.client.view.display;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
