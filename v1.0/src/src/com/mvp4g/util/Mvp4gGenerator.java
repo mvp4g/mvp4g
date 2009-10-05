@@ -88,6 +88,7 @@ public class Mvp4gGenerator extends Generator {
 		classFactory.addImport( "com.google.gwt.user.client.ui.RootPanel" );
 		classFactory.addImport( "com.google.gwt.core.client.GWT" );
 		classFactory.addImport( "com.google.gwt.user.client.History" );
+		classFactory.addImport( "com.google.gwt.user.client.rpc.ServiceDefTarget" );
 
 		PrintWriter printWriter = context.tryCreate( logger, packageName, generatedClassName );
 		if ( printWriter == null ) {

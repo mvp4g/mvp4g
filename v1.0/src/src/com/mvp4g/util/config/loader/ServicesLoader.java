@@ -19,6 +19,7 @@ public class ServicesLoader extends Mvp4gElementLoader<ServiceElement> {
 
 	static final String[] REQUIRED_ATTRIBUTES = { "name", "class" };
 	static final String[] PARENT_ATTRIBUTES = { "package" };
+	static final String[] OPTIONAL_ATTRIBUTES = { "path" };
 
 	@SuppressWarnings( "unchecked" )
 	public ServicesLoader( XMLConfiguration xmlConfig ) {
@@ -43,6 +44,11 @@ public class ServicesLoader extends Mvp4gElementLoader<ServiceElement> {
 	@Override
 	protected String[] getParentAttributeNames() {
 		return PARENT_ATTRIBUTES;
+	}
+	
+	@Override
+	String[] getOptionalAttributeNames() {
+		return OPTIONAL_ATTRIBUTES;
 	}
 
 	/**

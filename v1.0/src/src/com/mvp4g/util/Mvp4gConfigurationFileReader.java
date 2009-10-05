@@ -218,6 +218,14 @@ public class Mvp4gConfigurationFileReader {
 			sourceWriter.print( " = GWT.create(" );
 			sourceWriter.print( className );
 			sourceWriter.println( ".class);" );
+
+			if ( service.hasPath() ) {
+				sourceWriter.print( "((ServiceDefTarget) " );
+				sourceWriter.print( name );
+				sourceWriter.print( ").setServiceEntryPoint(\"" );
+				sourceWriter.print( service.getPath() );
+				sourceWriter.print( "\");" );				
+			}
 		}
 	}
 
@@ -245,11 +253,10 @@ public class Mvp4gConfigurationFileReader {
 			type = event.getType();
 			calledMethod = event.getCalledMethod();
 			objectClass = getObjectClass( event );
-			if(objectClass == null){
+			if ( objectClass == null ) {
 				objectClass = Object.class.getName();
 				param = "();";
-			}
-			else{
+			} else {
 				param = "(form);";
 			}
 			handlers = event.getHandlers();
@@ -393,7 +400,7 @@ public class Mvp4gConfigurationFileReader {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings( "unchecked" )
 	String getObjectClass( EventElement event ) {
 		String objectClass = event.getEventObjectClass();
 		if ( ( objectClass == null ) || ( objectClass.length() == 0 ) ) {
@@ -430,7 +437,7 @@ public class Mvp4gConfigurationFileReader {
 
 				} catch ( ClassNotFoundException e ) {
 					throw new InvalidMvp4gConfigurationException( "Tag " + event.getTagName() + " " + event.getType() + ": " + handlers[0]
-							+ " handler class: " + presenterClasses.get( handlers[0] ) +" is not found" );
+							+ " handler class: " + presenterClasses.get( handlers[0] ) + " is not found" );
 				}
 			}
 		}

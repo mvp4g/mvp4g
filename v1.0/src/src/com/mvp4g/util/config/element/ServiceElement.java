@@ -10,5 +10,17 @@ public class ServiceElement extends SimpleMvp4gElement {
 	public ServiceElement() {
 		super( "service" );
 	}
+	
+	public void setPath(String path){
+		setProperty( "path", path );
+	}
+	
+	public String getPath(){
+		return getProperty( "path" );
+	}
+	
+	public boolean hasPath(){
+		return getPath() != null;
+	}
 
 }
