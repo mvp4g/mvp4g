@@ -26,19 +26,18 @@ public class EventElement extends Mvp4gElement {
 	}
 
 	public String getCalledMethod() {
-		
+
 		String calledMethod = getProperty( "calledMethod" );
-		if((calledMethod == null)||(calledMethod.length() == 0)){
+		if ( ( calledMethod == null ) || ( calledMethod.length() == 0 ) ) {
 			String type = getType();
-			if(type.length() > 1){
+			if ( type.length() > 1 ) {
 				type = type.substring( 0, 1 ).toUpperCase() + type.substring( 1 );
-			}
-			else{
+			} else {
 				type = type.toUpperCase();
 			}
 			calledMethod = "on" + type;
 		}
-		
+
 		return calledMethod;
 	}
 
@@ -47,19 +46,7 @@ public class EventElement extends Mvp4gElement {
 	}
 
 	public String getEventObjectClass() {
-		String value = getProperty( "eventObjectClass" );
-		if ( value == null ) {
-			value = Object.class.getName();
-		}
-		return value;
-	}
-
-	public String getEventParameterString() {
-		String value = getProperty( "eventObjectClass" );
-		if ( value == null ) {
-			return "();";
-		}
-		return "(form);";
+		return getProperty( "eventObjectClass" );
 	}
 
 	public void setHandlers( String[] handlers ) throws DuplicatePropertyNameException {
@@ -69,16 +56,16 @@ public class EventElement extends Mvp4gElement {
 	public String[] getHandlers() {
 		return getValues( "handlers" );
 	}
-	
-	public void setHistory(String history) throws DuplicatePropertyNameException{
-		setProperty("history", history);
+
+	public void setHistory( String history ) throws DuplicatePropertyNameException {
+		setProperty( "history", history );
 	}
-	
-	public String getHistory(){
-		return getProperty("history");
+
+	public String getHistory() {
+		return getProperty( "history" );
 	}
-	
-	public boolean hasHistory(){
+
+	public boolean hasHistory() {
 		return getHistory() != null;
 	}
 
