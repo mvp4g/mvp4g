@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:simpleType name="boolean">
+		<xs:restriction base="xs:boolean">
+			<xs:pattern value="true|false" />
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:simpleType name="package">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)*" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="className">
+		<xs:restriction base="xs:string">
+			<xs:pattern value=".?[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)*" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="name">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z][a-zA-Z0-9_]*" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="nameArray">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z][a-zA-Z0-9_]*(\s?,\s?[a-zA-Z][a-zA-Z0-9_]*)*" />
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:attributeGroup name="simpleMpv4gElement">
+		<xs:attribute name="name" type="name" use="required" />
+		<xs:attribute name="class" type="xs:NMTOKEN" use="required" />
+	</xs:attributeGroup>
+
+	<xs:attributeGroup name="mvp4gElementWithServices">
+		<xs:attributeGroup ref="simpleMpv4gElement" />
+		<xs:attribute name="services" type="nameArray" use="optional" />
+	</xs:attributeGroup>
+
+	<xs:element name="views">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="view" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+			<xs:attribute name="package" type="package" use="optional" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="services">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="service" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+			<xs:attribute name="package" type="package" use="optional" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="history">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="converter" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+			<xs:attribute name="package" type="package" use="required" />
+			<xs:attribute name="initEvent" type="name" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="presenters">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="presenter" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+			<xs:attribute name="package" type="package" use="optional" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="events">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="event" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="converter">
+		<xs:complexType>
+			<xs:attributeGroup ref="mvp4gElementWithServices" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="event">
+		<xs:complexType>
+			<xs:attribute name="handlers" type="nameArray" use="required" />
+			<xs:attribute name="type" type="name" use="required" />
+			<xs:attribute name="history" type="name" use="optional" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="mvp4g">
+		<xs:complexType mixed="true">
+			<xs:all>
+				<xs:element ref="events" />
+				<xs:element ref="history" minOccurs="0" />
+				<xs:element ref="presenters" />
+				<xs:element ref="services" minOccurs="0" />
+				<xs:element ref="start" />
+				<xs:element ref="views" />
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="presenter">
+		<xs:complexType>
+			<xs:attributeGroup ref="mvp4gElementWithServices" />
+			<xs:attribute name="view" type="name" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+
+
+	<xs:element name="service">
+		<xs:complexType>
+			<xs:attributeGroup ref="simpleMpv4gElement" />
+			<xs:attribute name="path" type="xs:string" use="optional" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="start">
+		<xs:complexType>
+			<xs:attribute name="view" type="name" use="required" />
+			<xs:attribute name="eventType" type="name" use="optional" />
+			<xs:attribute name="history" type="boolean" use="optional" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="view">
+		<xs:complexType>
+			<xs:attributeGroup ref="simpleMpv4gElement" />
+		</xs:complexType>
+	</xs:element>
+
+
+
+</xs:schema>
