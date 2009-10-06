@@ -8,7 +8,6 @@
 		</xs:restriction>
 	</xs:simpleType>
 
-
 	<xs:simpleType name="package">
 		<xs:restriction base="xs:string">
 			<xs:pattern value="[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)*" />
@@ -32,7 +31,7 @@
 			<xs:pattern value="[a-zA-Z][a-zA-Z0-9_]*(\s?,\s?[a-zA-Z][a-zA-Z0-9_]*)*" />
 		</xs:restriction>
 	</xs:simpleType>
-
+	
 
 	<xs:attributeGroup name="simpleMpv4gElement">
 		<xs:attribute name="name" type="name" use="required" />
@@ -43,6 +42,7 @@
 		<xs:attributeGroup ref="simpleMpv4gElement" />
 		<xs:attribute name="services" type="nameArray" use="optional" />
 	</xs:attributeGroup>
+	
 
 	<xs:element name="views">
 		<xs:complexType>
@@ -99,6 +99,8 @@
 		<xs:complexType>
 			<xs:attribute name="handlers" type="nameArray" use="required" />
 			<xs:attribute name="type" type="name" use="required" />
+			<xs:attribute name="calledMethod" type="name" use="optional" />
+			<xs:attribute name="eventObjectClass" type="package" use="optional" />
 			<xs:attribute name="history" type="name" use="optional" />
 		</xs:complexType>
 	</xs:element>
@@ -123,8 +125,6 @@
 		</xs:complexType>
 	</xs:element>
 
-
-
 	<xs:element name="service">
 		<xs:complexType>
 			<xs:attributeGroup ref="simpleMpv4gElement" />
@@ -145,7 +145,5 @@
 			<xs:attributeGroup ref="simpleMpv4gElement" />
 		</xs:complexType>
 	</xs:element>
-
-
-
+	
 </xs:schema>
