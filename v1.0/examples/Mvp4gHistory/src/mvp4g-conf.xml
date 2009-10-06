@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<mvp4g>
+<mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/trunk/v1.0/src/xsd/mvp4g-conf.xsd">
 	<views package="com.mvp4g.example.client.view">
 		<view name="accountView" class="AccountView" />
 		<view name="cartDisplayView" class=".display.CartDisplayView" />
@@ -8,11 +8,11 @@
 		<view name="productDisplayView" class=".display.ProductDisplayView" />
 		<view name="rootTemplateView" class="RootTemplateView" />
 		<view name="topBarView" class="TopBarView" />
-	</views>
-	<services package="com.mvp4g.example.client">
-		<service name="service" class="Service" path="/history/service"/>
-	</services>
-
+	</views>	
+	<services package="com.mvp4g.example.client">		
+		<service name="service" class="Service" path="/history/service" />
+	</services>	
+	
 	<history package="com.mvp4g.example.client.history" initEvent="init">
 		<converter name="dealConverter" class="DealHistoryConverter"
 			services="service" />
@@ -35,7 +35,7 @@
 			view="dealDisplayView" />
 		<presenter name="productDisplay" class=".display.ProductDisplayPresenter"
 			view="productDisplayView" />
-	</presenters>
+	</presenters>	
 	<events>
 		<event type="changeTopWidget" handlers="rootTemplate" />
 		<event type="changeBottomWidget" handlers="rootTemplate" />
