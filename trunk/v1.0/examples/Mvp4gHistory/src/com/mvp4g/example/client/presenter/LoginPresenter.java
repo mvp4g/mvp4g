@@ -21,6 +21,7 @@ public class LoginPresenter extends Presenter<LoginViewInterface> {
 				} else {
 					Cookies.setCookie( Constants.USERNAME, username );
 					eventBus.dispatch( EventsEnum.LOGIN, username );
+					eventBus.dispatch( EventsEnum.DISPLAY_MESSAGE, "" );
 				}
 			}
 

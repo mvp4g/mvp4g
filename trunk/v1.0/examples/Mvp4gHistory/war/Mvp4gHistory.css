@@ -1,34 +1,63 @@
-/** Add css rules here for your application. */
-
-
-/** Example rules used by the template application (remove for your app) */
-h1 {
-  font-size: 2em;
-  font-weight: bold;
-  color: #777777;
-  margin: 40px 0px 70px;
-  text-align: center;
+.input {
+	background: red;
+	color: white;
 }
 
-.sendButton {
-  display: block;
-  font-size: 16pt;
+.bar {
+	background: #146EB4;
+	color: white;
+	font-family: Arial;
+	font-size: 14;
 }
 
-/** Most GWT widgets already have a style name defined */
-.gwt-DialogBox {
-  width: 400px;
+.bar .gwt-Button {
+	background: red;
+	color: white;
+	margin: 3px;
+	margin-right: 10px;
 }
 
-.dialogVPanel {
-  margin: 5px;
+.bar .gwt-Label,.bar .gwt-CheckBox,.bar .gwt-HTML,.bar .gwt-TextBox {
+	margin: 3px;
 }
 
-.serverResponseLabelError {
-  color: red;
+.bar .username {
+	font-weight: bold;
+	font-style: italic;
 }
 
-/** Set ids using widget.getElement().setId("idOfElement") */
-#closeButton {
-  margin: 15px 6px 6px;
+.display .gwt-Label,.display .gwt-HTML {
+	font-family: Arial;
+	font-size: 14px;
+	margin: 5px;
+}
+
+.display .name {
+	font-weight: bold;
+	color: grey;
+	font-size: 20px;
+	margin-bottom: 10px;
+}
+
+.display .gwt-HTML .name {
+	font-weight: bold;
+	color: grey;
+	font-size: 16px;
+	margin: 0px;
+}
+
+.display .price {
+	color: red;
+	font-weight: bold;
+	margin-left: 50px;
+}
+
+.display .gwt-HTML .price {
+	margin-left: 30px;
+}
+
+.messageBar {
+	background: orange none repeat scroll 0 0;
+	color: white;
+	text-align: center;
 }

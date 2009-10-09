@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.mvp4g.example.client.presenter.view_interface.LoginViewInterface;
@@ -16,7 +17,9 @@ public class LoginView extends Composite implements LoginViewInterface {
 	public LoginView(){
 		HorizontalPanel mainPanel = new HorizontalPanel();
 		initWidget( mainPanel );
+		setStyleName( "bar" );
 		
+		mainPanel.setVerticalAlignment( HasVerticalAlignment.ALIGN_MIDDLE );
 		mainPanel.add( username );
 		mainPanel.add( login );
 		

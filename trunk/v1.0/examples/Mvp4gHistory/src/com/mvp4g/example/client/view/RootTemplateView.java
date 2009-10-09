@@ -13,6 +13,7 @@ public class RootTemplateView extends Composite implements RootTemplateViewInter
 	private Label messageBar = new Label();
 	
 	public RootTemplateView(){
+		messageBar.setStyleName( "messageBar" );
 		table.setWidget( 1, 0, messageBar );
 		initWidget( table );
 	}
