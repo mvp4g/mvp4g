@@ -12,6 +12,10 @@ public class ProductDisplayView extends BasicBeanDisplayView implements ProductD
 		HorizontalPanel panel = new HorizontalPanel();
 		panel.add( new Label("Price") );
 		panel.add( price );
+		
+		price.addStyleName( "price" );
+		
+		getMainPanel().add( panel );
 	}
 
 	public Label getPrice() {

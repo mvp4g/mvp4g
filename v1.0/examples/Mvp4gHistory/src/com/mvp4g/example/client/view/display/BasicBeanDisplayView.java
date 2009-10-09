@@ -14,6 +14,9 @@ public class BasicBeanDisplayView extends Composite implements BasicBeanDisplayV
 	
 	public BasicBeanDisplayView(){
 		initWidget( mainPanel );
+		setStyleName( "display" );
+		name.addStyleName( "name" );
+		description.addStyleName( "description" );
 		mainPanel.add( name );
 		mainPanel.add( description );		
 	}

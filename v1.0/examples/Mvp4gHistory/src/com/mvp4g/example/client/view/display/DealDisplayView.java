@@ -12,6 +12,10 @@ public class DealDisplayView extends BasicBeanDisplayView implements DealDisplay
 		HorizontalPanel panel = new HorizontalPanel();
 		panel.add( new Label("Code") );
 		panel.add( code );
+		
+		code.addStyleName( "price" );
+		
+		getMainPanel().add( panel );
 	}
 
 	public Label getCode() {

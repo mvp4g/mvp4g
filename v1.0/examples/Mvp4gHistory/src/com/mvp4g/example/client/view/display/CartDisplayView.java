@@ -12,6 +12,7 @@ public class CartDisplayView extends Composite implements CartDisplayViewInterfa
 
 	public CartDisplayView() {
 		initWidget( mainPanel );
+		setStyleName( "display" );
 	}
 
 	public void addProduct( ProductBean product ) {
@@ -25,11 +26,11 @@ public class CartDisplayView extends Composite implements CartDisplayViewInterfa
 
 	private String buildElement( ProductBean product ) {
 		StringBuilder element = new StringBuilder( 200 );
-		element.append( "<div><span>" );
+		element.append( "<div><span class=\"name\">" );
 		element.append( product.getName() );
-		element.append( "</span>" );
+		element.append( "</span><span class=\"price\" >" );
 		element.append( product.getPrice() );
-		element.append( "</div><div>" );
+		element.append( "</span></div><div>" );
 		element.append( product.getDescription() );
 		element.append( "<div>" );
 		return element.toString();
