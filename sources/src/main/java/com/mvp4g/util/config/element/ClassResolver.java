@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mvp4g.util.config.element;
 
 /**

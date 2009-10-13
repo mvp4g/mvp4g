@@ -74,6 +74,13 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 
 		assertArrayEquals( emptyArray, element.getValues( "nonExistent" ) );
 	}
+	
+	@Test
+	public void testSetValuesWithEmptyArray(){
+		String[] emptyArray = {""};
+		element.setValues( "test", emptyArray );
+		assertArrayEquals( new String[]{}, element.getValues( "test" ) );
+	}
 
 	@Test( expected = DuplicatePropertyNameException.class )
 	public void testDuplicateValues() throws DuplicatePropertyNameException {
@@ -155,7 +162,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 
 		}
 	}
-
+	
 	private void assertPropertiesSize( int expectedSize ) {
 		assertEquals( expectedSize, element.totalProperties() );
 	}

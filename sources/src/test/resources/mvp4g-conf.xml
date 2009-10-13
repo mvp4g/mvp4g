@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<mvp4g>
+<mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/xsd/mvp4g-conf.xsd">
 	<views package="com.mvp4g.example.client.view">
 		<view name="rootView" class="com.mvp4g.util.test_tools.RootView" />
 		<view name="userCreateView" class="UserCreateView" />
@@ -23,7 +23,7 @@
 	<history package="com.mvp4g.example.client.history" initEvent="init">
 		<converter name="userConverter" class=".display.UserHistoryConverter"
 			services="userService" />
-		<converter name="stringConverter" class="StringHistoryConverter" />
+		<converter name="stringConverter" class="StringHistoryConverter" services=""/>
 		<converter name="particularConverter" class="com.mvp4g.example.client.StringHistoryConverter" />
 	</history>
 
@@ -41,6 +41,7 @@
 		<event type="start" calledMethod="onStart"
 			handlers="rootPresenter" />
 		<event type="init" handlers="rootPresenter" />
+		<event type="optionalEvent" handlers="" />
 	</events>
 
 	<start view="rootView" eventType="start" history="true" />
