@@ -1,0 +1,9 @@
+com.mvp4g.client
+com.mvp4g.client.event
+com.mvp4g.client.history
+com.mvp4g.client.presenter
+com.mvp4g.util
+com.mvp4g.util.config
+com.mvp4g.util.config.element
+com.mvp4g.util.config.loader
+com.mvp4g.util.exception
