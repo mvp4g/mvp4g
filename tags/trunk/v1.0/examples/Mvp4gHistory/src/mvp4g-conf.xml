@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/trunk/v1.0/src/xsd/mvp4g-conf.xsd">
+	<views package="com.mvp4g.example.client.view">
+		<view name="accountView" class="AccountView" />
+		<view name="cartDisplayView" class=".display.CartDisplayView" />
+		<view name="dealDisplayView" class=".display.DealDisplayView" />
+		<view name="loginView" class="LoginView" />
+		<view name="productDisplayView" class=".display.ProductDisplayView" />
+		<view name="rootTemplateView" class="RootTemplateView" />
+		<view name="topBarView" class="TopBarView" />
+	</views>	
+	<services package="com.mvp4g.example.client">		
+		<service name="service" class="Service" path="/history/service" />
+	</services>	
+	
+	<history package="com.mvp4g.example.client.history" initEvent="init">
+		<converter name="dealConverter" class="DealHistoryConverter"
+			services="service" />
+		<converter name="productConverter" class="ProductHistoryConverter"
+			services="service" />
+		<converter name="cartConverter" class="ShowCartConverter" />
+	</history>
+
+	<presenters package="com.mvp4g.example.client.presenter">
+		<presenter name="account" class="AccountPresenter" view="accountView" />
+		<presenter name="loginPresenter" class="LoginPresenter"
+			view="loginView" />
+		<presenter name="rootTemplate" class="RootTemplatePresenter"
+			view="rootTemplateView" />
+		<presenter name="topBar" class="TopBarPresenter" view="topBarView"
+			services="service" />
+		<presenter name="cartDisplay" class=".display.CartDisplayPresenter"
+			view="cartDisplayView" services="service" />
+		<presenter name="dealDisplay" class=".display.DealDisplayPresenter"
+			view="dealDisplayView" />
+		<presenter name="productDisplay" class=".display.ProductDisplayPresenter"
+			view="productDisplayView" />
+	</presenters>	
+	<events>
+		<event type="changeTopWidget" handlers="rootTemplate" />
+		<event type="changeBottomWidget" handlers="rootTemplate" />
+		<event type="changeMainWidget" handlers="rootTemplate" />
+
+		<event type="displayCart" handlers="cartDisplay" history="cartConverter" />
+		<event type="displayDeal" handlers="dealDisplay,topBar" history="dealConverter" />
+		<event type="displayMessage" handlers="rootTemplate" />
+		<event type="displayProduct" handlers="productDisplay,topBar"
+			history="productConverter" />
+
+		<event type="init" handlers="rootTemplate, topBar" />
+
+		<event type="login" handlers="account" />
+
+		<event type="start" handlers="loginPresenter, topBar" />
+	</events>
+
+	<start view="rootTemplateView" eventType="start" history="true" />
+
+</mvp4g>		

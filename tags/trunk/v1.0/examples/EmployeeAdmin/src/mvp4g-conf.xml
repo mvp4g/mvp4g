@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/trunk/v1.0/src/xsd/mvp4g-conf.xsd">
+	<views package="com.mvp4g.example.client.view" >
+		<view name="rootTemplateView" class="RootTemplateView" />
+		<view name="userListView" class="UserListView" />
+		<view name="userProfileView" class="UserProfileView"/>
+		<view name="userRoleView" class="UserRoleView"/>
+	</views>
+	<services package="com.mvp4g.example.client" >
+		<service name="userService" class="UserService" />
+	</services>
+	<presenters package="com.mvp4g.example.client.presenter" >
+		<presenter name="rootTemplate" class="RootTemplatePresenter" view="rootTemplateView" />
+		<presenter name="userList" class="UserListPresenter" view="userListView" services="userService" />
+		<presenter name="userProfile" class="UserProfilePresenter" view="userProfileView" services="userService" />
+		<presenter name="userRole" class="UserRolePresenter" view="userRoleView"  services="userService" />			
+	</presenters>
+	<events>
+		<event type="changeTopWidget" calledMethod="onChangeTopWidget" eventObjectClass="com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface" handlers="rootTemplate" />
+		<event type="changeLeftBottomWidget" calledMethod="onChangeLeftBottomWidget" eventObjectClass="com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface" handlers="rootTemplate" />
+		<event type="changeRightBottomWidget" calledMethod="onChangeRightBottomWidget" eventObjectClass="com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface" handlers="rootTemplate" />
+		
+		<event type="createNewUser" calledMethod="onCreateNewUser" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="userProfile, userRole" />
+		<event type="selectUser" calledMethod="onSelectUser" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="userProfile, userRole" />
+		<event type="unselectUser" calledMethod="onUnselectUser" handlers="userProfile, userRole, userList" />
+		<event type="userCreated" calledMethod="onUserCreated" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="userList" />
+		<event type="userUpdated" calledMethod="onUserUpdated" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="userList, userRole" />
+		
+		<event type="start" calledMethod="onStart" handlers="userList, userProfile, userRole" />
+		
+	</events>
+	
+	<start view="rootTemplateView" eventType="start" />
+	
+</mvp4g>		
