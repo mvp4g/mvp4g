@@ -248,7 +248,10 @@ public class Mvp4gConfigurationFileReaderTest {
 
 				"Command<java.lang.Object> cmdinit = new Command<java.lang.Object>(){",
 				"public void execute(java.lang.Object form, boolean storeInHistory) {", "rootPresenter.onInit();",
-				"eventBus.addEvent(\"init\", cmdinit);" };
+				"eventBus.addEvent(\"init\", cmdinit);",
+				
+				"Command<java.lang.Object> cmdoptionalEvent = new Command<java.lang.Object>(){",
+				"public void execute(java.lang.Object form, boolean storeInHistory) {"};
 	}
 
 	private String[] getExpectedStartEvent() {
