@@ -41,6 +41,11 @@ Create your project Views(s). A view just needs to have a constructor with no pa
 == Mvp4g Services ==
 Create your project Service Interface(s). A service interface must extend the RemoteService included in the GWT library.
 
+== Mvp4g History Converters (optional)==
+Create your project history converter(s). A converter needs to:
+  * implement HistoryConverter interface
+  * have a constructor with no parameter
+
 == Mvp4g Presenters ==
 Create your project presenters(s). A presenter needs to:
   * extend Presenter or implement PresenterInterface
@@ -64,31 +69,51 @@ Add your views to the configuration file. Only views declared in this configurat
 </views>
 }}}
 
- * package: you can precise the package where your views are located in order not to have to give it for each view. If the attribute `class` of the tag `view` contains only the class name, the value of the package attribute will be added to it to generate the view class full name. 
- * name: name of the view. It must be unique amongs views, services and presenters.
- * class: Class of the view. If no package is precised, the package attribute will be added to it to generate the full name of the class.
+ * package (optional): you can precise the package where your views are located in order not to write it for each of them (see [FAQ] for more information).
+ * name: name of the view. It must be unique amongs all elements.
+ * class: Class of the view (package attribute may be used to build the full name, see [FAQ] for more information). 
 
-===Services===
+===Services (optional)===
 Add your services to the configuration file. Only services declared in this configuration can be injected into presenters.
 {{{
 <services package="com.mvp4g.example.client" >
 	<service name="service1" class="Service1" />
-	<service name="service2" class="com.mvp4g.example.client.service.special.Service2" />
+	<service name="service2" class="com.mvp4g.example.client.service.special.Service2" path="/myapp/myservice"/>
 	...
 </services>
 }}}
 
- * package: you can precise the package where your service interfaces are located in order not to have to give it for each service. If the attribute `class` of the `service` tag contains only the class name, the value of the package attribute will be added to it to generate the service interface full name. 
- * name: name of the service. It must be unique amongs views, services and presenters.
- * class: Interface of the service. If no package is precised, the package attribute will be added to it to generate the full name of the interface.
+ * package (optional): you can precise the package where your services are located in order not to write it for each of them (see [FAQ] for more information).
+ * name: name of the service. It must be unique amongs all elements.
+ * class: Interface of the service (package attribute may be used to build the full name, see [FAQ] for more information). 
+ * path (optional): allow to define the service entry point. Similar to:
+{{{
+service2.setServiceEntryPoint("/myapp/myservice"); 
+}}}
 
 It is not an instance of the service interface that is injected into the presenter but an instance of the associated Async class.
 
-If a service is injected into a presenter, the presenter must define the appropriate setter. The name of this method must be equals to: "set" + name of the service and the type of the parameter of this method must be equals to: (package if needed) + class of the service (first character being upper case) + "Async". For example, to be able to inject `service1` into a presenter, the presenter needs to define the following method:
+If a service is injected into a presenter or an history converter, the presenter or the history converter must define the appropriate setter. This method must be called: "set" + name of the service and have one parameter which class is equal to class of the service + "Async". For example, to be able to inject `service1` into a presenter, the presenter needs to define the following method:
 {{{
 public void setService1(com.mvp4g.example.client.Service1Async service1)
 }}}
 
+===History (optional)===
+Add history to the configuration file. 
+
+{{{
+<history package="com.mvp4g.example.client.history" initEvent="init">
+	<converter name="converter1" class="Converter1" services="service1, service2" />
+	<converter name="converter2" class=".display.Converter1" services="service3" />
+	<converter name="converter3" class="com.mvp4g.example.client.special.Converter" />
+</history>
+}}}
+
+ * package (optional): you can precise the package where your history converters are located in order not to write it for each of them (see [FAQ] for more information).
+ * initEvent: type of the event thrown by the PlaceService in case the history is fired with an empty token (null or equals to ""). This event will be thrown with no parameter.
+ * name: name of the history converter. It must be unique amongs all elements.
+ * class: Class of the history converter (package attribute may be used to build the full name, see [FAQ] for more information). 
+ * service (optional) : name(s) of the service(s) to inject in the history converter. The name(s) of the service(s) must be equal to one of the services' name declared in the configuration file. Each service name must be separated by a coma.
 
 ===Presenters===
 Add your presenters to the configuration file. You have to inject one view into each presenter and can inject one to many services into it.
@@ -100,9 +125,9 @@ Add your presenters to the configuration file. You have to inject one view into 
 </presenters>
 }}}
 
- * package: you can precise the package where your presenters are located in order not to have to give it for each presenter. If the attribute `class` of the `presenter` tag contains only the class name, the value of the package attribute will be added to it to generate the presenter class full name. 
- * name: name of the presenter. It must be unique amongs views, services and presenters.
- * class: Class of the presenter. If no package is precised, the package attribute will be added to it to generate the full name of the class.
+ * package (optional): you can precise the package where your presenters are located in order not to write it for each of them (see [FAQ] for more information).
+ * name: name of the presenter. It must be unique amongs all elements.
+ * class: Class of the presenter (package attribute may be used to build the full name, see [FAQ] for more information). 
  * view: name of the view to inject in the presenter. The name must be equal to one of the views' name declared in the configuration file.
  * service (optional) : name(s) of the service(s) to inject in the presenter. The name(s) of the service(s) must be equal to one of the services' name declared in the configuration file. Each service name must be separated by a coma.
 
@@ -116,52 +141,76 @@ Add events that can be sent by presenters in the configuration file.
 }}}
 
  * type: type of the event. It must be unique amongst events. This is the type given to the event bus to dispatch an event.
- * calledMethod: method that presenters that handle this event need to define. This method will have only one parameter which class is the one defined in the `eventObjectClass` attribute.
- * eventObjectClass: class of the object that is sent with the event.
+ * calledMethod (optional): method that presenters that handle this event need to define. This method will have only one parameter which class is the one defined in the `eventObjectClass` attribute. If not defined, the value of this attribute will be deduced from the type attribute: on + type of the event (for example, considering an event with type "display", the default value will be "onDisplay") .
+ * eventObjectClass (optional): class of the object that is sent with the event. If not defined, the value of this attribute is deduced from the method definition of the first handler. This attribute is also optional if no event is sent with the event.
  * handlers: name(s) of the presenter(s) that handle this event. The name(s) of the presenters(s) must be equal to one of the presenters' name declared in the configuration file. Each presenter name must be separated by a coma. Each presenter must implement the handler method called when this type of event is thrown. For example, handlers of `event1` event must implement the following method:
 {{{
 public void onEvent1(com.mvp4g.example.client.bean.Bean1 bean)
 }}}
 
-===Start (optional)===
+===Start===
 You can decide to throw an event and to add a view in the RootPanel when you start your application.
 {{{
-<start view="rootView" eventType="start" />
+<start view="rootView" eventType="start" history="true"/>
 }}}
- * view (optional): view to add to the RootPanel when the application starts. 
+ * view: view to add to the RootPanel when the application starts. 
  * eventType (optional): event type sent to the event bus when the application starts. No object will be sent with the event.
+ * history (optional): if this attribute is equals to "true", then the current history state is fired.
 
 It is similar to execute the following lines of code:
 {{{
 eventBus.dispatch("start");
 RootPanel.add(rootView);
+History.fireCurrentHistoryState();
 }}}
 
 ===Full example===
 {{{
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<mvp4g>
-	<views package="com.mvp4g.example.client.view" >
-		<view name="rootView" class="RootView" />
+<mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/xsd/mvp4g-conf.xsd">
+	<views package="com.mvp4g.example.client.view">
+		<view name="rootView" class="com.mvp4g.util.test_tools.RootView" />
 		<view name="userCreateView" class="UserCreateView" />
-		<view name="userDisplayView" class="UserDisplayView"/>
+		<view name="userDisplayView" class=".display.UserDisplayView" />		
 	</views>
-	<services package="com.mvp4g.example.client.service" >
-		<service name="userService" class="UserService" />
+
+	<services package="com.mvp4g.example.client.services">
+		<service name="userService" class="UserService" path="/service/user"/>
+		<service name="userRpcService" class="com.mvp4g.example.client.rpc.UserService" />
+		<service name="userDisplayService" class=".display.UserService" />
 	</services>
-	<presenters package="com.mvp4g.example.client.presenter" >
-		<presenter name="rootPresenter" class="RootPresenter" view="rootView" />
-		<presenter name="createUserPresenter" class="UserCreatePresenter" view="userCreateView" services="userService" />
-		<presenter name="displayUserPresenter" class="UserDisplayPresenter" view="userDisplayView" />						
+
+	<presenters package="com.mvp4g.example.client.presenter">
+		<presenter name="rootPresenter" class="com.mvp4g.util.test_tools.RootPresenter" view="rootView" />
+		<presenter name="createUserPresenter" class="UserCreatePresenter"
+			view="userCreateView" services="userService" />
+		<presenter name="displayUserPresenter" class=".display.UserDisplayPresenter"
+			view="userDisplayView" />
 	</presenters>
+
+	<history package="com.mvp4g.example.client.history" initEvent="init">
+		<converter name="userConverter" class=".display.UserHistoryConverter"
+			services="userService" />
+		<converter name="stringConverter" class="StringHistoryConverter" />
+		<converter name="particularConverter" class="com.mvp4g.example.client.StringHistoryConverter" />
+	</history>
+
+
 	<events>
-		<event type="userCreated" calledMethod="onUserCreated" eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="displayUserPresenter" />			
-		<event type="changeBody" calledMethod="onChangeBody" handlers="rootPresenter" eventObjectClass="com.google.gwt.user.client.ui.Widget"/>
-		<event type="displayMessage" calledMethod="onDisplayMessage" handlers="rootPresenter" eventObjectClass="java.lang.String" />
-		<event type="start" calledMethod="onStart" handlers="rootPresenter, createUserPresenter" />
+		<event type="userCreated" calledMethod="onUserCreated"
+			eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="displayUserPresenter" />
+		<event type="userDisplay" calledMethod="onUserDisplay"
+			eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="displayUserPresenter"
+			history="userConverter" />
+		<event type="changeBody" calledMethod="onChangeBody" handlers="rootPresenter"
+			eventObjectClass="com.mvp4g.example.client.view.widget.Page" />
+		<event type="displayMessage" calledMethod="onDisplayMessage"
+			handlers="rootPresenter" history="stringConverter" />
+		<event type="start" calledMethod="onStart"
+			handlers="rootPresenter" />
+		<event type="init" handlers="rootPresenter" />
 	</events>
-	
-	<start view="rootView" eventType="start" />
-	
-</mvp4g>		
+
+	<start view="rootView" eventType="start" history="true" />
+</mvp4g>			
 }}}
