@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 	<name>Mvp4g</name>
 	
-	<description>Model View Presenter For GWT</description>
+	<description>Model View Presenter with Event Bus For GWT</description>
 	<url>http://mvp4g.googlecode.com</url>
 
 	<licenses>
@@ -20,8 +20,8 @@
 	</licenses>
 	
 	<properties>
-		<gwt.version>1.6.4</gwt.version>
-		<platform>linux</platform>
+		<gwt.version>1.7.0</gwt.version>
+		<platform>windows</platform>
 	</properties>
 
 	<developers>
@@ -68,43 +68,18 @@
 	</dependencies>
 
 	<build>
-		<sourceDirectory>src</sourceDirectory>
-		<testSourceDirectory>test</testSourceDirectory>
 
 		<resources>
 			<resource>
-				<directory>src</directory>
+				<directory>src/main/java</directory>
 				<includes>
 					<include>**/client/**</include>
-					<include>**/*.gwt.xml</include>
+					<include>**/*.gwt.xml</include>					
 				</includes>
 			</resource>
 		</resources>
-		
-		<testResources>
-			<testResource>
-				<directory>test</directory>
-				<includes>
-					<include>mvp4g-conf.xml</include>
-				</includes>
-			</testResource>
-		</testResources>
 				
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -132,8 +107,40 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.3</version>
 			</plugin>
+			
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <outputDirectory>../documentation/javadoc</outputDirectory>
+        </configuration>
+        <executions>
+					<execution>
+						<id>attach-javadoc</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+      </plugin>
+			
 		</plugins>
 	</build>
+	
+	<distributionManagement>
+      <repository>
+        <id>mvp4g.googlecode.releases</id>
+        <name>Releases Repository for Mvp4g</name> 
+        <url>dav:https://mvp4g.googlecode.com/svn/maven2/releases/</url>
+      </repository>
+      <snapshotRepository>
+        <id>raisercostin.googlecode.snapshots</id>
+        <name>Snapshots Repository for Mvp4g</name>
+        <url>dav:https://mvp4g.googlecode.com/svn/maven2/snapshots/</url> 
+      </snapshotRepository>
+  </distributionManagement>
 	
 	<profiles>
 		<profile>
