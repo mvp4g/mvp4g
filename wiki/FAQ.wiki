@@ -3,6 +3,9 @@
 If you have other questions about the framework or would like further information about a question, just let me know by leaving a message on the FAQ discusion in the Mvp4g Google group (http://groups.google.com/group/mvp4g/browse_thread/thread/d8ee207598bf02fa).
 
 
+<wiki:toc max_depth="5" />
+
+
 ====What's the class diagram of the framework?====
 http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/documentation/uml/mvp4g_class_diagram_overview.png
 
@@ -25,12 +28,20 @@ http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/documentation/uml/mvp4g_event_b
 ====What's an history converter?====
 History converters have two goals:
  * convert event parameter to a string and/or store it (in cookie for example) when an event is stored in browser history. This convertion is done by convertToToken method.
- * convert a token to an event and retrieve information to build its parameter (thanks to the token, database, cookie...) and send approriate event to event bus. This convertion is done by convertFromToken method.
+ * convert a token to an event and retrieve information to build its parameter (thanks to the token, database, cookie...) and send approriate event to event bus when browser history changes. This convertion is done by convertFromToken method.
 
 ====How is an event added to the browser history?====
 An event is added to the browser history the following way:
 http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/documentation/uml/place_service.png
 
+====What's the value of the token when an event is stored in the browser history?====
+The token will be equal to: event type + "?" + value returned by convertToToken method.
+
+====I need to store event information when the event is stored in the browser history. How can I do this?====
+When you implement the history converter of the event, store any information you need in the convertToToken method.
+
+====I need to retrieve event information when browser history changes. How can I do this?====
+When you implement the history converter of the event, retrieve any information you need in the convertFromToken method.
 
 ====How can change in history tokens throw an event?====
 Changes in history tokens are managed the following way:
