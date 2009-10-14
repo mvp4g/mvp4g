@@ -22,6 +22,22 @@ The event bus is a Java object, part of the Mvp4g library in charge of dispatchi
 The event bus dispatches events the following way thanks to information stored in the configuration file:<br/>
 http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/documentation/uml/mvp4g_event_broadcast.png
 
+====What's an history converter?====
+History converters have two goals:
+ * convert event parameter to a string and/or store it (in cookie for example) when an event is stored in browser history. This convertion is done by convertToToken method.
+ * convert a token to an event and retrieve information to build its parameter (thanks to the token, database, cookie...) and send approriate event to event bus. This convertion is done by convertFromToken method.
+
+====How is an event added to the browser history?====
+An event is added to the browser history the following way:
+http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/documentation/uml/place_service.png
+
+
+====How can change in history tokens throw an event?====
+Changes in history tokens are managed the following way:
+
+http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/documentation/uml/place_service_reverse.png
+
+
 ====How are presenters, views, services and history converters' class name built? How is the package attribute used?====
 The following rules are applied to build the class name:
  * the class attribute doesn't contain any "." or starts with a ".", then the class name is equals to package attribute + class attribute.
