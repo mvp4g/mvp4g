@@ -4,7 +4,7 @@
 
 	<groupId>com.googlecode.mvp4g</groupId>
 	<artifactId>mvp4g</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 	<name>Mvp4g</name>
 	
@@ -136,7 +136,7 @@
         <url>dav:https://mvp4g.googlecode.com/svn/maven2/releases/</url>
       </repository>
       <snapshotRepository>
-        <id>raisercostin.googlecode.snapshots</id>
+        <id>mvp4g.googlecode.snapshots</id>
         <name>Snapshots Repository for Mvp4g</name>
         <url>dav:https://mvp4g.googlecode.com/svn/maven2/snapshots/</url> 
       </snapshotRepository>
