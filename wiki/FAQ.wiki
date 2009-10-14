@@ -254,3 +254,7 @@ Command<com.mvp4g.example.client.bean.DealBean> cmddisplayDeal = new Command<com
         }
       };
 }}}
+
+==Why do I have to configure an initEvent for history?==
+
+==What events are sent when application starts?==
