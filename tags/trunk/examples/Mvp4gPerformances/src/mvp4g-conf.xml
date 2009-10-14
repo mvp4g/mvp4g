@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/xsd/mvp4g-conf.xsd">
+	<views package="com.mvp4g.example.client">
+		<view name="mainView" class="MainView" />
+		<view name="testView" class=".presenters.TestMvp4gView" />		
+	</views>	
+		
+	<presenters package="com.mvp4g.example.client">
+		<presenter name="mainPresenter" class="MainPresenter" view="mainView" />
+		
+		<presenter name="handler1" class=".presenters.TestMvp4gPresenter" view="testView" />
+		<presenter name="handler2" class=".presenters.TestMvp4gPresenter" view="testView" />
+		<presenter name="handler3" class=".presenters.TestMvp4gPresenter" view="testView" />
+		<presenter name="handler4" class=".presenters.TestMvp4gPresenter" view="testView" />
+		<presenter name="handler5" class=".presenters.TestMvp4gPresenter" view="testView" />
+		<presenter name="handler6" class=".presenters.TestMvp4gPresenter" view="testView" />
+		<presenter name="handler7" class=".presenters.TestMvp4gPresenter" view="testView" />
+		<presenter name="handler8" class=".presenters.TestMvp4gPresenter" view="testView" />
+		<presenter name="handler9" class=".presenters.TestMvp4gPresenter" view="testView" />
+		<presenter name="handler10" class=".presenters.TestMvp4gPresenter" view="testView" />
+	</presenters>	
+	
+	<events>
+		<event type="event1" handlers="handler1,handler2,handler3,handler4,handler5,handler6,handler7,handler8,handler9,handler10" />
+		<event type="event2" handlers="handler1,handler2,handler3,handler4,handler5,handler6,handler7,handler8,handler9,handler10" />
+		<event type="event3" handlers="handler1,handler2,handler3,handler4,handler5,handler6,handler7,handler8,handler9,handler10" />
+		<event type="event4" handlers="handler1,handler2,handler3,handler4,handler5,handler6,handler7,handler8,handler9,handler10" />
+		<event type="event5" handlers="handler1,handler2,handler3,handler4,handler5,handler6,handler7,handler8,handler9,handler10" />
+		<event type="event6" handlers="handler1,handler2,handler3,handler4,handler5,handler6,handler7,handler8,handler9,handler10" />
+		<event type="event7" handlers="handler1,handler2,handler3,handler4,handler5,handler6,handler7,handler8,handler9,handler10" />
+		<event type="event8" handlers="handler1,handler2,handler3,handler4,handler5,handler6,handler7,handler8,handler9,handler10" />
+		<event type="event9" handlers="handler1,handler2,handler3,handler4,handler5,handler6,handler7,handler8,handler9,handler10" />
+		<event type="event10" handlers="handler1,handler2,handler3,handler4,handler5,handler6,handler7,handler8,handler9,handler10" />
+	</events>
+
+	<start view="mainView" />
+
+</mvp4g>		
