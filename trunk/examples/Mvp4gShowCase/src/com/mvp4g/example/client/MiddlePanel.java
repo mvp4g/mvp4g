@@ -30,7 +30,7 @@ public class MiddlePanel extends Composite {
 	public void set( MenuItem item ) {
 		description.setHTML( "<h2>" + item.getProjectName() + "</h2>" + item.getDescription() );
 		demo.setUrl( "http://" + item.getAppId() + ".appspot.com/" );
-		configuration.setUrl( "http://mvp4g.googlecode.com/svn/trunk/v1.0/examples/" + item.getProjectName() + "/src/mvp4g-conf.xml" );
+		configuration.setUrl( "http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/examples/" + item.getProjectName() + "/src/mvp4g-conf.xml" );
 		tabPanel.selectTab( 0 );
 	}
 
