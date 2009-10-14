@@ -22,6 +22,24 @@ The event bus is a Java object, part of the Mvp4g library in charge of dispatchi
 The event bus dispatches events the following way thanks to information stored in the configuration file:<br/>
 http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/documentation/uml/mvp4g_event_broadcast.png
 
+====How are presenters, views, services and history converters' class name built? How is the package attribute used?====
+The following rules are applied to build the class name:
+ * the class attribute doesn't contain any "." or starts with a ".", then the class name is equals to package attribute + class attribute.
+ * the class attribute starts contains "." but doesn't start by ".", then the class name is equals to class attribute.
+
+For example:
+{{{
+<views package="com.mvp4g.example.client.view" >
+	<view name="rootView" class="com.mvp4g.example.client.RootView" />
+	<view name="userCreateView" class="UserCreateView" />
+	<view name="userDisplayView" class=".display.UserDisplayView"/>
+</views>
+}}}
+
+will generate the following class names: com.mvp4g.example.client.RootView, com.mvp4g.example.client.UserCreateView and com.mvp4g.example.client.display.UserDisplayView.
+
+
+
 ====When and how are presenters, views and services instantiated? When and how views and services injected into presenters? When is the event bust created and configured?====
 All these actions are done thanks to the following lines:
 {{{
