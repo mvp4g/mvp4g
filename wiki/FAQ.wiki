@@ -5,7 +5,7 @@ If you have other questions about the framework or would like further informatio
 
 <wiki:toc max_depth="5" />
 
-
+==General==
 ====What's the class diagram of the framework?====
 http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/documentation/uml/mvp4g_class_diagram_overview.png
 
@@ -24,30 +24,6 @@ In the Mvp4g framework, a service is an interface that extends the RemoveService
 The event bus is a Java object, part of the Mvp4g library in charge of dispatching events between the presenters.<br/>
 The event bus dispatches events the following way thanks to information stored in the configuration file:<br/>
 http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/documentation/uml/mvp4g_event_broadcast.png
-
-====What's an history converter?====
-History converters have two goals:
- * convert event parameter to a string and/or store it (in cookie for example) when an event is stored in browser history. This convertion is done by convertToToken method.
- * convert a token to an event and retrieve information to build its parameter (thanks to the token, database, cookie...) and send approriate event to event bus when browser history changes. This convertion is done by convertFromToken method.
-
-====How is an event added to the browser history?====
-An event is added to the browser history the following way:
-http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/documentation/uml/place_service.png
-
-====What's the value of the token when an event is stored in the browser history?====
-The token will be equal to: event type + "?" + value returned by convertToToken method.
-
-====I need to store event information when the event is stored in the browser history. How can I do this?====
-When you implement the history converter of the event, store any information you need in the convertToToken method.
-
-====I need to retrieve event information when browser history changes. How can I do this?====
-When you implement the history converter of the event, retrieve any information you need in the convertFromToken method.
-
-====How can change in history tokens throw an event?====
-Changes in history tokens are managed the following way:
-
-http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/documentation/uml/place_service_reverse.png
-
 
 ====How are presenters, views, services and history converters' class name built? How is the package attribute used?====
 The following rules are applied to build the class name:
@@ -164,3 +140,53 @@ As you can see, it's the call to the start method that:
  * creates one instance for each view, service and presenter.
  * injects views, services and event bus in the presenters.
  * creates the event bus and a command for each event. These commands are then added to the event bus.
+
+==History and Place Service==
+
+====What's an history converter?====
+History converters have two goals:
+ * convert event parameter to a string and/or store it (in cookie for example) when an event is stored in browser history. This convertion is done by convertToToken method.
+ * convert a token to an event and retrieve information to build its parameter (thanks to the token, database, cookie...) and send approriate event to event bus when browser history changes. This convertion is done by convertFromToken method.
+
+====How is an event added to the browser history?====
+An event is added to the browser history the following way:
+http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/documentation/uml/place_service.png
+
+====How can a change in history tokens throw an event?====
+Changes in history tokens are managed the following way:
+
+http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/documentation/uml/place_service_reverse.png
+
+====What's the value of the token when an event is stored in the browser history?====
+The token will be equal to: event type + "?" + value returned by convertToToken method.
+
+====What type of event can be stored in browser history?====
+Any event that is associated with an history converter can be stored in browser history.
+
+====When an event is associated with an history converter, will it be automatically be stored in browser history?====
+No, you can precise not to store the event when calling the dispatch method of the event bus:
+{{{
+eventBus.dispatch(myEvent, myForm, false);
+}}}
+
+However using
+{{{
+eventBus.dispatch(myEvent, myForm);
+}}}
+is equivalent to
+{{{
+eventBus.dispatch(myEvent, myForm, true);
+}}}
+
+====I need to store event information when the event is stored in the browser history. How can I do this?====
+When you implement the history converter of the event, store any information you need in the convertToToken method.
+
+====I need to retrieve event information when browser history changes. How can I do this?====
+When you implement the history converter of the event, retrieve any information you need in the convertFromToken method.
+
+====When and how are history converters instantiated and associated to an event bus? When and how is place service created and configured? How is the event bus interact with the place service?====
+As for other elements, place service and history converters are instantiated thanks to the following lines:
+{{{
+Mvp4gStarter starter = GWT.create(Mvp4gStarter.class);
+starter.start();
+}}}
