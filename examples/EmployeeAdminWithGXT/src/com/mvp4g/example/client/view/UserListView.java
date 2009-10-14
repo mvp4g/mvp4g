@@ -1,32 +1,67 @@
 package com.mvp4g.example.client.view;
 
-import com.google.gwt.user.client.ui.CaptionPanel;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
+import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.HorizontalPanel;
+import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
+import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.example.client.presenter.gxt.MyUserListModel;
 import com.mvp4g.example.client.presenter.view_interface.UserListViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyLabelInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyTableInterface;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
-import com.mvp4g.example.client.view.widget.MyButton;
-import com.mvp4g.example.client.view.widget.MyLabel;
-import com.mvp4g.example.client.view.widget.MyTable;
+import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.MyGXTTableInterface;
+import com.mvp4g.example.client.view.gxt.MyGXTTable;
+import com.mvp4g.example.client.view.gxt.MyLabel;
+import com.mvp4g.example.client.view.gxt.MySimpleGXTButton;
 
-public class UserListView extends Composite implements UserListViewInterface, MyWidgetInterface {
+public class UserListView extends ContentPanel implements UserListViewInterface, MyWidgetInterface {
 
-	private MyButton delete = new MyButton( "Delete" );
-	private MyButton newButton = new MyButton( "New" );
-	private MyButton yes = new MyButton( "Yes" );
-	private MyButton no = new MyButton( "No" );
+	private MySimpleGXTButton delete = new MySimpleGXTButton( "Delete" );
+	private MySimpleGXTButton newButton = new MySimpleGXTButton( "New" );
+	private MySimpleGXTButton yes = new MySimpleGXTButton( "Yes" );
+	private MySimpleGXTButton no = new MySimpleGXTButton( "No" );
 	private MyLabel confirmText = new MyLabel( "Are you Sure?" );
 
-	private MyTable userList = new MyTable();
+	private MyGXTTable userList = null;
 
 	public UserListView() {
 
-		CaptionPanel cpPanel = new CaptionPanel( "Users" );
+		List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
+
+		ColumnConfig column = new ColumnConfig( "username", "Username", 150 );
+		configs.add( column );
+
+		column = new ColumnConfig( "firstName", "First Name", 150 );
+		configs.add( column );
+
+		column = new ColumnConfig( "lastName", "Last Name", 150 );
+		configs.add( column );
+
+		column = new ColumnConfig( "email", "Email", 150 );
+		configs.add( column );
+
+		column = new ColumnConfig( "department", "Department", 150 );
+		configs.add( column );
+
+		ListStore<MyUserListModel> store = new ListStore<MyUserListModel>();
+
+		ColumnModel cm = new ColumnModel( configs );
+
+		
+		setBodyBorder( false );
+		setHeading( "Users" );
+		setButtonAlign( HorizontalAlignment.CENTER );
+
+		userList = new MyGXTTable( store, cm );
+		userList.setStyleAttribute( "borderTop", "none" );
+		userList.setBorders( true );
+		userList.setAutoHeight( true );
+		userList.setStripeRows( true );
 
 		HorizontalPanel buttons = new HorizontalPanel();
 		buttons.setSpacing( 4 );
@@ -35,40 +70,25 @@ public class UserListView extends Composite implements UserListViewInterface, My
 		buttons.add( confirmText );
 		buttons.add( yes );
 		buttons.add( no );
-		
-		VerticalPanel mainPanel = new VerticalPanel();
-		mainPanel.add( userList );
-		mainPanel.add( buttons );
-		mainPanel.setStyleName( "users" );
 
-		userList.setStyleName( "userList" );
-		userList.setCellPadding( 0 );
-		userList.setCellSpacing( 0 );
-		userList.getRowFormatter().setStyleName( 0, "header" );
-		userList.setText( 0, 0, "Username" );
-		userList.setText( 0, 1, "First Name" );
-		userList.setText( 0, 2, "Last Name" );
-		userList.setText( 0, 3, "Email" );
-		userList.setText( 0, 4, "Department" );
+		add( userList );
+		add( buttons );
 
-		cpPanel.add( mainPanel );
-
-		initWidget( cpPanel );
 	}
 
 	public Widget getMyWidget() {
 		return this;
 	}
 
-	public MyButtonInterface getDeleteButton() {
+	public MySimpleGXTButton getDeleteButton() {
 		return delete;
 	}
 
-	public MyTableInterface getTable() {
+	public MyGXTTableInterface getTable() {
 		return userList;
 	}
 
-	public MyButtonInterface getNewButton() {
+	public MySimpleGXTButton getNewButton() {
 		return newButton;
 	}
 
@@ -76,11 +96,11 @@ public class UserListView extends Composite implements UserListViewInterface, My
 		return confirmText;
 	}
 
-	public MyButtonInterface getNoButton() {
+	public MySimpleGXTButton getNoButton() {
 		return no;
 	}
 
-	public MyButtonInterface getYesButton() {
+	public MySimpleGXTButton getYesButton() {
 		return yes;
 	}
 

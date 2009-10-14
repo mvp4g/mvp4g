@@ -1,4 +1,4 @@
-package com.mvp4g.example.client.view.widget;
+package com.mvp4g.example.client.view.gxt;
 
 import com.google.gwt.user.client.ui.Label;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyLabelInterface;
