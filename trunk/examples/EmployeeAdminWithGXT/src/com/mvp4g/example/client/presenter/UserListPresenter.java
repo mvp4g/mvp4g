@@ -2,16 +2,18 @@ package com.mvp4g.example.client.presenter;
 
 import java.util.List;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.GridEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.presenter.Presenter;
 import com.mvp4g.example.client.EventsEnum;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
 import com.mvp4g.example.client.presenter.view_interface.UserListViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyTableInterface;
+import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.MyGXTButtonInterface;
+import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.MyGXTTableInterface;
 
 public class UserListPresenter extends Presenter<UserListViewInterface> {
 
@@ -20,46 +22,46 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 
 	private UserServiceAsync service = null;
 
+	@SuppressWarnings( "unchecked" )
 	@Override
 	public void bind() {
-		MyButtonInterface delete = view.getDeleteButton();
+		MyGXTButtonInterface delete = view.getDeleteButton();
 		delete.setEnabled( false );
-		delete.addClickHandler( new ClickHandler() {
+		delete.addListener( Events.Select, new Listener<ButtonEvent>() {
 
-			public void onClick( ClickEvent event ) {
+			public void handleEvent( ButtonEvent be ) {
 				setVisibleConfirmDeletion( true );
 			}
 
 		} );
-		view.getNewButton().addClickHandler( new ClickHandler() {
+		view.getNewButton().addListener( Events.Select, new Listener<ButtonEvent>() {
 
-			public void onClick( ClickEvent event ) {
+			public void handleEvent( ButtonEvent be ) {
 				eventBus.dispatch( EventsEnum.CREATE_NEW_USER, new UserBean() );
 			}
 
 		} );
-		MyTableInterface table = view.getTable();
-		table.addClickHandler( new ClickHandler() {
+		MyGXTTableInterface table = view.getTable();
+		table.addListener( Events.RowClick, new Listener<GridEvent>() {
 
-			public void onClick( ClickEvent event ) {
-				MyTableInterface table = view.getTable();
+			public void handleEvent( GridEvent be ) {
 
-				selectUser( table.getRowForEvent( event ) );
+				selectUser( be.getRowIndex() );
 
 			}
 
-		} );		
+		} );
 
-		view.getYesButton().addClickHandler( new ClickHandler() {
+		view.getYesButton().addListener( Events.Select, new Listener<ButtonEvent>() {
 
-			public void onClick( ClickEvent event ) {
+			public void handleEvent( ButtonEvent be ) {
 				deleteUser();
 			}
 
 		} );
-		view.getNoButton().addClickHandler( new ClickHandler() {
+		view.getNoButton().addListener( Events.Select, new Listener<ButtonEvent>() {
 
-			public void onClick( ClickEvent event ) {
+			public void handleEvent( ButtonEvent be ) {
 				setVisibleConfirmDeletion( false );
 			}
 
@@ -79,8 +81,9 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 			public void onSuccess( List<UserBean> result ) {
 				users = result;
 				int nbUsers = result.size();
+				MyGXTTableInterface table = view.getTable();
 				for ( int i = 0; i < nbUsers; i++ ) {
-					displayUser( users.get( i ), i + 1 );
+					table.addUser( users.get( i ) );
 				}
 
 				eventBus.dispatch( EventsEnum.CHANGE_TOP_WIDGET, view.getViewWidget() );
@@ -92,17 +95,17 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 	}
 
 	public void onUserUpdated( UserBean user ) {
-		displayUser( user, users.indexOf( user ) + 1);
+		view.getTable().updateUser( user, users.indexOf( user ) );		
 	}
-	
+
 	public void onUserCreated( UserBean user ) {
 		users.add( user );
-		displayUser( user, users.size() );
+		view.getTable().addUser( user );
 	}
-	
+
 	public void onUnselectUser() {
 		view.getTable().unSelectRow( indexSelected );
-		indexSelected = 0;		
+		indexSelected = 0;
 	}
 
 	public void setUserService( UserServiceAsync service ) {
@@ -110,23 +113,21 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 	}
 
 	private void selectUser( int row ) {
-		MyTableInterface table = view.getTable();
+		MyGXTTableInterface table = view.getTable();
 
-		if ( row > 0 ) {
-
-			if ( indexSelected > 0 ) {
-				table.unSelectRow( indexSelected );
-			}
-
-			indexSelected = row;
-			table.selectRow( indexSelected );
-			eventBus.dispatch( EventsEnum.SELECT_USER, users.get( row - 1 ) );
-			view.getDeleteButton().setEnabled( true );
+		if ( indexSelected > 0 ) {
+			table.unSelectRow( indexSelected );
 		}
+
+		indexSelected = row;
+		table.selectRow( indexSelected );
+		eventBus.dispatch( EventsEnum.SELECT_USER, users.get( row ) );
+		view.getDeleteButton().setEnabled( true );
+
 	}
 
 	private void deleteUser() {
-		service.deleteUser( users.get( indexSelected - 1 ), new AsyncCallback<Void>() {
+		service.deleteUser( users.get( indexSelected ), new AsyncCallback<Void>() {
 
 			public void onFailure( Throwable caught ) {
 				// TODO Auto-generated method stub
@@ -134,7 +135,7 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 			}
 
 			public void onSuccess( Void result ) {
-				users.remove( indexSelected - 1 );
+				users.remove( indexSelected );
 				view.getTable().removeRow( indexSelected );
 				view.getDeleteButton().setEnabled( false );
 				setVisibleConfirmDeletion( false );
@@ -142,15 +143,6 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 			}
 
 		} );
-	}
-
-	private void displayUser( UserBean user, int row ) {
-		MyTableInterface table = view.getTable();
-		table.setText( row, 0, user.getUsername() );
-		table.setText( row, 1, user.getFirstName() );
-		table.setText( row, 2, user.getLastName() );
-		table.setText( row, 3, user.getEmail() );
-		table.setText( row, 4, user.getDepartment() );
 	}
 
 	private void setVisibleConfirmDeletion( boolean visible ) {

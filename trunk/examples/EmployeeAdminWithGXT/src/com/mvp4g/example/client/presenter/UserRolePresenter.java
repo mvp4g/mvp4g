@@ -53,14 +53,6 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 			}
 
 		} );
-		/*
-		 * remove.addClickHandler( new ClickHandler() {
-		 * 
-		 * public void onClick( ClickEvent event ) { deleteRole(
-		 * view.getSelectedRolesListBox().getSelectedValue() ); }
-		 * 
-		 * } );
-		 */
 
 		ListField<MyListModel> selectedRoles = view.getSelectedRolesListBox();
 		selectedRoles.addListener( Events.Focus, new Listener<FieldEvent>() {
@@ -72,18 +64,6 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 
 		} );
 		
-		/*
-		 * selectedRoles.addClickHandler( new ClickHandler() {
-		 * 
-		 * public void onClick( ClickEvent event ) { enableRemoveButton(); }
-		 * 
-		 * } ); selectedRoles.addKeyUpHandler( new KeyUpHandler(){
-		 * 
-		 * public void onKeyUp( KeyUpEvent event ) { enableRemoveButton(); }
-		 * 
-		 * });
-		 */
-
 		SimpleComboBox<String> rolesChoices = view.getRoleChoiceListBox();
 		rolesChoices.addListener( Events.Select, new Listener<FieldEvent>() {
 

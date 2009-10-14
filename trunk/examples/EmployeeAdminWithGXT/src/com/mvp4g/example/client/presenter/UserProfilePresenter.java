@@ -30,6 +30,8 @@ public class UserProfilePresenter extends Presenter<UserProfileViewInterface> im
 		for ( String dep : DEPARTMENTS ) {
 			list.addItem( dep );
 		}
+		
+		
 
 		view.getUpdateButton().addClickHandler( new ClickHandler() {
 
