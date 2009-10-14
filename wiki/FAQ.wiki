@@ -4,7 +4,7 @@ If you have other questions about the framework or would like further informatio
 
 
 ====What's the class diagram of the framework?====
-http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/mvp4g_class_diagram_overview.png
+http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/documentation/uml/mvp4g_class_diagram_overview.png
 
 ====What's a presenter?====
 In a MVP architecture, the presenter is in charge of the logic of the application. It acts upon the model and the view.<br/>
@@ -20,7 +20,7 @@ In the Mvp4g framework, a service is an interface that extends the RemoveService
 ====What's an event bus and how can it dispatch events?====
 The event bus is a Java object, part of the Mvp4g library in charge of dispatching events between the presenters.<br/>
 The event bus dispatches events the following way thanks to information stored in the configuration file:<br/>
-http://mvp4g.googlecode.com/svn/trunk/v1.0/other/uml/mvp4g_event_broadcast.png
+http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/documentation/uml/mvp4g_event_broadcast.png
 
 ====When and how are presenters, views and services instantiated? When and how views and services injected into presenters? When is the event bust created and configured?====
 All these actions are done thanks to the following lines:
