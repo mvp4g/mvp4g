@@ -183,14 +183,14 @@ When you implement the history converter of the event, store any information you
 ==I need to retrieve event information when browser history changes. How can I do this?==
 When you implement the history converter of the event, retrieve any information you need in the convertFromToken method.
 
-==When and how are history converters instantiated and associated to an event bus? When and how is place service created and configured?==
-As for other elements, place service and history converters are instantiated and configured thanks to the following lines:
+==When and how are history converters instantiated and associated to an event bus? When and how is Place Service created and configured?==
+As for other elements, Place Service and history converters are instantiated and configured thanks to the following lines:
 {{{
 Mvp4gStarter starter = GWT.create(Mvp4gStarter.class);
 starter.start();
 }}}
 
-As explained before, the first line creates a Java class thanks to the configuration file and a Generator. ([FAQ#When_and_how_are_presenters,_views_and_services_instantiated?_Wh see how are instantiated elements)<br/>
+As explained before, the first line creates a Java class thanks to the configuration file and a Generator. ([FAQ#When_and_how_are_presenters,_views_and_services_instantiated?_Wh see how are instantiated elements])<br/>
 
 The following lines in the configuration file
 {{{
@@ -229,4 +229,28 @@ public class Mvp4gStarterImpl implements Mvp4gStarter {
   }
 }}}
 
-As you can see these extra lines allows to instantiate and configure place service and history converters.
+As you can see these extra lines allows to instantiate and configure Place Service and history converters.
+
+==How events interact with PlaceService?==
+An event that is associated to no history converter generates the following type of Command object:
+{{{
+Command<com.google.gwt.user.client.ui.Widget> cmdchangeTopWidget = new Command<com.google.gwt.user.client.ui.Widget>(){
+        public void execute(com.google.gwt.user.client.ui.Widget form, boolean storeInHistory) {
+          handler1.onChangeTopWidget(form);
+          ...
+        }
+      };
+}}}
+
+whereas an event associated to an history converter generates the following type of Command object
+{{{
+Command<com.mvp4g.example.client.bean.DealBean> cmddisplayDeal = new Command<com.mvp4g.example.client.bean.DealBean>(){
+        public void execute(com.mvp4g.example.client.bean.DealBean form, boolean storeInHistory) {
+          if(storeInHistory){
+            placeService.place( "displayDeal", form );
+          }
+          handler1.onDisplayDeal(form);
+          ...
+        }
+      };
+}}}
