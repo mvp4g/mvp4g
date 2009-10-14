@@ -4,10 +4,10 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/commons-configuration-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar"/>
-	<classpathentry kind="lib" path="lib/mvp4g-0.13-beta.jar"/>
 	<classpathentry kind="lib" path="lib/gxt.jar"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="lib" path="test/lib/junit-4.5.jar"/>
+	<classpathentry kind="lib" path="lib/mvp4g-1.0.0.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
