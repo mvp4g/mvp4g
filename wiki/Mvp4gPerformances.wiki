@@ -12,7 +12,7 @@ Presenters' handle methods do nothing in order to measure only GWT HandlerManage
 
 Events instances needed to send events to GWT HandlerManager are created before test starts and the same instances of events are sent for each step of the test.
 
-You can find the test project [http://code.google.com/p/mvp4g/source/browse/#svn/trunk/v1.0/examples/Mvp4gPerformances here] and try it [http://mvp4gperformances.appspot.com here].
+You can find the test project [http://code.google.com/p/mvp4g/source/browse/#svn/tags/mvp4g-1.0.0/examples/Mvp4gPerformances here] and try it [http://mvp4gperformances.appspot.com here].
 
 == Results ==
 
