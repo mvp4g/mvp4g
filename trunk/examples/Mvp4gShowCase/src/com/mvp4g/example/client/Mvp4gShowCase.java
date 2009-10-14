@@ -52,11 +52,11 @@ public class Mvp4gShowCase implements EntryPoint {
 		menu.addItem( new MenuItem( d2, "mvp4gemployeeadmin", "EmployeeAdmin" ) );
 		
 		//EmployeeAdmin with GXT
-		String d3 = "Same example as EmployeeAdmin but bottom frames are implemented with GXT (<a href=\"http://groups.google.com/group/mvp4g/browse_thread/thread/5ba8664afbbda1f7\">see Mvp4g and GXT post</a>).";
+		String d3 = "Same example as EmployeeAdmin but implemented with GXT using different approaches (<a href=\"http://groups.google.com/group/mvp4g/browse_thread/thread/5ba8664afbbda1f7\">see Mvp4g and GXT post</a>).";
 		menu.addItem( new MenuItem( d3, "mvp4gemployeeadminwithgxt", "EmployeeAdminWithGXT" ) );
 		
 		//Mvp4gHistory
-		String d4 = "This example shows how history is managed thanks to a Place Service. (<a href=\"http://code.google.com/p/mvp4g/wiki/PlaceServiceInMvp4g\">see the wiki page for more information</a>).<br/><br/>" +
+		String d4 = "This example shows how history is managed thanks to a Place Service. (<a href=\"http://code.google.com/p/mvp4g/wiki/PlaceServiceInMvp4g\">see the wiki page for more information</a>).<br/>It also shows how the Mvp4g configuration file can be simplified (calledMethod and eventObjectClass attributes of event tag are now optional)<br/><br/>" +
 				"<img src=\"beware.gif\" height=15 width=15/> You need to open this application <a href=\"http://mvp4ghistory.appspot.com\">mvp4ghistory.appspot.com</a> in a new window in order to see url modifications.";
 		menu.addItem( new MenuItem( d4, "mvp4ghistory", "Mvp4gHistory" ) );
 	}
