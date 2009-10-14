@@ -135,7 +135,7 @@ Add your presenters to the configuration file. You have to inject one view into 
 Add events that can be sent by presenters in the configuration file.
 {{{
 <events>
-	<event type="event1" calledMethod="onEvent1" eventObjectClass="com.mvp4g.example.client.bean.Bean1" handlers="presenter1,presenter2" />
+	<event type="event1" calledMethod="onEvent1" eventObjectClass="com.mvp4g.example.client.bean.Bean1" handlers="presenter1,presenter2" history="beanConverter" />
 	...
 </events>
 }}}
@@ -147,6 +147,7 @@ Add events that can be sent by presenters in the configuration file.
 {{{
 public void onEvent1(com.mvp4g.example.client.bean.Bean1 bean)
 }}}
+ * history (optional): name of history converter that must be used to placed event into browser history. The name of the history converter must be equal to one of the history converters' name declared in the configuration file. If no history converter is associated to the event, it means that the event can not be placed into the browser history.
 
 ===Start===
 You can decide to throw an event and to add a view in the RootPanel when you start your application.
