@@ -11,14 +11,14 @@ TDB (here are some ideas: integration with GWT 2.0, simplification of the XML fi
 
 ==1.0.0 (10/14/09)==
  * Add a Place Service (Issue 4)
- * Simplify XML file (Issues 6, 8 & 9) 
+ * Simplify XML file (Issue 6, Issue 8, Issue 9) 
  * Add a XSD file (Issue 5)
  * Add a path attribute to service tag (Issue 7)
  * Correct Issue 10
 
 ==0.13-beta (08/11/09)==
  * Add the posibility to inject views and services to presenters.
- * Correct Issues 2 & 3
+ * Correct Issue 2, Issue 3
 
 ==0.9-beta (06/14/09)==
  * Integration of an event bus that can be configured thanks an xml file.
