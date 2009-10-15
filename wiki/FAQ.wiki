@@ -229,7 +229,7 @@ public class Mvp4gStarterImpl implements Mvp4gStarter {
   }
 }}}
 
-As you can see these extra lines allows to instantiate and configure Place Service and history converters.
+As you can see these extra lines allow to instantiate and configure Place Service and history converters.
 
 ==How events interact with PlaceService?==
 An event that is associated to no history converter generates the following type of Command object:
