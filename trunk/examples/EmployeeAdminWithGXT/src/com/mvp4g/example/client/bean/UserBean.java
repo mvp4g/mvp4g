@@ -2,9 +2,10 @@ package com.mvp4g.example.client.bean;
 
 import java.util.List;
 
+import com.extjs.gxt.ui.client.data.BeanModelTag;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class UserBean implements IsSerializable {
+public class UserBean implements BeanModelTag, IsSerializable {
 
 	private String firstName = null;
 	private String lastName = null;
