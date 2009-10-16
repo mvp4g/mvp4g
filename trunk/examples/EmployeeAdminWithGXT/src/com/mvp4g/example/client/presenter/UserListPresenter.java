@@ -2,6 +2,8 @@ package com.mvp4g.example.client.presenter;
 
 import com.extjs.gxt.ui.client.data.BasePagingLoader;
 import com.extjs.gxt.ui.client.data.BeanModel;
+import com.extjs.gxt.ui.client.data.BeanModelFactory;
+import com.extjs.gxt.ui.client.data.BeanModelLookup;
 import com.extjs.gxt.ui.client.data.BeanModelReader;
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.PagingLoadConfig;
@@ -24,7 +26,7 @@ import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.My
 
 public class UserListPresenter extends Presenter<UserListViewInterface> {
 	
-	//private static BeanModelFactory factory = BeanModelLookup.get().getFactory( UserBean.class );
+	private static BeanModelFactory factory = BeanModelLookup.get().getFactory( UserBean.class );
 
 	protected int indexSelected = -1;
 	
@@ -128,7 +130,7 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 	}
 
 	public void onUserCreated( UserBean user ) {
-		//store.add( factory.createModel( user ) );		
+		store.add( factory.createModel( user ) );		
 	}
 
 	public void onUnselectUser() {
