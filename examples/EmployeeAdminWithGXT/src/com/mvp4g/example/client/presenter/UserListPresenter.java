@@ -1,11 +1,18 @@
 package com.mvp4g.example.client.presenter;
 
-import java.util.List;
-
+import com.extjs.gxt.ui.client.data.BasePagingLoader;
+import com.extjs.gxt.ui.client.data.BeanModel;
+import com.extjs.gxt.ui.client.data.BeanModelReader;
+import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import com.extjs.gxt.ui.client.data.PagingLoader;
+import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.store.ListStore;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.presenter.Presenter;
 import com.mvp4g.example.client.EventsEnum;
@@ -16,15 +23,36 @@ import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.My
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.MyGXTTableInterface;
 
 public class UserListPresenter extends Presenter<UserListViewInterface> {
+	
+	//private static BeanModelFactory factory = BeanModelLookup.get().getFactory( UserBean.class );
 
-	protected int indexSelected = 0;
-	protected List<UserBean> users = null;
-
+	protected int indexSelected = -1;
+	
 	private UserServiceAsync service = null;
+
+	private PagingLoader<PagingLoadResult<ModelData>> loader = null;
+	private ListStore<BeanModel> store = null;
 
 	@SuppressWarnings( "unchecked" )
 	@Override
 	public void bind() {
+
+		RpcProxy<PagingLoadResult<UserBean>> proxy = new RpcProxy<PagingLoadResult<UserBean>>() {
+
+			public void load( Object loadConfig, AsyncCallback<PagingLoadResult<UserBean>> callback ) {
+				service.getUsers( (PagingLoadConfig)loadConfig, callback );
+			}
+		};
+
+		// loader 
+		loader = new BasePagingLoader<PagingLoadResult<ModelData>>( proxy, new BeanModelReader() );
+		store = new ListStore<BeanModel>( loader );
+		view.getToolBar().bind( loader );
+
+		view.buildWidget( store );
+		
+		
+
 		MyGXTButtonInterface delete = view.getDeleteButton();
 		delete.setEnabled( false );
 		delete.addListener( Events.Select, new Listener<ButtonEvent>() {
@@ -71,41 +99,41 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 	}
 
 	public void onStart() {
-		service.getUsers( new AsyncCallback<List<UserBean>>() {
-
-			public void onFailure( Throwable caught ) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void onSuccess( List<UserBean> result ) {
-				users = result;
-				int nbUsers = result.size();
-				MyGXTTableInterface table = view.getTable();
-				for ( int i = 0; i < nbUsers; i++ ) {
-					table.addUser( users.get( i ) );
-				}
-
-				eventBus.dispatch( EventsEnum.CHANGE_TOP_WIDGET, view.getViewWidget() );
-
-			}
-
-		} );
+		eventBus.dispatch( EventsEnum.CHANGE_TOP_WIDGET, view.getViewWidget() );
+		loader.load(0, 4);
+		/*
+		 * service.getUsers( new AsyncCallback<List<UserBean>>() {
+		 * 
+		 * public void onFailure( Throwable caught ) { // TODO Auto-generated method stub
+		 * 
+		 * }
+		 * 
+		 * public void onSuccess( List<UserBean> result ) { users = result; int nbUsers =
+		 * result.size(); MyGXTTableInterface table = view.getTable(); for ( int i = 0; i < nbUsers;
+		 * i++ ) { table.addUser( users.get( i ) ); }
+		 * 
+		 * eventBus.dispatch( EventsEnum.CHANGE_TOP_WIDGET, view.getViewWidget() );
+		 * 
+		 * }
+		 * 
+		 * } );
+		 */
 
 	}
 
 	public void onUserUpdated( UserBean user ) {
-		view.getTable().updateUser( user, users.indexOf( user ) );		
+		if(indexSelected > -1){
+			store.update( store.getAt( indexSelected ) );
+		}
 	}
 
 	public void onUserCreated( UserBean user ) {
-		users.add( user );
-		view.getTable().addUser( user );
+		//store.add( factory.createModel( user ) );		
 	}
 
 	public void onUnselectUser() {
 		view.getTable().unSelectRow( indexSelected );
-		indexSelected = 0;
+		indexSelected = -1;
 	}
 
 	public void setUserService( UserServiceAsync service ) {
@@ -115,19 +143,19 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 	private void selectUser( int row ) {
 		MyGXTTableInterface table = view.getTable();
 
-		if ( indexSelected > 0 ) {
+		if ( indexSelected > -1 ) {
 			table.unSelectRow( indexSelected );
 		}
 
 		indexSelected = row;
 		table.selectRow( indexSelected );
-		eventBus.dispatch( EventsEnum.SELECT_USER, users.get( row ) );
+		eventBus.dispatch( EventsEnum.SELECT_USER, store.getAt( row ).getBean() );
 		view.getDeleteButton().setEnabled( true );
 
 	}
 
 	private void deleteUser() {
-		service.deleteUser( users.get( indexSelected ), new AsyncCallback<Void>() {
+		service.deleteUser((UserBean) store.getAt( indexSelected ).getBean(), new AsyncCallback<Void>() {
 
 			public void onFailure( Throwable caught ) {
 				// TODO Auto-generated method stub
@@ -135,8 +163,7 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 			}
 
 			public void onSuccess( Void result ) {
-				users.remove( indexSelected );
-				view.getTable().removeRow( indexSelected );
+				store.remove( store.getAt( indexSelected ) );				
 				view.getDeleteButton().setEnabled( false );
 				setVisibleConfirmDeletion( false );
 				eventBus.dispatch( EventsEnum.UNSELECT_USER );
