@@ -7,27 +7,26 @@ import static junit.framework.Assert.assertNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.extjs.gxt.ui.client.event.BaseEvent;
+import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.GridEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
+import com.extjs.gxt.ui.client.store.ListStore;
 import com.mvp4g.example.client.Constants;
 import com.mvp4g.example.client.EventsEnum;
 import com.mvp4g.example.client.bean.UserBean;
-import com.mvp4g.example.client.mock.MockGwtEvent;
 import com.mvp4g.example.client.mock.event.MockGridEvent;
 import com.mvp4g.example.client.mock.eventbus.MockEventBus;
 import com.mvp4g.example.client.mock.service.MockUserServiceAsync;
 import com.mvp4g.example.client.mock.view.MockUserListView;
-import com.mvp4g.example.client.mock.widget.MyMockButton;
 import com.mvp4g.example.client.mock.widget.MyMockLabel;
 import com.mvp4g.example.client.mock.widget.gxt.MyGXTMockButton;
 import com.mvp4g.example.client.mock.widget.gxt.MyGXTMockTable;
 import com.mvp4g.example.client.presenter.gxt.MyUserListModel;
+import com.mvp4g.example.client.util.GWTMockUtilities;
 
 public class UserListPresenterTest implements Constants {
 
@@ -35,10 +34,11 @@ public class UserListPresenterTest implements Constants {
 	MockUserListView view = null;
 	MockEventBus eventBus = null;
 	MockUserServiceAsync service = null;
-	List<UserBean> users = null;
+	List users = null;
 
 	@Before
 	public void setUp() {
+		GWTMockUtilities.disarm();
 		presenter = new UserListPresenter();
 		view = new MockUserListView();
 		eventBus = new MockEventBus();
@@ -48,6 +48,11 @@ public class UserListPresenterTest implements Constants {
 		presenter.setEventBus( eventBus );
 		presenter.setUserService( service );
 		presenter.onStart();
+	}
+	
+	@After
+	public void tearUp(){
+		GWTMockUtilities.restore();
 	}
 
 	@Test
@@ -61,7 +66,7 @@ public class UserListPresenterTest implements Constants {
 	public void testOnStart() {
 		int nbUser = users.size();
 		for ( int i = 0; i < nbUser; i++ ) {
-			assertTableRow( i, users.get( i ) );
+			assertTableRow( i, (UserBean) ((BeanModel)users.get( i )).getBean() );
 		}
 		eventBus.assertEvent( EventsEnum.CHANGE_TOP_WIDGET.toString(), view.getViewWidget() );
 
@@ -69,7 +74,7 @@ public class UserListPresenterTest implements Constants {
 
 	@Test
 	public void testOnUserUpdated() {
-		UserBean user = users.get( 0 );
+		UserBean user = ((BeanModel) users.get( 0 )).getBean();
 		fillUser( user );
 		presenter.onUserUpdated( user );
 		assertTableRow( 0, user );
@@ -80,7 +85,7 @@ public class UserListPresenterTest implements Constants {
 		UserBean user = new UserBean();
 		fillUser( user );
 		presenter.onUserCreated( user );
-		assertTableRow( users.size() - 1 , user );
+		assertTableRow( users.size() , user );
 	}
 
 	@Test
@@ -113,12 +118,9 @@ public class UserListPresenterTest implements Constants {
 		MyGXTMockTable table = (MyGXTMockTable)view.getTable();
 		table.getListener( Events.RowClick ).handleEvent( new MockGridEvent<MyUserListModel>() );
 		
-		int tableSize = table.getRowCount();
-		int usersSize = users.size();
 		MyGXTMockButton yes = (MyGXTMockButton)view.getYesButton();
 		yes.getListener( Events.Select ).handleEvent( new ButtonEvent(null) );
-		assertEquals( tableSize - 1, table.getRowCount() );
-		assertEquals( usersSize - 1, users.size() );
+		assertEquals( view.getStore().getCount(), users.size() - 1 );
 	}
 
 	@Test
@@ -142,8 +144,8 @@ public class UserListPresenterTest implements Constants {
 	}
 
 	private void assertTableRow( int row, UserBean user ) {
-		MyGXTMockTable table = (MyGXTMockTable)view.getTable();
-		assertEquals( table.getRow( row ), user);		
+		ListStore<BeanModel> store = view.getStore();
+		assertEquals( store.getAt( row ).getBean(), user);		
 	}
 
 	private void assertConfirmDeletionBar( boolean visible ) {
