@@ -8,7 +8,7 @@ public class MockEventBus extends EventBus {
 	private String lastDispatchedEventType = null;
 	private Object lastDispatchedObject = null;
 
-	public void dispatch( String eventType, Object form ) {
+	public void dispatch( String eventType, Object form, boolean hasHistory ) {
 		lastDispatchedEventType = eventType;
 		lastDispatchedObject = form;
 	}
