@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.mvp4g.util.config.loader;
+package com.mvp4g.util.config.loader.xml;
 
 import java.util.ArrayList;
 import java.util.Set;

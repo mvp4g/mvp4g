@@ -1,9 +1,7 @@
 /**
  * 
  */
-package com.mvp4g.util.config.loader;
-
-import java.util.Set;
+package com.mvp4g.util.config.loader.xml;
 
 import org.apache.commons.configuration.XMLConfiguration;
 
@@ -45,19 +43,10 @@ public class ServicesLoader extends Mvp4gElementLoader<ServiceElement> {
 	protected String[] getParentAttributeNames() {
 		return PARENT_ATTRIBUTES;
 	}
-	
+
 	@Override
 	String[] getOptionalAttributeNames() {
 		return OPTIONAL_ATTRIBUTES;
 	}
 
-	/**
-	 * Optionally loads any Service elements if present in the configuration.</p>
-	 * 
-	 * @return a set of service elements or an empty set if no elements were found.
-	 */
-	@Override
-	public Set<ServiceElement> loadElements() {
-		return loadExistingElements();
-	}
 }

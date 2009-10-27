@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.mvp4g.util.config.loader;
+package com.mvp4g.util.config.loader.xml;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -108,8 +108,6 @@ abstract class Mvp4gElementLoader<E extends Mvp4gElement> {
 	 * 
 	 */
 	public Set<E> loadElements() throws InvalidMvp4gConfigurationException {
-
-		checkForNonEmptyElements();
 
 		return loadExistingElements();
 	}
@@ -234,13 +232,6 @@ abstract class Mvp4gElementLoader<E extends Mvp4gElement> {
 			values = new String[] {};
 		}
 		return values;
-	}
-
-	private void checkForNonEmptyElements() throws InvalidMvp4gConfigurationException {
-		if ( elements.isEmpty() ) {
-			String err = "No " + getElementLabel() + " elements found in configuration file.";
-			throw new InvalidMvp4gConfigurationException( err );
-		}
 	}
 
 	private void checkForDuplicates( Set<E> loadedElements, E element ) throws InvalidMvp4gConfigurationException {
