@@ -3,7 +3,8 @@
 =Road Map=
 
 ==1.1.0==
-TDB (here are some ideas: integration with GWT 2.0, simplification of the XML file)
+ * Add the possibility to use annotations (see http://groups.google.com/group/mvp4g/browse_thread/thread/b04dfd32aa4cd70e)
+ * Add a multi-module feature (see http://groups.google.com/group/mvp4g/browse_thread/thread/2c80f33cc38b5f3f)
 
 
 
