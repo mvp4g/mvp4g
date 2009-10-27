@@ -1,9 +1,7 @@
 /**
  * 
  */
-package com.mvp4g.util.config.loader;
-
-import java.util.Set;
+package com.mvp4g.util.config.loader.xml;
 
 import org.apache.commons.configuration.XMLConfiguration;
 
@@ -24,16 +22,6 @@ public class HistoryConverterLoader extends Mvp4gElementLoader<HistoryConverterE
 	@SuppressWarnings( "unchecked" )
 	public HistoryConverterLoader( XMLConfiguration xmlConfig ) {
 		super( xmlConfig.configurationsAt( "history.converter" ) );
-	}
-	
-	/**
-	 * Optionally loads any History Converters elements if present in the configuration.</p>
-	 * 
-	 * @return a set of history converter elements or an empty set if no elements were found.
-	 */
-	@Override
-	public Set<HistoryConverterElement> loadElements() {
-		return loadExistingElements();
 	}
 
 	@Override

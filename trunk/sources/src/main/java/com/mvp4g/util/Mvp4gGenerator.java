@@ -16,6 +16,9 @@
 package com.mvp4g.util;
 
 import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
@@ -25,6 +28,10 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.mvp4g.client.annotation.EventBus;
+import com.mvp4g.client.annotation.History;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.annotation.Service;
 
 /**
  * Class uses to create the implementation class of Mvp4gStarter
@@ -33,6 +40,9 @@ import com.google.gwt.user.rebind.SourceWriter;
  * 
  */
 public class Mvp4gGenerator extends Generator {
+
+	//scan result is the same for all the generator
+	private static Map<Class<? extends Annotation>, List<Class<?>>> scanResult = null;
 
 	private SourceWriter sourceWriter;
 
@@ -55,7 +65,7 @@ public class Mvp4gGenerator extends Generator {
 	private String createClass( TreeLogger logger, GeneratorContext context, String typeName ) throws UnableToCompleteException {
 		sourceWriter = getSourceWriter( logger, context, typeName );
 		if ( sourceWriter != null ) {
-			writeClass( logger );
+			writeClass( logger, context );
 			sourceWriter.commit( logger );
 		}
 
@@ -98,12 +108,20 @@ public class Mvp4gGenerator extends Generator {
 		return classFactory.createSourceWriter( context, printWriter );
 	}
 
-	private void writeClass( TreeLogger logger ) throws UnableToCompleteException {
+	@SuppressWarnings( "unchecked" )
+	private void writeClass( TreeLogger logger, GeneratorContext context ) throws UnableToCompleteException {
+
+		try {
+			scanResult = AnnotationScanner.scan( logger, context.getTypeOracle(), new Class[] { Presenter.class, History.class, EventBus.class, Service.class } );
+		} catch ( ClassNotFoundException e ) {
+			logger.log( TreeLogger.ERROR, e.getMessage() );
+			throw new UnableToCompleteException();
+		}
 
 		sourceWriter.indent();
 		sourceWriter.println( "public void start(){" );
 		sourceWriter.indent();
-		new Mvp4gConfigurationFileReader( sourceWriter, logger ).writeConf();
+		new Mvp4gConfigurationFileReader( sourceWriter, logger, scanResult ).writeConf();
 		sourceWriter.outdent();
 		sourceWriter.println( "};" );
 	}

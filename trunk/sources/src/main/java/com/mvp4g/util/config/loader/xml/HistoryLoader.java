@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.mvp4g.util.config.loader;
+package com.mvp4g.util.config.loader.xml;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -20,7 +20,7 @@ import com.mvp4g.util.config.element.HistoryElement;
 public class HistoryLoader extends Mvp4gElementLoader<HistoryElement> {
 
 	static final String[] REQUIRED_ATTRIBUTES = { "initEvent" };
-	
+
 	@SuppressWarnings( "unchecked" )
 	public HistoryLoader( XMLConfiguration xmlConfig ) {
 		super( xmlConfig.configurationsAt( "history" ) );
@@ -40,19 +40,9 @@ public class HistoryLoader extends Mvp4gElementLoader<HistoryElement> {
 	protected HistoryElement newElement() {
 		return new HistoryElement();
 	}
-	
-	/**
-	 * Optionally loads History element if present in the configuration.</p>
-	 * 
-	 * @return a set of history elements or an empty set if no elements were found.
-	 */
-	@Override
-	public Set<HistoryElement> loadElements() {
-		return loadExistingElements();
-	}
 
 	public HistoryElement loadElement() {
 		Set<HistoryElement> elements = loadElements();
-		return (elements.size() == 0) ? null : new ArrayList<HistoryElement>( elements ).get( 0 );
+		return ( elements.size() == 0 ) ? null : new ArrayList<HistoryElement>( elements ).get( 0 );
 	}
 }

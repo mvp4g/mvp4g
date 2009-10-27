@@ -3,27 +3,37 @@
  */
 package com.mvp4g.util.config;
 
+import java.lang.annotation.Annotation;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.configuration.XMLConfiguration;
 
+import com.mvp4g.client.annotation.History;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.annotation.Service;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
+import com.mvp4g.util.config.element.InjectedElement;
 import com.mvp4g.util.config.element.Mvp4gElement;
 import com.mvp4g.util.config.element.Mvp4gWithServicesElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.config.element.ViewElement;
-import com.mvp4g.util.config.loader.EventsLoader;
-import com.mvp4g.util.config.loader.HistoryConverterLoader;
-import com.mvp4g.util.config.loader.HistoryLoader;
-import com.mvp4g.util.config.loader.PresentersLoader;
-import com.mvp4g.util.config.loader.ServicesLoader;
-import com.mvp4g.util.config.loader.StartLoader;
-import com.mvp4g.util.config.loader.ViewsLoader;
+import com.mvp4g.util.config.loader.annotation.HistoryAnnotationsLoader;
+import com.mvp4g.util.config.loader.annotation.PresenterAnnotationsLoader;
+import com.mvp4g.util.config.loader.annotation.ServiceAnnotationsLoader;
+import com.mvp4g.util.config.loader.xml.EventsLoader;
+import com.mvp4g.util.config.loader.xml.HistoryConverterLoader;
+import com.mvp4g.util.config.loader.xml.HistoryLoader;
+import com.mvp4g.util.config.loader.xml.PresentersLoader;
+import com.mvp4g.util.config.loader.xml.ServicesLoader;
+import com.mvp4g.util.config.loader.xml.StartLoader;
+import com.mvp4g.util.config.loader.xml.ViewsLoader;
 import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
 import com.mvp4g.util.exception.NonUniqueIdentifierException;
 import com.mvp4g.util.exception.UnknownConfigurationElementException;
@@ -73,7 +83,9 @@ public class Mvp4gConfiguration {
 	 *             <li/>if a view reference cannot be found among the configured elements.
 	 *             </ol>
 	 */
-	public void load( XMLConfiguration xmlConfig ) {
+	public void load( XMLConfiguration xmlConfig, Map<Class<? extends Annotation>, List<Class<?>>> scanResult ) {
+
+		
 
 		// Phase 1: load all elements, performing attribute validation
 		loadViews( xmlConfig );
@@ -83,14 +95,36 @@ public class Mvp4gConfiguration {
 		loadEvents( xmlConfig );
 		loadStart( xmlConfig );
 		loadHistory( xmlConfig );
+		
+		// Phase 2: load information from annotations
+		loadServices( scanResult.get( Service.class ) );
+		loadHistoryConverters( scanResult.get( History.class ) );
+		loadPresenters( scanResult.get( Presenter.class ) );
+		
 
-		// Phase 2: perform cross-element validations
+		// Phase 3: perform cross-element validations
 		checkUniquenessOfAllElements();
 		validateEventHandlers();
 		validateViews();
 		validateServices();
 		validateHistoryConverters();
 		validateEvents();
+	}
+
+	/**
+	 * Pre-loads information contained in Presenter annotations.
+	 * 
+	 * @param annotedClasses
+	 *            classes with the Presenter annotations
+	 * 
+	 * @throws InvalidMvp4gConfigurationException
+	 *             if presenter tags cannot be loaded.
+	 * 
+	 */
+	private void loadPresenters( List<Class<?>> annotedClasses ) {
+		PresenterAnnotationsLoader loader = new PresenterAnnotationsLoader();
+		loader.load( annotedClasses, this );
+
 	}
 
 	/**
@@ -106,6 +140,20 @@ public class Mvp4gConfiguration {
 	private void loadPresenters( XMLConfiguration xmlConfig ) throws InvalidMvp4gConfigurationException {
 		PresentersLoader presentersConfig = new PresentersLoader( xmlConfig );
 		presenters = presentersConfig.loadElements();
+	}
+	
+	/**
+	 * Pre-loads all History Converter in the configuration file.
+	 * 
+	 * @param xmlConfig
+	 *            raw representation of mvp4g-config.xml file.
+	 * 
+	 * @throws InvalidMvp4gConfigurationException
+	 *             if event tags cannot be loaded.
+	 */
+	private void loadServices( List<Class<?>> annotedClasses ) {
+		ServiceAnnotationsLoader loader = new ServiceAnnotationsLoader();
+		loader.load( annotedClasses, this );
 	}
 
 	/**
@@ -151,6 +199,20 @@ public class Mvp4gConfiguration {
 		events = eventsConfig.loadElements();
 	}
 
+	/**
+	 * Pre-loads all History Converter in the configuration file.
+	 * 
+	 * @param xmlConfig
+	 *            raw representation of mvp4g-config.xml file.
+	 * 
+	 * @throws InvalidMvp4gConfigurationException
+	 *             if event tags cannot be loaded.
+	 */
+	private void loadHistoryConverters( List<Class<?>> annotedClasses ) {
+		HistoryAnnotationsLoader loader = new HistoryAnnotationsLoader();
+		loader.load( annotedClasses, this );
+	}
+	
 	/**
 	 * Pre-loads all History Converter in the configuration file.
 	 * 
@@ -328,8 +390,10 @@ public class Mvp4gConfiguration {
 		elements.addAll( presenters );
 		elements.addAll( historyConverters );
 
+		String serviceName = null;
 		for ( Mvp4gWithServicesElement element : elements ) {
-			for ( String serviceName : element.getServices() ) {
+			for ( InjectedElement service : element.getInjectedServices() ) {
+				serviceName = service.getElementName();
 				if ( !elementExists( serviceName, services ) ) {
 					throw new UnknownConfigurationElementException( serviceName );
 				}

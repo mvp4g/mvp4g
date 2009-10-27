@@ -15,8 +15,10 @@
  */
 package com.mvp4g.util;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.configuration.ConfigurationException;
@@ -29,6 +31,7 @@ import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
+import com.mvp4g.util.config.element.InjectedElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.config.element.StartElement;
@@ -45,6 +48,7 @@ public class Mvp4gConfigurationFileReader {
 
 	private SourceWriter sourceWriter = null;
 	private TreeLogger logger = null;
+	private Map<Class<? extends Annotation>, List<Class<?>>> scanResult = null;
 
 	private Mvp4gConfiguration configuration = new Mvp4gConfiguration();
 
@@ -57,9 +61,10 @@ public class Mvp4gConfigurationFileReader {
 	 * @param sourceWriter
 	 * @param logger
 	 */
-	public Mvp4gConfigurationFileReader( SourceWriter sourceWriter, TreeLogger logger ) {
+	public Mvp4gConfigurationFileReader( SourceWriter sourceWriter, TreeLogger logger, Map<Class<? extends Annotation>, List<Class<?>>> scanResult ) {
 		this.sourceWriter = sourceWriter;
 		this.logger = logger;
+		this.scanResult = scanResult;
 	}
 
 	/**
@@ -118,7 +123,7 @@ public class Mvp4gConfigurationFileReader {
 	 */
 	private void loadConfiguration( XMLConfiguration xmlConfig ) throws UnableToCompleteException {
 		try {
-			configuration.load( xmlConfig );
+			configuration.load( xmlConfig, scanResult );
 		} catch ( InvalidMvp4gConfigurationException imce ) {
 			logger.log( TreeLogger.ERROR, imce.getMessage() );
 			throw new UnableToCompleteException();
@@ -146,7 +151,7 @@ public class Mvp4gConfigurationFileReader {
 			for ( HistoryConverterElement converter : configuration.getHistoryConverters() ) {
 				name = converter.getName();
 				createInstance( name, converter.getClassName() );
-				injectServices( name, converter.getServices() );
+				injectServices( name, converter.getInjectedServices() );
 			}
 
 		}
@@ -191,7 +196,7 @@ public class Mvp4gConfigurationFileReader {
 			sourceWriter.print( name );
 			sourceWriter.println( ".setView(" + presenter.getView() + ");" );
 
-			injectServices( name, presenter.getServices() );
+			injectServices( name, presenter.getInjectedServices() );
 
 		}
 	}
@@ -224,7 +229,7 @@ public class Mvp4gConfigurationFileReader {
 				sourceWriter.print( name );
 				sourceWriter.print( ").setServiceEntryPoint(\"" );
 				sourceWriter.print( service.getPath() );
-				sourceWriter.print( "\");" );				
+				sourceWriter.print( "\");" );
 			}
 		}
 	}
@@ -356,15 +361,7 @@ public class Mvp4gConfigurationFileReader {
 		}
 	}
 
-	/**
-	 * Returns the supplied name with its first letter in upper case.
-	 * 
-	 * @param name
-	 *            the name to be capitalized.
-	 */
-	/* package */String capitalized( String name ) {
-		return name.substring( 0, 1 ).toUpperCase() + name.substring( 1 );
-	}
+	
 
 	/**
 	 * Write the lines to create a new instance of an element
@@ -392,11 +389,10 @@ public class Mvp4gConfigurationFileReader {
 	 * @param services
 	 *            name of the services to inject
 	 */
-	private void injectServices( String elementName, String[] services ) {
-		for ( String service : services ) {
-			String methodName = "set" + capitalized( service );
+	private void injectServices( String elementName, List<InjectedElement> injectedServices ) {
+		for ( InjectedElement service : injectedServices ) {
 			sourceWriter.print( elementName );
-			sourceWriter.println( "." + methodName + "(" + service + ");" );
+			sourceWriter.println( "." + service.getSetterName() + "(" + service.getElementName() + ");" );
 		}
 	}
 
