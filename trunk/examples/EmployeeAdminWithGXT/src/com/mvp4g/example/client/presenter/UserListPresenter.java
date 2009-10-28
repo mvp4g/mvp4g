@@ -26,7 +26,7 @@ import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.My
 
 public class UserListPresenter extends Presenter<UserListViewInterface> {
 	
-	private static BeanModelFactory factory = BeanModelLookup.get().getFactory( UserBean.class );
+	private BeanModelFactory factory = BeanModelLookup.get().getFactory( UserBean.class );
 
 	protected int indexSelected = -1;
 	
@@ -103,24 +103,6 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 	public void onStart() {
 		eventBus.dispatch( EventsEnum.CHANGE_TOP_WIDGET, view.getViewWidget() );
 		loader.load(0, 4);
-		/*
-		 * service.getUsers( new AsyncCallback<List<UserBean>>() {
-		 * 
-		 * public void onFailure( Throwable caught ) { // TODO Auto-generated method stub
-		 * 
-		 * }
-		 * 
-		 * public void onSuccess( List<UserBean> result ) { users = result; int nbUsers =
-		 * result.size(); MyGXTTableInterface table = view.getTable(); for ( int i = 0; i < nbUsers;
-		 * i++ ) { table.addUser( users.get( i ) ); }
-		 * 
-		 * eventBus.dispatch( EventsEnum.CHANGE_TOP_WIDGET, view.getViewWidget() );
-		 * 
-		 * }
-		 * 
-		 * } );
-		 */
-
 	}
 
 	public void onUserUpdated( UserBean user ) {
