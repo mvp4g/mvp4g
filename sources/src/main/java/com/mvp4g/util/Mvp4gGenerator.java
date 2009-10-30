@@ -28,7 +28,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-import com.mvp4g.client.annotation.EventBus;
+import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.annotation.Service;
@@ -42,7 +42,7 @@ import com.mvp4g.client.annotation.Service;
 public class Mvp4gGenerator extends Generator {
 
 	//scan result is the same for all the generator
-	private static Map<Class<? extends Annotation>, List<Class<?>>> scanResult = null;
+	private static Map<Class<? extends Annotation>, List<JClassType>> scanResult = null;
 
 	private SourceWriter sourceWriter;
 
@@ -92,8 +92,6 @@ public class Mvp4gGenerator extends Generator {
 
 		ClassSourceFileComposerFactory classFactory = new ClassSourceFileComposerFactory( packageName, generatedClassName );
 		classFactory.addImplementedInterface( originalType.getName() );
-		classFactory.addImport( "com.mvp4g.client.event.EventBus" );
-		classFactory.addImport( "com.mvp4g.client.event.Command" );
 		classFactory.addImport( "com.mvp4g.client.history.PlaceService" );
 		classFactory.addImport( "com.google.gwt.user.client.ui.RootPanel" );
 		classFactory.addImport( "com.google.gwt.core.client.GWT" );
@@ -112,17 +110,12 @@ public class Mvp4gGenerator extends Generator {
 	private void writeClass( TreeLogger logger, GeneratorContext context ) throws UnableToCompleteException {
 
 		try {
-			scanResult = AnnotationScanner.scan( logger, context.getTypeOracle(), new Class[] { Presenter.class, History.class, EventBus.class, Service.class } );
+			scanResult = AnnotationScanner.scan( logger, context.getTypeOracle(), new Class[] { Presenter.class, History.class, Events.class, Service.class } );
 		} catch ( ClassNotFoundException e ) {
 			logger.log( TreeLogger.ERROR, e.getMessage() );
 			throw new UnableToCompleteException();
 		}
 
-		sourceWriter.indent();
-		sourceWriter.println( "public void start(){" );
-		sourceWriter.indent();
 		new Mvp4gConfigurationFileReader( sourceWriter, logger, scanResult ).writeConf();
-		sourceWriter.outdent();
-		sourceWriter.println( "};" );
 	}
 }

@@ -10,7 +10,7 @@ import com.mvp4g.client.event.EventBus;
  * @param <T>
  * 			type of the object used with the event associated with the converter.
  */
-public interface HistoryConverter<T> {
+public interface HistoryConverter<T, E extends EventBus> {
 
 	/**
 	 * Convert the object of the event to a string in order to store into the URI.<br/>
@@ -38,6 +38,6 @@ public interface HistoryConverter<T> {
 	 * @param eventBus
 	 * 			event bus of the application
 	 */
-	public void convertFromToken(String eventType, String param, EventBus eventBus);
+	public void convertFromToken(String eventType, String param, E eventBus);
 	
 }

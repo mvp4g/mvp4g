@@ -17,6 +17,7 @@ package com.mvp4g.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,11 @@ import org.apache.commons.configuration.XMLConfiguration;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
+import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.util.config.Mvp4gConfiguration;
+import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
@@ -48,7 +52,7 @@ public class Mvp4gConfigurationFileReader {
 
 	private SourceWriter sourceWriter = null;
 	private TreeLogger logger = null;
-	private Map<Class<? extends Annotation>, List<Class<?>>> scanResult = null;
+	private Map<Class<? extends Annotation>, List<JClassType>> scanResult = null;
 
 	private Mvp4gConfiguration configuration = new Mvp4gConfiguration();
 
@@ -61,7 +65,7 @@ public class Mvp4gConfigurationFileReader {
 	 * @param sourceWriter
 	 * @param logger
 	 */
-	public Mvp4gConfigurationFileReader( SourceWriter sourceWriter, TreeLogger logger, Map<Class<? extends Annotation>, List<Class<?>>> scanResult ) {
+	public Mvp4gConfigurationFileReader( SourceWriter sourceWriter, TreeLogger logger, Map<Class<? extends Annotation>, List<JClassType>> scanResult ) {
 		this.sourceWriter = sourceWriter;
 		this.logger = logger;
 		this.scanResult = scanResult;
@@ -80,9 +84,16 @@ public class Mvp4gConfigurationFileReader {
 
 			loadConfiguration( xmlConfig );
 
-			sourceWriter.println( "EventBus eventBus = new EventBus();" );
+			sourceWriter.indent();
 
 			sourceWriter.println();
+
+			writeEventBusClass();
+
+			sourceWriter.println();
+
+			sourceWriter.println( "public void start(){" );
+			sourceWriter.indent();
 
 			writeViews();
 
@@ -100,16 +111,34 @@ public class Mvp4gConfigurationFileReader {
 
 			sourceWriter.println();
 
-			writeEvents();
+			writeEventBus();
+
+			sourceWriter.println();
+
+			injectEventBus();
 
 			sourceWriter.println();
 
 			writeStartEvent();
 
+			sourceWriter.outdent();
+			sourceWriter.println( "};" );
+
 		} catch ( ConfigurationException e ) {
 			logger.log( TreeLogger.ERROR, e.getMessage() );
 			throw new UnableToCompleteException();
 		}
+	}
+
+	private void writeEventBusClass() {
+
+		EventBusElement eventBus = configuration.getEventBus();
+
+		sourceWriter.print( "private abstract class AbstractEventBus extends " );
+		sourceWriter.print( eventBus.getAbstractClassName() );
+		sourceWriter.print( " implements " );
+		sourceWriter.print( eventBus.getInterfaceClassName() );
+		sourceWriter.println( "{}" );
 	}
 
 	/**
@@ -141,10 +170,33 @@ public class Mvp4gConfigurationFileReader {
 		HistoryElement history = configuration.getHistory();
 
 		if ( history != null ) {
-			sourceWriter.println( "final PlaceService placeService = new PlaceService(eventBus);" );
-			sourceWriter.print( "placeService.setInitEvent( \"" );
-			sourceWriter.print( history.getInitEvent() );
-			sourceWriter.println( "\");" );
+
+			String eventBusClass = configuration.getEventBus().getInterfaceClassName();
+
+			sourceWriter.print( "final PlaceService<");
+			sourceWriter.print( eventBusClass );
+			sourceWriter.print( "> placeService = new PlaceService<" );
+			sourceWriter.print( eventBusClass );
+			sourceWriter.println( ">(){" );
+
+			sourceWriter.indent();
+			sourceWriter.println( "protected void sendInitEvent(){" );
+			sourceWriter.indent();
+			sourceWriter.print( "getEventBus()." );
+
+			if ( EventBusWithLookup.class.getName().equals( eventBusClass ) ) {
+				sourceWriter.print( "dispatch(\"" );
+				sourceWriter.print( history.getInitEvent() );
+				sourceWriter.println( "\");" );
+			} else {
+				sourceWriter.print( history.getInitEvent() );
+				sourceWriter.println( "();" );
+			}
+
+			sourceWriter.outdent();
+			sourceWriter.println( "}" );
+			sourceWriter.outdent();
+			sourceWriter.println( "};" );
 
 			String name = null;
 
@@ -191,14 +243,30 @@ public class Mvp4gConfigurationFileReader {
 			createInstance( name, className );
 
 			sourceWriter.print( name );
-			sourceWriter.println( ".setEventBus(eventBus);" );
-
-			sourceWriter.print( name );
 			sourceWriter.println( ".setView(" + presenter.getView() + ");" );
 
 			injectServices( name, presenter.getInjectedServices() );
 
 		}
+	}
+
+	/**
+	 * Write the presenters included in the configuration file.
+	 * 
+	 * Pre-condition: mvp4g configuration has been pre-loaded from configuration file.
+	 * 
+	 */
+	private void injectEventBus() {
+
+		for ( PresenterElement presenter : configuration.getPresenters() ) {
+			sourceWriter.print( presenter.getName() );
+			sourceWriter.println( ".setEventBus(eventBus);" );
+		}
+
+		if ( configuration.getHistory() != null ) {
+			sourceWriter.print( "placeService.setEventBus(eventBus);" );
+		}
+
 	}
 
 	/**
@@ -244,79 +312,120 @@ public class Mvp4gConfigurationFileReader {
 	 * @throws UnableToCompleteException
 	 *             thrown if the events tag aren't correct.
 	 */
-	private void writeEvents() throws UnableToCompleteException {
+	private void writeEventBus() throws UnableToCompleteException {
+
+		EventBusElement eventBus = configuration.getEventBus();
+
+		sourceWriter.println( "AbstractEventBus eventBus = new AbstractEventBus(){" );
+		sourceWriter.indent();
+
+		List<EventElement> eventsWithHistory = new ArrayList<EventElement>();
 
 		String type = null;
 		String calledMethod = null;
 		String objectClass = null;
 		String param = null;
 		String[] handlers = null;
-		String history = null;
 		boolean hasHistory = false;
 
 		for ( EventElement event : configuration.getEvents() ) {
 			type = event.getType();
 			calledMethod = event.getCalledMethod();
-			objectClass = getObjectClass( event );
-			if ( objectClass == null ) {
-				objectClass = Object.class.getName();
-				param = "();";
-			} else {
-				param = "(form);";
-			}
+			objectClass = getObjectClass( event, eventBus.isLookForObjectClass() );
+
 			handlers = event.getHandlers();
-			history = event.getHistory();
 			hasHistory = event.hasHistory();
 
-			sourceWriter.print( "Command<" );
-			sourceWriter.print( objectClass );
-			sourceWriter.print( "> cmd" );
+			sourceWriter.print( "public void " );
 			sourceWriter.print( type );
-			sourceWriter.print( " = new Command<" );
-			sourceWriter.print( objectClass );
-			sourceWriter.println( ">(){" );
-			sourceWriter.indent();
-			sourceWriter.print( "public void execute(" );
-			sourceWriter.print( objectClass );
-			sourceWriter.println( " form, boolean storeInHistory) {" );
+			sourceWriter.print( "(" );
+			if ( objectClass == null ) {
+				param = "();";
+			} else {
+				sourceWriter.print( objectClass );
+				sourceWriter.print( " form" );
+				param = "(form);";
+			}
+			sourceWriter.println( "){" );
+
 			sourceWriter.indent();
 
 			if ( hasHistory ) {
-				sourceWriter.println( "if(storeInHistory){" );
+				sourceWriter.println( "if(isHistoryStored()){" );
 				sourceWriter.indent();
 				sourceWriter.print( "placeService.place( \"" );
 				sourceWriter.print( type );
 				sourceWriter.println( "\", form );" );
 				sourceWriter.outdent();
 				sourceWriter.println( "}" );
+				eventsWithHistory.add( event );
 			}
 
-			int nbHandlers = handlers.length;
-			for ( int i = 0; i < nbHandlers; i++ ) {
-				sourceWriter.print( handlers[i] );
+			for ( String handler : handlers ) {
+				sourceWriter.print( handler );
 				sourceWriter.print( "." );
 				sourceWriter.print( calledMethod );
 				sourceWriter.println( param );
 			}
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
-			sourceWriter.outdent();
-			sourceWriter.println( "};" );
-			sourceWriter.print( "eventBus.addEvent(\"" );
-			sourceWriter.print( type );
-			sourceWriter.print( "\", cmd" );
-			sourceWriter.print( type );
-			sourceWriter.println( ");" );
-
-			if ( hasHistory ) {
-				sourceWriter.print( "placeService.addConverter( \"" );
-				sourceWriter.print( type );
-				sourceWriter.print( "\"," );
-				sourceWriter.print( history );
-				sourceWriter.print( ");" );
-			}
 
 		}
+
+		if ( eventBus.isWithLookUp() ) {
+			writeEventLookUp();
+		}
+		sourceWriter.println( "};" );
+
+		for ( EventElement event : eventsWithHistory ) {
+			sourceWriter.print( "placeService.addConverter( \"" );
+			sourceWriter.print( event.getType() );
+			sourceWriter.print( "\"," );
+			sourceWriter.print( event.getHistory() );
+			sourceWriter.print( ");" );
+		}
+	}
+
+	private void writeEventLookUp() {
+
+		sourceWriter.println( "public void dispatch( String eventType, Object form ){" );
+		sourceWriter.indent();
+
+		String type = null;
+		String objectClass = null;
+		String param = null;
+
+		for ( EventElement event : configuration.getEvents() ) {
+			type = event.getType();
+
+			objectClass = event.getEventObjectClass();
+			if ( objectClass == null ) {
+				param = "();";
+			} else {
+				param = "( (" + objectClass + ") form);";
+			}
+
+			sourceWriter.print( "if ( \"" );
+			sourceWriter.print( type );
+			sourceWriter.println( "\".equals( eventType ) ){" );
+
+			sourceWriter.indent();
+			sourceWriter.print( type );
+			sourceWriter.println( param );
+			sourceWriter.outdent();
+			sourceWriter.print( "} else " );
+
+		}
+
+		sourceWriter.println( "{" );
+		sourceWriter.indent();
+		sourceWriter
+				.println( "throw new Mvp4gException( \"Event \" + eventType + \" doesn't exist. Have you forgotten to add it to your Mvp4g configuration file?\" );" );
+		sourceWriter.outdent();
+		sourceWriter.println( "}" );
+		sourceWriter.outdent();
+		sourceWriter.println( "}" );
+		sourceWriter.outdent();
 	}
 
 	/**
@@ -336,7 +445,9 @@ public class Mvp4gConfigurationFileReader {
 
 		if ( start.hasEventType() ) {
 			String eventType = start.getEventType();
-			sourceWriter.println( "eventBus.dispatch(\"" + eventType + "\");" );
+			sourceWriter.print( "eventBus." );
+			sourceWriter.print( eventType );
+			sourceWriter.println( "();" );
 		}
 
 		if ( start.hasHistory() ) {
@@ -360,8 +471,6 @@ public class Mvp4gConfigurationFileReader {
 			throw new UnableToCompleteException();
 		}
 	}
-
-	
 
 	/**
 	 * Write the lines to create a new instance of an element
@@ -397,9 +506,9 @@ public class Mvp4gConfigurationFileReader {
 	}
 
 	@SuppressWarnings( "unchecked" )
-	String getObjectClass( EventElement event ) {
+	String getObjectClass( EventElement event, boolean lookUp ) {
 		String objectClass = event.getEventObjectClass();
-		if ( ( objectClass == null ) || ( objectClass.length() == 0 ) ) {
+		if ( lookUp && ( ( objectClass == null ) || ( objectClass.length() == 0 ) ) ) {
 			String[] handlers = event.getHandlers();
 			if ( handlers.length == 0 ) {
 				//no handler and no event object class defined, then no class associated to the object
@@ -422,6 +531,7 @@ public class Mvp4gConfigurationFileReader {
 							} else if ( parameterSize == 1 ) {
 								found = true;
 								objectClass = parameters[0].getName();
+								event.setEventObjectClass( objectClass );
 								break;
 							}
 						}
