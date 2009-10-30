@@ -10,7 +10,7 @@ import com.mvp4g.client.event.EventBus;
  * @author plcoirier
  * 
  */
-public interface PresenterInterface<V> {
+public interface PresenterInterface<V, E extends EventBus> {
 
 	/**
 	 * Set an event bus to the presenter
@@ -18,14 +18,14 @@ public interface PresenterInterface<V> {
 	 * @param eventBus
 	 *            event bus to set
 	 */
-	public void setEventBus( EventBus eventBus );
+	public void setEventBus( E eventBus );
 	
 	/**
 	 * Get the view associated with the presenter
 	 * 
 	 * @return eventBus manipulated by the presenter.
 	 */
-	public EventBus getEventBus();
+	public E getEventBus();
 
 	/**
 	 * Sets the view associated with the presenter.

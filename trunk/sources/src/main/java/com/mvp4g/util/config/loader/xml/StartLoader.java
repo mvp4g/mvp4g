@@ -49,6 +49,6 @@ public class StartLoader extends Mvp4gElementLoader<StartElement> {
 
 	public StartElement loadElement() {
 		Set<StartElement> elements = super.loadElements();
-		return new ArrayList<StartElement>( elements ).get( 0 );
+		return (elements.size() == 0) ? null : new ArrayList<StartElement>( elements ).get( 0 );
 	}
 }

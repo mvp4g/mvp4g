@@ -14,12 +14,12 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 
 public class AnnotationScanner {
 
-	public static Map<Class<? extends Annotation>, List<Class<?>>> scan( TreeLogger logger, TypeOracle typeOracle,
+	public static Map<Class<? extends Annotation>, List<JClassType>> scan( TreeLogger logger, TypeOracle typeOracle,
 			Class<? extends Annotation>[] annotationClasses ) throws ClassNotFoundException {
 
-		Map<Class<? extends Annotation>, List<Class<?>>> annotationMap = new HashMap<Class<? extends Annotation>, List<Class<?>>>();
+		Map<Class<? extends Annotation>, List<JClassType>> annotationMap = new HashMap<Class<? extends Annotation>, List<JClassType>>();
 		for ( Class<? extends Annotation> c : annotationClasses ) {
-			annotationMap.put( c, new ArrayList<Class<?>>() );
+			annotationMap.put( c, new ArrayList<JClassType>() );
 		}
 
 		int nbClasses = 0;
@@ -31,7 +31,7 @@ public class AnnotationScanner {
 			for ( JClassType type : pack.getTypes() ) {
 				for ( Class<? extends Annotation> c : annotationClasses ) {
 					if ( type.getAnnotation( c ) != null ) {
-						annotationMap.get( c ).add( Class.forName( type.getQualifiedSourceName() ) );
+						annotationMap.get( c ).add( type );
 					}
 
 				}

@@ -34,15 +34,15 @@ import com.mvp4g.client.event.EventBus;
  * @author plcoirier
  * 
  */
-public class Presenter<V> implements PresenterInterface<V> {
+public class BasePresenter<V, E extends EventBus> implements PresenterInterface<V, E> {
 
-	protected EventBus eventBus = null;
+	protected E eventBus = null;
 	protected V view = null;
 
-	public Presenter() {
+	public BasePresenter() {
 	}
 
-	public Presenter( V view, EventBus eventBus ) {
+	public BasePresenter( V view, E eventBus ) {
 		this.eventBus = eventBus;
 		this.view = view;
 	}
@@ -63,11 +63,11 @@ public class Presenter<V> implements PresenterInterface<V> {
 		 */
 	}
 
-	public void setEventBus( EventBus eventBus ) {
+	public void setEventBus( E eventBus ) {
 		this.eventBus = eventBus;
 	}
 
-	public EventBus getEventBus() {
+	public E getEventBus() {
 		return eventBus;
 	}
 

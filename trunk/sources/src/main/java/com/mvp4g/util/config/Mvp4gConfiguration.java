@@ -11,9 +11,14 @@ import java.util.Set;
 
 import org.apache.commons.configuration.XMLConfiguration;
 
+import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.annotation.Service;
+import com.mvp4g.client.event.EventBusWithLookup;
+import com.mvp4g.client.event.XmlEventBus;
+import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
@@ -24,6 +29,7 @@ import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.config.element.ViewElement;
+import com.mvp4g.util.config.loader.annotation.EventsAnnotationsLoader;
 import com.mvp4g.util.config.loader.annotation.HistoryAnnotationsLoader;
 import com.mvp4g.util.config.loader.annotation.PresenterAnnotationsLoader;
 import com.mvp4g.util.config.loader.annotation.ServiceAnnotationsLoader;
@@ -51,8 +57,9 @@ public class Mvp4gConfiguration {
 	private Set<EventElement> events = new HashSet<EventElement>();
 	private Set<ServiceElement> services = new HashSet<ServiceElement>();
 	private Set<HistoryConverterElement> historyConverters = new HashSet<HistoryConverterElement>();
-	private StartElement start = new StartElement();
-	private HistoryElement history = new HistoryElement();
+	private StartElement start = null;
+	private HistoryElement history = null;
+	private EventBusElement eventBus = null;
 
 	/**
 	 * Loads all Mvp4g elements from an in-memory representation of the XML configuration.</p>
@@ -83,9 +90,7 @@ public class Mvp4gConfiguration {
 	 *             <li/>if a view reference cannot be found among the configured elements.
 	 *             </ol>
 	 */
-	public void load( XMLConfiguration xmlConfig, Map<Class<? extends Annotation>, List<Class<?>>> scanResult ) {
-
-		
+	public void load( XMLConfiguration xmlConfig, Map<Class<? extends Annotation>, List<JClassType>> scanResult ) {
 
 		// Phase 1: load all elements, performing attribute validation
 		loadViews( xmlConfig );
@@ -95,15 +100,16 @@ public class Mvp4gConfiguration {
 		loadEvents( xmlConfig );
 		loadStart( xmlConfig );
 		loadHistory( xmlConfig );
-		
+
 		// Phase 2: load information from annotations
 		loadServices( scanResult.get( Service.class ) );
 		loadHistoryConverters( scanResult.get( History.class ) );
 		loadPresenters( scanResult.get( Presenter.class ) );
-		
+		loadEvents( scanResult.get( Events.class ) );
 
 		// Phase 3: perform cross-element validations
 		checkUniquenessOfAllElements();
+		validateStart();
 		validateEventHandlers();
 		validateViews();
 		validateServices();
@@ -121,7 +127,7 @@ public class Mvp4gConfiguration {
 	 *             if presenter tags cannot be loaded.
 	 * 
 	 */
-	private void loadPresenters( List<Class<?>> annotedClasses ) {
+	private void loadPresenters( List<JClassType> annotedClasses ) {
 		PresenterAnnotationsLoader loader = new PresenterAnnotationsLoader();
 		loader.load( annotedClasses, this );
 
@@ -141,7 +147,7 @@ public class Mvp4gConfiguration {
 		PresentersLoader presentersConfig = new PresentersLoader( xmlConfig );
 		presenters = presentersConfig.loadElements();
 	}
-	
+
 	/**
 	 * Pre-loads all History Converter in the configuration file.
 	 * 
@@ -151,7 +157,7 @@ public class Mvp4gConfiguration {
 	 * @throws InvalidMvp4gConfigurationException
 	 *             if event tags cannot be loaded.
 	 */
-	private void loadServices( List<Class<?>> annotedClasses ) {
+	private void loadServices( List<JClassType> annotedClasses ) {
 		ServiceAnnotationsLoader loader = new ServiceAnnotationsLoader();
 		loader.load( annotedClasses, this );
 	}
@@ -194,6 +200,23 @@ public class Mvp4gConfiguration {
 	 * @throws InvalidMvp4gConfigurationException
 	 *             if event tags cannot be loaded.
 	 */
+	private void loadEvents( List<JClassType> annotedClasses ) {
+		EventsAnnotationsLoader loader = new EventsAnnotationsLoader();
+		loader.load( annotedClasses, this );
+		if ( eventBus == null ) {
+			eventBus = new EventBusElement( EventBusWithLookup.class.getName(), XmlEventBus.class.getName(), true, true );
+		}
+	}
+
+	/**
+	 * Pre-loads all Events in the configuration file.
+	 * 
+	 * @param xmlConfig
+	 *            raw representation of mvp4g-config.xml file.
+	 * 
+	 * @throws InvalidMvp4gConfigurationException
+	 *             if event tags cannot be loaded.
+	 */
 	private void loadEvents( XMLConfiguration xmlConfig ) throws InvalidMvp4gConfigurationException {
 		EventsLoader eventsConfig = new EventsLoader( xmlConfig );
 		events = eventsConfig.loadElements();
@@ -208,11 +231,11 @@ public class Mvp4gConfiguration {
 	 * @throws InvalidMvp4gConfigurationException
 	 *             if event tags cannot be loaded.
 	 */
-	private void loadHistoryConverters( List<Class<?>> annotedClasses ) {
+	private void loadHistoryConverters( List<JClassType> annotedClasses ) {
 		HistoryAnnotationsLoader loader = new HistoryAnnotationsLoader();
 		loader.load( annotedClasses, this );
 	}
-	
+
 	/**
 	 * Pre-loads all History Converter in the configuration file.
 	 * 
@@ -298,6 +321,22 @@ public class Mvp4gConfiguration {
 	}
 
 	/**
+	 * @param start
+	 *            the start to set
+	 */
+	public void setStart( StartElement start ) {
+		this.start = start;
+	}
+
+	/**
+	 * @param history
+	 *            the history to set
+	 */
+	public void setHistory( HistoryElement history ) {
+		this.history = history;
+	}
+
+	/**
 	 * Returns the Start element loaded from the configuration file.
 	 */
 	public HistoryElement getHistory() {
@@ -325,6 +364,13 @@ public class Mvp4gConfiguration {
 			if ( !unique ) {
 				throw new NonUniqueIdentifierException( item.getUniqueIdentifier() );
 			}
+		}
+	}
+	
+	
+	void validateStart(){
+		if((start == null) || (start.getView() == null)){
+			throw new InvalidMvp4gConfigurationException("You must define a view to load when the application starts.");
 		}
 	}
 
@@ -441,6 +487,21 @@ public class Mvp4gConfiguration {
 			}
 		}
 
+	}
+
+	/**
+	 * @return the eventBus
+	 */
+	public EventBusElement getEventBus() {
+		return eventBus;
+	}
+
+	/**
+	 * @param eventBus
+	 *            the eventBus to set
+	 */
+	public void setEventBus( EventBusElement eventBus ) {
+		this.eventBus = eventBus;
 	}
 
 }

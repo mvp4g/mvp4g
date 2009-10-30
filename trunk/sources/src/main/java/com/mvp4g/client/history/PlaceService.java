@@ -20,7 +20,8 @@ import com.mvp4g.client.event.EventBus;
  * <br/>
  * myurl#eventType?params<br/>
  * <br/>
- * where params is the string returned by the convertToToken method of the converter associated with the event.<br/>
+ * where params is the string returned by the convertToToken method of the converter associated with
+ * the event.<br/>
  * If params is null, then the URL will be:<br/>
  * <br/>
  * myurl#eventType
@@ -30,7 +31,7 @@ import com.mvp4g.client.event.EventBus;
  * @author plcoirier
  * 
  */
-public class PlaceService implements ValueChangeHandler<String> {
+public abstract class PlaceService<E extends EventBus> implements ValueChangeHandler<String> {
 
 	/**
 	 * Interface to define methods needed to manage history<br/>
@@ -52,12 +53,10 @@ public class PlaceService implements ValueChangeHandler<String> {
 	private static final String FIRST = "?";
 	private static final String FIRST_RE = "\\" + FIRST;
 
-	private EventBus eventBus = null;
+	private E eventBus = null;
 	private HistoryProxy history = null;
-	private String initEvent = null;
 
-	@SuppressWarnings( "unchecked" )
-	private Map<String, HistoryConverter> converters = new HashMap<String, HistoryConverter>();
+	private Map<String, HistoryConverter<? extends Object, E>> converters = new HashMap<String, HistoryConverter<?, E>>();
 
 	/**
 	 * Build a <code>PlaceService</code> and inject <code>EventBus</code> instance.
@@ -65,8 +64,8 @@ public class PlaceService implements ValueChangeHandler<String> {
 	 * @param eventBus
 	 *            event bus to inject
 	 */
-	public PlaceService( EventBus eventBus ) {
-		this( eventBus, new HistoryProxy() {
+	public PlaceService() {
+		this( new HistoryProxy() {
 
 			public void addValueChangeHandler( ValueChangeHandler<String> handler ) {
 				History.addValueChangeHandler( handler );
@@ -93,8 +92,7 @@ public class PlaceService implements ValueChangeHandler<String> {
 	 * @param history
 	 *            history proxy to inject
 	 */
-	PlaceService( EventBus eventBus, HistoryProxy history ) {
-		this.eventBus = eventBus;
+	PlaceService( HistoryProxy history ) {
 		this.history = history;
 		history.addValueChangeHandler( this );
 	}
@@ -107,8 +105,8 @@ public class PlaceService implements ValueChangeHandler<String> {
 	 * <br/>
 	 * If token is equal to empty string, ask the event bus to dispatch an initEvent.
 	 * 
-	 *  @param event
-	 *  		event containing the new history token
+	 * @param event
+	 *            event containing the new history token
 	 * 
 	 */
 	public void onValueChange( ValueChangeEvent<String> event ) {
@@ -117,25 +115,31 @@ public class PlaceService implements ValueChangeHandler<String> {
 			String[] tokenTab = token.split( FIRST_RE );
 			String eventType = tokenTab[0];
 			String param = ( tokenTab.length > 1 ) ? tokenTab[1] : null;
-			converters.get( eventType ).convertFromToken( eventType, param, eventBus );
+			HistoryConverter<?, E> converter = converters.get( eventType );
+			if ( converter == null ) {
+				sendInitEvent();
+			} else {
+				converter.convertFromToken( eventType, param, eventBus );
+			}
 		} else {
-			eventBus.dispatch( initEvent, false );
+			sendInitEvent();
 		}
 	}
 
 	/**
 	 * Convert an event and its associated object to a token.<br/>
 	 * <br/>
-	 * The object is converted to a string thanks to the history converter associated with the event.<br/>
+	 * The object is converted to a string thanks to the history converter associated with the
+	 * event.<br/>
 	 * 
 	 * @param eventType
-	 * 			type of the event to store
+	 *            type of the event to store
 	 * @param form
-	 * 			object associated with the event
+	 *            object associated with the event
 	 */
 	@SuppressWarnings( "unchecked" )
-	public void place( String eventType, Object form ) {
-		String param = converters.get( eventType ).convertToToken( eventType, form );
+	public <T> void place( String eventType, T form ) {
+		String param = ( (HistoryConverter<T, E>)converters.get( eventType ) ).convertToToken( eventType, form );
 		String token = ( ( param == null ) || ( param.length() == 0 ) ) ? eventType : ( eventType + FIRST + param );
 		history.newItem( token, false );
 	}
@@ -152,13 +156,23 @@ public class PlaceService implements ValueChangeHandler<String> {
 	}
 
 	/**
-	 * Set the event to send in case the history token is equal to null or empty string.
-	 * 
-	 * @param initEvent
-	 * 			event to set
+	 * @param eventBus
+	 *            the eventBus to set
 	 */
-	public void setInitEvent( String initEvent ) {
-		this.initEvent = initEvent;
+	public void setEventBus( E eventBus ) {
+		this.eventBus = eventBus;
 	}
+
+	/**
+	 * @return the eventBus
+	 */
+	protected E getEventBus() {
+		return eventBus;
+	}
+
+	/**
+	 * Call when the init event needs to be sent
+	 */
+	abstract protected void sendInitEvent();
 
 }
