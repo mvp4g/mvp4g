@@ -101,15 +101,13 @@ abstract class Mvp4gElementLoader<E extends Mvp4gElement> {
 	 * @throws InvalidMvp4gConfigurationException
 	 *             if
 	 *             <p/>
-	 *             <ul>
-	 *             <li/>no elements are found;
+	 *             <ul>             
 	 *             <li/>elements with duplicate identifiers are found;
 	 *             <li/>one of the required attribute names is missing.
 	 *             </ul>
 	 * 
 	 */
 	public Set<E> loadElements() throws Mvp4gXmlException {
-
 		return loadExistingElements();
 	}
 

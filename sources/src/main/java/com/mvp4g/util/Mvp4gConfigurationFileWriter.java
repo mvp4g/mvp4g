@@ -42,7 +42,7 @@ public class Mvp4gConfigurationFileWriter {
 
 	private SourceWriter sourceWriter = null;
 
-	private Mvp4gConfiguration configuration = new Mvp4gConfiguration();
+	private Mvp4gConfiguration configuration = null;
 
 	/**
 	 * Create a Mvp4gConfigurationFileReader object

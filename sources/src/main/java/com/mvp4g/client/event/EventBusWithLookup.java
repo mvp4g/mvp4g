@@ -5,21 +5,16 @@ import com.mvp4g.client.Mvp4gException;
 public interface EventBusWithLookup extends EventBus {
 
 	/**
-	 * Execute the command associated with the event type in order to trigger the presenters that
-	 * can handle the event. Forward to the handler the object associated with the event.<br/>
+	 * Call the method associated with the event type in order to trigger the presenters that can
+	 * handle the event. Forward to the handler the object associated with the event.<br/>
 	 * <br/>
-	 * Store the event in GWT History stack if needed and possible. If an event can't be stored in
-	 * GWT History stack (ie when no History Converter has been associated to the event), the method
-	 * will not try to store in GWT History stack even if storeInHistory is true.
+	 * The event is stored in GWT History stack if possible (ie if an History Converter is
+	 * associated with the event) and needed (ie isHistoryStored() == true).
 	 * 
 	 * @param eventType
 	 *            type of the event to dispatch
 	 * @param form
 	 *            form to forward to the handlers
-	 * @param storeInHistory
-	 *            indicates if the event must be stored in the GWT History stack. This parameter
-	 *            matters only if the event can be stored in the GWT History stack (ie if a History
-	 *            converter is associated with the event).
 	 * @throws Mvp4gException
 	 *             exception thrown in case an error occurs while the event is dispatched.<br/>
 	 *             The most common cases that this error could be thrown is in case:
@@ -36,14 +31,13 @@ public interface EventBusWithLookup extends EventBus {
 	public void dispatch( String eventType, Object form );
 
 	/**
-	 * Execute the command associated with the event type in order to trigger the presenters that
-	 * can handle the event. In this case no object is forwarded to the handler(s).<br/>
+	 * Call the method associated with the event type in order to trigger the presenters that can
+	 * handle the event. In this case no object is forwarded to the handler(s).<br/>
 	 * <br/>
-	 * 
-	 * The event is automatically stored in GWT History stack if possible (ie if an History
-	 * Converter is associated with the event)
-	 * 
-	 * Calling dispatch(eventType) is equivalent to calling dispatch(eventType, null, true).
+	 * The event is stored in GWT History stack if possible (ie if an History Converter is
+	 * associated with the event) and needed (ie isHistoryStored() == true).<br/>
+	 * <br/>
+	 * Calling dispatch(eventType) is equivalent to calling dispatch(eventType, null).
 	 * 
 	 * @param eventType
 	 *            type of the event to dispatch
@@ -63,16 +57,16 @@ public interface EventBusWithLookup extends EventBus {
 	public void dispatch( String eventType );
 
 	/**
-	 * Execute the command associated with the event type in order to trigger the presenters that
-	 * can handle the event. Forward to the handler the object associated with the event. <br/>
+	 * Call the method associated with the event type in order to trigger the presenters that can
+	 * handle the event. Forward to the handler the object associated with the event. <br/>
 	 * In this function, the type is given as a enumeration. The toString method of this enumeration
 	 * must return the type of the event defined the configuration file.<br/>
 	 * <br/>
-	 * The event is automatically stored in GWT History stack if possible (ie if an History
-	 * Converter is associated with the event)<br/>
+	 * The event is stored in GWT History stack if possible (ie if an History Converter is
+	 * associated with the event) and needed (ie isHistoryStored() == true).<br/>
 	 * <br/>
 	 * Calling dispatch(enumEventType, form) is equivalent to calling
-	 * dispatch(enumEventType.toString(), form, true).
+	 * dispatch(enumEventType.toString(), form).
 	 * 
 	 * 
 	 * 
@@ -96,17 +90,17 @@ public interface EventBusWithLookup extends EventBus {
 	public <E extends Enum<E>> void dispatch( Enum<E> enumEventType, Object form );
 
 	/**
-	 * Execute the command associated with the event type in order to trigger the presenters that
+	 * Call the method associated with the event type in order to trigger the presenters that
 	 * can handle the event. In this case no object is forwarded to the handler(s).<br/>
 	 * <br/>
 	 * In this function, the type is given as a enumeration. The toString method of this enumeration
 	 * must return the type of the event defined the configuration file.<br/>
 	 * <br/>
-	 * The event is automatically stored in GWT History stack if possible (ie if an History
-	 * Converter is associated with the event)<br/>
+	 * The event is stored in GWT History stack if possible (ie if an History Converter is
+	 * associated with the event) and needed (ie isHistoryStored() == true).<br/>	 
 	 * <br/>
 	 * Calling dispatch(enumEventType) is equivalent to calling dispatch(enumEventType.toString(),
-	 * null, true).
+	 * null).
 	 * 
 	 * @param enumEventType
 	 *            type of the event to dispatch

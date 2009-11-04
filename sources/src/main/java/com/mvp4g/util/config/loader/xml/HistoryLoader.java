@@ -12,10 +12,10 @@ import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 
 /**
- * A class responsible for loading the Start tag defined in the mvp4g-config.xml file.
+ * A class responsible for loading the History tag defined in the configuration file.
  * <p/>
  * 
- * @author javier
+ * @author plcoirier
  * 
  */
 public class HistoryLoader extends Mvp4gElementLoader<HistoryElement> {
