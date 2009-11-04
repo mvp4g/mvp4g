@@ -13,8 +13,23 @@ import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 
+/**
+ * Class responsible for loading information contained in annotations from classes where methods can
+ * contain <code>InjectService</code> annotation.
+ * 
+ * @author plcoirier
+ * 
+ */
 public abstract class Mvp4gAnnotationsWithServiceLoader<T extends Annotation> extends Mvp4gAnnotationsLoader<T> {
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.mvp4g.util.config.loader.annotation.Mvp4gAnnotationsLoader#loadElement(com.google.gwt
+	 * .core.ext.typeinfo.JClassType, java.lang.annotation.Annotation,
+	 * com.mvp4g.util.config.Mvp4gConfiguration)
+	 */
 	@Override
 	protected void loadElement( JClassType c, T annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
 		Mvp4gWithServicesElement element = loadElementWithServices( c, annotation, configuration );
@@ -43,7 +58,7 @@ public abstract class Mvp4gAnnotationsWithServiceLoader<T extends Annotation> ex
 				}
 				className = className.substring( 0, className.indexOf( "Async" ) );
 				serviceName = serviceAnnotation.serviceName();
-				
+
 				if ( ( serviceName == null ) || ( serviceName.length() == 0 ) ) {
 					serviceName = getServiceName( configuration, className );
 				}
@@ -53,6 +68,17 @@ public abstract class Mvp4gAnnotationsWithServiceLoader<T extends Annotation> ex
 
 	}
 
+	/**
+	 * Retrieve the name of service element with the given service class name. If no service with
+	 * the given class name is found, create one.
+	 * 
+	 * @param configuration
+	 *            configuration containing loaded elements of the application
+	 * @param serviceClassName
+	 *            class name of the service element
+	 * 
+	 * @return name of the service element (either found or create)
+	 */
 	private String getServiceName( Mvp4gConfiguration configuration, String serviceClassName ) {
 		String serviceName = getElementName( configuration.getServices(), serviceClassName );
 		if ( serviceName == null ) {
@@ -69,6 +95,18 @@ public abstract class Mvp4gAnnotationsWithServiceLoader<T extends Annotation> ex
 		return serviceName;
 	}
 
+	/**
+	 * Load one class annoted with the annotation
+	 * 
+	 * @param c
+	 *            class annoted with the annotation
+	 * @param annotation
+	 *            annotation of the class
+	 * @param configuration
+	 *            configuration containing loaded elements of the application
+	 * @throws Mvp4gAnnotationException
+	 *             if annotation is not used correctly
+	 */
 	abstract Mvp4gWithServicesElement loadElementWithServices( JClassType c, T annotation, Mvp4gConfiguration configuration )
 			throws Mvp4gAnnotationException;
 

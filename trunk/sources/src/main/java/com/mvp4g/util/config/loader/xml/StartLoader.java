@@ -12,7 +12,7 @@ import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 
 /**
- * A class responsible for loading the Start tag defined in the mvp4g-config.xml file.
+ * A class responsible for loading the Start tag defined in the configuration file.
  * <p/>
  * 
  * @author javier

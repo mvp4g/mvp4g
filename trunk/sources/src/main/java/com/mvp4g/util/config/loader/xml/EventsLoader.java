@@ -8,7 +8,7 @@ import org.apache.commons.configuration.XMLConfiguration;
 import com.mvp4g.util.config.element.EventElement;
 
 /**
- * A class responsible for loading all Events defined in the mvp4g-config.xml file.
+ * A class responsible for loading all Events defined in the configuration file.
  * 
  * @author javier
  * 

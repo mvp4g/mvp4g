@@ -8,7 +8,7 @@ import org.apache.commons.configuration.XMLConfiguration;
 import com.mvp4g.util.config.element.ViewElement;
 
 /**
- * A class responsible for loading all Views defined in the mvp4g-config.xml file.
+ * A class responsible for loading all Views defined in the configuration file.
  * 
  * @author javier
  * 

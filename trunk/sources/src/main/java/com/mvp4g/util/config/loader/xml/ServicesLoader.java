@@ -8,7 +8,7 @@ import org.apache.commons.configuration.XMLConfiguration;
 import com.mvp4g.util.config.element.ServiceElement;
 
 /**
- * A class responsible for loading all Services defined in the mvp4g-config.xml file.
+ * A class responsible for loading all Services defined in the configuration file.
  * 
  * @author javier
  * 

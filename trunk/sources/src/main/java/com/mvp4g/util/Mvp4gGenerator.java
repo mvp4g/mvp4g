@@ -57,19 +57,19 @@ public class Mvp4gGenerator extends Generator {
 	 */
 	@Override
 	public String generate( TreeLogger logger, GeneratorContext context, String typeName ) throws UnableToCompleteException {
-		
+
 		Date start = new Date();
-		
+
 		String generatedClassQualifiedName = createClass( logger, context, typeName );
 
 		if ( generatedClassQualifiedName == null ) {
 			throw new UnableToCompleteException();
 		}
-		
+
 		Date end = new Date();
-		
-		logger.log( TreeLogger.INFO, "Mvp4g Compilation: " + (end.getTime() - start.getTime()) + "ms.");
-		
+
+		logger.log( TreeLogger.INFO, "Mvp4g Compilation: " + ( end.getTime() - start.getTime() ) + "ms." );
+
 		return generatedClassQualifiedName;
 	}
 
@@ -122,17 +122,16 @@ public class Mvp4gGenerator extends Generator {
 
 		try {
 			TypeOracle oracle = context.getTypeOracle();
-						
-			scanResult = AnnotationScanner.scan( logger, oracle, new Class[] { Presenter.class, History.class, Events.class,
-					Service.class } );
 
-			Mvp4gConfiguration configuration = new Mvp4gConfiguration();
-			configuration.load( "mvp4g-conf.xml", scanResult, oracle );
+			scanResult = AnnotationScanner.scan( logger, oracle, new Class[] { Presenter.class, History.class, Events.class, Service.class } );
+
+			Mvp4gConfiguration configuration = new Mvp4gConfiguration( logger, oracle );
+			configuration.load( "mvp4g-conf.xml", scanResult );
 
 			Mvp4gConfigurationFileWriter writer = new Mvp4gConfigurationFileWriter( sourceWriter, configuration );
 			writer.writeConf();
 		} catch ( InvalidMvp4gConfigurationException e ) {
-			logger.log( TreeLogger.ERROR, e.getMessage(), e);
+			logger.log( TreeLogger.ERROR, e.getMessage(), e );
 			throw new UnableToCompleteException();
 		}
 
