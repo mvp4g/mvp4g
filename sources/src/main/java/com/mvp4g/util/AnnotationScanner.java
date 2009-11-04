@@ -15,7 +15,7 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 public class AnnotationScanner {
 
 	public static Map<Class<? extends Annotation>, List<JClassType>> scan( TreeLogger logger, TypeOracle typeOracle,
-			Class<? extends Annotation>[] annotationClasses ) throws ClassNotFoundException {
+			Class<? extends Annotation>[] annotationClasses ) {
 
 		Map<Class<? extends Annotation>, List<JClassType>> annotationMap = new HashMap<Class<? extends Annotation>, List<JClassType>>();
 		for ( Class<? extends Annotation> c : annotationClasses ) {
@@ -44,7 +44,7 @@ public class AnnotationScanner {
 		Date end = new Date();
 
 		logger.log( TreeLogger.INFO, nbClasses + " classes scanned in " + Long.toString( end.getTime() - start.getTime() ) + " ms." );
-		
+
 		return annotationMap;
 
 	}

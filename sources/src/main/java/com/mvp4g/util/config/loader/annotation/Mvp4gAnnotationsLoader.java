@@ -6,23 +6,24 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.Mvp4gElement;
 import com.mvp4g.util.config.element.SimpleMvp4gElement;
-import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
+import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 
 public abstract class Mvp4gAnnotationsLoader<T extends Annotation> {
 
 	@SuppressWarnings( "unchecked" )
-	public void load( List<JClassType> annotedClasses, Mvp4gConfiguration configuration ) {
+	public void load( List<JClassType> annotedClasses, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
 		for ( JClassType c : annotedClasses ) {
 			loadElement( c, c.getAnnotation( (Class<T>)( (ParameterizedType)getClass().getGenericSuperclass() ).getActualTypeArguments()[0] ),
 					configuration );
 		}
 	}
 
-	protected <E extends Mvp4gElement> void addElement( Set<E> loadedElements, E element ) throws InvalidMvp4gConfigurationException {
-		checkForDuplicates( loadedElements, element );
+	protected <E extends Mvp4gElement> void addElement( Set<E> loadedElements, E element, JClassType c, JMethod m ) throws Mvp4gAnnotationException {
+		checkForDuplicates( loadedElements, element, c, m );
 		loadedElements.add( element );
 	}
 
@@ -37,11 +38,11 @@ public abstract class Mvp4gAnnotationsLoader<T extends Annotation> {
 	protected String buildElementName( String className, String suffix ) {
 		return className.replace( '.', '_' ) + suffix;
 	}
-	
-	protected <E extends SimpleMvp4gElement> String getElementName(Set<E> loadedElements, String elementClassName){
+
+	protected <E extends SimpleMvp4gElement> String getElementName( Set<E> loadedElements, String elementClassName ) {
 		String elementName = null;
-		for(E element : loadedElements){
-			if(elementClassName.equals( element.getClassName())){
+		for ( E element : loadedElements ) {
+			if ( elementClassName.equals( element.getClassName() ) ) {
 				elementName = element.getName();
 				break;
 			}
@@ -49,14 +50,15 @@ public abstract class Mvp4gAnnotationsLoader<T extends Annotation> {
 		return elementName;
 	}
 
-	private <E extends Mvp4gElement> void checkForDuplicates( Set<E> loadedElements, E element ) throws InvalidMvp4gConfigurationException {
+	private <E extends Mvp4gElement> void checkForDuplicates( Set<E> loadedElements, E element, JClassType c, JMethod m )
+			throws Mvp4gAnnotationException {
 		if ( loadedElements.contains( element ) ) {
 			String err = "Duplicate " + element.getTagName() + " identified by " + "'" + element.getUniqueIdentifierName()
 					+ "' found in configuration file.";
-			throw new InvalidMvp4gConfigurationException( err );
+			throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), ( m == null ) ? null : m.getName(), err );
 		}
 	}
 
-	abstract protected void loadElement( JClassType c, T annotation, Mvp4gConfiguration configuration );
+	abstract protected void loadElement( JClassType c, T annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException;
 
 }

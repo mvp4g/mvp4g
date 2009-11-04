@@ -9,6 +9,7 @@ import java.util.Set;
 import org.apache.commons.configuration.XMLConfiguration;
 
 import com.mvp4g.util.config.element.HistoryElement;
+import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 
 /**
  * A class responsible for loading the Start tag defined in the mvp4g-config.xml file.
@@ -41,7 +42,7 @@ public class HistoryLoader extends Mvp4gElementLoader<HistoryElement> {
 		return new HistoryElement();
 	}
 
-	public HistoryElement loadElement() {
+	public HistoryElement loadElement() throws Mvp4gXmlException {
 		Set<HistoryElement> elements = loadElements();
 		return ( elements.size() == 0 ) ? null : new ArrayList<HistoryElement>( elements ).get( 0 );
 	}

@@ -176,5 +176,12 @@ public abstract class XmlEventBus extends BaseEventBus implements EventBusWithLo
 	public <E extends Enum<E>> void dispatch( Enum<E> enumEventType ) {
 		this.dispatch( enumEventType.toString(), null );
 	}
+	
+
+	protected void handleClassCastException( ClassCastException e, String eventType ) {
+		if ( e.getStackTrace()[0].getClassName().equals( this.getClass().getName() ) ) {
+			throw new Mvp4gException( "Class of the object sent with event " + eventType + " is incorrect." );
+		}
+	}
 
 }
