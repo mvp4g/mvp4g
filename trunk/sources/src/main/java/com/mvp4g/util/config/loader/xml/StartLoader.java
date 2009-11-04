@@ -9,6 +9,7 @@ import java.util.Set;
 import org.apache.commons.configuration.XMLConfiguration;
 
 import com.mvp4g.util.config.element.StartElement;
+import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 
 /**
  * A class responsible for loading the Start tag defined in the mvp4g-config.xml file.
@@ -47,7 +48,7 @@ public class StartLoader extends Mvp4gElementLoader<StartElement> {
 		return new StartElement();
 	}
 
-	public StartElement loadElement() {
+	public StartElement loadElement() throws Mvp4gXmlException {
 		Set<StartElement> elements = super.loadElements();
 		return (elements.size() == 0) ? null : new ArrayList<StartElement>( elements ).get( 0 );
 	}

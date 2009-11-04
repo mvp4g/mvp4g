@@ -17,6 +17,7 @@ package com.mvp4g.util;
 
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,8 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.annotation.Service;
+import com.mvp4g.util.config.Mvp4gConfiguration;
+import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
 
 /**
  * Class uses to create the implementation class of Mvp4gStarter
@@ -54,11 +57,19 @@ public class Mvp4gGenerator extends Generator {
 	 */
 	@Override
 	public String generate( TreeLogger logger, GeneratorContext context, String typeName ) throws UnableToCompleteException {
+		
+		Date start = new Date();
+		
 		String generatedClassQualifiedName = createClass( logger, context, typeName );
 
 		if ( generatedClassQualifiedName == null ) {
 			throw new UnableToCompleteException();
 		}
+		
+		Date end = new Date();
+		
+		logger.log( TreeLogger.INFO, "Mvp4g Compilation: " + (end.getTime() - start.getTime()) + "ms.");
+		
 		return generatedClassQualifiedName;
 	}
 
@@ -110,12 +121,20 @@ public class Mvp4gGenerator extends Generator {
 	private void writeClass( TreeLogger logger, GeneratorContext context ) throws UnableToCompleteException {
 
 		try {
-			scanResult = AnnotationScanner.scan( logger, context.getTypeOracle(), new Class[] { Presenter.class, History.class, Events.class, Service.class } );
-		} catch ( ClassNotFoundException e ) {
-			logger.log( TreeLogger.ERROR, e.getMessage() );
+			TypeOracle oracle = context.getTypeOracle();
+						
+			scanResult = AnnotationScanner.scan( logger, oracle, new Class[] { Presenter.class, History.class, Events.class,
+					Service.class } );
+
+			Mvp4gConfiguration configuration = new Mvp4gConfiguration();
+			configuration.load( "mvp4g-conf.xml", scanResult, oracle );
+
+			Mvp4gConfigurationFileWriter writer = new Mvp4gConfigurationFileWriter( sourceWriter, configuration );
+			writer.writeConf();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			logger.log( TreeLogger.ERROR, e.getMessage(), e);
 			throw new UnableToCompleteException();
 		}
 
-		new Mvp4gConfigurationFileReader( sourceWriter, logger, scanResult ).writeConf();
 	}
 }

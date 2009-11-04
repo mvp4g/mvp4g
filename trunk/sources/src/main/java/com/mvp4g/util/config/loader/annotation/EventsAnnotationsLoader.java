@@ -21,26 +21,27 @@ import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.config.element.ViewElement;
-import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
+import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
+import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 
 public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 
 	@Override
-	protected void loadElement( JClassType c, Events annotation, Mvp4gConfiguration configuration ) {
+	protected void loadElement( JClassType c, Events annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
 
 		if ( configuration.getEvents().size() > 0 ) {
 			String err = "You can either define your events thanks to the configuration file or an EventBus interface but not both.";
-			throw new InvalidMvp4gConfigurationException( err );
+			throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 		}
 
 		if ( configuration.getStart() != null ) {
 			String err = "You can't use start tag in your configuration file when you define your events in an EventBus interface.";
-			throw new InvalidMvp4gConfigurationException( err );
+			throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 		}
 
 		if ( c.isInterface() == null ) {
-			String err = c.getQualifiedSourceName() + "must be an interface to define events.";
-			throw new InvalidMvp4gConfigurationException( err );
+			String err = Events.class.getSimpleName() + " annotation can only be used on interfaces.";
+			throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 		}
 
 		EventBusElement eventBus = buildEventBusElement( c );
@@ -50,9 +51,8 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			loadStartView( c, annotation, configuration );
 			loadEvents( c, annotation, configuration );
 		} else {
-			String err = Events.class.getSimpleName() + " annotation can only be used on classes implemented " + EventBus.class.getName() + ". "
-					+ c.getQualifiedSourceName() + " doesn't implement this interface.";
-			throw new InvalidMvp4gConfigurationException( err );
+			String err = Events.class.getSimpleName() + " annotation can only be used on classes implemented " + EventBus.class.getName() + ". ";
+			throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 		}
 	}
 
@@ -82,7 +82,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		return eventBus;
 	}
 
-	private void loadStartView( JClassType c, Events annotation, Mvp4gConfiguration configuration ) {
+	private void loadStartView( JClassType c, Events annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
 
 		Set<ViewElement> views = configuration.getViews();
 		String viewName = annotation.startViewName();
@@ -91,8 +91,8 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			for ( ViewElement view : views ) {
 				if ( viewName.equals( view.getName() ) ) {
 					if ( !viewClass.getName().equals( view.getClassName() ) ) {
-						String err = c.getQualifiedSourceName() + ": There is no instance of " + viewClass.getName() + " with name " + viewName;
-						throw new InvalidMvp4gConfigurationException( err );
+						String err = "There is no instance of " + viewClass.getName() + " with name " + viewName;
+						throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 					}
 					break;
 				}
@@ -101,18 +101,23 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		} else {
 			viewName = getElementName( views, viewClass.getName() );
 			if ( viewName == null ) {
-				String err = c.getQualifiedSourceName() + ": There is no instance of " + viewClass.getName();
-				throw new InvalidMvp4gConfigurationException( err );
+				String err = "There is no instance of " + viewClass.getName();
+				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 			}
 		}
 
-		StartElement element = new StartElement();
-		element.setView( viewName );
-		element.setHistory( Boolean.toString( annotation.historyOnStart() ) );
-		configuration.setStart( element );
+		try {
+			StartElement element = new StartElement();
+			element.setView( viewName );
+			element.setHistory( Boolean.toString( annotation.historyOnStart() ) );
+			configuration.setStart( element );
+		} catch ( DuplicatePropertyNameException e ) {
+			//setters are only called once, so this error can't occur.
+		}
+
 	}
 
-	private void loadEvents( JClassType c, Events annotation, Mvp4gConfiguration configuration ) {
+	private void loadEvents( JClassType c, Events annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
 
 		Event event = null;
 		EventElement element = null;
@@ -124,49 +129,62 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		for ( JMethod method : c.getMethods() ) {
 			event = method.getAnnotation( Event.class );
 			if ( event == null ) {
-				String err = buildErrorMessage( c, method ) + "all methods must have an " + Event.class.getSimpleName() + " annotation.";
-				throw new InvalidMvp4gConfigurationException( err );
+				String err = Event.class.getSimpleName() + " annotation missing.";
+				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 			}
 
 			params = method.getParameters();
 			if ( params.length > 1 ) {
-				String err = buildErrorMessage( c, method ) + "event method must not have more than 1 argument.";
-				throw new InvalidMvp4gConfigurationException( err );
+				String err = "Event method must not have more than 1 argument.";
+				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 			}
 
 			element = new EventElement();
-			element.setType( method.getName() );
-			element.setHandlers( buildEventHandlers( c, method, event, configuration ) );
-			element.setCalledMethod( event.calledMethod() );
+			try {
+				element.setType( method.getName() );
+				element.setHandlers( buildEventHandlers( c, method, event, configuration ) );
+				element.setCalledMethod( event.calledMethod() );
 
-			if ( params.length > 0 ) {
-				element.setEventObjectClass( params[0].getType().getQualifiedSourceName() );
+				if ( params.length > 0 ) {
+					element.setEventObjectClass( params[0].getType().getQualifiedSourceName() );
+				}
+			} catch ( DuplicatePropertyNameException e ) {
+				//setters are only called once, so this error can't occur.
 			}
 
-			addElement( events, element );
+			addElement( events, element, c, method );
 
 			if ( method.getAnnotation( Start.class ) != null ) {
-				configuration.getStart().setEventType( method.getName() );
-			}
-			if ( method.getAnnotation( InitHistory.class ) != null){
-				HistoryElement history = configuration.getHistory();
-				if(history != null){
-					String err = buildErrorMessage( c, method ) + "you can't define an init history event here since you're already defined an init history event in your configuration file.";
-					throw new InvalidMvp4gConfigurationException( err );
+				try {
+					configuration.getStart().setEventType( method.getName() );
+				} catch ( DuplicatePropertyNameException e ) {
+					String err = "Duplicate value for Start event. It is already defined by another method.";
+					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 				}
-				else{
+			}
+			if ( method.getAnnotation( InitHistory.class ) != null ) {
+				HistoryElement history = configuration.getHistory();
+				if ( history != null ) {
+					String err = "Duplicate value for Init History event. It is already defined by another method or in your configuration file.";
+					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
+				} else {
 					history = new HistoryElement();
-					history.setInitEvent( method.getName() );
+					try {
+						history.setInitEvent( method.getName() );
+					} catch ( DuplicatePropertyNameException e ) {
+						//setter is only called once, so this error can't occur.
+					}
 					configuration.setHistory( history );
 				}
 			}
-			loadHistory(event, element, configuration);
+			loadHistory( event, element, configuration );
 
 		}
 
 	}
 
-	private String[] buildEventHandlers( JClassType c, JMethod method, Event event, Mvp4gConfiguration configuration ) {
+	private String[] buildEventHandlers( JClassType c, JMethod method, Event event, Mvp4gConfiguration configuration )
+			throws Mvp4gAnnotationException {
 
 		Set<PresenterElement> presenters = configuration.getPresenters();
 
@@ -179,9 +197,8 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		for ( Class<?> handler : handlerClasses ) {
 			handlerName = getElementName( presenters, handler.getName() );
 			if ( handlerName == null ) {
-				String err = "No instance of " + handler.getName() + "is defined. You can't use it as an handler of " + method.getName() + " of "
-						+ c.getQualifiedSourceName();
-				throw new InvalidMvp4gConfigurationException( err );
+				String err = "No instance of " + handler.getName() + "is defined.";
+				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 			}
 			handlers[index] = handlerName;
 			index++;
@@ -194,27 +211,36 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 
 		return handlers;
 	}
-	
-	private void loadHistory(Event annotation, EventElement element, Mvp4gConfiguration configuration){
+
+	private void loadHistory( Event annotation, EventElement element, Mvp4gConfiguration configuration ) {
 		String hcName = annotation.historyConverterName();
 		Class<?> hcClass = annotation.historyConverter();
-		if((hcName != null) && (hcName.length() > 0)){
-			element.setHistory( hcName );
-		}
-		else if(!Event.NoHistoryConverter.class.equals( hcClass )){
+		if ( ( hcName != null ) && ( hcName.length() > 0 ) ) {
+			try {
+				element.setHistory( hcName );
+			} catch ( DuplicatePropertyNameException e ) {
+				//setter is only called once, so this error can't occur.
+			}
+		} else if ( !Event.NoHistoryConverter.class.equals( hcClass ) ) {
 			String hcClassName = hcClass.getName();
 			Set<HistoryConverterElement> historyConverters = configuration.getHistoryConverters();
 			hcName = getElementName( historyConverters, hcClassName );
-			if(hcName == null){
+			if ( hcName == null ) {
 				HistoryConverterElement hcElement = new HistoryConverterElement();
-				hcElement.setClassName( hcClassName );
-				hcElement.setName( buildElementName( hcClassName, "" ) );
+				try {
+					hcElement.setClassName( hcClassName );
+					hcElement.setName( buildElementName( hcClassName, "" ) );
+				} catch ( DuplicatePropertyNameException e ) {
+					//setters are only called once, so this error can't occur.
+				}
+
 			}
-			element.setHistory( hcName );
+			try {
+				element.setHistory( hcName );
+			} catch ( DuplicatePropertyNameException e ) {
+				//setters are only called once, so this error can't occur.
+			}
 		}
 	}
 
-	private String buildErrorMessage( JClassType c, JMethod m ) {
-		return "Event " + m.getName() + " of EventBus " + c.getQualifiedSourceName() + " : ";
-	}
 }

@@ -3,21 +3,33 @@
  */
 package com.mvp4g.util.config;
 
+import java.io.File;
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JGenericType;
+import com.google.gwt.core.ext.typeinfo.JMethod;
+import com.google.gwt.core.ext.typeinfo.JParameter;
+import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.NotFoundException;
+import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.annotation.Service;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.XmlEventBus;
+import com.mvp4g.client.history.HistoryConverter;
+import com.mvp4g.client.presenter.PresenterInterface;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
@@ -41,8 +53,12 @@ import com.mvp4g.util.config.loader.xml.ServicesLoader;
 import com.mvp4g.util.config.loader.xml.StartLoader;
 import com.mvp4g.util.config.loader.xml.ViewsLoader;
 import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
+import com.mvp4g.util.exception.InvalidTypeException;
 import com.mvp4g.util.exception.NonUniqueIdentifierException;
 import com.mvp4g.util.exception.UnknownConfigurationElementException;
+import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
+import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
+import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 
 /**
  * An in-memory representation of all elements in the mvp4g-config.xml file.
@@ -90,16 +106,35 @@ public class Mvp4gConfiguration {
 	 *             <li/>if a view reference cannot be found among the configured elements.
 	 *             </ol>
 	 */
-	public void load( XMLConfiguration xmlConfig, Map<Class<? extends Annotation>, List<JClassType>> scanResult ) {
+	public void load( String xmlConfigPath, Map<Class<? extends Annotation>, List<JClassType>> scanResult, TypeOracle oracle )
+			throws InvalidMvp4gConfigurationException {
 
-		// Phase 1: load all elements, performing attribute validation
-		loadViews( xmlConfig );
-		loadServices( xmlConfig );
-		loadHistoryConverters( xmlConfig );
-		loadPresenters( xmlConfig );
-		loadEvents( xmlConfig );
-		loadStart( xmlConfig );
-		loadHistory( xmlConfig );
+		File f = new File( xmlConfigPath );
+
+		if ( f.exists() ) {
+
+			XMLConfiguration xmlConfig;
+			try {
+				xmlConfig = new XMLConfiguration( "mvp4g-conf.xml" );
+			} catch ( ConfigurationException e ) {
+				throw new InvalidMvp4gConfigurationException( e.getMessage() );
+			}
+
+			// Phase 1: load all elements, performing attribute validation
+			try {
+				loadViews( xmlConfig );
+				loadServices( xmlConfig );
+				loadHistoryConverters( xmlConfig );
+				loadPresenters( xmlConfig );
+				loadEvents( xmlConfig );
+				loadStart( xmlConfig );
+				loadHistory( xmlConfig );
+			} catch ( Mvp4gXmlException e ) {
+				e.setXmlFilePath( xmlConfigPath );
+				throw e;
+			}
+
+		}
 
 		// Phase 2: load information from annotations
 		loadServices( scanResult.get( Service.class ) );
@@ -108,12 +143,15 @@ public class Mvp4gConfiguration {
 		loadEvents( scanResult.get( Events.class ) );
 
 		// Phase 3: perform cross-element validations
+		if ( eventBus.isLookForObjectClass() ) {
+			findEventObjectClass( oracle );
+		}
 		checkUniquenessOfAllElements();
 		validateStart();
-		validateEventHandlers();
+		validateEventHandlers( oracle );
+		validateHistoryConverters( oracle );
 		validateViews();
 		validateServices();
-		validateHistoryConverters();
 		validateEvents();
 	}
 
@@ -122,15 +160,15 @@ public class Mvp4gConfiguration {
 	 * 
 	 * @param annotedClasses
 	 *            classes with the Presenter annotations
+	 * @throws Mvp4gAnnotationException
 	 * 
 	 * @throws InvalidMvp4gConfigurationException
 	 *             if presenter tags cannot be loaded.
 	 * 
 	 */
-	private void loadPresenters( List<JClassType> annotedClasses ) {
+	private void loadPresenters( List<JClassType> annotedClasses ) throws Mvp4gAnnotationException {
 		PresenterAnnotationsLoader loader = new PresenterAnnotationsLoader();
 		loader.load( annotedClasses, this );
-
 	}
 
 	/**
@@ -153,11 +191,12 @@ public class Mvp4gConfiguration {
 	 * 
 	 * @param xmlConfig
 	 *            raw representation of mvp4g-config.xml file.
+	 * @throws Mvp4gAnnotationException
 	 * 
 	 * @throws InvalidMvp4gConfigurationException
 	 *             if event tags cannot be loaded.
 	 */
-	private void loadServices( List<JClassType> annotedClasses ) {
+	private void loadServices( List<JClassType> annotedClasses ) throws Mvp4gAnnotationException {
 		ServiceAnnotationsLoader loader = new ServiceAnnotationsLoader();
 		loader.load( annotedClasses, this );
 	}
@@ -186,7 +225,7 @@ public class Mvp4gConfiguration {
 	 * @throws InvalidMvp4gConfigurationException
 	 *             if view tags cannot be loaded.
 	 */
-	private void loadViews( XMLConfiguration xmlConfig ) throws InvalidMvp4gConfigurationException {
+	private void loadViews( XMLConfiguration xmlConfig ) throws Mvp4gXmlException {
 		ViewsLoader viewsConfig = new ViewsLoader( xmlConfig );
 		views = viewsConfig.loadElements();
 	}
@@ -196,11 +235,12 @@ public class Mvp4gConfiguration {
 	 * 
 	 * @param xmlConfig
 	 *            raw representation of mvp4g-config.xml file.
+	 * @throws Mvp4gAnnotationException
 	 * 
 	 * @throws InvalidMvp4gConfigurationException
 	 *             if event tags cannot be loaded.
 	 */
-	private void loadEvents( List<JClassType> annotedClasses ) {
+	private void loadEvents( List<JClassType> annotedClasses ) throws Mvp4gAnnotationException {
 		EventsAnnotationsLoader loader = new EventsAnnotationsLoader();
 		loader.load( annotedClasses, this );
 		if ( eventBus == null ) {
@@ -227,11 +267,12 @@ public class Mvp4gConfiguration {
 	 * 
 	 * @param xmlConfig
 	 *            raw representation of mvp4g-config.xml file.
+	 * @throws Mvp4gAnnotationException
 	 * 
 	 * @throws InvalidMvp4gConfigurationException
 	 *             if event tags cannot be loaded.
 	 */
-	private void loadHistoryConverters( List<JClassType> annotedClasses ) {
+	private void loadHistoryConverters( List<JClassType> annotedClasses ) throws Mvp4gAnnotationException {
 		HistoryAnnotationsLoader loader = new HistoryAnnotationsLoader();
 		loader.load( annotedClasses, this );
 	}
@@ -346,10 +387,12 @@ public class Mvp4gConfiguration {
 	/**
 	 * Validates that every mvp4g element has a globally unique identifier.</p>
 	 * 
+	 * @throws NonUniqueIdentifierException
+	 * 
 	 * @throws NonUniqueIdentifierExcpetion
 	 *             if two or more elements have the same textual identifier.
 	 */
-	void checkUniquenessOfAllElements() {
+	void checkUniquenessOfAllElements() throws NonUniqueIdentifierException {
 		Set<String> allIds = new HashSet<String>();
 		checkUniquenessOf( historyConverters, allIds );
 		checkUniquenessOf( presenters, allIds );
@@ -358,7 +401,7 @@ public class Mvp4gConfiguration {
 		checkUniquenessOf( services, allIds );
 	}
 
-	private <E extends Mvp4gElement> void checkUniquenessOf( Set<E> subset, Set<String> ids ) {
+	private <E extends Mvp4gElement> void checkUniquenessOf( Set<E> subset, Set<String> ids ) throws NonUniqueIdentifierException {
 		for ( E item : subset ) {
 			boolean unique = ids.add( item.getUniqueIdentifier() );
 			if ( !unique ) {
@@ -366,11 +409,10 @@ public class Mvp4gConfiguration {
 			}
 		}
 	}
-	
-	
-	void validateStart(){
-		if((start == null) || (start.getView() == null)){
-			throw new InvalidMvp4gConfigurationException("You must define a view to load when the application starts.");
+
+	void validateStart() throws InvalidMvp4gConfigurationException {
+		if ( ( start == null ) || ( start.getView() == null ) ) {
+			throw new InvalidMvp4gConfigurationException( "You must define a view to load when the application starts." );
 		}
 	}
 
@@ -378,13 +420,74 @@ public class Mvp4gConfiguration {
 	 * Checks that all event handler names correspond to a configured mvp4g element.</p>
 	 * 
 	 * @throws UnknownConfigurationElementException
+	 * 
+	 * @throws UnknownConfigurationElementException
 	 *             if an event handler cannot be found among the configured elements.
+	 * @throws InvalidTypeException
 	 */
-	void validateEventHandlers() {
+	void validateEventHandlers( TypeOracle oracle ) throws UnknownConfigurationElementException, InvalidTypeException {
+
+		Map<String, List<EventElement>> presenterMap = new HashMap<String, List<EventElement>>();
+
+		//Add presenter that handles event
+		List<EventElement> eventList = null;
+		for ( EventElement event : events ) {
+			for ( String handler : event.getHandlers() ) {
+				eventList = presenterMap.get( handler );
+				if ( eventList == null ) {
+					eventList = new ArrayList<EventElement>();
+					presenterMap.put( handler, eventList );
+				}
+				eventList.add( event );
+			}
+		}
+
+		String startView = start.getView();
+		JGenericType presenterGenType = oracle.findType( PresenterInterface.class.getName() ).isGenericType();
+		JClassType eventBusType = oracle.findType( eventBus.getInterfaceClassName() );
+		JType[] noParam = new JType[0];
+		JClassType presenterType = null;
+		JClassType eventBusParam = null;
+		JClassType viewParam = null;
+		String viewName = null;
+		String viewClass = null;
+
+		for ( PresenterElement presenter : presenters ) {
+			eventList = presenterMap.remove( presenter.getName() );
+			viewName = presenter.getView();
+			if ( eventList != null || viewName.equals( startView ) ) {
+				presenterType = oracle.findType( presenter.getClassName() );
+				eventBusParam = (JClassType)presenterType.asParameterizationOf( presenterGenType ).findMethod( "getEventBus", noParam )
+						.getReturnType();
+				viewParam = (JClassType)presenterType.asParameterizationOf( presenterGenType ).findMethod( "getView", noParam ).getReturnType();
+
+				//Control if presenter event bus is compatible with module event bus
+				if ( !eventBusType.isAssignableTo( eventBusParam ) ) {
+					throw new InvalidTypeException( presenter, "Event Bus", eventBusParam.getQualifiedSourceName(), eventBus.getInterfaceClassName() );
+				}
+
+				//Control if view injected to the event bus is compatible with presenter view type
+				viewClass = getViewClass( viewName );
+				if ( !oracle.findType( viewClass ).isAssignableTo( viewParam ) ) {
+					throw new InvalidTypeException( presenter, "View", viewClass, viewParam.getQualifiedSourceName() );
+				}
+
+			} else {
+				//this object is not used, you can remove it
+				presenters.remove( presenter );
+			}
+		}
+
+		//Missing presenter
+		if ( !presenterMap.isEmpty() ) {
+			String it = presenterMap.keySet().iterator().next();
+			throw new UnknownConfigurationElementException( presenterMap.get( it ).get( 0 ), it );
+		}
+
 		for ( EventElement event : events ) {
 			for ( String handlerName : event.getHandlers() ) {
 				if ( !elementExists( handlerName, presenters ) ) {
-					throw new UnknownConfigurationElementException( handlerName );
+					throw new UnknownConfigurationElementException( event, handlerName );
 				}
 			}
 		}
@@ -394,70 +497,161 @@ public class Mvp4gConfiguration {
 	 * Checks that all injected views correspond to a configured mvp4g element.</p>
 	 * 
 	 * @throws UnknownConfigurationElementException
+	 * 
+	 * @throws UnknownConfigurationElementException
 	 *             if a view reference cannot be found among the configured elements.
 	 */
-	void validateViews() {
-		Set<String> viewIds = new HashSet<String>();
+	void validateViews() throws UnknownConfigurationElementException {
 
-		// Include view injected into start tag
-		viewIds.add( start.getView() );
+		Map<String, List<PresenterElement>> viewMap = new HashMap<String, List<PresenterElement>>();
 
-		// Include all views injected into presenter tags
+		List<PresenterElement> presenterList = null;
+		String viewName = null;
 		for ( PresenterElement presenter : presenters ) {
-			viewIds.add( presenter.getView() );
-		}
-
-		for ( String view : viewIds ) {
-			if ( !viewExists( view ) ) {
-				throw new UnknownConfigurationElementException( view );
+			viewName = presenter.getView();
+			presenterList = viewMap.get( viewName );
+			if ( presenterList == null ) {
+				presenterList = new ArrayList<PresenterElement>();
+				viewMap.put( viewName, presenterList );
 			}
+			presenterList.add( presenter );
 		}
-	}
 
-	private boolean viewExists( String viewId ) {
+		String startView = start.getView();
 		for ( ViewElement view : views ) {
-			if ( view.getUniqueIdentifier().equals( viewId ) ) {
-				return true;
+			viewName = view.getName();
+			if ( ( viewMap.remove( viewName ) == null ) && ( !startView.equals( viewName ) ) ) {
+				//this object is not used, you can remove it
+				views.remove( view );
 			}
 		}
-		return false;
+
+		//Missing view
+		if ( !viewMap.isEmpty() ) {
+			String it = viewMap.keySet().iterator().next();
+			throw new UnknownConfigurationElementException( viewMap.get( it ).get( 0 ), it );
+		}
+
 	}
+	
 
 	/**
 	 * Checks that all service names injected on every presenter and history converter correspond to
 	 * a configured mvp4g element.</p>
 	 * 
 	 * @throws UnknownConfigurationElementException
+	 * 
+	 * @throws UnknownConfigurationElementException
 	 *             if a service cannot be found among the configured elements.
 	 */
-	void validateServices() {
+	void validateServices() throws UnknownConfigurationElementException {
 
-		Set<Mvp4gWithServicesElement> elements = new HashSet<Mvp4gWithServicesElement>();
-		elements.addAll( presenters );
-		elements.addAll( historyConverters );
+		Map<String, List<Mvp4gWithServicesElement>> serviceMap = new HashMap<String, List<Mvp4gWithServicesElement>>();
 
-		String serviceName = null;
-		for ( Mvp4gWithServicesElement element : elements ) {
-			for ( InjectedElement service : element.getInjectedServices() ) {
-				serviceName = service.getElementName();
-				if ( !elementExists( serviceName, services ) ) {
-					throw new UnknownConfigurationElementException( serviceName );
+		//Add presenter that handles event
+		List<Mvp4gWithServicesElement> elementList = null;
+		for ( PresenterElement presenter : presenters ) {
+			for ( InjectedElement service : presenter.getInjectedServices() ) {
+				elementList = serviceMap.get( service.getElementName() );
+				if ( elementList == null ) {
+					elementList = new ArrayList<Mvp4gWithServicesElement>();
+					serviceMap.put( service.getElementName(), elementList );
 				}
+				elementList.add( presenter );
 			}
+		}
+		for ( HistoryConverterElement hc : historyConverters ) {
+			for ( InjectedElement service : hc.getInjectedServices() ) {
+				elementList = serviceMap.get( service.getElementName() );
+				if ( elementList == null ) {
+					elementList = new ArrayList<Mvp4gWithServicesElement>();
+					serviceMap.put( service.getElementName(), elementList );
+				}
+				elementList.add( hc );
+			}
+		}
+
+		for ( ServiceElement service : services ) {
+			if ( serviceMap.remove( service.getName() ) == null ) {
+				//this object is not used, you can remove it
+				services.remove( service );
+			}
+		}
+
+		//Missing service
+		if ( !serviceMap.isEmpty() ) {
+			String it = serviceMap.keySet().iterator().next();
+			throw new UnknownConfigurationElementException( serviceMap.get( it ).get( 0 ), it );
 		}
 
 	}
 
-	void validateHistoryConverters() {
+	void validateHistoryConverters( TypeOracle oracle ) throws InvalidMvp4gConfigurationException {
 
-		String historyConverterName = null;
+		Map<String, List<EventElement>> historyConverterMap = new HashMap<String, List<EventElement>>();
+
+		List<EventElement> eventList = null;
+		String hcName = null;
 		for ( EventElement event : events ) {
 			if ( event.hasHistory() ) {
-				historyConverterName = event.getHistory();
-				if ( !elementExists( historyConverterName, historyConverters ) ) {
-					throw new UnknownConfigurationElementException( historyConverterName );
+				hcName = event.getHistory();
+				eventList = historyConverterMap.get( hcName );
+				if ( eventList == null ) {
+					eventList = new ArrayList<EventElement>();
+					historyConverterMap.put( hcName, eventList );
 				}
+				eventList.add( event );
 			}
+		}
+
+		JGenericType hcGenType = oracle.findType( HistoryConverter.class.getName() ).isGenericType();
+		JClassType eventBusType = oracle.findType( eventBus.getInterfaceClassName() );
+		JClassType hcType = null;
+		JClassType eventBusParam = null;
+		JClassType objectClassParam = null;
+		String objectClass = null;
+		JMethod[] methods = null;
+
+		for ( HistoryConverterElement history : historyConverters ) {
+			eventList = historyConverterMap.remove( history.getName() );
+			if ( eventList != null ) {
+				hcType = oracle.findType( history.getClassName() );
+				methods = hcType.asParameterizationOf( hcGenType ).getMethods();
+
+				//Retrieve classes of History Converter event bus & form
+				if ( "convertFromToken".equals( methods[0].getName() ) ) {
+					eventBusParam = (JClassType)methods[0].findParameter( "eventBus" ).getType();
+					objectClassParam = (JClassType)methods[1].findParameter( "form" ).getType();
+				} else {
+					eventBusParam = (JClassType)methods[1].findParameter( "eventBus" ).getType();
+					objectClassParam = (JClassType)methods[0].findParameter( "form" ).getType();
+				}
+
+				//Control if history converter event bus is compatible with module event bus
+				if ( !eventBusType.isAssignableTo( eventBusParam ) ) {
+					throw new InvalidTypeException( history, "Event Bus", eventBusParam.getQualifiedSourceName(), eventBus.getInterfaceClassName() );
+				}
+
+				//Control if event object class is compatible with History Converter object class
+				for ( EventElement event : eventList ) {
+					objectClass = event.getEventObjectClass();
+					if ( ( objectClass != null ) && ( objectClass.length() > 0 ) ) {
+						if ( !oracle.findType( objectClass ).isAssignableTo( objectClassParam ) ) {
+							throw new InvalidTypeException( event, "History Converter", eventBusParam.getQualifiedSourceName(), eventBus
+									.getInterfaceClassName() );
+						}
+					}
+				}
+			} else {
+				//this object is not used, you can remove it
+				historyConverters.remove( history );
+			}
+		}
+
+		//Missing history converter
+		if ( !historyConverterMap.isEmpty() ) {
+			String it = historyConverterMap.keySet().iterator().next();
+			throw new UnknownConfigurationElementException( historyConverterMap.get( it ).get( 0 ), it );
 		}
 
 	}
@@ -471,22 +665,84 @@ public class Mvp4gConfiguration {
 		return false;
 	}
 
-	void validateEvents() {
+	void validateEvents() throws UnknownConfigurationElementException {
 		String event = null;
 		if ( start.hasEventType() ) {
 			event = start.getEventType();
 			if ( !elementExists( event, events ) ) {
-				throw new UnknownConfigurationElementException( event );
+				throw new UnknownConfigurationElementException( start, event );
 			}
 		}
 
 		if ( history != null ) {
 			event = history.getInitEvent();
 			if ( !elementExists( event, events ) ) {
-				throw new UnknownConfigurationElementException( event );
+				throw new UnknownConfigurationElementException( history, event );
 			}
 		}
 
+	}
+
+	void findEventObjectClass( TypeOracle typeOracle ) throws InvalidMvp4gConfigurationException {
+
+		for ( EventElement event : events ) {
+			String objectClass = event.getEventObjectClass();
+			if ( ( objectClass == null ) || ( objectClass.length() == 0 ) ) {
+				String[] handlers = event.getHandlers();
+
+				//if no handler, then event object class can't be deduce 
+				if ( handlers.length != 0 ) {
+					String presenterClass = getPresenterClass( handlers[0] );
+
+					try {
+						JClassType handlerClass = typeOracle.getType( presenterClass );
+						String eventMethod = event.getCalledMethod();
+						JParameter[] parameters = null;
+						boolean found = false;
+						int parameterSize = 0;
+						for ( JMethod method : handlerClass.getMethods() ) {
+							if ( eventMethod.equals( method.getName() ) ) {
+								parameters = method.getParameters();
+								parameterSize = parameters.length;
+								if ( parameterSize == 0 ) {
+									found = true;
+									break;
+								} else if ( parameterSize == 1 ) {
+									found = true;
+									try {
+										event.setEventObjectClass( parameters[0].getType().getQualifiedSourceName() );
+									} catch ( DuplicatePropertyNameException e ) {
+										//setter is only called once, so this error can't occur.
+									}
+									break;
+								}
+							}
+						}
+						if ( !found ) {
+							throw new InvalidMvp4gConfigurationException( "Event " + event.getType() + ": handler " + handlers[0]
+									+ " doesn't define a method " + event.getCalledMethod() + " with 1 or 0 parameter." );
+						}
+
+					} catch ( NotFoundException e ) {
+						throw new InvalidMvp4gConfigurationException( "Event " + event.getType() + ": handler " + handlers[0] + ": class "
+								+ presenterClass + " not found" );
+					}
+				}
+			}
+
+		}
+
+	}
+
+	private String getPresenterClass( String presenterName ) {
+		String presenterClass = null;
+		for ( PresenterElement presenter : presenters ) {
+			if ( presenterName.equals( presenter.getName() ) ) {
+				presenterClass = presenter.getClassName();
+			}
+		}
+
+		return presenterClass;
 	}
 
 	/**
@@ -502,6 +758,16 @@ public class Mvp4gConfiguration {
 	 */
 	public void setEventBus( EventBusElement eventBus ) {
 		this.eventBus = eventBus;
+	}
+
+	private String getViewClass( String viewName ) {
+		String viewClass = null;
+		for ( ViewElement view : views ) {
+			if ( view.getName().equals( viewName ) ) {
+				viewClass = view.getClassName();
+			}
+		}
+		return viewClass;
 	}
 
 }

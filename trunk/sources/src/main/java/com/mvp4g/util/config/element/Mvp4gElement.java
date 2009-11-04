@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import com.mvp4g.util.exception.DuplicatePropertyNameException;
+import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 /**
  * A representation of an Mvp4g configuration element.
@@ -76,7 +76,7 @@ public abstract class Mvp4gElement {
 		return values != null ? values : new String[] {};
 	}
 
-	public void setValues( String name, String[] values ) {
+	public void setValues( String name, String[] values ) throws DuplicatePropertyNameException {
 
 		if ( name != null && values != null ) {
 			failIfMultiValuePropertyPresent( name );
@@ -92,13 +92,13 @@ public abstract class Mvp4gElement {
 
 	private void failIfPropertyPresent( String name ) throws DuplicatePropertyNameException {
 		if ( properties.containsKey( name ) ) {
-			throw new DuplicatePropertyNameException( tagName, name );
+			throw new DuplicatePropertyNameException( name );
 		}
 	}
 
 	private void failIfMultiValuePropertyPresent( String name ) throws DuplicatePropertyNameException {
 		if ( multiValueProperties.containsKey( name ) ) {
-			throw new DuplicatePropertyNameException( tagName, name );
+			throw new DuplicatePropertyNameException( name );
 		}
 	}
 

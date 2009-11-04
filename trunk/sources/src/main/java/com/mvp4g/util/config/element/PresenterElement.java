@@ -1,6 +1,6 @@
 package com.mvp4g.util.config.element;
 
-import com.mvp4g.util.exception.DuplicatePropertyNameException;
+import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 /**
  * An Mvp4g Presenter configuration element.</p>

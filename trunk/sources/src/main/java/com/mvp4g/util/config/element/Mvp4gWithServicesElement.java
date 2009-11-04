@@ -3,7 +3,7 @@ package com.mvp4g.util.config.element;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mvp4g.util.exception.DuplicatePropertyNameException;
+import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 /**
  * A simple Mvp4g configuration element with services.</p>

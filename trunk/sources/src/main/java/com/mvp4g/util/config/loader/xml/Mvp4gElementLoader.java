@@ -12,7 +12,8 @@ import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.tree.ConfigurationNode;
 
 import com.mvp4g.util.config.element.Mvp4gElement;
-import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
+import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
+import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 
 /**
  * A class responsible for loading and validating an Mvp4g configuration element.</p>
@@ -107,7 +108,7 @@ abstract class Mvp4gElementLoader<E extends Mvp4gElement> {
 	 *             </ul>
 	 * 
 	 */
-	public Set<E> loadElements() throws InvalidMvp4gConfigurationException {
+	public Set<E> loadElements() throws Mvp4gXmlException {
 
 		return loadExistingElements();
 	}
@@ -127,7 +128,7 @@ abstract class Mvp4gElementLoader<E extends Mvp4gElement> {
 	 *             </ul>
 	 * 
 	 */
-	protected Set<E> loadExistingElements() throws InvalidMvp4gConfigurationException {
+	protected Set<E> loadExistingElements() throws Mvp4gXmlException {
 		Set<E> loadedElements = new HashSet<E>();
 
 		for ( HierarchicalConfiguration xmlElement : elements ) {
@@ -141,24 +142,30 @@ abstract class Mvp4gElementLoader<E extends Mvp4gElement> {
 		return loadedElements;
 	}
 
-	private E createNewElementFrom( HierarchicalConfiguration xmlConfig ) {
+	private E createNewElementFrom( HierarchicalConfiguration xmlConfig ) throws Mvp4gXmlException {
 		E element = newElement();
-		addParentAttributes( xmlConfig, element );
-		addRequiredAttributes( xmlConfig, element );
-		addOptionalAttributes( xmlConfig, element );
-		addMultiValueAttributes( xmlConfig, element );
-		addOptionalMultiValueAttributes( xmlConfig, element );
+
+		try {
+			addParentAttributes( xmlConfig, element );
+			addRequiredAttributes( xmlConfig, element );
+			addOptionalAttributes( xmlConfig, element );
+			addMultiValueAttributes( xmlConfig, element );
+			addOptionalMultiValueAttributes( xmlConfig, element );
+		} catch ( DuplicatePropertyNameException e ) {
+			throw new Mvp4gXmlException(element, e.getMessage());
+		}
+
 		return element;
 	}
 
-	private void addRequiredAttributes( HierarchicalConfiguration xmlConfig, E element ) {
+	private void addRequiredAttributes( HierarchicalConfiguration xmlConfig, E element ) throws Mvp4gXmlException, DuplicatePropertyNameException {
 		for ( String attributeName : getRequiredAttributeNames() ) {
-			String attributeValue = getAttribute( xmlConfig, attributeName );
+			String attributeValue = getAttribute( xmlConfig, attributeName, element );
 			element.setProperty( attributeName, attributeValue );
 		}
 	}
 
-	private void addOptionalAttributes( HierarchicalConfiguration xmlConfig, E element ) {
+	private void addOptionalAttributes( HierarchicalConfiguration xmlConfig, E element ) throws Mvp4gXmlException, DuplicatePropertyNameException {
 		for ( String attributeName : getOptionalAttributeNames() ) {
 			String attributeValue = xmlConfig.getString( "[@" + attributeName + "]" );
 			if ( attributeValue != null ) {
@@ -167,14 +174,15 @@ abstract class Mvp4gElementLoader<E extends Mvp4gElement> {
 		}
 	}
 
-	private void addMultiValueAttributes( HierarchicalConfiguration xmlConfig, E element ) {
+	private void addMultiValueAttributes( HierarchicalConfiguration xmlConfig, E element ) throws Mvp4gXmlException, DuplicatePropertyNameException {
 		for ( String attributeName : getMultiValueAttributeNames() ) {
-			String[] attributeValues = getAttributeValues( xmlConfig, attributeName );
+			String[] attributeValues = getAttributeValues( xmlConfig, attributeName, element );
 			element.setValues( attributeName, attributeValues );
 		}
 	}
 
-	private void addOptionalMultiValueAttributes( HierarchicalConfiguration xmlConfig, E element ) {
+	private void addOptionalMultiValueAttributes( HierarchicalConfiguration xmlConfig, E element ) throws Mvp4gXmlException,
+			DuplicatePropertyNameException {
 		for ( String attributeName : getOptionalMultiValueAttributeNames() ) {
 			String[] attributeValues = getOptionalAttributeValues( xmlConfig, attributeName );
 			if ( attributeValues.length > 0 ) {
@@ -183,7 +191,7 @@ abstract class Mvp4gElementLoader<E extends Mvp4gElement> {
 		}
 	}
 
-	private void addParentAttributes( HierarchicalConfiguration xmlConfig, E element ) {
+	private void addParentAttributes( HierarchicalConfiguration xmlConfig, E element ) throws Mvp4gXmlException, DuplicatePropertyNameException {
 		ConfigurationNode parent = xmlConfig.getRootNode().getParentNode();
 
 		for ( String attributeName : getParentAttributeNames() ) {
@@ -206,22 +214,22 @@ abstract class Mvp4gElementLoader<E extends Mvp4gElement> {
 		return "";
 	}
 
-	private String getAttribute( HierarchicalConfiguration element, String attributeName ) throws InvalidMvp4gConfigurationException {
+	private String getAttribute( HierarchicalConfiguration element, String attributeName, E tag ) throws Mvp4gXmlException {
 
 		String value = element.getString( "[@" + attributeName + "]" );
 		if ( value == null ) {
 			String err = getElementLabel() + ": '" + attributeName + "' is missing";
-			throw new InvalidMvp4gConfigurationException( err );
+			throw new Mvp4gXmlException( tag, err );
 		}
 		return value;
 	}
 
-	private String[] getAttributeValues( HierarchicalConfiguration element, String attributeName ) throws InvalidMvp4gConfigurationException {
+	private String[] getAttributeValues( HierarchicalConfiguration element, String attributeName, E tag ) throws Mvp4gXmlException {
 
 		String[] values = element.getStringArray( "[@" + attributeName + "]" );
 		if ( values == null || values.length == 0 ) {
 			String err = getElementLabel() + ": '" + attributeName + "' is missing";
-			throw new InvalidMvp4gConfigurationException( err );
+			throw new Mvp4gXmlException( tag, err );
 		}
 		return values;
 	}
@@ -234,12 +242,12 @@ abstract class Mvp4gElementLoader<E extends Mvp4gElement> {
 		return values;
 	}
 
-	private void checkForDuplicates( Set<E> loadedElements, E element ) throws InvalidMvp4gConfigurationException {
+	private void checkForDuplicates( Set<E> loadedElements, E element ) throws Mvp4gXmlException {
 
 		if ( loadedElements.contains( element ) ) {
 			String err = "Duplicate " + getElementLabel() + " identified by " + "'" + element.getUniqueIdentifierName()
 					+ "' found in configuration file.";
-			throw new InvalidMvp4gConfigurationException( err );
+			throw new Mvp4gXmlException( element, err );
 		}
 	}
 
