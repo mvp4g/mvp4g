@@ -6,15 +6,19 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.ListBox;
-import com.mvp4g.client.presenter.Presenter;
-import com.mvp4g.example.client.EventsEnum;
+import com.mvp4g.client.annotation.InjectService;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.example.client.MyEventBus;
 import com.mvp4g.example.client.ServiceAsync;
 import com.mvp4g.example.client.bean.BasicBean;
 import com.mvp4g.example.client.bean.DealBean;
 import com.mvp4g.example.client.bean.ProductBean;
 import com.mvp4g.example.client.presenter.view_interface.TopBarViewInterface;
+import com.mvp4g.example.client.view.TopBarView;
 
-public class TopBarPresenter extends Presenter<TopBarViewInterface> {
+@Presenter( view = TopBarView.class )
+public class TopBarPresenter extends BasePresenter<TopBarViewInterface, MyEventBus> {
 
 	private ServiceAsync service = null;
 
@@ -35,7 +39,8 @@ public class TopBarPresenter extends Presenter<TopBarViewInterface> {
 
 					public void onSuccess( DealBean deal ) {
 						dealSelected = deal;
-						eventBus.dispatch( EventsEnum.DISPLAY_DEAL, deal, view.getSave().getValue().booleanValue() );
+						eventBus.setHistoryStored( view.getSave().getValue().booleanValue() );
+						eventBus.displayDeal( deal );
 					}
 
 				} );
@@ -56,7 +61,8 @@ public class TopBarPresenter extends Presenter<TopBarViewInterface> {
 
 					public void onSuccess( ProductBean product ) {
 						productSelected = product;
-						eventBus.dispatch( EventsEnum.DISPLAY_PRODUCT, product, view.getSave().getValue().booleanValue() );
+						eventBus.setHistoryStored( view.getSave().getValue().booleanValue() );
+						eventBus.displayProduct( product );
 					}
 
 				} );
@@ -86,7 +92,7 @@ public class TopBarPresenter extends Presenter<TopBarViewInterface> {
 						if ( productSelected != null ) {
 							selectRightIndex( productsBox, productSelected.getId() );
 						}
-						eventBus.dispatch( EventsEnum.CHANGE_TOP_WIDGET, view );
+						eventBus.changeTopWidget( view.getViewWidget() );
 					}
 
 				} );
@@ -102,6 +108,7 @@ public class TopBarPresenter extends Presenter<TopBarViewInterface> {
 		} );
 	}
 
+	@InjectService
 	public void setService( ServiceAsync service ) {
 		this.service = service;
 	}

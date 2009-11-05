@@ -13,7 +13,7 @@
 
 	<servlet-mapping>
 		<servlet-name>service</servlet-name>
-		<url-pattern>/history/service</url-pattern>
+		<url-pattern>/mvp4ghistory/service</url-pattern>
 	</servlet-mapping>
   
   <!-- Default page to serve -->

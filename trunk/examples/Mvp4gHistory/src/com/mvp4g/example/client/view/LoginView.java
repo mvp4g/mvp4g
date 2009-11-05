@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.presenter.view_interface.LoginViewInterface;
 
 public class LoginView extends Composite implements LoginViewInterface {
@@ -31,6 +32,10 @@ public class LoginView extends Composite implements LoginViewInterface {
 
 	public HasText getUserName() {
 		return username;
+	}
+	
+	public Widget getViewWidget() {
+		return this;
 	}
 
 }

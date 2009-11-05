@@ -8,6 +8,7 @@ import com.mvp4g.example.client.bean.BasicBean;
 import com.mvp4g.example.client.bean.DealBean;
 import com.mvp4g.example.client.bean.ProductBean;
 
+
 @RemoteServiceRelativePath("service")
 public interface Service extends RemoteService {
 	

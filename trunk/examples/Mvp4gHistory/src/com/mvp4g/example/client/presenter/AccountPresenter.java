@@ -2,11 +2,14 @@ package com.mvp4g.example.client.presenter;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.mvp4g.client.presenter.Presenter;
-import com.mvp4g.example.client.EventsEnum;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.example.client.MyEventBus;
 import com.mvp4g.example.client.presenter.view_interface.AccountViewInterface;
+import com.mvp4g.example.client.view.AccountView;
 
-public class AccountPresenter extends Presenter<AccountViewInterface> {
+@Presenter(view=AccountView.class)
+public class AccountPresenter extends BasePresenter<AccountViewInterface, MyEventBus> {
 	
 	private String username = null;
 		
@@ -15,7 +18,7 @@ public class AccountPresenter extends Presenter<AccountViewInterface> {
 		view.getShowCart().addClickHandler( new ClickHandler(){
 
 			public void onClick( ClickEvent event ) {
-				eventBus.dispatch( EventsEnum.DISPLAY_CART, username );				
+				eventBus.displayCart( username );				
 			}
 			
 		});
@@ -24,7 +27,7 @@ public class AccountPresenter extends Presenter<AccountViewInterface> {
 	public void onLogin(String username){
 		this.username = username;
 		view.getUsername().setText( username );
-		eventBus.dispatch( EventsEnum.CHANGE_BOTTOM_WIDGET, view );
+		eventBus.changeBottomWidget( view.getViewWidget() );
 	}
 	
 }

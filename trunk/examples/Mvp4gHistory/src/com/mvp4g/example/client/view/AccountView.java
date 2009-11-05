@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.presenter.view_interface.AccountViewInterface;
 
 public class AccountView extends Composite implements AccountViewInterface {
@@ -33,6 +34,10 @@ public class AccountView extends Composite implements AccountViewInterface {
 
 	public Label getUsername() {
 		return username;
+	}
+
+	public Widget getViewWidget() {
+		return this;
 	}
 
 }

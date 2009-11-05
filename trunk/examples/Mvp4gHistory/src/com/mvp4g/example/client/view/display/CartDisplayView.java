@@ -3,6 +3,7 @@ package com.mvp4g.example.client.view.display;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.bean.ProductBean;
 import com.mvp4g.example.client.presenter.view_interface.display.CartDisplayViewInterface;
 
@@ -17,11 +18,14 @@ public class CartDisplayView extends Composite implements CartDisplayViewInterfa
 
 	public void addProduct( ProductBean product ) {
 		mainPanel.add( new HTML( buildElement( product ) ) );
-
 	}
 
 	public void clear() {
 		mainPanel.clear();
+	}
+	
+	public Widget getViewWidget() {
+		return this;
 	}
 
 	private String buildElement( ProductBean product ) {
