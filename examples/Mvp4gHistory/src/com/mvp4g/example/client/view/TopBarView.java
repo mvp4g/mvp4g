@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.presenter.view_interface.TopBarViewInterface;
 
 public class TopBarView extends Composite implements TopBarViewInterface {
@@ -57,6 +58,10 @@ public class TopBarView extends Composite implements TopBarViewInterface {
 
 	public HasValue<Boolean> getSave() {
 		return save;
+	}
+	
+	public Widget getViewWidget() {
+		return this;
 	}
 
 }

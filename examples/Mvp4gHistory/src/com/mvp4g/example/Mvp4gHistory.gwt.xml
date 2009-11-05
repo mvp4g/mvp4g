@@ -15,5 +15,5 @@
   <inherits name='com.mvp4g.Mvp4gModule'/>
   
   <!-- Specify the app entry point class.                         -->
-  <entry-point class='com.mvp4g.example.client.Mvp4gHistory'/>
+  <entry-point class='com.mvp4g.client.Mvp4gEntryPoint'/>
 </module>

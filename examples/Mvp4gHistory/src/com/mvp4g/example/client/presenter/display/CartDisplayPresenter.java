@@ -3,13 +3,17 @@ package com.mvp4g.example.client.presenter.display;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.presenter.Presenter;
-import com.mvp4g.example.client.EventsEnum;
+import com.mvp4g.client.annotation.InjectService;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.example.client.MyEventBus;
 import com.mvp4g.example.client.ServiceAsync;
 import com.mvp4g.example.client.bean.ProductBean;
 import com.mvp4g.example.client.presenter.view_interface.display.CartDisplayViewInterface;
+import com.mvp4g.example.client.view.display.CartDisplayView;
 
-public class CartDisplayPresenter extends Presenter<CartDisplayViewInterface> {
+@Presenter( view = CartDisplayView.class )
+public class CartDisplayPresenter extends BasePresenter<CartDisplayViewInterface, MyEventBus> {
 
 	private ServiceAsync service = null;
 
@@ -29,15 +33,16 @@ public class CartDisplayPresenter extends Presenter<CartDisplayViewInterface> {
 						view.addProduct( products.get( i ) );
 					}
 
-					eventBus.dispatch( EventsEnum.CHANGE_MAIN_WIDGET, view );
+					eventBus.changeMainWidget( view.getViewWidget() );
 				}
 
 			} );
 		}
 
 	}
-	
-	public void setService(ServiceAsync service){
+
+	@InjectService
+	public void setService( ServiceAsync service ) {
 		this.service = service;
 	}
 
