@@ -405,12 +405,21 @@ public class Mvp4gConfigurationFileWriter {
 		String startView = start.getView();
 
 		sourceWriter.println( "RootPanel.get().add(" + startView + ");" );
-
+		
 		if ( start.hasEventType() ) {
 			String eventType = start.getEventType();
+			String eventBusClass = configuration.getEventBus().getInterfaceClassName();
+
 			sourceWriter.print( "eventBus." );
-			sourceWriter.print( eventType );
-			sourceWriter.println( "();" );
+			if ( EventBusWithLookup.class.getName().equals( eventBusClass ) ) {
+				sourceWriter.print( "dispatch(\"" );
+				sourceWriter.print( eventType );
+				sourceWriter.println( "\");" );
+			} else {
+				sourceWriter.print( eventType );
+				sourceWriter.println( "();" );
+			}
+			
 		}
 
 		if ( start.hasHistory() ) {

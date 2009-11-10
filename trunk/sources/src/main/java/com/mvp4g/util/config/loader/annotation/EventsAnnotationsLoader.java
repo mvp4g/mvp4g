@@ -11,9 +11,9 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.BaseEventBus;
+import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
-import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
@@ -92,9 +92,9 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 
 		EventBusElement eventBus = null;
 		if ( c.isAssignableTo( oracle.findType( EventBusWithLookup.class.getName() ) ) ) {
-			eventBus = new EventBusElement( c.getQualifiedSourceName(), BaseEventBusWithLookUp.class.getName(), true, false );
+			eventBus = new EventBusElement( c.getQualifiedSourceName(), BaseEventBusWithLookUp.class.getName(), true );
 		} else if ( c.isAssignableTo( oracle.findType( EventBus.class.getName() ) ) ) {
-			eventBus = new EventBusElement( c.getQualifiedSourceName(), BaseEventBus.class.getName(), false, false );
+			eventBus = new EventBusElement( c.getQualifiedSourceName(), BaseEventBus.class.getName(), false );
 		}
 
 		return eventBus;

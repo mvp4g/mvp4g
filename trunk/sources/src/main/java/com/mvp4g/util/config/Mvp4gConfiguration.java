@@ -3,7 +3,7 @@
  */
 package com.mvp4g.util.config;
 
-import java.io.File;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,8 +28,8 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.annotation.Service;
-import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
+import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.presenter.PresenterInterface;
 import com.mvp4g.util.config.element.EventBusElement;
@@ -73,7 +73,7 @@ import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 public class Mvp4gConfiguration {
 
 	private static final String HC_WARNING = "History Converter %s: must be able to translate null objects since it is associated to event %s which is sent with no object.";
-	private static final String REMOVE_OBJ = "%s %s: this object has been removed since it is not used.";
+	private static final String REMOVE_OBJ = "%s %s: No instance of this object has been created since this class is not used.";
 
 	private Set<PresenterElement> presenters = new HashSet<PresenterElement>();
 	private Set<ViewElement> views = new HashSet<ViewElement>();
@@ -129,9 +129,11 @@ public class Mvp4gConfiguration {
 	 */
 	public void load( String xmlConfigPath, Map<Class<? extends Annotation>, List<JClassType>> scanResult ) throws InvalidMvp4gConfigurationException {
 
-		File f = new File( xmlConfigPath );
+		InputStream input = getClass().getClassLoader().getResourceAsStream( xmlConfigPath );
+		
+		boolean eventObjectLookUpNeeded = false;
 
-		if ( f.exists() ) {
+		if ( input != null ) {
 
 			XMLConfiguration xmlConfig;
 			try {
@@ -147,6 +149,7 @@ public class Mvp4gConfiguration {
 				loadHistoryConverters( xmlConfig );
 				loadPresenters( xmlConfig );
 				loadEvents( xmlConfig );
+				eventObjectLookUpNeeded = !events.isEmpty();
 				loadStart( xmlConfig );
 				loadHistory( xmlConfig );
 			} catch ( Mvp4gXmlException e ) {
@@ -163,7 +166,7 @@ public class Mvp4gConfiguration {
 		loadEvents( scanResult.get( Events.class ) );
 
 		// Phase 3: perform cross-element validations
-		if ( eventBus.isLookForObjectClass() ) {
+		if ( eventObjectLookUpNeeded ) {
 			findEventObjectClass();
 		}
 		checkUniquenessOfAllElements();
@@ -530,7 +533,7 @@ public class Mvp4gConfiguration {
 
 				//Control if presenter event bus is compatible with module event bus
 				if ( !eventBusType.isAssignableTo( eventBusParam ) ) {
-					throw new InvalidTypeException( presenter, "Event Bus", eventBusParam.getQualifiedSourceName(), eventBus.getInterfaceClassName() );
+					throw new InvalidTypeException( presenter, "Event Bus", eventBus.getInterfaceClassName(), eventBusParam.getQualifiedSourceName() );
 				}
 
 				//Control if view injected to the event bus is compatible with presenter view type
@@ -715,7 +718,7 @@ public class Mvp4gConfiguration {
 		EventsAnnotationsLoader loader = new EventsAnnotationsLoader();
 		loader.load( annotedClasses, this );
 		if ( eventBus == null ) {
-			eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBusWithLookUp.class.getName(), true, true );
+			eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBusWithLookUp.class.getName(), true );
 		}
 	}
 
