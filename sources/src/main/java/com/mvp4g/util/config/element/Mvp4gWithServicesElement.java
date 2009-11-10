@@ -28,15 +28,19 @@ public class Mvp4gWithServicesElement extends SimpleMvp4gElement {
 		super( tagName );
 	}
 
-	public void setServices( String[] services ) throws DuplicatePropertyNameException {
-
-		for ( String service : services ) {
-			injectedServices.add( new InjectedElement( service, "set" + capitalized( service ) ) );
+	@Override
+	public void setValues( String name, String[] values ) throws DuplicatePropertyNameException {
+		super.setValues( name, values );
+		if ( "services".equals( name ) ) {
+			setServices( values );
 		}
-
 	}
 
 	public List<InjectedElement> getInjectedServices() {
+		String[] services = getValues( "services" );
+		if ( services != null ) {
+
+		}
 		return injectedServices;
 	}
 
@@ -49,6 +53,14 @@ public class Mvp4gWithServicesElement extends SimpleMvp4gElement {
 	/* package */
 	String capitalized( String name ) {
 		return name.substring( 0, 1 ).toUpperCase() + name.substring( 1 );
+	}
+
+	private void setServices( String[] services ) throws DuplicatePropertyNameException {
+
+		for ( String service : services ) {
+			injectedServices.add( new InjectedElement( service, "set" + capitalized( service ) ) );
+		}
+
 	}
 
 }

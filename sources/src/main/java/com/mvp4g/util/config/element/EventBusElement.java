@@ -7,13 +7,11 @@ public class EventBusElement {
 	private String interfaceClassName = null;
 	private String abstractClassName = null;
 	private boolean withLookUp = true;
-	private boolean lookForObjectClass = true;
 
-	public EventBusElement( String interfaceClassName, String abstractClassName, boolean withLookUp, boolean lookForObjectClass ) {
+	public EventBusElement( String interfaceClassName, String abstractClassName, boolean withLookUp ) {
 		this.interfaceClassName = interfaceClassName;
 		this.abstractClassName = abstractClassName;
 		this.withLookUp = withLookUp;
-		this.lookForObjectClass = lookForObjectClass;
 	}
 
 	/**
@@ -61,22 +59,7 @@ public class EventBusElement {
 		this.withLookUp = withLookUp;
 	}
 
-	/**
-	 * @return the lookForObjectClass
-	 */
-	public boolean isLookForObjectClass() {
-		return lookForObjectClass;
-	}
-
-	/**
-	 * @param lookForObjectClass
-	 *            the lookForObjectClass to set
-	 */
-	public void setLookForObjectClass( boolean lookForObjectClass ) {
-		this.lookForObjectClass = lookForObjectClass;
-	}
-	
-	public boolean isXml(){
+	public boolean isXml() {
 		return EventBusWithLookup.class.getName().equals( interfaceClassName );
 	}
 
