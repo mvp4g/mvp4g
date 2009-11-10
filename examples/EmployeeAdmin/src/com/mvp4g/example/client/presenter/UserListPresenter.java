@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.presenter.Presenter;
+import com.mvp4g.client.presenter.XmlPresenter;
 import com.mvp4g.example.client.EventsEnum;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
@@ -13,7 +13,7 @@ import com.mvp4g.example.client.presenter.view_interface.UserListViewInterface;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyTableInterface;
 
-public class UserListPresenter extends Presenter<UserListViewInterface> {
+public class UserListPresenter extends XmlPresenter<UserListViewInterface> {
 
 	protected int indexSelected = 0;
 	protected List<UserBean> users = null;

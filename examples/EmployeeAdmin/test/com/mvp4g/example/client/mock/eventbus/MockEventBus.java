@@ -1,14 +1,15 @@
 package com.mvp4g.example.client.mock.eventbus;
 
-import com.mvp4g.client.event.EventBus;
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
-public class MockEventBus extends EventBus {
+import com.mvp4g.client.event.BaseEventBusWithLookUp;
+
+public class MockEventBus extends BaseEventBusWithLookUp {
 
 	private String lastDispatchedEventType = null;
 	private Object lastDispatchedObject = null;
 
-	public void dispatch( String eventType, Object form, boolean hasHistory ) {
+	public void dispatch( String eventType, Object form ) {
 		lastDispatchedEventType = eventType;
 		lastDispatchedObject = form;
 	}

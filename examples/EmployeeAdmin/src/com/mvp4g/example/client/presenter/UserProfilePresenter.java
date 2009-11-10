@@ -5,7 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.presenter.Presenter;
+import com.mvp4g.client.presenter.XmlPresenter;
 import com.mvp4g.example.client.Constants;
 import com.mvp4g.example.client.EventsEnum;
 import com.mvp4g.example.client.UserServiceAsync;
@@ -14,7 +14,7 @@ import com.mvp4g.example.client.presenter.view_interface.UserProfileViewInterfac
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyListBoxInterface;
 
-public class UserProfilePresenter extends Presenter<UserProfileViewInterface> implements Constants {
+public class UserProfilePresenter extends XmlPresenter<UserProfileViewInterface> implements Constants {
 
 	private boolean toUpdate = true;
 	private boolean enabled = false;
