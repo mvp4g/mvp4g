@@ -39,7 +39,7 @@ For example:
 </views>
 }}}
 
-will generate the following class names: com.mvp4g.example.client.RootView, com.mvp4g.example.client.UserCreateView and com.mvp4g.example.client.display.UserDisplayView.
+will generate the following class names: com.mvp4g.example.client.RootView, com.mvp4g.example.client.view.UserCreateView and com.mvp4g.example.client.view.display.UserDisplayView.
 
 
 ==When and how are presenters, views and services instantiated? When and how views and services injected into presenters? When is the event bus created and configured?==
