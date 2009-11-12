@@ -71,7 +71,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			loadStartView( c, annotation, configuration );
 			loadEvents( c, annotation, configuration );
 		} else {
-			String err = "this class must implement " + EventBus.class.getName() + " since it is annoted with " + Events.class.getSimpleName() + ".";
+			String err = "this class must implement " + EventBus.class.getCanonicalName() + " since it is annoted with " + Events.class.getSimpleName() + ".";
 			throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 		}
 	}
@@ -91,10 +91,10 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		TypeOracle oracle = configuration.getOracle();
 
 		EventBusElement eventBus = null;
-		if ( c.isAssignableTo( oracle.findType( EventBusWithLookup.class.getName() ) ) ) {
-			eventBus = new EventBusElement( c.getQualifiedSourceName(), BaseEventBusWithLookUp.class.getName(), true );
-		} else if ( c.isAssignableTo( oracle.findType( EventBus.class.getName() ) ) ) {
-			eventBus = new EventBusElement( c.getQualifiedSourceName(), BaseEventBus.class.getName(), false );
+		if ( c.isAssignableTo( oracle.findType( EventBusWithLookup.class.getCanonicalName() ) ) ) {
+			eventBus = new EventBusElement( c.getQualifiedSourceName(), BaseEventBusWithLookUp.class.getCanonicalName(), true );
+		} else if ( c.isAssignableTo( oracle.findType( EventBus.class.getCanonicalName() ) ) ) {
+			eventBus = new EventBusElement( c.getQualifiedSourceName(), BaseEventBus.class.getCanonicalName(), false );
 		}
 
 		return eventBus;
@@ -118,20 +118,26 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		String viewName = annotation.startViewName();
 		Class<?> viewClass = annotation.startView();
 		if ( ( viewName != null ) && ( viewName.length() > 0 ) ) {
+			boolean found = false;
 			for ( ViewElement view : views ) {
 				if ( viewName.equals( view.getName() ) ) {
-					if ( !viewClass.getName().equals( view.getClassName() ) ) {
-						String err = "There is no instance of " + viewClass.getName() + " with name " + viewName;
+					if ( !viewClass.getCanonicalName().equals( view.getClassName() ) ) {
+						String err = "There is no instance of " + viewClass.getCanonicalName() + " with name " + viewName;
 						throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 					}
+					found = true;
 					break;
 				}
 			}
+			if ( !found ){
+				String err = "There is no view named " + viewName;
+				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
+			}
 
 		} else {
-			viewName = getElementName( views, viewClass.getName() );
+			viewName = getElementName( views, viewClass.getCanonicalName() );
 			if ( viewName == null ) {
-				String err = "There is no instance of " + viewClass.getName();
+				String err = "There is no instance of " + viewClass.getCanonicalName();
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 			}
 		}
@@ -254,9 +260,9 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		String handlerName = null;
 		int index = 0;
 		for ( Class<?> handler : handlerClasses ) {
-			handlerName = getElementName( presenters, handler.getName() );
+			handlerName = getElementName( presenters, handler.getCanonicalName() );
 			if ( handlerName == null ) {
-				String err = "No instance of " + handler.getName() + "is defined.";
+				String err = "No instance of " + handler.getCanonicalName() + " is defined.";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 			}
 			handlers[index] = handlerName;
@@ -298,11 +304,11 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				//setter is only called once, so this error can't occur.
 			}
 		} else if ( !Event.NoHistoryConverter.class.equals( hcClass ) ) {
-			String hcClassName = hcClass.getName();
+			String hcClassName = hcClass.getCanonicalName();
 			Set<HistoryConverterElement> historyConverters = configuration.getHistoryConverters();
 			hcName = getElementName( historyConverters, hcClassName );
 			if ( hcName == null ) {
-				String err = "No instance of " + hcClassName + "is defined.";
+				String err = "No instance of " + hcClassName + " is defined.";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 			}
 			try {
@@ -333,7 +339,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 	 */
 	@Override
 	protected String getMandatoryInterfaceName() {
-		return null;
+		return EventBus.class.getCanonicalName();
 	}
 
 }

@@ -2,13 +2,13 @@ package com.mvp4g.client.history;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.mvp4g.client.event.EventBus;
-import com.mvp4g.client.test_tools.EventBusStub;
+import com.mvp4g.client.test_tools.EventBusWithLookUpStub;
 import com.mvp4g.client.test_tools.HistoryProxyStub;
 import com.mvp4g.client.test_tools.ValueChangeEventStub;
 
@@ -21,19 +21,44 @@ import com.mvp4g.client.test_tools.ValueChangeEventStub;
  */
 public class PlaceServiceTest {
 
-	PlaceService placeService = null;
-	EventBusStub eventBus = null;
+	private class MyTestPlaceService extends PlaceService<EventBusWithLookUpStub> {
+
+		private boolean initEvent = false;
+
+		public MyTestPlaceService( PlaceService.HistoryProxy history ) {
+			super( history );
+		}
+
+		@Override
+		protected void sendInitEvent() {
+			initEvent = true;
+		}
+
+		public boolean isInitEvent() {
+			return initEvent;
+		}
+
+	}
+
+	MyTestPlaceService placeService = null;
+	EventBusWithLookUpStub eventBus = null;
 	HistoryProxyStub history = new HistoryProxyStub();
 
 	@Before
 	public void setUp() {
-		eventBus = new EventBusStub();
-		placeService = new PlaceService( eventBus, history );
+		eventBus = new EventBusWithLookUpStub();
+		placeService = new MyTestPlaceService( history );
+		placeService.setEventBus( eventBus );
 	}
 
 	@Test
 	public void testConstructor() {
 		assertEquals( history.getHandler(), placeService );
+	}
+
+	@Test
+	public void testEventBusGetter() {
+		assertEquals( eventBus, placeService.getEventBus() );
 	}
 
 	@Test
@@ -56,12 +81,17 @@ public class PlaceServiceTest {
 	}
 
 	@Test
-	public void testInitEvent() {
-		String initEvent = "initEvent";
-		placeService.setInitEvent( initEvent );
+	public void testEmptyToken() {
 		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( "" );
 		placeService.onValueChange( event );
-		eventBus.assertEvent( initEvent, null, false );
+		assertTrue( placeService.isInitEvent() );
+	}
+
+	@Test
+	public void testWrongToken() {
+		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( "wrongEventType" );
+		placeService.onValueChange( event );
+		assertTrue( placeService.isInitEvent() );
 	}
 
 	@Test
@@ -70,7 +100,7 @@ public class PlaceServiceTest {
 		placeService.addConverter( eventType, buildHistoryConverter() );
 		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( "eventType" );
 		placeService.onValueChange( event );
-		eventBus.assertEvent( eventType, null, false );
+		eventBus.assertEvent( eventType, null );
 	}
 
 	@Test
@@ -80,14 +110,14 @@ public class PlaceServiceTest {
 		placeService.addConverter( eventType, buildHistoryConverter() );
 		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( eventType + "?" + form );
 		placeService.onValueChange( event );
-		eventBus.assertEvent( eventType, form, false );
+		eventBus.assertEvent( eventType, form );
 	}
 
-	private HistoryConverter<String> buildHistoryConverter() {
-		return new HistoryConverter<String>() {
+	private HistoryConverter<String, EventBusWithLookUpStub> buildHistoryConverter() {
+		return new HistoryConverter<String, EventBusWithLookUpStub>() {
 
-			public void convertFromToken( String eventType, String param, EventBus eventBus ) {
-				eventBus.dispatch( eventType, param, false );
+			public void convertFromToken( String eventType, String param, EventBusWithLookUpStub eventBus ) {
+				eventBus.dispatch( eventType, param );
 			}
 
 			public String convertToToken( String eventType, String form ) {

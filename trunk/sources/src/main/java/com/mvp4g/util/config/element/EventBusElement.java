@@ -22,26 +22,10 @@ public class EventBusElement {
 	}
 
 	/**
-	 * @param interfaceClassName
-	 *            the interfaceClassName to set
-	 */
-	public void setInterfaceClassName( String interfaceClassName ) {
-		this.interfaceClassName = interfaceClassName;
-	}
-
-	/**
 	 * @return the abstractClassName
 	 */
 	public String getAbstractClassName() {
 		return abstractClassName;
-	}
-
-	/**
-	 * @param abstractClassName
-	 *            the abstractClassName to set
-	 */
-	public void setAbstractClassName( String abstractClassName ) {
-		this.abstractClassName = abstractClassName;
 	}
 
 	/**
@@ -51,16 +35,8 @@ public class EventBusElement {
 		return withLookUp;
 	}
 
-	/**
-	 * @param withLookUp
-	 *            the withLookUp to set
-	 */
-	public void setWithLookUp( boolean withLookUp ) {
-		this.withLookUp = withLookUp;
-	}
-
 	public boolean isXml() {
-		return EventBusWithLookup.class.getName().equals( interfaceClassName );
+		return EventBusWithLookup.class.getCanonicalName().equals( interfaceClassName );
 	}
 
 }

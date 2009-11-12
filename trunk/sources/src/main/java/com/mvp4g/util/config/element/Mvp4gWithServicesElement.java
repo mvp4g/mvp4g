@@ -37,10 +37,6 @@ public class Mvp4gWithServicesElement extends SimpleMvp4gElement {
 	}
 
 	public List<InjectedElement> getInjectedServices() {
-		String[] services = getValues( "services" );
-		if ( services != null ) {
-
-		}
 		return injectedServices;
 	}
 

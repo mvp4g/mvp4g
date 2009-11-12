@@ -92,7 +92,7 @@ public abstract class PlaceService<E extends EventBus> implements ValueChangeHan
 	 * @param history
 	 *            history proxy to inject
 	 */
-	PlaceService( HistoryProxy history ) {
+	protected PlaceService( HistoryProxy history ) {
 		this.history = history;
 		history.addValueChangeHandler( this );
 	}

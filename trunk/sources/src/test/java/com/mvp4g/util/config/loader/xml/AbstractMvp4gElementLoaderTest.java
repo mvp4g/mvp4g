@@ -1,4 +1,4 @@
-package com.mvp4g.util.config.loader;
+package com.mvp4g.util.config.loader.xml;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -12,7 +12,9 @@ import org.apache.commons.configuration.XMLConfiguration;
 import org.junit.Test;
 
 import com.mvp4g.util.config.element.Mvp4gElement;
+import com.mvp4g.util.config.loader.xml.Mvp4gElementLoader;
 import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
+import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 import com.mvp4g.util.test_tools.XMLConfigurationBuilder;
 
 public abstract class AbstractMvp4gElementLoaderTest<E extends Mvp4gElement, L extends Mvp4gElementLoader<E>> {
@@ -27,13 +29,13 @@ public abstract class AbstractMvp4gElementLoaderTest<E extends Mvp4gElement, L e
 
 	protected L basicLoader = newLoader( xmlBuilder.getEmptyConf() );
 
-	@Test( expected = InvalidMvp4gConfigurationException.class )
-	public void testEmptyElement() {
-		basicLoader.loadElements();
+	@Test
+	public void testEmptyElement() throws Mvp4gXmlException {
+		assertEquals( 0, basicLoader.loadElements().size() );
 	}
 
-	@Test( expected = InvalidMvp4gConfigurationException.class )
-	public void testDuplicateElement() {
+	@Test( expected = Mvp4gXmlException.class )
+	public void testDuplicateElement() throws Mvp4gXmlException {
 		L loader = newLoader( xmlBuilder.getConfigAttribute( convertToList( basicLoader.getRequiredAttributeNames() ), convertToList( basicLoader
 				.getMultiValueAttributeNames() ), new ArrayList<String>(), 2, false, isSingleNode() ) );
 		loader.loadElements();
@@ -99,9 +101,11 @@ public abstract class AbstractMvp4gElementLoaderTest<E extends Mvp4gElement, L e
 	/**
 	 * Load an element and verify that all its parameters have been loaded correctly
 	 * 
+	 * @throws Mvp4gXmlException
+	 * 
 	 */
 	@Test
-	public void testLoadOk() {
+	public void testLoadOk() throws Mvp4gXmlException {
 		List<String> attributes = convertToList( basicLoader.getRequiredAttributeNames() );
 		attributes.addAll( convertToList( basicLoader.getOptionalAttributeNames() ) );
 		List<String> multiValues = convertToList( basicLoader.getMultiValueAttributeNames() );

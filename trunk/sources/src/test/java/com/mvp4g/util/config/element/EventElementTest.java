@@ -4,13 +4,15 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
+
 public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 
 	private static final String[] properties = { "eventObjectClass", "calledMethod", "type", "history" };
 	private static final String[] values = { "handlers" };
 	
 	@Test
-	public void testGetCalledMethod(){
+	public void testGetCalledMethod() throws DuplicatePropertyNameException{
 		element.setType( "display" );
 		assertEquals( "onDisplay", element.getCalledMethod() );
 		element.setCalledMethod( "onDisplayCalled" );
@@ -18,21 +20,21 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 	}
 	
 	@Test
-	public void testGetCalledMethodOneCharacter(){
+	public void testGetCalledMethodOneCharacter() throws DuplicatePropertyNameException{
 		element.setType( "o" );
 		assertEquals( "onO", element.getCalledMethod() );
 	}
 
 
 	@Test
-	public void testHasHistory() {
+	public void testHasHistory() throws DuplicatePropertyNameException{
 		assertFalse( element.hasHistory() );
 		element.setHistory( "converter" );
 		assertTrue( element.hasHistory() );
 	}
 
 	@Test
-	public void testToString() {
+	public void testToString() throws DuplicatePropertyNameException{
 		element.setType( "type" );
 		assertEquals( "[type]", element.toString() );
 	}

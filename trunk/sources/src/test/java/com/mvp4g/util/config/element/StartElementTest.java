@@ -5,44 +5,46 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
+
 public class StartElementTest extends AbstractMvp4gElementTest<StartElement> {
 
 	protected static final String[] properties = { "eventType", "view", "history" };
 
 	@Test
-	public void testHasEventType() {
+	public void testHasEventType() throws DuplicatePropertyNameException {
 		assertFalse( element.hasEventType() );
 		element.setEventType( "test" );
 		assertTrue( element.hasEventType() );
 	}
-	
+
 	@Test
-	public void testHasHistory(){
+	public void testHasHistory() throws DuplicatePropertyNameException {
 		assertFalse( element.hasHistory() );
 		element.setHistory( "true" );
-		assertTrue( element.hasHistory() );		
+		assertTrue( element.hasHistory() );
 	}
-	
+
 	@Test
-	public void testHasHistoryUpper(){
+	public void testHasHistoryUpper() throws DuplicatePropertyNameException{
 		assertFalse( element.hasHistory() );
 		element.setHistory( "TRUE" );
-		assertTrue( element.hasHistory() );		
+		assertTrue( element.hasHistory() );
 	}
-	
+
 	@Test
-	public void testHasHistoryFalse(){
+	public void testHasHistoryFalse() throws DuplicatePropertyNameException{
 		assertFalse( element.hasHistory() );
 		element.setHistory( "false" );
-		assertFalse( element.hasHistory() );		
+		assertFalse( element.hasHistory() );
 	}
-	
+
 	@Test
-	public void testHasHistoryAny(){
+	public void testHasHistoryAny() throws DuplicatePropertyNameException{
 		assertFalse( element.hasHistory() );
 		element.setHistory( "laksjd123" );
-		assertFalse( element.hasHistory() );		
-	}		
+		assertFalse( element.hasHistory() );
+	}
 
 	@Override
 	protected String[] getProperties() {

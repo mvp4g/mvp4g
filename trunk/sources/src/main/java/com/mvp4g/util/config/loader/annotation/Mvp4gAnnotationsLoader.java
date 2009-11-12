@@ -135,7 +135,7 @@ public abstract class Mvp4gAnnotationsLoader<T extends Annotation> {
 	@SuppressWarnings( "unchecked" )
 	protected void controlType( JClassType c, JClassType mandatoryInterface ) throws Mvp4gAnnotationException {
 		if ( !c.isAssignableTo( mandatoryInterface ) ) {
-			String annotationClassName = ( (Class<T>)( (ParameterizedType)getClass().getGenericSuperclass() ).getActualTypeArguments()[0] ).getName();
+			String annotationClassName = ( (Class<T>)( (ParameterizedType)getClass().getGenericSuperclass() ).getActualTypeArguments()[0] ).getCanonicalName();
 			throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, "this class must implement "
 					+ mandatoryInterface.getQualifiedSourceName() + " since it is annoted with " + annotationClassName + "." );
 		}

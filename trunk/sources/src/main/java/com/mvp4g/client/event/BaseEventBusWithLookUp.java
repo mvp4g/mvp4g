@@ -74,6 +74,7 @@ public abstract class BaseEventBusWithLookUp extends BaseEventBus implements Eve
 		if ( e.getStackTrace()[0].getClassName().equals( this.getClass().getName() ) ) {
 			throw new Mvp4gException( "Class of the object sent with event " + eventType + " is incorrect." );
 		}
+		throw e;
 	}
 
 }

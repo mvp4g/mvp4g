@@ -42,7 +42,7 @@ public class PresenterAnnotationsLoader extends Mvp4gAnnotationsWithServiceLoade
 
 		ViewElement view = new ViewElement();
 		try {
-			view.setClassName( annotation.view().getName() );
+			view.setClassName( annotation.view().getCanonicalName() );
 			view.setName( viewName );
 		} catch ( DuplicatePropertyNameException e ) {
 			//setters are only called once, so this error can't occur.
@@ -60,6 +60,6 @@ public class PresenterAnnotationsLoader extends Mvp4gAnnotationsWithServiceLoade
 	 */
 	@Override
 	protected String getMandatoryInterfaceName() {
-		return PresenterInterface.class.getName();
+		return PresenterInterface.class.getCanonicalName();
 	}
 }

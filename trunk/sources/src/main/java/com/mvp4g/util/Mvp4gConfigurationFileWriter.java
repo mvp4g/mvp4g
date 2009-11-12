@@ -20,7 +20,6 @@ import java.util.List;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.user.rebind.SourceWriter;
-import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
@@ -31,6 +30,7 @@ import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.config.element.ViewElement;
+import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
 
 /**
  * This class reads the mvp4g-conf.xml
@@ -141,7 +141,7 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.indent();
 			sourceWriter.print( "getEventBus()." );
 
-			if ( EventBusWithLookup.class.getName().equals( eventBusClass ) ) {
+			if ( configuration.getEventBus().isXml() ) {
 				sourceWriter.print( "dispatch(\"" );
 				sourceWriter.print( history.getInitEvent() );
 				sourceWriter.println( "\");" );
@@ -405,13 +405,12 @@ public class Mvp4gConfigurationFileWriter {
 		String startView = start.getView();
 
 		sourceWriter.println( "RootPanel.get().add(" + startView + ");" );
-		
+
 		if ( start.hasEventType() ) {
 			String eventType = start.getEventType();
-			String eventBusClass = configuration.getEventBus().getInterfaceClassName();
 
 			sourceWriter.print( "eventBus." );
-			if ( EventBusWithLookup.class.getName().equals( eventBusClass ) ) {
+			if ( configuration.getEventBus().isXml() ) {
 				sourceWriter.print( "dispatch(\"" );
 				sourceWriter.print( eventType );
 				sourceWriter.println( "\");" );
@@ -419,7 +418,7 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.print( eventType );
 				sourceWriter.println( "();" );
 			}
-			
+
 		}
 
 		if ( start.hasHistory() ) {

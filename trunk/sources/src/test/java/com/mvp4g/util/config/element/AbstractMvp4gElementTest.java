@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mvp4g.util.exception.DuplicatePropertyNameException;
+import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 
@@ -32,7 +32,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 	}
 
 	@Test
-	public void testEquals() {
+	public void testEquals() throws DuplicatePropertyNameException{
 		T same = newElement();
 		T different = newElement();
 		element.setProperty( element.getUniqueIdentifierName(), "id1" );
@@ -51,7 +51,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 	}
 
 	@Test
-	public void testSetAndGetProperties() {
+	public void testSetAndGetProperties() throws DuplicatePropertyNameException{
 		assertPropertiesSize( 0 );
 		assertSetProperty( "first", "first value" );
 		assertSetProperty( "second", "second value" );
@@ -59,7 +59,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 	}
 
 	@Test
-	public void testSetAndGetValues() {
+	public void testSetAndGetValues() throws DuplicatePropertyNameException{
 		String[] english = { "one", "two", "three" };
 		String[] french = { "un", "deux", "trois" };
 		assertMultiValuesSize( 0 );
@@ -76,7 +76,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 	}
 	
 	@Test
-	public void testSetValuesWithEmptyArray(){
+	public void testSetValuesWithEmptyArray() throws DuplicatePropertyNameException{
 		String[] emptyArray = {""};
 		element.setValues( "test", emptyArray );
 		assertArrayEquals( new String[]{}, element.getValues( "test" ) );
@@ -88,6 +88,17 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 		String[] values2 = { "un", "deux", "trois" };
 		element.setValues( "values", values );
 		element.setValues( "values", values2 );
+	}
+	
+	@Test
+	public void testHashCode() throws DuplicatePropertyNameException{
+		element.setProperty( getUniqueIdentifierName(), "test" );		
+		assertEquals( element.hashCode(), element.getUniqueIdentifier().hashCode() );
+	}
+	
+	@Test
+	public void testEmptyProperties(){
+		assertEquals( "", element.getUniqueIdentifier() );
 	}
 
 	/**

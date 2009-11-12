@@ -46,6 +46,6 @@ public class HistoryAnnotationsLoader extends Mvp4gAnnotationsWithServiceLoader<
 	 */
 	@Override
 	protected String getMandatoryInterfaceName() {
-		return HistoryConverter.class.getName();
+		return HistoryConverter.class.getCanonicalName();
 	}
 }
