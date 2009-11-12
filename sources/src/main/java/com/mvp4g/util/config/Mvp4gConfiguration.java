@@ -405,7 +405,7 @@ public class Mvp4gConfiguration {
 			}
 		}
 
-		JGenericType hcGenType = getType( null, HistoryConverter.class.getName() ).isGenericType();
+		JGenericType hcGenType = getType( null, HistoryConverter.class.getCanonicalName() ).isGenericType();
 		JClassType eventBusType = getType( null, eventBus.getInterfaceClassName() );
 		JClassType hcType = null;
 		JClassType eventBusParam = null;
@@ -423,7 +423,7 @@ public class Mvp4gConfiguration {
 
 				genHC = hcType.asParameterizationOf( hcGenType );
 				if ( genHC == null ) {
-					throw new InvalidClassException( history, HistoryConverter.class.getName() );
+					throw new InvalidClassException( history, HistoryConverter.class.getCanonicalName() );
 				}
 
 				methods = genHC.getMethods();
@@ -506,7 +506,7 @@ public class Mvp4gConfiguration {
 		}
 
 		String startView = start.getView();
-		JGenericType presenterGenType = getType( null, PresenterInterface.class.getName() ).isGenericType();
+		JGenericType presenterGenType = getType( null, PresenterInterface.class.getCanonicalName() ).isGenericType();
 		JClassType eventBusType = getType( null, eventBus.getInterfaceClassName() );
 		JType[] noParam = new JType[0];
 		JClassType presenterType = null;
@@ -525,7 +525,7 @@ public class Mvp4gConfiguration {
 				presenterType = getType( presenter, presenter.getClassName() );
 				genPresenter = presenterType.asParameterizationOf( presenterGenType );
 				if ( genPresenter == null ) {
-					throw new InvalidClassException( presenter, PresenterInterface.class.getName() );
+					throw new InvalidClassException( presenter, PresenterInterface.class.getCanonicalName() );
 				}
 
 				eventBusParam = (JClassType)genPresenter.findMethod( "getEventBus", noParam ).getReturnType();
@@ -718,7 +718,7 @@ public class Mvp4gConfiguration {
 		EventsAnnotationsLoader loader = new EventsAnnotationsLoader();
 		loader.load( annotedClasses, this );
 		if ( eventBus == null ) {
-			eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBusWithLookUp.class.getName(), true );
+			eventBus = new EventBusElement( EventBusWithLookup.class.getCanonicalName(), BaseEventBusWithLookUp.class.getCanonicalName(), true );
 		}
 	}
 

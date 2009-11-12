@@ -46,7 +46,7 @@ public class ServiceAnnotationsLoader extends Mvp4gAnnotationsLoader<Service> {
 	 */
 	@Override
 	protected String getMandatoryInterfaceName() {
-		return RemoteService.class.getName();
+		return RemoteService.class.getCanonicalName();
 	}
 
 }

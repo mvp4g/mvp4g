@@ -1,8 +1,9 @@
-package com.mvp4g.util.config.loader;
+package com.mvp4g.util.config.loader.xml;
 
 import org.apache.commons.configuration.XMLConfiguration;
 
 import com.mvp4g.util.config.element.ViewElement;
+import com.mvp4g.util.config.loader.xml.ViewsLoader;
 
 public class ViewsLoaderTest extends AbstractMvp4gElementLoaderTest<ViewElement, ViewsLoader> {
 

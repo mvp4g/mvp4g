@@ -1,4 +1,4 @@
-package com.mvp4g.util.config.loader;
+package com.mvp4g.util.config.loader.xml;
 
 import static org.junit.Assert.*;
 
@@ -9,17 +9,19 @@ import org.apache.commons.configuration.XMLConfiguration;
 import org.junit.Test;
 
 import com.mvp4g.util.config.element.HistoryElement;
+import com.mvp4g.util.config.loader.xml.HistoryLoader;
+import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 
 public class HistoryLoaderTest extends AbstractMvp4gElementLoaderTest<HistoryElement, HistoryLoader> {
 
 	@Test
-	public void testEmptyElement() {
+	public void testEmptyElement() throws Mvp4gXmlException {
 		assertEquals( 0, basicLoader.loadElements().size() );
 		assertNull( basicLoader.loadElement() );
 	}
 
 	@Test
-	public void testLoadOk() {
+	public void testLoadOk() throws Mvp4gXmlException {
 		List<String> attributes = convertToList( basicLoader.getRequiredAttributeNames() );
 		attributes.addAll( convertToList( basicLoader.getOptionalAttributeNames() ) );
 		List<String> multiValues = convertToList( basicLoader.getMultiValueAttributeNames() );

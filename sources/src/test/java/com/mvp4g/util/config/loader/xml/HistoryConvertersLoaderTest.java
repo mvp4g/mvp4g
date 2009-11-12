@@ -1,18 +1,10 @@
-package com.mvp4g.util.config.loader;
-
-import static org.junit.Assert.assertEquals;
+package com.mvp4g.util.config.loader.xml;
 
 import org.apache.commons.configuration.XMLConfiguration;
-import org.junit.Test;
 
 import com.mvp4g.util.config.element.HistoryConverterElement;
 
 public class HistoryConvertersLoaderTest extends AbstractMvp4gElementLoaderTest<HistoryConverterElement, HistoryConverterLoader> {
-
-	@Test
-	public void testEmptyElement() {
-		assertEquals( 0, basicLoader.loadElements().size() );
-	}
 
 	@Override
 	protected String getTagName() {

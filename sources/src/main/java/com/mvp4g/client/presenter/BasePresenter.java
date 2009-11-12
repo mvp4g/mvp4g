@@ -42,11 +42,6 @@ public class BasePresenter<V, E extends EventBus> implements PresenterInterface<
 	public BasePresenter() {
 	}
 
-	public BasePresenter( V view, E eventBus ) {
-		this.eventBus = eventBus;
-		this.view = view;
-	}
-
 	public V getView() {
 		return view;
 	}

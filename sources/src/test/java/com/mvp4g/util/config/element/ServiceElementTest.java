@@ -4,12 +4,14 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
+
 public class ServiceElementTest extends SimpleMvp4gElementTest {
 
 	private static final String[] properties = SimpleMvp4gElementTest.addProperties( new String[] { "path" } );
 
 	@Test
-	public void testHasPath() {
+	public void testHasPath() throws DuplicatePropertyNameException{
 		ServiceElement serviceElement = (ServiceElement)element;
 		assertFalse( serviceElement.hasPath() );
 		serviceElement.setPath( "path" );

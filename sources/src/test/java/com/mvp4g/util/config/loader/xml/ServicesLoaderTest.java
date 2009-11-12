@@ -1,17 +1,10 @@
-package com.mvp4g.util.config.loader;
+package com.mvp4g.util.config.loader.xml;
 
-import static org.junit.Assert.*;
 import org.apache.commons.configuration.XMLConfiguration;
-import org.junit.Test;
 
 import com.mvp4g.util.config.element.ServiceElement;
 
 public class ServicesLoaderTest extends AbstractMvp4gElementLoaderTest<ServiceElement, ServicesLoader> {
-
-	@Test
-	public void testEmptyElement() {
-		assertEquals( 0, basicLoader.loadElements().size() );		
-	}
 
 	@Override
 	protected String getTagName() {

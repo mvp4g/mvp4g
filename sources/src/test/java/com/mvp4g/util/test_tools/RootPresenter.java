@@ -1,8 +1,8 @@
 package com.mvp4g.util.test_tools;
 
-import com.mvp4g.client.presenter.Presenter;
+import com.mvp4g.client.presenter.XmlPresenter;
 
-public class RootPresenter extends Presenter<RootView> {
+public class RootPresenter extends XmlPresenter<RootView> {
 	
 	public void onDisplayMessage(String message){
 		//do nothing
