@@ -6,7 +6,7 @@
  * Add the possibility to use annotations (see http://groups.google.com/group/mvp4g/browse_thread/thread/b04dfd32aa4cd70e)
  * Add a multi-module feature (see http://groups.google.com/group/mvp4g/browse_thread/thread/2c80f33cc38b5f3f)
  * Add lazy creation of presenter (http://groups.google.com/group/mvp4g/browse_thread/thread/1fa4aeed1e25fff2)
-
+ * Add the possibility to use non-RPC services (http://groups.google.com/group/mvp4g/browse_thread/thread/a9714065557e8c98)
 
 
 = Release Notes =
