@@ -305,6 +305,25 @@ public class EventsAnnotationsLoaderTest {
 	}
 
 	@Test( expected = Mvp4gAnnotationException.class )
+	public void testDoubleNotFoundHistory() throws Mvp4gAnnotationException {
+		try {
+			List<JClassType> annotedClasses = new ArrayList<JClassType>();
+			annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+			annotedClasses.clear();
+
+			JClassType type = oracle.addClass( Events.EventBusDoubleNotFoundHistory.class );
+			annotedClasses.add( type );
+			loader.load( annotedClasses, configuration );
+		} catch ( Mvp4gAnnotationException e ) {
+			assertTrue( e.getMessage().contains(
+					"Duplicate value for Not Found History event. It is already defined by another method or in your configuration file." ) );
+			throw e;
+		}
+	}
+
+	@Test( expected = Mvp4gAnnotationException.class )
 	public void testNoInstanceOfHander() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
@@ -322,7 +341,7 @@ public class EventsAnnotationsLoaderTest {
 			throw e;
 		}
 	}
-	
+
 	@Test( expected = Mvp4gAnnotationException.class )
 	public void testNoInstanceOfHistory() throws Mvp4gAnnotationException {
 		try {
@@ -379,6 +398,7 @@ public class EventsAnnotationsLoaderTest {
 
 		assertEquals( "event2", configuration.getStart().getEventType() );
 		assertEquals( "event2", configuration.getHistory().getInitEvent() );
+		assertEquals( "event1", configuration.getHistory().getNotFoundEvent() );
 
 	}
 }

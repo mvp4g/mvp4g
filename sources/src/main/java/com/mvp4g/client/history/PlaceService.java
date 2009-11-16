@@ -117,7 +117,7 @@ public abstract class PlaceService<E extends EventBus> implements ValueChangeHan
 			String param = ( tokenTab.length > 1 ) ? tokenTab[1] : null;
 			HistoryConverter<?, E> converter = converters.get( eventType );
 			if ( converter == null ) {
-				sendInitEvent();
+				sendNotFoundEvent();
 			} else {
 				converter.convertFromToken( eventType, param, eventBus );
 			}
@@ -171,8 +171,13 @@ public abstract class PlaceService<E extends EventBus> implements ValueChangeHan
 	}
 
 	/**
-	 * Call when the init event needs to be sent
+	 * Call when token retrieved is null or equals to empty string
 	 */
 	abstract protected void sendInitEvent();
+	
+	/**
+	 * Call when token retrieved doesn't correspond to an event
+	 */
+	abstract protected void sendNotFoundEvent();
 
 }

@@ -9,6 +9,7 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.InitHistory;
+import com.mvp4g.client.annotation.NotFoundHistory;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
@@ -71,7 +72,8 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			loadStartView( c, annotation, configuration );
 			loadEvents( c, annotation, configuration );
 		} else {
-			String err = "this class must implement " + EventBus.class.getCanonicalName() + " since it is annoted with " + Events.class.getSimpleName() + ".";
+			String err = "this class must implement " + EventBus.class.getCanonicalName() + " since it is annoted with "
+					+ Events.class.getSimpleName() + ".";
 			throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 		}
 	}
@@ -129,7 +131,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 					break;
 				}
 			}
-			if ( !found ){
+			if ( !found ) {
 				String err = "There is no view named " + viewName;
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 			}
@@ -212,18 +214,31 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			}
 			if ( method.getAnnotation( InitHistory.class ) != null ) {
 				HistoryElement history = configuration.getHistory();
-				if ( history != null ) {
+				if ( history == null ) {
+					history = new HistoryElement();
+				}
+
+				try {
+					history.setInitEvent( method.getName() );
+				} catch ( DuplicatePropertyNameException e ) {
 					String err = "Duplicate value for Init History event. It is already defined by another method or in your configuration file.";
 					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
-				} else {
-					history = new HistoryElement();
-					try {
-						history.setInitEvent( method.getName() );
-					} catch ( DuplicatePropertyNameException e ) {
-						//setter is only called once, so this error can't occur.
-					}
-					configuration.setHistory( history );
 				}
+				configuration.setHistory( history );
+			}
+			else if ( method.getAnnotation( NotFoundHistory.class ) != null ) {
+				HistoryElement history = configuration.getHistory();
+				if ( history == null ) {
+					history = new HistoryElement();
+				}
+
+				try {
+					history.setNotFoundEvent( method.getName() );
+				} catch ( DuplicatePropertyNameException e ) {
+					String err = "Duplicate value for Not Found History event. It is already defined by another method or in your configuration file.";
+					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
+				}
+				configuration.setHistory( history );
 			}
 			loadHistory( c, method, event, element, configuration );
 

@@ -274,6 +274,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		HistoryElement history = new HistoryElement();
 		history.setInitEvent( "init" );
+		history.setNotFoundEvent( "notFound" );
 		configuration.setHistory( history );
 
 		assertOutput( getExpectedHistory(), false );
@@ -290,6 +291,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		HistoryElement history = new HistoryElement();
 		history.setInitEvent( "init" );
+		history.setNotFoundEvent( "notFound" );
 		configuration.setHistory( history );
 
 		assertOutput( getExpectedHistoryXml(), false );
@@ -454,6 +456,8 @@ public class Mvp4gConfigurationFileReaderTest {
 				"final PlaceService<com.mvp4g.client.event.EventBus> placeService = new PlaceService<com.mvp4g.client.event.EventBus>(){",
 				"protected void sendInitEvent(){",
 				"getEventBus().init();",
+				"protected void sendNotFoundEvent(){",
+				"getEventBus().notFound()",
 				"placeService.setEventBus(eventBus);",
 				"final com.mvp4g.example.client.history.display.UserHistoryConverter userConverter = new com.mvp4g.example.client.history.display.UserHistoryConverter();",
 				"userConverter.setUserService(userService);",
@@ -467,6 +471,8 @@ public class Mvp4gConfigurationFileReaderTest {
 				"final PlaceService<com.mvp4g.client.event.EventBusWithLookup> placeService = new PlaceService<com.mvp4g.client.event.EventBusWithLookup>(){",
 				"protected void sendInitEvent(){",
 				"getEventBus().dispatch(\"init\");",
+				"protected void sendNotFoundEvent(){",
+				"getEventBus().dispatch(\"notFound\")",
 				"placeService.setEventBus(eventBus);"
 				 };
 

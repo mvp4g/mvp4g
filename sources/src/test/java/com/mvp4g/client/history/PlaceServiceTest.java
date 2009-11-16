@@ -24,9 +24,18 @@ public class PlaceServiceTest {
 	private class MyTestPlaceService extends PlaceService<EventBusWithLookUpStub> {
 
 		private boolean initEvent = false;
+		private boolean notFoundEvent = false;
 
 		public MyTestPlaceService( PlaceService.HistoryProxy history ) {
 			super( history );
+		}
+		
+		public boolean isInitEvent() {
+			return initEvent;
+		}
+		
+		public boolean isNotFoundEvent() {
+			return notFoundEvent;
 		}
 
 		@Override
@@ -34,8 +43,9 @@ public class PlaceServiceTest {
 			initEvent = true;
 		}
 
-		public boolean isInitEvent() {
-			return initEvent;
+		@Override
+		protected void sendNotFoundEvent() {
+			notFoundEvent = true;
 		}
 
 	}
@@ -91,7 +101,7 @@ public class PlaceServiceTest {
 	public void testWrongToken() {
 		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( "wrongEventType" );
 		placeService.onValueChange( event );
-		assertTrue( placeService.isInitEvent() );
+		assertTrue( placeService.isNotFoundEvent() );
 	}
 
 	@Test

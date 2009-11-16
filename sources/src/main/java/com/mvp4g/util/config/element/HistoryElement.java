@@ -41,5 +41,17 @@ public class HistoryElement extends Mvp4gElement {
 	public String getInitEvent() {
 		return getProperty( "initEvent" );
 	}
+	
+	public void setNotFoundEvent( String notFoundEvent ) throws DuplicatePropertyNameException {
+		setProperty( "notFoundEvent", notFoundEvent );
+	}
+
+	public String getNotFoundEvent() {
+		String event = getProperty( "notFoundEvent" );
+		if(event == null){
+			event = getInitEvent();
+		}
+		return event;
+	}
 
 }

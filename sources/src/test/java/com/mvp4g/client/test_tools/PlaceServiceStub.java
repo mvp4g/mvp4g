@@ -20,11 +20,6 @@ public class PlaceServiceStub<E extends EventBus> extends PlaceService<E> {
 		this.lastForm = form;
 	}
 
-	@Override
-	protected void sendInitEvent() {
-		// TODO Auto-generated method stub			
-	}
-
 	public Object getLastForm() {
 		return lastForm;
 	}
@@ -36,6 +31,16 @@ public class PlaceServiceStub<E extends EventBus> extends PlaceService<E> {
 	public void assertEvent( String expectedEventType, Object expectedForm ) {
 		assertEquals( expectedEventType, lastEventType );
 		assertEquals( expectedForm, lastForm );
+	}
+
+	@Override
+	protected void sendInitEvent() {
+		//Nothing to do			
+	}
+
+	@Override
+	protected void sendNotFoundEvent() {
+		//Nothing to do
 	}
 
 }
