@@ -1,174 +1,429 @@
 package com.mvp4g.util;
 
-import static junit.framework.Assert.*;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static junit.framework.Assert.assertEquals;
+
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.dev.util.UnitTestTreeLogger;
+import com.mvp4g.client.event.BaseEventBus;
+import com.mvp4g.client.event.BaseEventBusWithLookUp;
+import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.event.EventBusWithLookup;
+import com.mvp4g.util.config.Mvp4gConfiguration;
+import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
-import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
+import com.mvp4g.util.config.element.HistoryConverterElement;
+import com.mvp4g.util.config.element.HistoryElement;
+import com.mvp4g.util.config.element.InjectedElement;
+import com.mvp4g.util.config.element.PresenterElement;
+import com.mvp4g.util.config.element.ServiceElement;
+import com.mvp4g.util.config.element.StartElement;
+import com.mvp4g.util.config.element.ViewElement;
+import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 import com.mvp4g.util.test_tools.SourceWriterTestStub;
+import com.mvp4g.util.test_tools.TypeOracleStub;
 
 public class Mvp4gConfigurationFileReaderTest {
 
 	private SourceWriterTestStub sourceWriter;
-	private Mvp4gConfigurationFileReader configReader;
+	private Mvp4gConfigurationFileWriter writer;
+	private Mvp4gConfiguration configuration;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws DuplicatePropertyNameException {
 		sourceWriter = new SourceWriterTestStub();
 		TreeLogger tl = new UnitTestTreeLogger.Builder().createLogger();
-		configReader = new Mvp4gConfigurationFileReader( sourceWriter, tl );
+		configuration = new Mvp4gConfiguration( tl, new TypeOracleStub() );
+		writer = new Mvp4gConfigurationFileWriter( sourceWriter, configuration );
+
+		String eventBusInterface = EventBus.class.getName();
+		String eventBusClass = BaseEventBus.class.getName();
+		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, false ) );
+
+		StartElement start = new StartElement();
+		start.setView( "view" );
+		configuration.setStart( start );
+
 	}
 
 	@Test
-	public void testWriteConfConstructsEventBus() throws UnableToCompleteException {
+	public void testWriteEventBusClass() {
 
-		String output = "EventBus eventBus = new EventBus();";
+		EventBusElement eventBus = configuration.getEventBus();
 
-		assertFalse( sourceWriter.dataContains( output ) );
+		String[] output = { "private abstract class AbstractEventBus extends " + eventBus.getAbstractClassName() + " implements "
+				+ eventBus.getInterfaceClassName() + "{}" };
 
-		configReader.writeConf();
-
-		assertTrue( eventBusError(), sourceWriter.dataContains( output ) );
-	}
-
-	private String eventBusError() {
-		return "EventBus construction not found in data:\n" + sourceWriter.getData();
+		assertOutput( output, false );
+		writer.writeConf();
+		assertOutput( output, true );
 	}
 
 	@Test
-	public void testWriteViews() throws UnableToCompleteException {
+	public void testWriteEvents() throws DuplicatePropertyNameException {
+
+		assertOutput( getExpectedEvents(), false );
+		assertOutput( getExpectedEventsWithLookup(), false );
+
+		Set<EventElement> events = configuration.getEvents();
+
+		EventElement e1 = new EventElement();
+		e1.setType( "userCreated" );
+		e1.setHandlers( new String[] { "displayUserPresenter" } );
+		e1.setEventObjectClass( "java.lang.String" );
+
+		EventElement e2 = new EventElement();
+		e2.setType( "userDisplay" );
+		e2.setHandlers( new String[] { "displayUserPresenter" } );
+		e2.setEventObjectClass( "java.lang.String" );
+		e2.setHistory( "history" );
+
+		EventElement e3 = new EventElement();
+		e3.setType( "displayMessage" );
+		e3.setHandlers( new String[] { "rootPresenter" } );
+
+		events.add( e1 );
+		events.add( e3 );
+		events.add( e2 );
+
+		writer.writeConf();
+
+		assertOutput( getExpectedEvents(), true );
+		assertOutput( getExpectedEventsWithLookup(), false );
+
+	}
+
+	@Test
+	public void testWriteEventsWithLookup() throws DuplicatePropertyNameException {
+
+		String eventBusInterface = EventBusWithLookup.class.getName();
+		String eventBusClass = BaseEventBusWithLookUp.class.getName();
+		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, true ) );
+
+		assertOutput( getExpectedEvents(), false );
+		assertOutput( getExpectedEventsWithLookup(), false );
+
+		EventElement e1 = new EventElement();
+		e1.setType( "userCreated" );
+		e1.setHandlers( new String[] { "displayUserPresenter" } );
+		e1.setEventObjectClass( "java.lang.String" );
+
+		EventElement e2 = new EventElement();
+		e2.setType( "userDisplay" );
+		e2.setHandlers( new String[] { "displayUserPresenter" } );
+		e2.setEventObjectClass( "java.lang.String" );
+		e2.setHistory( "history" );
+
+		EventElement e3 = new EventElement();
+		e3.setType( "displayMessage" );
+		e3.setHandlers( new String[] { "rootPresenter" } );
+
+		Set<EventElement> events = configuration.getEvents();
+		events.add( e1 );
+		events.add( e3 );
+		events.add( e2 );
+
+		writer.writeConf();
+
+		assertOutput( getExpectedEvents(), true );
+		assertOutput( getExpectedEventsWithLookup(), true );
+
+	}
+
+	@Test
+	public void testWriteViews() throws DuplicatePropertyNameException {
+
+		ViewElement view1 = new ViewElement();
+		view1.setName( "rootView" );
+		view1.setClassName( "com.mvp4g.util.test_tools.RootView" );
+
+		ViewElement view2 = new ViewElement();
+		view2.setName( "userCreateView" );
+		view2.setClassName( "com.mvp4g.example.client.view.UserCreateView" );
+
+		ViewElement view3 = new ViewElement();
+		view3.setName( "userDisplayView" );
+		view3.setClassName( "com.mvp4g.example.client.view.display.UserDisplayView" );
+
+		Set<ViewElement> views = configuration.getViews();
+		views.add( view1 );
+		views.add( view2 );
+		views.add( view3 );
 
 		assertOutput( getExpectedViews(), false );
 
-		configReader.writeConf();
+		writer.writeConf();
 
 		assertOutput( getExpectedViews(), true );
+
 	}
 
 	@Test
-	public void testWritePresenters() throws UnableToCompleteException {
+	public void testWritePresenters() throws DuplicatePropertyNameException {
+
+		PresenterElement p1 = new PresenterElement();
+		p1.setName( "rootPresenter" );
+		p1.setClassName( "com.mvp4g.util.test_tools.RootPresenter" );
+		p1.setView( "rootView" );
+
+		PresenterElement p2 = new PresenterElement();
+		p2.setName( "createUserPresenter" );
+		p2.setClassName( "com.mvp4g.example.client.presenter.UserCreatePresenter" );
+		p2.setView( "userCreateView" );
+		p2.getInjectedServices().add( new InjectedElement( "userService", "setUserService" ) );
+
+		PresenterElement p3 = new PresenterElement();
+		p3.setName( "displayUserPresenter" );
+		p3.setClassName( "com.mvp4g.example.client.presenter.display.UserDisplayPresenter" );
+		p3.setView( "userDisplayView" );
+
+		Set<PresenterElement> presenters = configuration.getPresenters();
+		presenters.add( p1 );
+		presenters.add( p2 );
+		presenters.add( p3 );
 
 		assertOutput( getExpectedPresenters(), false );
-
-		configReader.writeConf();
-
+		writer.writeConf();
 		assertOutput( getExpectedPresenters(), true );
 	}
 
 	@Test
-	public void testWriteEvents() throws UnableToCompleteException {
+	public void testWriteServices() throws DuplicatePropertyNameException {
 
-		assertOutput( getExpectedEvents(), false );
+		ServiceElement s1 = new ServiceElement();
+		s1.setName( "userRpcService" );
+		s1.setClassName( "com.mvp4g.example.client.rpc.UserService" );
 
-		configReader.writeConf();
+		ServiceElement s2 = new ServiceElement();
+		s2.setName( "userService" );
+		s2.setClassName( "com.mvp4g.example.client.services.UserService" );
+		s2.setPath( "/service/user" );
 
-		assertOutput( getExpectedEvents(), true );
-	}
+		ServiceElement s3 = new ServiceElement();
+		s3.setName( "userDisplayService" );
+		s3.setClassName( "com.mvp4g.example.client.services.display.UserService" );
 
-	@Test
-	public void testWriteStartEvent() throws UnableToCompleteException {
-
-		assertOutput( getExpectedStartEvent(), false );
-
-		configReader.writeConf();
-
-		assertOutput( getExpectedStartEvent(), true );
-	}
-
-	@Test
-	public void testWriteHistory() throws UnableToCompleteException {
-
-		assertOutput( getExpectedHistory(), false );
-
-		configReader.writeConf();
-
-		assertOutput( getExpectedHistory(), true );
-	}
-
-	@Test
-	public void testWriteServices() throws UnableToCompleteException {
+		Set<ServiceElement> services = configuration.getServices();
+		services.add( s1 );
+		services.add( s2 );
+		services.add( s3 );
 
 		assertOutput( getExpectedServices(), false );
-
-		configReader.writeConf();
-
+		writer.writeConf();
 		assertOutput( getExpectedServices(), true );
+
 	}
 
 	@Test
-	public void testCapitalized() {
-		String input = "donQuixote";
-		String expected = "DonQuixote";
+	public void testWriteXmlStart() throws DuplicatePropertyNameException {
+		String eventBusInterface = EventBusWithLookup.class.getName();
+		String eventBusClass = BaseEventBusWithLookUp.class.getName();
+		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, false ) );
 
-		assertEquals( expected, configReader.capitalized( input ) );
+		StartElement start = new StartElement();
+		start.setView( "rootView" );
+		start.setEventType( "start" );
+		start.setHistory( "true" );
+		configuration.setStart( start );
+
+		assertOutput( getExpectedStartXmlEvent(), false );
+		writer.writeConf();
+		assertOutput( getExpectedStartXmlEvent(), true );
+
 	}
 
 	@Test
-	public void testGetObjectClass() throws UnableToCompleteException {
+	public void testWriteStart() throws DuplicatePropertyNameException {
 
-		configReader.writeConf();
+		StartElement start = new StartElement();
+		start.setView( "rootView" );
+		start.setEventType( "start" );
+		start.setHistory( "true" );
+		configuration.setStart( start );
 
-		EventElement event = new EventElement();
-		assertNull( configReader.getObjectClass( event ) );
-
-		event = new EventElement();
-		event.setEventObjectClass( String.class.getName() );
-		assertEquals( String.class.getName(), configReader.getObjectClass( event ) );
-
-		event = new EventElement();
-		event.setCalledMethod( "onInit" );
-		event.setHandlers( new String[] { "rootPresenter" } );
-		assertNull( configReader.getObjectClass( event ) );
-
-		event = new EventElement();
-		event.setCalledMethod( "onDisplayMessage" );
-		event.setHandlers( new String[] { "rootPresenter" } );
-		assertEquals( String.class.getName(), configReader.getObjectClass( event ) );
-
-		try {
-			event = new EventElement();
-			event.setType( "one" );
-			event.setCalledMethod( "unknownMethod" );
-			event.setHandlers( new String[] { "rootPresenter" } );
-			configReader.getObjectClass( event );
-			fail();
-		} catch ( InvalidMvp4gConfigurationException ex ) {
-			String expected = "Tag " + event.getTagName() + " one: handler rootPresenter doesn't define a method unknownMethod with 1 or 0 parameter.";
-			assertEquals( expected, ex.getMessage() );
-		}
-		
-		try {
-			event = new EventElement();
-			event.setType( "one" );
-			event.setCalledMethod( "onTest" );
-			event.setHandlers( new String[] { "rootPresenter" } );
-			configReader.getObjectClass( event );
-			fail();
-		} catch ( InvalidMvp4gConfigurationException ex ) {
-			String expected = "Tag " + event.getTagName() + " one: handler rootPresenter doesn't define a method onTest with 1 or 0 parameter.";
-			assertEquals( expected, ex.getMessage() );
-		}
-		
-		try {
-			event = new EventElement();
-			event.setType( "one" );
-			event.setCalledMethod( "onInit" );
-			event.setHandlers( new String[] { "displayUserPresenter" } );
-			configReader.getObjectClass( event );
-			fail();
-		} catch ( InvalidMvp4gConfigurationException ex ) {
-			String expected = "Tag " + event.getTagName() + " one: displayUserPresenter handler class: com.mvp4g.example.client.presenter.display.UserDisplayPresenter is not found";
-			assertEquals( expected, ex.getMessage() );
-		}
+		assertOutput( getExpectedStartEvent(), false );
+		writer.writeConf();
+		assertOutput( getExpectedStartEvent(), true );
 
 	}
+
+	@Test
+	public void testHistory() throws DuplicatePropertyNameException {
+
+		HistoryConverterElement hc1 = new HistoryConverterElement();
+		hc1.setName( "userConverter" );
+		hc1.setClassName( "com.mvp4g.example.client.history.display.UserHistoryConverter" );
+		hc1.getInjectedServices().add( new InjectedElement( "userService", "setUserService" ) );
+
+		HistoryConverterElement hc2 = new HistoryConverterElement();
+		hc2.setName( "userConverter" );
+		hc2.setClassName( "com.mvp4g.example.client.history.display.UserHistoryConverter" );
+
+		HistoryConverterElement hc3 = new HistoryConverterElement();
+		hc3.setName( "stringConverter" );
+		hc3.setClassName( "com.mvp4g.example.client.history.StringHistoryConverter" );
+
+		Set<HistoryConverterElement> hcs = configuration.getHistoryConverters();
+		hcs.add( hc1 );
+		hcs.add( hc2 );
+		hcs.add( hc3 );
+
+		HistoryElement history = new HistoryElement();
+		history.setInitEvent( "init" );
+		configuration.setHistory( history );
+
+		assertOutput( getExpectedHistory(), false );
+		writer.writeConf();
+		assertOutput( getExpectedHistory(), true );
+
+	}
+	
+	@Test
+	public void testWriteXmlHistoryStart() throws DuplicatePropertyNameException {
+		String eventBusInterface = EventBusWithLookup.class.getName();
+		String eventBusClass = BaseEventBusWithLookUp.class.getName();
+		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, false ) );
+
+		HistoryElement history = new HistoryElement();
+		history.setInitEvent( "init" );
+		configuration.setHistory( history );
+
+		assertOutput( getExpectedHistoryXml(), false );
+		writer.writeConf();
+		assertOutput( getExpectedHistoryXml(), true );
+
+	}
+	
+	@Test
+	public void testWriteNoHistoryStart() throws DuplicatePropertyNameException {
+		
+		configuration.setHistory( null );
+
+		assertOutput( getExpectedHistory(), false );
+		writer.writeConf();
+		assertOutput( getExpectedHistory(), false );
+		
+		String eventBusInterface = EventBusWithLookup.class.getName();
+		String eventBusClass = BaseEventBusWithLookUp.class.getName();
+		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, false ) );
+		
+		assertOutput( getExpectedHistoryXml(), false );
+		writer.writeConf();
+		assertOutput( getExpectedHistoryXml(), false );
+
+	}
+
+	/*
+	 * 
+	 * @Test public void testWriteConfConstructsEventBus() throws UnableToCompleteException {
+	 * 
+	 * String output = "EventBus eventBus = new EventBus();";
+	 * 
+	 * assertFalse( sourceWriter.dataContains( output ) );
+	 * 
+	 * configReader.writeConf();
+	 * 
+	 * assertTrue( eventBusError(), sourceWriter.dataContains( output ) ); }
+	 * 
+	 * private String eventBusError() { return "EventBus construction not found in data:\n" +
+	 * sourceWriter.getData(); }
+	 * 
+	 * @Test public void testWriteViews() throws UnableToCompleteException {
+	 * 
+	 * assertOutput( getExpectedViews(), false );
+	 * 
+	 * configReader.writeConf();
+	 * 
+	 * assertOutput( getExpectedViews(), true ); }
+	 * 
+	 * @Test public void testWritePresenters() throws UnableToCompleteException {
+	 * 
+	 * assertOutput( getExpectedPresenters(), false );
+	 * 
+	 * configReader.writeConf();
+	 * 
+	 * assertOutput( getExpectedPresenters(), true ); }
+	 * 
+	 * @Test public void testWriteEvents() throws UnableToCompleteException {
+	 * 
+	 * assertOutput( getExpectedEvents(), false );
+	 * 
+	 * configReader.writeConf();
+	 * 
+	 * assertOutput( getExpectedEvents(), true ); }
+	 * 
+	 * @Test public void testWriteStartEvent() throws UnableToCompleteException {
+	 * 
+	 * assertOutput( getExpectedStartEvent(), false );
+	 * 
+	 * configReader.writeConf();
+	 * 
+	 * assertOutput( getExpectedStartEvent(), true ); }
+	 * 
+	 * @Test public void testWriteHistory() throws UnableToCompleteException {
+	 * 
+	 * assertOutput( getExpectedHistory(), false );
+	 * 
+	 * configReader.writeConf();
+	 * 
+	 * assertOutput( getExpectedHistory(), true ); }
+	 * 
+	 * @Test public void testWriteServices() throws UnableToCompleteException {
+	 * 
+	 * assertOutput( getExpectedServices(), false );
+	 * 
+	 * configReader.writeConf();
+	 * 
+	 * assertOutput( getExpectedServices(), true ); }
+	 * 
+	 * @Test public void testCapitalized() { String input = "donQuixote"; String expected =
+	 * "DonQuixote";
+	 * 
+	 * assertEquals( expected, configReader.capitalized( input ) ); }
+	 * 
+	 * @Test public void testGetObjectClass() throws UnableToCompleteException {
+	 * 
+	 * configReader.writeConf();
+	 * 
+	 * EventElement event = new EventElement(); assertNull( configReader.getObjectClass( event ) );
+	 * 
+	 * event = new EventElement(); event.setEventObjectClass( String.class.getName() );
+	 * assertEquals( String.class.getName(), configReader.getObjectClass( event ) );
+	 * 
+	 * event = new EventElement(); event.setCalledMethod( "onInit" ); event.setHandlers( new
+	 * String[] { "rootPresenter" } ); assertNull( configReader.getObjectClass( event ) );
+	 * 
+	 * event = new EventElement(); event.setCalledMethod( "onDisplayMessage" ); event.setHandlers(
+	 * new String[] { "rootPresenter" } ); assertEquals( String.class.getName(),
+	 * configReader.getObjectClass( event ) );
+	 * 
+	 * try { event = new EventElement(); event.setType( "one" ); event.setCalledMethod(
+	 * "unknownMethod" ); event.setHandlers( new String[] { "rootPresenter" } );
+	 * configReader.getObjectClass( event ); fail(); } catch ( InvalidMvp4gConfigurationException ex
+	 * ) { String expected = "Tag " + event.getTagName() +
+	 * " one: handler rootPresenter doesn't define a method unknownMethod with 1 or 0 parameter.";
+	 * assertEquals( expected, ex.getMessage() ); }
+	 * 
+	 * try { event = new EventElement(); event.setType( "one" ); event.setCalledMethod( "onTest" );
+	 * event.setHandlers( new String[] { "rootPresenter" } ); configReader.getObjectClass( event );
+	 * fail(); } catch ( InvalidMvp4gConfigurationException ex ) { String expected = "Tag " +
+	 * event.getTagName() +
+	 * " one: handler rootPresenter doesn't define a method onTest with 1 or 0 parameter.";
+	 * assertEquals( expected, ex.getMessage() ); }
+	 * 
+	 * try { event = new EventElement(); event.setType( "one" ); event.setCalledMethod( "onInit" );
+	 * event.setHandlers( new String[] { "displayUserPresenter" } ); configReader.getObjectClass(
+	 * event ); fail(); } catch ( InvalidMvp4gConfigurationException ex ) { String expected = "Tag "
+	 * + event.getTagName() +
+	 * " one: displayUserPresenter handler class: com.mvp4g.example.client.presenter.display.UserDisplayPresenter is not found"
+	 * ; assertEquals( expected, ex.getMessage() ); }
+	 * 
+	 * }
+	 */
 
 	private void assertOutput( String[] statements, boolean expected ) {
 		String error = null;
@@ -185,28 +440,41 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedViews() {
-		return new String[] { "final com.mvp4g.util.test_tools.RootView " + "rootView = new com.mvp4g.util.test_tools.RootView();",
+		return new String[] {
+				"final com.mvp4g.util.test_tools.RootView " + "rootView = new com.mvp4g.util.test_tools.RootView();",
 
-		"final com.mvp4g.example.client.view.UserCreateView " + "userCreateView = new com.mvp4g.example.client.view.UserCreateView();",
+				"final com.mvp4g.example.client.view.UserCreateView " + "userCreateView = new com.mvp4g.example.client.view.UserCreateView();",
 
-		"final com.mvp4g.example.client.view.display.UserDisplayView " + "userDisplayView = new com.mvp4g.example.client.view.display.UserDisplayView();" };
+				"final com.mvp4g.example.client.view.display.UserDisplayView "
+						+ "userDisplayView = new com.mvp4g.example.client.view.display.UserDisplayView();" };
 	}
 
 	private String[] getExpectedHistory() {
 		return new String[] {
-				"final PlaceService placeService = new PlaceService(eventBus);",
-				"placeService.setInitEvent( \"init\");",
+				"final PlaceService<com.mvp4g.client.event.EventBus> placeService = new PlaceService<com.mvp4g.client.event.EventBus>(){",
+				"protected void sendInitEvent(){",
+				"getEventBus().init();",
+				"placeService.setEventBus(eventBus);",
 				"final com.mvp4g.example.client.history.display.UserHistoryConverter userConverter = new com.mvp4g.example.client.history.display.UserHistoryConverter();",
 				"userConverter.setUserService(userService);",
-				"final com.mvp4g.example.client.history.StringHistoryConverter stringConverter = new com.mvp4g.example.client.history.StringHistoryConverter();",
-				"final com.mvp4g.example.client.StringHistoryConverter particularConverter = new com.mvp4g.example.client.StringHistoryConverter();"};
+				"final com.mvp4g.example.client.history.StringHistoryConverter stringConverter = new com.mvp4g.example.client.history.StringHistoryConverter();"
+				 };
+
+	}
+	
+	private String[] getExpectedHistoryXml() {
+		return new String[] {
+				"final PlaceService<com.mvp4g.client.event.EventBusWithLookup> placeService = new PlaceService<com.mvp4g.client.event.EventBusWithLookup>(){",
+				"protected void sendInitEvent(){",
+				"getEventBus().dispatch(\"init\");",
+				"placeService.setEventBus(eventBus);"
+				 };
 
 	}
 
 	private String[] getExpectedPresenters() {
 		return new String[] {
-				"final com.mvp4g.util.test_tools.RootPresenter " + "rootPresenter = new com.mvp4g.util.test_tools.RootPresenter();",
-
+				"final com.mvp4g.util.test_tools.RootPresenter rootPresenter = new com.mvp4g.util.test_tools.RootPresenter();",
 				"rootPresenter.setEventBus(eventBus);",
 				"rootPresenter.setView(rootView);",
 
@@ -224,47 +492,40 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedEvents() {
-		return new String[] {
-				"Command<com.mvp4g.example.client.bean.UserBean> cmduserCreated = new Command<com.mvp4g.example.client.bean.UserBean>(){",
-				"public void execute(com.mvp4g.example.client.bean.UserBean form, boolean storeInHistory) {",
-				"displayUserPresenter.onUserCreated(form);", "eventBus.addEvent(\"userCreated\", cmduserCreated);",
-
-				"Command<com.mvp4g.example.client.bean.UserBean> cmduserDisplay = new Command<com.mvp4g.example.client.bean.UserBean>(){",
-				"public void execute(com.mvp4g.example.client.bean.UserBean form, boolean storeInHistory) {",
-				"displayUserPresenter.onUserDisplay(form);", "if(storeInHistory){", "placeService.place( \"userDisplay\", form )",
-				"eventBus.addEvent(\"userDisplay\", cmduserDisplay);",
-
-				"Command<com.mvp4g.example.client.view.widget.Page> cmdchangeBody = new Command<com.mvp4g.example.client.view.widget.Page>(){",
-				"public void execute(com.mvp4g.example.client.view.widget.Page form, boolean storeInHistory) {", "rootPresenter.onChangeBody(form);",
-				"eventBus.addEvent(\"changeBody\", cmdchangeBody);",
-
-				"Command<java.lang.String> cmddisplayMessage = new Command<java.lang.String>(){",
-				"public void execute(java.lang.String form, boolean storeInHistory) {", "rootPresenter.onDisplayMessage(form);",
-				"if(storeInHistory){", "placeService.place( \"displayMessage\", form )", "eventBus.addEvent(\"displayMessage\", cmddisplayMessage);",
-
-				"Command<java.lang.Object> cmdstart = new Command<java.lang.Object>(){",
-				"public void execute(java.lang.Object form, boolean storeInHistory) {", "rootPresenter.onStart();",
-				"eventBus.addEvent(\"start\", cmdstart);",
-
-				"Command<java.lang.Object> cmdinit = new Command<java.lang.Object>(){",
-				"public void execute(java.lang.Object form, boolean storeInHistory) {", "rootPresenter.onInit();",
-				"eventBus.addEvent(\"init\", cmdinit);",
-				
-				"Command<java.lang.Object> cmdoptionalEvent = new Command<java.lang.Object>(){",
-				"public void execute(java.lang.Object form, boolean storeInHistory) {"};
+		return new String[] { "public void userCreated(java.lang.String form){", "displayUserPresenter.onUserCreated(form);",
+				"public void userDisplay(java.lang.String form){", "displayUserPresenter.onUserDisplay(form);",
+				"place( placeService, \"userDisplay\", form )", "public void displayMessage()", "rootPresenter.onDisplayMessage();","placeService.addConverter( \"userDisplay\",history);" };
 	}
 
-	private String[] getExpectedStartEvent() {
+	private String[] getExpectedEventsWithLookup() {
+		return new String[] {
+				"public void dispatch( String eventType, Object form ){",
+				"if ( \"userDisplay\".equals( eventType ) ){",
+				"userDisplay( (java.lang.String) form);",
+				"} else if ( \"displayMessage\".equals( eventType ) ){",
+				"displayMessage();",
+				"} else if ( \"userCreated\".equals( eventType ) ){",
+				"userCreated( (java.lang.String) form);",
+				"throw new Mvp4gException( \"Event \" + eventType + \" doesn't exist. Have you forgotten to add it to your Mvp4g configuration file?\" );",
+				"handleClassCastException( e, eventType );" };
+	}
+
+	private String[] getExpectedStartXmlEvent() {
 		return new String[] { "RootPanel.get().add(rootView);", "eventBus.dispatch(\"start\");", "History.fireCurrentHistoryState();" };
 	}
 
+	private String[] getExpectedStartEvent() {
+		return new String[] { "RootPanel.get().add(rootView);", "eventBus.start();", "History.fireCurrentHistoryState();" };
+	}
+
 	private String[] getExpectedServices() {
-		return new String[] { "final com.mvp4g.example.client.rpc.UserServiceAsync "
-				+ "userRpcService = GWT.create(com.mvp4g.example.client.rpc.UserService.class);",
+		return new String[] {
+				"final com.mvp4g.example.client.rpc.UserServiceAsync "
+						+ "userRpcService = GWT.create(com.mvp4g.example.client.rpc.UserService.class);",
 				"final com.mvp4g.example.client.services.UserServiceAsync "
-				+ "userService = GWT.create(com.mvp4g.example.client.services.UserService.class);",
+						+ "userService = GWT.create(com.mvp4g.example.client.services.UserService.class);",
 				"((ServiceDefTarget) userService).setServiceEntryPoint(\"/service/user\");",
 				"final com.mvp4g.example.client.services.display.UserServiceAsync "
-				+ "userDisplayService = GWT.create(com.mvp4g.example.client.services.display.UserService.class);"};
+						+ "userDisplayService = GWT.create(com.mvp4g.example.client.services.display.UserService.class);" };
 	}
 }

@@ -44,9 +44,6 @@ import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
  */
 public class Mvp4gGenerator extends Generator {
 
-	//scan result is the same for all the generator
-	private static Map<Class<? extends Annotation>, List<JClassType>> scanResult = null;
-
 	private SourceWriter sourceWriter;
 
 	/*
@@ -123,7 +120,7 @@ public class Mvp4gGenerator extends Generator {
 		try {
 			TypeOracle oracle = context.getTypeOracle();
 
-			scanResult = AnnotationScanner.scan( logger, oracle, new Class[] { Presenter.class, History.class, Events.class, Service.class } );
+			Map<Class<? extends Annotation>, List<JClassType>> scanResult = AnnotationScanner.scan( logger, oracle, new Class[] { Presenter.class, History.class, Events.class, Service.class } );
 
 			Mvp4gConfiguration configuration = new Mvp4gConfiguration( logger, oracle );
 			configuration.load( "mvp4g-conf.xml", scanResult );

@@ -15,7 +15,7 @@ public class InvalidTypeException extends InvalidMvp4gConfigurationException {
 
 	private static final long serialVersionUID = 5810274632221827765L;
 
-	private static final String MESSAGE = "%s %s: Invalid %s. Can not convert %s to %s.";
+	private static final String MESSAGE = "%s %s: Invalid %s. Can not convert %s to %s";
 
 	public InvalidTypeException( Mvp4gElement element, String attribute, String classAttribute, String classExpected) {
 		super( String.format( MESSAGE, element.getTagName(), element.getUniqueIdentifier(), attribute, classAttribute, classExpected ) );

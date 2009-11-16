@@ -9,12 +9,17 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JGenericType;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JPackage;
 import com.google.gwt.core.ext.typeinfo.JParameter;
-import com.google.gwt.core.ext.typeinfo.JRealClassType;
+import com.google.gwt.core.ext.typeinfo.JParameterizedType;
+import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.JTypeParameter;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
-import com.mvp4g.util.test_tools.annotation.Presenters;
+import com.mvp4g.client.event.EventBusWithLookup;
+import com.mvp4g.client.history.HistoryConverter;
+import com.mvp4g.client.presenter.PresenterInterface;
 
 public class TypeOracleStub extends TypeOracle {
 
@@ -33,7 +38,7 @@ public class TypeOracleStub extends TypeOracle {
 		return type;
 	}
 
-	public JRealClassType addClass( Class<?> c ) {
+	public JGenericType addClass( Class<?> c ) {
 		JPackage p = getOrCreatePackage( c.getPackage().getName() );
 		Class<?> enclosingClass = c.getEnclosingClass();
 		JClassType enclosingType = null;
@@ -44,7 +49,7 @@ public class TypeOracleStub extends TypeOracle {
 			}
 		}
 
-		JRealClassType type = new JRealClassType( this, p, enclosingType, c.isLocalClass(), c.getSimpleName(), c.isInterface() );
+		JGenericType type = new JGenericType( this, p, enclosingType, c.isLocalClass(), c.getSimpleName(), c.isInterface(), new JTypeParameter[0] );
 
 		Class<?> superClass = c.getSuperclass();
 		if ( superClass != null ) {
@@ -63,7 +68,7 @@ public class TypeOracleStub extends TypeOracle {
 		}
 		type.addAnnotations( annotations );
 
-		if ( c.getPackage().getName().contains( Presenters.class.getPackage().getName() ) ) {
+		if ( c.getPackage().getName().contains( getClass().getPackage().getName() ) ) {
 			JMethod method = null;
 			for ( Method m : c.getDeclaredMethods() ) {
 				annotations = new HashMap<Class<? extends Annotation>, Annotation>();
@@ -91,7 +96,7 @@ public class TypeOracleStub extends TypeOracle {
 	private List<JClassType> getImplementedInterfaces( Class<?> c ) {
 		List<JClassType> interfaces = new ArrayList<JClassType>();
 		for ( Class<?> implementedInterface : c.getInterfaces() ) {
-			interfaces.add( findType( implementedInterface.getName() ) );
+			interfaces.add( new MyParameterizedType( (JGenericType) findType( implementedInterface.getName() ), null, new JClassType[0] ) );
 		}
 
 		Class<?> superClass = c.getSuperclass();
@@ -100,6 +105,50 @@ public class TypeOracleStub extends TypeOracle {
 		}
 
 		return interfaces;
+	}
+	
+	private class MyParameterizedType extends JParameterizedType {
+		
+		public MyParameterizedType( JGenericType baseType, JClassType enclosingType, JClassType[] typeArgs ) {
+			super( baseType, enclosingType, typeArgs );
+		}
+
+		@Override
+		public JMethod findMethod(String name, JType[] paramTypes) {
+			JMethod method = super.findMethod( name, paramTypes );
+			
+			if(method == null){
+				if(getQualifiedSourceName().equals( PresenterInterface.class.getName() )){
+					if("getEventBus".equals( name )){
+						method = new JMethod(this.getBaseType(), name);
+						method.setReturnType( findType( EventBusWithLookup.class.getName() ) );
+					}
+					else{
+						method = new JMethod(this.getBaseType(), name);
+						method.setReturnType( findType( String.class.getName() ) );
+					}
+				}
+			}
+			
+			return method;
+		}
+		
+		@Override
+		public JMethod[] getMethods() {
+			JMethod[] methods = null;
+			if(getQualifiedSourceName().equals( HistoryConverter.class.getName() )){
+				JMethod method = new JMethod(this.getBaseType(), "convertFromToken");
+				new JParameter( method, findType( EventBusWithLookup.class.getName() ), "eventBus" );
+				new JParameter( method, findType( String.class.getName() ), "form" );
+				methods = new JMethod[]{method, method};				
+			}
+			else{
+				methods = super.getMethods();
+			}
+			
+		    return methods;
+		}
+		
 	}
 
 }
