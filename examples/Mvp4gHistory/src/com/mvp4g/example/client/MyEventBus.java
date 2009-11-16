@@ -4,6 +4,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.InitHistory;
+import com.mvp4g.client.annotation.NotFoundHistory;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.example.client.bean.DealBean;
@@ -32,21 +33,25 @@ public interface MyEventBus extends EventBus {
 	@Event(handlers=RootTemplatePresenter.class)
 	public void changeMainWidget(Widget w);
 	
-	@Event(handlers=CartDisplayPresenter.class, historyConverter=ShowCartConverter.class)
+	@Event(handlers={RootTemplatePresenter.class, CartDisplayPresenter.class}, historyConverter=ShowCartConverter.class)
 	public void displayCart(String username);
 	
-	@Event(handlers={DealDisplayPresenter.class, TopBarPresenter.class}, historyConverter=DealHistoryConverter.class)
+	@Event(handlers={RootTemplatePresenter.class, DealDisplayPresenter.class, TopBarPresenter.class}, historyConverter=DealHistoryConverter.class)
 	public void displayDeal(DealBean deal);
 	
 	@Event(handlers=RootTemplatePresenter.class)
 	public void displayMessage(String message);
 	
-	@Event(handlers={ProductDisplayPresenter.class, TopBarPresenter.class}, historyConverter=ProductHistoryConverter.class)	
+	@Event(handlers={RootTemplatePresenter.class, ProductDisplayPresenter.class, TopBarPresenter.class}, historyConverter=ProductHistoryConverter.class)	
 	public void displayProduct(ProductBean product);
 
 	@InitHistory
 	@Event(handlers={RootTemplatePresenter.class, TopBarPresenter.class})
 	public void init();
+	
+	@NotFoundHistory
+	@Event(handlers=RootTemplatePresenter.class)
+	public void notFound();
 
 	@Event(handlers=AccountPresenter.class)
 	public void login(String username);
