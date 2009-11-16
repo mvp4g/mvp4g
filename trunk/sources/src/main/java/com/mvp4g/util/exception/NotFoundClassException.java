@@ -15,8 +15,8 @@ public class NotFoundClassException extends InvalidMvp4gConfigurationException {
 
 	private static final long serialVersionUID = 5810274632221827765L;
 
-	private static final String MESSAGE = "%s %s: No source code is available for %s.";
-	private static final String MESSAGE_WITHOUT = "No source code is available for %s.";
+	private static final String MESSAGE = "%s %s: No source code is available for %s";
+	private static final String MESSAGE_WITHOUT = "No source code is available for %s";
 
 	public NotFoundClassException( Mvp4gElement element, String classNotFound ) {
 		super( getErrorMessage( element, classNotFound ) );

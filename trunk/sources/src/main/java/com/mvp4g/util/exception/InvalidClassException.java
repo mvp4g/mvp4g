@@ -15,7 +15,7 @@ public class InvalidClassException extends InvalidMvp4gConfigurationException {
 
 	private static final long serialVersionUID = 5810274632221827765L;
 
-	private static final String MESSAGE = "%s %s: This class must extend %s.";
+	private static final String MESSAGE = "%s %s: This class must extend %s";
 
 	public InvalidClassException( Mvp4gElement element, String classExpected) {
 		super( String.format( MESSAGE, element.getTagName(), element.getUniqueIdentifier(), classExpected ) );

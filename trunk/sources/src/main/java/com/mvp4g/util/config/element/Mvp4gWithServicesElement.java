@@ -54,9 +54,10 @@ public class Mvp4gWithServicesElement extends SimpleMvp4gElement {
 	private void setServices( String[] services ) throws DuplicatePropertyNameException {
 
 		for ( String service : services ) {
-			injectedServices.add( new InjectedElement( service, "set" + capitalized( service ) ) );
+			if ( ( service != null ) && ( service.length() > 0 ) ) {
+				injectedServices.add( new InjectedElement( service, "set" + capitalized( service ) ) );
+			}
 		}
 
 	}
-
 }
