@@ -4,6 +4,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.MyEventBus;
+import com.mvp4g.example.client.bean.DealBean;
+import com.mvp4g.example.client.bean.ProductBean;
 import com.mvp4g.example.client.presenter.view_interface.RootTemplateViewInterface;
 import com.mvp4g.example.client.view.RootTemplateView;
 
@@ -28,6 +30,23 @@ public class RootTemplatePresenter extends BasePresenter<RootTemplateViewInterfa
 
 	public void onInit() {
 		view.clearMainWidget();
+		view.getMessageBar().setText( "" );
+	}
+	
+	public void onNotFound(){
+		eventBus.init();
+		view.getMessageBar().setText( "Page not found" );
+	}
+	
+	public void onDisplayProduct(ProductBean bean){
+		view.getMessageBar().setText( "" );
+	}
+	
+	public void onDisplayDeal(DealBean bean){
+		view.getMessageBar().setText( "" );
+	}
+	
+	public void onDisplayCart(String username){
 		view.getMessageBar().setText( "" );
 	}
 
