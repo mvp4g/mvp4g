@@ -153,6 +153,23 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
 			sourceWriter.outdent();
+			sourceWriter.indent();
+			sourceWriter.println( "protected void sendNotFoundEvent(){" );
+			sourceWriter.indent();
+			sourceWriter.print( "getEventBus()." );
+
+			if ( configuration.getEventBus().isXml() ) {
+				sourceWriter.print( "dispatch(\"" );
+				sourceWriter.print( history.getNotFoundEvent() );
+				sourceWriter.println( "\");" );
+			} else {
+				sourceWriter.print( history.getNotFoundEvent() );
+				sourceWriter.println( "();" );
+			}
+
+			sourceWriter.outdent();
+			sourceWriter.println( "}" );
+			sourceWriter.outdent();
 			sourceWriter.println( "};" );
 
 			String name = null;

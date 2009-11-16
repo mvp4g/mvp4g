@@ -2,6 +2,7 @@ package com.mvp4g.util.test_tools.annotation;
 
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.InitHistory;
+import com.mvp4g.client.annotation.NotFoundHistory;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
@@ -53,6 +54,7 @@ public class Events {
 	@com.mvp4g.client.annotation.Events( startView = Object.class )
 	public static interface EventBusOk extends EventBus {
 		
+		@NotFoundHistory
 		@Event(handlerNames="name", calledMethod="treatEvent1", historyConverterName="history")
 		public void event1(String obj);
 		
@@ -82,6 +84,18 @@ public class Events {
 		public void event1(String obj);
 		 
 		@InitHistory
+		@Event(handlers=Presenters.PresenterWithName.class)
+		public void event2();
+	}
+	
+	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	public static interface EventBusDoubleNotFoundHistory extends EventBus {
+		
+		@NotFoundHistory
+		@Event(handlerNames="name", calledMethod="treatEvent1")
+		public void event1(String obj);
+		 
+		@NotFoundHistory
 		@Event(handlers=Presenters.PresenterWithName.class)
 		public void event2();
 	}
