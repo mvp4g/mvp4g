@@ -1,6 +1,7 @@
 package com.mvp4g.client.presenter;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
@@ -39,16 +40,22 @@ public class PresenterTest {
 	}
 
 	@Test
-	public void testBindCalledBySetView() {
+	public void testBindIfNeeded() {
+		final String bind = "bind";
+		
 		BasePresenter<String, EventBus> p = new BasePresenter<String, EventBus>() {
 			@Override
 			public void bind() {
-				view = "bind";
+				view = bind;
 			}
 		};
 
-		p.setView( "view" );
-		assertSame( p.getView(), "bind" );
+		assertNull( p.getView());
+		p.bindIfNeeded();
+		assertEquals( p.getView(), bind );
+		p.setView( "notBind" );
+		p.bindIfNeeded();
+		assertFalse( bind.equals( p.getView() ) );
 	}
 
 	@Test

@@ -21,18 +21,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.annotation.Service;
+import com.mvp4g.client.history.PlaceService;
+import com.mvp4g.client.presenter.PresenterInterface;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
 
@@ -100,11 +105,12 @@ public class Mvp4gGenerator extends Generator {
 
 		ClassSourceFileComposerFactory classFactory = new ClassSourceFileComposerFactory( packageName, generatedClassName );
 		classFactory.addImplementedInterface( originalType.getName() );
-		classFactory.addImport( "com.mvp4g.client.history.PlaceService" );
-		classFactory.addImport( "com.google.gwt.user.client.ui.RootPanel" );
-		classFactory.addImport( "com.google.gwt.core.client.GWT" );
-		classFactory.addImport( "com.google.gwt.user.client.History" );
-		classFactory.addImport( "com.google.gwt.user.client.rpc.ServiceDefTarget" );
+		classFactory.addImport( PlaceService.class.getName() );
+		classFactory.addImport( RootPanel.class.getName() );
+		classFactory.addImport( GWT.class.getName() );
+		classFactory.addImport( com.google.gwt.user.client.History.class.getName() );
+		classFactory.addImport( ServiceDefTarget.class.getName() );
+		classFactory.addImport( PresenterInterface.class.getName() );
 
 		PrintWriter printWriter = context.tryCreate( logger, packageName, generatedClassName );
 		if ( printWriter == null ) {
