@@ -332,6 +332,8 @@ public class Mvp4gConfigurationFileWriter {
 
 			for ( String handler : handlers ) {
 				sourceWriter.print( handler );
+				sourceWriter.print( ".bindIfNeeded();" );
+				sourceWriter.print( handler );
 				sourceWriter.print( "." );
 				sourceWriter.print( calledMethod );
 				sourceWriter.println( param );
@@ -421,6 +423,12 @@ public class Mvp4gConfigurationFileWriter {
 		StartElement start = configuration.getStart();
 		String startView = start.getView();
 
+		String startPresenter = findStartPresenter();
+
+		if ( startPresenter != null ) {
+			sourceWriter.print( startPresenter );
+			sourceWriter.println( ".bindIfNeeded();" );
+		}
 		sourceWriter.println( "RootPanel.get().add(" + startView + ");" );
 
 		if ( start.hasEventType() ) {
@@ -441,6 +449,18 @@ public class Mvp4gConfigurationFileWriter {
 		if ( start.hasHistory() ) {
 			sourceWriter.println( "History.fireCurrentHistoryState();" );
 		}
+	}
+
+	String findStartPresenter() {
+		String startPresenter = null;
+		String startView = configuration.getStart().getView();
+		for ( PresenterElement presenter : configuration.getPresenters() ) {
+			if ( startView.equals( presenter.getView() ) ) {
+				startPresenter = presenter.getName();
+				break;
+			}
+		}
+		return startPresenter;
 	}
 
 	/**

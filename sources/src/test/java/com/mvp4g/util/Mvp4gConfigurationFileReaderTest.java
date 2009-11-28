@@ -498,9 +498,9 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedEvents() {
-		return new String[] { "public void userCreated(java.lang.String form){", "displayUserPresenter.onUserCreated(form);",
-				"public void userDisplay(java.lang.String form){", "displayUserPresenter.onUserDisplay(form);",
-				"place( placeService, \"userDisplay\", form )", "public void displayMessage()", "rootPresenter.onDisplayMessage();","placeService.addConverter( \"userDisplay\",history);" };
+		return new String[] { "public void userCreated(java.lang.String form){", "displayUserPresenter.onUserCreated(form);","displayUserPresenter.bindIfNeeded();",
+				"public void userDisplay(java.lang.String form){", "displayUserPresenter.onUserDisplay(form);","displayUserPresenter.bindIfNeeded();",
+				"place( placeService, \"userDisplay\", form )", "public void displayMessage()", "rootPresenter.bindIfNeeded();","rootPresenter.onDisplayMessage();","placeService.addConverter( \"userDisplay\",history);" };
 	}
 
 	private String[] getExpectedEventsWithLookup() {
