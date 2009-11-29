@@ -4,17 +4,17 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Cookies;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.example.client.Constants;
 import com.mvp4g.example.client.MyEventBus;
 import com.mvp4g.example.client.presenter.view_interface.LoginViewInterface;
 import com.mvp4g.example.client.view.LoginView;
 
-@Presenter(view=LoginView.class)
-public class LoginPresenter extends BasePresenter<LoginViewInterface, MyEventBus> {
+@Presenter( view = LoginView.class )
+public class LoginPresenter extends LazyPresenter<LoginViewInterface, MyEventBus> {
 
 	@Override
-	public void bind() {
+	public void bindView() {
 		view.getLoginButton().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
