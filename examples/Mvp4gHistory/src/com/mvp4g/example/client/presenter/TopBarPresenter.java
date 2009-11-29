@@ -8,7 +8,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.ListBox;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.example.client.MyEventBus;
 import com.mvp4g.example.client.ServiceAsync;
 import com.mvp4g.example.client.bean.BasicBean;
@@ -18,14 +18,14 @@ import com.mvp4g.example.client.presenter.view_interface.TopBarViewInterface;
 import com.mvp4g.example.client.view.TopBarView;
 
 @Presenter( view = TopBarView.class )
-public class TopBarPresenter extends BasePresenter<TopBarViewInterface, MyEventBus> {
+public class TopBarPresenter extends LazyPresenter<TopBarViewInterface, MyEventBus> {
 
 	private ServiceAsync service = null;
 
 	private ProductBean productSelected = null;
 	private DealBean dealSelected = null;
 
-	public void bind() {
+	public void bindView() {
 		view.getShowDealButton().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {

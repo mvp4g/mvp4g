@@ -2,8 +2,9 @@ package com.mvp4g.example.client.presenter.view_interface;
 
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.view.LazyView;
 
-public interface RootTemplateViewInterface {
+public interface RootTemplateViewInterface extends LazyView {
 	
 	public void setTopWidget(Widget w);
 	public void clearMainWidget();

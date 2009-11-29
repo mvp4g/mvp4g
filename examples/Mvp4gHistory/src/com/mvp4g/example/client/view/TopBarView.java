@@ -3,7 +3,6 @@ package com.mvp4g.example.client.view;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -12,7 +11,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.presenter.view_interface.TopBarViewInterface;
 
-public class TopBarView extends Composite implements TopBarViewInterface {
+public class TopBarView extends BaseView implements TopBarViewInterface {
 
 	private ListBox deals = new ListBox();
 	private ListBox products = new ListBox();
@@ -22,9 +21,9 @@ public class TopBarView extends Composite implements TopBarViewInterface {
 
 	private CheckBox save = new CheckBox( "Save in History" );
 
-	public TopBarView() {
+	@Override
+	protected Widget createWidget() {
 		HorizontalPanel mainPanel = new HorizontalPanel();
-		initWidget( mainPanel );
 
 		save.setValue( true );
 
@@ -37,7 +36,9 @@ public class TopBarView extends Composite implements TopBarViewInterface {
 		mainPanel.add( showDeal );
 		mainPanel.add( save );
 
-		setStyleName( "bar" );
+		mainPanel.setStyleName( "bar" );
+
+		return mainPanel;
 	}
 
 	public ListBox getDealList() {
@@ -59,7 +60,7 @@ public class TopBarView extends Composite implements TopBarViewInterface {
 	public HasValue<Boolean> getSave() {
 		return save;
 	}
-	
+
 	public Widget getViewWidget() {
 		return this;
 	}
