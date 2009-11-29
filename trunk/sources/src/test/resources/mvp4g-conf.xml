@@ -20,7 +20,7 @@
 			view="userDisplayView" />
 	</presenters>
 
-	<history package="com.mvp4g.example.client.history" initEvent="init">
+	<history package="com.mvp4g.example.client.history" initEvent="init" notFoundEvent="event404">
 		<converter name="userConverter" class=".display.UserHistoryConverter"
 			services="userService" />
 		<converter name="stringConverter" class="StringHistoryConverter" services=""/>
@@ -41,6 +41,7 @@
 		<event type="start" calledMethod="onStart"
 			handlers="rootPresenter" />
 		<event type="init" handlers="rootPresenter" />
+		<event type="event404" handlers="rootPresenter" />
 		<event type="optionalEvent" handlers="" />
 	</events>
 
