@@ -767,13 +767,14 @@ public class Mvp4gConfigurationTest {
 		configuration.loadViews( xmlConfig );
 		configuration.loadStart( xmlConfig );
 
-		assertEquals( 7, configuration.getEvents().size() );
+		assertEquals( 8, configuration.getEvents().size() );
 		assertEquals( 3, configuration.getHistoryConverters().size() );
 		assertEquals( 3, configuration.getPresenters().size() );
 		assertEquals( 3, configuration.getViews().size() );
 		assertEquals( 3, configuration.getServices().size() );
 
 		assertEquals( "init", configuration.getHistory().getInitEvent() );
+		assertEquals( "event404", configuration.getHistory().getNotFoundEvent() );
 		assertEquals( "start", configuration.getStart().getEventType() );
 
 	}

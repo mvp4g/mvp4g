@@ -21,6 +21,7 @@ import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 public class HistoryLoader extends Mvp4gElementLoader<HistoryElement> {
 
 	static final String[] REQUIRED_ATTRIBUTES = { "initEvent" };
+	static final String[] OPTIONAL_ATTRIBUTES = { "notFoundEvent"};
 
 	@SuppressWarnings( "unchecked" )
 	public HistoryLoader( XMLConfiguration xmlConfig ) {
@@ -35,6 +36,11 @@ public class HistoryLoader extends Mvp4gElementLoader<HistoryElement> {
 	@Override
 	protected String[] getRequiredAttributeNames() {
 		return REQUIRED_ATTRIBUTES;
+	}
+	
+	@Override
+	protected String[] getOptionalAttributeNames() {
+		return OPTIONAL_ATTRIBUTES;
 	}
 
 	@Override
