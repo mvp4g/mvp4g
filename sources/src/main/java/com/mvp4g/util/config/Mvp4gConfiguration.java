@@ -430,11 +430,11 @@ public class Mvp4gConfiguration {
 
 				//Retrieve classes of History Converter event bus & form
 				if ( "convertFromToken".equals( methods[0].getName() ) ) {
-					eventBusParam = (JClassType)methods[0].findParameter( "eventBus" ).getType();
-					objectClassParam = (JClassType)methods[1].findParameter( "form" ).getType();
+					eventBusParam = (JClassType) methods[0].getParameters()[2].getType();
+					objectClassParam = (JClassType)methods[1].getParameters()[1].getType();
 				} else {
-					eventBusParam = (JClassType)methods[1].findParameter( "eventBus" ).getType();
-					objectClassParam = (JClassType)methods[0].findParameter( "form" ).getType();
+					eventBusParam = (JClassType)methods[1].getParameters()[2].getType();
+					objectClassParam = (JClassType)methods[0].getParameters()[1].getType();
 				}
 
 				//Control if history converter event bus is compatible with module event bus

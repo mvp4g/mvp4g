@@ -326,7 +326,11 @@ public class Mvp4gConfigurationFileWriter {
 			if ( hasHistory ) {
 				sourceWriter.print( "place( placeService, \"" );
 				sourceWriter.print( type );
-				sourceWriter.println( "\", form );" );
+				if ( objectClass == null ) {
+					sourceWriter.println( "\", null );" );
+				} else {
+					sourceWriter.println( "\", form );" );
+				}
 				eventsWithHistory.add( event );
 			}
 
