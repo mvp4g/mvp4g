@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+  
+  <!-- Servlets -->
+  <servlet>
+    <servlet-name>companyServlet</servlet-name>
+    <servlet-class>com.mvp4g.example.server.CompanyServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>companyServlet</servlet-name>
+    <url-pattern>/mvp4gmodules/company</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Servlets -->
+  <servlet>
+    <servlet-name>productServlet</servlet-name>
+    <servlet-class>com.mvp4g.example.server.ProductServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>productServlet</servlet-name>
+    <url-pattern>/mvp4gmodules/product</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>Mvp4gModules.html</welcome-file>
+  </welcome-file-list>
+
+</web-app>
