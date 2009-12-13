@@ -3,6 +3,8 @@ package com.mvp4g.client.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import com.mvp4g.client.Mvp4gModule;
+
 /**
  * This annotation indicates that the interface should be used to define events of the module.<br/>
  * This annotation must be used on interface that extends <code>EventBus</code>. <br/>
@@ -30,6 +32,8 @@ public @interface Events {
 	String startViewName() default "";
 
 	Class<?> startView();
+	
+	Class<? extends Mvp4gModule> module() default Mvp4gModule.class; 
 
 	boolean historyOnStart() default false;
 

@@ -36,6 +36,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.annotation.Service;
+import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.client.presenter.PresenterInterface;
 import com.mvp4g.util.config.Mvp4gConfiguration;
@@ -77,13 +78,14 @@ public class Mvp4gGenerator extends Generator {
 
 	private String createClass( TreeLogger logger, GeneratorContext context, String typeName ) throws UnableToCompleteException {
 		sourceWriter = getSourceWriter( logger, context, typeName );
+		TypeOracle typeOracle = context.getTypeOracle();
+		JClassType originalType = typeOracle.findType( typeName );
+		
 		if ( sourceWriter != null ) {
-			writeClass( logger, context );
+			writeClass( originalType, logger, context );
 			sourceWriter.commit( logger );
 		}
 
-		TypeOracle typeOracle = context.getTypeOracle();
-		JClassType originalType = typeOracle.findType( typeName );
 		return originalType.getParameterizedQualifiedSourceName() + "Impl";
 	}
 
@@ -111,6 +113,7 @@ public class Mvp4gGenerator extends Generator {
 		classFactory.addImport( com.google.gwt.user.client.History.class.getName() );
 		classFactory.addImport( ServiceDefTarget.class.getName() );
 		classFactory.addImport( PresenterInterface.class.getName() );
+		classFactory.addImport( EventBus.class.getName() );
 
 		PrintWriter printWriter = context.tryCreate( logger, packageName, generatedClassName );
 		if ( printWriter == null ) {
@@ -121,7 +124,7 @@ public class Mvp4gGenerator extends Generator {
 	}
 
 	@SuppressWarnings( "unchecked" )
-	private void writeClass( TreeLogger logger, GeneratorContext context ) throws UnableToCompleteException {
+	private void writeClass( JClassType module, TreeLogger logger, GeneratorContext context ) throws UnableToCompleteException {
 
 		try {
 			TypeOracle oracle = context.getTypeOracle();
@@ -129,7 +132,7 @@ public class Mvp4gGenerator extends Generator {
 			Map<Class<? extends Annotation>, List<JClassType>> scanResult = AnnotationScanner.scan( logger, oracle, new Class[] { Presenter.class, History.class, Events.class, Service.class } );
 
 			Mvp4gConfiguration configuration = new Mvp4gConfiguration( logger, oracle );
-			configuration.load( "mvp4g-conf.xml", scanResult );
+			configuration.load( module, scanResult );
 
 			Mvp4gConfigurationFileWriter writer = new Mvp4gConfigurationFileWriter( sourceWriter, configuration );
 			writer.writeConf();

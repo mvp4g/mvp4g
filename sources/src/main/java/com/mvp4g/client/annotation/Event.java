@@ -5,6 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.presenter.PresenterInterface;
@@ -46,9 +47,11 @@ import com.mvp4g.client.presenter.PresenterInterface;
 public @interface Event {
 
 	Class<? extends PresenterInterface<?, ? extends EventBus>>[] handlers() default {};
-
+	
 	String[] handlerNames() default {};
-
+	
+	Class<? extends Mvp4gModule>[] modulesToLoad() default {};
+	
 	String calledMethod() default "";
 
 	String historyConverterName() default "";
