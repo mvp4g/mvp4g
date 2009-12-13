@@ -17,6 +17,8 @@ package com.mvp4g.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Default Mvp4g entry point
@@ -29,7 +31,8 @@ public class Mvp4gEntryPoint implements EntryPoint {
 	 * @see com.google.gwt.core.client.EntryPoint#onModuleLoad()
 	 */
 	public void onModuleLoad() {
-		Mvp4gStarter entry = (Mvp4gStarter)GWT.create( Mvp4gStarter.class );
-		entry.start();
+		Mvp4gModule module = (Mvp4gModule)GWT.create( Mvp4gModule.class );
+		module.createAndStartModule();
+		RootPanel.get().add((Widget) module.getStartView());
 	}
 }

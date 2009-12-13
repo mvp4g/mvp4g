@@ -15,17 +15,25 @@
  */
 package com.mvp4g.client;
 
+import com.mvp4g.client.annotation.XmlFilePath;
+import com.mvp4g.client.event.EventBus;
+
 /**
  * This interface designs how to start the application
  * 
  * @author plcoirier
  * 
  */
-public interface Mvp4gStarter {
+@XmlFilePath("mvp4g-conf.xml")
+public interface Mvp4gModule {
 
 	/**
-	 * Method called to start the application
+	 * Method called to create the module
 	 */
-	public void start();
+	public void createAndStartModule();
+	
+	public Object getStartView();
+	
+	public EventBus getEventBus();
 
 }
