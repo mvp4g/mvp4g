@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
+import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.util.config.Mvp4gConfiguration;
@@ -153,29 +154,34 @@ public class Mvp4gConfigurationFileWriter {
 		boolean isBefore = (beforeEvent != null) && (beforeEvent.length() > 0);
 		boolean isAfter = (afterEvent != null) && (afterEvent.length() > 0);
 		String formError = null;
-		if(isError){
-			if(getElement(errorEvent, configuration.getEvents()).getEventObjectClass() != null){
-				formError = "reason"; 
+		if (isError) {
+			if (getElement(errorEvent, configuration.getEvents())
+					.getEventObjectClass() != null) {
+				formError = "reason";
 			}
-		}		
-		
+		}
+		boolean isAsync = true;
+		boolean isAsyncEnabled = configuration.isAsyncEnabled();
 		for (ChildModuleElement module : configuration.getChildModules()) {
 			moduleClassName = module.getClassName();
 			event = getElement(module.getEventToLoadView(), events);
+			isAsync = module.isAsync() && isAsyncEnabled;
 			sourceWriter.print("private void load");
 			sourceWriter.print(module.getName());
-			sourceWriter.print("(final Mvp4gEventPasser<?> passer){");
+			sourceWriter.println("(final Mvp4gEventPasser<?> passer){");
 			sourceWriter.indent();
-			if (isBefore) {
-				writeDispatchEvent(beforeEvent, null, isXml);
-			}
-			sourceWriter
-					.println("GWT.runAsync(new com.google.gwt.core.client.RunAsyncCallback() {");
-			sourceWriter.indent();
-			sourceWriter.println("public void onSuccess() {");
-			sourceWriter.indent();
-			if (isAfter) {
-				writeDispatchEvent(afterEvent, null, isXml);
+			if (isAsync) {
+				if (isBefore) {
+					writeDispatchEvent(beforeEvent, null, isXml);
+				}
+				sourceWriter
+						.println("GWT.runAsync(new com.google.gwt.core.client.RunAsyncCallback() {");
+				sourceWriter.indent();
+				sourceWriter.println("public void onSuccess() {");
+				sourceWriter.indent();
+				if (isAfter) {
+					writeDispatchEvent(afterEvent, null, isXml);
+				}
 			}
 			sourceWriter.print("Mvp4gModule newModule = modules.get(");
 			sourceWriter.print(moduleClassName);
@@ -195,20 +201,23 @@ public class Mvp4gConfigurationFileWriter {
 					+ event.getEventObjectClass()
 					+ ") newModule.getStartView()", isXml);
 			sourceWriter.println("if(passer != null) passer.pass(newModule);");
-			sourceWriter.outdent();
-			sourceWriter.println("}");
-			sourceWriter.println("public void onFailure(Throwable reason) {");
-			if (isAfter) {
-				writeDispatchEvent(afterEvent, null, isXml);
-			}
-			if (isError) {
-				sourceWriter.indent();				
-				writeDispatchEvent(errorEvent, formError, isXml);
+			if (isAsync) {
 				sourceWriter.outdent();
+				sourceWriter.println("}");
+				sourceWriter
+						.println("public void onFailure(Throwable reason) {");
+				if (isAfter) {
+					writeDispatchEvent(afterEvent, null, isXml);
+				}
+				if (isError) {
+					sourceWriter.indent();
+					writeDispatchEvent(errorEvent, formError, isXml);
+					sourceWriter.outdent();
+				}
+				sourceWriter.println("}");
+				sourceWriter.outdent();
+				sourceWriter.println("});");
 			}
-			sourceWriter.println("}");
-			sourceWriter.outdent();
-			sourceWriter.println("});");
 			sourceWriter.outdent();
 			sourceWriter.println("}");
 		}
@@ -625,7 +634,7 @@ public class Mvp4gConfigurationFileWriter {
 		String eventObjectClass = null;
 		String eventObject = null;
 		String form = null;
-		for (String moduleName : event.getModules()) {
+		for (String moduleName : event.getModulesToLoad()) {
 			module = getElement(moduleName, modules);
 			eventObjectClass = event.getEventObjectClass();
 			sourceWriter.print("load");
@@ -640,12 +649,16 @@ public class Mvp4gConfigurationFileWriter {
 				eventObject = "eventObject";
 			}
 
-			String eventBusClass = configuration.getChildEventBusClassMap()
+			JClassType eventBusType = configuration.getChildEventBusClassMap()
 					.get(module.getClassName());
 			boolean isXml = false;
-			if (eventBusClass == null) {
+			String eventBusClass = null;
+			if (eventBusType == null) {
 				isXml = true;
 				eventBusClass = EventBusWithLookup.class.getCanonicalName();
+			}
+			else{
+				eventBusClass = eventBusType.getQualifiedSourceName();
 			}
 			sourceWriter.print("(new Mvp4gEventPasser<");
 			sourceWriter.print(eventObjectClass);
@@ -699,10 +712,14 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print("dispatch(\"");
 			sourceWriter.print(eventType);
 			if ((form != null) && (form.length() > 0)) {
-				sourceWriter.print(", ");
+				sourceWriter.print("\", ");
 				sourceWriter.print(form);
+				sourceWriter.println(");");
 			}
-			sourceWriter.println("\");");
+			else{
+				sourceWriter.println("\");");
+			}
+			
 		} else {
 			sourceWriter.print(eventType);
 			sourceWriter.print("(");

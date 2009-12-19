@@ -57,12 +57,12 @@ public class EventElement extends Mvp4gElement {
 		return getValues( "handlers" );
 	}
 	
-	public void setModules( String[] modules ) throws DuplicatePropertyNameException {
-		setValues( "modules", modules );
+	public void setModulesToLoad( String[] modules ) throws DuplicatePropertyNameException {
+		setValues( "modulesToLoad", modules );
 	}
 
-	public String[] getModules() {
-		return getValues( "modules" );
+	public String[] getModulesToLoad() {
+		return getValues( "modulesToLoad" );
 	}
 
 	public void setHistory( String history ) throws DuplicatePropertyNameException {

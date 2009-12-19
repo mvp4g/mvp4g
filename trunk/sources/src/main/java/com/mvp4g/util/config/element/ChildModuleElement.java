@@ -17,11 +17,13 @@ public class ChildModuleElement extends SimpleMvp4gElement {
 	}
 
 	public String getAsync() {
-		return getProperty("async");
+		String async = getProperty("async");
+		//By default it's true
+		return (async == null) ? "true" : getProperty("async");
 	}
 
 	public boolean isAsync() {
-		return getProperty("async") != null;
+		return "true".equalsIgnoreCase(getAsync());
 	}
 
 }

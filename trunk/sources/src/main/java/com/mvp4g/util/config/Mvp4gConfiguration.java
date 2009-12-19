@@ -33,13 +33,13 @@ import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.presenter.PresenterInterface;
+import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.InjectedElement;
-import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.Mvp4gElement;
 import com.mvp4g.util.config.element.Mvp4gWithServicesElement;
 import com.mvp4g.util.config.element.PresenterElement;
@@ -50,6 +50,8 @@ import com.mvp4g.util.config.loader.annotation.EventsAnnotationsLoader;
 import com.mvp4g.util.config.loader.annotation.HistoryAnnotationsLoader;
 import com.mvp4g.util.config.loader.annotation.PresenterAnnotationsLoader;
 import com.mvp4g.util.config.loader.annotation.ServiceAnnotationsLoader;
+import com.mvp4g.util.config.loader.xml.ChildModuleLoader;
+import com.mvp4g.util.config.loader.xml.ChildModulesLoader;
 import com.mvp4g.util.config.loader.xml.EventsLoader;
 import com.mvp4g.util.config.loader.xml.HistoryConverterLoader;
 import com.mvp4g.util.config.loader.xml.HistoryLoader;
@@ -79,6 +81,11 @@ public class Mvp4gConfiguration {
 	private static final String HC_WARNING = "History Converter %s: must be able to translate null objects since it is associated to event %s which is sent with no object.";
 	private static final String REMOVE_OBJ = "%s %s: No instance of this object has been created since this class is not used.";
 	private static final String MISSING_ATTRIBUTE = "%s: child module %s doesn't define any event to load its view.";
+	private static final String NOT_EMPTY_EVENT_OBJ = "%s: %s event %s can't have any object associated with it.";
+	private static final String WRONG_EVENT_OBJ = "%s: %s event %s can only be associated with %s";
+	private static final String EMPTY_EVENT_OBJ = "Event %s: event must have an object associated with it as it loads a child view.";
+	private static final String WRONG_CHILD_LOAD_EVENT_OBJ = "Child Module %s: event %s can not load child module's start view. Can not convert %s to %s.";
+	private static final String START_VIEW_XML_WARNING = "Child Module %s: could not verify if child module's start view can be loaded by event %s since child module uses a XML event bus.";
 
 	private Set<PresenterElement> presenters = new HashSet<PresenterElement>();
 	private Set<ViewElement> views = new HashSet<ViewElement>();
@@ -91,7 +98,7 @@ public class Mvp4gConfiguration {
 	private EventBusElement eventBus = null;
 	private JClassType module = null;
 	private ChildModulesElement loadChildConfig = null;
-	private Map<String, String> childEventBusClassMap = new HashMap<String, String>();
+	private Map<String, JClassType> childEventBusClassMap = new HashMap<String, JClassType>();
 
 	private TreeLogger logger = null;
 	private TypeOracle oracle = null;
@@ -167,6 +174,8 @@ public class Mvp4gConfiguration {
 					loadEvents(xmlConfig);
 					loadStart(xmlConfig);
 					loadHistory(xmlConfig);
+					loadChildConfig(xmlConfig);
+					loadChildModules(xmlConfig);
 				} catch (Mvp4gXmlException e) {
 					e.setXmlFilePath(xmlFilePath.value());
 					throw e;
@@ -200,6 +209,10 @@ public class Mvp4gConfiguration {
 		validateEvents();
 		validateHistory();
 		validateChildModules();
+	}
+
+	public boolean isAsyncEnabled() {
+		return (oracle.findType("com.google.gwt.core.client.RunAsyncCallback") != null);
 	}
 
 	/*
@@ -305,14 +318,14 @@ public class Mvp4gConfiguration {
 	public JClassType getModule() {
 		return module;
 	}
-	
+
 	/**
 	 * @return the childEventBusClassMap
 	 */
-	public Map<String, String> getChildEventBusClassMap() {
+	public Map<String, JClassType> getChildEventBusClassMap() {
 		return childEventBusClassMap;
 	}
-	
+
 	/**
 	 * @return the loadChildConfig
 	 */
@@ -321,18 +334,17 @@ public class Mvp4gConfiguration {
 	}
 
 	/**
-	 * @param loadChildConfig the loadChildConfig to set
+	 * @param loadChildConfig
+	 *            the loadChildConfig to set
 	 */
 	public void setLoadChildConfig(ChildModulesElement loadChildConfig) {
 		this.loadChildConfig = loadChildConfig;
 	}
 
-	
-
 	/*
 	 * Validation
 	 */
-	
+
 	/**
 	 * Checks that all injected views correspond to a configured mvp4g element.
 	 * Remove views that aren't injected into a presenter or loaded at
@@ -669,7 +681,7 @@ public class Mvp4gConfiguration {
 		// Add presenter that handles event
 		List<EventElement> eventList = null;
 		for (EventElement event : events) {
-			for (String childModule : event.getModules()) {
+			for (String childModule : event.getModulesToLoad()) {
 				eventList = childModuleMap.get(childModule);
 				if (eventList == null) {
 					eventList = new ArrayList<EventElement>();
@@ -679,28 +691,57 @@ public class Mvp4gConfiguration {
 			}
 		}
 
-		JClassType moduleSuperClass = getType(null,
-				Mvp4gModule.class.getCanonicalName());
+		JClassType moduleSuperClass = getType(null, Mvp4gModule.class
+				.getCanonicalName());
 		JClassType moduleType = null;
-				
+
 		Set<ChildModuleElement> toRemove = new HashSet<ChildModuleElement>();
 		String eventName = null;
-		
+		EventElement eventElt = null;
+		String eventObjClass = null;
+		String childModuleClass = null;
+		JClassType childEventBus = null;
+		String startViewClass = null;
 		for (ChildModuleElement childModule : childModules) {
 			eventList = childModuleMap.remove(childModule.getName());
 			if (eventList != null) {
-				moduleType = getType(childModule, childModule.getClassName());
+				childModuleClass = childModule.getClassName();
+				moduleType = getType(childModule, childModuleClass);
 				if (!moduleType.isAssignableTo(moduleSuperClass)) {
 					throw new InvalidClassException(childModule,
 							Mvp4gModule.class.getCanonicalName());
 				}
 				eventName = childModule.getEventToLoadView();
-				if((eventName == null) || (eventName.length() == 0)){
-					String error = String.format(MISSING_ATTRIBUTE, module.getQualifiedSourceName(), childModule.getClassName());
+				if ((eventName == null) || (eventName.length() == 0)) {
+					String error = String.format(MISSING_ATTRIBUTE, module
+							.getQualifiedSourceName(), childModule
+							.getClassName());
 					throw new InvalidMvp4gConfigurationException(error);
 				}
-				//verify event exists
-				getElement(eventName, events, childModule);
+				// verify event exists
+				eventElt = getElement(eventName, events, childModule);
+				eventObjClass = eventElt.getEventObjectClass();
+				if ((eventObjClass == null) || (eventObjClass.length() == 0)) {
+					throw new InvalidMvp4gConfigurationException(String.format(
+							EMPTY_EVENT_OBJ, eventElt.getType()));
+				}
+				childEventBus = childEventBusClassMap.get(childModuleClass);
+				if (childEventBus != null) {
+					startViewClass = childEventBus.getAnnotation(Events.class)
+							.startView().getCanonicalName();
+					if (!getType(childModule, startViewClass).isAssignableTo(
+							getType(eventElt, eventElt.getEventObjectClass()))) {
+						throw new InvalidMvp4gConfigurationException(String
+								.format(WRONG_CHILD_LOAD_EVENT_OBJ, childModule
+										.getClassName(), eventElt.getType(),
+										startViewClass, eventElt
+												.getEventObjectClass()));
+					}
+				} else {
+					logger.log(TreeLogger.WARN, String.format(
+							START_VIEW_XML_WARNING, childModule.getClassName(),
+							eventElt.getType()));
+				}
 			} else {
 				// this object is not used, you can remove it
 				toRemove.add(childModule);
@@ -710,8 +751,8 @@ public class Mvp4gConfiguration {
 		// Missing presenter
 		if (!childModuleMap.isEmpty()) {
 			String it = childModuleMap.keySet().iterator().next();
-			throw new UnknownConfigurationElementException(childModuleMap.get(it)
-					.get(0), it);
+			throw new UnknownConfigurationElementException(childModuleMap.get(
+					it).get(0), it);
 		}
 
 		removeUselessElements(childModules, toRemove);
@@ -722,11 +763,9 @@ public class Mvp4gConfiguration {
 	 * Checks that events dispatch at start or History correspond to a
 	 * configured mvp4g element.
 	 * 
-	 * @throws UnknownConfigurationElementException
-	 *             if an event handler cannot be found among the configured
-	 *             elements.
+	 * @throws InvalidMvp4gConfigurationException
 	 */
-	void validateEvents() throws UnknownConfigurationElementException {
+	void validateEvents() throws InvalidMvp4gConfigurationException {
 		String event = null;
 		if (start.hasEventType()) {
 			event = start.getEventType();
@@ -736,6 +775,46 @@ public class Mvp4gConfiguration {
 		if (history != null) {
 			event = history.getInitEvent();
 			getElement(event, events, history);
+		}
+
+		if (loadChildConfig != null) {
+			EventElement eventElt = null;
+			String objClass = null;
+			String eventName = loadChildConfig.getErrorEvent();
+			if ((eventName != null) && (eventName.length() > 0)) {
+				eventElt = getElement(eventName, events, loadChildConfig);
+				objClass = eventElt.getEventObjectClass();
+				if ((objClass != null)
+						&& (!Throwable.class.getName().equals(objClass))) {
+					throw new InvalidMvp4gConfigurationException(String.format(
+							WRONG_EVENT_OBJ, loadChildConfig.getTagName(),
+							"Error", eventElt.getType(), Throwable.class
+									.getName()));
+				}
+			}
+
+			eventName = loadChildConfig.getAfterEvent();
+			if ((eventName != null) && (eventName.length() > 0)) {
+				eventElt = getElement(eventName, events, loadChildConfig);
+				objClass = eventElt.getEventObjectClass();
+				if ((objClass != null) && (objClass.length() > 0)) {
+					throw new InvalidMvp4gConfigurationException(String.format(
+							NOT_EMPTY_EVENT_OBJ, loadChildConfig.getTagName(),
+							"After", eventElt.getType()));
+				}
+			}
+
+			eventName = loadChildConfig.getBeforeEvent();
+			if ((eventName != null) && (eventName.length() > 0)) {
+				eventElt = getElement(eventName, events, loadChildConfig);
+				objClass = eventElt.getEventObjectClass();
+				if ((objClass != null) && (objClass.length() > 0)) {
+					throw new InvalidMvp4gConfigurationException(String.format(
+							NOT_EMPTY_EVENT_OBJ, loadChildConfig.getTagName(),
+							"Before", eventElt.getType()));
+				}
+			}
+
 		}
 
 	}
@@ -1010,6 +1089,17 @@ public class Mvp4gConfiguration {
 			throws InvalidMvp4gConfigurationException {
 		StartLoader startConfig = new StartLoader(xmlConfig);
 		start = startConfig.loadElement();
+	}
+
+	void loadChildConfig(XMLConfiguration xmlConfig)
+			throws InvalidMvp4gConfigurationException {
+		ChildModulesLoader childConfigLoader = new ChildModulesLoader(xmlConfig);
+		loadChildConfig = childConfigLoader.loadElement();
+	}
+
+	void loadChildModules(XMLConfiguration xmlConfig) throws Mvp4gXmlException {
+		ChildModuleLoader loader = new ChildModuleLoader(xmlConfig);
+		childModules = loader.loadElements();
 	}
 
 	/**

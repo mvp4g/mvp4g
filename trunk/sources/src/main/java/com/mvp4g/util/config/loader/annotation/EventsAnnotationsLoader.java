@@ -96,7 +96,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		}
 		else{
 			//save event bus type of potentiel child module
-			configuration.getChildEventBusClassMap().put(annotation.module().getCanonicalName(), c.getQualifiedSourceName());
+			configuration.getChildEventBusClassMap().put(annotation.module().getCanonicalName(), c);
 		}
 	}
 
@@ -272,7 +272,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				element.setHandlers(buildEventHandlers(c, method, event,
 						configuration));
 				element.setCalledMethod(event.calledMethod());
-				element.setModules(buildChildModules(c, method, event,
+				element.setModulesToLoad(buildChildModules(c, method, event,
 						configuration));
 
 				if (params.length > 0) {

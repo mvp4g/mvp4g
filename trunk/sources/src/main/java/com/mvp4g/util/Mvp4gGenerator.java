@@ -32,6 +32,7 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.mvp4g.client.Mvp4gException;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.Presenter;
@@ -114,6 +115,7 @@ public class Mvp4gGenerator extends Generator {
 		classFactory.addImport( ServiceDefTarget.class.getName() );
 		classFactory.addImport( PresenterInterface.class.getName() );
 		classFactory.addImport( EventBus.class.getName() );
+		classFactory.addImport( Mvp4gException.class.getName() );
 
 		PrintWriter printWriter = context.tryCreate( logger, packageName, generatedClassName );
 		if ( printWriter == null ) {
