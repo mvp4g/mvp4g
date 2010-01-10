@@ -27,6 +27,8 @@ public class MainPresenter extends
 		
 		public void displayErrorMessage(String error);
 		public void setWaitVisible(boolean visible);
+		
+		public void setMessage(String message);
 	
 	}
 
@@ -60,6 +62,10 @@ public class MainPresenter extends
 	
 	public void onAfterLoad(){
 		view.setWaitVisible(false);
+	}
+	
+	public void onDisplayMessage(String message){
+		view.setMessage(message);
 	}
 	
 	

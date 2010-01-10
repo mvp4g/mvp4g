@@ -17,19 +17,24 @@ public class MainView extends Composite implements
 	private Label p = new Label("Product");
 	private SimplePanel bodyContainer = new SimplePanel();
 	private PopupPanel wait = new PopupPanel();
+	private Label message = new Label();
 
 	public MainView() {
+		message.setStyleName("messageBar");
+		message.setVisible(false);
+		
 		TabBar bar = new TabBar();
 		bar.addTab(c);
 		bar.addTab(p);
 
 		VerticalPanel mainPanel = new VerticalPanel();
 		mainPanel.add(bar);
+		mainPanel.add(message);
 		mainPanel.add(bodyContainer);
-		wait.add(new Label("Wait"));		
+		wait.add(new Label("Wait"));
 
 		initWidget(mainPanel);
-		
+
 		bodyContainer.setWidget(new Label("Click on one of the tab to start."));
 	}
 
@@ -50,14 +55,20 @@ public class MainView extends Composite implements
 	}
 
 	public void setWaitVisible(boolean visible) {
-		if(visible){
-			wait.setPopupPosition(bodyContainer.getAbsoluteLeft(), bodyContainer.getAbsoluteTop());
-			wait.setPixelSize(bodyContainer.getOffsetWidth(), bodyContainer.getOffsetHeight());
-			wait.show();			
-		}
-		else{
+		if (visible) {
+			wait.setPopupPosition(bodyContainer.getAbsoluteLeft(),
+					bodyContainer.getAbsoluteTop());
+			wait.setPixelSize(bodyContainer.getOffsetWidth(), bodyContainer
+					.getOffsetHeight());
+			wait.show();
+		} else {
 			wait.hide();
 		}
+	}
+
+	public void displayText(String text) {
+		message.setText(text);
+		message.setVisible(text.length() > 0);
 	}
 
 }

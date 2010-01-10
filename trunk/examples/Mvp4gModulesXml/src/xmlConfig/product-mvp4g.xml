@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/xsd/mvp4g-conf.xsd">
 	<views package="com.mvp4g.example.client.product.view" >
-		<view name="rootView" class="ProductRootView" />
 		<view name="listView" class="ProductListView" />
 		<view name="displayView" class="ProductDisplayView"/>
 		<view name="editView" class="ProductEditView"/>
@@ -11,7 +10,6 @@
 		<service name="service" class="ProductService" />
 	</services>
 	<presenters package="com.mvp4g.example.client.product.presenter" >
-		<presenter name="rootPresenter" class="ProductRootPresenter" view="rootView" />
 		<presenter name="listPresenter" class="ProductListPresenter" view="listView" services="service" />
 		<presenter name="displayPresenter" class="ProductDisplayPresenter" view="displayView" services="service" />
 		<presenter name="editPresenter" class="ProductEditPresenter" view="editView"  services="service" />			
@@ -22,12 +20,12 @@
 		<event type="goToCreation" handlers="creationPresenter" />
 		<event type="goToEdit" handlers="editPresenter" />
 		<event type="goToDisplay" handlers="displayPresenter" />
-		<event type="changeBody" handlers="rootPresenter"/>
-		<event type="displayMessage" handlers="rootPresenter"/>
+		<event type="changeBody" eventObjectClass="com.google.gwt.user.client.ui.Widget" forwardToParent="true"/>
+		<event type="displayMessage" eventObjectClass="java.lang.String" forwardToParent="true"/>
 		<event type="productCreated" handlers="listPresenter, displayPresenter"/>
 		<event type="productDeleted" handlers="listPresenter"/>		
 	</events>
 	
-	<start view="rootView" />
+	<start view="listView" />
 	
 </mvp4g>		

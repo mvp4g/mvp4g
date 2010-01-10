@@ -9,10 +9,9 @@ import com.mvp4g.example.client.company.presenter.CompanyCreationPresenter;
 import com.mvp4g.example.client.company.presenter.CompanyDisplayPresenter;
 import com.mvp4g.example.client.company.presenter.CompanyEditPresenter;
 import com.mvp4g.example.client.company.presenter.CompanyListPresenter;
-import com.mvp4g.example.client.company.presenter.CompanyRootPresenter;
-import com.mvp4g.example.client.company.view.CompanyRootView;
+import com.mvp4g.example.client.company.view.CompanyListView;
 
-@Events(startView=CompanyRootView.class, module=CompanyModule.class)
+@Events(startView=CompanyListView.class, module=CompanyModule.class)
 public interface CompanyEventBus extends EventBus {
 	
 	@Event(handlers=CompanyListPresenter.class)
@@ -30,10 +29,10 @@ public interface CompanyEventBus extends EventBus {
 	@Event(handlers=CompanyDisplayPresenter.class)
 	public void goToDisplay(CompanyBean company);
 	
-	@Event(handlers=CompanyRootPresenter.class)
+	@Event(forwardToParent=true)
 	public void displayMessage(String message);
 
-	@Event(handlers=CompanyRootPresenter.class)
+	@Event(forwardToParent=true)
 	public void changeBody(Widget body);
 	
 	@Event(handlers={CompanyListPresenter.class, CompanyDisplayPresenter.class})

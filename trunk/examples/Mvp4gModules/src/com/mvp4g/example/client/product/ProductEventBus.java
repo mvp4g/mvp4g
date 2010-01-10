@@ -9,10 +9,9 @@ import com.mvp4g.example.client.product.presenter.ProductCreationPresenter;
 import com.mvp4g.example.client.product.presenter.ProductDisplayPresenter;
 import com.mvp4g.example.client.product.presenter.ProductEditPresenter;
 import com.mvp4g.example.client.product.presenter.ProductListPresenter;
-import com.mvp4g.example.client.product.presenter.ProductRootPresenter;
-import com.mvp4g.example.client.product.view.ProductRootView;
+import com.mvp4g.example.client.product.view.ProductListView;
 
-@Events(startView=ProductRootView.class, module=ProductModule.class)
+@Events(startView=ProductListView.class, module=ProductModule.class)
 public interface ProductEventBus extends EventBus {
 	
 	@Event(handlers=ProductCreationPresenter.class)
@@ -30,10 +29,10 @@ public interface ProductEventBus extends EventBus {
 	@Event(handlers=ProductListPresenter.class)
 	public void goToProduct();
 	
-	@Event(handlers=ProductRootPresenter.class)
+	@Event(forwardToParent=true)
 	public void displayMessage(String message);
 
-	@Event(handlers=ProductRootPresenter.class)
+	@Event(forwardToParent=true)
 	public void changeBody(Widget body);
 	
 	@Event(handlers={ProductListPresenter.class, ProductDisplayPresenter.class})
