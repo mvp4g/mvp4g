@@ -81,6 +81,8 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println("private Object startView = null;");
 		sourceWriter.println("private AbstractEventBus eventBus = null;");
 
+		writeParentEventBus();
+
 		if (configuration.getChildModules().size() > 0) {
 			writeChildModules();
 		}
@@ -136,6 +138,24 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println("}");
 	}
 
+	private void writeParentEventBus() {
+		JClassType parentEventBus = configuration.getParentEventBus();
+		if (parentEventBus != null) {
+			String parentEventBusClass = parentEventBus
+					.getQualifiedSourceName();
+			sourceWriter.println("private ");
+			sourceWriter.print(parentEventBusClass);
+			sourceWriter.print(" parentEventBus = null;");
+			sourceWriter.print("public void setParentEventBus(");
+			sourceWriter.print(parentEventBusClass);
+			sourceWriter.println(" eventBus){");
+			sourceWriter.indent();
+			sourceWriter.println(" parentEventBus = eventBus;");
+			sourceWriter.outdent();
+			sourceWriter.println("}");
+		}
+	}
+
 	private void writeChildModules() {
 
 		sourceWriter
@@ -164,7 +184,6 @@ public class Mvp4gConfigurationFileWriter {
 		boolean isAsyncEnabled = configuration.isAsyncEnabled();
 		for (ChildModuleElement module : configuration.getChildModules()) {
 			moduleClassName = module.getClassName();
-			event = getElement(module.getEventToLoadView(), events);
 			isAsync = module.isAsync() && isAsyncEnabled;
 			sourceWriter.print("private void load");
 			sourceWriter.print(module.getName());
@@ -183,7 +202,10 @@ public class Mvp4gConfigurationFileWriter {
 					writeDispatchEvent(afterEvent, null, isXml);
 				}
 			}
-			sourceWriter.print("Mvp4gModule newModule = modules.get(");
+			sourceWriter.print(moduleClassName);
+			sourceWriter.print(" newModule = (");
+			sourceWriter.print(moduleClassName);
+			sourceWriter.print(") modules.get(");
 			sourceWriter.print(moduleClassName);
 			sourceWriter.println(".class);");
 			sourceWriter.println("if(newModule == null){");
@@ -194,12 +216,20 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print("modules.put(");
 			sourceWriter.print(moduleClassName);
 			sourceWriter.println(".class, newModule);");
+			if (configuration.hasParentEventBus(moduleClassName)) {
+				sourceWriter.println("newModule.setParentEventBus(eventBus);");
+			}
 			sourceWriter.println("newModule.createAndStartModule();");
 			sourceWriter.outdent();
 			sourceWriter.println("}");
-			writeDispatchEvent(event.getType(), "("
-					+ event.getEventObjectClass()
-					+ ") newModule.getStartView()", isXml);
+
+			if (module.isAutoLoad()) {
+				event = getElement(module.getEventToLoadView(), events);
+				writeDispatchEvent(event.getType(), "("
+						+ event.getEventObjectClass()
+						+ ") newModule.getStartView()", isXml);
+			}
+
 			sourceWriter.println("if(passer != null) passer.pass(newModule);");
 			if (isAsync) {
 				sourceWriter.outdent();
@@ -426,6 +456,7 @@ public class Mvp4gConfigurationFileWriter {
 		String calledMethod = null;
 		String objectClass = null;
 		String param = null;
+		String parentParam = null;
 		String[] handlers = null;
 		boolean hasHistory = false;
 
@@ -440,18 +471,21 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print("public void ");
 			sourceWriter.print(type);
 			sourceWriter.print("(");
-			if (objectClass == null) {
+			if ((objectClass == null) || (objectClass.length() == 0)) {
 				param = "();";
+				parentParam = null;
 			} else {
 				sourceWriter.print(objectClass);
 				sourceWriter.print(" form");
 				param = "(form);";
+				parentParam = "form";
 			}
 			sourceWriter.println("){");
 
 			sourceWriter.indent();
 
 			writeLoadChildModule(event);
+			writeParentEvent(event, parentParam);
 
 			if (hasHistory) {
 				sourceWriter.print("place( placeService, \"");
@@ -508,7 +542,7 @@ public class Mvp4gConfigurationFileWriter {
 			type = event.getType();
 
 			objectClass = event.getEventObjectClass();
-			if (objectClass == null) {
+			if ((objectClass == null) || (objectClass.length() == 0)) {
 				param = "();";
 			} else {
 				param = "( (" + objectClass + ") form);";
@@ -627,6 +661,31 @@ public class Mvp4gConfigurationFileWriter {
 		}
 	}
 
+	private void writeParentEvent(EventElement event, String form) {
+		if (event.hasForwardToParent()) {
+			sourceWriter.print("parentEventBus.");
+			if (configuration.isParentEventBusXml()) {
+				sourceWriter.print("dispatch(\"");
+				sourceWriter.print(event.getType());
+				if ((form != null) && (form.length() > 0)) {
+					sourceWriter.print("\", ");
+					sourceWriter.print(form);
+					sourceWriter.println(");");
+				} else {
+					sourceWriter.println("\");");
+				}
+
+			} else {
+				sourceWriter.print(event.getType());
+				sourceWriter.print("(");
+				if ((form != null) && (form.length() > 0)) {
+					sourceWriter.print(form);
+				}
+				sourceWriter.println(");");
+			}
+		}
+	}
+
 	private void writeLoadChildModule(EventElement event) {
 
 		ChildModuleElement module = null;
@@ -656,8 +715,7 @@ public class Mvp4gConfigurationFileWriter {
 			if (eventBusType == null) {
 				isXml = true;
 				eventBusClass = EventBusWithLookup.class.getCanonicalName();
-			}
-			else{
+			} else {
 				eventBusClass = eventBusType.getQualifiedSourceName();
 			}
 			sourceWriter.print("(new Mvp4gEventPasser<");
@@ -715,11 +773,10 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.print("\", ");
 				sourceWriter.print(form);
 				sourceWriter.println(");");
-			}
-			else{
+			} else {
 				sourceWriter.println("\");");
 			}
-			
+
 		} else {
 			sourceWriter.print(eventType);
 			sourceWriter.print("(");

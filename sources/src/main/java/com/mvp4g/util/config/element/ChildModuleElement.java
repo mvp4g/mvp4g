@@ -4,6 +4,10 @@ import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 public class ChildModuleElement extends SimpleMvp4gElement {
 	
+	public ChildModuleElement() {
+		super( "childModule" );
+	}
+	
 	public void setEventToLoadView(String eventToLoadView) throws DuplicatePropertyNameException{
 		setProperty("eventToLoadView", eventToLoadView);
 	}
@@ -25,5 +29,22 @@ public class ChildModuleElement extends SimpleMvp4gElement {
 	public boolean isAsync() {
 		return "true".equalsIgnoreCase(getAsync());
 	}
+	
+
+	public void setAutoLoad(String autoLoad) throws DuplicatePropertyNameException {
+		setProperty("autoLoad", autoLoad);
+	}
+
+	public String getAutoLoad() {
+		String autoLoad = getProperty("autoLoad");
+		//By default it's true
+		return (autoLoad == null) ? "true" : getProperty("autoLoad");
+	}
+
+	public boolean isAutoLoad() {
+		return "true".equalsIgnoreCase(getAutoLoad());
+	}
+	
+		
 
 }

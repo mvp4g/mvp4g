@@ -52,6 +52,8 @@ public @interface Event {
 	
 	Class<? extends Mvp4gModule>[] modulesToLoad() default {};
 	
+	boolean forwardToParent() default false;
+	
 	String calledMethod() default "";
 
 	String historyConverterName() default "";

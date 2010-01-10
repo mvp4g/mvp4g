@@ -76,6 +76,18 @@ public class EventElement extends Mvp4gElement {
 	public boolean hasHistory() {
 		return getHistory() != null;
 	}
+	
+	public String getForwardToParent(){
+		return getProperty("forwardToParent");
+	}
+	
+	public void setForwardToParent(String forwardToParent) throws DuplicatePropertyNameException{
+		setProperty("forwardToParent", forwardToParent);
+	}
+	
+	public boolean hasForwardToParent(){
+		return "true".equalsIgnoreCase(getProperty("forwardToParent"));
+	}
 
 	@Override
 	public String toString() {

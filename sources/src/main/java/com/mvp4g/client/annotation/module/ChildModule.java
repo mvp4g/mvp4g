@@ -6,5 +6,6 @@ public @interface ChildModule {
 	
 	Class<? extends Mvp4gModule> moduleClass();
 	boolean async() default true;
+	boolean autoLoad() default true;
 
 }
