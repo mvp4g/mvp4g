@@ -2,7 +2,7 @@
 <mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/xsd/mvp4g-conf.xsd">
 	<childModules package="com.mvp4g.example.client" beforeEvent="beforeLoad" afterEvent="afterLoad" errorEvent="errorOnLoad">
 		<childModule name="companyModule" class=".company.CompanyModule" eventToLoadView="changeBody"/>
-		<childModule name="productModule" class=".product.ProductModule" eventToLoadView="changeBody" async="false"/>	
+		<childModule name="productModule" class=".product.ProductModule" eventToLoadView="changeBody" async="false" autoLoad="false"/>	
 	</childModules>
 	<views package="com.mvp4g.example.client.main" >
 		<view name="rootView" class="MainView" />		
@@ -16,7 +16,8 @@
 		<event type="changeBody" handlers="rootPresenter" />
 		<event type="errorOnLoad" handlers="rootPresenter" />
 		<event type="beforeLoad" handlers="rootPresenter"/>
-		<event type="afterLoad" handlers="rootPresenter"/>				
+		<event type="afterLoad" handlers="rootPresenter"/>
+		<event type="displayMessage" handlers="rootPresenter"/>				
 	</events>
 	
 	<start view="rootView" />

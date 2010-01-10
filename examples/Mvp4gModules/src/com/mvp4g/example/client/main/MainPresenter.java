@@ -27,6 +27,8 @@ public class MainPresenter extends
 		
 		public void displayErrorMessage(String error);
 		public void setWaitVisible(boolean visible);
+		
+		public void displayText(String message);
 	
 	}
 
@@ -48,6 +50,7 @@ public class MainPresenter extends
 
 	public void onChangeBody(Widget w) {
 		view.setBody(w);
+		onDisplayMessage("");
 	}
 	
 	public void onErrorOnLoad(Throwable reason){
@@ -62,6 +65,8 @@ public class MainPresenter extends
 		view.setWaitVisible(false);
 	}
 	
-	
+	public void onDisplayMessage(String message){
+		view.displayText(message);
+	}
 
 }

@@ -17,14 +17,20 @@ public class MainView extends Composite implements
 	private Label p = new Label("Product");
 	private SimplePanel bodyContainer = new SimplePanel();
 	private PopupPanel wait = new PopupPanel();
+	
+	private Label messageBar = new Label();
 
 	public MainView() {
 		TabBar bar = new TabBar();
 		bar.addTab(c);
 		bar.addTab(p);
+		
+		messageBar.setStyleName("messageBar");
+		messageBar.setVisible(false);
 
 		VerticalPanel mainPanel = new VerticalPanel();
 		mainPanel.add(bar);
+		mainPanel.add(messageBar);
 		mainPanel.add(bodyContainer);
 		wait.add(new Label("Wait"));		
 
@@ -43,6 +49,7 @@ public class MainView extends Composite implements
 
 	public void setBody(Widget newBody) {
 		bodyContainer.setWidget(newBody);
+		setMessage("");
 	}
 
 	public void displayErrorMessage(String error) {
@@ -58,6 +65,11 @@ public class MainView extends Composite implements
 		else{
 			wait.hide();
 		}
+	}
+
+	public void setMessage(String message) {
+		messageBar.setText(message);
+		messageBar.setVisible(message.length() > 0);
 	}
 
 }

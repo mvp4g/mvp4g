@@ -15,7 +15,7 @@ import com.mvp4g.example.client.product.ProductModule;
 
 @Events(startView = MainView.class)
 @ChildModules( { @ChildModule(moduleClass = CompanyModule.class),
-		@ChildModule(moduleClass = ProductModule.class) })
+		@ChildModule(moduleClass = ProductModule.class, async=false, autoLoad=false) })
 public interface MainEventBus extends EventBus {
 
 	@Event(modulesToLoad = CompanyModule.class)
@@ -24,7 +24,7 @@ public interface MainEventBus extends EventBus {
 	@Event(modulesToLoad = ProductModule.class)
 	public void goToProduct();
 
-	@UseToLoadChildModuleView({ProductModule.class, CompanyModule.class})
+	@UseToLoadChildModuleView(CompanyModule.class)
 	@Event(handlers = MainPresenter.class)
 	public void changeBody(Widget newBody);
 	
@@ -39,5 +39,8 @@ public interface MainEventBus extends EventBus {
 	@AfterLoadChildModule
 	@Event(handlers = MainPresenter.class)
 	public void afterLoad();
+	
+	@Event(handlers = MainPresenter.class)
+	public void displayMessage(String message);
 
 }
