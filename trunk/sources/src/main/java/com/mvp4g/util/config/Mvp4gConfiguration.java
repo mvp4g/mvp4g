@@ -86,6 +86,8 @@ public class Mvp4gConfiguration {
 	private static final String EMPTY_EVENT_OBJ = "Event %s: event must have an object associated with it as it loads a child view.";
 	private static final String WRONG_CHILD_LOAD_EVENT_OBJ = "Child Module %s: event %s can not load child module's start view. Can not convert %s to %s.";
 	private static final String START_VIEW_XML_WARNING = "Child Module %s: could not verify if child module's start view can be loaded by event %s since child module uses a XML event bus.";
+	private static final String PARENT_EVENT_BUS_WARNING = "Parent's event bus is a XML event bus. Mvp4g framework can't verify if parent's event bus can handle events forwarded to it.";
+	private static final String NO_PARENT_ERROR = "Event %s: No parent event bus has been found for this module but this event must be forwarded to parent event bus. Have you forgotten to add setParentEventBus method to your module?";
 
 	private Set<PresenterElement> presenters = new HashSet<PresenterElement>();
 	private Set<ViewElement> views = new HashSet<ViewElement>();
@@ -99,6 +101,7 @@ public class Mvp4gConfiguration {
 	private JClassType module = null;
 	private ChildModulesElement loadChildConfig = null;
 	private Map<String, JClassType> childEventBusClassMap = new HashMap<String, JClassType>();
+	private JClassType parentEventBus = null;
 
 	private TreeLogger logger = null;
 	private TypeOracle oracle = null;
@@ -189,6 +192,7 @@ public class Mvp4gConfiguration {
 		loadHistoryConverters(scanResult.get(History.class));
 		loadPresenters(scanResult.get(Presenter.class));
 		loadEvents(scanResult.get(Events.class));
+		loadParentModule();
 
 		// Phase 3: perform cross-element validations
 		if (eventBus == null) {
@@ -339,6 +343,23 @@ public class Mvp4gConfiguration {
 	 */
 	public void setLoadChildConfig(ChildModulesElement loadChildConfig) {
 		this.loadChildConfig = loadChildConfig;
+	}
+
+	/**
+	 * @return the parentEventBus
+	 */
+	public JClassType getParentEventBus() {
+		return parentEventBus;
+	}
+
+	public boolean isParentEventBusXml() {
+		return (parentEventBus != null)
+				&& (parentEventBus.getQualifiedSourceName()
+						.equals(EventBusWithLookup.class.getCanonicalName()));
+	}
+
+	public boolean hasParentEventBus(String moduleClassName) {
+		return findParentEventBus(moduleClassName) != null;
 	}
 
 	/*
@@ -711,36 +732,42 @@ public class Mvp4gConfiguration {
 					throw new InvalidClassException(childModule,
 							Mvp4gModule.class.getCanonicalName());
 				}
-				eventName = childModule.getEventToLoadView();
-				if ((eventName == null) || (eventName.length() == 0)) {
-					String error = String.format(MISSING_ATTRIBUTE, module
-							.getQualifiedSourceName(), childModule
-							.getClassName());
-					throw new InvalidMvp4gConfigurationException(error);
-				}
-				// verify event exists
-				eventElt = getElement(eventName, events, childModule);
-				eventObjClass = eventElt.getEventObjectClass();
-				if ((eventObjClass == null) || (eventObjClass.length() == 0)) {
-					throw new InvalidMvp4gConfigurationException(String.format(
-							EMPTY_EVENT_OBJ, eventElt.getType()));
-				}
-				childEventBus = childEventBusClassMap.get(childModuleClass);
-				if (childEventBus != null) {
-					startViewClass = childEventBus.getAnnotation(Events.class)
-							.startView().getCanonicalName();
-					if (!getType(childModule, startViewClass).isAssignableTo(
-							getType(eventElt, eventElt.getEventObjectClass()))) {
-						throw new InvalidMvp4gConfigurationException(String
-								.format(WRONG_CHILD_LOAD_EVENT_OBJ, childModule
-										.getClassName(), eventElt.getType(),
-										startViewClass, eventElt
-												.getEventObjectClass()));
+
+				if (childModule.isAutoLoad()) {
+					eventName = childModule.getEventToLoadView();
+					if ((eventName == null) || (eventName.length() == 0)) {
+						String error = String.format(MISSING_ATTRIBUTE, module
+								.getQualifiedSourceName(), childModule
+								.getClassName());
+						throw new InvalidMvp4gConfigurationException(error);
 					}
-				} else {
-					logger.log(TreeLogger.WARN, String.format(
-							START_VIEW_XML_WARNING, childModule.getClassName(),
-							eventElt.getType()));
+					// verify event exists
+					eventElt = getElement(eventName, events, childModule);
+					eventObjClass = eventElt.getEventObjectClass();
+					if ((eventObjClass == null)
+							|| (eventObjClass.length() == 0)) {
+						throw new InvalidMvp4gConfigurationException(String
+								.format(EMPTY_EVENT_OBJ, eventElt.getType()));
+					}
+					childEventBus = childEventBusClassMap.get(childModuleClass);
+					if (childEventBus != null) {
+						startViewClass = childEventBus.getAnnotation(
+								Events.class).startView().getCanonicalName();
+						if (!getType(childModule, startViewClass)
+								.isAssignableTo(
+										getType(eventElt, eventElt
+												.getEventObjectClass()))) {
+							throw new InvalidMvp4gConfigurationException(String
+									.format(WRONG_CHILD_LOAD_EVENT_OBJ,
+											childModule.getClassName(),
+											eventElt.getType(), startViewClass,
+											eventElt.getEventObjectClass()));
+						}
+					} else {
+						logger.log(TreeLogger.WARN, String.format(
+								START_VIEW_XML_WARNING, childModule
+										.getClassName(), eventElt.getType()));
+					}
 				}
 			} else {
 				// this object is not used, you can remove it
@@ -766,6 +793,14 @@ public class Mvp4gConfiguration {
 	 * @throws InvalidMvp4gConfigurationException
 	 */
 	void validateEvents() throws InvalidMvp4gConfigurationException {
+
+		for (EventElement event : events) {
+			if (event.hasForwardToParent() && (parentEventBus == null)) {
+				throw new InvalidMvp4gConfigurationException(String.format(
+						NO_PARENT_ERROR, event.getType()));
+			}
+		}
+
 		String event = null;
 		if (start.hasEventType()) {
 			event = start.getEventType();
@@ -878,7 +913,7 @@ public class Mvp4gConfiguration {
 
 		for (EventElement event : events) {
 			String objectClass = event.getEventObjectClass();
-			if ((objectClass == null) || (objectClass.length() == 0)) {
+			if (objectClass == null) {
 				String[] handlers = event.getHandlers();
 
 				// if no handler, then event object class can't be deduce
@@ -921,6 +956,13 @@ public class Mvp4gConfiguration {
 								+ " with 1 or 0 parameter.");
 					}
 
+				} else {
+					if (event.hasForwardToParent()) {
+						throw new InvalidMvp4gConfigurationException(
+								"Event "
+										+ event.getType()
+										+ ": you need to define the class of the object linked to this event since it is forwarded to the parent event bus and no presenter of this module handles it. If no object is associated with this event, set eventObjectClass attribute to \"\".");
+					}
 				}
 			}
 
@@ -1117,6 +1159,13 @@ public class Mvp4gConfiguration {
 		history = historyConfig.loadElement();
 	}
 
+	void loadParentModule() {
+		parentEventBus = findParentEventBus(module.getQualifiedSourceName());
+		if (isParentEventBusXml()) {
+			logger.log(TreeLogger.WARN, PARENT_EVENT_BUS_WARNING);
+		}
+	}
+
 	/**
 	 * Verify that id of elements contained in the set isn't already contained
 	 * in the ids set.
@@ -1211,6 +1260,27 @@ public class Mvp4gConfiguration {
 			throw new NotFoundClassException(element, className);
 		}
 		return type;
+	}
+
+	private JClassType findParentEventBus(String moduleClassName) {
+		JClassType parentEventBus = null;
+		JClassType module;
+		try {
+			module = getType(null, moduleClassName);
+			JMethod[] methods = module.getMethods();
+			for (JMethod m : methods) {
+				if ("setParentEventBus".equals(m.getName())
+						&& (m.getParameters().length == 1)) {
+					parentEventBus = m.getParameters()[0].getType()
+							.isClassOrInterface();
+					break;
+				}
+			}
+		} catch (NotFoundClassException e) {
+			parentEventBus = null;
+		}
+
+		return parentEventBus;
 	}
 
 }

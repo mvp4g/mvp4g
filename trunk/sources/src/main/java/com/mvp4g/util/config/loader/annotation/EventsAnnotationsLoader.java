@@ -157,6 +157,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 					module.setName(buildElementName(moduleClass, ""));
 					module.setClassName(moduleClass);
 					module.setAsync(Boolean.toString(child.async()));
+					module.setAutoLoad(Boolean.toString(child.autoLoad()));
 				} catch (DuplicatePropertyNameException e) {
 					// setters are only called once, so this error can't occur.
 				}
@@ -274,6 +275,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				element.setCalledMethod(event.calledMethod());
 				element.setModulesToLoad(buildChildModules(c, method, event,
 						configuration));
+				element.setForwardToParent(Boolean.toString(event.forwardToParent()));
 
 				if (params.length > 0) {
 					element.setEventObjectClass(params[0].getType()

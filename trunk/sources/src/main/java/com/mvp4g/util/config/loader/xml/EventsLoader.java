@@ -16,9 +16,8 @@ import com.mvp4g.util.config.element.EventElement;
 public class EventsLoader extends Mvp4gElementLoader<EventElement> {
 
 	static final String[] REQUIRED_ATTRIBUTES = { "type" };
-	static final String[] OPTIONAL_ATTRIBUTES = { "calledMethod", "eventObjectClass", "history" };
-	static final String[] MULTI_VALUE_ATTRIBUTES = { "handlers" };
-	static final String[] OPTIONAL_MULTI_VALUE_ATTRIBUTES = { "modulesToLoad" };
+	static final String[] OPTIONAL_ATTRIBUTES = { "calledMethod", "eventObjectClass", "history", "forwardToParent" };
+	static final String[] OPTIONAL_MULTI_VALUE_ATTRIBUTES = { "handlers", "modulesToLoad" };
 
 	@SuppressWarnings( "unchecked" )
 	public EventsLoader( XMLConfiguration xmlConfig ) {
@@ -40,11 +39,6 @@ public class EventsLoader extends Mvp4gElementLoader<EventElement> {
 		return OPTIONAL_ATTRIBUTES;
 	}
 
-	@Override
-	protected String[] getMultiValueAttributeNames() {
-		return MULTI_VALUE_ATTRIBUTES;
-	}
-	
 	@Override
 	protected String[] getOptionalMultiValueAttributeNames() {
 		return OPTIONAL_MULTI_VALUE_ATTRIBUTES;
