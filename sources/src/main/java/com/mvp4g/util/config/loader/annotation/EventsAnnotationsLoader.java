@@ -96,7 +96,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		}
 		else{
 			//save event bus type of potentiel child module
-			configuration.getChildEventBusClassMap().put(annotation.module().getCanonicalName(), c);
+			configuration.getOthersEventBusClassMap().put(annotation.module().getCanonicalName(), c);
 		}
 	}
 

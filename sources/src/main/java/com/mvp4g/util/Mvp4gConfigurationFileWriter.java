@@ -23,14 +23,15 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.mvp4g.client.event.EventBusWithLookup;
+import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.util.config.Mvp4gConfiguration;
+import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.InjectedElement;
-import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.Mvp4gElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
@@ -79,13 +80,16 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println();
 
 		sourceWriter.println("private Object startView = null;");
-		sourceWriter.println("private AbstractEventBus eventBus = null;");
+		sourceWriter.println("protected AbstractEventBus eventBus = null;");
+		sourceWriter.println("protected Mvp4gModule itself = this;");
 
 		writeParentEventBus();
 
 		if (configuration.getChildModules().size() > 0) {
 			writeChildModules();
 		}
+
+		writeHistoryConnection();
 
 		sourceWriter.println();
 
@@ -139,20 +143,30 @@ public class Mvp4gConfigurationFileWriter {
 	}
 
 	private void writeParentEventBus() {
-		JClassType parentEventBus = configuration.getParentEventBus();
-		if (parentEventBus != null) {
-			String parentEventBusClass = parentEventBus
+		JClassType parentModule = configuration.getParentModule();
+		if (parentModule != null) {
+			String parentModuleClass = parentModule.getQualifiedSourceName();
+			String parentEventBusClass = configuration.getParentEventBus()
 					.getQualifiedSourceName();
-			sourceWriter.println("private ");
+			sourceWriter.print("private ");
+			sourceWriter.print(parentModuleClass);
+			sourceWriter.println(" parentModule = null;");
+			sourceWriter.print("private ");
 			sourceWriter.print(parentEventBusClass);
-			sourceWriter.print(" parentEventBus = null;");
-			sourceWriter.print("public void setParentEventBus(");
-			sourceWriter.print(parentEventBusClass);
-			sourceWriter.println(" eventBus){");
+			sourceWriter.println(" parentEventBus = null;");
+			sourceWriter.println("public void setParentModule(");
+			sourceWriter.print(parentModuleClass);
+			sourceWriter.println(" module){");
 			sourceWriter.indent();
-			sourceWriter.println(" parentEventBus = eventBus;");
+			sourceWriter.println("parentModule = module;");
+			sourceWriter.println("parentEventBus = (");
+			sourceWriter.print(parentEventBusClass);
+			sourceWriter.println(") module.getEventBus();");
 			sourceWriter.outdent();
 			sourceWriter.println("}");
+		} else {
+			// only root module can have a placeService instance
+			sourceWriter.println("private PlaceService placeService = null;");
 		}
 	}
 
@@ -216,8 +230,8 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print("modules.put(");
 			sourceWriter.print(moduleClassName);
 			sourceWriter.println(".class, newModule);");
-			if (configuration.hasParentEventBus(moduleClassName)) {
-				sourceWriter.println("newModule.setParentEventBus(eventBus);");
+			if (configuration.hasParentModule(moduleClassName)) {
+				sourceWriter.println("newModule.setParentModule(itself);");
 			}
 			sourceWriter.println("newModule.createAndStartModule();");
 			sourceWriter.outdent();
@@ -277,19 +291,12 @@ public class Mvp4gConfigurationFileWriter {
 
 		if (history != null) {
 
-			String eventBusClass = configuration.getEventBus()
-					.getInterfaceClassName();
-
-			sourceWriter.print("final PlaceService<");
-			sourceWriter.print(eventBusClass);
-			sourceWriter.print("> placeService = new PlaceService<");
-			sourceWriter.print(eventBusClass);
-			sourceWriter.println(">(){");
+			sourceWriter.print("placeService = new PlaceService(){");
 
 			sourceWriter.indent();
 			sourceWriter.println("protected void sendInitEvent(){");
 			sourceWriter.indent();
-			sourceWriter.print("getEventBus().");
+			sourceWriter.print("eventBus.");
 
 			if (configuration.getEventBus().isXml()) {
 				sourceWriter.print("dispatch(\"");
@@ -306,7 +313,7 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.indent();
 			sourceWriter.println("protected void sendNotFoundEvent(){");
 			sourceWriter.indent();
-			sourceWriter.print("getEventBus().");
+			sourceWriter.print("eventBus.");
 
 			if (configuration.getEventBus().isXml()) {
 				sourceWriter.print("dispatch(\"");
@@ -322,15 +329,15 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.outdent();
 			sourceWriter.println("};");
 
-			String name = null;
+		}
 
-			for (HistoryConverterElement converter : configuration
-					.getHistoryConverters()) {
-				name = converter.getName();
-				createInstance(name, converter.getClassName());
-				injectServices(name, converter.getInjectedServices());
-			}
+		String name = null;
 
+		for (HistoryConverterElement converter : configuration
+				.getHistoryConverters()) {
+			name = converter.getName();
+			createInstance(name, converter.getClassName());
+			injectServices(name, converter.getInjectedServices());
 		}
 
 	}
@@ -392,7 +399,7 @@ public class Mvp4gConfigurationFileWriter {
 		}
 
 		if (configuration.getHistory() != null) {
-			sourceWriter.print("placeService.setEventBus(eventBus);");
+			sourceWriter.print("placeService.setModule(itself);");
 		}
 
 	}
@@ -407,18 +414,16 @@ public class Mvp4gConfigurationFileWriter {
 	private void writeServices() {
 
 		String name = null;
-		String className = null;
 
 		for (ServiceElement service : configuration.getServices()) {
 			name = service.getName();
-			className = service.getClassName();
 
 			sourceWriter.print("final ");
-			sourceWriter.print(className + "Async");
+			sourceWriter.print(service.getGeneratedClassName());
 			sourceWriter.print(" ");
 			sourceWriter.print(name);
 			sourceWriter.print(" = GWT.create(");
-			sourceWriter.print(className);
+			sourceWriter.print(service.getClassName());
 			sourceWriter.println(".class);");
 
 			if (service.hasPath()) {
@@ -488,7 +493,7 @@ public class Mvp4gConfigurationFileWriter {
 			writeParentEvent(event, parentParam);
 
 			if (hasHistory) {
-				sourceWriter.print("place( placeService, \"");
+				sourceWriter.print("place( itself, \"");
 				sourceWriter.print(type);
 				if (objectClass == null) {
 					sourceWriter.println("\", null );");
@@ -517,7 +522,7 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println("};");
 
 		for (EventElement event : eventsWithHistory) {
-			sourceWriter.print("placeService.addConverter( \"");
+			sourceWriter.print("addConverter( \"");
 			sourceWriter.print(event.getType());
 			sourceWriter.print("\",");
 			sourceWriter.print(event.getHistory());
@@ -708,7 +713,7 @@ public class Mvp4gConfigurationFileWriter {
 				eventObject = "eventObject";
 			}
 
-			JClassType eventBusType = configuration.getChildEventBusClassMap()
+			JClassType eventBusType = configuration.getOthersEventBusClassMap()
 					.get(module.getClassName());
 			boolean isXml = false;
 			String eventBusClass = null;
@@ -785,5 +790,91 @@ public class Mvp4gConfigurationFileWriter {
 			}
 			sourceWriter.println(");");
 		}
+	}
+
+	private void writeHistoryConnection() {
+		sourceWriter
+				.println("public void addConverter(String token, HistoryConverter<?,?> hc){");
+		sourceWriter.indent();
+		if (configuration.getParentModule() != null) {
+			String historyName = configuration.getHistoryName();
+			if (historyName != null) {
+				sourceWriter.print("parentModule.addConverter(\"");
+				sourceWriter.print(historyName);
+				sourceWriter.print(PlaceService.MODULE_SEPARATOR);
+				sourceWriter.println("\" + token, hc);");
+			}
+		} else {
+			sourceWriter.println("placeService.addConverter(token, hc);");
+		}
+		sourceWriter.outdent();
+		sourceWriter.println("}");
+
+		sourceWriter.println("public <T> void place(String token, T form){");
+		sourceWriter.indent();
+		if (configuration.getParentModule() != null) {
+			String historyName = configuration.getHistoryName();
+			if (historyName != null) {
+				sourceWriter.print("parentModule.place(\"");
+				sourceWriter.print(historyName);
+				sourceWriter.print(PlaceService.MODULE_SEPARATOR);
+				sourceWriter.println("\" + token, form );");
+			}
+		} else {
+			sourceWriter.println("placeService.place( token, form );");
+		}
+		sourceWriter.outdent();
+		sourceWriter.println("}");
+
+		sourceWriter
+				.println("public <T> void dispatchHistoryEvent(String eventType, final Mvp4gEventPasser<Boolean> passer){");
+		sourceWriter.indent();
+		sourceWriter
+		.println("int index = eventType.indexOf(PlaceService.MODULE_SEPARATOR);");
+		sourceWriter
+		.println("if(index > -1){");
+		sourceWriter.indent();
+		sourceWriter.println("String moduleHistoryName = eventType.substring(0, index);");
+		sourceWriter.println("String nextToken = eventType.substring(index + 1);");
+		sourceWriter.println("Mvp4gEventPasser<String> nextPasser = new Mvp4gEventPasser<String>(nextToken) {");
+		sourceWriter.indent();
+		sourceWriter.println("public void pass(Mvp4gModule module) {");
+		sourceWriter.indent();
+		sourceWriter.println("module.dispatchHistoryEvent(eventObject, passer);");
+		sourceWriter.outdent();
+		sourceWriter.println("}");
+		sourceWriter.outdent();
+		sourceWriter.println("};");
+		
+		String historyName;
+		for(ChildModuleElement child : configuration.getChildModules()){
+			historyName = child.getHistoryName();
+			if((historyName != null) && (historyName.length() > 0)){
+				sourceWriter.print("if(\"");
+				sourceWriter.print(historyName);
+				sourceWriter.println("\".equals(moduleHistoryName)){");
+				sourceWriter.indent();
+				sourceWriter.print("load");
+				sourceWriter.print(child.getName());
+				sourceWriter.println("(nextPasser);");
+				sourceWriter.println("return;");
+				sourceWriter.outdent();
+				sourceWriter.println("}");
+			}			
+		}
+		
+		sourceWriter.println("passer.setEventObject(false);");
+		sourceWriter.println("passer.pass(this);");		
+		
+		sourceWriter.outdent();
+		sourceWriter.println("}else{");
+		sourceWriter.indent();
+		sourceWriter.println("passer.pass(this);");
+		sourceWriter.println("return;");		
+		sourceWriter.outdent();
+		sourceWriter.println("}");
+		
+		sourceWriter.outdent();
+		sourceWriter.println("}");
 	}
 }

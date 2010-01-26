@@ -17,7 +17,7 @@ import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
  */
 public class SimpleMvp4gElement extends Mvp4gElement {
 
-	private ClassResolver resolver = new ClassResolver();
+	protected ClassResolver resolver = new ClassResolver();
 
 	public SimpleMvp4gElement() {
 		super( "simple" );

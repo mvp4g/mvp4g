@@ -23,6 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 public @interface Service {
 	
 	String name() default "";
-	String path();
+	String path() default "";
+	Class<?> generatedClass() default Void.class; 
 
 }

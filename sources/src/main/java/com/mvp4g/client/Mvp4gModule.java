@@ -17,6 +17,7 @@ package com.mvp4g.client;
 
 import com.mvp4g.client.annotation.XmlFilePath;
 import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.history.HistoryConverter;
 
 /**
  * This interface designs how to start the application
@@ -35,5 +36,11 @@ public interface Mvp4gModule {
 	public Object getStartView();
 	
 	public EventBus getEventBus();
+	
+	public void addConverter(String token, HistoryConverter<?,?> hc);
+	
+	public <T> void place(String token, T form);
+	
+	public <T> void dispatchHistoryEvent(String eventType, Mvp4gEventPasser<Boolean> passer);
 
 }
