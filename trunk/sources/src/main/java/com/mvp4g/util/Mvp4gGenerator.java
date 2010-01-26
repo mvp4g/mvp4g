@@ -32,12 +32,15 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.mvp4g.client.Mvp4gEventPasser;
 import com.mvp4g.client.Mvp4gException;
+import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.annotation.Service;
 import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.client.presenter.PresenterInterface;
 import com.mvp4g.util.config.Mvp4gConfiguration;
@@ -116,6 +119,9 @@ public class Mvp4gGenerator extends Generator {
 		classFactory.addImport( PresenterInterface.class.getName() );
 		classFactory.addImport( EventBus.class.getName() );
 		classFactory.addImport( Mvp4gException.class.getName() );
+		classFactory.addImport( HistoryConverter.class.getName() );
+		classFactory.addImport( Mvp4gEventPasser.class.getName() );
+		classFactory.addImport( Mvp4gModule.class.getName() );
 
 		PrintWriter printWriter = context.tryCreate( logger, packageName, generatedClassName );
 		if ( printWriter == null ) {

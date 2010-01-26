@@ -29,6 +29,7 @@ import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.annotation.Service;
 import com.mvp4g.client.annotation.XmlFilePath;
+import com.mvp4g.client.annotation.module.HistoryName;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.history.HistoryConverter;
@@ -100,8 +101,10 @@ public class Mvp4gConfiguration {
 	private EventBusElement eventBus = null;
 	private JClassType module = null;
 	private ChildModulesElement loadChildConfig = null;
-	private Map<String, JClassType> childEventBusClassMap = new HashMap<String, JClassType>();
+	private Map<String, JClassType> othersEventBusClassMap = new HashMap<String, JClassType>();
+	private JClassType parentModule = null;
 	private JClassType parentEventBus = null;
+	private String historyName = null;
 
 	private TreeLogger logger = null;
 	private TypeOracle oracle = null;
@@ -204,6 +207,7 @@ public class Mvp4gConfiguration {
 		if (eventBus.isXml()) {
 			findEventObjectClass();
 		}
+		findChildModuleHistoryName();
 		checkUniquenessOfAllElements();
 		validateStart();
 		validateEventHandlers();
@@ -326,8 +330,8 @@ public class Mvp4gConfiguration {
 	/**
 	 * @return the childEventBusClassMap
 	 */
-	public Map<String, JClassType> getChildEventBusClassMap() {
-		return childEventBusClassMap;
+	public Map<String, JClassType> getOthersEventBusClassMap() {
+		return othersEventBusClassMap;
 	}
 
 	/**
@@ -346,20 +350,34 @@ public class Mvp4gConfiguration {
 	}
 
 	/**
+	 * @return the parentModule
+	 */
+	public JClassType getParentModule() {
+		return parentModule;
+	}
+
+	/**
 	 * @return the parentEventBus
 	 */
 	public JClassType getParentEventBus() {
 		return parentEventBus;
 	}
 
+	/**
+	 * @return the historyName
+	 */
+	public String getHistoryName() {
+		return historyName;
+	}
+
 	public boolean isParentEventBusXml() {
-		return (parentEventBus != null)
-				&& (parentEventBus.getQualifiedSourceName()
+		return (parentModule != null)
+				&& (parentModule.getQualifiedSourceName()
 						.equals(EventBusWithLookup.class.getCanonicalName()));
 	}
 
-	public boolean hasParentEventBus(String moduleClassName) {
-		return findParentEventBus(moduleClassName) != null;
+	public boolean hasParentModule(String moduleClassName) {
+		return findParentModule(moduleClassName) != null;
 	}
 
 	/*
@@ -749,7 +767,8 @@ public class Mvp4gConfiguration {
 						throw new InvalidMvp4gConfigurationException(String
 								.format(EMPTY_EVENT_OBJ, eventElt.getType()));
 					}
-					childEventBus = childEventBusClassMap.get(childModuleClass);
+					childEventBus = othersEventBusClassMap
+							.get(childModuleClass);
 					if (childEventBus != null) {
 						startViewClass = childEventBus.getAnnotation(
 								Events.class).startView().getCanonicalName();
@@ -795,7 +814,7 @@ public class Mvp4gConfiguration {
 	void validateEvents() throws InvalidMvp4gConfigurationException {
 
 		for (EventElement event : events) {
-			if (event.hasForwardToParent() && (parentEventBus == null)) {
+			if (event.hasForwardToParent() && (parentModule == null)) {
 				throw new InvalidMvp4gConfigurationException(String.format(
 						NO_PARENT_ERROR, event.getType()));
 			}
@@ -864,10 +883,25 @@ public class Mvp4gConfiguration {
 	 */
 	void validateHistory() throws InvalidMvp4gConfigurationException {
 		if (historyConverters.size() > 0) {
-			if ((history == null) || (history.getInitEvent() == null)
-					|| (history.getInitEvent().length() == 0)) {
-				throw new InvalidMvp4gConfigurationException(
-						"You must define a History init event if you use history converters.");
+			if (parentModule != null) {
+				if ((history != null)
+						&& ((history.getInitEvent() != null) || (history
+								.getNotFoundEvent() != null))) {
+					throw new InvalidMvp4gConfigurationException(
+							"History configuration (init and not found event should be configure only for root module (only module with no parent)");
+				}
+				if ((historyName == null) || (historyName.length() == 0)) {
+					throw new InvalidMvp4gConfigurationException(
+							"Child module that defines history converter must have an HistoryName annotation.");
+				}
+				// make sure history is equal to null for the writer
+				history = null;
+			} else {
+				if ((history == null) || (history.getInitEvent() == null)
+						|| (history.getInitEvent().length() == 0)) {
+					throw new InvalidMvp4gConfigurationException(
+							"You must define a History init event if you use history converters.");
+				}
 			}
 		}
 	}
@@ -1139,7 +1173,8 @@ public class Mvp4gConfiguration {
 		loadChildConfig = childConfigLoader.loadElement();
 	}
 
-	void loadChildModules(XMLConfiguration xmlConfig) throws Mvp4gXmlException {
+	void loadChildModules(XMLConfiguration xmlConfig) throws Mvp4gXmlException,
+			NotFoundClassException {
 		ChildModuleLoader loader = new ChildModuleLoader(xmlConfig);
 		childModules = loader.loadElements();
 	}
@@ -1159,10 +1194,20 @@ public class Mvp4gConfiguration {
 		history = historyConfig.loadElement();
 	}
 
-	void loadParentModule() {
-		parentEventBus = findParentEventBus(module.getQualifiedSourceName());
-		if (isParentEventBusXml()) {
-			logger.log(TreeLogger.WARN, PARENT_EVENT_BUS_WARNING);
+	void loadParentModule() throws NotFoundClassException {
+		parentModule = findParentModule(module.getQualifiedSourceName());
+		if (parentModule != null) {
+			parentEventBus = othersEventBusClassMap.get(parentModule
+					.getQualifiedSourceName());
+			if (parentEventBus == null) {
+				parentEventBus = getType(null, EventBusWithLookup.class
+						.getCanonicalName());
+				logger.log(TreeLogger.WARN, PARENT_EVENT_BUS_WARNING);
+			}
+			HistoryName hName = module.getAnnotation(HistoryName.class);
+			if (hName != null) {
+				historyName = hName.value();
+			}
 		}
 	}
 
@@ -1262,25 +1307,41 @@ public class Mvp4gConfiguration {
 		return type;
 	}
 
-	private JClassType findParentEventBus(String moduleClassName) {
-		JClassType parentEventBus = null;
+	private JClassType findParentModule(String moduleClassName) {
+		JClassType parentModule = null;
 		JClassType module;
 		try {
 			module = getType(null, moduleClassName);
 			JMethod[] methods = module.getMethods();
 			for (JMethod m : methods) {
-				if ("setParentEventBus".equals(m.getName())
+				if ("setParentModule".equals(m.getName())
 						&& (m.getParameters().length == 1)) {
-					parentEventBus = m.getParameters()[0].getType()
+					parentModule = m.getParameters()[0].getType()
 							.isClassOrInterface();
 					break;
 				}
 			}
 		} catch (NotFoundClassException e) {
-			parentEventBus = null;
+			parentModule = null;
 		}
 
-		return parentEventBus;
+		return parentModule;
+	}
+
+	private void findChildModuleHistoryName() throws NotFoundClassException {
+		JClassType childType;
+		HistoryName hName;
+		for (ChildModuleElement childModule : childModules) {
+			childType = getType(childModule, childModule.getClassName());
+			hName = childType.getAnnotation(HistoryName.class);
+			if (hName != null) {
+				try {
+					childModule.setHistoryName(hName.value());
+				} catch (DuplicatePropertyNameException e) {
+					// exception can't occur, only time you set this value
+				}
+			}
+		}
 	}
 
 }

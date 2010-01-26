@@ -10,19 +10,36 @@ import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 public class ServiceElement extends SimpleMvp4gElement {
 
 	public ServiceElement() {
-		super( "service" );
+		super("service");
 	}
-	
-	public void setPath(String path) throws DuplicatePropertyNameException{
-		setProperty( "path", path );
+
+	public void setPath(String path) throws DuplicatePropertyNameException {
+		setProperty("path", path);
 	}
-	
-	public String getPath(){
-		return getProperty( "path" );
+
+	public String getPath() {
+		return getProperty("path");
 	}
-	
-	public boolean hasPath(){
+
+	public boolean hasPath() {
 		return getPath() != null;
+	}
+
+	public void setGeneratedClassName(String generatedClassName)
+			throws DuplicatePropertyNameException {
+		setProperty("generatedClassName", generatedClassName);
+	}
+
+	public String getGeneratedClassName() {
+		String generatedClass = getProperty("generatedClassName");
+		if(generatedClass == null){
+			generatedClass = getClassName() + "Async";
+		}
+		else{
+			String packageName = getProperty( "package" );
+			generatedClass = resolver.getClassNameFrom(packageName, generatedClass);
+		}
+		return generatedClass;
 	}
 
 }

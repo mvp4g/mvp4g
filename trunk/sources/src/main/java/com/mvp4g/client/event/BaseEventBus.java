@@ -1,6 +1,6 @@
 package com.mvp4g.client.event;
 
-import com.mvp4g.client.history.PlaceService;
+import com.mvp4g.client.Mvp4gModule;
 
 /**
  * Base implementation of the event bus. It should only be used by the framework.
@@ -53,9 +53,9 @@ public class BaseEventBus implements EventBus {
 	 * @param form
 	 *            object of the event to store
 	 */
-	protected void place( PlaceService<? extends EventBus> placeService, String type, Object form ) {
+	protected void place( Mvp4gModule module, String type, Object form ) {
 		if ( historyStored ) {
-			placeService.place( type, form );
+			module.place( type, form );
 		}
 		if ( changeForNextOne ) {
 			historyStored = !historyStored;
