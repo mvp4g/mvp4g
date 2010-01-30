@@ -10,6 +10,7 @@ import com.mvp4g.example.client.company.presenter.CompanyDisplayPresenter;
 import com.mvp4g.example.client.company.presenter.CompanyEditPresenter;
 import com.mvp4g.example.client.company.presenter.CompanyListPresenter;
 import com.mvp4g.example.client.company.view.CompanyListView;
+import com.mvp4g.example.client.main.historyConverter.CompanyHistoryConverter;
 
 @Events(startView=CompanyListView.class, module=CompanyModule.class)
 public interface CompanyEventBus extends EventBus {
@@ -26,7 +27,7 @@ public interface CompanyEventBus extends EventBus {
 	@Event(handlers=CompanyEditPresenter.class)
 	public void goToEdit(CompanyBean company);
 	
-	@Event(handlers=CompanyDisplayPresenter.class)
+	@Event(handlers=CompanyDisplayPresenter.class, historyConverter=CompanyHistoryConverter.class)
 	public void goToDisplay(CompanyBean company);
 	
 	@Event(forwardToParent=true)
@@ -34,6 +35,9 @@ public interface CompanyEventBus extends EventBus {
 
 	@Event(forwardToParent=true)
 	public void changeBody(Widget body);
+	
+	@Event(forwardToParent=true)
+	public void selectCompanyMenu();
 	
 	@Event(handlers={CompanyListPresenter.class, CompanyDisplayPresenter.class})
 	public void companyCreated(CompanyBean newBean);

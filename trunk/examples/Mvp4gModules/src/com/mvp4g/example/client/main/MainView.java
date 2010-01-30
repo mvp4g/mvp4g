@@ -3,6 +3,7 @@ package com.mvp4g.example.client.main;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -18,16 +19,22 @@ public class MainView extends Composite implements
 	private SimplePanel bodyContainer = new SimplePanel();
 	private PopupPanel wait = new PopupPanel();
 	private Label message = new Label();
+	private TabBar bar = new TabBar();
+	private Label clearHistory = new Label("Clear History");
 
 	public MainView() {
 		message.setStyleName("messageBar");
 		message.setVisible(false);
 		
-		TabBar bar = new TabBar();
 		bar.addTab(c);
 		bar.addTab(p);
 
 		VerticalPanel mainPanel = new VerticalPanel();
+		mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+		clearHistory.setStyleName("link");
+		mainPanel.add(clearHistory);
+		
+		mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
 		mainPanel.add(bar);
 		mainPanel.add(message);
 		mainPanel.add(bodyContainer);
@@ -69,6 +76,22 @@ public class MainView extends Composite implements
 	public void displayText(String text) {
 		message.setText(text);
 		message.setVisible(text.length() > 0);
+	}
+
+	public void selectCompanyMenu() {
+		bar.selectTab(0);		
+	}
+
+	public void selectProductMenu() {
+		bar.selectTab(1);
+	}
+
+	public void displayAlertMessage(String message) {
+		Window.alert(message);
+	}
+
+	public HasClickHandlers getClearHistoryButton() {
+		return clearHistory;
 	}
 
 }

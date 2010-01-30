@@ -29,6 +29,14 @@ public class MainPresenter extends
 		public void setWaitVisible(boolean visible);
 		
 		public void displayText(String message);
+		
+		public void selectCompanyMenu();
+		
+		public void selectProductMenu();
+		
+		public HasClickHandlers getClearHistoryButton();
+		
+		public void displayAlertMessage(String message);
 	
 	}
 
@@ -45,6 +53,12 @@ public class MainPresenter extends
 				eventBus.goToProduct();
 			}
 		});	
+		view.getClearHistoryButton().addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				eventBus.clearHistory();				
+			}
+		});
 		
 	}
 
@@ -67,6 +81,26 @@ public class MainPresenter extends
 	
 	public void onDisplayMessage(String message){
 		view.displayText(message);
+	}
+	
+	public void onGoToCompany(){
+		view.selectCompanyMenu();
+	}
+	
+	public void onGoToProduct(){
+		view.selectProductMenu();
+	}
+	
+	public void onSelectProductMenu(){
+		view.selectProductMenu();
+	}
+	
+	public void onSelectCompanyMenu(){
+		view.selectCompanyMenu();
+	}
+	
+	public void onClearHistory(){
+		view.displayAlertMessage("History has been cleared");
 	}
 
 }
