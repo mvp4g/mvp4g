@@ -372,8 +372,8 @@ public class Mvp4gConfiguration {
 	}
 
 	public boolean isParentEventBusXml() {
-		return (parentModule != null)
-				&& (parentModule.getQualifiedSourceName()
+		return (parentEventBus != null)
+				&& (parentEventBus.getQualifiedSourceName()
 						.equals(EventBusWithLookup.class.getCanonicalName()));
 	}
 
@@ -538,6 +538,7 @@ public class Mvp4gConfiguration {
 		String objectClass = null;
 		JMethod[] methods = null;
 		JParameterizedType genHC = null;
+		HistoryConverterElement clearHistoryToRemove = null;
 
 		Set<HistoryConverterElement> toRemove = new HashSet<HistoryConverterElement>();
 		for (HistoryConverterElement history : historyConverters) {
@@ -602,9 +603,8 @@ public class Mvp4gConfiguration {
 				if (!clearHistoryClassName.equals(history.getClassName())) {
 					// this object is not used, you can remove it
 					toRemove.add(history);
-				}
-				else{
-					historyConverters.remove(history);
+				} else {
+					clearHistoryToRemove = history;
 				}
 			}
 		}
@@ -614,6 +614,11 @@ public class Mvp4gConfiguration {
 			String it = historyConverterMap.keySet().iterator().next();
 			throw new UnknownConfigurationElementException(historyConverterMap
 					.get(it).get(0), it);
+		}
+
+		// remove clear history (you don't want this to appear on log)
+		if (clearHistoryToRemove != null) {
+			historyConverters.remove(clearHistoryToRemove);
 		}
 
 		removeUselessElements(historyConverters, toRemove);
