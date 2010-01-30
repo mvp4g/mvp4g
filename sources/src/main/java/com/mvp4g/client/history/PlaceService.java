@@ -35,7 +35,7 @@ import com.mvp4g.client.Mvp4gModule;
  * 
  */
 public abstract class PlaceService implements ValueChangeHandler<String> {
-	
+
 	public static final String MODULE_SEPARATOR = "/";
 
 	/**
@@ -173,11 +173,15 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> void place(String eventType, T form) {
-		String param = ((HistoryConverter<T, ?>) converters.get(eventType))
-				.convertToToken(eventType, form);
-		String token = ((param == null) || (param.length() == 0)) ? eventType
-				: (eventType + FIRST + param);
-		history.newItem(token, false);
+		HistoryConverter hc = converters.get(eventType);
+		if (hc instanceof ClearHistory) {
+			history.newItem("", false);
+		} else {
+			String param = hc.convertToToken(eventType, form);
+			String token = ((param == null) || (param.length() == 0)) ? eventType
+					: (eventType + FIRST + param);
+			history.newItem(token, false);
+		}
 	}
 
 	/**

@@ -32,6 +32,7 @@ import com.mvp4g.client.annotation.XmlFilePath;
 import com.mvp4g.client.annotation.module.HistoryName;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBusWithLookup;
+import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.presenter.PresenterInterface;
 import com.mvp4g.util.config.element.ChildModuleElement;
@@ -80,7 +81,7 @@ import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 public class Mvp4gConfiguration {
 
 	private static final String HC_WARNING = "History Converter %s: must be able to translate null objects since it is associated to event %s which is sent with no object.";
-	private static final String REMOVE_OBJ = "%s %s: No instance of this object has been created since this class is not used.";
+	private static final String REMOVE_OBJ = "%s %s: No instance of this class has been created since this class is not used.";
 	private static final String MISSING_ATTRIBUTE = "%s: child module %s doesn't define any event to load its view.";
 	private static final String NOT_EMPTY_EVENT_OBJ = "%s: %s event %s can't have any object associated with it.";
 	private static final String WRONG_EVENT_OBJ = "%s: %s event %s can only be associated with %s";
@@ -529,6 +530,8 @@ public class Mvp4gConfiguration {
 				HistoryConverter.class.getCanonicalName()).isGenericType();
 		JClassType eventBusType = getType(null, eventBus
 				.getInterfaceClassName());
+		String clearHistoryClassName = ClearHistory.class.getCanonicalName();
+		JClassType clearHistoryType = getType(null, clearHistoryClassName);
 		JClassType hcType = null;
 		JClassType eventBusParam = null;
 		JClassType objectClassParam = null;
@@ -543,56 +546,66 @@ public class Mvp4gConfiguration {
 
 				hcType = getType(history, history.getClassName());
 
-				genHC = hcType.asParameterizationOf(hcGenType);
-				if (genHC == null) {
-					throw new InvalidClassException(history,
-							HistoryConverter.class.getCanonicalName());
-				}
+				// if historyConverter is a ClearHistory instance, no control
+				// needed
+				if (!clearHistoryType.equals(hcType)) {
 
-				methods = genHC.getMethods();
+					genHC = hcType.asParameterizationOf(hcGenType);
+					if (genHC == null) {
+						throw new InvalidClassException(history,
+								HistoryConverter.class.getCanonicalName());
+					}
 
-				// Retrieve classes of History Converter event bus & form
-				if ("convertFromToken".equals(methods[0].getName())) {
-					eventBusParam = (JClassType) methods[0].getParameters()[2]
-							.getType();
-					objectClassParam = (JClassType) methods[1].getParameters()[1]
-							.getType();
-				} else {
-					eventBusParam = (JClassType) methods[1].getParameters()[2]
-							.getType();
-					objectClassParam = (JClassType) methods[0].getParameters()[1]
-							.getType();
-				}
+					methods = genHC.getMethods();
 
-				// Control if history converter event bus is compatible with
-				// module event bus
-				if (!eventBusType.isAssignableTo(eventBusParam)) {
-					throw new InvalidTypeException(history, "Event Bus",
-							eventBusParam.getQualifiedSourceName(), eventBus
-									.getInterfaceClassName());
-				}
-
-				// Control if event object class is compatible with History
-				// Converter object class
-				for (EventElement event : eventList) {
-					objectClass = event.getEventObjectClass();
-					if ((objectClass != null) && (objectClass.length() > 0)) {
-						if (!getType(event, objectClass).isAssignableTo(
-								objectClassParam)) {
-							throw new InvalidTypeException(event,
-									"History Converter", objectClassParam
-											.getQualifiedSourceName(),
-									objectClass);
-						}
+					// Retrieve classes of History Converter event bus & form
+					if ("convertFromToken".equals(methods[0].getName())) {
+						eventBusParam = (JClassType) methods[0].getParameters()[2]
+								.getType();
+						objectClassParam = (JClassType) methods[1]
+								.getParameters()[1].getType();
 					} else {
-						logger.log(TreeLogger.WARN, String.format(HC_WARNING,
-								history.getUniqueIdentifier(), event
-										.getUniqueIdentifier()));
+						eventBusParam = (JClassType) methods[1].getParameters()[2]
+								.getType();
+						objectClassParam = (JClassType) methods[0]
+								.getParameters()[1].getType();
+					}
+
+					// Control if history converter event bus is compatible with
+					// module event bus
+					if (!eventBusType.isAssignableTo(eventBusParam)) {
+						throw new InvalidTypeException(history, "Event Bus",
+								eventBusParam.getQualifiedSourceName(),
+								eventBus.getInterfaceClassName());
+					}
+
+					// Control if event object class is compatible with History
+					// Converter object class
+					for (EventElement event : eventList) {
+						objectClass = event.getEventObjectClass();
+						if ((objectClass != null) && (objectClass.length() > 0)) {
+							if (!getType(event, objectClass).isAssignableTo(
+									objectClassParam)) {
+								throw new InvalidTypeException(event,
+										"History Converter", objectClassParam
+												.getQualifiedSourceName(),
+										objectClass);
+							}
+						} else {
+							logger.log(TreeLogger.WARN, String.format(
+									HC_WARNING, history.getUniqueIdentifier(),
+									event.getUniqueIdentifier()));
+						}
 					}
 				}
 			} else {
-				// this object is not used, you can remove it
-				toRemove.add(history);
+				if (!clearHistoryClassName.equals(history.getClassName())) {
+					// this object is not used, you can remove it
+					toRemove.add(history);
+				}
+				else{
+					historyConverters.remove(history);
+				}
 			}
 		}
 
