@@ -7,3 +7,11 @@
 	width: 100%;
 	text-align: center;
 }
+
+.link{
+	cursor: hand;
+	color: blue;
+	font-size: 10px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
