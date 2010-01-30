@@ -4,6 +4,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
+import com.mvp4g.example.client.main.historyConverter.ProductHistoryConverter;
 import com.mvp4g.example.client.product.bean.ProductBean;
 import com.mvp4g.example.client.product.presenter.ProductCreationPresenter;
 import com.mvp4g.example.client.product.presenter.ProductDisplayPresenter;
@@ -23,7 +24,7 @@ public interface ProductEventBus extends EventBus {
 	@Event(handlers=ProductEditPresenter.class)
 	public void goToEdit(ProductBean product);
 	
-	@Event(handlers=ProductDisplayPresenter.class)
+	@Event(handlers=ProductDisplayPresenter.class, historyConverter=ProductHistoryConverter.class)
 	public void goToDisplay(ProductBean product);
 	
 	@Event(handlers=ProductListPresenter.class)
@@ -34,6 +35,9 @@ public interface ProductEventBus extends EventBus {
 
 	@Event(forwardToParent=true)
 	public void changeBody(Widget body);
+	
+	@Event(forwardToParent=true)
+	public void selectProductMenu();
 	
 	@Event(handlers={ProductListPresenter.class, ProductDisplayPresenter.class})
 	public void productCreated(ProductBean product);

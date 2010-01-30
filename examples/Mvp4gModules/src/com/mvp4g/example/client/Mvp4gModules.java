@@ -16,6 +16,7 @@ public class Mvp4gModules implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		Mvp4gModule module = (Mvp4gModule)GWT.create( Mvp4gModule.class );
+		//Mvp4gModule module = new Mvp4gModuleImpl();
 		module.createAndStartModule();
 		RootPanel.get().add((Widget) module.getStartView());
 	}

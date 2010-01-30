@@ -11,6 +11,7 @@ public class ProductDisplayPresenter extends AbstractProductPresenter {
 
 	public void onGoToDisplay(ProductBean product) {
 		displayProduct(product);
+		eventBus.selectProductMenu();
 	}
 
 	public void onProductCreated(ProductBean product) {
