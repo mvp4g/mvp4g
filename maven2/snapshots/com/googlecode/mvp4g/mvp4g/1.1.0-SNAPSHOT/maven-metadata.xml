@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+  <groupId>com.googlecode.mvp4g</groupId>
+  <artifactId>mvp4g</artifactId>
+  <version>1.1.0-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20100202.030109</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20100202030112</lastUpdated>
+  </versioning>
+</metadata>
