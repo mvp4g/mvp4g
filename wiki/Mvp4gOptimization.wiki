@@ -1,0 +1,58 @@
+#summary Draft for 1.1.0 version
+
+=Optimization=
+
+Mvp4g provides different ways to optimize your application. 
+
+==Minimum of instances creation==
+
+Mvp4g creates one instance for each presenter and each view. However for services and history converters, the framework uses a singleton pattern to have only one instance for each of those elements, no matter how many times they're used.
+
+==Useless elements are ignored==
+
+This optimization is done automaticaly by Mvp4g and doesn't need any extra configuration from your part. The framework will automaticaly ignore any element (presenter/view/service/history converter) that are useless. Thus those useless elements won't be instantiated, making your application faster to start and use less memory.
+
+An element is considered useless when:
+ * presenter: if it handles no event and its view is not the start view.
+ * view: if it is not injected into a useful presenter.
+ * history converter: if it is not associated to an event.
+ * service: if it is not injected to a useful presenter or history converter.
+
+==Lazy Loading==
+
+Mvp4g let you implement a mechanism similar to GWT LazyPanel. Like a GWT LazyPanel that is built only when it's visible, you can build your presenter (and its view) only when the presenter has to handle its first event. Thus, when you start your application, the instantiation of your views and presenters will be faster as they will be built only when handling their first event.
+
+Before forwarding any event to a presenter, Mvp4g framework makes sure that the bind method has been called for the presenter. If it's not the case, then the framework calls it. Thus you can build your presenter (and its views) when the bind method is called since this method will be called only once before the presenter has to handle its first event.
+
+[diagramToDo.png]
+
+To create a Lazy Presenter, your presenter has to extend LazyPresenter and overrides the following methods:
+ * createPresenter: in this method, you should create your presenter (ie instantiate all the attributes of your presenter). By default this method does nothing.
+ * bindView: in this method, you should bind your presenter to its view. By default this method does nothing.
+
+{{{
+public class MyLazyCompanyPresenter extends LazyPresenter<MyLazyViewInterface, MyEventBus> {
+
+	public interface MyLazyViewInterface extends LazyView {
+		getLeftButton();
+		getRightButton();
+	}
+
+	private OnePresenterAttribute oneAttribute;
+	private AnotherPresenterAttribute anotherAttribute;
+
+
+	public void bindView() {
+		view.getLeftButton().addClickHandler(new ClickHandler() {...});
+		view.getRightButton().addClickHandler(new ClickHandler() {...});
+	}
+
+
+	public void createPresenter() {
+		oneAttribute = new OnePresenterAttribute();
+		anotherAttribute = new AnotherPresenterAttribute();
+	}
+	...
+
+}
+}}}
