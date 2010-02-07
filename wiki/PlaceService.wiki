@@ -1,0 +1,159 @@
+#summary draft for 1.1.0 version
+
+=Place Service=
+
+==Description==
+
+Mvp4g instantiates a Place Service to easily manage history based on History converter.
+
+History converters have two goals: 
+ * convert event parameter to a string (to add it to the token) and/or store it (in cookie for example) when an event is stored in browser history. This convertion is done by convertToToken method. 
+ * convert, when history changes, a token to an event and retrieve information to build its parameter (thanks to the token, database, cookie...) and send the converted event to event bus. This convertion is done by convertFromToken method.
+
+[diagramToDo.png]
+
+[diagramToDo.png]
+
+The token stored in the browser history will be built the following way: event type + "?" + value returned by convertToToken (event type corresponds to the name of the method that defines the event in your event bus interface).
+
+Any event can be stored in history. All you have to do is to associate an history converter to an event.
+
+If you need to store event information when the event is stored in the browser history, you can realize it in the convertToToken method of the history converter.<br/> 
+If you need to retrieve event information when browser history changes, you can realize it in the convertFromToken method of the history converter.
+
+==Create an History Converter==
+
+To create an history converter, you have to:
+ * create a class that implements HistoryConverter 
+ * have a constructor with no parameter
+ * annotated your class with @History
+
+{{{
+@History
+public class CompanyHistoryConverter implements HistoryConverter<CompanyBean, CompanyEventBus> {...}
+}}}
+
+You can also give a name to your converter thanks to the attribute "name" of @History annotation (it may be used, but not recommended, to associate an history converter to an event, see ).
+
+==Associate an history converter to an event==
+To add an history converter to an event, you need to specify the history converter attribute of the @Event annotation that annotates the method of your event.
+
+{{{
+@Event(historyConverter = NoParamHistoryConverter.class)
+public void goToCompany();
+}}}
+
+By defining the history converter class, Mvp4g will be able to find the instance of history converter with this class and associate it with the event.<br/>
+Mvp4g generates instances of history converter as singleton so for one class, it generates only one instance, which means that if for several events, the same history converter class is associated, then the events will share the same instance of the converter.
+
+Instead of the class, you can also specify the name of the history converter thanks of the attribute historyConverterName of @Event annotation. In this case, you need to make sure that an history converter with this name exits.
+
+==Inject services to history converters==
+
+You may need to call server while converting your event to/from a token, that's why Mvp4g let you easily inject services inside history converters.
+
+You can inject service to history converters the same way as presenters by:
+ * creating a setter method for your service
+ * annotate this method with @InjectService
+
+{{{
+@InjectService
+public void setService( ServiceAsync service ) {
+	this.service = service;
+}
+}}}
+
+==Init and NotFound events==
+
+When dealing with history, two particular cases can happen:
+ * token stored in history is null or empty (ie equals to ""). 
+ * token is incorrect (for example, user tried to modify the url and event type stored in the token is not correct).
+
+For both of these cases, Mvp4g lets you define events that can be thrown if these cases happen. You can annotate the method defining an event in your event bus with:
+ * @InitHistory, to manage the case when the token is empty
+ * @NotFoundHistory, to manage the case when the token is incorrect.
+
+{{{
+@InitHistory
+@Event(handlers={RootTemplatePresenter.class, TopBarPresenter.class})
+public void init();
+	
+@NotFoundHistory
+@Event(handlers=RootTemplatePresenter.class)
+public void notFound();
+}}}
+
+@InitHistory and @NotFoundHistory can annotate the same method.
+
+Event(s) that manage(s) those cases must not be associated with an object.
+
+==Clear History Token==
+
+For some event, you may want to delete history stoken stored in the URL. In order to do so, you just have to associate your event to a particular HistoryConverter provided by the framework, ClearHistory.
+
+{{{
+@Event(handlers = MainPresenter.class, historyConverter=ClearHistory.class)
+public void clearHistory();
+}}}
+
+==History on start==
+When you start your application, you may want to fire the current history state in order to take care of any token that could be stored in the URL.<br/>
+In order to do so, you have to set the attribute historyOnStart of the @Events annotation of your event bus to true. By default this parameter is false.
+
+{{{
+@Events(...historyOnStart = true)
+public interface MainEventBus extends EventBusWithLookup {...}
+}}}
+
+==Temporary disable history==
+
+In some cases, you may need to temporary stop storing events in browser history. In order to do so, Mvp4g provides though the event bus two methods, setHistoryStored and setHistoryStoredForNextOne. The first one allows you to set if all events associated to an history converter and thrown after the call of this method will be stored in browser history or not. The second one allows you set it only for the next event thrown, even if other events are thrown while handling this event.
+
+In this example, none of the events thrown will be stored in browser history:
+{{{
+	eventBus.setHistoryStored(false);
+	eventBus.selectCompanyMenu();
+}}}
+In this example, only the selectCompanyMenu event won't be stored in browser history:
+{{{
+	eventBus.setHistoryStoredForNextOne(false);
+	eventBus.selectCompanyMenu();
+}}}
+In this example, selectCompany event and all the events that are thrown by handlers of selectCompany event won't be stored in browser history:
+{{{
+	eventBus.setHistoryStored(false);
+	eventBus.selectCompanyMenu();
+	eventBus.setHistoryStored(true);
+}}}
+
+=History Management and Multi-Modules feature=
+
+Any module (child or parent module) can store its events into history by associating an history converter to an event. When an event of a module (except for the Root module) needs to be stored in history, the event will be converted the same way as described before except that the name of the module and all its parents (but the Root Module) will also be stored in the token.
+
+For example, the following token: #module/submodule/event1 means:
+ * event1: name of the event to forward
+ * submodule: name of the module to which you can forward the event
+ * module: name of the parent module. Since this is the top name, it means that the parent of the parent module is the Root Module.
+
+[diagramToDo.png]
+
+When history token changes, the framework will download if needed the module associated with the event and forwards the event to the module.
+
+For example, if the value of token is: #module/submodule/event1 then:
+ * module will be loaded.
+ * When done loading module, submodule will be loaded
+ * when done loading submodule, event1 is forwarded to submodule.
+
+[diagramToDo.png]
+
+If your module needs to store events in history, then you need to define its history name. In order to so, you need to annotate your module interface with @HistoryName.
+
+{{{
+@HistoryName("company")
+public interface CompanyModule extends Mvp4gModule {...}
+}}}
+
+This name will be stored in the token (and thus displayed in the url).
+
+Only the Root module knows the place service, which means that you can configure an History init event, a not found event and the flag historyOnStart only inside the Root module. You can't define these parameters in other modules.
+
