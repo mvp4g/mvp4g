@@ -36,5 +36,7 @@ public @interface Events {
 	Class<? extends Mvp4gModule> module() default Mvp4gModule.class; 
 
 	boolean historyOnStart() default false;
+	
+	boolean debug() default false;
 
 }

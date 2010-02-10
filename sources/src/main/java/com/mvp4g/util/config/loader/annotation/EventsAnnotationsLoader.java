@@ -23,6 +23,7 @@ import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.ChildModulesElement;
+import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
@@ -85,6 +86,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				loadChildModules(c, annotation, configuration);
 				loadStartView(c, annotation, configuration);
 				loadEvents(c, annotation, configuration);
+				loadDebug(annotation, configuration);
 			} else {
 				String err = "this class must implement "
 						+ EventBus.class.getCanonicalName()
@@ -537,6 +539,17 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			}			
 		}
 		
+	}
+	
+	private void loadDebug(Events annotation,
+			Mvp4gConfiguration configuration) throws Mvp4gAnnotationException {
+		DebugElement debug = new DebugElement();
+		try {
+			debug.setEnabled(Boolean.toString(annotation.debug()));
+		} catch (DuplicatePropertyNameException e) {
+			// setter is only called once, so this error can't occur. 
+		}
+		configuration.setDebug(debug);
 	}
 
 	/*
