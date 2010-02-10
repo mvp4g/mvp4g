@@ -12,7 +12,7 @@ import com.mvp4g.example.client.company.presenter.CompanyListPresenter;
 import com.mvp4g.example.client.company.view.CompanyListView;
 import com.mvp4g.example.client.main.historyConverter.CompanyHistoryConverter;
 
-@Events(startView=CompanyListView.class, module=CompanyModule.class)
+@Events(startView=CompanyListView.class, module=CompanyModule.class, debug=true)
 public interface CompanyEventBus extends EventBus {
 	
 	@Event(handlers=CompanyListPresenter.class)
