@@ -16,7 +16,7 @@ import com.mvp4g.example.client.company.CompanyModule;
 import com.mvp4g.example.client.main.historyConverter.NoParamHistoryConverter;
 import com.mvp4g.example.client.product.ProductModule;
 
-@Events(startView = MainView.class, historyOnStart = true)
+@Events(startView = MainView.class, historyOnStart = true, debug=true)
 @ChildModules( {
 		@ChildModule(moduleClass = CompanyModule.class),
 		@ChildModule(moduleClass = ProductModule.class, async = false, autoLoad = false) })
