@@ -37,6 +37,7 @@ import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.presenter.PresenterInterface;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
+import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
@@ -54,6 +55,7 @@ import com.mvp4g.util.config.loader.annotation.PresenterAnnotationsLoader;
 import com.mvp4g.util.config.loader.annotation.ServiceAnnotationsLoader;
 import com.mvp4g.util.config.loader.xml.ChildModuleLoader;
 import com.mvp4g.util.config.loader.xml.ChildModulesLoader;
+import com.mvp4g.util.config.loader.xml.DebugLoader;
 import com.mvp4g.util.config.loader.xml.EventsLoader;
 import com.mvp4g.util.config.loader.xml.HistoryConverterLoader;
 import com.mvp4g.util.config.loader.xml.HistoryLoader;
@@ -106,6 +108,7 @@ public class Mvp4gConfiguration {
 	private JClassType parentModule = null;
 	private JClassType parentEventBus = null;
 	private String historyName = null;
+	private DebugElement debug = null;
 
 	private TreeLogger logger = null;
 	private TypeOracle oracle = null;
@@ -183,6 +186,7 @@ public class Mvp4gConfiguration {
 					loadHistory(xmlConfig);
 					loadChildConfig(xmlConfig);
 					loadChildModules(xmlConfig);
+					loadDebug(xmlConfig);
 				} catch (Mvp4gXmlException e) {
 					e.setXmlFilePath(xmlFilePath.value());
 					throw e;
@@ -379,6 +383,21 @@ public class Mvp4gConfiguration {
 
 	public boolean hasParentModule(String moduleClassName) {
 		return findParentModule(moduleClassName) != null;
+	}
+
+	/**
+	 * @return the debug
+	 */
+	public DebugElement getDebug() {
+		return debug;
+	}
+
+	/**
+	 * @param debug
+	 *            the debug to set
+	 */
+	public void setDebug(DebugElement debug) {
+		this.debug = debug;
 	}
 
 	/*
@@ -1197,6 +1216,12 @@ public class Mvp4gConfiguration {
 		childModules = loader.loadElements();
 	}
 
+	void loadDebug(XMLConfiguration xmlConfig) throws Mvp4gXmlException,
+			NotFoundClassException {
+		DebugLoader loader = new DebugLoader(xmlConfig);
+		debug = loader.loadElement();
+	}
+
 	/**
 	 * Pre-loads the History element in the configuration file.
 	 * 
@@ -1299,7 +1324,7 @@ public class Mvp4gConfiguration {
 			Set<T> toRemove) {
 		for (T e : toRemove) {
 			set.remove(e);
-			logger.log(TreeLogger.INFO, String.format(REMOVE_OBJ, e
+			logger.log(TreeLogger.DEBUG, String.format(REMOVE_OBJ, e
 					.getTagName(), e.getUniqueIdentifier()));
 		}
 	}

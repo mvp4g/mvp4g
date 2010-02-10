@@ -27,6 +27,7 @@ import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
+import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
@@ -489,6 +490,8 @@ public class Mvp4gConfigurationFileWriter {
 
 			sourceWriter.indent();
 
+			writeLog(type, (parentParam != null));
+
 			writeLoadChildModule(event);
 			writeParentEvent(event, parentParam);
 
@@ -830,26 +833,29 @@ public class Mvp4gConfigurationFileWriter {
 				.println("public <T> void dispatchHistoryEvent(String eventType, final Mvp4gEventPasser<Boolean> passer){");
 		sourceWriter.indent();
 		sourceWriter
-		.println("int index = eventType.indexOf(PlaceService.MODULE_SEPARATOR);");
-		sourceWriter
-		.println("if(index > -1){");
+				.println("int index = eventType.indexOf(PlaceService.MODULE_SEPARATOR);");
+		sourceWriter.println("if(index > -1){");
 		sourceWriter.indent();
-		sourceWriter.println("String moduleHistoryName = eventType.substring(0, index);");
-		sourceWriter.println("String nextToken = eventType.substring(index + 1);");
-		sourceWriter.println("Mvp4gEventPasser<String> nextPasser = new Mvp4gEventPasser<String>(nextToken) {");
+		sourceWriter
+				.println("String moduleHistoryName = eventType.substring(0, index);");
+		sourceWriter
+				.println("String nextToken = eventType.substring(index + 1);");
+		sourceWriter
+				.println("Mvp4gEventPasser<String> nextPasser = new Mvp4gEventPasser<String>(nextToken) {");
 		sourceWriter.indent();
 		sourceWriter.println("public void pass(Mvp4gModule module) {");
 		sourceWriter.indent();
-		sourceWriter.println("module.dispatchHistoryEvent(eventObject, passer);");
+		sourceWriter
+				.println("module.dispatchHistoryEvent(eventObject, passer);");
 		sourceWriter.outdent();
 		sourceWriter.println("}");
 		sourceWriter.outdent();
 		sourceWriter.println("};");
-		
+
 		String historyName;
-		for(ChildModuleElement child : configuration.getChildModules()){
+		for (ChildModuleElement child : configuration.getChildModules()) {
 			historyName = child.getHistoryName();
-			if((historyName != null) && (historyName.length() > 0)){
+			if ((historyName != null) && (historyName.length() > 0)) {
 				sourceWriter.print("if(\"");
 				sourceWriter.print(historyName);
 				sourceWriter.println("\".equals(moduleHistoryName)){");
@@ -860,21 +866,37 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.println("return;");
 				sourceWriter.outdent();
 				sourceWriter.println("}");
-			}			
+			}
 		}
-		
+
 		sourceWriter.println("passer.setEventObject(false);");
-		sourceWriter.println("passer.pass(this);");		
-		
+		sourceWriter.println("passer.pass(this);");
+
 		sourceWriter.outdent();
 		sourceWriter.println("}else{");
 		sourceWriter.indent();
 		sourceWriter.println("passer.pass(this);");
-		sourceWriter.println("return;");		
+		sourceWriter.println("return;");
 		sourceWriter.outdent();
 		sourceWriter.println("}");
-		
+
 		sourceWriter.outdent();
 		sourceWriter.println("}");
+	}
+
+	private void writeLog(String type, boolean withForm) {
+		DebugElement debug = configuration.getDebug();
+		if ((debug != null) && debug.isEnabled()) {
+			sourceWriter.print("GWT.log(\"Module: ");
+			sourceWriter.print(configuration.getModule().getSimpleSourceName());
+			sourceWriter.print(" || event: ");
+			sourceWriter.print(type);
+			if (withForm) {
+				sourceWriter.print(" || object: \" + form");
+			} else {
+				sourceWriter.print("\"");
+			}
+			sourceWriter.println(", null);");
+		}
 	}
 }
