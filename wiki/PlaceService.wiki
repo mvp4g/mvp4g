@@ -1,4 +1,4 @@
-#summary draft for 1.1.0 version
+#summary Draft for 1.1.0 version
 
 =Place Service=
 
@@ -156,4 +156,3 @@ public interface CompanyModule extends Mvp4gModule {...}
 This name will be stored in the token (and thus displayed in the url).
 
 Only the Root module knows the place service, which means that you can configure an History init event, a not found event and the flag historyOnStart only inside the Root module. You can't define these parameters in other modules.
-
