@@ -1,0 +1,89 @@
+#summary Draft for 1.1.0 version
+
+Mvp4g mainly helps you define 3 types of elements:
+ * Presenter 
+ * View
+ * Services
+
+This page will help you to understand how to build these different types of elements.
+
+=Presenter=
+
+==Creating a presenter==
+
+To create a presenter, you need to:
+ 1. extends BasePresenter<V,E>:
+   * V: type of the view that will be injected in the presenter
+   * E: type of your event bus interface. 
+
+By extending BasePresenter, you will have access to the following protected attributes:
+ * V view: instance of the view injected to the presenter
+ * E eventBus: instance of the event bus injected to the presenter
+
+You also have the oppurtinity to override the method bind() to bind your view to your presenter.
+
+Instead of extending BasePresenter, you can also implement PresenterInterface<V,E>.
+
+ 2. have a constructor with no parameter
+
+ 3. annotate it with @Presenter and set the attribute 'view'. This attribute must define the class of the view that implement the presenter's view interface.
+
+Mvp4g will automaticaly create an instance for each class annoted with @Presenter. Mvp4g will also create for each presenter its own instance of its view. If two presenters are injected with views with the same class, two instances of this view class will be created.
+
+You can also decide to create a Lazy Presenter (see ... for more information).
+
+==Injecting services==
+
+You can easily inject services to a presenter by: 
+ * creating a setter method for your service 
+ * annotate this method with @InjectService
+
+{{{
+@InjectService 
+public void setService( ServiceAsync service ) { 
+        this.service = service; 
+}
+}}}
+
+When you inject a service to a presenter, Mvp4g will automaticaly find the instance of the service. If you inject the same service into multiples presenters, only one instance of the service will be created.
+
+You can also decide to inject a service thanks to its name by specifying the attribute 'serviceName' of the @InjectService annotation (not recommanded). In this case you need to make sure that a service with this name exists.
+
+=View=
+
+To create a view, all you need is to create a class with a constructor with no parameter.
+
+You can also decide to create a Lazy View (see ... for more information).
+
+=Service=
+
+==Creating a service==
+Create your service the same way as with a regular GWT application. No extra-code is needed and it is <b>NOT MANDATORY</b> to annotate your service with @Service. This annotation is here in case you need to set Mvp4g options for your service.
+
+==@Service Annotation==
+This annotation is used to define options for your service and it is not mandatory to create a service.
+
+This annotation has the following attributes:
+ * name: to specify the name of the service in case you want to inject the service thanks to its name.
+ * path: allow to define the service entry point. Similar to: 
+{{{
+service.setServiceEntryPoint("/myapp/myservice"); 
+}}}
+ * generatedClass: class that GWT.create should generate when creating the service (by default service class name + "Async", useful only to define non-rpc service, see ... for more information)
+
+==Using a non-rpc service==
+You can use a non-rpc service as long as your service generation uses the same process as GWT rpc service, which means that you create your service the following way:
+{{{
+MyNonRpcService service = GWT.create(MyNonRpcService.class)
+}}}
+
+In this case, you need to annotate your service interface with @Service and the set the attribute 'generatedClass'.
+
+The following example uses Edgebox library (http://code.google.com/p/edgebox/) to create a Rest service:
+{{{
+@Service(generatedClass=PingService.class)
+public interface PingService extends RestRemote {...}
+}}}
+
+
+
