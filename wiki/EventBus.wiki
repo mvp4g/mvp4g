@@ -2,7 +2,7 @@
 
 =Event Bus=
 
-The main goal of Mvp4g is to allow you to easily set an event bus and events without creating classes and interfaces for each event.
+The main goal of Mvp4g is to allow you to easily set an event bus and events without creating classes and interfaces for each event. Another goal is to easily see what presenters manages each event.
 
 An event is defined by:
  * its name (or type)
@@ -36,7 +36,7 @@ To create an event, you need to:
  * annotate it with @Event.
 
 {{{
-@Events(startView = MainView.class, historyOnStart = true)
+@Events(startView = MainView.class)
 public interface MainEventBus extends EventBusWithLookup {
 
 	@Event(...)
@@ -49,7 +49,7 @@ public interface MainEventBus extends EventBusWithLookup {
 }
 }}}
 
-Annotation @Event has the following at attributes:
+@Event annotation has the following attributes:
  * handlers and handlerNames (see ...)
  * calledMethod (see ...)
  * historyConverter and historyConverterName, use only in case of history management(see ...)
@@ -57,7 +57,7 @@ Annotation @Event has the following at attributes:
 
 ==Adding an handler to an event==
 
-Only presenters can be an handler of an event. To add an handler to an event you just have to add its class to the attribute handlers of the @Event annotation that annotates the method of your event in your event bus interface.
+Only presenters can handle of an event. To add an handler to an event you just have to add its class to the attribute 'handlers' of the @Event annotation that annotates the method of your event in your event bus interface.
 
 {{{
 @Event(handlers=CompanyListPresenter.class)
@@ -69,10 +69,10 @@ public void companyCreated(CompanyBean newBean);
 
 By adding the presenter class, Mvp4g will be able to retrieve the instance of this class and add it to the list of handlers of the event.
 
-You can also add an handler thanks to the presenter name by adding it to the attribute handlerNames of @Event annotation (not recommanded). In this case, you need to verify that a presenter with the given name exists.
+You can also add an handler thanks to the presenter name by adding it to the attribute 'handlerNames' of @Event annotation (not recommanded). In this case, you need to verify that a presenter with the given name exists.
 
 If a presenter is added to an event, it must define the handler method associated to an event. By default, the name of this method is:  *"on" + the name of the event method*
-and the parameters are the same as event method parameters.
+and the parameters are the same as the event method parameters.
 
 In the following example:
 {{{
@@ -89,19 +89,19 @@ public void onCompanyDeleted(CompanyBean newBean){...}
 public void onCompanyCreated(CompanyBean newBean){...}
 }}}
 
-You can change the handler method's name the presenter needs to define thanks to the attribute calledMethod of @Event annotation.
+You can change the handler method's name the presenter needs to define thanks to the attribute 'calledMethod' of @Event annotation.
 
 ==Start View==
 
 Each module needs to define a start view. The start view is the view that is added to the RootPanel or RootLayoutPanel when the application starts.
 
-To define a start view, you need to specify the class of the start view thanks to the attribute startView of the @Events annotation that annotate your event bus interface. Mvp4g will automaticaly find the instance of the view. However Mvp4g will find the instance of the view only if the view is injected into a presenter.
+To define a start view, you need to specify the class of the start view thanks to the attribute 'startView' of the @Events annotation that annotate your event bus interface. Mvp4g will automaticaly find the instance of the view. However Mvp4g will find the instance of the view only if the view is injected into a presenter.
 
-In addition to set the class, you can also specify its name thanks to the attribute startViewName of the @Events annotation.
+In addition to set the class, you can also specify its name thanks to the attribute 'startViewName' of the @Events annotation.
 
 ==Firing an event==
 
-To throw an event, all you have to do is calling the event's method:
+To fire an event, all you have to do is calling the event's method:
 {{{
 eventBus.companyCreated(new CompanyBean("company"));
 }}}
@@ -124,7 +124,7 @@ Module: Mvp4gModule || event: login || object: "myUserName"
 
 Mvp4g uses the GWT.log method to display the log, which means that the log will appear in the hosted mode console. It also means that even if you activate the logs, it won't affect your compiled code since "calls [to GWT.log] are optimized out in web mode" (see GWT Reference API, http://google-web-toolkit.googlecode.com/svn/javadoc/2.0/index.html?overview-summary.html). 
 
-To activate the log, you need to set to true the 'debug' attribute of the @Events annotation of your event bus interface.
+To activate the log, you need to set to true the attribute 'debug' of the @Events annotation of your event bus interface.
 {{{
 @Events(..., debug=true)
 public interface MainEventBus extends EventBusWithLookup {...}
@@ -143,19 +143,23 @@ you can use:
 eventBus.dispatch("login","myUserName");
 }}}
 
-Mvp4g will automaticaly find the right method to call on your event bus. However this functionality should be only when needed and with caution for two reasons:
- * Mvp4g can't verify at compile if the event with the given name exists. You will see the error only when you execute your code.
+Mvp4g will automaticaly find the right method to call on your event bus. 
+
+To create an event bus with lookup, all you have to do is implementing EventBusWithLookup interface instead of EventBus interface.
+
+However this functionality should be used only when needed and with caution for two reasons:
+ * Mvp4g can't verify at compile time if the event with the given name exists. You will see the error only when you execute your code.
  * It is not type safe. If you decide to send an object which type is not the one associated to the event, Mvp4g won't detect it at compile time and an error will occur when you execute your code.
 
 {{{
-//let's say this call is correct
+//let say this call is correct
 eventBus.dispatch("login","myUserName");
 
 //call to an event that doesn't exist because of a typo error
 eventBus.dispatch("lgin","myUserName");
 
 //call with an object which type is incorrect
-eventBus.dispatch("lgin",new User("myUserName"));
+eventBus.dispatch("login",new User("myUserName"));
 }}}
 
 An event bus with lookup actually defines four different dispatch methods depending on if you want to associate
