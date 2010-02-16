@@ -124,7 +124,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 			String[] tokenTab = token.split(FIRST_RE);
 			final String eventType = tokenTab[0];
 			final String param = (tokenTab.length > 1) ? tokenTab[1] : null;
-			if (eventType.contains("/")) {
+			if (eventType.contains(MODULE_SEPARATOR)) {
 				Mvp4gEventPasser<Boolean> passer = new Mvp4gEventPasser<Boolean>(
 						true) {
 
@@ -153,7 +153,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 		if (converter == null) {
 			sendNotFoundEvent();
 		} else {
-			String[] tab = eventType.split("/");
+			String[] tab = eventType.split(MODULE_SEPARATOR);
 			String finalEventType = tab[tab.length - 1];
 			converter.convertFromToken(finalEventType, param, module
 					.getEventBus());
