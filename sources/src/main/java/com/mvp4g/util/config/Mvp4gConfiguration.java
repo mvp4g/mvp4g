@@ -331,6 +331,16 @@ public class Mvp4gConfiguration {
 	public JClassType getModule() {
 		return module;
 	}
+	
+	/**
+	 * Should be used only for test
+	 * 
+	 * @param module
+	 *            the module to set
+	 */
+	public void setModule(JClassType module) {
+		this.module = module;
+	}
 
 	/**
 	 * @return the childEventBusClassMap
