@@ -216,7 +216,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			viewName = getElementName(views, viewClass.getCanonicalName());
 			if (viewName == null) {
 				String err = "There is no instance of "
-						+ viewClass.getCanonicalName();
+						+ viewClass.getCanonicalName() + ". Have you forget to inject it to a presenter?";
 				throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
 						null, err);
 			}
@@ -354,7 +354,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			handlerName = getElementName(presenters, handler.getCanonicalName());
 			if (handlerName == null) {
 				String err = "No instance of " + handler.getCanonicalName()
-						+ " is defined.";
+						+ " is defined. Have you forget to annotate your presenter with @Presenter?";
 				throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
 						method.getName(), err);
 			}
@@ -386,7 +386,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 					.getCanonicalName());
 			if (moduleName == null) {
 				String err = "No instance of " + moduleClass.getCanonicalName()
-						+ " is defined.";
+						+ " is defined. Have you forgotten to add it to @ChildModules of your event bus interface?";
 				throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
 						method.getName(), err);
 			}
@@ -431,7 +431,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 					.getHistoryConverters();
 			hcName = getElementName(historyConverters, hcClassName);
 			if (hcName == null) {
-				String err = "No instance of " + hcClassName + " is defined.";
+				String err = "No instance of " + hcClassName + " is defined. Have you forget to annotate your history converter with @History?";
 				throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
 						method.getName(), err);
 			}
@@ -490,7 +490,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 						.getCanonicalName());
 				if (module == null) {
 					String err = "No instance of "
-							+ moduleClass.getCanonicalName() + " is defined.";
+							+ moduleClass.getCanonicalName() + " is defined.  Have you forgotten to add it to @ChildModules of your event bus interface?";
 					throw new Mvp4gAnnotationException(c
 							.getQualifiedSourceName(), method.getName(), err);
 				}

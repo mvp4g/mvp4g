@@ -331,7 +331,7 @@ public class Mvp4gConfiguration {
 	public JClassType getModule() {
 		return module;
 	}
-	
+
 	/**
 	 * Should be used only for test
 	 * 
@@ -873,7 +873,7 @@ public class Mvp4gConfiguration {
 			getElement(event, events, start);
 		}
 
-		if (history != null) {
+		if ((history != null) && (parentModule == null)) {
 			event = history.getInitEvent();
 			getElement(event, events, history);
 		}
