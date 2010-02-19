@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/xsd/mvp4g-conf.xsd">
+	<history package="com.mvp4g.example.client.product.historyConverter">
+		<converter name="productHC" class="ProductHistoryConverter"/>
+	</history>
 	<views package="com.mvp4g.example.client.product.view" >
 		<view name="listView" class="ProductListView" />
 		<view name="displayView" class="ProductDisplayView"/>
@@ -19,11 +22,12 @@
 		<event type="goToProduct" handlers="listPresenter" />
 		<event type="goToCreation" handlers="creationPresenter" />
 		<event type="goToEdit" handlers="editPresenter" />
-		<event type="goToDisplay" handlers="displayPresenter" />
+		<event type="goToDisplay" handlers="displayPresenter" history="productHC"/>
 		<event type="changeBody" eventObjectClass="com.google.gwt.user.client.ui.Widget" forwardToParent="true"/>
 		<event type="displayMessage" eventObjectClass="java.lang.String" forwardToParent="true"/>
 		<event type="productCreated" handlers="listPresenter, displayPresenter"/>
-		<event type="productDeleted" handlers="listPresenter"/>		
+		<event type="productDeleted" handlers="listPresenter"/>
+		<event type="selectProductMenu" forwardToParent="true" eventObjectClass=""/>		
 	</events>
 	
 	<start view="listView" />

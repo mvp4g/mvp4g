@@ -26,9 +26,14 @@ public class MainPresenter extends
 		public void setBody(Widget newBody);
 		
 		public void displayErrorMessage(String error);
+				
 		public void setWaitVisible(boolean visible);
 		
 		public void setMessage(String message);
+		
+		public void selectCompanyMenu();
+		
+		public void selectProductMenu();
 	
 	}
 
@@ -68,6 +73,14 @@ public class MainPresenter extends
 		view.setMessage(message);
 	}
 	
+	
+	public void onSelectProductMenu(){
+		view.selectProductMenu();
+	}
+	
+	public void onSelectCompanyMenu(){
+		view.selectCompanyMenu();
+	}
 	
 
 }

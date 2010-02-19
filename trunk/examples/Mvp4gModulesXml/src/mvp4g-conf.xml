@@ -7,22 +7,28 @@
 		<childModule name="companyModule" class=".company.CompanyModule" eventToLoadView="changeBody"/>
 		<childModule name="productModule" class=".product.ProductModule" eventToLoadView="changeBody" async="false" autoLoad="false"/>	
 	</childModules>
+	<history package="com.mvp4g.example.client.main.historyConverter" initEvent="start">
+		<converter name="noParamHC" class="NoParamHistoryConverter"/>
+	</history>
 	<views package="com.mvp4g.example.client.main" >
 		<view name="rootView" class="MainView" />		
-	</views>
+	</views>	
 	<presenters package="com.mvp4g.example.client.main" >
 		<presenter name="rootPresenter" class="MainPresenter" view="rootView" />		
 	</presenters>
 	<events>
-		<event type="goToCompany" handlers="" modulesToLoad="companyModule"/>
-		<event type="goToProduct" handlers="" modulesToLoad="productModule" />
+		<event type="goToCompany" handlers="" modulesToLoad="companyModule" history="noParamHC"/>
+		<event type="goToProduct" handlers="" modulesToLoad="productModule" history="noParamHC" />
 		<event type="changeBody" handlers="rootPresenter" />
 		<event type="errorOnLoad" handlers="rootPresenter" />
 		<event type="beforeLoad" handlers="rootPresenter"/>
 		<event type="afterLoad" handlers="rootPresenter"/>
-		<event type="displayMessage" handlers="rootPresenter"/>				
+		<event type="displayMessage" handlers="rootPresenter"/>
+		<event type="start" handlers="" />		
+		<event type="selectCompanyMenu" handlers="rootPresenter"/>
+		<event type="selectProductMenu" handlers="rootPresenter"/>		
 	</events>
 	
-	<start view="rootView" />
+	<start view="rootView" history="true"/>
 	
 </mvp4g>		
