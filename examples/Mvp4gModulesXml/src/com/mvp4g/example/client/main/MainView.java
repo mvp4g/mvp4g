@@ -17,11 +17,12 @@ public class MainView extends Composite implements
 	private Label p = new Label("Product");
 	private SimplePanel bodyContainer = new SimplePanel();
 	private PopupPanel wait = new PopupPanel();
+	private TabBar bar = new TabBar();
 	
 	private Label messageBar = new Label();
 
 	public MainView() {
-		TabBar bar = new TabBar();
+		
 		bar.addTab(c);
 		bar.addTab(p);
 		
@@ -72,4 +73,11 @@ public class MainView extends Composite implements
 		messageBar.setVisible(message.length() > 0);
 	}
 
+	public void selectCompanyMenu() {
+		bar.selectTab(0);		
+	}
+
+	public void selectProductMenu() {
+		bar.selectTab(1);
+	}
 }
