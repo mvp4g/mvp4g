@@ -20,8 +20,8 @@ import com.mvp4g.util.exception.loader.Mvp4gXmlException;
  */
 public class HistoryLoader extends Mvp4gElementLoader<HistoryElement> {
 
-	static final String[] REQUIRED_ATTRIBUTES = { "initEvent" };
-	static final String[] OPTIONAL_ATTRIBUTES = { "notFoundEvent"};
+	static final String[] REQUIRED_ATTRIBUTES = {};
+	static final String[] OPTIONAL_ATTRIBUTES = { "initEvent", "notFoundEvent"};
 
 	@SuppressWarnings( "unchecked" )
 	public HistoryLoader( XMLConfiguration xmlConfig ) {
