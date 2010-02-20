@@ -1,5 +1,7 @@
 #summary Draft for 1.1.0 version
 
+<wiki:toc max_depth="3" />
+
 =Optimization=
 
 Mvp4g provides different ways to optimize your application. 
@@ -24,7 +26,9 @@ Mvp4g let you implement a mechanism similar to GWT LazyPanel. Like a GWT LazyPan
 
 Before forwarding any event to a presenter, Mvp4g framework makes sure that the bind method has been called for the presenter. If it's not the case, then the framework calls it. Thus you can build your presenter (and its views) when the bind method is called since this method will be called only once before the presenter has to handle its first event.
 
-[diagramToDo.png]
+[http://mvp4g.googlecode.com/svn/trunk/documentation/uml/lazy_loading.png]
+
+1: these methods are called only the first time the presenter has to handle an event.
 
 To create a Lazy Presenter, your presenter has to extend LazyPresenter and overrides the following methods:
  * createPresenter: in this method, you should create your presenter (ie instantiate all the attributes of your presenter). By default this method does nothing.
@@ -51,6 +55,27 @@ public class MyLazyCompanyPresenter extends LazyPresenter<MyLazyViewInterface, M
 	public void createPresenter() {
 		oneAttribute = new OnePresenterAttribute();
 		anotherAttribute = new AnotherPresenterAttribute();
+	}
+	...
+
+}
+}}}
+
+LazyPresenter's view have to implement LazyView. This interface provides a `createView` method to build the view only when the presenter has to handle its first event.
+
+{{{
+public class MyLazyView extends Composite implements MyLazyViewInterface{
+
+        private Button leftButton;
+        private Button rightButton;
+
+	public void createView() {
+             leftButton = new Button("edit");
+             rightButton = new Button("right");
+             HorizontalPanel hp = new HorizontalPanel();
+             hp.add(leftButton);
+             hp.add(rightButton);
+             initWidget(hp);		
 	}
 	...
 
