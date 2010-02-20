@@ -101,6 +101,7 @@ eventBus.companyCreated(new CompanyBean("company"));
 }}}
 
 [http://mvp4g.googlecode.com/svn/trunk/documentation/uml/event_broadcast.png]
+1: this method will tell the presenter to call the bind method if it's the first event it handles.
 
 You don't have to manage eventbus creation and implementation, the framework will do it for you. It will also inject it automaticaly to all your presenters.
 
