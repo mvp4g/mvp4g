@@ -1,4 +1,5 @@
 #summary Draft for 1.1.0 version
+<wiki:toc max_depth="3" />
 
 Mvp4g mainly helps you define 3 types of elements:
  * Presenter 
@@ -84,6 +85,4 @@ The following example uses Edgebox library (http://code.google.com/p/edgebox/) t
 @Service(generatedClass=PingService.class)
 public interface PingService extends RestRemote {...}
 }}}
-
-
 
