@@ -2,7 +2,7 @@
 
 =Event Bus=
 
-The main goal of Mvp4g is to allow you to easily set an event bus and events without creating classes and interfaces for each event. Another goal is to easily see what presenters manages each event.
+The main goal of Mvp4g is to allow you to easily set an event bus and events without creating classes and interfaces for each event. Another goal is to easily see which presenters manages each event.
 
 An event is defined by:
  * its name (or type)
@@ -91,14 +91,6 @@ public void onCompanyCreated(CompanyBean newBean){...}
 
 You can change the handler method's name the presenter needs to define thanks to the attribute 'calledMethod' of @Event annotation.
 
-==Start View==
-
-Each module needs to define a start view. The start view is the view that is added to the RootPanel or RootLayoutPanel when the application starts.
-
-To define a start view, you need to specify the class of the start view thanks to the attribute 'startView' of the @Events annotation that annotate your event bus interface. Mvp4g will automaticaly find the instance of the view. However Mvp4g will find the instance of the view only if the view is injected into a presenter.
-
-In addition to set the class, you can also specify its name thanks to the attribute 'startViewName' of the @Events annotation.
-
 ==Firing an event==
 
 To fire an event, all you have to do is calling the event's method:
@@ -106,7 +98,17 @@ To fire an event, all you have to do is calling the event's method:
 eventBus.companyCreated(new CompanyBean("company"));
 }}}
 
+[http://mvp4g.googlecode.com/svn/trunk/documentation/uml/event_broadcast.png]
+
 You don't have to manage eventbus creation and implementation, the framework will do it for you. It will also inject it automaticaly to all your presenters.
+
+==Start View==
+
+Each module needs to define a start view. The start view is the view that is added to the RootPanel or RootLayoutPanel when the application starts.
+
+To define a start view, you need to specify the class of the start view thanks to the attribute 'startView' of the @Events annotation that annotates your event bus interface. Mvp4g will automaticaly find the instance of the view. However Mvp4g will find the instance of the view only if the view is injected into a presenter.
+
+In addition to set the class, you can also specify its name thanks to the attribute 'startViewName' of the @Events annotation.
 
 ==Logs==
 
