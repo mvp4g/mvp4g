@@ -135,14 +135,14 @@ In this example, selectCompany event and all the events that are thrown by handl
 
 =History Management and Multi-Modules feature=
 
-Any module (child or parent module) can store its events into history by associating an history converter to an event. When an event of a module (except for the Root module) needs to be stored in history, the event will be converted the same way as described before except that the name of the module and all its parents (but the Root Module) will also be stored in the token.
+Any module (child or parent module) can store its events into history by associating an history converter to an event. When an event of a module (except for the Root module) needs to be stored in history, the event will be converted the same way as described before except that the name of the module and all its parents (*but the Root Module*) will also be stored in the token.
 
 For example, the following token: #module/submodule/event1 means:
  * event1: name of the event to forward
  * submodule: name of the module to which you can forward the event
  * module: name of the parent module. Since this is the top name, it means that the parent of the parent module is the Root Module.
 
-[diagramToDo.png]
+[http://mvp4g.googlecode.com/svn/trunk/documentation/uml/place_service_children.png]
 
 When history token changes, the framework will download if needed the module associated with the event and forwards the event to the module.
 
@@ -151,7 +151,8 @@ For example, if the value of token is: #module/submodule/event1 then:
  * When done loading module, submodule will be loaded
  * when done loading submodule, event1 is forwarded to submodule.
 
-[diagramToDo.png]
+[http://mvp4g.googlecode.com/svn/trunk/documentation/uml/place_service_reverse_children.png]
+
 
 If your module needs to store events in history, then you need to define its history name. In order to so, you need to annotate your module interface with @HistoryName.
 
