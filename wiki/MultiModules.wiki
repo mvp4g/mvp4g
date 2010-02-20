@@ -1,5 +1,7 @@
 #summary Draft for 1.1.0 version
 
+<wiki:toc max_depth="3" />
+
 =Multi-Modules=
 
 Thanks to Mvp4g, developers can easily split their application into modules. Each module will have its own event bus and own presenters/views/services.
@@ -10,7 +12,7 @@ A module will be able to communicate with its parent and its childmodule(s) by f
 
 An event can be handled by zero to many presenters and/or forwarded to zero to many child modules and/or forwarded to one parent module.
 
-Thanks to Mvp4g and GWT 2.0 new features, RunAsync, you can either load the code of your module at start or only when it needs to handle its first event.
+Thanks to Mvp4g and GWT 2.0 new features, Code splitting, you can either load the code of your module at start or only when it needs to handle its first event.
 
 ==Creating modules==
 
@@ -36,7 +38,7 @@ You can define child modules of a module thanks to ChildModule<b>s</b> annotatio
 
 A ChildModule annotation has three attributes:
  * moduleClass: class of the child module. It must be one of the class you created at step 1.
- * async (default:true): if set to true, then the code containing the child module is loaded when handling its first event otherwise it is loaded when application starts. In the first case, Mvp4g uses GWT RunAsync feature to load the child module. 
+ * async (default:true): if set to true, then the code containing the child module is loaded when handling its first event otherwise it is loaded when application starts. In the first case, Mvp4g uses GWT Code Splitting feature to load the child module. 
  * autoLoad (default:true): if set to true, the start view of the child module will be displayed when the child module is done loaded. When this option is set to true, the event of the parent module needed to load the start view of the child module must be defined (see ...)
 
 To forward an event to a child module, you need to specify the attribute modulesToLoad of the @Event annotation that is associated with the method of your event (defined inside your event bus interface). This attribute contains an array of child module(s) classname that need(s) to which events need to be forwarded be loaded.
@@ -48,15 +50,18 @@ public void goToCompany();
 
 A child module will be started (ie its presenters/views/services will be instantiated and its start event will be fired) only the first time it has to handle an event even if several events are forwarded to it. 
 
-[diagramToDo.png]
+===Child module AutoDisplay===
+For the Root Module, Mvp4g automaticaly add the Root Module start view to the RootPanel/RootLayoutPanel when the application starts.
 
-===Child module autoload===
+The same thing can be done for child modules in order them not to take care of it when they're done loaded. This is done thanks to AutoDisplay feature.
 
-By default, autoload option is set to true, which means that when a child module is loaded, parent module will automaticaly display child module start view.
+Whereas the Root Module is added to the RootPanel/RootLayoutPanel, the child module will be added to one of the view of its parent. In order to do that, Mvp4g will use an event and pass to this event the start view of the child module. The presenter that handles this event will be in charge of adding the child start view to its view.
 
-To indicate how parent module should display child module start view, you need to set an event to use. This event will be fired with child module start view each time an event is forwarded to a child module.
+This event will be fired view each time an event is forwarded to a child module.
 
-To set this event, you have to annotate the event with @UseToLoadChildModuleView.
+By default, AutoDisplay option is set to true.
+
+When this option is activated, you need to indicate which event to use to display the child module start view. To set this event, you have to annotate the event with @UseToLoadChildModuleView.
 
 {{{
 @UseToLoadChildModuleView(CompanyModule.class)
@@ -64,13 +69,13 @@ To set this event, you have to annotate the event with @UseToLoadChildModuleView
 public void changeBody(Widget newBody);
 }}}
 
-The only attribute of this annotation is a list of child module class name. You can specify one-to-many child module classes thanks to this attribute. You can specify only one event to load a child module start view.
+The only attribute of this annotation is a list of child module class name. You can specify one-to-many child module classes thanks to this attribute. One and only one event should be set for each child module.
 
 The parent module event used to load child module start view must be associated with one object which type is compatible with child module start view type.
 
 ===Before, After, OnError===
 
-When the code of a child module is loaded thanks to GWT 2.0 feature, RunAsync, you have the possibility to define:
+When the code of a child module is loaded thanks to GWT 2.0 feature, Code splitting, you have the possibility to define:
  * a before event: this event will be called before starting to load the code of the child module. You can for example decide to display a wait popup.
  * an after event: this event will be called after the code of the module is done loading. You can for example decide to hide a wait popup.
  * an error event: this event will be called in case an error occurs while loading the code of the child module.
@@ -92,6 +97,21 @@ public void beforeLoad();
 @Event(handlers = MainPresenter.class)
 public void afterLoad();
 }}}
+
+===Sequence Diagram===
+
+[http://mvp4g.googlecode.com/svn/trunk/documentation/uml/forward_children.png]
+
+1: these methods are called only the first time the child module is loaded<br/>
+2: child module is created thanks to GWT.create process<br/>
+3: when you decide not to load your child module asynchronously (ie load your child module at first), these methods are still called.
+
+===Understanding events fired when an event is forwarded to a child module===
+
+When a child module is done loaded the following events will be fired:
+ # child module start event, on child event bus, only the first time an event is forwarded to the child module.
+ # event to display child module start view, on parent event bus, only if AutoDisplay option is activated, every time an event is forwarded to a child module.
+ # event forwarded to child module, on child event bus, every time an event is forwarded to a child module.
 
 ==Event forwarding from child to parent module==
 
@@ -115,4 +135,6 @@ To forward an event to a child module, you need to set the attribute forwardToPa
 public void changeBody(Widget body);
 }}}
 
-[diagramToDo.png]
+[http://mvp4g.googlecode.com/svn/trunk/documentation/uml/forward_parent.png]
+
+1: these methods are called when the child module is loaded and allow it to retrieve the parent event bus.
