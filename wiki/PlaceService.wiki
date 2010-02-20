@@ -1,5 +1,7 @@
 #summary Draft for 1.1.0 version
 
+<wiki:toc max_depth="3" />
+
 =Place Service=
 
 ==Description==
@@ -10,9 +12,14 @@ History converters have two goals:
  * convert event parameter to a string (to add it to the token) and/or store it (in cookie for example) when an event is stored in browser history. This convertion is done by convertToToken method. 
  * convert, when history changes, a token to an event and retrieve information to build its parameter (thanks to the token, database, cookie...) and send the converted event to event bus. This convertion is done by convertFromToken method.
 
-[diagramToDo.png]
 
-[diagramToDo.png]
+This is how Mvp4g stores an event to the browser history:
+
+[http://mvp4g.googlecode.com/svn/trunk/documentation/uml/place_service.png]
+
+This is how Mvp4g retrieves an event from browser history:
+
+[http://mvp4g.googlecode.com/svn/trunk/documentation/uml/place_service_reverse.png]
 
 The token stored in the browser history will be built the following way: event type + "?" + value returned by convertToToken (event type corresponds to the name of the method that defines the event in your event bus interface).
 
