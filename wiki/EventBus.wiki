@@ -1,5 +1,7 @@
 #summary Draft for 1.1.0 version
 
+<wiki:toc max_depth="3" />
+
 =Event Bus=
 
 The main goal of Mvp4g is to allow you to easily set an event bus and events without creating classes and interfaces for each event. Another goal is to easily see which presenters manages each event.
