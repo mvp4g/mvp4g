@@ -1,0 +1,188 @@
+#summary One-sentence summary of this page.
+<wiki:toc max_depth="3" />
+
+The first version of Mvp4g was based on an XML configuration file. To be as compatible as possible with the previous version, Mvp4g still offers the possibility to use an XML file instead of an EventBus interface.
+
+All the Mvp4g features can be configured thanks to an XML configuration file. However it is recommended to use an EventBus interface instead of an XML configuration file because the XML configuration doesn't allow to have a type-safe eventbus because it is based on an EventBusWithLookup [http://code.google.com/p/mvp4g/wiki/EventBus#with_lookup see EventBusWithLookup].
+
+With XML configuration, Mvp4g removes useless elements [http://code.google.com/p/mvp4g/wiki/Mvp4gOptimization#Minimum_of_instances_creation see Mvp4g Optimisation], however if you declare two instances with the same class and they both uses, then two instances will be created.
+
+This section describes how to use the XML configuration file. However it doesn't give description of the features.
+
+= Mvp4g Configuration file =
+Create in your project source directory a file with the name mvp4g-conf.xml. Your file must start and end with the tag <mvp4g>. 
+{{{
+YourGWTModule
+     |--- src
+           |---mvp4g-conf.xml
+}}}
+
+=Views=
+Add your views to the configuration file. 
+
+{{{
+<views package="com.mvp4g.example.client.view" >
+	<view name="viewOne" class="View1" />
+	<view name="viewTwo" class="com.mvp4g.example.client.view.special.View2" />
+	...
+</views>
+}}}
+
+ * package (optional): you can precise the package where your views are located in order not to write it for each of them (see [FAQ] for more information).
+ * name: name of the view. It must be unique amongs all elements.
+ * class: Class of the view (package attribute may be used to build the full name, see [FAQ] for more information). 
+
+===Services (optional)===
+Add your services to the configuration file. Only services declared in this configuration can be injected into presenters and history converters.
+{{{
+<services package="com.mvp4g.example.client" >
+	<service name="service1" class="Service1" />
+	<service name="service2" class="com.mvp4g.example.client.service.special.Service2" path="/myapp/myservice"/>
+	...
+</services>
+}}}
+
+ * package (optional): you can precise the package where your services are located in order not to write it for each of them (see [FAQ] for more information).
+ * name: name of the service. It must be unique amongs all elements.
+ * class: Interface of the service (package attribute may be used to build the full name, see [FAQ] for more information). 
+ * path (optional): allow to define the service entry point. Similar to:
+{{{
+service2.setServiceEntryPoint("/myapp/myservice"); 
+}}}
+ * generatedClass (optional): allow to define the class that needs to be generated for the service. Needed if you want to use a third party library to define a service other than GWT-RPC (like EdgeBox). For example:
+{{{
+<service name="service3" class="com.mvp4g.example.client.service.special.Service3" generatedClass="com.mvp4g.example.client.service.special.Service3" >
+}}}
+will generate this code:
+{{{
+Service3 service3 = GWT.create(service3);
+}}}
+If not specified, the value is equals to class attribute + "Async". 
+
+
+If a service is injected into a presenter or an history converter, the presenter or the history converter must define the appropriate setter. This method must be called: "set" + name of the service and have one parameter which class is equal to class of the service + "Async". For example, to be able to inject `service1` into a presenter, the presenter needs to define the following method:
+{{{
+public void setService1(com.mvp4g.example.client.Service1Async service1)
+}}}
+
+===History (optional)===
+Add history to the configuration file  ([http://code.google.com/p/mvp4g/wiki/PlaceService see Place Service feature]). 
+
+{{{
+<history package="com.mvp4g.example.client.history" initEvent="init" notFoundEvent="notFound">
+	<converter name="converter1" class="Converter1" services="service1, service2" />
+	<converter name="converter2" class=".display.Converter1" services="service3" />
+	<converter name="converter3" class="com.mvp4g.example.client.special.Converter" />
+</history>
+}}}
+
+ * package (optional): you can precise the package where your history converters are located in order not to write it for each of them (see [FAQ] for more information).
+ * initEvent: type of the event thrown by the PlaceService in case the history is fired with an empty token (null or equals to ""). This event will be thrown with no parameter.
+ * notFoundEvent (optional): type of the event fired by the PlaceService if the token stored in browser history is not matched with an history converter. If not specified, then the same event as initEvent will be thrown.
+ * name: name of the history converter. It must be unique amongs all elements.
+ * class: Class of the history converter (package attribute may be used to build the full name, see [FAQ] for more information). 
+ * service (optional) : name(s) of the service(s) to inject in the history converter. The name(s) of the service(s) must be equal to one of the services' name declared in the configuration file. Each service name must be separated by a coma.
+
+===Presenters===
+Add your presenters to the configuration file. You have to inject one view into each presenter and can inject one to many services into it.
+{{{
+<presenters package="com.mvp4g.example.client.presenter" >
+	<presenter name="presenter1" class="Presenter1" view="viewOne" />
+	<presenter name="presenter2" class="com.mvp4g.example.client.presenter.special.Presenter2" view="viewTwo" services="service1, service2" />
+	...
+</presenters>
+}}}
+
+ * package (optional): you can precise the package where your presenters are located in order not to write it for each of them (see [FAQ] for more information).
+ * name: name of the presenter. It must be unique amongs all elements.
+ * class: Class of the presenter (package attribute may be used to build the full name, see [FAQ] for more information). 
+ * view: name of the view to inject in the presenter. The name must be equal to one of the views' name declared in the configuration file.
+ * service (optional) : name(s) of the service(s) to inject in the presenter. The name(s) of the service(s) must be equal to one of the services' name declared in the configuration file. Each service name must be separated by a coma.
+
+===Events===
+Add events that can be sent by presenters in the configuration file.
+{{{
+<events>
+	<event type="event1" calledMethod="onEvent1" eventObjectClass="com.mvp4g.example.client.bean.Bean1" handlers="presenter1,presenter2" history="beanConverter" />
+	...
+</events>
+}}}
+
+ * type: type of the event. It must be unique amongst events. This is the type given to the event bus to dispatch an event.
+ * calledMethod (optional): method that presenters that handle this event need to define. This method will have only one parameter which class is the one defined in the `eventObjectClass` attribute. If not defined, the value of this attribute will be deduced from the type attribute: on + type of the event (for example, considering an event with type "display", the default value will be "onDisplay") .
+ * eventObjectClass (optional): class of the object that is sent with the event. If not defined, the value of this attribute is deduced from the method definition of the first handler. This attribute is also optional if no event is sent with the event.
+ * handlers: name(s) of the presenter(s) that handle this event. The name(s) of the presenters(s) must be equal to one of the presenters' name declared in the configuration file. Each presenter name must be separated by a coma. Each presenter must implement the handler method called when this type of event is thrown. For example, handlers of `event1` event must implement the following method:
+{{{
+public void onEvent1(com.mvp4g.example.client.bean.Bean1 bean)
+}}}
+ * history (optional): name of history converter that must be used to placed event into browser history. The name of the history converter must be equal to one of the history converters' name declared in the configuration file. If no history converter is associated to the event, it means that the event can not be placed into the browser history ([http://code.google.com/p/mvp4g/wiki/PlaceService see Place Service feature]).
+ * modulesToLoad (optional): name of the child modules to load when this event is fired. The name of the child modules must be equal to one of the child modules declared in the configuration file ([http://code.google.com/p/mvp4g/wiki/MultiModules] see Multi-Modules feature).
+ * forwardToParent(optional): if this attribute is equals to "true", then the event is forwarded to the parent module ([http://code.google.com/p/mvp4g/wiki/MultiModules] see Multi-Modules feature).
+
+===Start===
+You can decide to throw an event and to add a view to the RootPanel/RootLayoutPanel when you start your application. 
+If this is the XML configuration file of a child module, then the start view is the view that will be automaticaly display if the AutoDisplay feature is activated ([http://code.google.com/p/mvp4g/wiki/MultiModules see Multi-Modules features)
+{{{
+<start view="rootView" eventType="start" history="true"/>
+}}}
+ * view: view to add to the RootPanel when the application starts. 
+ * eventType (optional): event type sent to the event bus when the application starts. No object will be sent with the event.
+ * history (optional): if this attribute is equals to "true", then the current history state is fired.
+
+It is similar to execute the following lines of code:
+{{{
+eventBus.dispatch("start");
+RootPanel.add(rootView);
+History.fireCurrentHistoryState();
+}}}
+
+===Full example===
+{{{
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/xsd/mvp4g-conf.xsd">
+	<views package="com.mvp4g.example.client.view">
+		<view name="rootView" class="com.mvp4g.util.test_tools.RootView" />
+		<view name="userCreateView" class="UserCreateView" />
+		<view name="userDisplayView" class=".display.UserDisplayView" />		
+	</views>
+
+	<services package="com.mvp4g.example.client.services">
+		<service name="userService" class="UserService" path="/service/user"/>
+		<service name="userRpcService" class="com.mvp4g.example.client.rpc.UserService" />
+		<service name="userDisplayService" class=".display.UserService" />
+	</services>
+
+	<presenters package="com.mvp4g.example.client.presenter">
+		<presenter name="rootPresenter" class="com.mvp4g.util.test_tools.RootPresenter" view="rootView" />
+		<presenter name="createUserPresenter" class="UserCreatePresenter"
+			view="userCreateView" services="userService" />
+		<presenter name="displayUserPresenter" class=".display.UserDisplayPresenter"
+			view="userDisplayView" />
+	</presenters>
+
+	<history package="com.mvp4g.example.client.history" initEvent="init">
+		<converter name="userConverter" class=".display.UserHistoryConverter"
+			services="userService" />
+		<converter name="stringConverter" class="StringHistoryConverter" />
+		<converter name="particularConverter" class="com.mvp4g.example.client.StringHistoryConverter" />
+	</history>
+
+
+	<events>
+		<event type="userCreated" calledMethod="onUserCreated"
+			eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="displayUserPresenter" />
+		<event type="userDisplay" calledMethod="onUserDisplay"
+			eventObjectClass="com.mvp4g.example.client.bean.UserBean" handlers="displayUserPresenter"
+			history="userConverter" />
+		<event type="changeBody" calledMethod="onChangeBody" handlers="rootPresenter"
+			eventObjectClass="com.mvp4g.example.client.view.widget.Page" />
+		<event type="displayMessage" calledMethod="onDisplayMessage"
+			handlers="rootPresenter" history="stringConverter" />
+		<event type="start" calledMethod="onStart"
+			handlers="rootPresenter" />
+		<event type="init" handlers="rootPresenter" />
+	</events>
+
+	<start view="rootView" eventType="start" history="true" />
+</mvp4g>			
+}}}
