@@ -62,6 +62,26 @@
 		</xs:complexType>
 	</xs:element>
 
+	<xs:element name="childModules">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="childModule" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+			<xs:attribute name="beforeEvent" type="name" use="optional" />
+			<xs:attribute name="afterEvent" type="name" use="optional" />
+			<xs:attribute name="errorEvent" type="name" use="optional" />
+		</xs:complexType>
+	</xs:element>
+			
+	<xs:element name="childModule">
+		<xs:complexType>
+			<xs:attributeGroup ref="simpleMvp4gElement" />
+			<xs:attribute name="async" type="xs:boolean" use="false" />
+			<xs:attribute name="autoDisplay" type="xs:boolean" use="false" />
+			<xs:attribute name="eventToDisplayView" type="name" use="true" />
+		</xs:complexType>
+	</xs:element>
+	
 	<xs:element name="history">
 		<xs:complexType>
 			<xs:sequence>
@@ -69,6 +89,7 @@
 			</xs:sequence>
 			<xs:attribute name="package" type="package" use="required" />
 			<xs:attribute name="initEvent" type="name" use="required" />
+			<xs:attribute name="initEvent" type="name" use="optional" />
 		</xs:complexType>
 	</xs:element>
 
@@ -97,23 +118,26 @@
 
 	<xs:element name="event">
 		<xs:complexType>
-			<xs:attribute name="handlers" type="nameArray" use="required" />
+			<xs:attribute name="handlers" type="nameArray" use="optional" />
 			<xs:attribute name="type" type="name" use="required" />
 			<xs:attribute name="calledMethod" type="name" use="optional" />
 			<xs:attribute name="eventObjectClass" type="package" use="optional" />
 			<xs:attribute name="history" type="name" use="optional" />
+			<xs:attribute name="forwardToParent" type="xs:boolean" use="optional" />
+			<xs:attribute name="modulesToLoad" type="nameArray" use="optional" />
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="mvp4g">
 		<xs:complexType mixed="true">
 			<xs:all>
-				<xs:element ref="events" />
+				<xs:element ref="events" minOccurs="0"  />
 				<xs:element ref="history" minOccurs="0" />
 				<xs:element ref="presenters" />
 				<xs:element ref="services" minOccurs="0" />
-				<xs:element ref="start" />
-				<xs:element ref="views" />
+				<xs:element ref="start" minOccurs="0"  />
+				<xs:element ref="views" minOccurs="0"  />
+				<xs:element ref="childModules" minOccurs="0"  />
 			</xs:all>
 		</xs:complexType>
 	</xs:element>
@@ -129,6 +153,7 @@
 		<xs:complexType>
 			<xs:attributeGroup ref="simpleMpv4gElement" />
 			<xs:attribute name="path" type="xs:string" use="optional" />
+			<xs:attribute name="generatedClassName" type="className" use="optional" />
 		</xs:complexType>
 	</xs:element>
 
