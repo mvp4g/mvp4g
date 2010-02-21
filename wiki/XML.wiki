@@ -1,4 +1,5 @@
-#summary One-sentence summary of this page.
+#summary Draft for 1.1.0 version
+
 <wiki:toc max_depth="3" />
 
 The first version of Mvp4g was based on an XML configuration file. To be as compatible as possible with the previous version, Mvp4g still offers the possibility to use an XML file instead of an EventBus interface.
