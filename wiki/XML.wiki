@@ -11,7 +11,7 @@ With XML configuration, Mvp4g removes useless elements [http://code.google.com/p
 This section describes how to use the XML configuration file. However it doesn't give description of the features.
 
 = Mvp4g Configuration file =
-Create in your project source directory a file with the name mvp4g-conf.xml. Your file must start and end with the tag <mvp4g>. 
+Create in your project source directory a file with the name mvp4g-conf.xml. Your file must start and end with the tag `<mvp4g>`. 
 {{{
 YourGWTModule
      |--- src
