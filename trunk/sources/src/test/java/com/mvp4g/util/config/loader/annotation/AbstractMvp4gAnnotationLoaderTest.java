@@ -2,6 +2,7 @@ package com.mvp4g.util.config.loader.annotation;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -28,18 +29,6 @@ public abstract class AbstractMvp4gAnnotationLoaderTest<A extends Annotation, L 
 		oracle = new TypeOracleStub();
 		configuration = new Mvp4gConfiguration( null, oracle );
 		loader = createLoader();
-	}
-
-	@Test( expected = Mvp4gAnnotationException.class )
-	public void testWrongClass() throws Mvp4gAnnotationException {
-		try {
-			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Object.class ) );
-			loader.load( annotedClasses, configuration );
-		} catch ( Mvp4gAnnotationException e ) {
-			assertTrue( e.getMessage().contains( "this class must implement " ) );
-			throw e;
-		}
 	}
 
 	@Test( expected = Mvp4gAnnotationException.class )
@@ -80,6 +69,23 @@ public abstract class AbstractMvp4gAnnotationLoaderTest<A extends Annotation, L 
 		assertEquals( element.getName(), "name" );
 	}
 
+	@Test
+	public void testWrongInterface() {
+		Class<?> wrongInterface = getWrongInterface();
+		if ( wrongInterface != null ) {
+			List<JClassType> annotedClasses = new ArrayList<JClassType>();
+			annotedClasses.add( oracle.addClass( wrongInterface ) );
+			Set<SimpleMvp4gElement> elements = getSet();
+			assertEquals( elements.size(), 0 );
+			try {
+				loader.load( annotedClasses, configuration );
+				fail();
+			} catch ( Mvp4gAnnotationException e ) {
+				assertTrue( e.getMessage().contains( "this class must implement " ) );
+			}
+		}
+	}
+
 	abstract protected L createLoader();
 
 	abstract protected <T extends SimpleMvp4gElement> Set<T> getSet();
@@ -87,5 +93,7 @@ public abstract class AbstractMvp4gAnnotationLoaderTest<A extends Annotation, L 
 	abstract protected Class<?> getSimpleClass();
 
 	abstract protected Class<?> getWithNameClass();
+
+	abstract protected Class<?> getWrongInterface();
 
 }

@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.mvp4g.client.event.EventBusWithLookup;
 
 public class EventBusElementTest {
-	
+
 	@Test
 	public void testConstructor() {
 		String interfaceName = "test";
@@ -18,9 +18,9 @@ public class EventBusElementTest {
 		assertFalse( e.isWithLookUp() );
 		assertFalse( e.isXml() );
 	}
-	
+
 	@Test
-	public void testIsXml(){
+	public void testIsXml() {
 		EventBusElement e = new EventBusElement( EventBusWithLookup.class.getName(), "name", false );
 		assertTrue( e.isXml() );
 	}

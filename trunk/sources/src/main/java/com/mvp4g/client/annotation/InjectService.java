@@ -15,11 +15,11 @@ import java.lang.annotation.Target;
  * same class. If it doesn't found one, it will create one.<br/>
  * This means that only one instance of each service class will be created.<br/>
  * <br/>
- * You can also specify to inject a particular instance of a service thanks to its name with the attribute <i>serviceName</i>.<br/>
+ * You can also specify to inject a particular instance of a service thanks to its name with the
+ * attribute <i>serviceName</i>.<br/>
  * <br/>
- * This annotation replaces the following lines in the Mvp4g XML configuration file:<br/>
- * {@code <presenter ... services="userService" />}
- * {@code <converter ... services="userService" />} 
+ * This annotation replaces the following lines in the Mvp4g XML configuration file:<br/> {@code
+ * <presenter ... services="userService" />} {@code <converter ... services="userService" />}
  * 
  * @author plcoirier
  * 

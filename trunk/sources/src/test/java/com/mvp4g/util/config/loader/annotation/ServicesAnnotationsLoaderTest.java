@@ -17,7 +17,7 @@ import com.mvp4g.util.test_tools.annotation.Services;
 public class ServicesAnnotationsLoaderTest extends AbstractMvp4gAnnotationLoaderTest<Service, ServiceAnnotationsLoader> {
 
 	@Test
-	public void testPath() throws Mvp4gAnnotationException{
+	public void testPath() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
 		annotedClasses.add( oracle.addClass( getSimpleClass() ) );
 		annotedClasses.add( oracle.addClass( getWithNameClass() ) );
@@ -25,17 +25,29 @@ public class ServicesAnnotationsLoaderTest extends AbstractMvp4gAnnotationLoader
 		assertEquals( services.size(), 0 );
 		loader.load( annotedClasses, configuration );
 		assertEquals( services.size(), 2 );
-		for(ServiceElement service : services){
-			assertEquals( service.getPath(), "path" );	
+		for ( ServiceElement service : services ) {
+			assertEquals( service.getPath(), "path" );
 		}
 	}
-	
+
+	@Test
+	public void testGeneratedClass() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Services.ServiceWithGeneratedClass.class ) );
+		Set<ServiceElement> services = getSet();
+		assertEquals( services.size(), 0 );
+		loader.load( annotedClasses, configuration );
+		assertEquals( services.size(), 1 );
+		assertEquals( services.iterator().next().getGeneratedClassName(), Services.ServiceWithGeneratedClass.class.getCanonicalName() );
+
+	}
+
 	@Override
 	protected ServiceAnnotationsLoader createLoader() {
 		return new ServiceAnnotationsLoader();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings( "unchecked" )
 	@Override
 	protected Set<ServiceElement> getSet() {
 		return configuration.getServices();
@@ -49,6 +61,11 @@ public class ServicesAnnotationsLoaderTest extends AbstractMvp4gAnnotationLoader
 	@Override
 	protected Class<?> getWithNameClass() {
 		return Services.ServiceWithName.class;
+	}
+
+	@Override
+	protected Class<?> getWrongInterface() {
+		return null;
 	}
 
 }

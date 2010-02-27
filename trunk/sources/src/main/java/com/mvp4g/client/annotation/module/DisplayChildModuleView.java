@@ -7,10 +7,10 @@ import java.lang.annotation.Target;
 
 import com.mvp4g.client.Mvp4gModule;
 
-@Retention(RetentionPolicy.RUNTIME)
+@Retention( RetentionPolicy.RUNTIME )
 @Target( ElementType.METHOD )
-public @interface UseToLoadChildModuleView {
-	
+public @interface DisplayChildModuleView {
+
 	public Class<? extends Mvp4gModule>[] value();
 
 }

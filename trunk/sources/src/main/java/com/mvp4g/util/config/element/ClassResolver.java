@@ -63,16 +63,15 @@ class ClassResolver {
 	String getClassNameFrom( String packageName, String className ) {
 
 		checkValidityOfClass( className );
-		
-		if(className.startsWith( "." )){
+
+		if ( className.startsWith( "." ) ) {
 			checkValidityOfPackage( packageName, className );
 			return packageName + className;
-		}
-		else if(!className.contains( "." )){
+		} else if ( !className.contains( "." ) ) {
 			checkValidityOfPackage( packageName, className );
 			return packageName + "." + className;
 		}
-		
+
 		return className;
 	}
 

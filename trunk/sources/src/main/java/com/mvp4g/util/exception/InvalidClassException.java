@@ -17,9 +17,8 @@ public class InvalidClassException extends InvalidMvp4gConfigurationException {
 
 	private static final String MESSAGE = "%s %s: This class must extend %s";
 
-	public InvalidClassException( Mvp4gElement element, String classExpected) {
+	public InvalidClassException( Mvp4gElement element, String classExpected ) {
 		super( String.format( MESSAGE, element.getTagName(), element.getUniqueIdentifier(), classExpected ) );
 	}
 
-	
 }

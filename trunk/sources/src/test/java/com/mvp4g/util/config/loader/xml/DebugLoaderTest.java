@@ -9,16 +9,24 @@ import java.util.List;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.junit.Test;
 
-import com.mvp4g.util.config.element.StartElement;
-import com.mvp4g.util.config.loader.xml.StartLoader;
+import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 
-public class StartLoaderTest extends AbstractMvp4gElementLoaderTest<StartElement, StartLoader> {
+public class DebugLoaderTest extends AbstractMvp4gElementLoaderTest<DebugElement, DebugLoader> {
 
-	@Test
-	public void testEmptyElement() throws Mvp4gXmlException {
-		assertEquals( 0, basicLoader.loadElements().size() );
-		assertNull( basicLoader.loadElement() );
+	@Override
+	protected String getTagName() {
+		return "debug";
+	}
+
+	@Override
+	protected boolean isSingleNode() {
+		return true;
+	}
+
+	@Override
+	protected DebugLoader newLoader( XMLConfiguration xml ) {
+		return new DebugLoader( xml );
 	}
 
 	@Test
@@ -29,24 +37,16 @@ public class StartLoaderTest extends AbstractMvp4gElementLoaderTest<StartElement
 		multiValues.addAll( convertToList( basicLoader.getOptionalMultiValueAttributeNames() ) );
 		List<String> parents = convertToList( basicLoader.getParentAttributeNames() );
 
-		StartLoader loader = newLoader( xmlBuilder.getConfigAttribute( attributes, multiValues, parents, 1, false, isSingleNode() ) );
-		assertEquals( loader.loadElement(), new ArrayList<StartElement>( loader.loadElements() ).get( 0 ) );
+		DebugLoader loader = newLoader( xmlBuilder.getConfigAttribute( attributes, multiValues, parents, 1, false, isSingleNode() ) );
+		assertEquals( loader.loadElement(), new ArrayList<DebugElement>( loader.loadElements() ).get( 0 ) );
 
 	}
 
-	@Override
-	protected String getTagName() {
-		return "start";
-	}
+	@Test
+	public void testLoadEmpty() throws Mvp4gXmlException {
+		DebugLoader loader = newLoader( xmlBuilder.getEmptyConf() );
+		assertNull( loader.loadElement() );
 
-	@Override
-	protected boolean isSingleNode() {
-		return true;
-	}
-
-	@Override
-	protected StartLoader newLoader( XMLConfiguration xml ) {
-		return new StartLoader( xml );
 	}
 
 }

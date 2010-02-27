@@ -25,22 +25,22 @@ import com.mvp4g.client.history.HistoryConverter;
  * @author plcoirier
  * 
  */
-@XmlFilePath("mvp4g-conf.xml")
+@XmlFilePath( "mvp4g-conf.xml" )
 public interface Mvp4gModule {
 
 	/**
 	 * Method called to create the module
 	 */
 	public void createAndStartModule();
-	
+
 	public Object getStartView();
-	
+
 	public EventBus getEventBus();
-	
-	public void addConverter(String token, HistoryConverter<?,?> hc);
-	
-	public <T> void place(String token, T form);
-	
-	public <T> void dispatchHistoryEvent(String eventType, Mvp4gEventPasser<Boolean> passer);
+
+	public void addConverter( String token, HistoryConverter<?, ?> hc );
+
+	public <T> void place( String token, T form );
+
+	public <T> void dispatchHistoryEvent( String eventType, Mvp4gEventPasser<Boolean> passer );
 
 }

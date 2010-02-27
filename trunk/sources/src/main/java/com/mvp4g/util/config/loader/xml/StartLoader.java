@@ -50,6 +50,6 @@ public class StartLoader extends Mvp4gElementLoader<StartElement> {
 
 	public StartElement loadElement() throws Mvp4gXmlException {
 		Set<StartElement> elements = super.loadElements();
-		return (elements.size() == 0) ? null : new ArrayList<StartElement>( elements ).get( 0 );
+		return ( elements.size() == 0 ) ? null : new ArrayList<StartElement>( elements ).get( 0 );
 	}
 }

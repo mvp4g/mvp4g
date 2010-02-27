@@ -8,22 +8,20 @@ import org.apache.commons.configuration.XMLConfiguration;
 import com.mvp4g.util.config.element.ChildModuleElement;
 
 /**
- * A class responsible for loading all Services defined in the configuration
- * file.
+ * A class responsible for loading all Services defined in the configuration file.
  * 
  * @author javier
  * 
  */
 public class ChildModuleLoader extends Mvp4gElementLoader<ChildModuleElement> {
 
-	static final String[] REQUIRED_ATTRIBUTES = { "name", "class",
-			"eventToLoadView" };
+	static final String[] REQUIRED_ATTRIBUTES = { "name", "class" };
 	static final String[] PARENT_ATTRIBUTES = { "package" };
-	static final String[] OPTIONAL_ATTRIBUTES = { "async", "autoLoad" };
+	static final String[] OPTIONAL_ATTRIBUTES = { "async", "autoLoad", "eventToDisplayView" };
 
-	@SuppressWarnings("unchecked")
-	public ChildModuleLoader(XMLConfiguration xmlConfig) {
-		super(xmlConfig.configurationsAt("childModules.childModule"));
+	@SuppressWarnings( "unchecked" )
+	public ChildModuleLoader( XMLConfiguration xmlConfig ) {
+		super( xmlConfig.configurationsAt( "childModules.childModule" ) );
 	}
 
 	@Override

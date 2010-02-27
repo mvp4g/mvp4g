@@ -11,8 +11,8 @@ import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
  * A <i>history</i> element is composed of two attributes:
  * <ol>
  * <li/><i>package</i>: this element is optional and used by the child tag
- * <li/><i>initEvent</i>: a required attribute that represents the event to send when token fired by history is empty 
- * (for example when you go back to the first page).
+ * <li/><i>initEvent</i>: a required attribute that represents the event to send when token fired by
+ * history is empty (for example when you go back to the first page).
  * </ol>
  * 
  * This element is optional because not all GWT applications have to manage history.
@@ -41,14 +41,14 @@ public class HistoryElement extends Mvp4gElement {
 	public String getInitEvent() {
 		return getProperty( "initEvent" );
 	}
-	
+
 	public void setNotFoundEvent( String notFoundEvent ) throws DuplicatePropertyNameException {
 		setProperty( "notFoundEvent", notFoundEvent );
 	}
 
 	public String getNotFoundEvent() {
 		String event = getProperty( "notFoundEvent" );
-		if(event == null){
+		if ( event == null ) {
 			event = getInitEvent();
 		}
 		return event;

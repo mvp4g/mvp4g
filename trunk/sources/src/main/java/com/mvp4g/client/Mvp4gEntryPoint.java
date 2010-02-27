@@ -33,6 +33,6 @@ public class Mvp4gEntryPoint implements EntryPoint {
 	public void onModuleLoad() {
 		Mvp4gModule module = (Mvp4gModule)GWT.create( Mvp4gModule.class );
 		module.createAndStartModule();
-		RootPanel.get().add((Widget) module.getStartView());
+		RootPanel.get().add( (Widget)module.getStartView() );
 	}
 }

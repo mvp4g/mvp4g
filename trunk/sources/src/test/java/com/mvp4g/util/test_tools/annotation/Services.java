@@ -5,12 +5,19 @@ import com.mvp4g.client.annotation.Service;
 
 public class Services {
 
-	@Service(path = "path")
-	public interface SimpleService extends RemoteService{}
-	
-	public interface SimpleServiceAsync extends RemoteService{}
+	@Service( path = "path" )
+	public interface SimpleService extends RemoteService {
+	}
 
-	@Service(path = "path", name="name")
-	public interface ServiceWithName extends RemoteService{}
+	public interface SimpleServiceAsync extends RemoteService {
+	}
+
+	@Service( path = "path", name = "name" )
+	public interface ServiceWithName extends RemoteService {
+	}
+
+	@Service( path = "path", name = "name", generatedClass = ServiceWithGeneratedClass.class )
+	public interface ServiceWithGeneratedClass extends RemoteService {
+	}
 
 }

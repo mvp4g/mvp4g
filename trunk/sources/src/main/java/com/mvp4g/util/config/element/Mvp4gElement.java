@@ -80,12 +80,12 @@ public abstract class Mvp4gElement {
 
 		if ( name != null && values != null ) {
 			failIfMultiValuePropertyPresent( name );
-			
+
 			//if values is an array containing only ""
-			if(values.length == 1 && ((values[0] == null) || (values[0].length() == 0))){
-				values = new String[]{};
+			if ( values.length == 1 && ( ( values[0] == null ) || ( values[0].length() == 0 ) ) ) {
+				values = new String[] {};
 			}
-			
+
 			multiValueProperties.put( name, values );
 		}
 	}

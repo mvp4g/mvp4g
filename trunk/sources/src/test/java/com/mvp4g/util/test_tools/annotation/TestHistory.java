@@ -9,7 +9,7 @@ public class TestHistory implements HistoryConverter<String, EventBus> {
 
 	public void convertFromToken( String eventType, String param, EventBus eventBus ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public String convertToToken( String eventType, String form ) {

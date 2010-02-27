@@ -32,7 +32,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 	}
 
 	@Test
-	public void testEquals() throws DuplicatePropertyNameException{
+	public void testEquals() throws DuplicatePropertyNameException {
 		T same = newElement();
 		T different = newElement();
 		element.setProperty( element.getUniqueIdentifierName(), "id1" );
@@ -51,7 +51,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 	}
 
 	@Test
-	public void testSetAndGetProperties() throws DuplicatePropertyNameException{
+	public void testSetAndGetProperties() throws DuplicatePropertyNameException {
 		assertPropertiesSize( 0 );
 		assertSetProperty( "first", "first value" );
 		assertSetProperty( "second", "second value" );
@@ -59,7 +59,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 	}
 
 	@Test
-	public void testSetAndGetValues() throws DuplicatePropertyNameException{
+	public void testSetAndGetValues() throws DuplicatePropertyNameException {
 		String[] english = { "one", "two", "three" };
 		String[] french = { "un", "deux", "trois" };
 		assertMultiValuesSize( 0 );
@@ -74,12 +74,12 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 
 		assertArrayEquals( emptyArray, element.getValues( "nonExistent" ) );
 	}
-	
+
 	@Test
-	public void testSetValuesWithEmptyArray() throws DuplicatePropertyNameException{
-		String[] emptyArray = {""};
+	public void testSetValuesWithEmptyArray() throws DuplicatePropertyNameException {
+		String[] emptyArray = { "" };
 		element.setValues( "test", emptyArray );
-		assertArrayEquals( new String[]{}, element.getValues( "test" ) );
+		assertArrayEquals( new String[] {}, element.getValues( "test" ) );
 	}
 
 	@Test( expected = DuplicatePropertyNameException.class )
@@ -89,15 +89,15 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 		element.setValues( "values", values );
 		element.setValues( "values", values2 );
 	}
-	
+
 	@Test
-	public void testHashCode() throws DuplicatePropertyNameException{
-		element.setProperty( getUniqueIdentifierName(), "test" );		
+	public void testHashCode() throws DuplicatePropertyNameException {
+		element.setProperty( getUniqueIdentifierName(), "test" );
 		assertEquals( element.hashCode(), element.getUniqueIdentifier().hashCode() );
 	}
-	
+
 	@Test
-	public void testEmptyProperties(){
+	public void testEmptyProperties() {
 		assertEquals( "", element.getUniqueIdentifier() );
 	}
 
@@ -173,7 +173,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 
 		}
 	}
-	
+
 	private void assertPropertiesSize( int expectedSize ) {
 		assertEquals( expectedSize, element.totalProperties() );
 	}

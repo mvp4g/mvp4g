@@ -9,10 +9,10 @@ import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 
 public class DebugLoader extends Mvp4gElementLoader<DebugElement> {
-	
+
 	static final String[] REQUIRED_ATTRIBUTES = { "enabled" };
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings( "unchecked" )
 	public DebugLoader( XMLConfiguration xmlConfig ) {
 		super( xmlConfig.configurationsAt( "debug" ) );
 	}
@@ -31,10 +31,10 @@ public class DebugLoader extends Mvp4gElementLoader<DebugElement> {
 	protected DebugElement newElement() {
 		return new DebugElement();
 	}
-	
+
 	public DebugElement loadElement() throws Mvp4gXmlException {
 		Set<DebugElement> elements = super.loadElements();
-		return (elements.size() == 0) ? null : new ArrayList<DebugElement>( elements ).get( 0 );
+		return ( elements.size() == 0 ) ? null : new ArrayList<DebugElement>( elements ).get( 0 );
 	}
 
 }

@@ -56,7 +56,7 @@ public class EventElement extends Mvp4gElement {
 	public String[] getHandlers() {
 		return getValues( "handlers" );
 	}
-	
+
 	public void setModulesToLoad( String[] modules ) throws DuplicatePropertyNameException {
 		setValues( "modulesToLoad", modules );
 	}
@@ -76,17 +76,17 @@ public class EventElement extends Mvp4gElement {
 	public boolean hasHistory() {
 		return getHistory() != null;
 	}
-	
-	public String getForwardToParent(){
-		return getProperty("forwardToParent");
+
+	public String getForwardToParent() {
+		return getProperty( "forwardToParent" );
 	}
-	
-	public void setForwardToParent(String forwardToParent) throws DuplicatePropertyNameException{
-		setProperty("forwardToParent", forwardToParent);
+
+	public void setForwardToParent( String forwardToParent ) throws DuplicatePropertyNameException {
+		setProperty( "forwardToParent", forwardToParent );
 	}
-	
-	public boolean hasForwardToParent(){
-		return "true".equalsIgnoreCase(getProperty("forwardToParent"));
+
+	public boolean hasForwardToParent() {
+		return "true".equalsIgnoreCase( getProperty( "forwardToParent" ) );
 	}
 
 	@Override

@@ -36,7 +36,7 @@ public class HistoryConverters {
 		}
 
 	}
-	
+
 	@History( name = "history" )
 	public static class HistoryConverterForEvent extends BaseHistoryConverter {
 
@@ -77,7 +77,7 @@ public class HistoryConverters {
 		}
 
 	}
-	
+
 	@History
 	public static class HistoryConverterWithSameService extends BaseHistoryConverter {
 

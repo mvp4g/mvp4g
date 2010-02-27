@@ -19,10 +19,15 @@ public class HistoryAnnotationsLoader extends Mvp4gAnnotationsWithServiceLoader<
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.mvp4g.util.config.loader.annotation.Mvp4gAnnotationsWithServiceLoader#loadElementWithServices(com.google.gwt.core.ext.typeinfo.JClassType, java.lang.annotation.Annotation, com.mvp4g.util.config.Mvp4gConfiguration)
+	 * 
+	 * @see
+	 * com.mvp4g.util.config.loader.annotation.Mvp4gAnnotationsWithServiceLoader#loadElementWithServices
+	 * (com.google.gwt.core.ext.typeinfo.JClassType, java.lang.annotation.Annotation,
+	 * com.mvp4g.util.config.Mvp4gConfiguration)
 	 */
 	@Override
-	Mvp4gWithServicesElement loadElementWithServices( JClassType c, History annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
+	Mvp4gWithServicesElement loadElementWithServices( JClassType c, History annotation, Mvp4gConfiguration configuration )
+			throws Mvp4gAnnotationException {
 
 		String className = c.getQualifiedSourceName();
 		String historyName = buildElementNameIfNeeded( annotation.name(), className, "" );
@@ -42,7 +47,9 @@ public class HistoryAnnotationsLoader extends Mvp4gAnnotationsWithServiceLoader<
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.mvp4g.util.config.loader.annotation.Mvp4gAnnotationsLoader#getMandatoryInterfaceName()
+	 * 
+	 * @see
+	 * com.mvp4g.util.config.loader.annotation.Mvp4gAnnotationsLoader#getMandatoryInterfaceName()
 	 */
 	@Override
 	protected String getMandatoryInterfaceName() {

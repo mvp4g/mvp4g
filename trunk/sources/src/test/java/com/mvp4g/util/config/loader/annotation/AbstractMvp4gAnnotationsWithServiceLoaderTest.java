@@ -57,19 +57,6 @@ public abstract class AbstractMvp4gAnnotationsWithServiceLoaderTest<A extends An
 		}
 	}
 
-	@Test( expected = Mvp4gAnnotationException.class )
-	public void testNotAsyncParameter() throws Mvp4gAnnotationException {
-		try {
-			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			JClassType type = oracle.addClass( getClassNotAsync() );
-			annotedClasses.add( type );
-			loader.load( annotedClasses, configuration );
-		} catch ( Mvp4gAnnotationException e ) {
-			assertTrue( e.getMessage().contains( "Only instance of Asynchron service class can be injected." ) );
-			throw e;
-		}
-	}
-
 	@Test
 	public void testServicesWithName() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
@@ -95,17 +82,17 @@ public abstract class AbstractMvp4gAnnotationsWithServiceLoaderTest<A extends An
 
 		String serviceClass = Services.SimpleService.class.getCanonicalName();
 		String serviceName = serviceClass.replace( '.', '_' );
-		
+
 		List<InjectedElement> injectedServices = elements.iterator().next().getInjectedServices();
 		InjectedElement injectedService = injectedServices.get( 0 );
 		assertEquals( injectedServices.size(), 1 );
 		assertEquals( injectedService.getSetterName(), "setSthg" );
-		assertEquals( injectedService.getElementName(), serviceName );
-		
+		assertEquals( injectedService.getElementName(), serviceName + "Async" );
+
 		Set<ServiceElement> services = configuration.getServices();
 		assertEquals( services.size(), 1 );
 		ServiceElement service = services.iterator().next();
-		assertEquals( service.getName(), serviceName );
+		assertEquals( service.getName(), serviceName + "Async" );
 		assertEquals( service.getClassName(), serviceClass );
 
 		annotedClasses.clear();
@@ -113,7 +100,7 @@ public abstract class AbstractMvp4gAnnotationsWithServiceLoaderTest<A extends An
 		annotedClasses.add( type );
 		loader.load( annotedClasses, configuration );
 		assertEquals( services.size(), 1 );
-		
+
 		ServiceElement service2 = services.iterator().next();
 		assertSame( service, service2 );
 	}
@@ -129,7 +116,7 @@ public abstract class AbstractMvp4gAnnotationsWithServiceLoaderTest<A extends An
 	abstract protected Class<?> getServiceWithName();
 
 	abstract protected Class<?> getService();
-	
+
 	abstract protected Class<?> getSameService();
 
 }

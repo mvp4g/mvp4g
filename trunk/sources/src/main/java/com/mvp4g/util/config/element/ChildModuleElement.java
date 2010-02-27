@@ -5,54 +5,51 @@ import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 public class ChildModuleElement extends SimpleMvp4gElement {
 
 	public ChildModuleElement() {
-		super("childModule");
+		super( "childModule" );
 	}
 
-	public void setEventToLoadView(String eventToLoadView)
-			throws DuplicatePropertyNameException {
-		setProperty("eventToLoadView", eventToLoadView);
+	public void setEventToDisplayView( String eventToDisplayView ) throws DuplicatePropertyNameException {
+		setProperty( "eventToDisplayView", eventToDisplayView );
 	}
 
-	public String getEventToLoadView() {
-		return getProperty("eventToLoadView");
+	public String getEventToDisplayView() {
+		return getProperty( "eventToDisplayView" );
 	}
 
-	public void setAsync(String async) throws DuplicatePropertyNameException {
-		setProperty("async", async);
+	public void setAsync( String async ) throws DuplicatePropertyNameException {
+		setProperty( "async", async );
 	}
 
 	public String getAsync() {
-		String async = getProperty("async");
+		String async = getProperty( "async" );
 		// By default it's true
-		return (async == null) ? "true" : getProperty("async");
+		return ( async == null ) ? "true" : getProperty( "async" );
 	}
 
 	public boolean isAsync() {
-		return "true".equalsIgnoreCase(getAsync());
+		return "true".equalsIgnoreCase( getAsync() );
 	}
 
-	public void setAutoLoad(String autoLoad)
-			throws DuplicatePropertyNameException {
-		setProperty("autoLoad", autoLoad);
+	public void setAutoDisplay( String autoDisplay ) throws DuplicatePropertyNameException {
+		setProperty( "autoDisplay", autoDisplay );
 	}
 
-	public String getAutoLoad() {
-		String autoLoad = getProperty("autoLoad");
+	public String getAutoDisplay() {
+		String autoDisplay = getProperty( "autoDisplay" );
 		// By default it's true
-		return (autoLoad == null) ? "true" : getProperty("autoLoad");
+		return ( autoDisplay == null ) ? "true" : getProperty( "autoDisplay" );
 	}
 
-	public boolean isAutoLoad() {
-		return "true".equalsIgnoreCase(getAutoLoad());
+	public boolean isAutoDisplay() {
+		return "true".equalsIgnoreCase( getAutoDisplay() );
 	}
 
 	public String getHistoryName() {
-		return getProperty("historyName");
+		return getProperty( "historyName" );
 	}
 
-	public void setHistoryName(String historyName)
-			throws DuplicatePropertyNameException {
-		setProperty("historyName", historyName);
+	public void setHistoryName( String historyName ) throws DuplicatePropertyNameException {
+		setProperty( "historyName", historyName );
 	}
 
 }

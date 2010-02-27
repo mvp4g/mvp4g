@@ -16,31 +16,31 @@ import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 import com.mvp4g.util.test_tools.annotation.Presenters;
 
 public class PresenterAnnotationsLoaderTest extends AbstractMvp4gAnnotationsWithServiceLoaderTest<Presenter, PresenterAnnotationsLoader> {
-	
+
 	@Test
-	public void testView() throws Mvp4gAnnotationException{
-	
-			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			JClassType type = oracle.addClass( getSimpleClass() );
-			annotedClasses.add( type );
-			loader.load( annotedClasses, configuration );
-			ViewElement view = configuration.getViews().iterator().next();
-			assertEquals( view.getClassName(), Object.class.getName() );
-			assertEquals( view.getName(), type.getQualifiedSourceName().replace( '.', '_' ) + "View" );
-	
+	public void testView() throws Mvp4gAnnotationException {
+
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		JClassType type = oracle.addClass( getSimpleClass() );
+		annotedClasses.add( type );
+		loader.load( annotedClasses, configuration );
+		ViewElement view = configuration.getViews().iterator().next();
+		assertEquals( view.getClassName(), Object.class.getName() );
+		assertEquals( view.getName(), type.getQualifiedSourceName().replace( '.', '_' ) + "View" );
+
 	}
-	
+
 	@Test
-	public void testViewWithName() throws Mvp4gAnnotationException{
-	
-			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			JClassType type = oracle.addClass( Presenters.PresenterWithViewName.class );
-			annotedClasses.add( type );
-			loader.load( annotedClasses, configuration );
-			ViewElement view = configuration.getViews().iterator().next();
-			assertEquals( view.getClassName(), Object.class.getName() );
-			assertEquals( view.getName(), "name" );
-	
+	public void testViewWithName() throws Mvp4gAnnotationException {
+
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		JClassType type = oracle.addClass( Presenters.PresenterWithViewName.class );
+		annotedClasses.add( type );
+		loader.load( annotedClasses, configuration );
+		ViewElement view = configuration.getViews().iterator().next();
+		assertEquals( view.getClassName(), Object.class.getName() );
+		assertEquals( view.getName(), "name" );
+
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class PresenterAnnotationsLoaderTest extends AbstractMvp4gAnnotationsWith
 		return new PresenterAnnotationsLoader();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings( "unchecked" )
 	@Override
 	protected Set<PresenterElement> getSet() {
 		return configuration.getPresenters();
@@ -97,6 +97,11 @@ public class PresenterAnnotationsLoaderTest extends AbstractMvp4gAnnotationsWith
 	@Override
 	protected Class<?> getWithNameClass() {
 		return Presenters.PresenterWithName.class;
+	}
+
+	@Override
+	protected Class<?> getWrongInterface() {
+		return Object.class;
 	}
 
 }

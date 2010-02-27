@@ -90,14 +90,14 @@ public interface EventBusWithLookup extends EventBus {
 	public <E extends Enum<E>> void dispatch( Enum<E> enumEventType, Object form );
 
 	/**
-	 * Call the method associated with the event type in order to trigger the presenters that
-	 * can handle the event. In this case no object is forwarded to the handler(s).<br/>
+	 * Call the method associated with the event type in order to trigger the presenters that can
+	 * handle the event. In this case no object is forwarded to the handler(s).<br/>
 	 * <br/>
 	 * In this function, the type is given as a enumeration. The toString method of this enumeration
 	 * must return the type of the event defined the configuration file.<br/>
 	 * <br/>
 	 * The event is stored in GWT History stack if possible (ie if an History Converter is
-	 * associated with the event) and needed (ie isHistoryStored() == true).<br/>	 
+	 * associated with the event) and needed (ie isHistoryStored() == true).<br/>
 	 * <br/>
 	 * Calling dispatch(enumEventType) is equivalent to calling dispatch(enumEventType.toString(),
 	 * null).

@@ -17,10 +17,9 @@ public class EventBusWithLookUpStub extends BaseEventBusWithLookUp {
 		lastDispatchedObject = form;
 		if ( MVP4G_EXCEPTION.equals( eventType ) ) {
 			Object o = new Object();
-			start((Integer) o);
-		}
-		else if(CLASS_CAST_EXCEPTION.equals( eventType )){
-			start(10);
+			start( (Integer)o );
+		} else if ( CLASS_CAST_EXCEPTION.equals( eventType ) ) {
+			start( 10 );
 		}
 	}
 

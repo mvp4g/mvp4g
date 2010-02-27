@@ -64,6 +64,9 @@ public class HistoryAnnotationsLoaderTest extends AbstractMvp4gAnnotationsWithSe
 		return HistoryConverters.HistoryConverterWithSameService.class;
 	}
 
-	
+	@Override
+	protected Class<?> getWrongInterface() {
+		return Object.class;
+	}
 
 }

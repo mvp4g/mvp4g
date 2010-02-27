@@ -47,13 +47,13 @@ import com.mvp4g.client.presenter.PresenterInterface;
 public @interface Event {
 
 	Class<? extends PresenterInterface<?, ? extends EventBus>>[] handlers() default {};
-	
+
 	String[] handlerNames() default {};
-	
+
 	Class<? extends Mvp4gModule>[] modulesToLoad() default {};
-	
+
 	boolean forwardToParent() default false;
-	
+
 	String calledMethod() default "";
 
 	String historyConverterName() default "";

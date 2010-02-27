@@ -4,7 +4,7 @@ public abstract class Mvp4gEventPasser<T> {
 
 	protected T eventObject = null;
 
-	public Mvp4gEventPasser(T eventObject) {
+	public Mvp4gEventPasser( T eventObject ) {
 		this.eventObject = eventObject;
 	}
 
@@ -12,10 +12,10 @@ public abstract class Mvp4gEventPasser<T> {
 	 * @param eventObject
 	 *            the eventObject to set
 	 */
-	public void setEventObject(T eventObject) {
+	public void setEventObject( T eventObject ) {
 		this.eventObject = eventObject;
 	}
 
-	public abstract void pass(Mvp4gModule module);
+	public abstract void pass( Mvp4gModule module );
 
 }

@@ -32,11 +32,11 @@ public @interface Events {
 	String startViewName() default "";
 
 	Class<?> startView();
-	
-	Class<? extends Mvp4gModule> module() default Mvp4gModule.class; 
+
+	Class<? extends Mvp4gModule> module() default Mvp4gModule.class;
 
 	boolean historyOnStart() default false;
-	
+
 	boolean debug() default false;
 
 }

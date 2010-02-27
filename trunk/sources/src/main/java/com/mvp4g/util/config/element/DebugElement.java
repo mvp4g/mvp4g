@@ -5,7 +5,7 @@ import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 public class DebugElement extends Mvp4gElement {
 
 	public DebugElement() {
-		super("debug");
+		super( "debug" );
 	}
 
 	private static final String DEBUG_ELEMENT_ID = DebugElement.class.getName();
@@ -15,17 +15,16 @@ public class DebugElement extends Mvp4gElement {
 		return DEBUG_ELEMENT_ID;
 	}
 
-	public void setEnabled(String enabled)
-			throws DuplicatePropertyNameException {
-		setProperty("enabled", enabled);
+	public void setEnabled( String enabled ) throws DuplicatePropertyNameException {
+		setProperty( "enabled", enabled );
 	}
 
 	public String getEnabled() {
-		return getProperty("enabled");
+		return getProperty( "enabled" );
 	}
 
 	public boolean isEnabled() {
-		return Boolean.TRUE.toString().equals(getEnabled());
+		return Boolean.TRUE.toString().equals( getEnabled() );
 	}
 
 }

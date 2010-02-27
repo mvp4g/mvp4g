@@ -17,7 +17,7 @@ public class ServicesLoader extends Mvp4gElementLoader<ServiceElement> {
 
 	static final String[] REQUIRED_ATTRIBUTES = { "name", "class" };
 	static final String[] PARENT_ATTRIBUTES = { "package" };
-	static final String[] OPTIONAL_ATTRIBUTES = { "path" };
+	static final String[] OPTIONAL_ATTRIBUTES = { "path", "generatedClassName" };
 
 	@SuppressWarnings( "unchecked" )
 	public ServicesLoader( XMLConfiguration xmlConfig ) {
