@@ -157,6 +157,20 @@ Add your child modules to the configuration file. Each module needs to have its 
  * autoDisplay(optional) : If this attribute is set to "true", the child start view will be displayed automaticaly thanks to eventToDisplayView event. By default, it sets to "true".
  * eventToDisplayView (required if autoDisplay activated): event used to display child start view.
 
+= Child Module Interface= 
+
+Like with EventBus interface, you need to create a Mvp4g module interface for each of your child module ([http://code.google.com/p/mvp4g/wiki/MultiModules#Creating_modules see Multi-module feature). Moreover
+you need to specify the xml configuration file of your child module thanks to @XmlFilePath.
+
+{{{
+@XmlFilePath("xmlConfig/company-mvp4g.xml")
+public interface CompanyModule extends Mvp4gModule {
+	
+	public void setParentModule(Mvp4gModule eventBus);
+
+}
+}}}
+
 =Full example=
 {{{
 <?xml version="1.0" encoding="ISO-8859-1" ?>
@@ -193,18 +207,4 @@ Add your child modules to the configuration file. Each module needs to have its 
 	<start view="rootView" history="true"/>
 	
 </mvp4g>					
-}}}
-
-= ChildModuleInterface= 
-
-Like with EventBus interface, you need to create a Mvp4g module interface for each of your child module ([http://code.google.com/p/mvp4g/wiki/MultiModules#Creating_modules see Multi-module feature). Moreover
-you need to specify the xml configuration file of your child module thanks to @XmlFilePath.
-
-{{{
-@XmlFilePath("xmlConfig/company-mvp4g.xml")
-public interface CompanyModule extends Mvp4gModule {
-	
-	public void setParentModule(Mvp4gModule eventBus);
-
-}
 }}}
