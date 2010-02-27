@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/xsd/mvp4g-conf.xsd">
+
+	<debug enabled="true" />
+
+	<childModules package="com.mvp4g.example.client" beforeEvent="beforeLoad" afterEvent="afterLoad" errorEvent="errorOnLoad">
+		<childModule name="companyModule" class=".company.CompanyModule" eventToDisplayView="changeBody"/>
+		<childModule name="productModule" class=".product.ProductModule" async="false" autoLoad="false"/>	
+	</childModules>
+
 	<views package="com.mvp4g.example.client.view">
 		<view name="rootView" class="com.mvp4g.util.test_tools.RootView" />
 		<view name="userCreateView" class="UserCreateView" />
@@ -42,6 +50,9 @@
 			handlers="rootPresenter" />
 		<event type="init" handlers="rootPresenter" />
 		<event type="event404" handlers="rootPresenter" />
+		<event type="beforeLoad" handlers="rootPresenter" />
+		<event type="afterLoad" handlers="rootPresenter" />
+		<event type="errorOnLoad" handlers="rootPresenter" />
 		<event type="optionalEvent" handlers="" />
 	</events>
 

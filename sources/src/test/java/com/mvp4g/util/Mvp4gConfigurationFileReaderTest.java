@@ -8,12 +8,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.dev.util.UnitTestTreeLogger;
+import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.util.config.Mvp4gConfiguration;
+import com.mvp4g.util.config.element.ChildModuleElement;
+import com.mvp4g.util.config.element.ChildModulesElement;
+import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
@@ -24,6 +30,7 @@ import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.config.element.ViewElement;
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
+import com.mvp4g.util.test_tools.Modules;
 import com.mvp4g.util.test_tools.SourceWriterTestStub;
 import com.mvp4g.util.test_tools.TypeOracleStub;
 
@@ -86,9 +93,15 @@ public class Mvp4gConfigurationFileReaderTest {
 		e3.setType( "displayMessage" );
 		e3.setHandlers( new String[] { "rootPresenter" } );
 
+		EventElement e4 = new EventElement();
+		e4.setType( "userEdit" );
+		e4.setHandlers( new String[] { "displayUserPresenter" } );
+		e4.setHistory( "history" );
+
 		events.add( e1 );
-		events.add( e3 );
 		events.add( e2 );
+		events.add( e3 );
+		events.add( e4 );
 
 		writer.writeConf();
 
@@ -122,10 +135,16 @@ public class Mvp4gConfigurationFileReaderTest {
 		e3.setType( "displayMessage" );
 		e3.setHandlers( new String[] { "rootPresenter" } );
 
+		EventElement e4 = new EventElement();
+		e4.setType( "userEdit" );
+		e4.setHandlers( new String[] { "displayUserPresenter" } );
+		e4.setHistory( "history" );
+
 		Set<EventElement> events = configuration.getEvents();
 		events.add( e1 );
-		events.add( e3 );
 		events.add( e2 );
+		events.add( e3 );
+		events.add( e4 );
 
 		writer.writeConf();
 
@@ -220,6 +239,13 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	@Test
 	public void testWriteXmlStart() throws DuplicatePropertyNameException {
+
+		PresenterElement presenter = new PresenterElement();
+		presenter.setName( "startPresenter" );
+		presenter.setView( "rootView" );
+		presenter.setClassName( Object.class.getCanonicalName() );
+		configuration.getPresenters().add( presenter );
+
 		String eventBusInterface = EventBusWithLookup.class.getName();
 		String eventBusClass = BaseEventBusWithLookUp.class.getName();
 		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, false ) );
@@ -238,6 +264,12 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	@Test
 	public void testWriteStart() throws DuplicatePropertyNameException {
+
+		PresenterElement presenter = new PresenterElement();
+		presenter.setName( "startPresenter" );
+		presenter.setView( "rootView" );
+		presenter.setClassName( Object.class.getCanonicalName() );
+		configuration.getPresenters().add( presenter );
 
 		StartElement start = new StartElement();
 		start.setView( "rootView" );
@@ -278,11 +310,13 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.setHistory( history );
 
 		assertOutput( getExpectedHistory(), false );
+		assertOutput( getExpectedInheritHistory(), false );
 		writer.writeConf();
 		assertOutput( getExpectedHistory(), true );
+		assertOutput( getExpectedInheritHistory(), true );
 
 	}
-	
+
 	@Test
 	public void testWriteXmlHistoryStart() throws DuplicatePropertyNameException {
 		String eventBusInterface = EventBusWithLookup.class.getName();
@@ -295,137 +329,440 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.setHistory( history );
 
 		assertOutput( getExpectedHistoryXml(), false );
+		assertOutput( getExpectedInheritHistory(), false );
 		writer.writeConf();
 		assertOutput( getExpectedHistoryXml(), true );
+		assertOutput( getExpectedInheritHistory(), true );
 
 	}
-	
+
 	@Test
 	public void testWriteNoHistoryStart() throws DuplicatePropertyNameException {
-		
+
 		configuration.setHistory( null );
 
 		assertOutput( getExpectedHistory(), false );
+		assertOutput( getExpectedInheritHistory(), false );
 		writer.writeConf();
 		assertOutput( getExpectedHistory(), false );
-		
+		assertOutput( getExpectedInheritHistory(), true );
+
 		String eventBusInterface = EventBusWithLookup.class.getName();
 		String eventBusClass = BaseEventBusWithLookUp.class.getName();
 		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, false ) );
-		
+
 		assertOutput( getExpectedHistoryXml(), false );
 		writer.writeConf();
 		assertOutput( getExpectedHistoryXml(), false );
 
 	}
 
-	/*
-	 * 
-	 * @Test public void testWriteConfConstructsEventBus() throws UnableToCompleteException {
-	 * 
-	 * String output = "EventBus eventBus = new EventBus();";
-	 * 
-	 * assertFalse( sourceWriter.dataContains( output ) );
-	 * 
-	 * configReader.writeConf();
-	 * 
-	 * assertTrue( eventBusError(), sourceWriter.dataContains( output ) ); }
-	 * 
-	 * private String eventBusError() { return "EventBus construction not found in data:\n" +
-	 * sourceWriter.getData(); }
-	 * 
-	 * @Test public void testWriteViews() throws UnableToCompleteException {
-	 * 
-	 * assertOutput( getExpectedViews(), false );
-	 * 
-	 * configReader.writeConf();
-	 * 
-	 * assertOutput( getExpectedViews(), true ); }
-	 * 
-	 * @Test public void testWritePresenters() throws UnableToCompleteException {
-	 * 
-	 * assertOutput( getExpectedPresenters(), false );
-	 * 
-	 * configReader.writeConf();
-	 * 
-	 * assertOutput( getExpectedPresenters(), true ); }
-	 * 
-	 * @Test public void testWriteEvents() throws UnableToCompleteException {
-	 * 
-	 * assertOutput( getExpectedEvents(), false );
-	 * 
-	 * configReader.writeConf();
-	 * 
-	 * assertOutput( getExpectedEvents(), true ); }
-	 * 
-	 * @Test public void testWriteStartEvent() throws UnableToCompleteException {
-	 * 
-	 * assertOutput( getExpectedStartEvent(), false );
-	 * 
-	 * configReader.writeConf();
-	 * 
-	 * assertOutput( getExpectedStartEvent(), true ); }
-	 * 
-	 * @Test public void testWriteHistory() throws UnableToCompleteException {
-	 * 
-	 * assertOutput( getExpectedHistory(), false );
-	 * 
-	 * configReader.writeConf();
-	 * 
-	 * assertOutput( getExpectedHistory(), true ); }
-	 * 
-	 * @Test public void testWriteServices() throws UnableToCompleteException {
-	 * 
-	 * assertOutput( getExpectedServices(), false );
-	 * 
-	 * configReader.writeConf();
-	 * 
-	 * assertOutput( getExpectedServices(), true ); }
-	 * 
-	 * @Test public void testCapitalized() { String input = "donQuixote"; String expected =
-	 * "DonQuixote";
-	 * 
-	 * assertEquals( expected, configReader.capitalized( input ) ); }
-	 * 
-	 * @Test public void testGetObjectClass() throws UnableToCompleteException {
-	 * 
-	 * configReader.writeConf();
-	 * 
-	 * EventElement event = new EventElement(); assertNull( configReader.getObjectClass( event ) );
-	 * 
-	 * event = new EventElement(); event.setEventObjectClass( String.class.getName() );
-	 * assertEquals( String.class.getName(), configReader.getObjectClass( event ) );
-	 * 
-	 * event = new EventElement(); event.setCalledMethod( "onInit" ); event.setHandlers( new
-	 * String[] { "rootPresenter" } ); assertNull( configReader.getObjectClass( event ) );
-	 * 
-	 * event = new EventElement(); event.setCalledMethod( "onDisplayMessage" ); event.setHandlers(
-	 * new String[] { "rootPresenter" } ); assertEquals( String.class.getName(),
-	 * configReader.getObjectClass( event ) );
-	 * 
-	 * try { event = new EventElement(); event.setType( "one" ); event.setCalledMethod(
-	 * "unknownMethod" ); event.setHandlers( new String[] { "rootPresenter" } );
-	 * configReader.getObjectClass( event ); fail(); } catch ( InvalidMvp4gConfigurationException ex
-	 * ) { String expected = "Tag " + event.getTagName() +
-	 * " one: handler rootPresenter doesn't define a method unknownMethod with 1 or 0 parameter.";
-	 * assertEquals( expected, ex.getMessage() ); }
-	 * 
-	 * try { event = new EventElement(); event.setType( "one" ); event.setCalledMethod( "onTest" );
-	 * event.setHandlers( new String[] { "rootPresenter" } ); configReader.getObjectClass( event );
-	 * fail(); } catch ( InvalidMvp4gConfigurationException ex ) { String expected = "Tag " +
-	 * event.getTagName() +
-	 * " one: handler rootPresenter doesn't define a method onTest with 1 or 0 parameter.";
-	 * assertEquals( expected, ex.getMessage() ); }
-	 * 
-	 * try { event = new EventElement(); event.setType( "one" ); event.setCalledMethod( "onInit" );
-	 * event.setHandlers( new String[] { "displayUserPresenter" } ); configReader.getObjectClass(
-	 * event ); fail(); } catch ( InvalidMvp4gConfigurationException ex ) { String expected = "Tag "
-	 * + event.getTagName() +
-	 * " one: displayUserPresenter handler class: com.mvp4g.example.client.presenter.display.UserDisplayPresenter is not found"
-	 * ; assertEquals( expected, ex.getMessage() ); }
-	 * 
-	 * }
-	 */
+	@Test
+	public void testWriteGetters() throws DuplicatePropertyNameException {
+
+		assertOutput( getExpectedGetters(), false );
+		writer.writeConf();
+		assertOutput( getExpectedGetters(), true );
+
+	}
+
+	@Test
+	public void testWriteNoParent() {
+		assertOutput( new String[] { "private PlaceService placeService = null;" }, false );
+		assertOutput( getExpectedSetParent(), false );
+		writer.writeConf();
+		assertOutput( new String[] { "private PlaceService placeService = null;" }, true );
+		assertOutput( getExpectedSetParent(), false );
+	}
+
+	@Test
+	public void testWriteParent() {
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		configuration.setParentModule( oracle.addClass( Mvp4gModule.class ) );
+		configuration.setParentEventBus( oracle.addClass( EventBusWithLookup.class ) );
+
+		assertOutput( new String[] { "private PlaceService placeService = null;" }, false );
+		assertOutput( getExpectedSetParent(), false );
+		writer.writeConf();
+		assertOutput( getExpectedSetParent(), true );
+		assertOutput( new String[] { "private PlaceService placeService = null;" }, false );
+	}
+
+	@Test
+	public void testWriteChildWithNoParentNoAsyncNoAutoLoad() throws DuplicatePropertyNameException {
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		JClassType moduleType = oracle.addClass( Modules.Module1.class );
+		ChildModuleElement childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "childModule" );
+		childModule.setAsync( "false" );
+		childModule.setAutoDisplay( "false" );
+
+		configuration.getChildModules().add( childModule );
+		configuration.setLoadChildConfig( new ChildModulesElement() );
+
+		assertOutput( getExpectedChildModule( Modules.Module1.class.getCanonicalName() ), false );
+		assertOutput( getExpectedChildModuleWithParent(), false );
+		assertOutput( getExpectedAsyncChildModule(), false );
+		assertOutput( getExpectedAutoDisplayChildModule(), false );
+		writer.writeConf();
+		assertOutput( getExpectedChildModule( Modules.Module1.class.getCanonicalName() ), true );
+		assertOutput( getExpectedChildModuleWithParent(), false );
+		assertOutput( getExpectedAsyncChildModule(), false );
+		assertOutput( getExpectedAutoDisplayChildModule(), false );
+	}
+
+	@Test
+	public void testWriteChildWithParentNoAsyncNoAutoLoad() throws DuplicatePropertyNameException {
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+		ChildModuleElement childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "childModule" );
+		childModule.setAsync( "false" );
+		childModule.setAutoDisplay( "false" );
+
+		configuration.getChildModules().add( childModule );
+		configuration.setLoadChildConfig( new ChildModulesElement() );
+
+		assertOutput( getExpectedChildModule( Modules.ModuleWithParent.class.getCanonicalName() ), false );
+		assertOutput( getExpectedChildModuleWithParent(), false );
+		assertOutput( getExpectedAsyncChildModule(), false );
+		assertOutput( getExpectedAutoDisplayChildModule(), false );
+		writer.writeConf();
+		assertOutput( getExpectedChildModule( Modules.ModuleWithParent.class.getCanonicalName() ), true );
+		assertOutput( getExpectedChildModuleWithParent(), true );
+		assertOutput( getExpectedAsyncChildModule(), false );
+		assertOutput( getExpectedAutoDisplayChildModule(), false );
+	}
+
+	@Test
+	public void testWriteChildWithNoParentAsyncNoAutoLoad() throws DuplicatePropertyNameException {
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		JClassType moduleType = oracle.addClass( Modules.Module1.class );
+		ChildModuleElement childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "childModule" );
+		childModule.setAutoDisplay( "false" );
+
+		EventElement event = new EventElement();
+		event.setType( "errorOnLoad" );
+		event.setEventObjectClass( Throwable.class.getCanonicalName() );
+		configuration.getEvents().add( event );
+
+		ChildModulesElement loadConfig = new ChildModulesElement();
+		loadConfig.setAfterEvent( "afterLoad" );
+		loadConfig.setBeforeEvent( "beforeLoad" );
+		loadConfig.setErrorEvent( "errorOnLoad" );
+		configuration.getChildModules().add( childModule );
+		configuration.setLoadChildConfig( loadConfig );
+
+		assertOutput( getExpectedChildModule( Modules.Module1.class.getCanonicalName() ), false );
+		assertOutput( getExpectedChildModuleWithParent(), false );
+		assertOutput( getExpectedAsyncChildModule(), false );
+		assertOutput( getExpectedAutoDisplayChildModule(), false );
+		writer.writeConf();
+		assertOutput( getExpectedChildModule( Modules.Module1.class.getCanonicalName() ), true );
+		assertOutput( getExpectedChildModuleWithParent(), false );
+		assertOutput( getExpectedAsyncChildModule(), true );
+		assertOutput( getExpectedAutoDisplayChildModule(), false );
+	}
+
+	@Test
+	public void testWriteChildWithNoParentAsyncNoAutoLoadNotGwt2() throws DuplicatePropertyNameException {
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		JClassType moduleType = oracle.addClass( Modules.Module1.class );
+		oracle.setGWT2( false );
+		ChildModuleElement childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "childModule" );
+		childModule.setAutoDisplay( "false" );
+
+		EventElement event = new EventElement();
+		event.setType( "errorOnLoad" );
+		event.setEventObjectClass( Throwable.class.getCanonicalName() );
+		configuration.getEvents().add( event );
+
+		ChildModulesElement loadConfig = new ChildModulesElement();
+		loadConfig.setAfterEvent( "afterLoad" );
+		loadConfig.setBeforeEvent( "beforeLoad" );
+		loadConfig.setErrorEvent( "errorOnLoad" );
+		configuration.getChildModules().add( childModule );
+		configuration.setLoadChildConfig( loadConfig );
+
+		assertOutput( getExpectedChildModule( Modules.Module1.class.getCanonicalName() ), false );
+		assertOutput( getExpectedChildModuleWithParent(), false );
+		assertOutput( getExpectedAsyncChildModule(), false );
+		assertOutput( getExpectedAutoDisplayChildModule(), false );
+		writer.writeConf();
+		assertOutput( getExpectedChildModule( Modules.Module1.class.getCanonicalName() ), true );
+		assertOutput( getExpectedChildModuleWithParent(), false );
+		assertOutput( getExpectedAsyncChildModule(), false );
+		assertOutput( getExpectedAutoDisplayChildModule(), false );
+	}
+
+	@Test
+	public void testWriteChildWithNoParentAsyncNoAutoLoadErrorEmpty() throws DuplicatePropertyNameException {
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		JClassType moduleType = oracle.addClass( Modules.Module1.class );
+		ChildModuleElement childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "childModule" );
+		childModule.setAutoDisplay( "false" );
+
+		EventElement event = new EventElement();
+		event.setType( "errorOnLoad" );
+		configuration.getEvents().add( event );
+
+		ChildModulesElement loadConfig = new ChildModulesElement();
+		loadConfig.setAfterEvent( "afterLoad" );
+		loadConfig.setBeforeEvent( "beforeLoad" );
+		loadConfig.setErrorEvent( "errorOnLoad" );
+		configuration.getChildModules().add( childModule );
+		configuration.setLoadChildConfig( loadConfig );
+
+		assertOutput( getExpectedChildModule( Modules.Module1.class.getCanonicalName() ), false );
+		assertOutput( getExpectedChildModuleWithParent(), false );
+		assertOutput( getExpectedAsyncChildModuleErrorEmpty(), false );
+		assertOutput( getExpectedAutoDisplayChildModule(), false );
+		writer.writeConf();
+		assertOutput( getExpectedChildModule( Modules.Module1.class.getCanonicalName() ), true );
+		assertOutput( getExpectedChildModuleWithParent(), false );
+		assertOutput( getExpectedAsyncChildModuleErrorEmpty(), true );
+		assertOutput( getExpectedAutoDisplayChildModule(), false );
+	}
+
+	@Test
+	public void testWriteChildWithParentAsyncNoAutoLoad() throws DuplicatePropertyNameException {
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+
+		ChildModuleElement childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "childModule" );
+		childModule.setAutoDisplay( "false" );
+
+		EventElement event = new EventElement();
+		event.setType( "errorOnLoad" );
+		event.setEventObjectClass( Throwable.class.getCanonicalName() );
+		configuration.getEvents().add( event );
+
+		ChildModulesElement loadConfig = new ChildModulesElement();
+		loadConfig.setAfterEvent( "afterLoad" );
+		loadConfig.setBeforeEvent( "beforeLoad" );
+		loadConfig.setErrorEvent( "errorOnLoad" );
+		configuration.getChildModules().add( childModule );
+		configuration.setLoadChildConfig( loadConfig );
+
+		assertOutput( getExpectedChildModule( Modules.ModuleWithParent.class.getCanonicalName() ), false );
+		assertOutput( getExpectedChildModuleWithParent(), false );
+		assertOutput( getExpectedAsyncChildModule(), false );
+		assertOutput( getExpectedAutoDisplayChildModule(), false );
+		writer.writeConf();
+		assertOutput( getExpectedChildModule( Modules.ModuleWithParent.class.getCanonicalName() ), true );
+		assertOutput( getExpectedChildModuleWithParent(), true );
+		assertOutput( getExpectedAsyncChildModule(), true );
+		assertOutput( getExpectedAutoDisplayChildModule(), false );
+	}
+
+	@Test
+	public void testWriteChildWithParentAsyncoAutoLoad() throws DuplicatePropertyNameException {
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+
+		ChildModuleElement childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "childModule" );
+		childModule.setEventToDisplayView( "changeBody" );
+
+		EventElement event = new EventElement();
+		event.setType( "errorOnLoad" );
+		event.setEventObjectClass( Throwable.class.getCanonicalName() );
+		configuration.getEvents().add( event );
+
+		event = new EventElement();
+		event.setType( "changeBody" );
+		event.setEventObjectClass( Widget.class.getCanonicalName() );
+		configuration.getEvents().add( event );
+
+		ChildModulesElement loadConfig = new ChildModulesElement();
+		loadConfig.setAfterEvent( "afterLoad" );
+		loadConfig.setBeforeEvent( "beforeLoad" );
+		loadConfig.setErrorEvent( "errorOnLoad" );
+		configuration.getChildModules().add( childModule );
+		configuration.setLoadChildConfig( loadConfig );
+
+		assertOutput( getExpectedChildModule( Modules.ModuleWithParent.class.getCanonicalName() ), false );
+		assertOutput( getExpectedChildModuleWithParent(), false );
+		assertOutput( getExpectedAsyncChildModule(), false );
+		assertOutput( getExpectedAutoDisplayChildModule(), false );
+		writer.writeConf();
+		assertOutput( getExpectedChildModule( Modules.ModuleWithParent.class.getCanonicalName() ), true );
+		assertOutput( getExpectedChildModuleWithParent(), true );
+		assertOutput( getExpectedAsyncChildModule(), true );
+		assertOutput( getExpectedAutoDisplayChildModule(), true );
+	}
+
+	@Test
+	public void testWriteChildEventXML() throws DuplicatePropertyNameException {
+
+		configuration.setLoadChildConfig( new ChildModulesElement() );
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+
+		ChildModuleElement childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "child" );
+		childModule.setAutoDisplay( "false" );
+		childModule.setAsync( "false" );
+		configuration.getChildModules().add( childModule );
+
+		EventElement event = new EventElement();
+		event.setType( "test" );
+		event.setModulesToLoad( new String[] { "child" } );
+		event.setEventObjectClass( Object.class.getCanonicalName() );
+		configuration.getEvents().add( event );
+
+		assertOutput( getExpectedEventChildModuleLoadXML(), false );
+		writer.writeConf();
+		assertOutput( getExpectedEventChildModuleLoadXML(), true );
+	}
+
+	@Test
+	public void testWriteChildEvent() throws DuplicatePropertyNameException {
+
+		configuration.setLoadChildConfig( new ChildModulesElement() );
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+
+		ChildModuleElement childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "child" );
+		childModule.setAutoDisplay( "false" );
+		childModule.setAsync( "false" );
+		configuration.getChildModules().add( childModule );
+
+		EventElement event = new EventElement();
+		event.setType( "test" );
+		event.setModulesToLoad( new String[] { "child" } );
+		configuration.getEvents().add( event );
+		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(),
+				oracle.addClass( com.mvp4g.util.test_tools.annotation.Events.EventBusOk.class ) );
+
+		assertOutput( getExpectedEventChildModuleLoad(), false );
+		writer.writeConf();
+		assertOutput( getExpectedEventChildModuleLoad(), true );
+	}
+
+	@Test
+	public void testWriteForwardParent() throws DuplicatePropertyNameException {
+
+		EventElement event = new EventElement();
+		event.setType( "test" );
+		event.setForwardToParent( "true" );
+		event.setEventObjectClass( Object.class.getCanonicalName() );
+		configuration.getEvents().add( event );
+
+		assertOutput( getExpectedForwardParent(), false );
+		writer.writeConf();
+		assertOutput( getExpectedForwardParent(), true );
+	}
+
+	@Test
+	public void testWriteForwardParentXML() throws DuplicatePropertyNameException {
+
+		EventElement event = new EventElement();
+		event.setType( "test" );
+		event.setForwardToParent( "true" );
+		configuration.getEvents().add( event );
+
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		configuration.setParentEventBus( oracle.addClass( EventBusWithLookup.class ) );
+
+		assertOutput( getExpectedForwardParentXML(), false );
+		writer.writeConf();
+		assertOutput( getExpectedForwardParentXML(), true );
+	}
+
+	@Test
+	public void testWriteForwardParentXMLWithForm() throws DuplicatePropertyNameException {
+
+		EventElement event = new EventElement();
+		event.setType( "test" );
+		event.setForwardToParent( "true" );
+		event.setEventObjectClass( Object.class.getCanonicalName() );
+		configuration.getEvents().add( event );
+
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		configuration.setParentEventBus( oracle.addClass( EventBusWithLookup.class ) );
+
+		assertOutput( getExpectedForwardParentXMLWithForm(), false );
+		writer.writeConf();
+		assertOutput( getExpectedForwardParentXMLWithForm(), true );
+	}
+
+	@Test
+	public void testWriteDebug() throws DuplicatePropertyNameException {
+
+		EventElement event = new EventElement();
+		event.setType( "test" );
+		event.setEventObjectClass( Object.class.getCanonicalName() );
+		configuration.getEvents().add( event );
+
+		event = new EventElement();
+		event.setType( "test2" );
+		configuration.getEvents().add( event );
+
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		configuration.setModule( oracle.addClass( Mvp4gModule.class ) );
+
+		DebugElement debug = new DebugElement();
+		debug.setEnabled( "true" );
+		configuration.setDebug( debug );
+		assertOutput( getExpectedDebug(), false );
+		writer.writeConf();
+		assertOutput( getExpectedDebug(), true );
+	}
+
+	@Test
+	public void testWriteChildHistory() {
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		configuration.setParentModule( oracle.addClass( Mvp4gModule.class ) );
+		configuration.setParentEventBus( oracle.addClass( EventBusWithLookup.class ) );
+		configuration.setHistoryName( "child" );
+
+		assertOutput( getExpectedHistoryChild(), false );
+		writer.writeConf();
+		assertOutput( getExpectedHistoryChild(), true );
+	}
+
+	@Test
+	public void testWriteParentHistory() throws DuplicatePropertyNameException {
+
+		configuration.setLoadChildConfig( new ChildModulesElement() );
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+
+		ChildModuleElement childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "child" );
+		childModule.setHistoryName( "child" );
+		childModule.setAutoDisplay( "false" );
+		childModule.setAsync( "false" );
+		configuration.getChildModules().add( childModule );
+
+		EventElement event = new EventElement();
+		event.setType( "test" );
+		event.setModulesToLoad( new String[] { "child" } );
+		configuration.getEvents().add( event );
+		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(),
+				oracle.addClass( com.mvp4g.util.test_tools.annotation.Events.EventBusOk.class ) );
+
+		assertOutput( getExpectedHistoryParent(), false );
+		writer.writeConf();
+		assertOutput( getExpectedHistoryParent(), true );
+
+	}
 
 	private void assertOutput( String[] statements, boolean expected ) {
 		String error = null;
@@ -453,28 +790,32 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	private String[] getExpectedHistory() {
 		return new String[] {
-				"final PlaceService<com.mvp4g.client.event.EventBus> placeService = new PlaceService<com.mvp4g.client.event.EventBus>(){",
+				"placeService = new PlaceService(){",
 				"protected void sendInitEvent(){",
-				"getEventBus().init();",
+				"eventBus.init();",
 				"protected void sendNotFoundEvent(){",
-				"getEventBus().notFound()",
-				"placeService.setEventBus(eventBus);",
+				"eventBus.notFound()",
+				"placeService.setModule(itself);",
 				"final com.mvp4g.example.client.history.display.UserHistoryConverter userConverter = new com.mvp4g.example.client.history.display.UserHistoryConverter();",
 				"userConverter.setUserService(userService);",
-				"final com.mvp4g.example.client.history.StringHistoryConverter stringConverter = new com.mvp4g.example.client.history.StringHistoryConverter();"
-				 };
+				"final com.mvp4g.example.client.history.StringHistoryConverter stringConverter = new com.mvp4g.example.client.history.StringHistoryConverter();", };
 
 	}
-	
+
+	private String[] getExpectedInheritHistory() {
+		return new String[] { "public void addConverter(String token, HistoryConverter<?,?> hc){", "placeService.addConverter(token, hc);",
+				"public <T> void place(String token, T form){", "placeService.place( token, form );",
+				"public <T> void dispatchHistoryEvent(String eventType, final Mvp4gEventPasser<Boolean> passer){",
+				"int index = eventType.indexOf(PlaceService.MODULE_SEPARATOR);", "if(index > -1){",
+				"String moduleHistoryName = eventType.substring(0, index);", "String nextToken = eventType.substring(index + 1);",
+				"Mvp4gEventPasser<String> nextPasser = new Mvp4gEventPasser<String>(nextToken) {", "public void pass(Mvp4gModule module) {",
+				"module.dispatchHistoryEvent(eventObject, passer);", "passer.setEventObject(false);", "passer.pass(this);", "}else{",
+				"passer.pass(this);" };
+	}
+
 	private String[] getExpectedHistoryXml() {
-		return new String[] {
-				"final PlaceService<com.mvp4g.client.event.EventBusWithLookup> placeService = new PlaceService<com.mvp4g.client.event.EventBusWithLookup>(){",
-				"protected void sendInitEvent(){",
-				"getEventBus().dispatch(\"init\");",
-				"protected void sendNotFoundEvent(){",
-				"getEventBus().dispatch(\"notFound\")",
-				"placeService.setEventBus(eventBus);"
-				 };
+		return new String[] { "placeService = new PlaceService(){", "protected void sendInitEvent(){", "eventBus.dispatch(\"init\");",
+				"protected void sendNotFoundEvent(){", "eventBus.dispatch(\"notFound\")", "placeService.setModule(itself);", };
 
 	}
 
@@ -498,17 +839,19 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedEvents() {
-		return new String[] { "public void userCreated(java.lang.String form){", "displayUserPresenter.onUserCreated(form);","displayUserPresenter.bindIfNeeded();",
-				"public void userDisplay(java.lang.String form){", "displayUserPresenter.onUserDisplay(form);","displayUserPresenter.bindIfNeeded();",
-				"place( placeService, \"userDisplay\", form )", "public void displayMessage()", "rootPresenter.bindIfNeeded();","rootPresenter.onDisplayMessage();","placeService.addConverter( \"userDisplay\",history);" };
+		return new String[] { "public void userCreated(java.lang.String form){", "displayUserPresenter.onUserCreated(form);",
+				"displayUserPresenter.bindIfNeeded();", "public void userDisplay(java.lang.String form){",
+				"displayUserPresenter.onUserDisplay(form);", "displayUserPresenter.bindIfNeeded();", "place( itself, \"userDisplay\", form )",
+				"public void displayMessage()", "rootPresenter.bindIfNeeded();", "rootPresenter.onDisplayMessage();",
+				"addConverter( \"userDisplay\",history);", "place( itself, \"userEdit\", null )", };
 	}
 
 	private String[] getExpectedEventsWithLookup() {
 		return new String[] {
 				"public void dispatch( String eventType, Object form ){",
-				"if ( \"userDisplay\".equals( eventType ) ){",
+				"} else if ( \"userDisplay\".equals( eventType ) ){",
 				"userDisplay( (java.lang.String) form);",
-				"} else if ( \"displayMessage\".equals( eventType ) ){",
+				"if ( \"displayMessage\".equals( eventType ) ){",
 				"displayMessage();",
 				"} else if ( \"userCreated\".equals( eventType ) ){",
 				"userCreated( (java.lang.String) form);",
@@ -517,11 +860,11 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedStartXmlEvent() {
-		return new String[] { "RootPanel.get().add(rootView);", "eventBus.dispatch(\"start\");", "History.fireCurrentHistoryState();" };
+		return new String[] { "eventBus.dispatch(\"start\");", "startPresenter.bindIfNeeded();", "History.fireCurrentHistoryState();" };
 	}
 
 	private String[] getExpectedStartEvent() {
-		return new String[] { "RootPanel.get().add(rootView);", "eventBus.start();", "History.fireCurrentHistoryState();" };
+		return new String[] { "eventBus.start();", "startPresenter.bindIfNeeded();", "History.fireCurrentHistoryState();" };
 	}
 
 	private String[] getExpectedServices() {
@@ -533,5 +876,79 @@ public class Mvp4gConfigurationFileReaderTest {
 				"((ServiceDefTarget) userService).setServiceEntryPoint(\"/service/user\");",
 				"final com.mvp4g.example.client.services.display.UserServiceAsync "
 						+ "userDisplayService = GWT.create(com.mvp4g.example.client.services.display.UserService.class);" };
+	}
+
+	private String[] getExpectedGetters() {
+		return new String[] { "public Object getStartView(){", "return startView;", "public EventBus getEventBus(){", "return eventBus;" };
+	}
+
+	private String[] getExpectedSetParent() {
+		return new String[] { "public void setParentModule(com.mvp4g.client.Mvp4gModule module){", "parentModule = module;",
+				"parentEventBus = (com.mvp4g.client.event.EventBusWithLookup) module.getEventBus();" };
+	}
+
+	private String[] getExpectedChildModule( String moduleClassName ) {
+		return new String[] { "private void loadchildModule(final Mvp4gEventPasser<?> passer){",
+				moduleClassName + " newModule = (" + moduleClassName + ") modules.get(" + moduleClassName + ".class);", "if(newModule == null){",
+				"newModule = GWT.create(" + moduleClassName + ".class);", "modules.put(" + moduleClassName + ".class, newModule);",
+				"newModule.createAndStartModule();", "if(passer != null) passer.pass(newModule);" };
+	}
+
+	private String[] getExpectedChildModuleWithParent() {
+		return new String[] { "newModule.setParentModule(itself);" };
+	}
+
+	private String[] getExpectedAsyncChildModule() {
+		return new String[] { "eventBus.beforeLoad();", "GWT.runAsync(new com.google.gwt.core.client.RunAsyncCallback() {",
+				"public void onSuccess() {", "eventBus.afterLoad();", "public void onFailure(Throwable reason) {", "eventBus.afterLoad();",
+				"eventBus.errorOnLoad(reason);" };
+	}
+
+	private String[] getExpectedAsyncChildModuleErrorEmpty() {
+		return new String[] { "eventBus.beforeLoad();", "GWT.runAsync(new com.google.gwt.core.client.RunAsyncCallback() {",
+				"public void onSuccess() {", "eventBus.afterLoad();", "public void onFailure(Throwable reason) {", "eventBus.afterLoad();",
+				"eventBus.errorOnLoad();" };
+	}
+
+	private String[] getExpectedAutoDisplayChildModule() {
+		return new String[] { "eventBus.changeBody((com.google.gwt.user.client.ui.Widget) newModule.getStartView());" };
+	}
+
+	private String[] getExpectedEventChildModuleLoadXML() {
+		return new String[] { "loadchild(new Mvp4gEventPasser<java.lang.Object>(form){", "public void pass(Mvp4gModule module){",
+				"com.mvp4g.client.event.EventBusWithLookup eventBus = (com.mvp4g.client.event.EventBusWithLookup) module.getEventBus();",
+				"eventBus.dispatch(\"test\", eventObject);" };
+	}
+
+	private String[] getExpectedEventChildModuleLoad() {
+		return new String[] {
+				com.mvp4g.util.test_tools.annotation.Events.EventBusOk.class.getCanonicalName() + " eventBus = ("
+						+ com.mvp4g.util.test_tools.annotation.Events.EventBusOk.class.getCanonicalName() + ") module.getEventBus();",
+				"eventBus.test();" };
+	}
+
+	private String[] getExpectedForwardParent() {
+		return new String[] { "parentEventBus.test(form);" };
+	}
+
+	private String[] getExpectedForwardParentXML() {
+		return new String[] { "parentEventBus.dispatch(\"test\");" };
+	}
+
+	private String[] getExpectedForwardParentXMLWithForm() {
+		return new String[] { "parentEventBus.dispatch(\"test\", form);" };
+	}
+
+	private String[] getExpectedDebug() {
+		return new String[] { "GWT.log(\"Module: Mvp4gModule || event: test2\", null);",
+				"GWT.log(\"Module: Mvp4gModule || event: test || object: \" + form, null);" };
+	}
+
+	private String[] getExpectedHistoryChild() {
+		return new String[] { "parentModule.addConverter(\"child/\" + token, hc);", "parentModule.place(\"child/\" + token, form );" };
+	}
+
+	private String[] getExpectedHistoryParent() {
+		return new String[] { "if(\"child\".equals(moduleHistoryName)){", "loadchild(nextPasser);", "return;" };
 	}
 }

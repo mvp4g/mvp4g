@@ -83,7 +83,7 @@ public class ClassResolverTest {
 		String generatedName = resolver.getClassNameFrom( "com.mvp4g.foo", "com.bar.SimpleClass" );
 		assertEquals( "com.bar.SimpleClass", generatedName );
 	}
-	
+
 	@Test
 	public void testSubPackage() {
 		String generatedName = resolver.getClassNameFrom( "com.mvp4g.foo", ".bar.SimpleClass" );

@@ -19,7 +19,7 @@ public interface PresenterInterface<V, E extends EventBus> {
 	 *            event bus to set
 	 */
 	public void setEventBus( E eventBus );
-	
+
 	/**
 	 * Get the view associated with the presenter
 	 * 
@@ -49,10 +49,10 @@ public interface PresenterInterface<V, E extends EventBus> {
 	 * 
 	 */
 	public void bind();
-	
+
 	/**
-	 * Call the bind method is needed. Usually, the first time this method is called, the bind method should be called, the other time
-	 * nothing should be done.
+	 * Call the bind method is needed. Usually, the first time this method is called, the bind
+	 * method should be called, the other time nothing should be done.
 	 */
 	public void bindIfNeeded();
 

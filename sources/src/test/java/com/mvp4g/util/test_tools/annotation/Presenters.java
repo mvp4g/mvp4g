@@ -81,13 +81,13 @@ public class Presenters {
 		}
 
 	}
-	
+
 	@Presenter( view = Object.class )
 	public static class PresenterWithEvent extends BasePresenter<Object, EventBus> {
 
 		public void onEvent1( String form ) {
 		}
-		
+
 		public void onEvent2() {
 		}
 

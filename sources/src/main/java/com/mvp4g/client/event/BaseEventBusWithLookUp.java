@@ -61,14 +61,14 @@ public abstract class BaseEventBusWithLookUp extends BaseEventBus implements Eve
 	}
 
 	/**
-	 * When a ClassCastException is thrown while executing dispatch method, verify if it is thrown by this class. If it's the case,
-	 * then send an Mvp4gException to indicate that an object with the wrong class type has been
-	 * sent with the event.
+	 * When a ClassCastException is thrown while executing dispatch method, verify if it is thrown
+	 * by this class. If it's the case, then send an Mvp4gException to indicate that an object with
+	 * the wrong class type has been sent with the event.
 	 * 
 	 * @param e
-	 * 			ClassCastException thrown
+	 *            ClassCastException thrown
 	 * @param eventType
-	 * 			event type dispatch while error is thrown
+	 *            event type dispatch while error is thrown
 	 */
 	protected void handleClassCastException( ClassCastException e, String eventType ) {
 		if ( e.getStackTrace()[0].getClassName().equals( this.getClass().getName() ) ) {

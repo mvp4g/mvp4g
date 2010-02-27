@@ -84,7 +84,7 @@ public class Mvp4gGenerator extends Generator {
 		sourceWriter = getSourceWriter( logger, context, typeName );
 		TypeOracle typeOracle = context.getTypeOracle();
 		JClassType originalType = typeOracle.findType( typeName );
-		
+
 		if ( sourceWriter != null ) {
 			writeClass( originalType, logger, context );
 			sourceWriter.commit( logger );
@@ -137,7 +137,8 @@ public class Mvp4gGenerator extends Generator {
 		try {
 			TypeOracle oracle = context.getTypeOracle();
 
-			Map<Class<? extends Annotation>, List<JClassType>> scanResult = AnnotationScanner.scan( logger, oracle, new Class[] { Presenter.class, History.class, Events.class, Service.class } );
+			Map<Class<? extends Annotation>, List<JClassType>> scanResult = AnnotationScanner.scan( logger, oracle, new Class[] { Presenter.class,
+					History.class, Events.class, Service.class } );
 
 			Mvp4gConfiguration configuration = new Mvp4gConfiguration( logger, oracle );
 			configuration.load( module, scanResult );

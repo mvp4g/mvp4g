@@ -5,7 +5,7 @@ import static junit.framework.Assert.assertEquals;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.history.PlaceService;
 
-public class PlaceServiceStub<E extends EventBus> extends PlaceService<E> {
+public class PlaceServiceStub<E extends EventBus> extends PlaceService {
 
 	Object lastForm = null;
 	String lastEventType = null;

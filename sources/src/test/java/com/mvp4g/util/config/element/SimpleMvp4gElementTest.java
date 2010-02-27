@@ -11,7 +11,7 @@ public class SimpleMvp4gElementTest extends AbstractMvp4gElementTest<SimpleMvp4g
 	protected static final String[] properties = { "name" };
 
 	@Test
-	public void testSetClassName() throws DuplicatePropertyNameException{
+	public void testSetClassName() throws DuplicatePropertyNameException {
 
 		String className = "Test";
 
@@ -20,7 +20,7 @@ public class SimpleMvp4gElementTest extends AbstractMvp4gElementTest<SimpleMvp4g
 	}
 
 	@Test
-	public void testGetClassName() throws DuplicatePropertyNameException{
+	public void testGetClassName() throws DuplicatePropertyNameException {
 
 		String packageName = "com.test";
 		String className = "Test";
@@ -31,7 +31,7 @@ public class SimpleMvp4gElementTest extends AbstractMvp4gElementTest<SimpleMvp4g
 	}
 
 	@Test
-	public void testToString() throws DuplicatePropertyNameException{
+	public void testToString() throws DuplicatePropertyNameException {
 		String name = "test";
 		String className = "com.test.Test";
 

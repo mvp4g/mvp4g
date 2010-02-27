@@ -12,13 +12,13 @@ import java.lang.annotation.Target;
  * <br/>
  * You must not have more than one <code>Start</code> annotation in a class.<br/>
  * <br/>
- * This annotation replaces the following line in the Mvp4g XML configuration file:<br/> {@code
- * <start ... eventType="eventStart" />}
+ * This annotation replaces the following line in the Mvp4g XML configuration file:<br/> {@code <start
+ * ... eventType="eventStart" />}
  * 
  * @author plcoirier
- *
+ * 
  */
-@Retention(RetentionPolicy.RUNTIME)
+@Retention( RetentionPolicy.RUNTIME )
 @Target( ElementType.METHOD )
 public @interface Start {
 

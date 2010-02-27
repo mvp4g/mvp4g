@@ -1,6 +1,5 @@
 package com.mvp4g.util.config.element;
 
-
 /**
  * An Mvp4g History converter configuration element.</p>
  * 

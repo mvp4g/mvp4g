@@ -23,15 +23,25 @@ import com.mvp4g.client.presenter.PresenterInterface;
 
 public class TypeOracleStub extends TypeOracle {
 
+	private boolean isGWT2 = true;
+
 	@Override
 	public JClassType findType( String name ) {
-		JClassType type = super.findType( name );
 
-		if ( type == null ) {
-			try {
-				type = addClass( Class.forName( name ) );
-			} catch ( ClassNotFoundException e ) {
-				e.printStackTrace();
+		JClassType type;
+		if ( "com.google.gwt.core.client.RunAsyncCallback".equals( name ) ) {
+			// if GWT2, return any class as long as type is not null
+			type = ( isGWT2 ) ? findType( Object.class.getName() ) : null;
+		} else {
+
+			type = super.findType( name );
+
+			if ( type == null ) {
+				try {
+					type = addClass( Class.forName( name ) );
+				} catch ( ClassNotFoundException e ) {
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -96,7 +106,7 @@ public class TypeOracleStub extends TypeOracle {
 	private List<JClassType> getImplementedInterfaces( Class<?> c ) {
 		List<JClassType> interfaces = new ArrayList<JClassType>();
 		for ( Class<?> implementedInterface : c.getInterfaces() ) {
-			interfaces.add( new MyParameterizedType( (JGenericType) findType( implementedInterface.getName() ), null, new JClassType[0] ) );
+			interfaces.add( new MyParameterizedType( (JGenericType)findType( implementedInterface.getName() ), null, new JClassType[0] ) );
 		}
 
 		Class<?> superClass = c.getSuperclass();
@@ -106,49 +116,56 @@ public class TypeOracleStub extends TypeOracle {
 
 		return interfaces;
 	}
-	
+
 	private class MyParameterizedType extends JParameterizedType {
-		
+
 		public MyParameterizedType( JGenericType baseType, JClassType enclosingType, JClassType[] typeArgs ) {
 			super( baseType, enclosingType, typeArgs );
 		}
 
 		@Override
-		public JMethod findMethod(String name, JType[] paramTypes) {
+		public JMethod findMethod( String name, JType[] paramTypes ) {
 			JMethod method = super.findMethod( name, paramTypes );
-			
-			if(method == null){
-				if(getQualifiedSourceName().equals( PresenterInterface.class.getName() )){
-					if("getEventBus".equals( name )){
-						method = new JMethod(this.getBaseType(), name);
+
+			if ( method == null ) {
+				if ( getQualifiedSourceName().equals( PresenterInterface.class.getName() ) ) {
+					if ( "getEventBus".equals( name ) ) {
+						method = new JMethod( this.getBaseType(), name );
 						method.setReturnType( findType( EventBusWithLookup.class.getName() ) );
-					}
-					else{
-						method = new JMethod(this.getBaseType(), name);
+					} else {
+						method = new JMethod( this.getBaseType(), name );
 						method.setReturnType( findType( String.class.getName() ) );
 					}
 				}
 			}
-			
+
 			return method;
 		}
-		
+
 		@Override
 		public JMethod[] getMethods() {
 			JMethod[] methods = null;
-			if(getQualifiedSourceName().equals( HistoryConverter.class.getName() )){
-				JMethod method = new JMethod(this.getBaseType(), "convertFromToken");
-				new JParameter( method, findType( EventBusWithLookup.class.getName() ), "eventBus" );
+			if ( getQualifiedSourceName().equals( HistoryConverter.class.getName() ) ) {
+				JMethod method = new JMethod( this.getBaseType(), "convertFromToken" );
+				new JParameter( method, findType( String.class.getName() ), "eventType" );
 				new JParameter( method, findType( String.class.getName() ), "form" );
-				methods = new JMethod[]{method, method};				
-			}
-			else{
+				new JParameter( method, findType( EventBusWithLookup.class.getName() ), "eventBus" );
+				methods = new JMethod[] { method, method };
+			} else {
 				methods = super.getMethods();
 			}
-			
-		    return methods;
+
+			return methods;
 		}
-		
+
+	}
+
+	/**
+	 * @param isGWT2
+	 *            the isGWT2 to set
+	 */
+	public void setGWT2( boolean isGWT2 ) {
+		this.isGWT2 = isGWT2;
 	}
 
 }

@@ -17,9 +17,11 @@ public interface EventBus {
 	public void setHistoryStored( boolean historyStored );
 
 	/**
-	 * Indicate for next event that can be stored in history only if it should be stored or not in browser history.<br/>
+	 * Indicate for next event that can be stored in history only if it should be stored or not in
+	 * browser history.<br/>
 	 * <br/>
-	 * This method should be called only right before sending an event that could be stored in browser history.
+	 * This method should be called only right before sending an event that could be stored in
+	 * browser history.
 	 * 
 	 * @param historyStored
 	 *            true if events should be stored

@@ -42,7 +42,7 @@ public class PresenterTest {
 	@Test
 	public void testBindIfNeeded() {
 		final String bind = "bind";
-		
+
 		BasePresenter<String, EventBus> p = new BasePresenter<String, EventBus>() {
 			@Override
 			public void bind() {
@@ -50,7 +50,7 @@ public class PresenterTest {
 			}
 		};
 
-		assertNull( p.getView());
+		assertNull( p.getView() );
 		p.bindIfNeeded();
 		assertEquals( p.getView(), bind );
 		p.setView( "notBind" );

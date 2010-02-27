@@ -26,21 +26,21 @@ public class StartElementTest extends AbstractMvp4gElementTest<StartElement> {
 	}
 
 	@Test
-	public void testHasHistoryUpper() throws DuplicatePropertyNameException{
+	public void testHasHistoryUpper() throws DuplicatePropertyNameException {
 		assertFalse( element.hasHistory() );
 		element.setHistory( "TRUE" );
 		assertTrue( element.hasHistory() );
 	}
 
 	@Test
-	public void testHasHistoryFalse() throws DuplicatePropertyNameException{
+	public void testHasHistoryFalse() throws DuplicatePropertyNameException {
 		assertFalse( element.hasHistory() );
 		element.setHistory( "false" );
 		assertFalse( element.hasHistory() );
 	}
 
 	@Test
-	public void testHasHistoryAny() throws DuplicatePropertyNameException{
+	public void testHasHistoryAny() throws DuplicatePropertyNameException {
 		assertFalse( element.hasHistory() );
 		element.setHistory( "laksjd123" );
 		assertFalse( element.hasHistory() );

@@ -50,6 +50,6 @@ public class ChildModulesLoader extends Mvp4gElementLoader<ChildModulesElement> 
 
 	public ChildModulesElement loadElement() throws Mvp4gXmlException {
 		Set<ChildModulesElement> elements = super.loadElements();
-		return (elements.size() == 0) ? null : new ArrayList<ChildModulesElement>( elements ).get( 0 );
+		return ( elements.size() == 0 ) ? null : new ArrayList<ChildModulesElement>( elements ).get( 0 );
 	}
 }

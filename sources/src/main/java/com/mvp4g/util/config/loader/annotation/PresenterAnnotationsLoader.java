@@ -20,14 +20,19 @@ public class PresenterAnnotationsLoader extends Mvp4gAnnotationsWithServiceLoade
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.mvp4g.util.config.loader.annotation.Mvp4gAnnotationsWithServiceLoader#loadElementWithServices(com.google.gwt.core.ext.typeinfo.JClassType, java.lang.annotation.Annotation, com.mvp4g.util.config.Mvp4gConfiguration)
+	 * 
+	 * @see
+	 * com.mvp4g.util.config.loader.annotation.Mvp4gAnnotationsWithServiceLoader#loadElementWithServices
+	 * (com.google.gwt.core.ext.typeinfo.JClassType, java.lang.annotation.Annotation,
+	 * com.mvp4g.util.config.Mvp4gConfiguration)
 	 */
 	@Override
-	Mvp4gWithServicesElement loadElementWithServices( JClassType c, Presenter annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
+	Mvp4gWithServicesElement loadElementWithServices( JClassType c, Presenter annotation, Mvp4gConfiguration configuration )
+			throws Mvp4gAnnotationException {
 
 		String className = c.getQualifiedSourceName();
 		String viewName = buildElementNameIfNeeded( annotation.viewName(), className, "View" );
-		String presenterName = buildElementNameIfNeeded( annotation.name(), className, "" ); 
+		String presenterName = buildElementNameIfNeeded( annotation.name(), className, "" );
 
 		PresenterElement presenter = new PresenterElement();
 		try {
@@ -37,7 +42,7 @@ public class PresenterAnnotationsLoader extends Mvp4gAnnotationsWithServiceLoade
 		} catch ( DuplicatePropertyNameException e ) {
 			//setters are only called once, so this error can't occur.
 		}
-		
+
 		addElement( configuration.getPresenters(), presenter, c, null );
 
 		ViewElement view = new ViewElement();
@@ -47,16 +52,17 @@ public class PresenterAnnotationsLoader extends Mvp4gAnnotationsWithServiceLoade
 		} catch ( DuplicatePropertyNameException e ) {
 			//setters are only called once, so this error can't occur.
 		}
-		
 
 		addElement( configuration.getViews(), view, c, null );
-		
+
 		return presenter;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see com.mvp4g.util.config.loader.annotation.Mvp4gAnnotationsLoader#getMandatoryInterfaceName()
+	 * 
+	 * @see
+	 * com.mvp4g.util.config.loader.annotation.Mvp4gAnnotationsLoader#getMandatoryInterfaceName()
 	 */
 	@Override
 	protected String getMandatoryInterfaceName() {

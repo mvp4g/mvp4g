@@ -2,7 +2,6 @@ package com.mvp4g.util.exception.loader;
 
 import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
 
-
 public class Mvp4gAnnotationException extends InvalidMvp4gConfigurationException {
 
 	private String className = null;

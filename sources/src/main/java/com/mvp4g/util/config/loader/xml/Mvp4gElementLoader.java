@@ -101,7 +101,7 @@ abstract class Mvp4gElementLoader<E extends Mvp4gElement> {
 	 * @throws InvalidMvp4gConfigurationException
 	 *             if
 	 *             <p/>
-	 *             <ul>             
+	 *             <ul>
 	 *             <li/>elements with duplicate identifiers are found;
 	 *             <li/>one of the required attribute names is missing.
 	 *             </ul>
@@ -150,7 +150,7 @@ abstract class Mvp4gElementLoader<E extends Mvp4gElement> {
 			addMultiValueAttributes( xmlConfig, element );
 			addOptionalMultiValueAttributes( xmlConfig, element );
 		} catch ( DuplicatePropertyNameException e ) {
-			throw new Mvp4gXmlException(element, e.getMessage());
+			throw new Mvp4gXmlException( element, e.getMessage() );
 		}
 
 		return element;
