@@ -67,7 +67,9 @@ public void setService1(com.mvp4g.example.client.Service1Async service1)
 }}}
 
 =History=
-Add history to the configuration file  ([http://code.google.com/p/mvp4g/wiki/PlaceService see Place Service feature]). 
+Create your history converters by extending XmlHistoryConverter. An XmlHistoryConverter is like a regular history converter(see [http://code.google.com/p/mvp4g/wiki/PlaceService Place Service] but since you don't define an event bus interface, it automaticaly uses an EventBusWithLookup.
+
+Add history to the configuration file. 
 
 {{{
 <history package="com.mvp4g.example.client.history" initEvent="init" notFoundEvent="notFound">
@@ -85,6 +87,11 @@ Add history to the configuration file  ([http://code.google.com/p/mvp4g/wiki/Pla
  * service (optional) : name(s) of the service(s) to inject in the history converter. The name(s) of the service(s) must be equal to one of the services' name declared in the configuration file. Each service name must be separated by a coma.
 
 =Presenters=
+Create your presenters by extending the XmlPresenter (or LazyXmlPresenter) class. An XmlPresenter is like a regular presenter (see [http://code.google.com/p/mvp4g/wiki/PresenterViewService#Presenter presenter] but since you don't define an event bus interface, it automaticaly uses an EventBusWithLookup. Thus to fire an event, you will use the following code:
+{{{
+eventBus.dispatch("event", new MyBean());
+}}}
+
 Add your presenters to the configuration file. You have to inject one view into each presenter and can inject one to many services into it.
 {{{
 <presenters package="com.mvp4g.example.client.presenter" >
@@ -186,4 +193,18 @@ Add your child modules to the configuration file. Each module needs to have its 
 	<start view="rootView" history="true"/>
 	
 </mvp4g>					
+}}}
+
+= ChildModuleInterface= 
+
+Like with EventBus interface, you need to create a Mvp4g module interface for each of your child module ([http://code.google.com/p/mvp4g/wiki/MultiModules#Creating_modules see Multi-module feature). Moreover
+you need to specify the xml configuration file of your child module thanks to @XmlFilePath.
+
+{{{
+@XmlFilePath("xmlConfig/company-mvp4g.xml")
+public interface CompanyModule extends Mvp4gModule {
+	
+	public void setParentModule(Mvp4gModule eventBus);
+
+}
 }}}
