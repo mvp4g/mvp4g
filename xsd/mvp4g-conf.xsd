@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
 	<xs:simpleType name="boolean">
@@ -17,6 +16,12 @@
 	<xs:simpleType name="className">
 		<xs:restriction base="xs:string">
 			<xs:pattern value=".?[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)*" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="eventObjectClass">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)*) || []" />
 		</xs:restriction>
 	</xs:simpleType>
 
@@ -67,6 +72,7 @@
 			<xs:sequence>
 				<xs:element ref="childModule" minOccurs="1" maxOccurs="unbounded" />
 			</xs:sequence>
+			<xs:attribute name="package" type="package" use="optional" />
 			<xs:attribute name="beforeEvent" type="name" use="optional" />
 			<xs:attribute name="afterEvent" type="name" use="optional" />
 			<xs:attribute name="errorEvent" type="name" use="optional" />
@@ -87,8 +93,8 @@
 			<xs:sequence>
 				<xs:element ref="converter" minOccurs="1" maxOccurs="unbounded" />
 			</xs:sequence>
-			<xs:attribute name="package" type="package" use="required" />
-			<xs:attribute name="initEvent" type="name" use="required" />
+			<xs:attribute name="package" type="package" use="optional" />
+			<xs:attribute name="initEvent" type="name" use="optional" />
 			<xs:attribute name="initEvent" type="name" use="optional" />
 		</xs:complexType>
 	</xs:element>
