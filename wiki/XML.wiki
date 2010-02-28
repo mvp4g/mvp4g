@@ -4,7 +4,7 @@
 
 The first version of Mvp4g was based on an XML configuration file. To be as compatible as possible with the previous version, Mvp4g still offers the possibility of using an XML file instead of an EventBus interface.
 
-All the Mvp4g features can be configured thanks to an XML configuration file. However it is recommended to use an EventBus interface instead of an XML configuration file since the XML configuration doesn't allow for a type-safe eventbus as it is based on an EventBusWithLookup [http://code.google.com/p/mvp4g/wiki/EventBus#with_lookup see EventBusWithLookup].
+All the Mvp4g features can be configured thanks to an XML configuration file. However, use of an EventBus interface is recommended instead of an XML configuration file since the XML configuration doesn't allow for a type-safe eventbus as it is based on an EventBusWithLookup [http://code.google.com/p/mvp4g/wiki/EventBus#with_lookup see EventBusWithLookup].
 
 With XML configuration, Mvp4g removes useless elements [http://code.google.com/p/mvp4g/wiki/Mvp4gOptimization#Minimum_of_instances_creation see Mvp4g Optimisation], however if you declare two instances with the same class and they are both used, then two instances will be created.
 
