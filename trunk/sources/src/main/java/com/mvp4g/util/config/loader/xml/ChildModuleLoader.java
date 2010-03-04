@@ -17,7 +17,7 @@ public class ChildModuleLoader extends Mvp4gElementLoader<ChildModuleElement> {
 
 	static final String[] REQUIRED_ATTRIBUTES = { "name", "class" };
 	static final String[] PARENT_ATTRIBUTES = { "package" };
-	static final String[] OPTIONAL_ATTRIBUTES = { "async", "autoLoad", "eventToDisplayView" };
+	static final String[] OPTIONAL_ATTRIBUTES = { "async", "autoDisplay", "eventToDisplayView" };
 
 	@SuppressWarnings( "unchecked" )
 	public ChildModuleLoader( XMLConfiguration xmlConfig ) {

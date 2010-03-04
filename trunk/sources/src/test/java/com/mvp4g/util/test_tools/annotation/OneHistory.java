@@ -5,7 +5,7 @@ import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.history.HistoryConverter;
 
 @History
-public class TestHistory implements HistoryConverter<String, EventBus> {
+public class OneHistory implements HistoryConverter<String, EventBus> {
 
 	public void convertFromToken( String eventType, String param, EventBus eventBus ) {
 		// TODO Auto-generated method stub
