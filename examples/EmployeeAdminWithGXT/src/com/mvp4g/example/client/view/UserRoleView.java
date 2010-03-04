@@ -30,13 +30,13 @@ public class UserRoleView extends LayoutContainer implements UserRoleViewInterfa
 		form.setStyleName( "userRoles" );
 		form.setHeading( "User Roles" );
 		selectedRoles.setHideLabel( true );
-		rolesChoices.setHideLabel( true );		
+		rolesChoices.setHideLabel( true );
 		selectedRoles.setStore( new ListStore<MyListModel>() );
 		form.add( selectedRoles );
 		form.add( rolesChoices );
 		form.addButton( add );
 		form.addButton( remove );
-		
+
 		form.setButtonAlign( HorizontalAlignment.CENTER );
 
 		add( form );

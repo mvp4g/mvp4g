@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mvp4g.example.client.Constants;
-import com.mvp4g.example.client.EventsEnum;
 import com.mvp4g.example.client.bean.UserBean;
 import com.mvp4g.example.client.mock.MockGwtEvent;
 import com.mvp4g.example.client.mock.eventbus.MockEventBus;
@@ -37,89 +36,90 @@ public class UserProfilePresenterTest implements Constants {
 		presenter.setView( view );
 		presenter.setEventBus( eventBus );
 		presenter.setUserService( service );
+		presenter.bindIfNeeded();
 		presenter.onStart();
 	}
 
 	@Test
-	public void testBind(){
+	public void testBind() {
 		assertInitForm();
 	}
-	
+
 	@Test
-	public void testEnabledButton(){
-		
+	public void testEnabledButton() {
+
 		presenter.onCreateNewUser( new UserBean() );
-		
-		MyMockTextBox[] textBoxes = {(MyMockTextBox)view.getUsername(), (MyMockTextBox)view.getPassword(), (MyMockTextBox)view.getConfirmPassword()};
-		MyMockButton update = (MyMockButton) view.getUpdateButton();
-		
-		for(MyMockTextBox textBox : textBoxes){
+
+		MyMockTextBox[] textBoxes = { (MyMockTextBox)view.getUsername(), (MyMockTextBox)view.getPassword(), (MyMockTextBox)view.getConfirmPassword() };
+		MyMockButton update = (MyMockButton)view.getUpdateButton();
+
+		for ( MyMockTextBox textBox : textBoxes ) {
 			fillForm( DEPARTMENTS[0] );
 			textBox.getKeyUpHandler().onKeyUp( MockGwtEvent.KEY_UP_EVENT );
-			assertTrue(update.isEnabled());		
+			assertTrue( update.isEnabled() );
 			fillForm( "" );
 			textBox.getKeyUpHandler().onKeyUp( MockGwtEvent.KEY_UP_EVENT );
-			assertFalse(update.isEnabled());
+			assertFalse( update.isEnabled() );
 		}
-		
-		MyMockListBox department = (MyMockListBox) view.getDepartment();
-		
+
+		MyMockListBox department = (MyMockListBox)view.getDepartment();
+
 		fillForm( DEPARTMENTS[0] );
 		department.getKeyUpHandler().onKeyUp( MockGwtEvent.KEY_UP_EVENT );
-		assertTrue(update.isEnabled());		
+		assertTrue( update.isEnabled() );
 		fillForm( "" );
 		department.getKeyUpHandler().onKeyUp( MockGwtEvent.KEY_UP_EVENT );
-		assertFalse(update.isEnabled());
-		
+		assertFalse( update.isEnabled() );
+
 		fillForm( DEPARTMENTS[0] );
 		department.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		assertTrue(update.isEnabled());		
+		assertTrue( update.isEnabled() );
 		fillForm( "" );
 		department.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		assertFalse(update.isEnabled());		
-		
+		assertFalse( update.isEnabled() );
+
 	}
-	
+
 	@Test
-	public void testNotEnabledButton(){
+	public void testNotEnabledButton() {
 		presenter.onCreateNewUser( new UserBean() );
-		
-		MyMockButton update = (MyMockButton) view.getUpdateButton();
-		MyMockListBox department = (MyMockListBox) view.getDepartment();
-		
+
+		MyMockButton update = (MyMockButton)view.getUpdateButton();
+		MyMockListBox department = (MyMockListBox)view.getDepartment();
+
 		fillForm( DEPARTMENTS[0] );
 		view.getUsername().setValue( "" );
 		department.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		assertFalse(update.isEnabled());
-		
+		assertFalse( update.isEnabled() );
+
 		fillForm( DEPARTMENTS[0] );
 		view.getPassword().setValue( "" );
 		department.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		assertFalse(update.isEnabled());
-		
+		assertFalse( update.isEnabled() );
+
 		fillForm( DEPARTMENTS[0] );
 		view.getConfirmPassword().setValue( "" );
 		department.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		assertFalse(update.isEnabled());
-		
+		assertFalse( update.isEnabled() );
+
 		fillForm( DEPARTMENTS[0] );
 		view.getPassword().setValue( "test" );
 		department.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		assertFalse(update.isEnabled());
-		
+		assertFalse( update.isEnabled() );
+
 		fillForm( DEPARTMENTS[0] );
 		department.setSelectedIndex( 0 );
 		department.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		assertFalse(update.isEnabled());
+		assertFalse( update.isEnabled() );
 	}
-	
+
 	@Test
 	public void testOnStart() {
-		eventBus.assertEvent( EventsEnum.CHANGE_LEFT_BOTTOM_WIDGET.toString(), view.getViewWidget() );
+		eventBus.assertChangeLeftBottomWidget( view.getViewWidget() );
 	}
-	
+
 	@Test
-	public void testOnUnselectUser(){
+	public void testOnUnselectUser() {
 		presenter.onUnselectUser();
 		assertInitForm();
 	}
@@ -137,14 +137,14 @@ public class UserProfilePresenterTest implements Constants {
 
 		fillForm( DEPARTMENTS[1] );
 		update.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		eventBus.assertEvent( EventsEnum.USER_UPDATED.toString(), user );
+		eventBus.assertUserUpdated( user );
 
 		assertInitForm();
 		assertFalse( update.isEnabled() );
 		assertFalse( cancel.isEnabled() );
-		
+
 	}
-	
+
 	@Test
 	public void testOnNewAndCreate() {
 		UserBean user = new UserBean();
@@ -155,22 +155,22 @@ public class UserProfilePresenterTest implements Constants {
 		MyMockButton cancel = (MyMockButton)view.getCancelButton();
 		assertTrue( cancel.isEnabled() );
 		assertFalse( view.isUpdateMode() );
-		
+
 		fillForm( DEPARTMENTS[1] );
 		update.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		eventBus.assertEvent( EventsEnum.USER_CREATED.toString(), user );
+		eventBus.assertUserCreated( user );
 
 		assertInitForm();
 		assertFalse( update.isEnabled() );
 		assertFalse( cancel.isEnabled() );
 
 	}
-	
+
 	@Test
-	public void testCancelButton(){
-		MyMockButton cancel = (MyMockButton) view.getCancelButton();
+	public void testCancelButton() {
+		MyMockButton cancel = (MyMockButton)view.getCancelButton();
 		cancel.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		eventBus.assertEvent( EventsEnum.UNSELECT_USER.toString(), null);
+		eventBus.assertUnselectUser();
 	}
 
 	private void fillForm( String value ) {
@@ -201,7 +201,7 @@ public class UserProfilePresenterTest implements Constants {
 		assertEquals( view.getLastName().getValue(), "" );
 		assertEquals( view.getEmail().getValue(), "" );
 		assertEquals( view.getPassword().getValue(), "" );
-		assertEquals( view.getDepartment().getSelectedIndex(), 0 );		
+		assertEquals( view.getDepartment().getSelectedIndex(), 0 );
 	}
 
 	private UserBean createUser( String value ) {

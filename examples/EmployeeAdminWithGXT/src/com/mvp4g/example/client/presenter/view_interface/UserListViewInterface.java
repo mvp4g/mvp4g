@@ -9,15 +9,23 @@ import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.My
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.MyGXTTableInterface;
 
 public interface UserListViewInterface {
-	
+
 	public void buildWidget( ListStore<BeanModel> store );
+
 	public MyWidgetInterface getViewWidget();
+
 	public MyGXTTableInterface getTable();
+
 	public MyGXTPagingToolBarInterface getToolBar();
+
 	public MyGXTButtonInterface getDeleteButton();
+
 	public MyGXTButtonInterface getNewButton();
+
 	public MyGXTButtonInterface getYesButton();
+
 	public MyGXTButtonInterface getNoButton();
+
 	public MyLabelInterface getConfirmText();
 
 }

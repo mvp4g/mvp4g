@@ -21,8 +21,8 @@ public class MockUserListView implements UserListViewInterface, MyWidgetInterfac
 	private MyGXTMockButton noButton = new MyGXTMockButton();
 	private MyGXTMockTable table = new MyGXTMockTable();
 	private MyGXTMockPagingToolBar toolBar = new MyGXTMockPagingToolBar();
-	
-	private ListStore<BeanModel> store = null;	
+
+	private ListStore<BeanModel> store = null;
 
 	public MyLabelInterface getConfirmText() {
 		return confirmText;
@@ -63,8 +63,8 @@ public class MockUserListView implements UserListViewInterface, MyWidgetInterfac
 	public MyGXTPagingToolBarInterface getToolBar() {
 		return toolBar;
 	}
-	
-	public ListStore<BeanModel> getStore(){
+
+	public ListStore<BeanModel> getStore() {
 		return store;
 	}
 

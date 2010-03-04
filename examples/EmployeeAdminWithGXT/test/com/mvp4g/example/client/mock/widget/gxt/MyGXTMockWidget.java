@@ -9,19 +9,16 @@ import com.extjs.gxt.ui.client.event.Listener;
 
 public class MyGXTMockWidget {
 
-	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings( "unchecked" )
 	Map<EventType, Listener> listeners = new HashMap<EventType, Listener>();
-	
+
 	public void addListener( EventType eventType, Listener<? extends BaseEvent> listener ) {
 		listeners.put( eventType, listener );
 	}
-	
-	@SuppressWarnings("unchecked")
-	public Listener getListener(EventType eventType){
+
+	@SuppressWarnings( "unchecked" )
+	public Listener getListener( EventType eventType ) {
 		return listeners.get( eventType );
 	}
-	
-	
 
 }

@@ -12,15 +12,19 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.ListField;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.presenter.Presenter;
+import com.mvp4g.client.annotation.InjectService;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.Constants;
-import com.mvp4g.example.client.EventsEnum;
+import com.mvp4g.example.client.EmployeeAdminWithGXTEventBus;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
 import com.mvp4g.example.client.presenter.gxt.MyListModel;
 import com.mvp4g.example.client.presenter.view_interface.UserRoleViewInterface;
+import com.mvp4g.example.client.view.UserRoleView;
 
-public class UserRolePresenter extends Presenter<UserRoleViewInterface> implements Constants {
+@Presenter( view = UserRoleView.class )
+public class UserRolePresenter extends BasePresenter<UserRoleViewInterface, EmployeeAdminWithGXTEventBus> implements Constants {
 
 	private final static String NONE_SELECTED = "--None Selected--";
 
@@ -63,7 +67,7 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 			}
 
 		} );
-		
+
 		SimpleComboBox<String> rolesChoices = view.getRoleChoiceListBox();
 		rolesChoices.addListener( Events.Select, new Listener<FieldEvent>() {
 
@@ -84,7 +88,7 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 	}
 
 	public void onStart() {
-		eventBus.dispatch( EventsEnum.CHANGE_RIGHT_BOTTOM_WIDGET, view.getViewWidget() );
+		eventBus.changeRightBottomWidget( view.getViewWidget() );
 	}
 
 	public void onSelectUser( UserBean user ) {
@@ -95,7 +99,7 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 		List<String> roles = user.getRoles();
 		if ( roles != null ) {
 			for ( String role : roles ) {
-				store.add( new MyListModel(role) );
+				store.add( new MyListModel( role ) );
 			}
 		}
 
@@ -122,6 +126,7 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 		disable();
 	}
 
+	@InjectService
 	public void setUserService( UserServiceAsync service ) {
 		this.service = service;
 	}
@@ -144,7 +149,7 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 				}
 
 				public void onSuccess( Void result ) {
-					view.getSelectedRolesListBox().getStore().add( new MyListModel(role) );
+					view.getSelectedRolesListBox().getStore().add( new MyListModel( role ) );
 				}
 
 			} );
@@ -180,7 +185,7 @@ public class UserRolePresenter extends Presenter<UserRoleViewInterface> implemen
 	}
 
 	private void enabledAddButton() {
-		Button add = view.getAddButton();		
+		Button add = view.getAddButton();
 		if ( enabled ) {
 			if ( view.getRoleChoiceListBox().getSelectedIndex() == 0 ) {
 				add.setEnabled( false );

@@ -5,7 +5,7 @@ import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.My
 
 public class MySimpleGXTButton extends Button implements MyGXTButtonInterface {
 
-	public MySimpleGXTButton(String text){
-		super(text);
+	public MySimpleGXTButton( String text ) {
+		super( text );
 	}
 }

@@ -36,7 +36,7 @@ public class MockUserServiceAsync implements UserServiceAsync, Constants {
 	}
 
 	public void getUsers( PagingLoadConfig config, AsyncCallback<PagingLoadResult<UserBean>> callback ) {
-		PagingLoadResult<UserBean> result = new BasePagingLoadResult<UserBean>(users, 0, users.size());
+		PagingLoadResult<UserBean> result = new BasePagingLoadResult<UserBean>( users, 0, users.size() );
 		callback.onSuccess( result );
 	}
 

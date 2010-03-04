@@ -2,7 +2,6 @@ package com.mvp4g.example.client.presenter;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,6 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.mvp4g.example.client.Constants;
-import com.mvp4g.example.client.EventsEnum;
 import com.mvp4g.example.client.bean.UserBean;
 import com.mvp4g.example.client.mock.event.MockGridEvent;
 import com.mvp4g.example.client.mock.eventbus.MockEventBus;
@@ -47,11 +45,12 @@ public class UserListPresenterTest implements Constants {
 		presenter.setView( view );
 		presenter.setEventBus( eventBus );
 		presenter.setUserService( service );
+		presenter.bindIfNeeded();
 		presenter.onStart();
 	}
-	
+
 	@After
-	public void tearUp(){
+	public void tearUp() {
 		GWTMockUtilities.restore();
 	}
 
@@ -66,15 +65,15 @@ public class UserListPresenterTest implements Constants {
 	public void testOnStart() {
 		int nbUser = users.size();
 		for ( int i = 0; i < nbUser; i++ ) {
-			assertTableRow( i, (UserBean) ((BeanModel)users.get( i )).getBean() );
+			assertTableRow( i, (UserBean)( (BeanModel)users.get( i ) ).getBean() );
 		}
-		eventBus.assertEvent( EventsEnum.CHANGE_TOP_WIDGET.toString(), view.getViewWidget() );
+		eventBus.assertChangeTopWidget( view.getViewWidget() );
 
 	}
 
 	@Test
 	public void testOnUserUpdated() {
-		UserBean user = ((BeanModel) users.get( 0 )).getBean();
+		UserBean user = ( (BeanModel)users.get( 0 ) ).getBean();
 		fillUser( user );
 		presenter.onUserUpdated( user );
 		assertTableRow( 0, user );
@@ -85,31 +84,21 @@ public class UserListPresenterTest implements Constants {
 		UserBean user = new UserBean();
 		fillUser( user );
 		presenter.onUserCreated( user );
-		assertTableRow( users.size() , user );
+		assertTableRow( users.size(), user );
 	}
 
 	@Test
 	public void testDeleteClick() {
 		MyGXTMockButton delete = (MyGXTMockButton)view.getDeleteButton();
-		delete.getListener( Events.Select ).handleEvent( new ButtonEvent(null) );
+		delete.getListener( Events.Select ).handleEvent( new ButtonEvent( null ) );
 		assertConfirmDeletionBar( true );
 	}
 
 	@Test
 	public void testNewClick() {
 		MyGXTMockButton newButton = (MyGXTMockButton)view.getNewButton();
-		newButton.getListener( Events.Select ).handleEvent( new ButtonEvent(null) );
-		assertEquals( eventBus.getLastDispatchedEventType(), EventsEnum.CREATE_NEW_USER.toString() );
-		UserBean u = (UserBean)eventBus.getLastDispatchedObject();
-
-		assertNull( u.getFirstName() );
-		assertNull( u.getLastName() );
-		assertNull( u.getEmail() );
-		assertNull( u.getUsername() );
-		assertNull( u.getPassword() );
-		assertNull( u.getDepartment() );
-		assertNull( u.getRoles() );
-
+		newButton.getListener( Events.Select ).handleEvent( new ButtonEvent( null ) );
+		eventBus.assertCreateNewUser();
 	}
 
 	@Test
@@ -117,16 +106,16 @@ public class UserListPresenterTest implements Constants {
 
 		MyGXTMockTable table = (MyGXTMockTable)view.getTable();
 		table.getListener( Events.RowClick ).handleEvent( new MockGridEvent<MyUserListModel>() );
-		
+
 		MyGXTMockButton yes = (MyGXTMockButton)view.getYesButton();
-		yes.getListener( Events.Select ).handleEvent( new ButtonEvent(null) );
+		yes.getListener( Events.Select ).handleEvent( new ButtonEvent( null ) );
 		assertEquals( view.getStore().getCount(), users.size() - 1 );
 	}
 
 	@Test
 	public void testNoClick() {
 		MyGXTMockButton no = (MyGXTMockButton)view.getNoButton();
-		no.getListener( Events.Select ).handleEvent( new ButtonEvent(null) );		
+		no.getListener( Events.Select ).handleEvent( new ButtonEvent( null ) );
 		assertConfirmDeletionBar( false );
 	}
 
@@ -134,7 +123,7 @@ public class UserListPresenterTest implements Constants {
 	public void testSelectAndUnselect() {
 		MyGXTMockTable table = (MyGXTMockTable)view.getTable();
 		MockGridEvent<MyUserListModel> event = new MockGridEvent<MyUserListModel>();
-		
+
 		table.getListener( Events.RowClick ).handleEvent( event );
 		assertEquals( event.getRowIndex(), table.getLastSelected() );
 
@@ -145,7 +134,7 @@ public class UserListPresenterTest implements Constants {
 
 	private void assertTableRow( int row, UserBean user ) {
 		ListStore<BeanModel> store = view.getStore();
-		assertEquals( store.getAt( row ).getBean(), user);		
+		assertEquals( store.getAt( row ).getBean(), user );
 	}
 
 	private void assertConfirmDeletionBar( boolean visible ) {

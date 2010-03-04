@@ -9,22 +9,21 @@ public class MyUserListModel extends BaseModelData {
 	 * 
 	 */
 	private static final long serialVersionUID = -6366208219041678176L;
-	
 
 	public MyUserListModel( UserBean user ) {
 		setData( user );
 	}
-	
-	public void updateData(UserBean user){
+
+	public void updateData( UserBean user ) {
 		setData( user );
 	}
-	
-	private void setData(UserBean user){
+
+	private void setData( UserBean user ) {
 		set( "firstName", user.getFirstName() );
 		set( "lastName", user.getLastName() );
 		set( "username", user.getUsername() );
 		set( "email", user.getEmail() );
-		set( "department", user.getDepartment() );	
+		set( "department", user.getDepartment() );
 	}
 
 }
