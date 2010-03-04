@@ -42,7 +42,7 @@ public abstract class AbstractHistoryConverter<T extends BasicBean> implements H
 	}
 
 	abstract void serviceCall( String id, AsyncCallback<T> callback );
-	
-	abstract void sendEvent(MyEventBus eventBus, T result);
+
+	abstract void sendEvent( MyEventBus eventBus, T result );
 
 }

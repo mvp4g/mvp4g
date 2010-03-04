@@ -11,10 +11,9 @@ public class ShowCartConverter implements HistoryConverter<Object, MyEventBus> {
 
 	public void convertFromToken( String eventType, String param, MyEventBus eventBus ) {
 		String username = Cookies.getCookie( Constants.USERNAME );
-		if(username == null){
+		if ( username == null ) {
 			eventBus.displayMessage( "Please login to display your cart." );
-		}
-		else{
+		} else {
 			eventBus.displayCart( username );
 		}
 	}

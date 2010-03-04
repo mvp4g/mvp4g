@@ -10,12 +10,12 @@ public class ProductHistoryConverter extends AbstractHistoryConverter<ProductBea
 
 	@Override
 	void serviceCall( String id, AsyncCallback<ProductBean> callback ) {
-		service.getProductDetails( id, callback );	
+		service.getProductDetails( id, callback );
 	}
-	
+
 	@Override
 	void sendEvent( MyEventBus eventBus, ProductBean result ) {
-		eventBus.displayProduct( result );		
+		eventBus.displayProduct( result );
 	}
 
 }

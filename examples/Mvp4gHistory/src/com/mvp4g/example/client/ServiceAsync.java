@@ -15,7 +15,7 @@ public interface ServiceAsync {
 
 	void getDeals( AsyncCallback<List<BasicBean>> callback );
 
-	void getProductDetails(String id,  AsyncCallback<ProductBean> callback );
+	void getProductDetails( String id, AsyncCallback<ProductBean> callback );
 
 	void getCart( String username, AsyncCallback<List<ProductBean>> callback );
 

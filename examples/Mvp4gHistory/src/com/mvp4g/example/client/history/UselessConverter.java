@@ -9,7 +9,7 @@ public class UselessConverter implements HistoryConverter<Object, EventBusWithLo
 
 	public void convertFromToken( String eventType, String param, EventBusWithLookup eventBus ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public String convertToToken( String eventType, Object form ) {

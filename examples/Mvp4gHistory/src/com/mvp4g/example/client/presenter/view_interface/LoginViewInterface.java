@@ -6,9 +6,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
 
 public interface LoginViewInterface extends LazyView {
-	
+
 	public HasText getUserName();
+
 	public HasClickHandlers getLoginButton();
+
 	public Widget getViewWidget();
 
 }

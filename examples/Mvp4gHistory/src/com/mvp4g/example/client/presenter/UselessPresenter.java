@@ -7,12 +7,12 @@ import com.mvp4g.example.client.MyEventBus;
 import com.mvp4g.example.client.UselessServiceAsync;
 import com.mvp4g.example.client.view.UselessView;
 
-@Presenter(view=UselessView.class)
+@Presenter( view = UselessView.class )
 public class UselessPresenter extends BasePresenter<UselessView, MyEventBus> {
-	
+
 	@InjectService
-	public void setService(UselessServiceAsync service){
-		
+	public void setService( UselessServiceAsync service ) {
+
 	}
 
 }
