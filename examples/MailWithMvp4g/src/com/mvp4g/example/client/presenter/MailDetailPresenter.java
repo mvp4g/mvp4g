@@ -25,30 +25,29 @@ import com.mvp4g.example.client.view.MailDetailView;
 /**
  * A composite for displaying the details of an email message.
  */
-@Presenter(view=MailDetailView.class)
-public class MailDetailPresenter extends
-		BasePresenter<MailDetailPresenter.IMailDetailView, MailEventBus> {
+@Presenter( view = MailDetailView.class )
+public class MailDetailPresenter extends BasePresenter<MailDetailPresenter.IMailDetailView, MailEventBus> {
 
 	public interface IMailDetailView {
-		public void setSubject(String subject);
+		public void setSubject( String subject );
 
-		public void setSender(String sender);
+		public void setSender( String sender );
 
-		public void setRecipient(String recipient);
+		public void setRecipient( String recipient );
 
-		public void setBody(String body);
-		
+		public void setBody( String body );
+
 		public Widget getViewWidget();
 	}
-	
-	public void onStart(){
-		eventBus.setMiddleCenter(view.getViewWidget());
+
+	public void onStart() {
+		eventBus.setMiddleCenter( view.getViewWidget() );
 	}
 
-	public void onItemSelected(MailItem item) {
-		view.setSubject(item.subject);
-		view.setSender(item.sender);
-		view.setRecipient("foo@example.com");
-		view.setBody(item.body);
+	public void onItemSelected( MailItem item ) {
+		view.setSubject( item.subject );
+		view.setSender( item.sender );
+		view.setRecipient( "foo@example.com" );
+		view.setBody( item.body );
 	}
 }

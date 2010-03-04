@@ -25,29 +25,27 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.Mvp4gModule;
 
 /**
- * This application demonstrates how to construct a relatively complex user
- * interface, similar to many common email readers. It has no back-end,
- * populating its components with hard-coded data.
+ * This application demonstrates how to construct a relatively complex user interface, similar to
+ * many common email readers. It has no back-end, populating its components with hard-coded data.
  */
 public class MailEntryPoint implements EntryPoint {
 
 	interface GlobalResources extends ClientBundle {
 		@NotStrict
-		@Source("resources/global.css")
+		@Source( "resources/global.css" )
 		CssResource css();
 	}
 
 	/**
-	 * This method constructs the application user interface by instantiating
-	 * controls and hooking up event handler.
+	 * This method constructs the application user interface by instantiating controls and hooking
+	 * up event handler.
 	 */
 	public void onModuleLoad() {
 		// Inject global styles.
-		GWT.<GlobalResources> create(GlobalResources.class).css()
-				.ensureInjected();
+		GWT.<GlobalResources> create( GlobalResources.class ).css().ensureInjected();
 
-		Mvp4gModule module = (Mvp4gModule) GWT.create(Mvp4gModule.class);
+		Mvp4gModule module = (Mvp4gModule)GWT.create( Mvp4gModule.class );
 		module.createAndStartModule();
-		RootLayoutPanel.get().add((Widget) module.getStartView());
+		RootLayoutPanel.get().add( (Widget)module.getStartView() );
 	}
 }

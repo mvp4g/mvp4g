@@ -9,24 +9,24 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ContactPopup extends PopupPanel {
-	@UiTemplate("ContactPopup.ui.xml")
+	@UiTemplate( "ContactPopup.ui.xml" )
 	interface Binder extends UiBinder<Widget, ContactPopup> {
 	}
 
-	private static final Binder binder = GWT.create(Binder.class);
+	private static final Binder binder = GWT.create( Binder.class );
 
 	@UiField
 	Element nameDiv;
 	@UiField
 	Element emailDiv;
 
-	public ContactPopup(String name, String email) {
+	public ContactPopup( String name, String email ) {
 		// The popup's constructor's argument is a boolean specifying that it
 		// auto-close itself when the user clicks outside of it.
-		super(true);
-		add(binder.createAndBindUi(this));
+		super( true );
+		add( binder.createAndBindUi( this ) );
 
-		nameDiv.setInnerText(name);
-		emailDiv.setInnerText(email);
+		nameDiv.setInnerText( name );
+		emailDiv.setInnerText( email );
 	}
 }

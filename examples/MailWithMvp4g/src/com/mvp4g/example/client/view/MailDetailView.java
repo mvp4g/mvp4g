@@ -27,13 +27,12 @@ import com.mvp4g.example.client.presenter.MailDetailPresenter;
 /**
  * A composite for displaying the details of an email message.
  */
-public class MailDetailView extends ResizeComposite implements
-		MailDetailPresenter.IMailDetailView {
+public class MailDetailView extends ResizeComposite implements MailDetailPresenter.IMailDetailView {
 
 	interface Binder extends UiBinder<Widget, MailDetailView> {
 	}
 
-	private static final Binder binder = GWT.create(Binder.class);
+	private static final Binder binder = GWT.create( Binder.class );
 
 	@UiField
 	Element subject;
@@ -45,33 +44,33 @@ public class MailDetailView extends ResizeComposite implements
 	HTML body;
 
 	public MailDetailView() {
-		initWidget(binder.createAndBindUi(this));
+		initWidget( binder.createAndBindUi( this ) );
 	}
 
 	public Widget getViewWidget() {
 		return this;
 	}
 
-	public void setBody(String b) {
+	public void setBody( String b ) {
 		// WARNING: For the purposes of this demo, we're using HTML directly, on
 		// the assumption that the "server" would have appropriately scrubbed
 		// the
 		// HTML. Failure to do so would open your application to XSS attacks.
-		body.setHTML(b);
+		body.setHTML( b );
 
 	}
 
-	public void setRecipient(String r) {
-		recipient.setInnerHTML(r);
+	public void setRecipient( String r ) {
+		recipient.setInnerHTML( r );
 
 	}
 
-	public void setSender(String s) {
-		sender.setInnerText(s);
+	public void setSender( String s ) {
+		sender.setInnerText( s );
 
 	}
 
-	public void setSubject(String s) {
-		subject.setInnerText(s);
+	public void setSubject( String s ) {
+		subject.setInnerText( s );
 	}
 }

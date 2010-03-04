@@ -33,8 +33,8 @@ import com.mvp4g.example.client.presenter.ShortCutsPresenter.FOLDER_TYPE;
 public class Mailboxes extends Composite {
 
 	/**
-	 * Specifies the images that will be bundled for this Composite and specify
-	 * that tree's images should also be included in the same bundle.
+	 * Specifies the images that will be bundled for this Composite and specify that tree's images
+	 * should also be included in the same bundle.
 	 */
 	public interface Images extends ClientBundle, Tree.Resources {
 		ImageResource drafts();
@@ -49,18 +49,18 @@ public class Mailboxes extends Composite {
 
 		ImageResource trash();
 
-		@Source("noimage.png")
+		@Source( "noimage.png" )
 		ImageResource treeLeaf();
 	}
 
-	private static Images images = GWT.create(Images.class);
+	private static Images images = GWT.create( Images.class );
 	private static Map<String, ImageResource> itemImages = new HashMap<String, ImageResource>();
 	static {
-		itemImages.put("Inbox", images.inbox());
-		itemImages.put("Drafts", images.drafts());
-		itemImages.put("Templates", images.templates());
-		itemImages.put("Sent", images.sent());
-		itemImages.put("Trash", images.trash());
+		itemImages.put( "Inbox", images.inbox() );
+		itemImages.put( "Drafts", images.drafts() );
+		itemImages.put( "Templates", images.templates() );
+		itemImages.put( "Sent", images.sent() );
+		itemImages.put( "Trash", images.trash() );
 	}
 	private Tree tree;
 	private TreeItem root;
@@ -72,13 +72,12 @@ public class Mailboxes extends Composite {
 	 *            a bundle that provides the images for this widget
 	 */
 	public Mailboxes() {
-		tree = new Tree(images);
-		TreeItem root = new TreeItem(imageItemHTML(images.home(),
-				"foo@example.com"));
-		tree.addItem(root);
+		tree = new Tree( images );
+		TreeItem root = new TreeItem( imageItemHTML( images.home(), "foo@example.com" ) );
+		tree.addItem( root );
 		this.root = root;
-		root.setState(true);
-		initWidget(tree);
+		root.setState( true );
+		initWidget( tree );
 	}
 
 	/**
@@ -90,29 +89,29 @@ public class Mailboxes extends Composite {
 	 * @param title
 	 *            the text associated with this item.
 	 */
-	public void addImageItem(FOLDER_TYPE folder) {
+	public void addImageItem( FOLDER_TYPE folder ) {
 
 		TreeItem item;
-		switch (folder) {
+		switch ( folder ) {
 		case INBOX:
-			item = new TreeItem(imageItemHTML(images.inbox(), "Inbox"));
+			item = new TreeItem( imageItemHTML( images.inbox(), "Inbox" ) );
 			break;
 		case DRAFS:
-			item = new TreeItem(imageItemHTML(images.drafts(), "Drafts"));
+			item = new TreeItem( imageItemHTML( images.drafts(), "Drafts" ) );
 			break;
 		case TEMPLATES:
-			item = new TreeItem(imageItemHTML(images.templates(), "Templates"));
+			item = new TreeItem( imageItemHTML( images.templates(), "Templates" ) );
 			break;
 		case SENT:
-			item = new TreeItem(imageItemHTML(images.sent(), "Sent"));
+			item = new TreeItem( imageItemHTML( images.sent(), "Sent" ) );
 			break;
 		default:
-			item = new TreeItem(imageItemHTML(images.trash(), "Trash"));
+			item = new TreeItem( imageItemHTML( images.trash(), "Trash" ) );
 			break;
 
 		}
 
-		root.addItem(item);
+		root.addItem( item );
 	}
 
 	/**
@@ -124,9 +123,8 @@ public class Mailboxes extends Composite {
 	 *            the title of the item
 	 * @return the resultant HTML
 	 */
-	private String imageItemHTML(ImageResource imageProto, String title) {
-		return AbstractImagePrototype.create(imageProto).getHTML() + " "
-				+ title;
+	private String imageItemHTML( ImageResource imageProto, String title ) {
+		return AbstractImagePrototype.create( imageProto ).getHTML() + " " + title;
 	}
 
 }

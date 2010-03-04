@@ -28,14 +28,13 @@ import com.mvp4g.example.client.presenter.NavBarPresenter;
 /**
  * A simple widget representing prev/next page navigation.
  */
-public class NavBarView extends Composite implements
-		NavBarPresenter.INavBarView {
+public class NavBarView extends Composite implements NavBarPresenter.INavBarView {
 
-	@UiTemplate("NavBarView.ui.xml")
+	@UiTemplate( "NavBarView.ui.xml" )
 	interface Binder extends UiBinder<Widget, NavBarView> {
 	}
 
-	private static final Binder binder = GWT.create(Binder.class);
+	private static final Binder binder = GWT.create( Binder.class );
 
 	@UiField
 	Element countLabel;
@@ -45,7 +44,7 @@ public class NavBarView extends Composite implements
 	Anchor olderButton;
 
 	public NavBarView() {
-		initWidget(binder.createAndBindUi(this));
+		initWidget( binder.createAndBindUi( this ) );
 	}
 
 	public Anchor getNewerButton() {
@@ -60,8 +59,8 @@ public class NavBarView extends Composite implements
 		return this;
 	}
 
-	public void setNavText(String text) {
-		countLabel.setInnerHTML(text);
+	public void setNavText( String text ) {
+		countLabel.setInnerHTML( text );
 	}
-	
+
 }

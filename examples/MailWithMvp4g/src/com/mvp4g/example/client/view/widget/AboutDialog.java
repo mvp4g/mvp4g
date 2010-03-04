@@ -32,39 +32,42 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class AboutDialog extends DialogBox {
 
-  interface Binder extends UiBinder<Widget, AboutDialog> { }
-  private static final Binder binder = GWT.create(Binder.class);
+	interface Binder extends UiBinder<Widget, AboutDialog> {
+	}
 
-  @UiField Button closeButton;
+	private static final Binder binder = GWT.create( Binder.class );
 
-  public AboutDialog() {
-    // Use this opportunity to set the dialog's caption.
-    setText("About the Mail Sample");
-    setWidget(binder.createAndBindUi(this));
+	@UiField
+	Button closeButton;
 
-    setAnimationEnabled(true);
-    setGlassEnabled(true);
-  }
+	public AboutDialog() {
+		// Use this opportunity to set the dialog's caption.
+		setText( "About the Mail Sample" );
+		setWidget( binder.createAndBindUi( this ) );
 
-  @Override
-  protected void onPreviewNativeEvent(NativePreviewEvent preview) {
-    super.onPreviewNativeEvent(preview);
+		setAnimationEnabled( true );
+		setGlassEnabled( true );
+	}
 
-    NativeEvent evt = preview.getNativeEvent();
-    if (evt.getType().equals("keydown")) {
-      // Use the popup's key preview hooks to close the dialog when either
-      // enter or escape is pressed.
-      switch (evt.getKeyCode()) {
-        case KeyCodes.KEY_ENTER:
-        case KeyCodes.KEY_ESCAPE:
-          hide();
-          break;
-      }
-    }
-  }
+	@Override
+	protected void onPreviewNativeEvent( NativePreviewEvent preview ) {
+		super.onPreviewNativeEvent( preview );
 
-  @UiHandler("closeButton")
-  void onSignOutClicked(ClickEvent event) {
-    hide();
-  }
+		NativeEvent evt = preview.getNativeEvent();
+		if ( evt.getType().equals( "keydown" ) ) {
+			// Use the popup's key preview hooks to close the dialog when either
+			// enter or escape is pressed.
+			switch ( evt.getKeyCode() ) {
+			case KeyCodes.KEY_ENTER:
+			case KeyCodes.KEY_ESCAPE:
+				hide();
+				break;
+			}
+		}
+	}
+
+	@UiHandler( "closeButton" )
+	void onSignOutClicked( ClickEvent event ) {
+		hide();
+	}
 }
