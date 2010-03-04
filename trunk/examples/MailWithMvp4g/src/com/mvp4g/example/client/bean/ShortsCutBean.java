@@ -18,7 +18,7 @@ public class ShortsCutBean {
 	 * @param title
 	 *            the title to set
 	 */
-	public void setTitle(String title) {
+	public void setTitle( String title ) {
 		this.title = title;
 	}
 
@@ -33,7 +33,7 @@ public class ShortsCutBean {
 	 * @param widget
 	 *            the widget to set
 	 */
-	public void setWidget(Widget widget) {
+	public void setWidget( Widget widget ) {
 		this.widget = widget;
 	}
 

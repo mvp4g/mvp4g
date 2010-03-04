@@ -15,38 +15,38 @@ import com.mvp4g.example.client.presenter.ShortCutsPresenter;
 import com.mvp4g.example.client.presenter.TopPresenter;
 import com.mvp4g.example.client.view.MailView;
 
-@Events(startView=MailView.class)
+@Events( startView = MailView.class )
 public interface MailEventBus extends EventBus {
-	
-	@Event(handlers=MailPresenter.class)
-	public void setNorth(Widget w);
 
-	@Event(handlers=MailPresenter.class)
-	public void setMiddleNorth(Widget w);
+	@Event( handlers = MailPresenter.class )
+	public void setNorth( Widget w );
 
-	@Event(handlers=MailPresenter.class)
-	public void setMiddleCenter(Widget w);
+	@Event( handlers = MailPresenter.class )
+	public void setMiddleNorth( Widget w );
 
-	@Event(handlers=MailPresenter.class)
-	public void setMiddleWest(Widget w);
-	
+	@Event( handlers = MailPresenter.class )
+	public void setMiddleCenter( Widget w );
+
+	@Event( handlers = MailPresenter.class )
+	public void setMiddleWest( Widget w );
+
 	@Start
-	@Event(handlers={TopPresenter.class, MailListPresenter.class, MailDetailPresenter.class, NavBarPresenter.class, ShortCutsPresenter.class})
+	@Event( handlers = { TopPresenter.class, MailListPresenter.class, MailDetailPresenter.class, NavBarPresenter.class, ShortCutsPresenter.class } )
 	public void start();
-	
-	@Event(handlers=MailDetailPresenter.class)
-	public void itemSelected(MailItem item);
-	
-	@Event(handlers=NavBarPresenter.class)
-	public void setNavStatus(NavStatus status);
-	
-	@Event(handlers=MailListPresenter.class)
-	public void setNavigationBar(Widget w);
-	
-	@Event(handlers=MailListPresenter.class)
+
+	@Event( handlers = MailDetailPresenter.class )
+	public void itemSelected( MailItem item );
+
+	@Event( handlers = NavBarPresenter.class )
+	public void setNavStatus( NavStatus status );
+
+	@Event( handlers = MailListPresenter.class )
+	public void setNavigationBar( Widget w );
+
+	@Event( handlers = MailListPresenter.class )
 	public void newer();
-	
-	@Event(handlers=MailListPresenter.class)
+
+	@Event( handlers = MailListPresenter.class )
 	public void older();
 
 }

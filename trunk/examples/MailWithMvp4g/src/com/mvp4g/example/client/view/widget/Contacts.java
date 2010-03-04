@@ -36,7 +36,7 @@ public class Contacts extends Composite {
 		String item();
 	}
 
-	private static final Binder binder = GWT.create(Binder.class);
+	private static final Binder binder = GWT.create( Binder.class );
 
 	@UiField
 	ComplexPanel panel;
@@ -44,13 +44,13 @@ public class Contacts extends Composite {
 	Style style;
 
 	public Contacts() {
-		initWidget(binder.createAndBindUi(this));
+		initWidget( binder.createAndBindUi( this ) );
 	}
 
-	public Anchor addContact(String contact) {
-		Anchor link = new Anchor(contact);
-		link.setStyleName(style.item());
-		panel.add(link);
+	public Anchor addContact( String contact ) {
+		Anchor link = new Anchor( contact );
+		link.setStyleName( style.item() );
+		panel.add( link );
 		return link;
 	}
 }

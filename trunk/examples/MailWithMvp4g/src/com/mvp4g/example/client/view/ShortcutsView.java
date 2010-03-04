@@ -30,19 +30,17 @@ import com.mvp4g.example.client.view.widget.Mailboxes;
 import com.mvp4g.example.client.view.widget.Tasks;
 
 /**
- * A composite that contains the shortcut stack panel on the left side. The
- * mailbox tree and shortcut lists don't actually do anything, but serve to show
- * how you can construct an interface using
- * {@link com.google.gwt.user.client.ui.StackPanel},
+ * A composite that contains the shortcut stack panel on the left side. The mailbox tree and
+ * shortcut lists don't actually do anything, but serve to show how you can construct an interface
+ * using {@link com.google.gwt.user.client.ui.StackPanel},
  * {@link com.google.gwt.user.client.ui.Tree}, and other custom widgets.
  */
-public class ShortcutsView extends ResizeComposite implements
-		ShortCutsPresenter.IShortCutsView {
+public class ShortcutsView extends ResizeComposite implements ShortCutsPresenter.IShortCutsView {
 
 	interface Binder extends UiBinder<StackLayoutPanel, ShortcutsView> {
 	}
 
-	private static final Binder binder = GWT.create(Binder.class);
+	private static final Binder binder = GWT.create( Binder.class );
 
 	@UiField
 	Mailboxes mailboxes;
@@ -58,29 +56,29 @@ public class ShortcutsView extends ResizeComposite implements
 	 *            a bundle that provides the images for this widget
 	 */
 	public ShortcutsView() {
-		initWidget(binder.createAndBindUi(this));
+		initWidget( binder.createAndBindUi( this ) );
 	}
 
-	public Anchor addContact(String name) {
-		return contacts.addContact(name);
+	public Anchor addContact( String name ) {
+		return contacts.addContact( name );
 	}
 
-	public void addTask(String task) {
-		tasks.addTask(task);
+	public void addTask( String task ) {
+		tasks.addTask( task );
 	}
 
 	public Widget getViewWidget() {
 		return this;
 	}
 
-	public void showContactPopup(String name, String email, int left, int top) {
-		ContactPopup popup = new ContactPopup(name, email);		
-		popup.setPopupPosition(left, top);
+	public void showContactPopup( String name, String email, int left, int top ) {
+		ContactPopup popup = new ContactPopup( name, email );
+		popup.setPopupPosition( left, top );
 		popup.show();
 	}
 
-	public void addFolder(FOLDER_TYPE folder) {
-		mailboxes.addImageItem(folder);
+	public void addFolder( FOLDER_TYPE folder ) {
+		mailboxes.addImageItem( folder );
 	}
 
 }

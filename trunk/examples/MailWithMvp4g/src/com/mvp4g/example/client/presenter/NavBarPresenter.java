@@ -28,51 +28,48 @@ import com.mvp4g.example.client.view.NavBarView;
 /**
  * A simple widget representing prev/next page navigation.
  */
-@Presenter(view=NavBarView.class)
-public class NavBarPresenter extends
-		BasePresenter<NavBarPresenter.INavBarView, MailEventBus> {
+@Presenter( view = NavBarView.class )
+public class NavBarPresenter extends BasePresenter<NavBarPresenter.INavBarView, MailEventBus> {
 
 	public interface INavBarView {
 		public Anchor getNewerButton();
 
 		public Anchor getOlderButton();
 
-		public void setNavText(String text);
-		
+		public void setNavText( String text );
+
 		public Widget getViewWidget();
 	}
-	
-	public void onStart(){
-		eventBus.setNavigationBar(view.getViewWidget());
+
+	public void onStart() {
+		eventBus.setNavigationBar( view.getViewWidget() );
 	}
 
 	public void bind() {
-		view.getNewerButton().addClickHandler(new ClickHandler() {
+		view.getNewerButton().addClickHandler( new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
+			public void onClick( ClickEvent event ) {
 				eventBus.newer();
 			}
 
-		});
+		} );
 
-		view.getOlderButton().addClickHandler(new ClickHandler() {
+		view.getOlderButton().addClickHandler( new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
+			public void onClick( ClickEvent event ) {
 				eventBus.older();
 			}
 
-		});
+		} );
 	}
 
-	public void onSetNavStatus(NavStatus status) {
+	public void onSetNavStatus( NavStatus status ) {
 		int startIndex = status.getStartIndex();
 		int count = status.getNumberOfElements();
 
-		view.getNewerButton().setVisible(startIndex != 1);
-		view
-				.getOlderButton().setVisible((startIndex + MailListPresenter.VISIBLE_EMAIL_COUNT) <= count);
-		view.setNavText("" + startIndex + " - " + status.getEndIndex() + " of "
-				+ count);
+		view.getNewerButton().setVisible( startIndex != 1 );
+		view.getOlderButton().setVisible( ( startIndex + MailListPresenter.VISIBLE_EMAIL_COUNT ) <= count );
+		view.setNavText( "" + startIndex + " - " + status.getEndIndex() + " of " + count );
 	}
 
 }

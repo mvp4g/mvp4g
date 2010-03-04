@@ -3,13 +3,12 @@ package com.mvp4g.example.client.bean;
 public class NavStatus {
 
 	private int startIndex, endIndex, numberOfElements;
-	
-	
+
 	public NavStatus() {
-		
+
 	}
 
-	public NavStatus(int startIndex, int endIndex, int numberOfElements) {
+	public NavStatus( int startIndex, int endIndex, int numberOfElements ) {
 		this.startIndex = startIndex;
 		this.endIndex = endIndex;
 		this.numberOfElements = numberOfElements;
@@ -26,7 +25,7 @@ public class NavStatus {
 	 * @param startIndex
 	 *            the startIndex to set
 	 */
-	public void setStartIndex(int startIndex) {
+	public void setStartIndex( int startIndex ) {
 		this.startIndex = startIndex;
 	}
 
@@ -41,7 +40,7 @@ public class NavStatus {
 	 * @param endIndex
 	 *            the endIndex to set
 	 */
-	public void setEndIndex(int endIndex) {
+	public void setEndIndex( int endIndex ) {
 		this.endIndex = endIndex;
 	}
 
@@ -56,7 +55,7 @@ public class NavStatus {
 	 * @param numberOfElements
 	 *            the numberOfElements to set
 	 */
-	public void setNumberOfElements(int numberOfElements) {
+	public void setNumberOfElements( int numberOfElements ) {
 		this.numberOfElements = numberOfElements;
 	}
 

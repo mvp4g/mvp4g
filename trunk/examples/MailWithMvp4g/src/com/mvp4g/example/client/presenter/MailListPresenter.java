@@ -29,14 +29,13 @@ import com.mvp4g.example.client.data.MailItem;
 import com.mvp4g.example.client.data.MailItems;
 import com.mvp4g.example.client.view.MailListView;
 
-@Presenter(view=MailListView.class)
-public class MailListPresenter extends
-		BasePresenter<MailListPresenter.IMailListView, MailEventBus> {
+@Presenter( view = MailListView.class )
+public class MailListPresenter extends BasePresenter<MailListPresenter.IMailListView, MailEventBus> {
 
 	public interface IMailListView {
 		public FlexTable getTable();
 
-		public void setNavigationBar(Widget navigationBar);
+		public void setNavigationBar( Widget navigationBar );
 
 		public String getSelectedStyle();
 
@@ -53,41 +52,41 @@ public class MailListPresenter extends
 
 	@Override
 	public void bind() {
-		view.getTable().addClickHandler(new ClickHandler() {
+		view.getTable().addClickHandler( new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
-				Cell cell = view.getTable().getCellForEvent(event);
-				if (cell != null) {
+			public void onClick( ClickEvent event ) {
+				Cell cell = view.getTable().getCellForEvent( event );
+				if ( cell != null ) {
 					int row = cell.getRowIndex();
-					selectRow(row);
+					selectRow( row );
 				}
 			}
-		});
+		} );
 	}
 
 	public void onStart() {
-		
-		eventBus.setMiddleNorth(view.getViewWidget());
-	
+
+		eventBus.setMiddleNorth( view.getViewWidget() );
+
 		update();
-		
+
 		// Select the first row if none is selected.
-		if (selectedRow == -1) {
-			selectRow(0);
+		if ( selectedRow == -1 ) {
+			selectRow( 0 );
 		}
 	}
-	
-	public void onSetNavigationBar(Widget navigationBar){
-		view.setNavigationBar(navigationBar);
+
+	public void onSetNavigationBar( Widget navigationBar ) {
+		view.setNavigationBar( navigationBar );
 	}
 
 	public void onNewer() {
 		// Move back a page.
 		startIndex -= VISIBLE_EMAIL_COUNT;
-		if (startIndex < 0) {
+		if ( startIndex < 0 ) {
 			startIndex = 0;
 		} else {
-			styleRow(selectedRow, false);
+			styleRow( selectedRow, false );
 			selectedRow = -1;
 			update();
 		}
@@ -96,10 +95,10 @@ public class MailListPresenter extends
 	public void onOlder() {
 		// Move forward a page.
 		startIndex += VISIBLE_EMAIL_COUNT;
-		if (startIndex >= MailItems.getMailItemCount()) {
+		if ( startIndex >= MailItems.getMailItemCount() ) {
 			startIndex -= VISIBLE_EMAIL_COUNT;
 		} else {
-			styleRow(selectedRow, false);
+			styleRow( selectedRow, false );
 			selectedRow = -1;
 			update();
 		}
@@ -111,67 +110,67 @@ public class MailListPresenter extends
 	 * @param row
 	 *            the row to be selected
 	 */
-	private void selectRow(int row) {
+	private void selectRow( int row ) {
 		// When a row (other than the first one, which is used as a header) is
 		// selected, display its associated MailItem.
-		MailItem item = MailItems.getMailItem(startIndex + row);
-		if (item == null) {
+		MailItem item = MailItems.getMailItem( startIndex + row );
+		if ( item == null ) {
 			return;
 		}
 
-		styleRow(selectedRow, false);
-		styleRow(row, true);
+		styleRow( selectedRow, false );
+		styleRow( row, true );
 
 		item.read = true;
 		selectedRow = row;
 
-		eventBus.itemSelected(item);
+		eventBus.itemSelected( item );
 	}
 
 	private void update() {
 		// Update the older/newer buttons & label.
 		int count = MailItems.getMailItemCount();
 		int max = startIndex + VISIBLE_EMAIL_COUNT;
-		if (max > count) {
+		if ( max > count ) {
 			max = count;
 		}
 
 		// Update the nav bar.
-		eventBus.setNavStatus(new NavStatus(startIndex + 1, max, count));
+		eventBus.setNavStatus( new NavStatus( startIndex + 1, max, count ) );
 
 		FlexTable table = view.getTable();
 
 		// Show the selected emails.
 		int i = 0;
-		for (; i < VISIBLE_EMAIL_COUNT; ++i) {
+		for ( ; i < VISIBLE_EMAIL_COUNT; ++i ) {
 			// Don't read past the end.
-			if (startIndex + i >= MailItems.getMailItemCount()) {
+			if ( startIndex + i >= MailItems.getMailItemCount() ) {
 				break;
 			}
 
-			MailItem item = MailItems.getMailItem(startIndex + i);
+			MailItem item = MailItems.getMailItem( startIndex + i );
 
 			// Add a new row to the table, then set each of its columns to the
 			// email's sender and subject values.
-			table.setText(i, 0, item.sender);
-			table.setText(i, 1, item.email);
-			table.setText(i, 2, item.subject);
+			table.setText( i, 0, item.sender );
+			table.setText( i, 1, item.email );
+			table.setText( i, 2, item.subject );
 		}
 
 		// Clear any remaining slots.
-		for (; i < VISIBLE_EMAIL_COUNT; ++i) {
-			table.removeRow(table.getRowCount() - 1);
+		for ( ; i < VISIBLE_EMAIL_COUNT; ++i ) {
+			table.removeRow( table.getRowCount() - 1 );
 		}
 	}
 
-	private void styleRow(int row, boolean selected) {
-		if (row != -1) {
+	private void styleRow( int row, boolean selected ) {
+		if ( row != -1 ) {
 			String style = view.getSelectedStyle();
 
-			if (selected) {
-				view.getTable().getRowFormatter().addStyleName(row, style);
+			if ( selected ) {
+				view.getTable().getRowFormatter().addStyleName( row, style );
 			} else {
-				view.getTable().getRowFormatter().removeStyleName(row, style);
+				view.getTable().getRowFormatter().removeStyleName( row, style );
 			}
 		}
 	}

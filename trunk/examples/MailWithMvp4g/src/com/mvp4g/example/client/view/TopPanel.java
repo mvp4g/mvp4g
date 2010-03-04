@@ -34,7 +34,7 @@ public class TopPanel extends Composite implements TopPresenter.ITopView {
 	interface Binder extends UiBinder<Widget, TopPanel> {
 	}
 
-	private static final Binder binder = GWT.create(Binder.class);
+	private static final Binder binder = GWT.create( Binder.class );
 
 	@UiField
 	Anchor signOutLink;
@@ -42,7 +42,7 @@ public class TopPanel extends Composite implements TopPresenter.ITopView {
 	Anchor aboutLink;
 
 	public TopPanel() {
-		initWidget(binder.createAndBindUi(this));
+		initWidget( binder.createAndBindUi( this ) );
 	}
 
 	public HasClickHandlers getAboutButton() {
@@ -63,8 +63,8 @@ public class TopPanel extends Composite implements TopPresenter.ITopView {
 		dlg.center();
 	}
 
-	public void showAlert(String message) {
-		Window.alert(message);
+	public void showAlert( String message ) {
+		Window.alert( message );
 	}
 
 }
