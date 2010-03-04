@@ -5,16 +5,20 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.presenter.XmlPresenter;
+import com.mvp4g.client.annotation.InjectService;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.Constants;
-import com.mvp4g.example.client.EventsEnum;
+import com.mvp4g.example.client.EmployeeAdminEventBus;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
 import com.mvp4g.example.client.presenter.view_interface.UserProfileViewInterface;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyListBoxInterface;
+import com.mvp4g.example.client.view.UserProfileView;
 
-public class UserProfilePresenter extends XmlPresenter<UserProfileViewInterface> implements Constants {
+@Presenter( view = UserProfileView.class )
+public class UserProfilePresenter extends BasePresenter<UserProfileViewInterface, EmployeeAdminEventBus> implements Constants {
 
 	private boolean toUpdate = true;
 	private boolean enabled = false;
@@ -48,7 +52,7 @@ public class UserProfilePresenter extends XmlPresenter<UserProfileViewInterface>
 		view.getCancelButton().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				eventBus.dispatch( EventsEnum.UNSELECT_USER );
+				eventBus.unselectUser();
 			}
 
 		} );
@@ -84,7 +88,7 @@ public class UserProfilePresenter extends XmlPresenter<UserProfileViewInterface>
 	}
 
 	public void onStart() {
-		eventBus.dispatch( EventsEnum.CHANGE_LEFT_BOTTOM_WIDGET, view.getViewWidget() );
+		eventBus.changeLeftBottomWidget( view.getViewWidget() );
 	}
 
 	public void onSelectUser( UserBean user ) {
@@ -117,6 +121,7 @@ public class UserProfilePresenter extends XmlPresenter<UserProfileViewInterface>
 
 	}
 
+	@InjectService
 	public void setUserService( UserServiceAsync service ) {
 		this.service = service;
 	}
@@ -165,7 +170,7 @@ public class UserProfilePresenter extends XmlPresenter<UserProfileViewInterface>
 
 			public void onSuccess( Void result ) {
 				init();
-				eventBus.dispatch( EventsEnum.USER_CREATED, user );
+				eventBus.userCreated( user );
 			}
 
 		} );
@@ -180,7 +185,7 @@ public class UserProfilePresenter extends XmlPresenter<UserProfileViewInterface>
 
 			public void onSuccess( Void result ) {
 				init();
-				eventBus.dispatch( EventsEnum.USER_UPDATED, user );
+				eventBus.userUpdated( user );
 			}
 
 		} );

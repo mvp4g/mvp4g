@@ -5,15 +5,19 @@ import java.util.List;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.presenter.XmlPresenter;
-import com.mvp4g.example.client.EventsEnum;
+import com.mvp4g.client.annotation.InjectService;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.example.client.EmployeeAdminEventBus;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
 import com.mvp4g.example.client.presenter.view_interface.UserListViewInterface;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyTableInterface;
+import com.mvp4g.example.client.view.UserListView;
 
-public class UserListPresenter extends XmlPresenter<UserListViewInterface> {
+@Presenter( view = UserListView.class )
+public class UserListPresenter extends BasePresenter<UserListViewInterface, EmployeeAdminEventBus> {
 
 	protected int indexSelected = 0;
 	protected List<UserBean> users = null;
@@ -34,7 +38,7 @@ public class UserListPresenter extends XmlPresenter<UserListViewInterface> {
 		view.getNewButton().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				eventBus.dispatch( EventsEnum.CREATE_NEW_USER, new UserBean() );
+				eventBus.createNewUser( new UserBean() );
 			}
 
 		} );
@@ -48,7 +52,7 @@ public class UserListPresenter extends XmlPresenter<UserListViewInterface> {
 
 			}
 
-		} );		
+		} );
 
 		view.getYesButton().addClickHandler( new ClickHandler() {
 
@@ -83,7 +87,7 @@ public class UserListPresenter extends XmlPresenter<UserListViewInterface> {
 					displayUser( users.get( i ), i + 1 );
 				}
 
-				eventBus.dispatch( EventsEnum.CHANGE_TOP_WIDGET, view.getViewWidget() );
+				eventBus.changeTopWidget( view.getViewWidget() );
 
 			}
 
@@ -92,19 +96,20 @@ public class UserListPresenter extends XmlPresenter<UserListViewInterface> {
 	}
 
 	public void onUserUpdated( UserBean user ) {
-		displayUser( user, users.indexOf( user ) + 1);
+		displayUser( user, users.indexOf( user ) + 1 );
 	}
-	
+
 	public void onUserCreated( UserBean user ) {
 		users.add( user );
 		displayUser( user, users.size() );
 	}
-	
+
 	public void onUnselectUser() {
 		view.getTable().unSelectRow( indexSelected );
-		indexSelected = 0;		
+		indexSelected = 0;
 	}
 
+	@InjectService
 	public void setUserService( UserServiceAsync service ) {
 		this.service = service;
 	}
@@ -120,7 +125,7 @@ public class UserListPresenter extends XmlPresenter<UserListViewInterface> {
 
 			indexSelected = row;
 			table.selectRow( indexSelected );
-			eventBus.dispatch( EventsEnum.SELECT_USER, users.get( row - 1 ) );
+			eventBus.selectUser( users.get( row - 1 ) );
 			view.getDeleteButton().setEnabled( true );
 		}
 	}
@@ -138,7 +143,7 @@ public class UserListPresenter extends XmlPresenter<UserListViewInterface> {
 				view.getTable().removeRow( indexSelected );
 				view.getDeleteButton().setEnabled( false );
 				setVisibleConfirmDeletion( false );
-				eventBus.dispatch( EventsEnum.UNSELECT_USER );
+				eventBus.unselectUser();
 			}
 
 		} );

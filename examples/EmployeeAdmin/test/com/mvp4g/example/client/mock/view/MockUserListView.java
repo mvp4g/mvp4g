@@ -11,7 +11,7 @@ import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyTabl
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
 
 public class MockUserListView implements UserListViewInterface, MyWidgetInterface {
-	
+
 	private MyLabelInterface confirmText = new MyMockLabel();
 	private MyButtonInterface deleteButton = new MyMockButton();
 	private MyButtonInterface newButton = new MyMockButton();

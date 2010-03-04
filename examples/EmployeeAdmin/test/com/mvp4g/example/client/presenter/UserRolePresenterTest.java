@@ -10,7 +10,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mvp4g.example.client.EventsEnum;
 import com.mvp4g.example.client.bean.UserBean;
 import com.mvp4g.example.client.mock.MockGwtEvent;
 import com.mvp4g.example.client.mock.eventbus.MockEventBus;
@@ -36,11 +35,12 @@ public class UserRolePresenterTest {
 		presenter.setView( view );
 		presenter.setEventBus( eventBus );
 		presenter.setUserService( service );
+		presenter.bindIfNeeded();
 		presenter.onStart();
 	}
-	
+
 	@Test
-	public void testBind(){
+	public void testBind() {
 		assertDisable();
 	}
 
@@ -72,7 +72,7 @@ public class UserRolePresenterTest {
 
 	@Test
 	public void testOnStart() {
-		eventBus.assertEvent( EventsEnum.CHANGE_RIGHT_BOTTOM_WIDGET.toString(), view.getViewWidget() );
+		eventBus.assertChangeRightBottomWidget( view.getViewWidget() );
 	}
 
 	@Test
@@ -138,71 +138,71 @@ public class UserRolePresenterTest {
 		assertTrue( view.getError() != null );
 
 	}
-	
+
 	@Test
-	public void testAddEnabled(){
+	public void testAddEnabled() {
 		MyMockButton add = (MyMockButton)view.getAddButton();
 		assertFalse( add.isEnabled() );
-		
+
 		MyMockListBox rolesChoices = (MyMockListBox)view.getRoleChoiceListBox();
 		rolesChoices.setSelectedIndex( 1 );
-		
+
 		rolesChoices.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
 		assertFalse( add.isEnabled() );
-		
+
 		rolesChoices.getKeyUpHandler().onKeyUp( MockGwtEvent.KEY_UP_EVENT );
 		assertFalse( add.isEnabled() );
-		
+
 		presenter.onSelectUser( new UserBean() );
 		rolesChoices.setSelectedIndex( 1 );
 		rolesChoices.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
 		assertTrue( add.isEnabled() );
-		
+
 		rolesChoices.setSelectedIndex( 0 );
 		rolesChoices.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
 		assertFalse( add.isEnabled() );
-		
+
 		rolesChoices.setSelectedIndex( 1 );
 		rolesChoices.getKeyUpHandler().onKeyUp( MockGwtEvent.KEY_UP_EVENT );
 		assertTrue( add.isEnabled() );
-		
+
 		rolesChoices.setSelectedIndex( 0 );
 		rolesChoices.getKeyUpHandler().onKeyUp( MockGwtEvent.KEY_UP_EVENT );
 		assertFalse( add.isEnabled() );
-		
+
 	}
-	
+
 	@Test
-	public void testRemoveEnabled(){
-		MyMockListBox selectedRoles = (MyMockListBox) view.getSelectedRolesListBox();
-		MyMockButton remove = (MyMockButton) view.getRemoveButton();
+	public void testRemoveEnabled() {
+		MyMockListBox selectedRoles = (MyMockListBox)view.getSelectedRolesListBox();
+		MyMockButton remove = (MyMockButton)view.getRemoveButton();
 		assertFalse( remove.isEnabled() );
-		
-		presenter.onSelectUser( createUserBean(new String[]{"test"}) );
+
+		presenter.onSelectUser( createUserBean( new String[] { "test" } ) );
 		selectedRoles.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
 		assertFalse( remove.isEnabled() );
 		selectedRoles.getKeyUpHandler().onKeyUp( MockGwtEvent.KEY_UP_EVENT );
 		assertFalse( remove.isEnabled() );
-		
+
 		selectedRoles.setSelectedIndex( 0 );
 		selectedRoles.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
 		assertTrue( remove.isEnabled() );
-		
-		presenter.onSelectUser( createUserBean(new String[]{"test"}) );
+
+		presenter.onSelectUser( createUserBean( new String[] { "test" } ) );
 		selectedRoles.setSelectedIndex( -1 );
 		selectedRoles.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
 		assertFalse( remove.isEnabled() );
-		
-		presenter.onSelectUser( createUserBean(new String[]{"test"}) );
+
+		presenter.onSelectUser( createUserBean( new String[] { "test" } ) );
 		selectedRoles.setSelectedIndex( 0 );
 		selectedRoles.getKeyUpHandler().onKeyUp( MockGwtEvent.KEY_UP_EVENT );
 		assertTrue( remove.isEnabled() );
-		
-		presenter.onSelectUser( createUserBean(new String[]{"test"}) );
+
+		presenter.onSelectUser( createUserBean( new String[] { "test" } ) );
 		selectedRoles.setSelectedIndex( -1 );
 		selectedRoles.getKeyUpHandler().onKeyUp( MockGwtEvent.KEY_UP_EVENT );
 		assertFalse( remove.isEnabled() );
-		
+
 	}
 
 	private void assertDisable() {

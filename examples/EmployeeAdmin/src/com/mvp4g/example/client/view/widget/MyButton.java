@@ -4,13 +4,13 @@ import com.google.gwt.user.client.ui.Button;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
 
 public class MyButton extends Button implements MyButtonInterface {
-	
-	public MyButton(){
+
+	public MyButton() {
 		//nothing to do
 	}
-	
-	public MyButton(String text){
-		super(text);
+
+	public MyButton( String text ) {
+		super( text );
 	}
 
 }

@@ -54,7 +54,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 			String role = null;
 			for ( int j = 0; j < nbRoles; j++ ) {
 				role = ROLES[random.nextInt( ROLES.length )];
-				if(!roles.contains( role )){
+				if ( !roles.contains( role ) ) {
 					roles.add( role );
 				}
 			}

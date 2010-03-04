@@ -74,8 +74,8 @@ public class MyMockTable implements MyTableInterface {
 		Map<Integer, String> rowMap = table.get( new Integer( row ) );
 		return ( rowMap == null ) ? null : rowMap.get( new Integer( column ) );
 	}
-	
-	public int getLastSelected(){
+
+	public int getLastSelected() {
 		return lastSelected;
 	}
 

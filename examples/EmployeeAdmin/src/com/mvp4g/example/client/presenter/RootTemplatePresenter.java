@@ -1,10 +1,14 @@
 package com.mvp4g.example.client.presenter;
 
-import com.mvp4g.client.presenter.XmlPresenter;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.example.client.EmployeeAdminEventBus;
 import com.mvp4g.example.client.presenter.view_interface.RootTemplateViewInterface;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
+import com.mvp4g.example.client.view.RootTemplateView;
 
-public class RootTemplatePresenter extends XmlPresenter<RootTemplateViewInterface> {
+@Presenter( view = RootTemplateView.class )
+public class RootTemplatePresenter extends BasePresenter<RootTemplateViewInterface, EmployeeAdminEventBus> {
 
 	public void onChangeTopWidget( MyWidgetInterface widget ) {
 		view.setTopWidget( widget );

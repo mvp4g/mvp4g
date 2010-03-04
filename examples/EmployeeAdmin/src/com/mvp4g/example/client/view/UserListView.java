@@ -35,7 +35,7 @@ public class UserListView extends Composite implements UserListViewInterface, My
 		buttons.add( confirmText );
 		buttons.add( yes );
 		buttons.add( no );
-		
+
 		VerticalPanel mainPanel = new VerticalPanel();
 		mainPanel.add( userList );
 		mainPanel.add( buttons );
