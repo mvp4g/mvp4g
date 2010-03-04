@@ -7,16 +7,16 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.presenter.view_interface.display.ProductDisplayViewInterface;
 
 public class ProductDisplayView extends BasicBeanDisplayView implements ProductDisplayViewInterface {
-	
+
 	private Label price = new Label();
-	
+
 	@Override
 	protected Widget createWidget() {
-		VerticalPanel mainPanel = (VerticalPanel) super.createWidget();
+		VerticalPanel mainPanel = (VerticalPanel)super.createWidget();
 		HorizontalPanel panel = new HorizontalPanel();
-		panel.add( new Label("Price") );
-		panel.add( price );		
-		price.addStyleName( "price" );		
+		panel.add( new Label( "Price" ) );
+		panel.add( price );
+		price.addStyleName( "price" );
 		mainPanel.add( panel );
 		return mainPanel;
 	}

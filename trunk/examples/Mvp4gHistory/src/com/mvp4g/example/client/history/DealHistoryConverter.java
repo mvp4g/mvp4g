@@ -10,12 +10,12 @@ public class DealHistoryConverter extends AbstractHistoryConverter<DealBean> {
 
 	@Override
 	void serviceCall( String id, AsyncCallback<DealBean> callback ) {
-		service.getDealDetails( id, callback );	
+		service.getDealDetails( id, callback );
 	}
 
 	@Override
 	void sendEvent( MyEventBus eventBus, DealBean result ) {
-		eventBus.displayDeal( result );		
+		eventBus.displayDeal( result );
 	}
 
 }

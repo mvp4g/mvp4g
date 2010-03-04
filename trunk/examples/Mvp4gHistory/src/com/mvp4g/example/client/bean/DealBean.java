@@ -3,7 +3,6 @@ package com.mvp4g.example.client.bean;
 public class DealBean extends BasicBean {
 
 	private String code = null;
-	
 
 	public DealBean() {
 		//nothing to do
@@ -21,7 +20,5 @@ public class DealBean extends BasicBean {
 	public void setCode( String code ) {
 		this.code = code;
 	}
-
-	
 
 }

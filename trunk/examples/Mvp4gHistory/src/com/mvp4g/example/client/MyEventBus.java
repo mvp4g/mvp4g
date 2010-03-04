@@ -21,43 +21,43 @@ import com.mvp4g.example.client.presenter.display.DealDisplayPresenter;
 import com.mvp4g.example.client.presenter.display.ProductDisplayPresenter;
 import com.mvp4g.example.client.view.RootTemplateView;
 
-@Events(startView=RootTemplateView.class, historyOnStart=true)
+@Events( startView = RootTemplateView.class, historyOnStart = true )
 public interface MyEventBus extends EventBus {
-	
-	@Event(handlers=RootTemplatePresenter.class)
-	public void changeTopWidget(Widget w);
-	
-	@Event(handlers=RootTemplatePresenter.class)
-	public void changeBottomWidget(Widget w);
 
-	@Event(handlers=RootTemplatePresenter.class)
-	public void changeMainWidget(Widget w);
-	
-	@Event(handlers={RootTemplatePresenter.class, CartDisplayPresenter.class}, historyConverter=ShowCartConverter.class)
-	public void displayCart(String username);
-	
-	@Event(handlers={RootTemplatePresenter.class, DealDisplayPresenter.class, TopBarPresenter.class}, historyConverter=DealHistoryConverter.class)
-	public void displayDeal(DealBean deal);
-	
-	@Event(handlers=RootTemplatePresenter.class)
-	public void displayMessage(String message);
-	
-	@Event(handlers={RootTemplatePresenter.class, ProductDisplayPresenter.class, TopBarPresenter.class}, historyConverter=ProductHistoryConverter.class)	
-	public void displayProduct(ProductBean product);
+	@Event( handlers = RootTemplatePresenter.class )
+	public void changeTopWidget( Widget w );
+
+	@Event( handlers = RootTemplatePresenter.class )
+	public void changeBottomWidget( Widget w );
+
+	@Event( handlers = RootTemplatePresenter.class )
+	public void changeMainWidget( Widget w );
+
+	@Event( handlers = { RootTemplatePresenter.class, CartDisplayPresenter.class }, historyConverter = ShowCartConverter.class )
+	public void displayCart( String username );
+
+	@Event( handlers = { RootTemplatePresenter.class, DealDisplayPresenter.class, TopBarPresenter.class }, historyConverter = DealHistoryConverter.class )
+	public void displayDeal( DealBean deal );
+
+	@Event( handlers = RootTemplatePresenter.class )
+	public void displayMessage( String message );
+
+	@Event( handlers = { RootTemplatePresenter.class, ProductDisplayPresenter.class, TopBarPresenter.class }, historyConverter = ProductHistoryConverter.class )
+	public void displayProduct( ProductBean product );
 
 	@InitHistory
-	@Event(handlers={RootTemplatePresenter.class, TopBarPresenter.class})
+	@Event( handlers = { RootTemplatePresenter.class, TopBarPresenter.class } )
 	public void init();
-	
+
 	@NotFoundHistory
-	@Event(handlers=RootTemplatePresenter.class)
+	@Event( handlers = RootTemplatePresenter.class )
 	public void notFound();
 
-	@Event(handlers=AccountPresenter.class)
-	public void login(String username);
+	@Event( handlers = AccountPresenter.class )
+	public void login( String username );
 
 	@Start
-	@Event(handlers={TopBarPresenter.class, LoginPresenter.class})
+	@Event( handlers = { TopBarPresenter.class, LoginPresenter.class } )
 	public void start();
 
 }

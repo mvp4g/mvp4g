@@ -16,7 +16,7 @@ import com.mvp4g.example.client.view.display.CartDisplayView;
 public class CartDisplayPresenter extends LazyPresenter<CartDisplayViewInterface, MyEventBus> {
 
 	private ServiceAsync service = null;
-	
+
 	public void onDisplayCart( String username ) {
 		view.clear();
 		if ( username != null ) {
