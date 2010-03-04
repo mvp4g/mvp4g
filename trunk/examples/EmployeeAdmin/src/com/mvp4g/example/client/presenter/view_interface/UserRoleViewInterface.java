@@ -5,12 +5,17 @@ import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyList
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
 
 public interface UserRoleViewInterface {
-	
+
 	public MyWidgetInterface getViewWidget();
+
 	public MyListBoxInterface getSelectedRolesListBox();
+
 	public MyListBoxInterface getRoleChoiceListBox();
+
 	public MyButtonInterface getAddButton();
+
 	public MyButtonInterface getRemoveButton();
-	public void displayError(String error);
+
+	public void displayError( String error );
 
 }

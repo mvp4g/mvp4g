@@ -23,15 +23,15 @@ public class UserProfileView extends Composite implements UserProfileViewInterfa
 	private MyPasswordTextBox password = new MyPasswordTextBox();
 	private MyPasswordTextBox confirmPassword = new MyPasswordTextBox();
 	private MyListBox department = new MyListBox();
-	
+
 	private MyButton update = new MyButton();
-	private MyButton cancel = new MyButton("Cancel");
-	
-	public UserProfileView(){		
-		CaptionPanel cp = new CaptionPanel("User Profile");
-		
-		Grid g = new Grid(8,2);
-		
+	private MyButton cancel = new MyButton( "Cancel" );
+
+	public UserProfileView() {
+		CaptionPanel cp = new CaptionPanel( "User Profile" );
+
+		Grid g = new Grid( 8, 2 );
+
 		g.setText( 0, 0, "First Name" );
 		g.setText( 1, 0, "Last Name" );
 		g.setText( 2, 0, "Email" );
@@ -39,7 +39,7 @@ public class UserProfileView extends Composite implements UserProfileViewInterfa
 		g.setText( 4, 0, "Password *" );
 		g.setText( 5, 0, "Confirm Password *" );
 		g.setText( 6, 0, "Department *" );
-		
+
 		g.setWidget( 0, 1, firstName );
 		g.setWidget( 1, 1, lastName );
 		g.setWidget( 2, 1, email );
@@ -47,15 +47,15 @@ public class UserProfileView extends Composite implements UserProfileViewInterfa
 		g.setWidget( 4, 1, password );
 		g.setWidget( 5, 1, confirmPassword );
 		g.setWidget( 6, 1, department );
-		
+
 		g.setWidget( 7, 0, update );
 		g.setWidget( 7, 1, cancel );
-		
+
 		cp.add( g );
-				
+
 		initWidget( cp );
 	}
-	
+
 	public MyWidgetInterface getViewWidget() {
 		return this;
 	}
@@ -69,7 +69,7 @@ public class UserProfileView extends Composite implements UserProfileViewInterfa
 	}
 
 	public MyListBoxInterface getDepartment() {
-			return department;
+		return department;
 	}
 
 	public MyTextBoxInterface getEmail() {
@@ -101,11 +101,11 @@ public class UserProfileView extends Composite implements UserProfileViewInterfa
 	}
 
 	public void showAddMode() {
-		update.setText( "Add User" );		
+		update.setText( "Add User" );
 	}
 
 	public void showUpdateMode() {
-		update.setText( "Update" );		
+		update.setText( "Update" );
 	}
 
 }

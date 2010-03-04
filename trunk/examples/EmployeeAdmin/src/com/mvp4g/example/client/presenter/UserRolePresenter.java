@@ -8,16 +8,20 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.presenter.XmlPresenter;
+import com.mvp4g.client.annotation.InjectService;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.Constants;
-import com.mvp4g.example.client.EventsEnum;
+import com.mvp4g.example.client.EmployeeAdminEventBus;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
 import com.mvp4g.example.client.presenter.view_interface.UserRoleViewInterface;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyListBoxInterface;
+import com.mvp4g.example.client.view.UserRoleView;
 
-public class UserRolePresenter extends XmlPresenter<UserRoleViewInterface> implements Constants {
+@Presenter( view = UserRoleView.class )
+public class UserRolePresenter extends BasePresenter<UserRoleViewInterface, EmployeeAdminEventBus> implements Constants {
 
 	private UserBean user = null;
 
@@ -53,13 +57,13 @@ public class UserRolePresenter extends XmlPresenter<UserRoleViewInterface> imple
 			}
 
 		} );
-		selectedRoles.addKeyUpHandler( new KeyUpHandler(){
+		selectedRoles.addKeyUpHandler( new KeyUpHandler() {
 
 			public void onKeyUp( KeyUpEvent event ) {
 				enableRemoveButton();
 			}
-			
-		});
+
+		} );
 
 		MyListBoxInterface rolesChoices = view.getRoleChoiceListBox();
 		rolesChoices.addClickHandler( new ClickHandler() {
@@ -86,7 +90,7 @@ public class UserRolePresenter extends XmlPresenter<UserRoleViewInterface> imple
 	}
 
 	public void onStart() {
-		eventBus.dispatch( EventsEnum.CHANGE_RIGHT_BOTTOM_WIDGET, view.getViewWidget() );
+		eventBus.changeRightBottomWidget( view.getViewWidget() );
 	}
 
 	public void onSelectUser( UserBean user ) {
@@ -122,6 +126,7 @@ public class UserRolePresenter extends XmlPresenter<UserRoleViewInterface> imple
 		disable();
 	}
 
+	@InjectService
 	public void setUserService( UserServiceAsync service ) {
 		this.service = service;
 	}

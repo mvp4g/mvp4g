@@ -2,7 +2,6 @@ package com.mvp4g.example.client.presenter;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,6 @@ import org.junit.Test;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.mvp4g.example.client.Constants;
-import com.mvp4g.example.client.EventsEnum;
 import com.mvp4g.example.client.bean.UserBean;
 import com.mvp4g.example.client.mock.MockGwtEvent;
 import com.mvp4g.example.client.mock.eventbus.MockEventBus;
@@ -40,6 +38,7 @@ public class UserListPresenterTest implements Constants {
 		presenter.setView( view );
 		presenter.setEventBus( eventBus );
 		presenter.setUserService( service );
+		presenter.bindIfNeeded();
 		presenter.onStart();
 	}
 
@@ -56,7 +55,7 @@ public class UserListPresenterTest implements Constants {
 		for ( int i = 0; i < nbUser; i++ ) {
 			assertTableRow( i + 1, users.get( i ) );
 		}
-		eventBus.assertEvent( EventsEnum.CHANGE_TOP_WIDGET.toString(), view.getViewWidget() );
+		eventBus.assertChangeTopWidget( view.getViewWidget() );
 
 	}
 
@@ -87,17 +86,7 @@ public class UserListPresenterTest implements Constants {
 	public void testNewClick() {
 		MyMockButton newButton = (MyMockButton)view.getNewButton();
 		newButton.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		assertEquals( eventBus.getLastDispatchedEventType(), EventsEnum.CREATE_NEW_USER.toString() );
-		UserBean u = (UserBean)eventBus.getLastDispatchedObject();
-
-		assertNull( u.getFirstName() );
-		assertNull( u.getLastName() );
-		assertNull( u.getEmail() );
-		assertNull( u.getUsername() );
-		assertNull( u.getPassword() );
-		assertNull( u.getDepartment() );
-		assertNull( u.getRoles() );
-
+		eventBus.assertCreateNewUser();
 	}
 
 	@Test

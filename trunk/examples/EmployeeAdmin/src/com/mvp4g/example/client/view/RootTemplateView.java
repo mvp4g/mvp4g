@@ -18,7 +18,7 @@ public class RootTemplateView extends Composite implements RootTemplateViewInter
 	}
 
 	public void setLeftBottomWidget( MyWidgetInterface widget ) {
-		table.setWidget( 1, 0, widget.getMyWidget() );		
+		table.setWidget( 1, 0, widget.getMyWidget() );
 	}
 
 	public void setRightBottomWidget( MyWidgetInterface widget ) {

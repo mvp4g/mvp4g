@@ -43,8 +43,8 @@ public class MockUserRoleView implements UserRoleViewInterface, MyWidgetInterfac
 	public Widget getMyWidget() {
 		return null;
 	}
-	
-	public String getError(){
+
+	public String getError() {
 		return error;
 	}
 

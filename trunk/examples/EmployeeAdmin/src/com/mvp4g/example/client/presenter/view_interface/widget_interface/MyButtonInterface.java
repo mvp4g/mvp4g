@@ -8,5 +8,5 @@ public interface MyButtonInterface extends HasClickHandlers {
 
 	public void setVisible( boolean isVisible );
 
-	public void setText(String text);
+	public void setText( String text );
 }
