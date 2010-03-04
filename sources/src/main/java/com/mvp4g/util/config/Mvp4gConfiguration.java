@@ -999,7 +999,6 @@ public class Mvp4gConfiguration {
 					}
 				}
 			}
-
 		}
 
 	}

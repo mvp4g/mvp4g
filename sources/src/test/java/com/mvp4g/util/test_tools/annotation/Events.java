@@ -8,8 +8,8 @@ import com.mvp4g.client.annotation.module.AfterLoadChildModule;
 import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
 import com.mvp4g.client.annotation.module.ChildModule;
 import com.mvp4g.client.annotation.module.ChildModules;
-import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.annotation.module.DisplayChildModuleView;
+import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.util.test_tools.Modules;
@@ -204,7 +204,7 @@ public class Events {
 
 	}
 
-	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ), } )
+	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ) } )
 	@com.mvp4g.client.annotation.Events( startView = Object.class )
 	public static interface EventBusUnknownModuleForEvent extends EventBus {
 
@@ -213,7 +213,7 @@ public class Events {
 
 	}
 
-	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ), } )
+	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ) } )
 	@com.mvp4g.client.annotation.Events( startView = Object.class )
 	public static interface EventBusUnknownModuleForLoadModuleViewEvent extends EventBus {
 
@@ -223,7 +223,7 @@ public class Events {
 
 	}
 
-	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ), } )
+	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ) } )
 	@com.mvp4g.client.annotation.Events( startView = Object.class )
 	public static interface EventBusSameModuleForLoadModuleViewEvent extends EventBus {
 

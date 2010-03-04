@@ -17,10 +17,10 @@ import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.annotation.Service;
 import com.mvp4g.util.test_tools.TypeOracleStub;
-import com.mvp4g.util.test_tools.annotation.TestEvents;
-import com.mvp4g.util.test_tools.annotation.TestHistory;
-import com.mvp4g.util.test_tools.annotation.TestPresenter;
-import com.mvp4g.util.test_tools.annotation.TestService;
+import com.mvp4g.util.test_tools.annotation.OneEvents;
+import com.mvp4g.util.test_tools.annotation.OneHistory;
+import com.mvp4g.util.test_tools.annotation.OnePresenter;
+import com.mvp4g.util.test_tools.annotation.OneService;
 
 public class TestAnnotationScanner {
 
@@ -51,10 +51,10 @@ public class TestAnnotationScanner {
 	public void testWithClass() {
 
 		JClassType[] types = new JClassType[4];
-		types[0] = oracle.findType( TestPresenter.class.getName() );
-		types[1] = oracle.findType( TestHistory.class.getName() );
-		types[2] = oracle.findType( TestEvents.class.getName() );
-		types[3] = oracle.findType( TestService.class.getName() );
+		types[0] = oracle.findType( OnePresenter.class.getName() );
+		types[1] = oracle.findType( OneHistory.class.getName() );
+		types[2] = oracle.findType( OneEvents.class.getName() );
+		types[3] = oracle.findType( OneService.class.getName() );
 
 		Map<Class<? extends Annotation>, List<JClassType>> scanResult = AnnotationScanner.scan( logger, oracle, annotations );
 		for ( int i = 0; i < types.length; i++ ) {

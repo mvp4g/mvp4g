@@ -484,7 +484,7 @@ public class Mvp4gConfigurationFileWriter {
 			if ( hasHistory ) {
 				sourceWriter.print( "place( itself, \"" );
 				sourceWriter.print( type );
-				if ( objectClass == null ) {
+				if ( ( objectClass == null ) || ( objectClass.length() == 0 ) ) {
 					sourceWriter.println( "\", null );" );
 				} else {
 					sourceWriter.println( "\", form );" );
@@ -688,7 +688,7 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( "load" );
 			sourceWriter.print( module.getName() );
 
-			if ( eventObjectClass == null ) {
+			if ( ( eventObjectClass == null ) || ( eventObjectClass.length() == 0 ) ) {
 				eventObject = null;
 				eventObjectClass = Object.class.getCanonicalName();
 				form = "null";
