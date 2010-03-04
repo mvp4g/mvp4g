@@ -7,13 +7,13 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
 
 public class MyGXTButton extends Button implements MyButtonInterface {
-	
-	public MyGXTButton(){
-		
+
+	public MyGXTButton() {
+
 	}
-	
-	public MyGXTButton(String text){
-		super(text);
+
+	public MyGXTButton( String text ) {
+		super( text );
 	}
 
 	public HandlerRegistration addClickHandler( ClickHandler handler ) {

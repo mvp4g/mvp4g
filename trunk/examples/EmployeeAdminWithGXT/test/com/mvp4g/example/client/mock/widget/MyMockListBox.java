@@ -37,7 +37,7 @@ public class MyMockListBox implements MyListBoxInterface {
 	public void removeItem( String item ) {
 		int index = items.indexOf( item );
 		if ( index > -1 ) {
-			if(index == selected){
+			if ( index == selected ) {
 				selected--;
 			}
 			items.remove( index );

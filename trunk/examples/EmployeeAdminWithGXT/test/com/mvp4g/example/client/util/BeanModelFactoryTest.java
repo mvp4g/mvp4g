@@ -4,10 +4,10 @@ import com.extjs.gxt.ui.client.data.BeanModel;
 import com.extjs.gxt.ui.client.data.BeanModelFactory;
 
 public class BeanModelFactoryTest extends BeanModelFactory {
-	
+
 	//Have to create a subclass to have access to the constructor
-	public class BeanModelTest extends BeanModel{		
-		
+	public class BeanModelTest extends BeanModel {
+
 	}
 
 	@Override

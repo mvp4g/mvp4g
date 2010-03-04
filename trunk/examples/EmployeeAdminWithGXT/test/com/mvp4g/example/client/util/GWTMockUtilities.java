@@ -10,7 +10,7 @@ public class GWTMockUtilities {
 
 	public static void disarm() {
 		GWTBridge bridge = new GXTBridge();
-        //Inject my own bridge to be able to create my own BeanModelLookup
+		//Inject my own bridge to be able to create my own BeanModelLookup
 		setGwtBridge( bridge );
 	}
 

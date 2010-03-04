@@ -16,20 +16,24 @@ import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.presenter.Presenter;
-import com.mvp4g.example.client.EventsEnum;
+import com.mvp4g.client.annotation.InjectService;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.example.client.EmployeeAdminWithGXTEventBus;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
 import com.mvp4g.example.client.presenter.view_interface.UserListViewInterface;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.MyGXTButtonInterface;
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.MyGXTTableInterface;
+import com.mvp4g.example.client.view.UserListView;
 
-public class UserListPresenter extends Presenter<UserListViewInterface> {
-	
+@Presenter( view = UserListView.class )
+public class UserListPresenter extends BasePresenter<UserListViewInterface, EmployeeAdminWithGXTEventBus> {
+
 	private BeanModelFactory factory = BeanModelLookup.get().getFactory( UserBean.class );
 
 	protected int indexSelected = -1;
-	
+
 	private UserServiceAsync service = null;
 
 	private PagingLoader<PagingLoadResult<ModelData>> loader = null;
@@ -52,8 +56,6 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 		view.getToolBar().bind( loader );
 
 		view.buildWidget( store );
-		
-		
 
 		MyGXTButtonInterface delete = view.getDeleteButton();
 		delete.setEnabled( false );
@@ -67,7 +69,7 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 		view.getNewButton().addListener( Events.Select, new Listener<ButtonEvent>() {
 
 			public void handleEvent( ButtonEvent be ) {
-				eventBus.dispatch( EventsEnum.CREATE_NEW_USER, new UserBean() );
+				eventBus.createNewUser( new UserBean() );
 			}
 
 		} );
@@ -101,18 +103,18 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 	}
 
 	public void onStart() {
-		eventBus.dispatch( EventsEnum.CHANGE_TOP_WIDGET, view.getViewWidget() );
-		loader.load(0, 4);
+		eventBus.changeTopWidget( view.getViewWidget() );
+		loader.load( 0, 4 );
 	}
 
 	public void onUserUpdated( UserBean user ) {
-		if(indexSelected > -1){
+		if ( indexSelected > -1 ) {
 			store.update( store.getAt( indexSelected ) );
 		}
 	}
 
 	public void onUserCreated( UserBean user ) {
-		store.add( factory.createModel( user ) );		
+		store.add( factory.createModel( user ) );
 	}
 
 	public void onUnselectUser() {
@@ -120,6 +122,7 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 		indexSelected = -1;
 	}
 
+	@InjectService
 	public void setUserService( UserServiceAsync service ) {
 		this.service = service;
 	}
@@ -133,13 +136,13 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 
 		indexSelected = row;
 		table.selectRow( indexSelected );
-		eventBus.dispatch( EventsEnum.SELECT_USER, store.getAt( row ).getBean() );
+		eventBus.selectUser( (UserBean)store.getAt( row ).getBean() );
 		view.getDeleteButton().setEnabled( true );
 
 	}
 
 	private void deleteUser() {
-		service.deleteUser((UserBean) store.getAt( indexSelected ).getBean(), new AsyncCallback<Void>() {
+		service.deleteUser( (UserBean)store.getAt( indexSelected ).getBean(), new AsyncCallback<Void>() {
 
 			public void onFailure( Throwable caught ) {
 				// TODO Auto-generated method stub
@@ -147,10 +150,10 @@ public class UserListPresenter extends Presenter<UserListViewInterface> {
 			}
 
 			public void onSuccess( Void result ) {
-				store.remove( store.getAt( indexSelected ) );				
+				store.remove( store.getAt( indexSelected ) );
 				view.getDeleteButton().setEnabled( false );
 				setVisibleConfirmDeletion( false );
-				eventBus.dispatch( EventsEnum.UNSELECT_USER );
+				eventBus.unselectUser();
 			}
 
 		} );

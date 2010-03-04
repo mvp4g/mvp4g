@@ -41,7 +41,7 @@ public class MyGXTComboBox extends SimpleComboBox<String> implements MyListBoxIn
 	}
 
 	public void setSelectedIndex( int index ) {
-		setValue( getStore().getAt( index ) );		
+		setValue( getStore().getAt( index ) );
 	}
 
 	public void setSelectedValue( String value ) {
@@ -49,13 +49,13 @@ public class MyGXTComboBox extends SimpleComboBox<String> implements MyListBoxIn
 	}
 
 	public HandlerRegistration addClickHandler( final ClickHandler handler ) {
-		addListener( Events.Select, new Listener<FieldEvent>(){
+		addListener( Events.Select, new Listener<FieldEvent>() {
 
 			public void handleEvent( FieldEvent be ) {
-				handler.onClick( null );				
+				handler.onClick( null );
 			}
-			
-		});
+
+		} );
 		return null;
 	}
 

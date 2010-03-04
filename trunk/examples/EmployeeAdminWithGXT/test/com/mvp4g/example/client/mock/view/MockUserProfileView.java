@@ -11,12 +11,12 @@ import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyText
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
 
 public class MockUserProfileView implements UserProfileViewInterface, MyWidgetInterface {
-	
+
 	private boolean updateMode = true;
-	
+
 	private MyMockButton cancel = new MyMockButton();
 	private MyMockButton update = new MyMockButton();
-	
+
 	private MyMockTextBox confirmPassword = new MyMockTextBox();
 	private MyMockListBox department = new MyMockListBox();
 	private MyMockTextBox email = new MyMockTextBox();
@@ -70,14 +70,14 @@ public class MockUserProfileView implements UserProfileViewInterface, MyWidgetIn
 	}
 
 	public void showAddMode() {
-		updateMode = false;		
+		updateMode = false;
 	}
 
 	public void showUpdateMode() {
-		updateMode = true;		
+		updateMode = true;
 	}
-	
-	public boolean isUpdateMode(){
+
+	public boolean isUpdateMode() {
 		return updateMode;
 	}
 
