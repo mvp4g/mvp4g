@@ -1,4 +1,5 @@
-#summary Draft for 1.1.0 version
+#summary Creating presenters, views & services
+
 <wiki:toc max_depth="3" />
 
 Mvp4g mainly helps you define 3 types of elements:
@@ -31,7 +32,7 @@ Instead of extending BasePresenter, you can also implement PresenterInterface<V,
 
 Mvp4g will automaticaly create an instance for each class annoted with @Presenter. Mvp4g will also create for each presenter its own instance of its view. If two presenters are injected with views with the same class, two instances of this view class will be created.
 
-You can also decide to create a Lazy Presenter (see ... for more information).
+You can also decide to create a Lazy Presenter ([http://code.google.com/p/mvp4g/wiki/Mvp4gOptimization#Lazy_Loading see Mvp4g Lazy Loading for more information]).
 
 ==Injecting services==
 
@@ -54,7 +55,7 @@ You can also decide to inject a service thanks to its name by specifying the att
 
 To create a view, all you need is to create a class with a constructor with no parameter.
 
-You can also decide to create a Lazy View (see ... for more information).
+You can also decide to create a Lazy View ([http://code.google.com/p/mvp4g/wiki/Mvp4gOptimization#Lazy_Loading see Mvp4g Lazy Loading for more information]).
 
 =Service=
 
@@ -85,4 +86,3 @@ The following example uses Edgebox library (http://code.google.com/p/edgebox/) t
 @Service(generatedClass=PingService.class)
 public interface PingService extends RestRemote {...}
 }}}
-
