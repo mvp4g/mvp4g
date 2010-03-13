@@ -29,9 +29,9 @@ Add your views to the configuration file.
 </views>
 }}}
 
- * package (optional): you can specify the package where your views are located so as to not be required to write it for each of them (see [FAQ] for more information).
+ * package (optional): you can specify the package where your views are located so as to not be required to write it for each of them ([http://code.google.com/p/mvp4g/wiki/XML?ts=1268511969&updated=XML#Package_attribute see package attribute for more information]).
  * name: name of the view. It must be unique amongst all elements.
- * class: Class of the view (package attribute may be used to build the full name, see [FAQ] for more information). 
+ * class: Class of the view (package attribute may be used to build the full name ([http://code.google.com/p/mvp4g/wiki/XML?ts=1268511969&updated=XML#Package_attribute see package attribute for more information]).
 
 =Services=
 Add your services to the configuration file. Only services declared in this configuration can be injected into presenters and history converters.
@@ -43,10 +43,8 @@ Add your services to the configuration file. Only services declared in this conf
 </services>
 }}}
 
- * package (optional): you can specify the package where your services are located in order to not to have write it for each of them (see [FAQ] for more information).
- * name: name of the service. It must be unique amongst all elements.
- * class: Interface of the service (package attribute may be used to build the full name, see [FAQ] for more information). 
- * path (optional): allows for the definition the service entry point. Similar to:
+ * package (optional): you can specify the package where your services are located in order to not to have write it for each of them ([http://code.google.com/p/mvp4g/wiki/XML?ts=1268511969&updated=XML#Package_attribute see package attribute for more information]). * name: name of the service. It must be unique amongst all elements.
+ * class: Interface of the service (package attribute may be used to build the full name ([http://code.google.com/p/mvp4g/wiki/XML?ts=1268511969&updated=XML#Package_attribute see package attribute for more information]). * path (optional): allows for the definition the service entry point. Similar to:
 {{{
 service2.setServiceEntryPoint("/myapp/myservice"); 
 }}}
@@ -79,12 +77,11 @@ Add history to the configuration file.
 </history>
 }}}
 
- * package (optional): you can specify the package where your history converters are located so as to not be required to write it for each of them (see [FAQ] for more information).
+ * package (optional): you can specify the package where your history converters are located so as to not be required to write it for each of them ([http://code.google.com/p/mvp4g/wiki/XML?ts=1268511969&updated=XML#Package_attribute see package attribute for more information]).
  * initEvent: type of the event thrown by the PlaceService in case the history is fired with an empty token (null or equal to ""). This event will be fired with no parameter.
  * notFoundEvent (optional): type of the event fired by the PlaceService if the token stored in browser history is not matched with a history converter. If not specified, then the same event as initEvent will be thrown.
  * name: name of the history converter. It must be unique amongst all elements.
- * class: Class of the history converter (package attribute may be used to build the full name, see [FAQ] for more information). 
- * service (optional) : name(s) of the service(s) to inject in the history converter. The name(s) of the service(s) must be equal to one of the service names declared in the configuration file. Each service name must be separated by a comma.
+ * class: Class of the history converter (package attribute may be used to build the full name ([http://code.google.com/p/mvp4g/wiki/XML?ts=1268511969&updated=XML#Package_attribute see package attribute for more information]). * service (optional) : name(s) of the service(s) to inject in the history converter. The name(s) of the service(s) must be equal to one of the service names declared in the configuration file. Each service name must be separated by a comma.
 
 =Presenters=
 Create your presenters by extending the XmlPresenter (or LazyXmlPresenter) class. An XmlPresenter is like a regular presenter (see [http://code.google.com/p/mvp4g/wiki/PresenterViewService#Presenter presenter] but since you don't define an event bus interface, it automaticaly uses an EventBusWithLookup. Thus to fire an event, you will use the following code:
@@ -101,9 +98,8 @@ Add your presenters to the configuration file. You have to inject one view into 
 </presenters>
 }}}
 
- * package (optional): you can specify the package where your presenters are located in order not have to write it for each of them (see [FAQ] for more information).
- * name: name of the presenter. It must be unique amongst all elements.
- * class: Class of the presenter (package attribute may be used to build the full name, see [FAQ] for more information). 
+ * package (optional): you can specify the package where your presenters are located in order not have to write it for each of them ([http://code.google.com/p/mvp4g/wiki/XML?ts=1268511969&updated=XML#Package_attribute see package attribute for more information]). * name: name of the presenter. It must be unique amongst all elements.
+ * class: Class of the presenter (package attribute may be used to build the full name ([http://code.google.com/p/mvp4g/wiki/XML?ts=1268511969&updated=XML#Package_attribute see package attribute for more information]).
  * view: name of the view to inject in the presenter. The name must be equal to one of the view names declared in the configuration file.
  * service (optional) : name(s) of the service(s) to inject in the presenter. The name(s) of the service(s) must be equal to one of the service names declared in the configuration file. Each service name must be separated by a comma.
 
@@ -147,12 +143,12 @@ Add your child modules to the configuration file. Each module needs to have its 
 </childModules>
 }}}
 
- * package (optional): you can specify the package where your child modules are located so as to not be required to write it for each of them (see [FAQ] for more information).
+ * package (optional): you can specify the package where your child modules are located so as to not be required to write it for each of them ([http://code.google.com/p/mvp4g/wiki/XML?ts=1268511969&updated=XML#Package_attribute see package attribute for more information]).
  * beforeEvent (optional): event to fire when starting to load the child module (only if child module is loaded asynchronously)
  * afterEvent (optional): event to fire when the child module is done loading (only if child module is loaded asynchronously)
  * errorEvent (optional): event to fire when an error occurs while loading the child module.
  * name: name of the child module. It must be unique amongst all elements.
- * class: interface of child module (package attribute may be used to build the full name, see [FAQ] for more information). 
+ * class: interface of child module (package attribute may be used to build the full name ([http://code.google.com/p/mvp4g/wiki/XML?ts=1268511969&updated=XML#Package_attribute see package attribute for more information]).
  * async (optional): If this attribute is set to "true", the module will be loaded only when it has to handle its first event thanks to the GWT 2.0 GWT splitting feature. By default, it sets to "true".
  * autoDisplay(optional) : If this attribute is set to "true", the child start view will be displayed automaticaly thanks to eventToDisplayView event. By default, it sets to "true".
  * eventToDisplayView (required if autoDisplay activated): event used to display child start view.
