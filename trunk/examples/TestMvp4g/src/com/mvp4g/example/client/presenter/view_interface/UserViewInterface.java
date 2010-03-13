@@ -6,15 +6,15 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 
 public interface UserViewInterface {
-	
+
 	public HasClickHandlers getButton();
-	
+
 	public HasText getId();
-	
+
 	public HasValue<String> getLastName();
-	
+
 	public HasValue<String> getFirstName();
-	
+
 	public Widget getViewWidget();
 
 }

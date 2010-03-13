@@ -8,7 +8,7 @@ public class Event10 extends GwtEvent<Event10.Event10Handler> {
 	public interface Event10Handler extends EventHandler {
 		void handle( Event10 event );
 	}
-	
+
 	public static final GwtEvent.Type<Event10.Event10Handler> TYPE = new GwtEvent.Type<Event10.Event10Handler>();
 
 	private String event = null;

@@ -9,27 +9,28 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.presenter.view_interface.RootViewInterface;
 import com.mvp4g.example.client.view.widget.LabelWithValue;
 
-public class RootView extends Composite implements RootViewInterface{
-	
+public class RootView extends Composite implements RootViewInterface {
+
 	private LabelWithValue message = new LabelWithValue();
 	private Panel body = new SimplePanel();
-	
-	public RootView(){
+
+	public RootView() {
 		VerticalPanel mainPanel = new VerticalPanel();
-		mainPanel.add(message);
-		mainPanel.add(body);
-		initWidget(mainPanel);		
+		message.setStyleName( "message" );
+		mainPanel.add( message );
+		mainPanel.add( body );
+		initWidget( mainPanel );
 	}
-	
-	public HasValue<String> getMessage(){
+
+	public HasValue<String> getMessage() {
 		return message;
 	}
-	
-	public Panel getBody(){
+
+	public Panel getBody() {
 		return body;
 	}
-	
-	public Widget getViewWidget(){
+
+	public Widget getViewWidget() {
 		return this;
 	}
 
