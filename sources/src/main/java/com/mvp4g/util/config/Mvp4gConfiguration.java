@@ -145,8 +145,8 @@ public class Mvp4gConfiguration {
 	 * </ol>
 	 * 
 	 * 
-	 * @param xmlConfigPath
-	 *            path of the XML configuration file to load
+	 * @param module
+	 *            module to load
 	 * @param scanResult
 	 *            Map of classes associated with an annotation
 	 * @throws InvalidMvp4gConfigurationException
@@ -359,8 +359,8 @@ public class Mvp4gConfiguration {
 	/**
 	 * Should be used only for test
 	 * 
-	 * @param parentEventBus
-	 *            the parentEventBus to set
+	 * @param historyName
+	 *            the historyName to set
 	 */
 	public void setHistoryName( String historyName ) {
 		this.historyName = historyName;

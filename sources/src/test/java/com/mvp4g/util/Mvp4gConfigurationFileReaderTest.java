@@ -805,7 +805,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	private String[] getExpectedInheritHistory() {
 		return new String[] { "public void addConverter(String token, HistoryConverter<?,?> hc){", "placeService.addConverter(token, hc);",
 				"public <T> void place(String token, T form){", "placeService.place( token, form );",
-				"public <T> void dispatchHistoryEvent(String eventType, final Mvp4gEventPasser<Boolean> passer){",
+				"public void dispatchHistoryEvent(String eventType, final Mvp4gEventPasser<Boolean> passer){",
 				"int index = eventType.indexOf(PlaceService.MODULE_SEPARATOR);", "if(index > -1){",
 				"String moduleHistoryName = eventType.substring(0, index);", "String nextToken = eventType.substring(index + 1);",
 				"Mvp4gEventPasser<String> nextPasser = new Mvp4gEventPasser<String>(nextToken) {", "public void pass(Mvp4gModule module) {",

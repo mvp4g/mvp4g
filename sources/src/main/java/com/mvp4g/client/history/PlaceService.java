@@ -1,3 +1,18 @@
+/*
+ * Copyright 2010 Pierre-Laurent Coirier
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package com.mvp4g.client.history;
 
 import java.util.HashMap;
@@ -10,22 +25,23 @@ import com.mvp4g.client.Mvp4gEventPasser;
 import com.mvp4g.client.Mvp4gModule;
 
 /**
- * Place Service defines the connection between the application and the history.<br/>
+ * Place Service defines the connection between the application and the browser history.<br/>
  * <br/>
- * When an event needs to be stored in the history, the place method of <code>PlaceService</code> by
- * the <code>Command</code> instance in charge of an event.<br/>
+ * When an event needs to be stored in the history, the place method of <code>PlaceService</code> is
+ * called. This method will transform the event to an history token the following way:<br/>
  * <br/>
- * When the History token changes, the onValueChange method is called.<br/>
+ * <b>myurl#eventType?params</b><br/>
  * <br/>
- * The <code>PlaceService</code> convert an event to a History token the following way:<br/>
- * <br/>
- * myurl#eventType?params<br/>
- * <br/>
- * where params is the string returned by the convertToToken method of the converter associated with
- * the event.<br/>
+ * where params is the string returned by the convertToToken method of the history converter
+ * associated with the event.<br/>
  * If params is null, then the URL will be:<br/>
  * <br/>
- * myurl#eventType
+ * <b>myurl#eventType</b><br/>
+ * <br/>
+ * In case an event of a child module is stored, its history name and history names of all its
+ * ascendant except the Root Module will be stored in the token:<br/>
+ * <br/>
+ * <b>myurl#childModule/subChildModule/eventType?params</b><br/>
  * 
  * 
  * 
@@ -63,10 +79,8 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	private Map<String, HistoryConverter> converters = new HashMap<String, HistoryConverter>();
 
 	/**
-	 * Build a <code>PlaceService</code> and inject <code>EventBus</code> instance.
+	 * Build a <code>PlaceService</code>.
 	 * 
-	 * @param eventBus
-	 *            event bus to inject
 	 */
 	public PlaceService() {
 		this( new HistoryProxy() {
@@ -83,16 +97,13 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	}
 
 	/**
-	 * Build a <code>PlaceService</code> and inject <code>EventBus</code> and
-	 * <code>HistoryProxy</code> instances.<br/>
+	 * Build a <code>PlaceService</code> and inject an <code>HistoryProxy</code> instance.<br/>
 	 * <br/>
 	 * This constructor is handy when you want to test <code>PlaceService</code> without using the
 	 * GWT History class.<br/>
 	 * It shouldn't be called otherwise.
 	 * 
 	 * 
-	 * @param eventBus
-	 *            event bus to inject
 	 * @param history
 	 *            history proxy to inject
 	 */

@@ -29,7 +29,9 @@ import com.mvp4g.client.event.EventBus;
  * <br/>
  * 
  * @param <V>
- *            Class type of the view injected into the presenter
+ *            Type of the view injected into the presenter
+ * @param <E>
+ *            Type of the event bus used by the presenter.
  * 
  * @author plcoirier
  * 

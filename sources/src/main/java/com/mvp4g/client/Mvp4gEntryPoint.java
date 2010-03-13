@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Pierre-Laurent Coirier
+ * Copyright 2010 Pierre-Laurent Coirier
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Default Mvp4g entry point
+ * Default Mvp4g entry point. Add the start view of the Root Module to the <code>RootPanel</code>. 
  */
 public class Mvp4gEntryPoint implements EntryPoint {
 
