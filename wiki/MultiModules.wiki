@@ -39,7 +39,7 @@ You can define child modules of a module thanks to ChildModule<b>s</b> annotatio
 A ChildModule annotation has three attributes:
  * moduleClass: class of the child module. It must be one of the class you created at step 1.
  * async (default:true): if set to true, then the code containing the child module is loaded when handling its first event otherwise it is loaded when application starts. In the first case, Mvp4g uses GWT Code Splitting feature to load the child module. 
- * autoLoad (default:true): if set to true, the start view of the child module will be displayed when the child module is done loaded. When this option is set to true, the event of the parent module needed to load the start view of the child module must be defined (see ...)
+ * autoDisplay (default:true): if set to true, the start view of the child module will be displayed when the child module is done loaded. When this option is set to true, the event of the parent module needed to display the start view of the child module must be defined (see [http://code.google.com/p/mvp4g/wiki/MultiModules#Child_module AutoDisplay])
 
 To forward an event to a child module, you need to specify the attribute modulesToLoad of the @Event annotation that is associated with the method of your event (defined inside your event bus interface). This attribute contains an array of child module(s) classname that need(s) to which events need to be forwarded be loaded.
 
@@ -61,17 +61,17 @@ This event will be fired view each time an event is forwarded to a child module.
 
 By default, AutoDisplay option is set to true.
 
-When this option is activated, you need to indicate which event to use to display the child module start view. To set this event, you have to annotate the event with @UseToLoadChildModuleView.
+When this option is activated, you need to indicate which event to use to display the child module start view. To set this event, you have to annotate the event's method with @DisplayChildModuleView.
 
 {{{
-@UseToLoadChildModuleView(CompanyModule.class)
+@DisplayChildModuleView(CompanyModule.class)
 @Event(handlers = MainPresenter.class)
 public void changeBody(Widget newBody);
 }}}
 
 The only attribute of this annotation is a list of child module class name. You can specify one-to-many child module classes thanks to this attribute. One and only one event should be set for each child module.
 
-The parent module event used to load child module start view must be associated with one object which type is compatible with child module start view type.
+The parent module event used to display child module start view must be associated with one object which type is compatible with child module start view type.
 
 ===Before, After, OnError===
 
