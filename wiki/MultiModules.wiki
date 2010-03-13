@@ -1,4 +1,4 @@
-#summary Draft for 1.1.0 version
+#summary Multi-Modules feature
 
 <wiki:toc max_depth="3" />
 
@@ -100,7 +100,7 @@ public void afterLoad();
 
 ===Sequence Diagram===
 
-[http://mvp4g.googlecode.com/svn/trunk/documentation/uml/forward_children.png]
+[http://mvp4g.googlecode.com/svn/tags/mvp4g-1.1.0/documentation/uml/forward_children.png]
 
 1: these methods are called only the first time the child module is loaded<br/>
 2: child module is created thanks to GWT.create process<br/>
@@ -135,6 +135,6 @@ To forward an event to a child module, you need to set the attribute forwardToPa
 public void changeBody(Widget body);
 }}}
 
-[http://mvp4g.googlecode.com/svn/trunk/documentation/uml/forward_parent.png]
+[http://mvp4g.googlecode.com/svn/tags/mvp4g-1.1.0/documentation/uml/forward_parent.png]
 
 1: these methods are called when the child module is loaded and allow it to retrieve the parent event bus.
