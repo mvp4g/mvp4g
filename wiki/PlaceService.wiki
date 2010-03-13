@@ -15,11 +15,11 @@ History converters have two goals:
 
 This is how Mvp4g stores an event to the browser history:
 
-[http://mvp4g.googlecode.com/svn/trunk/documentation/uml/place_service.png]
+[http://mvp4g.googlecode.com/svn/tags/mvp4g-1.1.0/documentation/uml/place_service.png]
 
 This is how Mvp4g retrieves an event from browser history:
 
-[http://mvp4g.googlecode.com/svn/trunk/documentation/uml/place_service_reverse.png]
+[http://mvp4g.googlecode.com/svn/tags/mvp4g-1.1.0/documentation/uml/place_service_reverse.png]
 
 The token stored in the browser history will be built the following way: event type + "?" + value returned by convertToToken (event type corresponds to the name of the method that defines the event in your event bus interface).
 
@@ -142,7 +142,7 @@ For example, the following token: #module/submodule/event1 means:
  * submodule: name of the module to which you can forward the event
  * module: name of the parent module. Since this is the top name, it means that the parent of the parent module is the Root Module.
 
-[http://mvp4g.googlecode.com/svn/trunk/documentation/uml/place_service_children.png]
+[http://mvp4g.googlecode.com/svn/tags/mvp4g-1.1.0/documentation/uml/place_service_children.png]
 
 When history token changes, the framework will download if needed the module associated with the event and forwards the event to the module.
 
@@ -151,7 +151,7 @@ For example, if the value of token is: #module/submodule/event1 then:
  * When done loading module, submodule will be loaded
  * when done loading submodule, event1 is forwarded to submodule.
 
-[http://mvp4g.googlecode.com/svn/trunk/documentation/uml/place_service_reverse_children.png]
+[http://mvp4g.googlecode.com/svn/tags/mvp4g-1.1.0/documentation/uml/place_service_reverse_children.png]
 
 
 If your module needs to store events in history, then you need to define its history name. In order to so, you need to annotate your module interface with @HistoryName.
