@@ -7,7 +7,7 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="lib" path="test/lib/junit-4.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt.jar"/>
-	<classpathentry kind="lib" path="lib/mvp4g-1.1.0-SNAPSHOT.jar"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/GWT 1.7.1"/>
+	<classpathentry kind="lib" path="lib/mvp4g-1.1.0.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
