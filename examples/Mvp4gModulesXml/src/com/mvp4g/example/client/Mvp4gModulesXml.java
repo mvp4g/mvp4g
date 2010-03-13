@@ -11,6 +11,6 @@ public class Mvp4gModulesXml implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		
+
 	}
 }

@@ -12,38 +12,37 @@ import com.mvp4g.example.client.product.presenter.ProductEditPresenter;
 import com.mvp4g.example.client.product.presenter.ProductListPresenter;
 import com.mvp4g.example.client.product.view.ProductListView;
 
-@Events(startView=ProductListView.class, module=ProductModule.class)
+@Events( startView = ProductListView.class, module = ProductModule.class )
 public interface ProductEventBus extends EventBus {
-	
-	@Event(handlers=ProductCreationPresenter.class)
-	public void goToCreation();
-	
-	@Event(handlers=ProductListPresenter.class)
-	public void goToList();
-	
-	@Event(handlers=ProductEditPresenter.class)
-	public void goToEdit(ProductBean product);
-	
-	@Event(handlers=ProductDisplayPresenter.class, historyConverter=ProductHistoryConverter.class)
-	public void goToDisplay(ProductBean product);
-	
-	@Event(handlers=ProductListPresenter.class)
-	public void goToProduct();
-	
-	@Event(forwardToParent=true)
-	public void displayMessage(String message);
 
-	@Event(forwardToParent=true)
-	public void changeBody(Widget body);
-	
-	@Event(forwardToParent=true)
+	@Event( handlers = ProductCreationPresenter.class )
+	public void goToCreation();
+
+	@Event( handlers = ProductListPresenter.class )
+	public void goToList();
+
+	@Event( handlers = ProductEditPresenter.class )
+	public void goToEdit( ProductBean product );
+
+	@Event( handlers = ProductDisplayPresenter.class, historyConverter = ProductHistoryConverter.class )
+	public void goToDisplay( ProductBean product );
+
+	@Event( handlers = ProductListPresenter.class )
+	public void goToProduct();
+
+	@Event( forwardToParent = true )
+	public void displayMessage( String message );
+
+	@Event( forwardToParent = true )
+	public void changeBody( Widget body );
+
+	@Event( forwardToParent = true )
 	public void selectProductMenu();
-	
-	@Event(handlers={ProductListPresenter.class, ProductDisplayPresenter.class})
-	public void productCreated(ProductBean product);
-	
-	@Event(handlers=ProductListPresenter.class)
-	public void productDeleted(ProductBean product);
-	
+
+	@Event( handlers = { ProductListPresenter.class, ProductDisplayPresenter.class } )
+	public void productCreated( ProductBean product );
+
+	@Event( handlers = ProductListPresenter.class )
+	public void productDeleted( ProductBean product );
 
 }

@@ -8,16 +8,15 @@ import com.mvp4g.example.client.company.bean.CompanyBean;
 @History
 public class CompanyHistoryConverter implements HistoryConverter<CompanyBean, CompanyEventBus> {
 
-	public void convertFromToken(String eventType, String param,
-			CompanyEventBus eventBus) {
-		String[] paramTab = param.split("&");
+	public void convertFromToken( String eventType, String param, CompanyEventBus eventBus ) {
+		String[] paramTab = param.split( "&" );
 		CompanyBean company = new CompanyBean();
-		company.setId(Integer.parseInt(paramTab[0].split("=")[1]));
-		company.setName(paramTab[1].split("=")[1]);
-		eventBus.goToDisplay(company);
+		company.setId( Integer.parseInt( paramTab[0].split( "=" )[1] ) );
+		company.setName( paramTab[1].split( "=" )[1] );
+		eventBus.goToDisplay( company );
 	}
 
-	public String convertToToken(String eventType, CompanyBean form) {
+	public String convertToToken( String eventType, CompanyBean form ) {
 		return "id=" + form.getId() + "&name=" + form.getName();
 	}
 

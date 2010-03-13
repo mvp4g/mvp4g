@@ -19,11 +19,10 @@ import com.mvp4g.client.annotation.Service;
  * @author keke
  * 
  */
-@Service(generatedClass=PingService.class)
+@Service( generatedClass = PingService.class )
 public interface PingService extends RestRemote {
-	@Endpoint(method = Method.Accept, urlTemplate = "/api/ping")
-	@HttpHeaders(headers = { @HttpHeader(name = "a", value = "a"),
-	        @HttpHeader(name = "b", value = "b") })
-	@Timeout(1000)
-	Request ping(@ReqKey("q") String query, RequestCallback callback);
+	@Endpoint( method = Method.Accept, urlTemplate = "/api/ping" )
+	@HttpHeaders( headers = { @HttpHeader( name = "a", value = "a" ), @HttpHeader( name = "b", value = "b" ) } )
+	@Timeout( 1000 )
+	Request ping( @ReqKey( "q" ) String query, RequestCallback callback );
 }

@@ -11,9 +11,8 @@ import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-@Presenter(view = MainView.class)
-public class MainPresenter extends
-		BasePresenter<MainPresenter.MainViewInterface, MainEventBus> {
+@Presenter( view = MainView.class )
+public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface, MainEventBus> {
 
 	public Map<Class<? extends Mvp4gModule>, Mvp4gModule> modules = new HashMap<Class<? extends Mvp4gModule>, Mvp4gModule>();
 
@@ -23,84 +22,85 @@ public class MainPresenter extends
 
 		public HasClickHandlers getProductMenu();
 
-		public void setBody(Widget newBody);
-		
-		public void displayErrorMessage(String error);
-		public void setWaitVisible(boolean visible);
-		
-		public void displayText(String message);
-		
+		public void setBody( Widget newBody );
+
+		public void displayErrorMessage( String error );
+
+		public void setWaitVisible( boolean visible );
+
+		public void displayText( String message );
+
 		public void selectCompanyMenu();
-		
+
 		public void selectProductMenu();
-		
+
 		public HasClickHandlers getClearHistoryButton();
-		
-		public void displayAlertMessage(String message);
-	
+
+		public void displayAlertMessage( String message );
+
 	}
 
 	public void bind() {
-		view.getCompanyMenu().addClickHandler(new ClickHandler() {
+		view.getCompanyMenu().addClickHandler( new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
+			public void onClick( ClickEvent event ) {
 				eventBus.goToCompany();
 			}
-		});
-		view.getProductMenu().addClickHandler(new ClickHandler() {
+		} );
+		view.getProductMenu().addClickHandler( new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
+			public void onClick( ClickEvent event ) {
 				eventBus.goToProduct();
 			}
-		});	
-		view.getClearHistoryButton().addClickHandler(new ClickHandler() {
-			
-			public void onClick(ClickEvent event) {
-				eventBus.clearHistory();				
+		} );
+		view.getClearHistoryButton().addClickHandler( new ClickHandler() {
+
+			public void onClick( ClickEvent event ) {
+				eventBus.clearHistory();
 			}
-		});
-		
+		} );
+
 	}
 
-	public void onChangeBody(Widget w) {
-		view.setBody(w);
-		onDisplayMessage("");
+	public void onChangeBody( Widget w ) {
+		view.setBody( w );
+		onDisplayMessage( "" );
 	}
-	
-	public void onErrorOnLoad(Throwable reason){
-		view.displayErrorMessage(reason.getMessage());
+
+	public void onErrorOnLoad( Throwable reason ) {
+		view.displayErrorMessage( reason.getMessage() );
 	}
-	
-	public void onBeforeLoad(){
-		view.setWaitVisible(true);
+
+	public void onBeforeLoad() {
+		view.setWaitVisible( true );
 	}
-	
-	public void onAfterLoad(){
-		view.setWaitVisible(false);
+
+	public void onAfterLoad() {
+		view.setWaitVisible( false );
 	}
-	
-	public void onDisplayMessage(String message){
-		view.displayText(message);
+
+	public void onDisplayMessage( String message ) {
+		view.displayText( message );
 	}
-	
-	public void onGoToCompany(){
+
+	public void onGoToCompany() {
 		view.selectCompanyMenu();
 	}
-	
-	public void onGoToProduct(){
+
+	public void onGoToProduct() {
 		view.selectProductMenu();
 	}
-	
-	public void onSelectProductMenu(){
+
+	public void onSelectProductMenu() {
 		view.selectProductMenu();
 	}
-	
-	public void onSelectCompanyMenu(){
+
+	public void onSelectCompanyMenu() {
 		view.selectCompanyMenu();
 	}
-	
-	public void onClearHistory(){
-		view.displayAlertMessage("History has been cleared");
+
+	public void onClearHistory() {
+		view.displayAlertMessage( "History has been cleared" );
 	}
 
 }

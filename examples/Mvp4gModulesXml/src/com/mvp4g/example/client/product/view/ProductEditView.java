@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ProductEditView extends AbstractProductView {
-	
+
 	private TextBox name = null;
 
 	@Override

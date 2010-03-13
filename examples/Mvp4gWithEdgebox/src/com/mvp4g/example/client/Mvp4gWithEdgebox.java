@@ -19,24 +19,24 @@ public class Mvp4gWithEdgebox implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		Button c = new Button("Click me");
-		c.addClickHandler(new ClickHandler() {
-			
-			public void onClick(ClickEvent event) {
-			
-				PingService pingService = GWT.create(PingService.class);
-				pingService.ping("Hello", new RequestCallback() {
+		Button c = new Button( "Click me" );
+		c.addClickHandler( new ClickHandler() {
 
-					public void onError(Request arg0, Throwable arg1) {
+			public void onClick( ClickEvent event ) {
+
+				PingService pingService = GWT.create( PingService.class );
+				pingService.ping( "Hello", new RequestCallback() {
+
+					public void onError( Request arg0, Throwable arg1 ) {
 
 					}
 
-					public void onResponseReceived(Request arg0, Response resp) {
-						RootPanel.get().add(new Label(resp.getText()));
+					public void onResponseReceived( Request arg0, Response resp ) {
+						RootPanel.get().add( new Label( resp.getText() ) );
 					}
-				});
+				} );
 			}
-		});
-		RootPanel.get().add(c);
+		} );
+		RootPanel.get().add( c );
 	}
 }

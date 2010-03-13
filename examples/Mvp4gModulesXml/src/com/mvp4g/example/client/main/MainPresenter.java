@@ -11,9 +11,8 @@ import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.XmlPresenter;
 
-@Presenter(view = MainView.class)
-public class MainPresenter extends
-		XmlPresenter<MainPresenter.MainViewInterface> {
+@Presenter( view = MainView.class )
+public class MainPresenter extends XmlPresenter<MainPresenter.MainViewInterface> {
 
 	public Map<Class<? extends Mvp4gModule>, Mvp4gModule> modules = new HashMap<Class<? extends Mvp4gModule>, Mvp4gModule>();
 
@@ -23,64 +22,62 @@ public class MainPresenter extends
 
 		public HasClickHandlers getProductMenu();
 
-		public void setBody(Widget newBody);
-		
-		public void displayErrorMessage(String error);
-				
-		public void setWaitVisible(boolean visible);
-		
-		public void setMessage(String message);
-		
+		public void setBody( Widget newBody );
+
+		public void displayErrorMessage( String error );
+
+		public void setWaitVisible( boolean visible );
+
+		public void setMessage( String message );
+
 		public void selectCompanyMenu();
-		
+
 		public void selectProductMenu();
-	
+
 	}
 
 	public void bind() {
-		view.getCompanyMenu().addClickHandler(new ClickHandler() {
+		view.getCompanyMenu().addClickHandler( new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
-				eventBus.dispatch("goToCompany");
+			public void onClick( ClickEvent event ) {
+				eventBus.dispatch( "goToCompany" );
 			}
-		});
-		view.getProductMenu().addClickHandler(new ClickHandler() {
+		} );
+		view.getProductMenu().addClickHandler( new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
-				eventBus.dispatch("goToProduct");
+			public void onClick( ClickEvent event ) {
+				eventBus.dispatch( "goToProduct" );
 			}
-		});	
-		
+		} );
+
 	}
 
-	public void onChangeBody(Widget w) {
-		view.setBody(w);
+	public void onChangeBody( Widget w ) {
+		view.setBody( w );
 	}
-	
-	public void onErrorOnLoad(Throwable reason){
-		view.displayErrorMessage(reason.getMessage());
+
+	public void onErrorOnLoad( Throwable reason ) {
+		view.displayErrorMessage( reason.getMessage() );
 	}
-	
-	public void onBeforeLoad(){
-		view.setWaitVisible(true);
+
+	public void onBeforeLoad() {
+		view.setWaitVisible( true );
 	}
-	
-	public void onAfterLoad(){
-		view.setWaitVisible(false);
+
+	public void onAfterLoad() {
+		view.setWaitVisible( false );
 	}
-	
-	public void onDisplayMessage(String message){
-		view.setMessage(message);
+
+	public void onDisplayMessage( String message ) {
+		view.setMessage( message );
 	}
-	
-	
-	public void onSelectProductMenu(){
+
+	public void onSelectProductMenu() {
 		view.selectProductMenu();
 	}
-	
-	public void onSelectCompanyMenu(){
+
+	public void onSelectCompanyMenu() {
 		view.selectCompanyMenu();
 	}
-	
 
 }

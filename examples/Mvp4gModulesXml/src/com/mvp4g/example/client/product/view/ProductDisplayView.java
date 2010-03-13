@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.common.widget.LabelWithValue;
 
 public class ProductDisplayView extends AbstractProductView {
-	
+
 	private LabelWithValue name = null;
 
 	@Override

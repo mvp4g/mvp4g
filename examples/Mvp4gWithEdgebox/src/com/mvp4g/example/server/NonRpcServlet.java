@@ -12,15 +12,15 @@ public class NonRpcServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 3451823764199326003L;
-	
+
 	private int number = 0;
 
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) {
+	public void doPost( HttpServletRequest request, HttpServletResponse response ) {
 		try {
-			response.getOutputStream().print("Pong " + number);
+			response.getOutputStream().print( "Pong " + number );
 			number++;
-		} catch (IOException e) {
+		} catch ( IOException e ) {
 			e.printStackTrace();
 		}
 	}
