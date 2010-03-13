@@ -100,7 +100,7 @@ To fire an event, all you have to do is calling the event's method:
 eventBus.companyCreated(new CompanyBean("company"));
 }}}
 
-[http://mvp4g.googlecode.com/svn/trunk/documentation/uml/event_broadcast.png]
+[http://mvp4g.googlecode.com/svn/tags/mvp4g-1.1.0/documentation/uml/event_broadcast.png]
 
 1: this method will tell the presenter to call the bind method if it's the first event it handles.
 
