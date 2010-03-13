@@ -6,42 +6,42 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.example.client.company.bean.CompanyBean;
 import com.mvp4g.example.client.company.view.CompanyDisplayView;
 
-@Presenter(view = CompanyDisplayView.class)
+@Presenter( view = CompanyDisplayView.class )
 public class CompanyDisplayPresenter extends AbstractCompanyPresenter {
 
-	public void onGoToDisplay(CompanyBean company) {
-		displayCompany(company);
+	public void onGoToDisplay( CompanyBean company ) {
+		displayCompany( company );
 		eventBus.selectCompanyMenu();
 	}
-	
-	public void onCompanyCreated(CompanyBean company) {
-		displayCompany(company);		
-	}	
 
-	@Override
-	protected void clickOnLeftButton(ClickEvent event) {
-		eventBus.goToEdit(company);
+	public void onCompanyCreated( CompanyBean company ) {
+		displayCompany( company );
 	}
 
 	@Override
-	protected void clickOnRightButton(ClickEvent event) {
+	protected void clickOnLeftButton( ClickEvent event ) {
+		eventBus.goToEdit( company );
+	}
+
+	@Override
+	protected void clickOnRightButton( ClickEvent event ) {
 		fillBean();
-		service.deleteCompany(company, new AsyncCallback<Void>() {
+		service.deleteCompany( company, new AsyncCallback<Void>() {
 
-			public void onSuccess(Void result) {
-				eventBus.companyDeleted(company);
+			public void onSuccess( Void result ) {
+				eventBus.companyDeleted( company );
 			}
 
-			public void onFailure(Throwable caught) {
-				eventBus.displayMessage("Deletion Failed");
+			public void onFailure( Throwable caught ) {
+				eventBus.displayMessage( "Deletion Failed" );
 			}
-		});
+		} );
 	}
-	
-	private void displayCompany(CompanyBean company){
+
+	private void displayCompany( CompanyBean company ) {
 		this.company = company;
 		fillView();
-		eventBus.changeBody(view.getViewWidget());
+		eventBus.changeBody( view.getViewWidget() );
 	}
 
 }

@@ -12,9 +12,8 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.presenter.BasePresenter;
 
-@Presenter(view = MainView.class)
-public class MainPresenter extends
-		BasePresenter<MainPresenter.MainViewInterface, EventBus> {
+@Presenter( view = MainView.class )
+public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface, EventBus> {
 
 	PingService pingService;
 
@@ -26,25 +25,25 @@ public class MainPresenter extends
 
 	@Override
 	public void bind() {
-		view.getButton().addClickHandler(new ClickHandler() {
+		view.getButton().addClickHandler( new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
-				pingService.ping("Hello", new RequestCallback() {
+			public void onClick( ClickEvent event ) {
+				pingService.ping( "Hello", new RequestCallback() {
 
-					public void onError(Request arg0, Throwable arg1) {
+					public void onError( Request arg0, Throwable arg1 ) {
 
 					}
 
-					public void onResponseReceived(Request arg0, Response resp) {
-						view.getLabel().setText(resp.getText());
+					public void onResponseReceived( Request arg0, Response resp ) {
+						view.getLabel().setText( resp.getText() );
 					}
-				});
+				} );
 			}
-		});
+		} );
 	}
 
 	@InjectService
-	public void setPingService(PingService pingService) {
+	public void setPingService( PingService pingService ) {
 		this.pingService = pingService;
 	}
 

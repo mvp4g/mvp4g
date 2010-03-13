@@ -12,38 +12,37 @@ import com.mvp4g.example.client.company.presenter.CompanyListPresenter;
 import com.mvp4g.example.client.company.view.CompanyListView;
 import com.mvp4g.example.client.main.historyConverter.CompanyHistoryConverter;
 
-@Events(startView=CompanyListView.class, module=CompanyModule.class, debug=true)
+@Events( startView = CompanyListView.class, module = CompanyModule.class, debug = true )
 public interface CompanyEventBus extends EventBus {
-	
-	@Event(handlers=CompanyListPresenter.class)
-	public void goToCompany();
-	
-	@Event(handlers=CompanyCreationPresenter.class)
-	public void goToCreation();
-	
-	@Event(handlers=CompanyListPresenter.class)
-	public void goToList();
-	
-	@Event(handlers=CompanyEditPresenter.class)
-	public void goToEdit(CompanyBean company);
-	
-	@Event(handlers=CompanyDisplayPresenter.class, historyConverter=CompanyHistoryConverter.class)
-	public void goToDisplay(CompanyBean company);
-	
-	@Event(forwardToParent=true)
-	public void displayMessage(String message);
 
-	@Event(forwardToParent=true)
-	public void changeBody(Widget body);
-	
-	@Event(forwardToParent=true)
+	@Event( handlers = CompanyListPresenter.class )
+	public void goToCompany();
+
+	@Event( handlers = CompanyCreationPresenter.class )
+	public void goToCreation();
+
+	@Event( handlers = CompanyListPresenter.class )
+	public void goToList();
+
+	@Event( handlers = CompanyEditPresenter.class )
+	public void goToEdit( CompanyBean company );
+
+	@Event( handlers = CompanyDisplayPresenter.class, historyConverter = CompanyHistoryConverter.class )
+	public void goToDisplay( CompanyBean company );
+
+	@Event( forwardToParent = true )
+	public void displayMessage( String message );
+
+	@Event( forwardToParent = true )
+	public void changeBody( Widget body );
+
+	@Event( forwardToParent = true )
 	public void selectCompanyMenu();
-	
-	@Event(handlers={CompanyListPresenter.class, CompanyDisplayPresenter.class})
-	public void companyCreated(CompanyBean newBean);
-	
-	@Event(handlers=CompanyListPresenter.class)
-	public void companyDeleted(CompanyBean newBean);
-	
+
+	@Event( handlers = { CompanyListPresenter.class, CompanyDisplayPresenter.class } )
+	public void companyCreated( CompanyBean newBean );
+
+	@Event( handlers = CompanyListPresenter.class )
+	public void companyDeleted( CompanyBean newBean );
 
 }

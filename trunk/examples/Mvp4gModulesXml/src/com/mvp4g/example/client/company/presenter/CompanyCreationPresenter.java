@@ -6,32 +6,32 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.example.client.company.bean.CompanyBean;
 import com.mvp4g.example.client.company.view.CompanyCreationView;
 
-@Presenter(view = CompanyCreationView.class)
+@Presenter( view = CompanyCreationView.class )
 public class CompanyCreationPresenter extends AbstractCompanyPresenter {
 
 	public void onGoToCreation() {
-		eventBus.dispatch("changeBody",view.getViewWidget());
+		eventBus.dispatch( "changeBody", view.getViewWidget() );
 	}
 
 	@Override
-	protected void clickOnLeftButton(ClickEvent event) {
+	protected void clickOnLeftButton( ClickEvent event ) {
 		company = new CompanyBean();
 		fillBean();
-		service.createCompany(company, new AsyncCallback<Void>() {
+		service.createCompany( company, new AsyncCallback<Void>() {
 
-			public void onSuccess(Void result) {
-				eventBus.dispatch("companyCreated",company);
-				eventBus.dispatch("displayMessage","Creation Succeeded");
+			public void onSuccess( Void result ) {
+				eventBus.dispatch( "companyCreated", company );
+				eventBus.dispatch( "displayMessage", "Creation Succeeded" );
 			}
 
-			public void onFailure(Throwable caught) {
-				eventBus.dispatch("displayMessage","Creation Failed");
+			public void onFailure( Throwable caught ) {
+				eventBus.dispatch( "displayMessage", "Creation Failed" );
 			}
-		});
+		} );
 	}
 
 	@Override
-	protected void clickOnRightButton(ClickEvent event) {
+	protected void clickOnRightButton( ClickEvent event ) {
 		clear();
 	}
 

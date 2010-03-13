@@ -8,12 +8,11 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.product.presenter.AbstractProductPresenter.ProductViewInterface;
 
-public abstract class AbstractProductView extends SimplePanel implements
-		ProductViewInterface {
+public abstract class AbstractProductView extends SimplePanel implements ProductViewInterface {
 
 	private Button leftButton = null;
 	private Button rightButton = null;
-	
+
 	public HasClickHandlers getLeftButton() {
 		return leftButton;
 	}
@@ -21,26 +20,26 @@ public abstract class AbstractProductView extends SimplePanel implements
 	public HasClickHandlers getRightButton() {
 		return rightButton;
 	}
-	
-	public Widget getViewWidget(){
+
+	public Widget getViewWidget() {
 		return this;
 	}
 
 	public void createView() {
-		leftButton = new Button(getLeftButtonName());
-		rightButton = new Button(getRightButtonName());
-		
-		Grid grid = new Grid(2, 2);
-		grid.setText(0, 0, "Name :");
-		grid.setWidget(0, 1, createAndGetNameWidget());
+		leftButton = new Button( getLeftButtonName() );
+		rightButton = new Button( getRightButtonName() );
+
+		Grid grid = new Grid( 2, 2 );
+		grid.setText( 0, 0, "Name :" );
+		grid.setWidget( 0, 1, createAndGetNameWidget() );
 
 		HorizontalPanel buttons = new HorizontalPanel();
-		buttons.add(leftButton);
-		buttons.add(rightButton);
+		buttons.add( leftButton );
+		buttons.add( rightButton );
 
-		grid.setWidget(1, 1, buttons);
+		grid.setWidget( 1, 1, buttons );
 
-		setWidget(grid);
+		setWidget( grid );
 	}
 
 	abstract protected String getLeftButtonName();

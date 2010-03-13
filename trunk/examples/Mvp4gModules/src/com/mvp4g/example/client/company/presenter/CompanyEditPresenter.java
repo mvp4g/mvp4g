@@ -6,33 +6,33 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.example.client.company.bean.CompanyBean;
 import com.mvp4g.example.client.company.view.CompanyEditView;
 
-@Presenter(view = CompanyEditView.class)
+@Presenter( view = CompanyEditView.class )
 public class CompanyEditPresenter extends AbstractCompanyPresenter {
 
-	public void onGoToEdit(CompanyBean company) {
+	public void onGoToEdit( CompanyBean company ) {
 		this.company = company;
 		fillView();
-		eventBus.changeBody(view.getViewWidget());
+		eventBus.changeBody( view.getViewWidget() );
 	}
 
 	@Override
-	protected void clickOnLeftButton(ClickEvent event) {
+	protected void clickOnLeftButton( ClickEvent event ) {
 		fillBean();
-		service.updateCompany(company, new AsyncCallback<Void>() {
+		service.updateCompany( company, new AsyncCallback<Void>() {
 
-			public void onSuccess(Void result) {
-				eventBus.goToDisplay(company);
-				eventBus.displayMessage("Update Succeeded");
+			public void onSuccess( Void result ) {
+				eventBus.goToDisplay( company );
+				eventBus.displayMessage( "Update Succeeded" );
 			}
 
-			public void onFailure(Throwable caught) {
-				eventBus.displayMessage("Update Failed");
+			public void onFailure( Throwable caught ) {
+				eventBus.displayMessage( "Update Failed" );
 			}
-		});
+		} );
 	}
 
 	@Override
-	protected void clickOnRightButton(ClickEvent event) {
+	protected void clickOnRightButton( ClickEvent event ) {
 		clear();
 	}
 

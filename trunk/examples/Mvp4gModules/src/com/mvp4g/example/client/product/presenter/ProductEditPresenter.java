@@ -6,33 +6,33 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.example.client.product.bean.ProductBean;
 import com.mvp4g.example.client.product.view.ProductEditView;
 
-@Presenter(view = ProductEditView.class)
+@Presenter( view = ProductEditView.class )
 public class ProductEditPresenter extends AbstractProductPresenter {
 
-	public void onGoToEdit(ProductBean product) {
+	public void onGoToEdit( ProductBean product ) {
 		this.product = product;
 		fillView();
-		eventBus.changeBody(view.getViewWidget());
+		eventBus.changeBody( view.getViewWidget() );
 	}
 
 	@Override
-	protected void clickOnLeftButton(ClickEvent event) {
+	protected void clickOnLeftButton( ClickEvent event ) {
 		fillBean();
-		service.updateProduct(product, new AsyncCallback<Void>() {
+		service.updateProduct( product, new AsyncCallback<Void>() {
 
-			public void onSuccess(Void result) {
-				eventBus.goToDisplay(product);
-				eventBus.displayMessage("Update Succeeded");
+			public void onSuccess( Void result ) {
+				eventBus.goToDisplay( product );
+				eventBus.displayMessage( "Update Succeeded" );
 			}
 
-			public void onFailure(Throwable caught) {
-				eventBus.displayMessage("Update Failed");
+			public void onFailure( Throwable caught ) {
+				eventBus.displayMessage( "Update Failed" );
 			}
-		});
+		} );
 	}
 
 	@Override
-	protected void clickOnRightButton(ClickEvent event) {
+	protected void clickOnRightButton( ClickEvent event ) {
 		clear();
 	}
 

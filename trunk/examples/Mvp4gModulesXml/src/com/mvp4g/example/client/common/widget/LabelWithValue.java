@@ -11,18 +11,17 @@ public class LabelWithValue extends Label implements HasValue<String> {
 		return getText();
 	}
 
-	public void setValue(String value) {
-		setText(value);
-		
+	public void setValue( String value ) {
+		setText( value );
+
 	}
 
-	public void setValue(String value, boolean fireEvents) {
+	public void setValue( String value, boolean fireEvents ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	public HandlerRegistration addValueChangeHandler(
-			ValueChangeHandler<String> handler) {
+	public HandlerRegistration addValueChangeHandler( ValueChangeHandler<String> handler ) {
 		// TODO Auto-generated method stub
 		return null;
 	}

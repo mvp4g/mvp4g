@@ -8,14 +8,14 @@ import com.mvp4g.example.client.MainPresenter.MainViewInterface;
 
 public class MainView extends Composite implements MainViewInterface {
 
-	private Button ping = new Button("Ping");
+	private Button ping = new Button( "Ping" );
 	private Label label = new Label();
 
 	public MainView() {
 		VerticalPanel vp = new VerticalPanel();
-		vp.add(ping);
-		vp.add(label);
-		initWidget(vp);
+		vp.add( ping );
+		vp.add( label );
+		initWidget( vp );
 	}
 
 	public Button getButton() {

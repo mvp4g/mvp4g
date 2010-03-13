@@ -12,9 +12,7 @@ import com.mvp4g.example.client.product.ProductEventBus;
 import com.mvp4g.example.client.product.ProductServiceAsync;
 import com.mvp4g.example.client.product.bean.ProductBean;
 
-public abstract class AbstractProductPresenter
-		extends
-		LazyPresenter<AbstractProductPresenter.ProductViewInterface, ProductEventBus> {
+public abstract class AbstractProductPresenter extends LazyPresenter<AbstractProductPresenter.ProductViewInterface, ProductEventBus> {
 
 	protected ProductBean product = null;
 
@@ -31,41 +29,41 @@ public abstract class AbstractProductPresenter
 	}
 
 	public void bindView() {
-		view.getLeftButton().addClickHandler(new ClickHandler() {
+		view.getLeftButton().addClickHandler( new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
-				clickOnLeftButton(event);
+			public void onClick( ClickEvent event ) {
+				clickOnLeftButton( event );
 			}
-		});
+		} );
 
-		view.getRightButton().addClickHandler(new ClickHandler() {
+		view.getRightButton().addClickHandler( new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
-				clickOnRightButton(event);
+			public void onClick( ClickEvent event ) {
+				clickOnRightButton( event );
 			}
-		});
+		} );
 
 	}
 
 	@InjectService
-	public void setService(ProductServiceAsync service) {
+	public void setService( ProductServiceAsync service ) {
 		this.service = service;
 	}
 
 	protected void fillView() {
-		view.getName().setValue(product.getName());
+		view.getName().setValue( product.getName() );
 	}
 
 	protected void fillBean() {
-		product.setName(view.getName().getValue());
+		product.setName( view.getName().getValue() );
 	}
 
 	protected void clear() {
-		view.getName().setValue("");
+		view.getName().setValue( "" );
 	}
 
-	abstract protected void clickOnLeftButton(ClickEvent event);
+	abstract protected void clickOnLeftButton( ClickEvent event );
 
-	abstract protected void clickOnRightButton(ClickEvent event);
+	abstract protected void clickOnRightButton( ClickEvent event );
 
 }

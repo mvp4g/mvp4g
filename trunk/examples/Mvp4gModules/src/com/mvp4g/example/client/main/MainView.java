@@ -11,38 +11,37 @@ import com.google.gwt.user.client.ui.TabBar;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class MainView extends Composite implements
-		MainPresenter.MainViewInterface {
+public class MainView extends Composite implements MainPresenter.MainViewInterface {
 
-	private Label c = new Label("Company");
-	private Label p = new Label("Product");
+	private Label c = new Label( "Company" );
+	private Label p = new Label( "Product" );
 	private SimplePanel bodyContainer = new SimplePanel();
 	private PopupPanel wait = new PopupPanel();
 	private Label message = new Label();
 	private TabBar bar = new TabBar();
-	private Label clearHistory = new Label("Clear History");
+	private Label clearHistory = new Label( "Clear History" );
 
 	public MainView() {
-		message.setStyleName("messageBar");
-		message.setVisible(false);
-		
-		bar.addTab(c);
-		bar.addTab(p);
+		message.setStyleName( "messageBar" );
+		message.setVisible( false );
+
+		bar.addTab( c );
+		bar.addTab( p );
 
 		VerticalPanel mainPanel = new VerticalPanel();
-		mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-		clearHistory.setStyleName("link");
-		mainPanel.add(clearHistory);
-		
-		mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-		mainPanel.add(bar);
-		mainPanel.add(message);
-		mainPanel.add(bodyContainer);
-		wait.add(new Label("Wait"));
+		mainPanel.setHorizontalAlignment( HasHorizontalAlignment.ALIGN_RIGHT );
+		clearHistory.setStyleName( "link" );
+		mainPanel.add( clearHistory );
 
-		initWidget(mainPanel);
+		mainPanel.setHorizontalAlignment( HasHorizontalAlignment.ALIGN_LEFT );
+		mainPanel.add( bar );
+		mainPanel.add( message );
+		mainPanel.add( bodyContainer );
+		wait.add( new Label( "Wait" ) );
 
-		bodyContainer.setWidget(new Label("Click on one of the tab to start."));
+		initWidget( mainPanel );
+
+		bodyContainer.setWidget( new Label( "Click on one of the tab to start." ) );
 	}
 
 	public HasClickHandlers getCompanyMenu() {
@@ -53,41 +52,39 @@ public class MainView extends Composite implements
 		return p;
 	}
 
-	public void setBody(Widget newBody) {
-		bodyContainer.setWidget(newBody);
+	public void setBody( Widget newBody ) {
+		bodyContainer.setWidget( newBody );
 	}
 
-	public void displayErrorMessage(String error) {
-		Window.alert("Error: " + error);
+	public void displayErrorMessage( String error ) {
+		Window.alert( "Error: " + error );
 	}
 
-	public void setWaitVisible(boolean visible) {
-		if (visible) {
-			wait.setPopupPosition(bodyContainer.getAbsoluteLeft(),
-					bodyContainer.getAbsoluteTop());
-			wait.setPixelSize(bodyContainer.getOffsetWidth(), bodyContainer
-					.getOffsetHeight());
+	public void setWaitVisible( boolean visible ) {
+		if ( visible ) {
+			wait.setPopupPosition( bodyContainer.getAbsoluteLeft(), bodyContainer.getAbsoluteTop() );
+			wait.setPixelSize( bodyContainer.getOffsetWidth(), bodyContainer.getOffsetHeight() );
 			wait.show();
 		} else {
 			wait.hide();
 		}
 	}
 
-	public void displayText(String text) {
-		message.setText(text);
-		message.setVisible(text.length() > 0);
+	public void displayText( String text ) {
+		message.setText( text );
+		message.setVisible( text.length() > 0 );
 	}
 
 	public void selectCompanyMenu() {
-		bar.selectTab(0);		
+		bar.selectTab( 0 );
 	}
 
 	public void selectProductMenu() {
-		bar.selectTab(1);
+		bar.selectTab( 1 );
 	}
 
-	public void displayAlertMessage(String message) {
-		Window.alert(message);
+	public void displayAlertMessage( String message ) {
+		Window.alert( message );
 	}
 
 	public HasClickHandlers getClearHistoryButton() {

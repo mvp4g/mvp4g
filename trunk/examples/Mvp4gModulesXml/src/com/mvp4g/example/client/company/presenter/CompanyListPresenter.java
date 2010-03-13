@@ -15,10 +15,8 @@ import com.mvp4g.example.client.company.CompanyServiceAsync;
 import com.mvp4g.example.client.company.bean.CompanyBean;
 import com.mvp4g.example.client.company.view.CompanyListView;
 
-@Presenter(view = CompanyListView.class)
-public class CompanyListPresenter
-		extends
-		LazyXmlPresenter<CompanyListPresenter.CompanyListViewInterface> {
+@Presenter( view = CompanyListView.class )
+public class CompanyListPresenter extends LazyXmlPresenter<CompanyListPresenter.CompanyListViewInterface> {
 
 	private CompanyServiceAsync service = null;
 	private List<CompanyBean> companies = null;
@@ -26,103 +24,104 @@ public class CompanyListPresenter
 	public interface CompanyListViewInterface extends LazyView {
 		public HasClickHandlers getCreateButton();
 
-		public HasClickHandlers[] addCompany(String name, int row);
+		public HasClickHandlers[] addCompany( String name, int row );
 
-		public void removeCompany(int row);
+		public void removeCompany( int row );
 
-		public void updateCompany(String name, int row);
+		public void updateCompany( String name, int row );
 
 		public Widget getViewWidget();
 	}
 
 	@Override
 	public void bindView() {
-		view.getCreateButton().addClickHandler(new ClickHandler() {
+		view.getCreateButton().addClickHandler( new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
-				eventBus.dispatch("goToCreation");
+			public void onClick( ClickEvent event ) {
+				eventBus.dispatch( "goToCreation" );
 			}
 
-		});
+		} );
 	}
 
 	public void onGoToCompany() {
-		service.getCompanies(new AsyncCallback<List<CompanyBean>>() {
+		service.getCompanies( new AsyncCallback<List<CompanyBean>>() {
 
-			public void onSuccess(List<CompanyBean> result) {
+			public void onSuccess( List<CompanyBean> result ) {
 				companies = result;
-				for (int i = 0; i < result.size(); i++) {
-					addCompany(result.get(i), i);
+				for ( int i = 0; i < result.size(); i++ ) {
+					addCompany( result.get( i ), i );
 				}
-				eventBus.dispatch("changeBody", view.getViewWidget());
+				eventBus.dispatch( "changeBody", view.getViewWidget() );
 			}
 
-			public void onFailure(Throwable caught) {
+			public void onFailure( Throwable caught ) {
 
 			}
-		});
+		} );
+		eventBus.dispatch( "selectCompanyMenu" );
 	}
 
 	public void onGoToList() {
-		eventBus.dispatch("changeBody",view.getViewWidget());
+		eventBus.dispatch( "changeBody", view.getViewWidget() );
 	}
 
-	public void onCompanyDeleted(CompanyBean company) {
-		eventBus.dispatch("changeBody",view.getViewWidget());
-		finishDeletion(company);
+	public void onCompanyDeleted( CompanyBean company ) {
+		eventBus.dispatch( "changeBody", view.getViewWidget() );
+		finishDeletion( company );
 	}
 
-	public void onCompanyCreated(CompanyBean company) {
+	public void onCompanyCreated( CompanyBean company ) {
 		int row = companies.size();
-		companies.add(company);
-		view.addCompany(company.getName(), row);
+		companies.add( company );
+		view.addCompany( company.getName(), row );
 	}
 
 	@InjectService
-	public void setService(CompanyServiceAsync service) {
+	public void setService( CompanyServiceAsync service ) {
 		this.service = service;
 	}
 
-	private void addCompany(final CompanyBean company, int row) {
-		HasClickHandlers[] buttons = view.addCompany(company.getName(), row);
-		buttons[0].addClickHandler(new ClickHandler() {
+	private void addCompany( final CompanyBean company, int row ) {
+		HasClickHandlers[] buttons = view.addCompany( company.getName(), row );
+		buttons[0].addClickHandler( new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
-				eventBus.dispatch("goToDisplay",company);
+			public void onClick( ClickEvent event ) {
+				eventBus.dispatch( "goToDisplay", company );
 			}
-		});
-		buttons[1].addClickHandler(new ClickHandler() {
+		} );
+		buttons[1].addClickHandler( new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
-				eventBus.dispatch("goToEdit",company);
+			public void onClick( ClickEvent event ) {
+				eventBus.dispatch( "goToEdit", company );
 			}
-		});
-		buttons[2].addClickHandler(new ClickHandler() {
+		} );
+		buttons[2].addClickHandler( new ClickHandler() {
 
-			public void onClick(ClickEvent event) {
-				deleteCompany(company);
+			public void onClick( ClickEvent event ) {
+				deleteCompany( company );
 			}
-		});
+		} );
 	}
 
-	private void deleteCompany(final CompanyBean company) {
-		service.deleteCompany(company, new AsyncCallback<Void>() {
+	private void deleteCompany( final CompanyBean company ) {
+		service.deleteCompany( company, new AsyncCallback<Void>() {
 
-			public void onFailure(Throwable caught) {
+			public void onFailure( Throwable caught ) {
 
 			}
 
-			public void onSuccess(Void result) {
-				finishDeletion(company);
+			public void onSuccess( Void result ) {
+				finishDeletion( company );
 			}
-		});
+		} );
 	}
 
-	private void finishDeletion(CompanyBean company) {
-		int row = companies.indexOf(company);
-		companies.remove(row);
-		view.removeCompany(row);
-		eventBus.dispatch("displayMessage","Deletion Succeeded");
+	private void finishDeletion( CompanyBean company ) {
+		int row = companies.indexOf( company );
+		companies.remove( row );
+		view.removeCompany( row );
+		eventBus.dispatch( "displayMessage", "Deletion Succeeded" );
 	}
 
 }
