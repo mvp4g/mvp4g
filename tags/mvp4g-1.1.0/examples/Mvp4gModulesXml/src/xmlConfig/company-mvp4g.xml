@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/tags/mvp4g-1.1.0/xsd/mvp4g-conf.xsd">
+	<history package="com.mvp4g.example.client.company.historyConverter" >
+		<converter name="companyHC" class="CompanyHistoryConverter"/>
+	</history>
+	<views package="com.mvp4g.example.client.company.view" >
+		<view name="listView" class="CompanyListView" />
+		<view name="displayView" class="CompanyDisplayView"/>
+		<view name="editView" class="CompanyEditView"/>
+		<view name="creationView" class="CompanyCreationView"/>
+	</views>
+	<services package="com.mvp4g.example.client.company" >
+		<service name="service" class="CompanyService" />
+	</services>
+	<presenters package="com.mvp4g.example.client.company.presenter" >
+		<presenter name="listPresenter" class="CompanyListPresenter" view="listView" services="service" />
+		<presenter name="displayPresenter" class="CompanyDisplayPresenter" view="displayView" services="service" />
+		<presenter name="editPresenter" class="CompanyEditPresenter" view="editView"  services="service" />			
+		<presenter name="creationPresenter" class="CompanyCreationPresenter" view="creationView"  services="service" />
+	</presenters>
+	<events>
+		<event type="goToCompany" handlers="listPresenter" />
+		<event type="goToCreation" handlers="creationPresenter" />
+		<event type="goToEdit" handlers="editPresenter" />
+		<event type="goToDisplay" handlers="displayPresenter" history="companyHC"/>
+		<event type="displayMessage" forwardToParent="true" eventObjectClass="java.lang.String"/>
+		<event type="changeBody" eventObjectClass="com.google.gwt.user.client.ui.Widget" forwardToParent="true"/>
+		<event type="companyCreated" handlers="listPresenter, displayPresenter"/>
+		<event type="companyDeleted" handlers="listPresenter"/>
+		<event type="selectCompanyMenu" forwardToParent="true" eventObjectClass=""/>		
+	</events>
+	
+	<start view="listView" />
+	
+</mvp4g>		

@@ -1,0 +1,18 @@
+.users {
+	padding: 4px;
+}
+
+.userList {
+	width: 800px;
+	border: 1px solid black;	
+}
+
+.userList .header {
+	background-color: #2062B8;
+	color: white;
+	font-style: italic;	
+}
+
+.userList .selected {
+	background:silver;
+}
