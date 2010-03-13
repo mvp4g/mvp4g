@@ -14,12 +14,6 @@ import java.lang.annotation.RetentionPolicy;
  * attribute <i>name</i> and <i>viewName</i>. If you don't give a name, the framework will generate
  * one.<br/>
  * It is recommended to affect a name only if needed.<br/>
- * <br/>
- * This annotation replaces the following line in the Mvp4g XML configuration file:<br/> {@code <view
- * name="rootTemplateView" class="RootTemplateView" />}<br/>
- * and<br/> {@code <presenter name="rootTemplate" class="RootTemplatePresenter" view="rootTemplateView"
- * />}
- * 
  * 
  * @author plcoirier
  * 

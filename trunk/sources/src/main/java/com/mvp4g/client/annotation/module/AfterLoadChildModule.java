@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Pierre-Laurent Coirier
+ * Copyright 2010 Pierre-Laurent Coirier
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -25,7 +25,12 @@ import java.lang.annotation.Target;
  * indicates which event should be fired when a child module is done loading in case the code of a
  * child module is loaded thanks to GWT2 Code Splitting feature.<br/>
  * <br/>
- * You can use this annotation for example to hide a wait popup. Event may not
+ * You can use this annotation for example to hide a wait popup.<br/>
+ * <br/>
+ * You can only annotate methods with no parameter (ie only event with no object associated can be
+ * used).<br/>
+ * <br/>
+ * You must not have more than one <code>AfterLoadChildModule</code> annotation in a class.
  * 
  * 
  * @author plcoirier

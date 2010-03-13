@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Pierre-Laurent Coirier
+ * Copyright 2010 Pierre-Laurent Coirier
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -20,7 +20,8 @@ import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.history.HistoryConverter;
 
 /**
- * This interface designs how to start the application
+ * This interface defines a module for Mvp4g. This interface is only used by the framework to
+ * manipulate modules.
  * 
  * @author plcoirier
  * 
@@ -29,18 +30,50 @@ import com.mvp4g.client.history.HistoryConverter;
 public interface Mvp4gModule {
 
 	/**
-	 * Method called to create the module
+	 * Method called to create the module and fire the start event.
 	 */
 	public void createAndStartModule();
 
+	/**
+	 * @return start view of the module
+	 */
 	public Object getStartView();
 
+	/**
+	 * @return event bus of the module
+	 */
 	public EventBus getEventBus();
 
+	/**
+	 * Add a converter to the associate token
+	 * 
+	 * @param token
+	 *            ascendant modules history name + event type
+	 * @param hc
+	 *            history converter to associate to the token
+	 */
 	public void addConverter( String token, HistoryConverter<?, ?> hc );
 
-	public <T> void place( String token, T form );
+	/**
+	 * Place an event and its associated object in the browser history
+	 * 
+	 * @param <T>
+	 *            type of the object associated with the event
+	 * @param event
+	 *            event to store
+	 * @param form
+	 *            object associated with the event
+	 */
+	public <T> void place( String event, T form );
 
-	public <T> void dispatchHistoryEvent( String eventType, Mvp4gEventPasser<Boolean> passer );
+	/**
+	 * Deal the event receive from browse history change or pass it to a child module if needed.
+	 * 
+	 * @param eventType
+	 *            token stored in the browse history (event type + ascendant modules history name)
+	 * @param passer
+	 *            passer to execute the event.
+	 */
+	public void dispatchHistoryEvent( String eventType, Mvp4gEventPasser<Boolean> passer );
 
 }

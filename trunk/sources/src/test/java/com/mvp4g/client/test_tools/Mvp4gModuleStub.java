@@ -24,7 +24,7 @@ public class Mvp4gModuleStub implements Mvp4gModule {
 
 	}
 
-	public <T> void dispatchHistoryEvent( String eventType, Mvp4gEventPasser<Boolean> passer ) {
+	public void dispatchHistoryEvent( String eventType, Mvp4gEventPasser<Boolean> passer ) {
 		this.eventType = eventType;
 		this.passer = passer;
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Pierre-Laurent Coirier
+ * Copyright 2010 Pierre-Laurent Coirier
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -52,12 +52,6 @@ public class Mvp4gConfigurationFileWriter {
 
 	private Mvp4gConfiguration configuration = null;
 
-	/**
-	 * Create a Mvp4gConfigurationFileReader object
-	 * 
-	 * @param sourceWriter
-	 * @param logger
-	 */
 	public Mvp4gConfigurationFileWriter( SourceWriter sourceWriter, Mvp4gConfiguration configuration ) {
 		this.sourceWriter = sourceWriter;
 		this.configuration = configuration;
@@ -807,7 +801,7 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );
 
-		sourceWriter.println( "public <T> void dispatchHistoryEvent(String eventType, final Mvp4gEventPasser<Boolean> passer){" );
+		sourceWriter.println( "public void dispatchHistoryEvent(String eventType, final Mvp4gEventPasser<Boolean> passer){" );
 		sourceWriter.indent();
 		sourceWriter.println( "int index = eventType.indexOf(PlaceService.MODULE_SEPARATOR);" );
 		sourceWriter.println( "if(index > -1){" );

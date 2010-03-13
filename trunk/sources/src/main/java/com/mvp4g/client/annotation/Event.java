@@ -1,3 +1,18 @@
+/*
+ * Copyright 2010 Pierre-Laurent Coirier
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package com.mvp4g.client.annotation;
 
 import java.lang.annotation.ElementType;
@@ -11,33 +26,31 @@ import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.presenter.PresenterInterface;
 
 /**
- * This annotation must be used on method of interfaces that extends <code>EventBus</code> in order
- * to define event.<br/>
- * It replaces event tag in Mvp4g XML configuration. <br/>
- * <br/> {@code @Event(handlers= RootTemplatePresenter.class}, calledMethod=onDisplayMessage,
- * historyConverter=MessageConverter.class) }<br/> {@code public void displayMessage(String m); }<br/>
+ * This annotation should be used to annotate methods of interfaces that extends
+ * <code>EventBus</code> in order to define event.<br/>
  * <br/>
- * is similar to<br/>
- * <br/> {@code <event type="displayMessage" calledMethod="onDisplayMessage"
- * eventObjectClass="com.lang.String" handlers="rootTemplate" history="messageConverter" />}<br/>
- * <br/>
- * You don't have to give the name of the presenters/history converter. The framework will
- * automatically deduce the name of the instances to use.<br/>
- * In case no instance of the given class can be found, an error is thrown. <br/>
- * <br/>
- * You can also directly give names of presenters/history converters thanks to attributes
- * handlerNames and historyConverterName. However it is recommanded to use classes in order to
- * prevent typo mistakes.<br/>
- * <br/>
- * Attribute calledMethod is optional. If not precised, its value will be "on" + name of the event.<br/>
- * <br/>
- * Attributes historyConverter and historyConverterName are optional. If not precised, no history
- * converter will be associated to the event. If you precise a name and a class, only the name will
- * be used.<br/>
- * <br/>
- * Attributes handlers and handlerNames represent arrays to define zero to many presenters. You can
- * use none, one or both of these at the same time. If none of these attributes are used, then no
- * handler will be associated to the event.
+ * The annotation has the following attributes:
+ * <ul>
+ *<li>handlers: classes of the presenters that handle this event. You can have zero to several
+ * handlers for an event.</li>
+ *<li>handlerNames: instead of using their classes, you can define handlers thanks to their name
+ * (in case you have given names to your handlers). Not recommended because this method tends to
+ * create typo errors.</li>
+ * <li>modulesToLoad: child modules that should be loaded if necessary and to which the event should
+ * be forwarded. Child modules to which the event is forwarded must be one of the child modules of
+ * the <code>EventBus</code> interface's module (ie one of the modules defined inside
+ * <code>ChildModules</code> annotation). If an object is associated to the event, it will also be
+ * forwarded. An event can be forwarded to zero to several child modules.</li>
+ * <li>forwardToParent: if true, event will be forwarded to the parent module. In this case, the
+ * module should have a parent.</li>
+ * <li>calledMethod: name of the method that handlers should define and that will be called when the
+ * event is fired. By default it's equal to "on" + event's method name.</li>
+ * <li>historyConverter: class of the history converter that should be used to store the event in
+ * browse history. If no history converter is specified, event won't be stored in browse history.
+ * You can define only one history converter for each event.
+ * <li>historyConverterName: instead of using its class, you can define the history converter thanks
+ * to his name (in case you have given names to your history converter). Not recommended because
+ * this method tends to create typo errors.</li>
  * 
  * @author plcoirier
  * 
