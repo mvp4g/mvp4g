@@ -170,6 +170,22 @@ public interface CompanyModule extends Mvp4gModule {
 }
 }}}
 
+= Package attribute =
+The package attribute makes it easier to type element class name. When this attribute is used, the following rules are applied to build the class name: 
+
+•the class attribute doesn't contain any "." or starts with a ".", then the class name is equals to package attribute + class attribute. 
+•the class attribute starts contains "." but doesn't start by ".", then the class name is equals to class attribute. 
+
+For example: 
+
+<views package="com.mvp4g.example.client.view" > 
+        <view name="rootView" class="com.mvp4g.example.client.RootView" /> 
+        <view name="userCreateView" class="UserCreateView" /> 
+        <view name="userDisplayView" class=".display.UserDisplayView"/> 
+</views>
+
+will generate the following class names: com.mvp4g.example.client.RootView, com.mvp4g.example.client.view.UserCreateView and com.mvp4g.example.client.view.display.UserDisplayView.
+
 =Full example=
 {{{
 <?xml version="1.0" encoding="ISO-8859-1" ?>
