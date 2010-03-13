@@ -12,27 +12,27 @@ public class MainView extends Composite implements MainViewInterface {
 
 	Label handlerManagerResult = new Label();
 	Label mvp4gResult = new Label();
-	Button start = new Button("Start");
+	Button start = new Button( "Start" );
 	ListBox numbers = new ListBox();
 	Label message = new Label();
-	
-	public MainView(){
+
+	public MainView() {
 		FlexTable table = new FlexTable();
 		initWidget( table );
-		
+
 		table.setWidget( 0, 0, numbers );
 		table.setWidget( 0, 2, start );
 		table.setWidget( 1, 1, handlerManagerResult );
 		table.setWidget( 2, 1, mvp4gResult );
-		
+
 		table.setText( 0, 1, " x10 events " );
-		
+
 		table.setText( 1, 0, "Handler Manager result: " );
 		table.setText( 1, 2, " ms" );
-		
+
 		table.setText( 2, 0, "Mvp4g result: " );
 		table.setText( 2, 2, " ms" );
-		
+
 		table.getFlexCellFormatter().setColSpan( 3, 0, 3 );
 		table.setWidget( 3, 0, message );
 	}

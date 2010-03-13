@@ -10,7 +10,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.mvp4g.client.presenter.Presenter;
+import com.mvp4g.client.presenter.XmlPresenter;
 import com.mvp4g.example.client.events.Event1;
 import com.mvp4g.example.client.events.Event10;
 import com.mvp4g.example.client.events.Event2;
@@ -23,7 +23,7 @@ import com.mvp4g.example.client.events.Event8;
 import com.mvp4g.example.client.events.Event9;
 import com.mvp4g.example.client.presenters.TestHandler;
 
-public class MainPresenter extends Presenter<MainPresenter.MainViewInterface> {
+public class MainPresenter extends XmlPresenter<MainPresenter.MainViewInterface> {
 
 	private HandlerManager handlerManager = new HandlerManager( null );
 
@@ -66,7 +66,7 @@ public class MainPresenter extends Presenter<MainPresenter.MainViewInterface> {
 		view.getStartButton().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				
+
 				view.getHandlerManagerResult().setText( "" );
 				view.getMvp4gResult().setText( "" );
 
@@ -107,7 +107,6 @@ public class MainPresenter extends Presenter<MainPresenter.MainViewInterface> {
 						int nbTimes = Integer.parseInt( view.getNumbers().getValue( view.getNumbers().getSelectedIndex() ) );
 
 						//Test Handler Manager
-						
 
 						Event1 event1 = new Event1( param );
 						Event2 event2 = new Event2( param );
@@ -140,11 +139,16 @@ public class MainPresenter extends Presenter<MainPresenter.MainViewInterface> {
 
 					}
 				} );
-				
+
 				view.getMessageBar().setText( "Testing Mvp4g event bus...please wait..." );
 
 			}
 
 		} );
+
+	}
+
+	public void onStart() {
+
 	}
 }

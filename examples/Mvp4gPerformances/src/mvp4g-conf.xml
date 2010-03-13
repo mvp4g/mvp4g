@@ -31,8 +31,9 @@
 		<event type="event8" handlers="handler1,handler2,handler3,handler4,handler5,handler6,handler7,handler8,handler9,handler10" />
 		<event type="event9" handlers="handler1,handler2,handler3,handler4,handler5,handler6,handler7,handler8,handler9,handler10" />
 		<event type="event10" handlers="handler1,handler2,handler3,handler4,handler5,handler6,handler7,handler8,handler9,handler10" />
+		<event type="start" handlers="mainPresenter" />
 	</events>
 
-	<start view="mainView" />
+	<start view="mainView" eventType="start"/>
 
 </mvp4g>		

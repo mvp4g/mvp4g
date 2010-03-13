@@ -2,17 +2,17 @@ package com.mvp4g.example.client.bean;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class UserBean implements IsSerializable{
+public class UserBean implements IsSerializable {
 
 	private Integer id = null;
 	private String firstName = null;
 	private String lastName = null;
-	
+
 	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId( Integer id ) {
 		this.id = id;
 	}
 
@@ -20,7 +20,7 @@ public class UserBean implements IsSerializable{
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName( String firstName ) {
 		this.firstName = firstName;
 	}
 
@@ -28,7 +28,7 @@ public class UserBean implements IsSerializable{
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public void setLastName( String lastName ) {
 		this.lastName = lastName;
 	}
 
