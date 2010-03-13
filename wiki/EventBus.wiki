@@ -1,4 +1,4 @@
-#summary Draft for 1.1.0 version
+#summary Defining an event bus
 
 <wiki:toc max_depth="3" />
 
@@ -17,14 +17,14 @@ Thus Mvp4g provides an easy and strongly-type way to define an event.
 ==Creating an event bus==
 
 To create an event bus, you need to:
- * create an interface that extends com.mvp4g.client.event.EventBus or com.mvp4g.client.event.EventBusWithLookup (see for the difference)
+ * create an interface that extends com.mvp4g.client.event.EventBus or com.mvp4g.client.event.EventBusWithLookup ([http://code.google.com/p/mvp4g/wiki/EventBus#with_lookup see this page to learn the difference])
  * annotate it with @Events
 
 Annotation @Events has the following attributes:
- * startView (mandatory) and startViewName (optional), see ...
- * historyOnStart (optional, by default false), use only in case of history management, see ...
- * module (optional, by default Mvp4gModule), use only in case of multi-module, see ...
- * debug (optional, by default false), see ...
+ * startView (mandatory) and startViewName (optional), [http://code.google.com/p/mvp4g/wiki/EventBus#Start_View see StartView].
+ * historyOnStart (optional, by default false), use only in case of history management, [http://code.google.com/p/mvp4g/wiki/PlaceService see Mvp4g & Browse history].
+ * module (optional, by default Mvp4gModule), use only in case of multi-module, [http://code.google.com/p/mvp4g/wiki/MultiModules see Multi-modules feature].
+ * debug (optional, by default false), [http://code.google.com/p/mvp4g/wiki/EventBus#Logs see Mvp4g logs].
 
 {{{
 @Events(startView = MainView.class)
@@ -167,5 +167,3 @@ eventBus.dispatch("lgin","myUserName");
 //call with an object which type is incorrect
 eventBus.dispatch("login",new User("myUserName"));
 }}}
-
-An event bus with lookup actually defines four different dispatch methods depending on if you want to associate
