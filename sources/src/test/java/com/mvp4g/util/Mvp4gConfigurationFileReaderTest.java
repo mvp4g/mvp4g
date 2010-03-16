@@ -399,7 +399,6 @@ public class Mvp4gConfigurationFileReaderTest {
 		childModule.setAutoDisplay( "false" );
 
 		configuration.getChildModules().add( childModule );
-		configuration.setLoadChildConfig( new ChildModulesElement() );
 
 		assertOutput( getExpectedChildModule( Modules.Module1.class.getCanonicalName() ), false );
 		assertOutput( getExpectedChildModuleWithParent(), false );
@@ -423,7 +422,6 @@ public class Mvp4gConfigurationFileReaderTest {
 		childModule.setAutoDisplay( "false" );
 
 		configuration.getChildModules().add( childModule );
-		configuration.setLoadChildConfig( new ChildModulesElement() );
 
 		assertOutput( getExpectedChildModule( Modules.ModuleWithParent.class.getCanonicalName() ), false );
 		assertOutput( getExpectedChildModuleWithParent(), false );
@@ -606,7 +604,6 @@ public class Mvp4gConfigurationFileReaderTest {
 	@Test
 	public void testWriteChildEventXML() throws DuplicatePropertyNameException {
 
-		configuration.setLoadChildConfig( new ChildModulesElement() );
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
 		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
 
@@ -739,7 +736,6 @@ public class Mvp4gConfigurationFileReaderTest {
 	@Test
 	public void testWriteParentHistory() throws DuplicatePropertyNameException {
 
-		configuration.setLoadChildConfig( new ChildModulesElement() );
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
 		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
 

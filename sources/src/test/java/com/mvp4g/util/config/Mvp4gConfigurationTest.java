@@ -973,7 +973,7 @@ public class Mvp4gConfigurationTest {
 			fail();
 		} catch ( InvalidMvp4gConfigurationException ex ) {
 			assertEquals(
-					"Event event: No parent event bus has been found for this module but this event must be forwarded to parent event bus. Have you forgotten to add setParentEventBus method to your module?",
+					"Event event: No parent module has been found for this module but this event must be forwarded to it. Have you forgotten to add setParentModule method to your module?",
 					ex.getMessage() );
 		}
 
