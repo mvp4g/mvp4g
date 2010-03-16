@@ -1,0 +1,28 @@
+<ui:UiBinder
+  xmlns:ui='urn:ui:com.google.gwt.uibinder'
+  xmlns:g='urn:import:com.google.gwt.user.client.ui'
+  xmlns:mail='urn:import:com.mvp4g.example.client'>
+
+  <g:DockLayoutPanel unit='EM'>
+    <g:north size='5'>
+    	<g:SimplePanel ui:field='topPanel'/>      
+    </g:north>
+
+    <g:center>
+      <g:SplitLayoutPanel>
+        <g:west size='192'>
+          <g:LayoutPanel ui:field='shortcuts'/>
+        </g:west>
+
+        <g:north size='200'>
+        	<g:LayoutPanel ui:field='mailList'/>          
+        </g:north>
+
+        <g:center>
+        	<g:LayoutPanel ui:field='mailDetail'/>          
+        </g:center>
+      </g:SplitLayoutPanel>
+    </g:center>
+  </g:DockLayoutPanel>
+
+</ui:UiBinder>
