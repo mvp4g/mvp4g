@@ -90,7 +90,7 @@ public class Mvp4gConfiguration {
 	private static final String WRONG_CHILD_LOAD_EVENT_OBJ = "Child Module %s: event %s can not load child module's start view. Can not convert %s to %s.";
 	private static final String START_VIEW_XML_WARNING = "Child Module %s: could not verify if child module's start view can be loaded by event %s since child module uses a XML event bus.";
 	private static final String PARENT_EVENT_BUS_WARNING = "Parent's event bus is a XML event bus. Mvp4g framework can't verify if parent's event bus can handle events forwarded to it.";
-	private static final String NO_PARENT_ERROR = "Event %s: No parent event bus has been found for this module but this event must be forwarded to parent event bus. Have you forgotten to add setParentEventBus method to your module?";
+	private static final String NO_PARENT_ERROR = "Event %s: No parent module has been found for this module but this event must be forwarded to it. Have you forgotten to add setParentModule method to your module?";
 	private static final String CHILD_MODULE_SAME_HISTORY_NAME = "Module %s: You can't have two child modules with the same history name \"%s\".";
 
 	private Set<PresenterElement> presenters = new HashSet<PresenterElement>();

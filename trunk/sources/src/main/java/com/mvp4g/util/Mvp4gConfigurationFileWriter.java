@@ -173,13 +173,27 @@ public class Mvp4gConfigurationFileWriter {
 		EventElement event = null;
 		Set<EventElement> events = configuration.getEvents();
 		boolean isXml = configuration.getEventBus().isXml();
+
 		ChildModulesElement loadConfig = configuration.getLoadChildConfig();
-		String errorEvent = loadConfig.getErrorEvent();
-		String beforeEvent = loadConfig.getBeforeEvent();
-		String afterEvent = loadConfig.getAfterEvent();
-		boolean isError = ( errorEvent != null ) && ( errorEvent.length() > 0 );
-		boolean isBefore = ( beforeEvent != null ) && ( beforeEvent.length() > 0 );
-		boolean isAfter = ( afterEvent != null ) && ( afterEvent.length() > 0 );
+		String errorEvent, beforeEvent, afterEvent;
+		boolean isError, isBefore, isAfter;
+
+		if ( loadConfig == null ) {
+			errorEvent = null;
+			beforeEvent = null;
+			afterEvent = null;
+			isError = false;
+			isBefore = false;
+			isAfter = false;
+		} else {
+			errorEvent = loadConfig.getErrorEvent();
+			beforeEvent = loadConfig.getBeforeEvent();
+			afterEvent = loadConfig.getAfterEvent();
+			isError = ( errorEvent != null ) && ( errorEvent.length() > 0 );
+			isBefore = ( beforeEvent != null ) && ( beforeEvent.length() > 0 );
+			isAfter = ( afterEvent != null ) && ( afterEvent.length() > 0 );
+		}
+		
 		String formError = null;
 		if ( isError ) {
 			if ( getElement( errorEvent, configuration.getEvents() ).getEventObjectClass() != null ) {
