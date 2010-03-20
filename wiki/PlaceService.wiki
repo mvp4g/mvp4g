@@ -9,8 +9,8 @@
 Mvp4g instantiates a Place Service to easily manage history based on History converter.
 
 History converters have two goals: 
- * convert event parameter to a string (to add it to the token) and/or store it (in cookie for example) when an event is stored in browser history. This convertion is done by convertToToken method. 
- * convert, when history changes, a token to an event and retrieve information to build its parameter (thanks to the token, database, cookie...) and send the converted event to event bus. This convertion is done by convertFromToken method.
+ * convert event parameter to a string (to add it to the token) and/or store it (in cookie for example) when an event is stored in browser history. This conversion is done by convertToToken method. 
+ * convert, when history changes, a token to an event and retrieve information to build its parameter (thanks to the token, database, cookie...) and send the converted event to event bus. This conversion is done by convertFromToken method.
 
 
 This is how Mvp4g stores an event to the browser history:
@@ -23,27 +23,27 @@ This is how Mvp4g retrieves an event from browser history:
 
 The token stored in the browser history will be built the following way: event type + "?" + value returned by convertToToken (event type corresponds to the name of the method that defines the event in your event bus interface).
 
-Any event can be stored in history. All you have to do is to associate an history converter to an event.
+Any event can be stored in history. All you have to do is associate a history converter to an event.
 
-If you need to store event information when the event is stored in the browser history, you can realize it in the convertToToken method of the history converter.<br/> 
-If you need to retrieve event information when browser history changes, you can realize it in the convertFromToken method of the history converter.
+If you need to store event information when the event is stored in the browser history, you can do this with the convertToToken method of the history converter.<br/> 
+If you need to retrieve event information when browser history changes, you can do this in the convertFromToken method of the history converter.
 
 ==Create an History Converter==
 
-To create an history converter, you have to:
+To create a history converter, you have to:
  * create a class that implements HistoryConverter 
  * have a constructor with no parameter
- * annotated your class with @History
+ * annotate your class with @History
 
 {{{
 @History
 public class CompanyHistoryConverter implements HistoryConverter<CompanyBean, CompanyEventBus> {...}
 }}}
 
-You can also give a name to your converter thanks to the attribute "name" of @History annotation (it may be used, but not recommended, to associate an history converter to an event, see ).
+You can also give a name to your converter thanks to the attribute "name" of @History annotation (it may be used, but not recommended, to associate a history converter to an event, [http://code.google.com/p/mvp4g/wiki/PlaceService#Associate_an_history_converter_to_an_event see next paragraph] ).
 
-==Associate an history converter to an event==
-To add an history converter to an event, you need to specify the history converter attribute of the @Event annotation that annotates the method of your event.
+==Associate a history converter to an event==
+To add a history converter to an event, you need to specify the history converter attribute of the @Event annotation that annotates the method of your event.
 
 {{{
 @Event(historyConverter = NoParamHistoryConverter.class)
@@ -53,15 +53,15 @@ public void goToCompany();
 By defining the history converter class, Mvp4g will be able to find the instance of history converter with this class and associate it with the event.<br/>
 Mvp4g generates instances of history converter as singleton so for one class, it generates only one instance, which means that if for several events, the same history converter class is associated, then the events will share the same instance of the converter.
 
-Instead of the class, you can also specify the name of the history converter thanks of the attribute historyConverterName of @Event annotation. In this case, you need to make sure that an history converter with this name exits.
+Instead of the class, you can also specify the name of the history converter thanks of the attribute historyConverterName of @Event annotation. In this case, you need to make sure that a history converter with this name exits.
 
 ==Inject services to history converters==
 
-You may need to call server while converting your event to/from a token, that's why Mvp4g let you easily inject services inside history converters.
+You may need to call the server while converting your event to/from a token, that's why Mvp4g allows you to easily inject services inside history converters.
 
-You can inject service to history converters the same way as presenters by:
+You can inject services to history converters the same way as presenters by:
  * creating a setter method for your service
- * annotate this method with @InjectService
+ * annotating this method with @InjectService
 
 {{{
 @InjectService
@@ -96,7 +96,7 @@ Event(s) that manage(s) those cases must not be associated with an object.
 
 ==Clear History Token==
 
-For some event, you may want to delete history stoken stored in the URL. In order to do so, you just have to associate your event to a particular HistoryConverter provided by the framework, ClearHistory.
+For some event, you may want to delete history token stored in the URL. In order to do so, you just have to associate your event to a particular HistoryConverter provided by the framework, ClearHistory.
 
 {{{
 @Event(handlers = MainPresenter.class, historyConverter=ClearHistory.class)
@@ -114,9 +114,9 @@ public interface MainEventBus extends EventBusWithLookup {...}
 
 ==Temporary disable history==
 
-In some cases, you may need to temporary stop storing events in browser history. In order to do so, Mvp4g provides though the event bus two methods, setHistoryStored and setHistoryStoredForNextOne. The first one allows you to set if all events associated to an history converter and thrown after the call of this method will be stored in browser history or not. The second one allows you set it only for the next event thrown, even if other events are thrown while handling this event.
+In some cases, you may need to temporary stop storing events in browser history. In order to do so, Mvp4g provides two methods using the event bus, setHistoryStored and setHistoryStoredForNextOne. The first method allows you to enable/disable storage of all events associated with a history converter in browser history. The second one allows you enable/disable storage of the next fired event thrown (other events fired while handling this event won't be affected by the call of this method).
 
-In this example, none of the events thrown will be stored in browser history:
+In this example, none of the events fired will be stored in browser history:
 {{{
 	eventBus.setHistoryStored(false);
 	eventBus.selectCompanyMenu();
