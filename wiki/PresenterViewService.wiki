@@ -14,7 +14,7 @@ This page will help you to understand how to build these different types of elem
 ==Creating a presenter==
 
 To create a presenter, you need to:
- 1. extends BasePresenter<V,E>:
+ 1. extend BasePresenter<V,E>:
    * V: type of the view that will be injected in the presenter
    * E: type of your event bus interface. 
 
@@ -28,9 +28,9 @@ Instead of extending BasePresenter, you can also implement PresenterInterface<V,
 
  2. have a constructor with no parameter
 
- 3. annotate it with @Presenter and set the attribute 'view'. This attribute must define the class of the view that implement the presenter's view interface.
+ 3. annotate it with @Presenter and set the attribute 'view'. This attribute must define the class of the view that implements the presenter's view interface.
 
-Mvp4g will automaticaly create an instance for each class annoted with @Presenter. Mvp4g will also create for each presenter its own instance of its view. If two presenters are injected with views with the same class, two instances of this view class will be created.
+Mvp4g will automaticaly create an instance for each class annoted with @Presenter. Mvp4g will also create its own instance of its view for each presenter. If two presenters are injected with views with the same class, two instances of this view class will be created.
 
 You can also decide to create a Lazy Presenter ([http://code.google.com/p/mvp4g/wiki/Mvp4gOptimization#Lazy_Loading see Mvp4g Lazy Loading for more information]).
 
@@ -38,7 +38,7 @@ You can also decide to create a Lazy Presenter ([http://code.google.com/p/mvp4g/
 
 You can easily inject services to a presenter by: 
  * creating a setter method for your service 
- * annotate this method with @InjectService
+ * annotating this method with @InjectService
 
 {{{
 @InjectService 
@@ -49,7 +49,7 @@ public void setService( ServiceAsync service ) {
 
 When you inject a service to a presenter, Mvp4g will automaticaly find the instance of the service. If you inject the same service into multiples presenters, only one instance of the service will be created.
 
-You can also decide to inject a service thanks to its name by specifying the attribute 'serviceName' of the @InjectService annotation (not recommanded). In this case you need to make sure that a service with this name exists.
+You can also decide to inject a service thanks to its name by specifying the attribute 'serviceName' of the @InjectService annotation (not recommended). In this case you need to make sure that a service with this name exists.
 
 =View=
 
@@ -60,14 +60,14 @@ You can also decide to create a Lazy View ([http://code.google.com/p/mvp4g/wiki/
 =Service=
 
 ==Creating a service==
-Create your service the same way as with a regular GWT application. No extra-code is needed and it is <b>NOT MANDATORY</b> to annotate your service with @Service. This annotation is here in case you need to set Mvp4g options for your service.
+Create your service the same way as a regular GWT application. No extra-code is needed and it is <b>NOT MANDATORY</b> to annotate your service with @Service. This annotation is here in case you need to set Mvp4g options for your service.
 
 ==@Service Annotation==
 This annotation is used to define options for your service and it is not mandatory to create a service.
 
 This annotation has the following attributes:
  * name: to specify the name of the service in case you want to inject the service thanks to its name.
- * path: allow to define the service entry point. Similar to: 
+ * path: to define the service entry point. Similar to: 
 {{{
 service.setServiceEntryPoint("/myapp/myservice"); 
 }}}
