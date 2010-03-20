@@ -1,7 +1,7 @@
 #summary How to integrate Mvp4g to your project
 
 == Introduction ==
-To integrate Mvp4g to your project, the following steps need to be done
+To integrate Mvp4g into your project, the following steps need to be done
   # Add needed library to your project
   # Modify your GWT configuration file (`*`.gwt.xml)
   # Set your entry point
@@ -17,7 +17,7 @@ Add the following libraries to your project:
 
 == GWT configuration file ==
 
-Insert Mvp4g module to your project:
+Insert Mvp4g module into your project:
 {{{
 <inherits name='com.mvp4g.Mvp4gModule'/>
 }}}
@@ -28,7 +28,7 @@ Insert Mvp4g module to your project:
 === Using RootPanel ===
 
 If you want to display your project inside a RootPanel, you can:
- * either choose as an entry-point the Mvp4g Entry point by modifying your GWT configuration file:
+ * either choose the Mvp4g Entry Point as an entry-point by modifying your GWT configuration file:
 {{{
 <entry-point class='com.mvp4g.client.Mvp4gEntryPoint'/>
 }}}
