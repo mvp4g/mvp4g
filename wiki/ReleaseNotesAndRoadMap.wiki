@@ -1,15 +1,18 @@
 #summary Release Notes and Road Map
 
 =Road Map=
-
-==1.1.0==
- * Add the possibility to use annotations (see http://groups.google.com/group/mvp4g/browse_thread/thread/b04dfd32aa4cd70e)
- * Add a multi-module feature (see http://groups.google.com/group/mvp4g/browse_thread/thread/2c80f33cc38b5f3f)
- * Add lazy creation of presenter (http://groups.google.com/group/mvp4g/browse_thread/thread/1fa4aeed1e25fff2)
- * Add the possibility to use non-RPC services (http://groups.google.com/group/mvp4g/browse_thread/thread/a9714065557e8c98)
+ * Support more than one argument for events (see Issue 21)
+ * Be compliant with JSR 330
+ * Have the possibility to inject view into other view without events (to take advantage of all the possibility of UiBinder, see Issue 17)
 
 
 = Release Notes =
+
+==1.1.0 (03/17/10)==
+ * Add possibility to configure the framework with annotations and an event bus interface
+ * Add multi-module feature to take advantages of GWT2.0 Code splitting feature
+ * Add lazy loading for views and presenters
+ * Add the possibility to use non-RPC services build with GWT deferred binding.
 
 ==1.0.0 (10/14/09)==
  * Add a Place Service (Issue 4)
