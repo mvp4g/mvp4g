@@ -52,10 +52,10 @@ public interface MainEventBus extends EventBusWithLookup {
 }}}
 
 @Event annotation has the following attributes:
- * handlers and handlerNames (see ...)
- * calledMethod (see ...)
- * historyConverter and historyConverterName, use only in case of history management(see ...)
- * modulesToLoad and forwardToParent (see ...)
+ * handlers and handlerNames (see next paragraph)
+ * calledMethod (see next paragraph)
+ * historyConverter and historyConverterName, use only in case of history management([http://code.google.com/p/mvp4g/wiki/PlaceService see Mvp4g & Browse history])
+ * modulesToLoad and forwardToParent ([http://code.google.com/p/mvp4g/wiki/MultiModules see Multi-modules feature])
 
 ==Adding an handler to an event==
 
@@ -91,7 +91,7 @@ public void onCompanyDeleted(CompanyBean newBean){...}
 public void onCompanyCreated(CompanyBean newBean){...}
 }}}
 
-You can change the handler method's name the presenter needs to define thanks to the attribute 'calledMethod' of @Event annotation.
+You can change the handler method's name thanks to the attribute 'calledMethod' of @Event annotation.
 
 ==Firing an event==
 
