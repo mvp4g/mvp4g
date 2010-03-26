@@ -34,19 +34,23 @@ public class MainPresenter extends XmlPresenter<MainPresenter.MainViewInterface>
 
 		public void selectProductMenu();
 
+		public int getStartIndex();
+
+		public int getLastIndex();
+
 	}
 
 	public void bind() {
 		view.getCompanyMenu().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				eventBus.dispatch( "goToCompany" );
+				eventBus.dispatch( "goToCompany", view.getStartIndex(), view.getLastIndex() );
 			}
 		} );
 		view.getProductMenu().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				eventBus.dispatch( "goToProduct" );
+				eventBus.dispatch( "goToProduct", view.getStartIndex(), view.getLastIndex() );
 			}
 		} );
 

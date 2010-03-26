@@ -7,7 +7,7 @@ import com.mvp4g.example.client.company.bean.CompanyBean;
 
 public interface CompanyServiceAsync {
 
-	void getCompanies( AsyncCallback<List<CompanyBean>> async );
+	void getCompanies(int start, int end, AsyncCallback<List<CompanyBean>> async );
 
 	void deleteCompany( CompanyBean company, AsyncCallback<Void> callback );
 

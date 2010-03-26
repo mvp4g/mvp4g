@@ -12,11 +12,11 @@ import com.mvp4g.example.client.company.presenter.CompanyListPresenter;
 import com.mvp4g.example.client.company.view.CompanyListView;
 import com.mvp4g.example.client.main.historyConverter.CompanyHistoryConverter;
 
-@Events( startView = CompanyListView.class, module = CompanyModule.class, debug = true )
+@Events( startView = CompanyListView.class, module = CompanyModule.class, debug = false )
 public interface CompanyEventBus extends EventBus {
 
 	@Event( handlers = CompanyListPresenter.class )
-	public void goToCompany();
+	public void goToCompany(int start, int end);
 
 	@Event( handlers = CompanyCreationPresenter.class )
 	public void goToCreation();

@@ -6,18 +6,23 @@ import com.mvp4g.client.history.XmlHistoryConverter;
 import com.mvp4g.example.client.product.bean.ProductBean;
 
 @History
-public class ProductHistoryConverter implements XmlHistoryConverter<ProductBean> {
+public class ProductHistoryConverter implements XmlHistoryConverter {
 
 	public void convertFromToken( String eventType, String param, EventBusWithLookup eventBus ) {
 		String[] paramTab = param.split( "&" );
 		ProductBean product = new ProductBean();
 		product.setId( Integer.parseInt( paramTab[0].split( "=" )[1] ) );
 		product.setName( paramTab[1].split( "=" )[1] );
-		eventBus.dispatch( "goToDisplay", product );
+		eventBus.dispatch( eventType, product );
+	}
+	
+	public String onGoToDisplay( ProductBean product ){
+		return convertProductToToken( product );
 	}
 
-	public String convertToToken( String eventType, ProductBean form ) {
-		return "id=" + form.getId() + "&name=" + form.getName();
+	public String convertProductToToken( ProductBean product ) {
+		return "id=" + product.getId() + "&name=" + product.getName();
 	}
 
 }
+

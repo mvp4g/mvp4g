@@ -6,7 +6,7 @@ import com.mvp4g.example.client.product.ProductEventBus;
 import com.mvp4g.example.client.product.bean.ProductBean;
 
 @History
-public class ProductHistoryConverter implements HistoryConverter<ProductBean, ProductEventBus> {
+public class ProductHistoryConverter implements HistoryConverter<ProductEventBus> {
 
 	public void convertFromToken( String eventType, String param, ProductEventBus eventBus ) {
 		String[] paramTab = param.split( "&" );
@@ -15,9 +15,13 @@ public class ProductHistoryConverter implements HistoryConverter<ProductBean, Pr
 		product.setName( paramTab[1].split( "=" )[1] );
 		eventBus.goToDisplay( product );
 	}
+	
+	public String onGoToDisplay( ProductBean product ){
+		return convertProductToToken( product );
+	}
 
-	public String convertToToken( String eventType, ProductBean form ) {
-		return "id=" + form.getId() + "&name=" + form.getName();
+	public String convertProductToToken( ProductBean product ) {
+		return "id=" + product.getId() + "&name=" + product.getName();
 	}
 
 }

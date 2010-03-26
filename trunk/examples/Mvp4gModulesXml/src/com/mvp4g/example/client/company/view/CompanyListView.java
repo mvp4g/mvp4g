@@ -57,5 +57,9 @@ public class CompanyListView extends SimplePanel implements CompanyListViewInter
 	public Widget getViewWidget() {
 		return this;
 	}
+	
+	public void clearTable(){
+		table.removeAllRows();
+	}
 
 }

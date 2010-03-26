@@ -38,19 +38,23 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
 		public void displayAlertMessage( String message );
 
+		public int getStartIndex();
+
+		public int getLastIndex();
+
 	}
 
 	public void bind() {
 		view.getCompanyMenu().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				eventBus.goToCompany();
+				eventBus.goToCompany( view.getStartIndex(), view.getLastIndex() );
 			}
 		} );
 		view.getProductMenu().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				eventBus.goToProduct();
+				eventBus.goToProduct( view.getStartIndex(), view.getLastIndex() );
 			}
 		} );
 		view.getClearHistoryButton().addClickHandler( new ClickHandler() {
@@ -83,11 +87,11 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 		view.displayText( message );
 	}
 
-	public void onGoToCompany() {
+	public void onGoToCompany( int start, int end ) {
 		view.selectCompanyMenu();
 	}
 
-	public void onGoToProduct() {
+	public void onGoToProduct( Integer start, Integer end ) {
 		view.selectProductMenu();
 	}
 

@@ -9,7 +9,7 @@ import com.mvp4g.example.client.product.bean.ProductBean;
 @RemoteServiceRelativePath( "product" )
 public interface ProductService extends RemoteService {
 
-	public List<ProductBean> getProducts();
+	public List<ProductBean> getProducts( int start, int end );
 
 	public void createProduct( ProductBean product );
 

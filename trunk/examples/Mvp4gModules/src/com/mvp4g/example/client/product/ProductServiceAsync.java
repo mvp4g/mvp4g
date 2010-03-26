@@ -7,7 +7,7 @@ import com.mvp4g.example.client.product.bean.ProductBean;
 
 public interface ProductServiceAsync {
 
-	void getProducts( AsyncCallback<List<ProductBean>> async );
+	void getProducts( int start, int end, AsyncCallback<List<ProductBean>> async );
 
 	void deleteProduct( ProductBean product, AsyncCallback<Void> callback );
 

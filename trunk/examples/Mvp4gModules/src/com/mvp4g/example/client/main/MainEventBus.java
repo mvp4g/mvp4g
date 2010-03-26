@@ -13,19 +13,20 @@ import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.example.client.company.CompanyModule;
-import com.mvp4g.example.client.main.historyConverter.NoParamHistoryConverter;
+import com.mvp4g.example.client.main.historyConverter.MenuHistoryConverter;
 import com.mvp4g.example.client.product.ProductModule;
 
-@Events( startView = MainView.class, historyOnStart = true, debug = true )
+@Events( startView = MainView.class, historyOnStart = true, debug = false )
 @ChildModules( { @ChildModule( moduleClass = CompanyModule.class ),
 		@ChildModule( moduleClass = ProductModule.class, async = false, autoDisplay = false ) } )
 public interface MainEventBus extends EventBusWithLookup {
 
-	@Event( modulesToLoad = CompanyModule.class, historyConverter = NoParamHistoryConverter.class, handlers = MainPresenter.class )
-	public void goToCompany();
+	@Event( modulesToLoad = CompanyModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class )
+	public void goToCompany(int start, int end);
 
-	@Event( modulesToLoad = ProductModule.class, historyConverter = NoParamHistoryConverter.class, handlers = MainPresenter.class )
-	public void goToProduct();
+	//use Integer instead of int here just to test passing object, in real project, you should have int
+	@Event( modulesToLoad = ProductModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class )
+	public void goToProduct(Integer start, Integer end);
 
 	@DisplayChildModuleView( CompanyModule.class )
 	@Event( handlers = MainPresenter.class )

@@ -18,9 +18,9 @@ public class ProductServiceImpl extends RemoteServiceServlet implements ProductS
 		// TODO Auto-generated method stub
 	}
 
-	public List<ProductBean> getProducts() {
+	public List<ProductBean> getProducts(int start, int end) {
 		List<ProductBean> companies = new ArrayList<ProductBean>();
-		for ( int i = 0; i < 10; i++ ) {
+		for ( int i = start; i <= end; i++ ) {
 			companies.add( new ProductBean( i, "Product " + i ) );
 		}
 		return companies;

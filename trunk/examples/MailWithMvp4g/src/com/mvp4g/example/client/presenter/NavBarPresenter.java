@@ -22,7 +22,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.MailEventBus;
-import com.mvp4g.example.client.bean.NavStatus;
 import com.mvp4g.example.client.view.NavBarView;
 
 /**
@@ -63,13 +62,10 @@ public class NavBarPresenter extends BasePresenter<NavBarPresenter.INavBarView, 
 		} );
 	}
 
-	public void onSetNavStatus( NavStatus status ) {
-		int startIndex = status.getStartIndex();
-		int count = status.getNumberOfElements();
-
+	public void onSetNavStatus( int startIndex, int endIndex, int numberOfElements ){
 		view.getNewerButton().setVisible( startIndex != 1 );
-		view.getOlderButton().setVisible( ( startIndex + MailListPresenter.VISIBLE_EMAIL_COUNT ) <= count );
-		view.setNavText( "" + startIndex + " - " + status.getEndIndex() + " of " + count );
+		view.getOlderButton().setVisible( ( startIndex + MailListPresenter.VISIBLE_EMAIL_COUNT ) <= numberOfElements );
+		view.setNavText( "" + startIndex + " - " + endIndex + " of " + numberOfElements );
 	}
 
 }

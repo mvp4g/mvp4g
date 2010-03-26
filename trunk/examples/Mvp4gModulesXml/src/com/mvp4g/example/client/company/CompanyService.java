@@ -9,7 +9,7 @@ import com.mvp4g.example.client.company.bean.CompanyBean;
 @RemoteServiceRelativePath( "company" )
 public interface CompanyService extends RemoteService {
 
-	public List<CompanyBean> getCompanies();
+	public List<CompanyBean> getCompanies(int start, int end);
 
 	public void createCompany( CompanyBean company );
 

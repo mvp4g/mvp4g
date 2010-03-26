@@ -31,6 +31,8 @@ public class CompanyListPresenter extends LazyXmlPresenter<CompanyListPresenter.
 		public void updateCompany( String name, int row );
 
 		public Widget getViewWidget();
+		
+		public void clearTable();
 	}
 
 	@Override
@@ -44,8 +46,8 @@ public class CompanyListPresenter extends LazyXmlPresenter<CompanyListPresenter.
 		} );
 	}
 
-	public void onGoToCompany() {
-		service.getCompanies( new AsyncCallback<List<CompanyBean>>() {
+	public void onGoToCompany(int start, int end) {
+		service.getCompanies(start, end, new AsyncCallback<List<CompanyBean>>() {
 
 			public void onSuccess( List<CompanyBean> result ) {
 				companies = result;
@@ -59,6 +61,7 @@ public class CompanyListPresenter extends LazyXmlPresenter<CompanyListPresenter.
 
 			}
 		} );
+		view.clearTable();
 		eventBus.dispatch( "selectCompanyMenu" );
 	}
 

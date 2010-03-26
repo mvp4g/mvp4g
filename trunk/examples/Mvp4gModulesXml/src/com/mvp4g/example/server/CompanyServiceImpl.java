@@ -18,9 +18,9 @@ public class CompanyServiceImpl extends RemoteServiceServlet implements CompanyS
 		// TODO Auto-generated method stub
 	}
 
-	public List<CompanyBean> getCompanies() {
+	public List<CompanyBean> getCompanies(int start, int end) {
 		List<CompanyBean> companies = new ArrayList<CompanyBean>();
-		for ( int i = 0; i < 10; i++ ) {
+		for ( int i = start; i <= end; i++ ) {
 			companies.add( new CompanyBean( i, "Company " + i ) );
 		}
 		return companies;
