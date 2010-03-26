@@ -131,11 +131,11 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 			final String eventType = tokenTab[0];
 			final String param = ( tokenTab.length > 1 ) ? tokenTab[1] : null;
 			if ( eventType.contains( MODULE_SEPARATOR ) ) {
-				Mvp4gEventPasser<Boolean> passer = new Mvp4gEventPasser<Boolean>( true ) {
+				Mvp4gEventPasser passer = new Mvp4gEventPasser( true ) {
 
 					@Override
 					public void pass( Mvp4gModule module ) {
-						if ( eventObject ) {
+						if ( (Boolean)eventObjects[0] ) {
 							dispatchEvent( eventType, param, module );
 						} else {
 							sendNotFoundEvent();
@@ -174,16 +174,16 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 * @param form
 	 *            object associated with the event
 	 */
-	@SuppressWarnings( "unchecked" )
-	public <T> void place( String eventType, T form ) {
-		HistoryConverter hc = converters.get( eventType );
-		if ( hc instanceof ClearHistory ) {
-			history.newItem( "", false );
-		} else {
-			String param = hc.convertToToken( eventType, form );
-			String token = ( ( param == null ) || ( param.length() == 0 ) ) ? eventType : ( eventType + FIRST + param );
-			history.newItem( token, false );
-		}
+	public void place( String eventType, String param ) {
+		String token = ( ( param == null ) || ( param.length() == 0 ) ) ? eventType : ( eventType + FIRST + param );
+		history.newItem( token, false );
+	}
+
+	/**
+	 * Clear the history token stored in the browse history url by adding a new empty token
+	 */
+	public void clearHistory() {
+		history.newItem( "", false );
 	}
 
 	/**

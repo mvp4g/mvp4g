@@ -27,6 +27,6 @@ import com.mvp4g.client.event.EventBusWithLookup;
  * @param <T>
  *            type of the object used with the event associated with the converter.
  */
-public interface XmlHistoryConverter<T> extends HistoryConverter<T, EventBusWithLookup> {
+public interface XmlHistoryConverter extends HistoryConverter<EventBusWithLookup> {
 
 }

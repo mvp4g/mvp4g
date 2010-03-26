@@ -52,7 +52,7 @@ public interface Mvp4gModule {
 	 * @param hc
 	 *            history converter to associate to the token
 	 */
-	public void addConverter( String token, HistoryConverter<?, ?> hc );
+	public void addConverter( String token, HistoryConverter<?> hc );
 
 	/**
 	 * Place an event and its associated object in the browser history
@@ -64,7 +64,7 @@ public interface Mvp4gModule {
 	 * @param form
 	 *            object associated with the event
 	 */
-	public <T> void place( String event, T form );
+	public void place( String event, String form );
 
 	/**
 	 * Deal the event receive from browse history change or pass it to a child module if needed.
@@ -74,6 +74,11 @@ public interface Mvp4gModule {
 	 * @param passer
 	 *            passer to execute the event.
 	 */
-	public void dispatchHistoryEvent( String eventType, Mvp4gEventPasser<Boolean> passer );
+	public void dispatchHistoryEvent( String eventType, Mvp4gEventPasser passer );
+	
+	/**
+	 * Clear the history token stored in the browse history url by adding a new empty token
+	 */
+	public void clearHistory();
 
 }

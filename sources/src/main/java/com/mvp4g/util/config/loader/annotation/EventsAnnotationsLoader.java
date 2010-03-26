@@ -254,9 +254,16 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			}
 
 			params = method.getParameters();
-			if ( params.length > 1 ) {
-				String err = "Event method must not have more than 1 argument.";
-				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
+			int nbParams = params.length;
+			String[] paramClasses;
+			if ( nbParams > 0 ) {
+				paramClasses = new String[nbParams];
+				for(int i=0; i<nbParams; i++){
+					paramClasses[i] = params[i].getType().getQualifiedSourceName();
+				}				
+			}
+			else{
+				paramClasses = null;
 			}
 
 			element = new EventElement();
@@ -267,8 +274,8 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				element.setModulesToLoad( buildChildModules( c, method, event, configuration ) );
 				element.setForwardToParent( Boolean.toString( event.forwardToParent() ) );
 
-				if ( params.length > 0 ) {
-					element.setEventObjectClass( params[0].getType().getQualifiedSourceName() );
+				if ( paramClasses != null ) {
+					element.setEventObjectClasses( paramClasses );
 				}
 			} catch ( DuplicatePropertyNameException e ) {
 				// setters are only called once, so this error can't occur.

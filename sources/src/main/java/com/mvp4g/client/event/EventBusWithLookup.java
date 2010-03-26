@@ -49,7 +49,7 @@ public interface EventBusWithLookup extends EventBus {
 	 *             there is an error in the application that needs to be fixed (most of the time, an
 	 *             error in the configuration file).
 	 */
-	public void dispatch( String eventType, Object form );
+	public void dispatch( String eventType, Object... data );
 
 	/**
 	 * Call the method associated with the event type in order to trigger the presenters that can
@@ -108,7 +108,7 @@ public interface EventBusWithLookup extends EventBus {
 	 *             there is an error in the application that needs to be fixed (most of the time, an
 	 *             error in the configuration file).
 	 */
-	public <E extends Enum<E>> void dispatch( Enum<E> enumEventType, Object form );
+	public <E extends Enum<E>> void dispatch( Enum<E> enumEventType, Object... data );
 
 	/**
 	 * Call the method associated with the event type in order to trigger the presenters that can

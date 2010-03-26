@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.googlecode.mvp4g</groupId>
 	<artifactId>mvp4g</artifactId>
-	<version>1.1.0</version>
+	<version>1.2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Mvp4g</name>
-	
+
 	<description>Model View Presenter with Event Bus For GWT</description>
 	<url>http://mvp4g.googlecode.com</url>
 
@@ -18,7 +19,7 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	
+
 	<properties>
 		<gwt.version>1.7.0</gwt.version>
 		<platform>windows</platform>
@@ -27,15 +28,15 @@
 	<developers>
 		<developer>
 			<name>Pierre-Laurent Coirier</name>
-		</developer>		
+		</developer>
 	</developers>
-	
+
 	<contributors>
 		<contributor>
 			<name>Javier Sandino</name>
 		</contributor>
 	</contributors>
-		
+
 	<dependencies>
 		<dependency>
 			<groupId>commons-configuration</groupId>
@@ -74,13 +75,13 @@
 				<directory>src/main/java</directory>
 				<includes>
 					<include>**/client/**</include>
-					<include>**/*.gwt.xml</include>					
+					<include>**/*.gwt.xml</include>
 				</includes>
 			</resource>
 		</resources>
-				
+
 		<plugins>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -107,15 +108,15 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.3</version>
 			</plugin>
-			
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <outputDirectory>../documentation/javadoc</outputDirectory>
-        </configuration>
-        <executions>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<outputDirectory>../documentation/javadoc</outputDirectory>
+				</configuration>
+				<executions>
 					<execution>
 						<id>attach-javadoc</id>
 						<phase>verify</phase>
@@ -124,24 +125,39 @@
 						</goals>
 					</execution>
 				</executions>
-      </plugin>
-			
+			</plugin>
 		</plugins>
+		<extensions>
+			<extension>
+				<groupId>org.jvnet.wagon-svn</groupId>
+				<artifactId>wagon-svn</artifactId>
+				<version>1.8</version>
+			</extension>
+		</extensions>
 	</build>
 	
+	 <repositories> 
+                 <repository> 
+                         <id>maven2-repository.dev.java.net</id> 
+                         <name>Java.net Repository for Maven</name> 
+                         <url>http://download.java.net/maven/2/</url> 
+                 </repository> 
+         </repositories> 
+ 
+
 	<distributionManagement>
-      <repository>
-        <id>mvp4g.googlecode.releases</id>
-        <name>Releases Repository for Mvp4g</name> 
-        <url>dav:https://mvp4g.googlecode.com/svn/maven2/releases/</url>
-      </repository>
-      <snapshotRepository>
-        <id>mvp4g.googlecode.snapshots</id>
-        <name>Snapshots Repository for Mvp4g</name>
-        <url>dav:https://mvp4g.googlecode.com/svn/maven2/snapshots/</url> 
-      </snapshotRepository>
-  </distributionManagement>
-	
+		<repository>
+			<id>mvp4g.googlecode.releases</id>
+			<name>Releases Repository for Mvp4g</name>
+			<url>svn:https://mvp4g.googlecode.com/svn/maven2/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>mvp4g.googlecode.snapshots</id>
+			<name>Snapshots Repository for Mvp4g</name>
+			<url>file://C:/Users/PL/Desktop/test</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<profiles>
 		<profile>
 			<id>linux</id>
@@ -166,7 +182,7 @@
 				<platform>mac</platform>
 			</properties>
 		</profile>
-		
+
 		<profile>
 			<id>windows</id>
 			<activation>
@@ -179,5 +195,5 @@
 			</properties>
 		</profile>
 	</profiles>
-	
+
 </project>

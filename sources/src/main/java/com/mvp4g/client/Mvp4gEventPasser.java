@@ -23,20 +23,20 @@ package com.mvp4g.client;
  * @param <T>
  * 			type of the object associated with the event
  */
-public abstract class Mvp4gEventPasser<T> {
+public abstract class Mvp4gEventPasser {
 
-	protected T eventObject = null;
+	protected Object[] eventObjects = null;
 
-	public Mvp4gEventPasser( T eventObject ) {
-		this.eventObject = eventObject;
+	public Mvp4gEventPasser( Object... eventObjects ) {
+		this.eventObjects = eventObjects;
 	}
 
 	/**
 	 * @param eventObject
 	 *            the eventObject to set
 	 */
-	public void setEventObject( T eventObject ) {
-		this.eventObject = eventObject;
+	public void setEventObject( Object... eventObjects ) {
+		this.eventObjects = eventObjects;
 	}
 
 	public abstract void pass( Mvp4gModule module );

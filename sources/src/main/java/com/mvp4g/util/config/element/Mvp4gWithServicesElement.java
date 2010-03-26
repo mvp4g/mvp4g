@@ -45,9 +45,11 @@ public class Mvp4gWithServicesElement extends SimpleMvp4gElement {
 
 	@Override
 	public void setValues( String name, String[] values ) throws DuplicatePropertyNameException {
-		super.setValues( name, values );
 		if ( "services".equals( name ) ) {
 			setServices( values );
+		}
+		else{
+			super.setValues( name, values );	
 		}
 	}
 

@@ -31,7 +31,7 @@ public abstract class BaseEventBusWithLookUp extends BaseEventBus implements Eve
 	 * 
 	 * @see com.mvp4g.client.event.EventBusWithLookup#dispatch(java.lang.String, java.lang.Object)
 	 */
-	abstract public void dispatch( String eventType, Object form );
+	abstract public void dispatch( String eventType, Object... data);
 
 	/*
 	 * (non-Javadoc)
@@ -39,7 +39,7 @@ public abstract class BaseEventBusWithLookUp extends BaseEventBus implements Eve
 	 * @see com.mvp4g.client.event.EventBusWithLookup#dispatch(java.lang.String)
 	 */
 	public void dispatch( String eventType ) {
-		dispatch( eventType, null );
+		dispatch( eventType, new Object[0] );
 	}
 
 	/*
@@ -47,8 +47,8 @@ public abstract class BaseEventBusWithLookUp extends BaseEventBus implements Eve
 	 * 
 	 * @see com.mvp4g.client.event.EventBusWithLookup#dispatch(java.lang.Enum, java.lang.Object)
 	 */
-	public <E extends Enum<E>> void dispatch( Enum<E> enumEventType, Object form ) {
-		this.dispatch( enumEventType.toString(), form );
+	public <E extends Enum<E>> void dispatch( Enum<E> enumEventType, Object... data ) {
+		this.dispatch( enumEventType.toString(), data );
 	}
 
 	/*
@@ -57,7 +57,7 @@ public abstract class BaseEventBusWithLookUp extends BaseEventBus implements Eve
 	 * @see com.mvp4g.client.event.EventBusWithLookup#dispatch(java.lang.Enum)
 	 */
 	public <E extends Enum<E>> void dispatch( Enum<E> enumEventType ) {
-		this.dispatch( enumEventType.toString(), null );
+		this.dispatch( enumEventType.toString(), new Object[0] );
 	}
 
 	/**
