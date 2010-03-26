@@ -28,7 +28,7 @@ public interface ProductEventBus extends EventBus {
 	public void goToDisplay( ProductBean product );
 
 	@Event( handlers = ProductListPresenter.class )
-	public void goToProduct();
+	public void goToProduct(Integer start, Integer end);
 
 	@Event( forwardToParent = true )
 	public void displayMessage( String message );

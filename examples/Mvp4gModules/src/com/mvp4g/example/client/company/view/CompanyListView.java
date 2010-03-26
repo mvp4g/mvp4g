@@ -37,6 +37,10 @@ public class CompanyListView extends SimplePanel implements CompanyListViewInter
 	public void removeCompany( int row ) {
 		table.removeRow( row + 1 );
 	}
+	
+	public void clearTable(){
+		table.removeAllRows();
+	}
 
 	public void updateCompany( String company, int row ) {
 		table.setText( row + 1, 0, company );

@@ -5,7 +5,6 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
-import com.mvp4g.example.client.bean.NavStatus;
 import com.mvp4g.example.client.data.MailItem;
 import com.mvp4g.example.client.presenter.MailDetailPresenter;
 import com.mvp4g.example.client.presenter.MailListPresenter;
@@ -38,7 +37,7 @@ public interface MailEventBus extends EventBus {
 	public void itemSelected( MailItem item );
 
 	@Event( handlers = NavBarPresenter.class )
-	public void setNavStatus( NavStatus status );
+	public void setNavStatus( int startIndex, int endIndex, int numberOfElements );
 
 	@Event( handlers = MailListPresenter.class )
 	public void setNavigationBar( Widget w );

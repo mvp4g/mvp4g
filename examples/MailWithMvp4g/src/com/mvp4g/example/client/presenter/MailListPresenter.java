@@ -24,7 +24,6 @@ import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.MailEventBus;
-import com.mvp4g.example.client.bean.NavStatus;
 import com.mvp4g.example.client.data.MailItem;
 import com.mvp4g.example.client.data.MailItems;
 import com.mvp4g.example.client.view.MailListView;
@@ -136,7 +135,7 @@ public class MailListPresenter extends BasePresenter<MailListPresenter.IMailList
 		}
 
 		// Update the nav bar.
-		eventBus.setNavStatus( new NavStatus( startIndex + 1, max, count ) );
+		eventBus.setNavStatus( startIndex + 1, max, count );
 
 		FlexTable table = view.getTable();
 

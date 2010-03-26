@@ -31,6 +31,8 @@ public class ProductListPresenter extends LazyXmlPresenter<ProductListPresenter.
 		public void updateProduct( String product, int row );
 
 		public Widget getViewWidget();
+		
+		public void clearTable();
 	}
 
 	@Override
@@ -44,8 +46,8 @@ public class ProductListPresenter extends LazyXmlPresenter<ProductListPresenter.
 		} );
 	}
 
-	public void onGoToProduct() {
-		service.getProducts( new AsyncCallback<List<ProductBean>>() {
+	public void onGoToProduct(int start, int end) {
+		service.getProducts( start, end, new AsyncCallback<List<ProductBean>>() {
 
 			public void onSuccess( List<ProductBean> result ) {
 				products = result;
@@ -59,6 +61,7 @@ public class ProductListPresenter extends LazyXmlPresenter<ProductListPresenter.
 				eventBus.dispatch( "displayMessage", "Failed to retrieve products" );
 			}
 		} );
+		view.clearTable();
 		eventBus.dispatch( "selectProductMenu" );
 	}
 

@@ -8,7 +8,7 @@
 		<childModule name="productModule" class=".product.ProductModule" async="false" autoDisplay="false"/>	
 	</childModules>
 	<history package="com.mvp4g.example.client.main.historyConverter" initEvent="start">
-		<converter name="noParamHC" class="NoParamHistoryConverter"/>
+		<converter name="menuHC" class="MenuHistoryConverter"/>
 	</history>
 	<views package="com.mvp4g.example.client.main" >
 		<view name="rootView" class="MainView" />		
@@ -17,8 +17,8 @@
 		<presenter name="rootPresenter" class="MainPresenter" view="rootView" />		
 	</presenters>
 	<events>
-		<event type="goToCompany" modulesToLoad="companyModule" history="noParamHC" eventObjectClass=""/>
-		<event type="goToProduct" modulesToLoad="productModule" history="noParamHC" eventObjectClass="" />
+		<event type="goToCompany" modulesToLoad="companyModule" history="menuHC" eventObjectClass="java.lang.Integer,java.lang.Integer"/>
+		<event type="goToProduct" modulesToLoad="productModule" history="menuHC" eventObjectClass="java.lang.Integer,java.lang.Integer" />
 		<event type="changeBody" handlers="rootPresenter" />
 		<event type="errorOnLoad" handlers="rootPresenter" />
 		<event type="beforeLoad" handlers="rootPresenter"/>

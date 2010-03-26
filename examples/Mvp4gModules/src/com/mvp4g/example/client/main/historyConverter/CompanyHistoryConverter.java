@@ -6,7 +6,7 @@ import com.mvp4g.example.client.company.CompanyEventBus;
 import com.mvp4g.example.client.company.bean.CompanyBean;
 
 @History
-public class CompanyHistoryConverter implements HistoryConverter<CompanyBean, CompanyEventBus> {
+public class CompanyHistoryConverter implements HistoryConverter<CompanyEventBus> {
 
 	public void convertFromToken( String eventType, String param, CompanyEventBus eventBus ) {
 		String[] paramTab = param.split( "&" );
@@ -15,9 +15,13 @@ public class CompanyHistoryConverter implements HistoryConverter<CompanyBean, Co
 		company.setName( paramTab[1].split( "=" )[1] );
 		eventBus.goToDisplay( company );
 	}
+	
+	public String onGoToDisplay( CompanyBean company ){
+		return convertCompanyToToken( company );
+	}
 
-	public String convertToToken( String eventType, CompanyBean form ) {
-		return "id=" + form.getId() + "&name=" + form.getName();
+	private String convertCompanyToToken( CompanyBean company ) {
+		return "id=" + company.getId() + "&name=" + company.getName();
 	}
 
 }

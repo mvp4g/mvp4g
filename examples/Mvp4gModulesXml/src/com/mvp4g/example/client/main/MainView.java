@@ -3,7 +3,10 @@ package com.mvp4g.example.client.main;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabBar;
@@ -19,6 +22,9 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 	private TabBar bar = new TabBar();
 
 	private Label messageBar = new Label();
+	
+	private ListBox startIndex = new ListBox();
+	private ListBox lastIndex = new ListBox();
 
 	public MainView() {
 
@@ -27,9 +33,29 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 
 		messageBar.setStyleName( "messageBar" );
 		messageBar.setVisible( false );
+		
+		int i;
+		for ( i = 0; i < 5; i++ ) {
+			startIndex.addItem( Integer.toString( i ) );
+		}
+		for ( i = 5; i < 10; i++ ) {
+			lastIndex.addItem( Integer.toString( i ) );
+		}
+		
+		startIndex.setSelectedIndex( 0 );
+		lastIndex.setSelectedIndex( 0 );
+
+		HorizontalPanel hp = new HorizontalPanel();
+		hp.setVerticalAlignment( HasVerticalAlignment.ALIGN_MIDDLE );
+		hp.add( new Label( "Start Index: " ) );
+		hp.add( startIndex );
+		hp.add( new Label( "End Index: " ) );
+		hp.add( lastIndex );
+		hp.setSpacing( 5 );
 
 		VerticalPanel mainPanel = new VerticalPanel();
-		mainPanel.add( bar );
+		mainPanel.add( hp );
+		mainPanel.add( bar );		
 		mainPanel.add( messageBar );
 		mainPanel.add( bodyContainer );
 		wait.add( new Label( "Wait" ) );
@@ -77,5 +103,13 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 
 	public void selectProductMenu() {
 		bar.selectTab( 1 );
+	}
+	
+	public int getLastIndex() {
+		return lastIndex.getSelectedIndex() + 5;
+	}
+
+	public int getStartIndex() {
+		return startIndex.getSelectedIndex();
 	}
 }
