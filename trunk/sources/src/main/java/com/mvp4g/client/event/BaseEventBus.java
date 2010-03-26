@@ -68,9 +68,25 @@ public class BaseEventBus implements EventBus {
 	 * @param form
 	 *            object of the event to store
 	 */
-	protected void place( Mvp4gModule module, String type, Object form ) {
+	protected void place( Mvp4gModule module, String type, String form ) {
 		if ( historyStored ) {
 			module.place( type, form );
+		}
+		if ( changeForNextOne ) {
+			historyStored = !historyStored;
+			changeForNextOne = false;
+		}
+	}
+	
+	/**
+	 * Interact with place service to clear history when needed thanks to the module
+	 * 
+	 * @param module
+	 *            module that knows the place service
+	 */
+	protected void clearHistory(Mvp4gModule module) {
+		if ( historyStored ) {
+			module.clearHistory();
 		}
 		if ( changeForNextOne ) {
 			historyStored = !historyStored;

@@ -71,19 +71,15 @@ public @interface Event {
 
 	String historyConverterName() default "";
 
-	Class<? extends HistoryConverter<?, ?>> historyConverter() default NoHistoryConverter.class;
+	Class<? extends HistoryConverter<?>> historyConverter() default NoHistoryConverter.class;
 
-	class NoHistoryConverter implements HistoryConverter<Object, EventBus> {
+	class NoHistoryConverter implements HistoryConverter<EventBus> {
 
 		private NoHistoryConverter() {
 			//to prevent this class to be used
 		}
 
 		public void convertFromToken( String eventType, String param, EventBus eventBus ) {
-		}
-
-		public String convertToToken( String eventType, Object form ) {
-			return null;
 		}
 
 	}

@@ -27,21 +27,7 @@ import com.mvp4g.client.event.EventBus;
  * @param <E>
  *            type of the event bus where the event is defined. 
  */
-public interface HistoryConverter<T, E extends EventBus> {
-
-	/**
-	 * Convert the object of the event to a string in order to store into the URI.<br/>
-	 * <br/>
-	 * Specific information can also be stored (in a cookie for example)
-	 * 
-	 * @param eventType
-	 *            type of the event
-	 * @param form
-	 *            object of the event
-	 * @return string to store if the URI. If you don't want to store anything in the URI, return
-	 *         null or empty string.
-	 */
-	public String convertToToken( String eventType, T form );
+public interface HistoryConverter<E extends EventBus> {
 
 	/**
 	 * Convert a token to event's object and trigger the event bus.<br/>

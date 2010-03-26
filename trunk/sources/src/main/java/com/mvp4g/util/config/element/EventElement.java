@@ -56,12 +56,12 @@ public class EventElement extends Mvp4gElement {
 		return calledMethod;
 	}
 
-	public void setEventObjectClass( String eventObjectClass ) throws DuplicatePropertyNameException {
-		setProperty( "eventObjectClass", eventObjectClass );
+	public void setEventObjectClasses( String[] eventObjectClasses ) throws DuplicatePropertyNameException {
+		setValues( "eventObjectClass", eventObjectClasses );
 	}
 
-	public String getEventObjectClass() {
-		return getProperty( "eventObjectClass" );
+	public String[] getEventObjectClasses() {
+		return getValues( "eventObjectClass" );
 	}
 
 	public void setHandlers( String[] handlers ) throws DuplicatePropertyNameException {

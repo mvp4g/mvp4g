@@ -84,8 +84,7 @@ public abstract class Mvp4gElement {
 	}
 
 	public String[] getValues( String name ) {
-		String[] values = multiValueProperties.get( name );
-		return values != null ? values : new String[] {};
+		return multiValueProperties.get( name );
 	}
 
 	public void setValues( String name, String[] values ) throws DuplicatePropertyNameException {
