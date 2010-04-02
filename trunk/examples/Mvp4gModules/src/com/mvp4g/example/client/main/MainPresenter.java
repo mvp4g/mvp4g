@@ -7,9 +7,11 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.example.client.util.index.IndexGenerator;
 
 @Presenter( view = MainView.class )
 public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface, MainEventBus> {
@@ -44,17 +46,20 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
 	}
 
+	@Inject
+	private IndexGenerator indexGenerator;
+
 	public void bind() {
 		view.getCompanyMenu().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				eventBus.goToCompany( view.getStartIndex(), view.getLastIndex() );
+				eventBus.goToCompany( indexGenerator.generateIndex( view.getStartIndex() ), indexGenerator.generateIndex( view.getLastIndex() ) );
 			}
 		} );
 		view.getProductMenu().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				eventBus.goToProduct( view.getStartIndex(), view.getLastIndex() );
+				eventBus.goToProduct( indexGenerator.generateIndex( view.getStartIndex() ), indexGenerator.generateIndex( view.getLastIndex() ) );
 			}
 		} );
 		view.getClearHistoryButton().addClickHandler( new ClickHandler() {

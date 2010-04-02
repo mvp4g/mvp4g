@@ -7,9 +7,11 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.XmlPresenter;
+import com.mvp4g.example.client.util.index.IndexGenerator;
 
 @Presenter( view = MainView.class )
 public class MainPresenter extends XmlPresenter<MainPresenter.MainViewInterface> {
@@ -40,17 +42,20 @@ public class MainPresenter extends XmlPresenter<MainPresenter.MainViewInterface>
 
 	}
 
+	@Inject
+	private IndexGenerator index;
+
 	public void bind() {
 		view.getCompanyMenu().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				eventBus.dispatch( "goToCompany", view.getStartIndex(), view.getLastIndex() );
+				eventBus.dispatch( "goToCompany", index.generateIndex( view.getStartIndex() ), index.generateIndex( view.getLastIndex() ) );
 			}
 		} );
 		view.getProductMenu().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				eventBus.dispatch( "goToProduct", view.getStartIndex(), view.getLastIndex() );
+				eventBus.dispatch( "goToProduct", index.generateIndex( view.getStartIndex() ), index.generateIndex( view.getLastIndex() ) );
 			}
 		} );
 
