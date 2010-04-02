@@ -72,6 +72,8 @@ public class Mvp4gConfigurationFileWriter {
 
 		writeEventBusClass();
 
+		writeGinInjector();
+
 		sourceWriter.println();
 
 		sourceWriter.println( "private Object startView = null;" );
@@ -90,6 +92,8 @@ public class Mvp4gConfigurationFileWriter {
 
 		sourceWriter.println( "public void createAndStartModule(){" );
 		sourceWriter.indent();
+
+		sourceWriter.println( "Mvp4gGinjector injector = GWT.create( Mvp4gGinjector.class );" );
 
 		writeViews();
 
@@ -282,6 +286,35 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println( "{}" );
 	}
 
+	private void writeGinInjector() {
+		sourceWriter.print( "@GinModules( " );
+		sourceWriter.print( configuration.getGinModule().getClassName() );
+		sourceWriter.println( ".class)" );
+		sourceWriter.println( "public interface Mvp4gGinjector extends Ginjector {" );
+		sourceWriter.indent();
+		for ( PresenterElement presenter : configuration.getPresenters() ) {
+			sourceWriter.print( presenter.getClassName() );
+			sourceWriter.print( " get" );
+			sourceWriter.print( presenter.getName() );
+			sourceWriter.println( "();" );
+		}
+		for ( ViewElement view : configuration.getViews() ) {
+			sourceWriter.print( view.getClassName() );
+			sourceWriter.print( " get" );
+			sourceWriter.print( view.getName() );
+			sourceWriter.println( "();" );
+		}
+		for ( HistoryConverterElement history : configuration.getHistoryConverters() ) {
+			sourceWriter.print( history.getClassName() );
+			sourceWriter.print( " get" );
+			sourceWriter.print( history.getName() );
+			sourceWriter.println( "();" );
+		}
+		sourceWriter.outdent();
+		sourceWriter.print( "}" );
+
+	}
+
 	/**
 	 * Write the history converters included in the configuration file.
 	 * 
@@ -294,7 +327,7 @@ public class Mvp4gConfigurationFileWriter {
 
 		if ( history != null ) {
 
-			sourceWriter.print( "placeService = new PlaceService(){" );
+			sourceWriter.println( "placeService = new PlaceService(){" );
 
 			sourceWriter.indent();
 			sourceWriter.println( "protected void sendInitEvent(){" );
@@ -688,8 +721,8 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.print( className );
 		sourceWriter.print( " " );
 		sourceWriter.print( elementName );
-		sourceWriter.print( " = new " );
-		sourceWriter.print( className );
+		sourceWriter.print( " = injector.get" );
+		sourceWriter.print( elementName );
 		sourceWriter.println( "();" );
 	}
 

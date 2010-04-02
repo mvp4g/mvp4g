@@ -66,6 +66,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.googlecode.gwt.inject</groupId>
+			<artifactId>gin</artifactId>
+			<version>1.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -127,34 +133,18 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<extensions>
-			<extension>
-				<groupId>org.jvnet.wagon-svn</groupId>
-				<artifactId>wagon-svn</artifactId>
-				<version>1.8</version>
-			</extension>
-		</extensions>
 	</build>
-	
-	 <repositories> 
-                 <repository> 
-                         <id>maven2-repository.dev.java.net</id> 
-                         <name>Java.net Repository for Maven</name> 
-                         <url>http://download.java.net/maven/2/</url> 
-                 </repository> 
-         </repositories> 
- 
 
 	<distributionManagement>
 		<repository>
 			<id>mvp4g.googlecode.releases</id>
 			<name>Releases Repository for Mvp4g</name>
-			<url>svn:https://mvp4g.googlecode.com/svn/maven2/releases/</url>
+			<url>dav:https://mvp4g.googlecode.com/svn/maven2/releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>mvp4g.googlecode.snapshots</id>
 			<name>Snapshots Repository for Mvp4g</name>
-			<url>file://C:/Users/PL/Desktop/test</url>
+			<url>dav:https://mvp4g.googlecode.com/svn/maven2/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 

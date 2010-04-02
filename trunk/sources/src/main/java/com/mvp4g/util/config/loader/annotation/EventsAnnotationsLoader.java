@@ -30,20 +30,21 @@ import com.mvp4g.client.annotation.module.AfterLoadChildModule;
 import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
 import com.mvp4g.client.annotation.module.ChildModule;
 import com.mvp4g.client.annotation.module.ChildModules;
-import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.annotation.module.DisplayChildModuleView;
+import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.util.config.Mvp4gConfiguration;
+import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
 import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
+import com.mvp4g.util.config.element.GinModuleElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
-import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.config.element.ViewElement;
@@ -94,6 +95,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				loadStartView( c, annotation, configuration );
 				loadEvents( c, annotation, configuration );
 				loadDebug( annotation, configuration );
+				loadGinModule( annotation, configuration );
 			} else {
 				String err = "this class must implement " + EventBus.class.getCanonicalName() + " since it is annoted with "
 						+ Events.class.getSimpleName() + ".";
@@ -516,6 +518,16 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			// setter is only called once, so this error can't occur.
 		}
 		configuration.setDebug( debug );
+	}
+	
+	private void loadGinModule( Events annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
+		GinModuleElement ginModule = new GinModuleElement();
+		try {
+			ginModule.setClassName( annotation.ginModule().getCanonicalName() );
+		} catch ( DuplicatePropertyNameException e ) {
+			// setter is only called once, so this error can't occur.
+		}
+		configuration.setGinModule( ginModule );
 	}
 
 	/*

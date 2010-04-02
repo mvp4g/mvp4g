@@ -19,6 +19,8 @@ package com.mvp4g.client.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import com.google.gwt.inject.client.GinModule;
+import com.mvp4g.client.DefaultMvp4gGinModule;
 import com.mvp4g.client.Mvp4gModule;
 
 /**
@@ -59,5 +61,7 @@ public @interface Events {
 	boolean historyOnStart() default false;
 
 	boolean debug() default false;
+	
+	Class<? extends GinModule> ginModule() default DefaultMvp4gGinModule.class;
 
 }

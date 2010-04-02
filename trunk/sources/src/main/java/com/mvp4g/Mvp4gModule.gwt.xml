@@ -8,5 +8,7 @@
 	<generate-with class="com.mvp4g.util.Mvp4gGenerator">
 		<when-type-assignable class="com.mvp4g.client.Mvp4gModule" />
 	</generate-with>
+	
+	<inherits name="com.google.gwt.inject.Inject"/>
 
 </module>

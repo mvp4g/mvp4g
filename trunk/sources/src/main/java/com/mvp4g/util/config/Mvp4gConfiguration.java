@@ -23,6 +23,7 @@ import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
+import com.mvp4g.client.DefaultMvp4gGinModule;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.History;
@@ -40,6 +41,7 @@ import com.mvp4g.util.config.element.ChildModulesElement;
 import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
+import com.mvp4g.util.config.element.GinModuleElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.InjectedElement;
@@ -57,6 +59,7 @@ import com.mvp4g.util.config.loader.xml.ChildModuleLoader;
 import com.mvp4g.util.config.loader.xml.ChildModulesLoader;
 import com.mvp4g.util.config.loader.xml.DebugLoader;
 import com.mvp4g.util.config.loader.xml.EventsLoader;
+import com.mvp4g.util.config.loader.xml.GinModuleLoader;
 import com.mvp4g.util.config.loader.xml.HistoryConverterLoader;
 import com.mvp4g.util.config.loader.xml.HistoryLoader;
 import com.mvp4g.util.config.loader.xml.PresentersLoader;
@@ -108,6 +111,7 @@ public class Mvp4gConfiguration {
 	private JClassType parentEventBus = null;
 	private String historyName = null;
 	private DebugElement debug = null;
+	private GinModuleElement ginModule = null;
 
 	private TreeLogger logger = null;
 	private TypeOracle oracle = null;
@@ -181,6 +185,7 @@ public class Mvp4gConfiguration {
 					loadChildConfig( xmlConfig );
 					loadChildModules( xmlConfig );
 					loadDebug( xmlConfig );
+					loadGinModule( xmlConfig );
 				} catch ( Mvp4gXmlException e ) {
 					e.setXmlFilePath( xmlFilePath.value() );
 					throw e;
@@ -429,6 +434,21 @@ public class Mvp4gConfiguration {
 	 */
 	public void setDebug( DebugElement debug ) {
 		this.debug = debug;
+	}
+
+	/**
+	 * @return the ginModule
+	 */
+	public GinModuleElement getGinModule() {
+		return ginModule;
+	}
+
+	/**
+	 * @param ginModule
+	 *            the ginModule to set
+	 */
+	public void setGinModule( GinModuleElement ginModule ) {
+		this.ginModule = ginModule;
 	}
 
 	/*
@@ -1154,6 +1174,18 @@ public class Mvp4gConfiguration {
 		debug = loader.loadElement();
 	}
 
+	void loadGinModule( XMLConfiguration xmlConfig ) throws Mvp4gXmlException, NotFoundClassException {
+		GinModuleLoader loader = new GinModuleLoader( xmlConfig );
+		ginModule = loader.loadElement();
+		if(ginModule == null){
+			ginModule = new GinModuleElement();
+			try {
+				ginModule.setClassName( DefaultMvp4gGinModule.class.getCanonicalName() );
+			} catch ( DuplicatePropertyNameException e ) {
+				//nothing to do, setter is called only once
+			}
+		}
+	}
 	/**
 	 * Pre-loads the History element in the configuration file.
 	 * 
