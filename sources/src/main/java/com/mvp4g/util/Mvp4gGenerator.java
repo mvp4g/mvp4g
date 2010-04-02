@@ -28,6 +28,8 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
+import com.google.gwt.inject.client.GinModules;
+import com.google.gwt.inject.client.Ginjector;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
@@ -122,6 +124,8 @@ public class Mvp4gGenerator extends Generator {
 		classFactory.addImport( HistoryConverter.class.getName() );
 		classFactory.addImport( Mvp4gEventPasser.class.getName() );
 		classFactory.addImport( Mvp4gModule.class.getName() );
+		classFactory.addImport( GinModules.class.getName() );
+		classFactory.addImport( Ginjector.class.getName() );
 
 		PrintWriter printWriter = context.tryCreate( logger, packageName, generatedClassName );
 		if ( printWriter == null ) {
