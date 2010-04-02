@@ -13,6 +13,8 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabBar;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.mvp4g.example.client.util.display.IndexDisplayer;
 
 public class MainView extends Composite implements MainPresenter.MainViewInterface {
 
@@ -27,16 +29,17 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 	private ListBox startIndex = new ListBox();
 	private ListBox lastIndex = new ListBox();
 
-	public MainView() {
+	@Inject
+	public MainView(IndexDisplayer indexDisplayer) {
 		message.setStyleName( "messageBar" );
 		message.setVisible( false );
 
 		int i;
 		for ( i = 0; i < 5; i++ ) {
-			startIndex.addItem( Integer.toString( i ) );
+			startIndex.addItem( indexDisplayer.getDisplay( i ), Integer.toString( i ) );
 		}
 		for ( i = 5; i < 10; i++ ) {
-			lastIndex.addItem( Integer.toString( i ) );
+			lastIndex.addItem( indexDisplayer.getDisplay( i ), Integer.toString( i ) );
 		}
 		
 		startIndex.setSelectedIndex( 0 );
