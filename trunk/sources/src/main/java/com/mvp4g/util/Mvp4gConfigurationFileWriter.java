@@ -78,7 +78,9 @@ public class Mvp4gConfigurationFileWriter {
 
 		sourceWriter.println( "private Object startView = null;" );
 		sourceWriter.println( "protected AbstractEventBus eventBus = null;" );
-		sourceWriter.println( "protected Mvp4gModule itself = this;" );
+		sourceWriter.print( "protected " );
+		sourceWriter.print( configuration.getModule().getQualifiedSourceName() );
+		sourceWriter.println( " itself = this;" );		
 
 		writeParentEventBus();
 
