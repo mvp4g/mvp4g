@@ -65,8 +65,6 @@ public class MailListPresenter extends BasePresenter<MailListPresenter.IMailList
 
 	public void onStart() {
 
-		eventBus.setMiddleNorth( view.getViewWidget() );
-
 		update();
 
 		// Select the first row if none is selected.

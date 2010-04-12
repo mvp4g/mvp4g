@@ -23,11 +23,13 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Singleton;
 import com.mvp4g.example.client.presenter.MailListPresenter;
 
 /**
  * A composite that displays a list of emails that can be selected.
  */
+@Singleton
 public class MailListView extends ResizeComposite implements MailListPresenter.IMailListView {
 
 	interface Binder extends UiBinder<Widget, MailListView> {

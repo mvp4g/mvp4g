@@ -5,9 +5,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import com.mvp4g.example.client.presenter.MailPresenter.IMailView;
 
 public class MailView extends Composite implements IMailView {
@@ -17,36 +15,22 @@ public class MailView extends Composite implements IMailView {
 
 	private static final Binder binder = GWT.create( Binder.class );
 
-	@UiField
-	SimplePanel topPanel;
-	@UiField
-	LayoutPanel mailList;
-	@UiField
-	LayoutPanel mailDetail;
-	@UiField
-	LayoutPanel shortcuts;
+	@UiField( provided = true )
+	TopPanel topPanel;
+	@UiField( provided = true )
+	MailListView mailList;
+	@UiField( provided = true )
+	ShortcutsView shortcuts;
+	@UiField( provided = true )
+	MailDetailView mailDetail;
 
-	public MailView() {
+	@Inject
+	public MailView( TopPanel topPanel, ShortcutsView shortcuts, MailListView mailList, MailDetailView mailDetail ) {
+		this.topPanel = topPanel;
+		this.shortcuts = shortcuts;
+		this.mailList = mailList;
+		this.mailDetail = mailDetail;
 		initWidget( binder.createAndBindUi( this ) );
-	}
-
-	public void setMiddleCenterWidget( Widget w ) {
-		mailDetail.clear();
-		mailDetail.add( w );
-	}
-
-	public void setMiddleNorthWidget( Widget w ) {
-		mailList.clear();
-		mailList.add( w );
-	}
-
-	public void setMiddleWestWidget( Widget w ) {
-		shortcuts.clear();
-		shortcuts.add( w );
-	}
-
-	public void setNorthWidget( Widget w ) {
-		topPanel.setWidget( w );
 	}
 
 }

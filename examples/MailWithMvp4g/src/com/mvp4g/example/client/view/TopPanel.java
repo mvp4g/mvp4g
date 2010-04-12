@@ -23,12 +23,14 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Singleton;
 import com.mvp4g.example.client.presenter.TopPresenter;
 import com.mvp4g.example.client.view.widget.AboutDialog;
 
 /**
  * The top panel, which contains the 'welcome' message and various links.
  */
+@Singleton
 public class TopPanel extends Composite implements TopPresenter.ITopView {
 
 	interface Binder extends UiBinder<Widget, TopPanel> {
