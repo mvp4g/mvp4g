@@ -22,11 +22,13 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Singleton;
 import com.mvp4g.example.client.presenter.MailDetailPresenter;
 
 /**
  * A composite for displaying the details of an email message.
  */
+@Singleton
 public class MailDetailView extends ResizeComposite implements MailDetailPresenter.IMailDetailView {
 
 	interface Binder extends UiBinder<Widget, MailDetailView> {

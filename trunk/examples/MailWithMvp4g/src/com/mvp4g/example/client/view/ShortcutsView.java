@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Singleton;
 import com.mvp4g.example.client.presenter.ShortCutsPresenter;
 import com.mvp4g.example.client.presenter.ShortCutsPresenter.FOLDER_TYPE;
 import com.mvp4g.example.client.view.widget.ContactPopup;
@@ -35,6 +36,7 @@ import com.mvp4g.example.client.view.widget.Tasks;
  * using {@link com.google.gwt.user.client.ui.StackPanel},
  * {@link com.google.gwt.user.client.ui.Tree}, and other custom widgets.
  */
+@Singleton
 public class ShortcutsView extends ResizeComposite implements ShortCutsPresenter.IShortCutsView {
 
 	interface Binder extends UiBinder<StackLayoutPanel, ShortcutsView> {

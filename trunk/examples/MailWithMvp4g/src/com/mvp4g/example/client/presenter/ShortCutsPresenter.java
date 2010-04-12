@@ -63,8 +63,7 @@ public class ShortCutsPresenter extends BasePresenter<ShortCutsPresenter.IShortC
 		for ( i = 0; i < folders.length; i++ ) {
 			view.addFolder( folders[i] );
 		}
-
-		eventBus.setMiddleWest( view.getViewWidget() );
+		
 	}
 
 }

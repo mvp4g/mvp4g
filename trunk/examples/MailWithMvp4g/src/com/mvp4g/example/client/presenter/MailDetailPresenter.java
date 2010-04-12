@@ -41,7 +41,6 @@ public class MailDetailPresenter extends BasePresenter<MailDetailPresenter.IMail
 	}
 
 	public void onStart() {
-		eventBus.setMiddleCenter( view.getViewWidget() );
 	}
 
 	public void onItemSelected( MailItem item ) {
