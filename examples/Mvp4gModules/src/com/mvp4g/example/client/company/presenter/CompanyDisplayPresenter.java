@@ -17,6 +17,10 @@ public class CompanyDisplayPresenter extends AbstractCompanyPresenter {
 	public void onCompanyCreated( CompanyBean company ) {
 		displayCompany( company );
 	}
+	
+	public void onNameSelected( String name ){
+		view.alert( "Selected a name on the display page does nothing, sorry." );
+	}
 
 	@Override
 	protected void clickOnLeftButton( ClickEvent event ) {

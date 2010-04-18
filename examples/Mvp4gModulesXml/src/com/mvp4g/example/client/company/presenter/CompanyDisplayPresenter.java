@@ -18,6 +18,10 @@ public class CompanyDisplayPresenter extends AbstractCompanyPresenter {
 		displayCompany( company );
 	}
 
+	public void onNameSelected( String name ) {
+		view.alert( "Selected a name on the display page does nothing, sorry." );
+	}
+
 	@Override
 	protected void clickOnLeftButton( ClickEvent event ) {
 		eventBus.dispatch( "goToEdit", company );

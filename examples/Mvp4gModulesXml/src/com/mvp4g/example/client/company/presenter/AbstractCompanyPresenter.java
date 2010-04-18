@@ -24,7 +24,11 @@ public abstract class AbstractCompanyPresenter extends LazyXmlPresenter<Abstract
 
 		public HasClickHandlers getRightButton();
 
+		public HasClickHandlers getSelectNameButton();
+
 		public Widget getViewWidget();
+
+		public void alert( String message );
 	}
 
 	public void bindView() {
@@ -39,6 +43,12 @@ public abstract class AbstractCompanyPresenter extends LazyXmlPresenter<Abstract
 
 			public void onClick( ClickEvent event ) {
 				clickOnRightButton( event );
+			}
+		} );
+		view.getSelectNameButton().addClickHandler( new ClickHandler() {
+
+			public void onClick( ClickEvent event ) {
+				eventBus.dispatch( "displayNameSelector" );
 			}
 		} );
 

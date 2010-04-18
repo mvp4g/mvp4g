@@ -11,6 +11,7 @@ public class CompanyCreationPresenter extends AbstractCompanyPresenter {
 
 	public void onGoToCreation() {
 		eventBus.dispatch( "changeBody", view.getViewWidget() );
+		eventBus.dispatch( "selectCompanyMenu" );
 	}
 
 	@Override
@@ -22,12 +23,18 @@ public class CompanyCreationPresenter extends AbstractCompanyPresenter {
 			public void onSuccess( Void result ) {
 				eventBus.dispatch( "companyCreated", company );
 				eventBus.dispatch( "displayMessage", "Creation Succeeded" );
+				setActivated( false );
 			}
 
 			public void onFailure( Throwable caught ) {
 				eventBus.dispatch( "displayMessage", "Creation Failed" );
 			}
 		} );
+	}
+
+	public void onNameSelected( String name ) {
+		view.getName().setValue( name );
+		view.alert( "Name changed on create page." );
 	}
 
 	@Override

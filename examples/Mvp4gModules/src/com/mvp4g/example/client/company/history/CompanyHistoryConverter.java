@@ -1,4 +1,4 @@
-package com.mvp4g.example.client.main.historyConverter;
+package com.mvp4g.example.client.company.history;
 
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.history.HistoryConverter;

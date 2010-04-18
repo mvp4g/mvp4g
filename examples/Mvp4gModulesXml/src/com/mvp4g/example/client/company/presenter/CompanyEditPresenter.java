@@ -15,6 +15,11 @@ public class CompanyEditPresenter extends AbstractCompanyPresenter {
 		eventBus.dispatch( "changeBody", view.getViewWidget() );
 	}
 
+	public void onNameSelected( String name ) {
+		view.getName().setValue( name );
+		view.alert( "Name changed on edit page." );
+	}
+
 	@Override
 	protected void clickOnLeftButton( ClickEvent event ) {
 		fillBean();
