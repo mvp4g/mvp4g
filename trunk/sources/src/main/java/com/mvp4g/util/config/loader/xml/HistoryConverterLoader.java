@@ -29,6 +29,7 @@ public class HistoryConverterLoader extends Mvp4gElementLoader<HistoryConverterE
 
 	static final String[] REQUIRED_ATTRIBUTES = { "name", "class" };
 	static final String[] PARENT_ATTRIBUTES = { "package" };
+	static final String[] OPTIONAL_ATTRIBUTES = { "convertParams" };
 	static final String[] OPTIONAL_MULTI_VALUE_ATTRIBUTES = { "services" };
 
 	@SuppressWarnings( "unchecked" )
@@ -54,6 +55,11 @@ public class HistoryConverterLoader extends Mvp4gElementLoader<HistoryConverterE
 	@Override
 	protected String[] getOptionalMultiValueAttributeNames() {
 		return OPTIONAL_MULTI_VALUE_ATTRIBUTES;
+	}
+
+	@Override
+	protected String[] getOptionalAttributeNames() {
+		return OPTIONAL_ATTRIBUTES;
 	}
 
 	@Override

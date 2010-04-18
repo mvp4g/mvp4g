@@ -80,7 +80,7 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println( "protected AbstractEventBus eventBus = null;" );
 		sourceWriter.print( "protected " );
 		sourceWriter.print( configuration.getModule().getQualifiedSourceName() );
-		sourceWriter.println( " itself = this;" );		
+		sourceWriter.println( " itself = this;" );
 
 		writeParentEventBus();
 
@@ -496,6 +496,8 @@ public class Mvp4gConfigurationFileWriter {
 		String parentParam = null;
 		String[] handlers = null;
 		String history;
+		List<String> activate;
+		List<String> deactivate;
 
 		for ( EventElement event : configuration.getEvents() ) {
 			type = event.getType();
@@ -504,6 +506,8 @@ public class Mvp4gConfigurationFileWriter {
 
 			handlers = event.getHandlers();
 			history = event.getHistory();
+			activate = event.getActivate();
+			deactivate = event.getDeactivate();
 
 			sourceWriter.print( "public void " );
 			sourceWriter.print( type );
@@ -541,23 +545,41 @@ public class Mvp4gConfigurationFileWriter {
 
 			sourceWriter.indent();
 
-			writeLog( type, ( parentParam != null ) );
+			writeLog( type, objectClasses );
+
+			if ( activate != null ) {
+				for ( String presenter : activate ) {
+					sourceWriter.print( presenter );
+					sourceWriter.println( ".setActivated(true);" );
+				}
+			}
+			if ( deactivate != null ) {
+				for ( String presenter : deactivate ) {
+					sourceWriter.print( presenter );
+					sourceWriter.println( ".setActivated(false);" );
+				}
+			}
 
 			writeLoadChildModule( event, param );
 			writeParentEvent( event, parentParam );
 
 			if ( history != null ) {
 
-				if ( ClearHistory.class.getCanonicalName().equals( getElement( history, configuration.getHistoryConverters() ).getClassName() ) ) {
+				HistoryConverterElement historyConverterElement = getElement( history, configuration.getHistoryConverters() );
+				if ( ClearHistory.class.getCanonicalName().equals( historyConverterElement.getClassName() ) ) {
 					sourceWriter.println( "clearHistory(itself);" );
 				} else {
 					sourceWriter.print( "place( itself, \"" );
 					sourceWriter.print( type );
 					sourceWriter.print( "\"," );
-					sourceWriter.print( history );
-					sourceWriter.print( "." );
-					sourceWriter.print( calledMethod );
-					sourceWriter.print( param );
+					if ( historyConverterElement.isConvertParams() ) {
+						sourceWriter.print( history );
+						sourceWriter.print( "." );
+						sourceWriter.print( calledMethod );
+						sourceWriter.print( param );
+					} else {
+						sourceWriter.print( "null" );
+					}
 					sourceWriter.println( ");" );
 					eventsWithHistory.add( event );
 				}
@@ -565,8 +587,9 @@ public class Mvp4gConfigurationFileWriter {
 
 			if ( handlers != null ) {
 				for ( String handler : handlers ) {
+					sourceWriter.print( "if (" );
 					sourceWriter.print( handler );
-					sourceWriter.print( ".bindIfNeeded();" );
+					sourceWriter.println( ".isActivated())" );
 					sourceWriter.print( handler );
 					sourceWriter.print( "." );
 					sourceWriter.print( calledMethod );
@@ -685,7 +708,7 @@ public class Mvp4gConfigurationFileWriter {
 
 		if ( startPresenter != null ) {
 			sourceWriter.print( startPresenter );
-			sourceWriter.println( ".bindIfNeeded();" );
+			sourceWriter.println( ".bind();" );
 		}
 
 		if ( start.hasEventType() ) {
@@ -974,15 +997,21 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println( "}" );
 	}
 
-	private void writeLog( String type, boolean withForm ) {
+	private void writeLog( String type, String[] objectClasses ) {
 		DebugElement debug = configuration.getDebug();
 		if ( ( debug != null ) && debug.isEnabled() ) {
 			sourceWriter.print( "GWT.log(\"Module: " );
 			sourceWriter.print( configuration.getModule().getSimpleSourceName() );
 			sourceWriter.print( " || event: " );
 			sourceWriter.print( type );
-			if ( withForm ) {
-				sourceWriter.print( " || object: \" + form" );
+			int nbClasses = ( objectClasses == null ) ? 0 : objectClasses.length;
+			if ( nbClasses > 0 ) {
+				sourceWriter.print( " || object(s): \" + attr0" );
+				for ( int i = 1; i < nbClasses; i++ ) {
+					sourceWriter.print( "+ \", \" + attr" );
+					sourceWriter.print( Integer.toString( i ) );
+				}
+
 			} else {
 				sourceWriter.print( "\"" );
 			}

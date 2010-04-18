@@ -46,11 +46,13 @@ public class HistoryAnnotationsLoader extends Mvp4gAnnotationsWithServiceLoader<
 
 		String className = c.getQualifiedSourceName();
 		String historyName = buildElementNameIfNeeded( annotation.name(), className, "" );
+		String convertParams = Boolean.toString( annotation.convertParams() );
 
 		HistoryConverterElement historyConverter = new HistoryConverterElement();
 		try {
 			historyConverter.setName( historyName );
 			historyConverter.setClassName( className );
+			historyConverter.setConvertParams( convertParams );
 		} catch ( DuplicatePropertyNameException e ) {
 			//setters are only called once, so this error can't occur.
 		}
