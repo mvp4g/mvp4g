@@ -72,6 +72,14 @@ public @interface Event {
 	String historyConverterName() default "";
 
 	Class<? extends HistoryConverter<?>> historyConverter() default NoHistoryConverter.class;
+	
+	Class<? extends PresenterInterface<?, ? extends EventBus>>[] activate() default {};
+
+	String[] activateNames() default {};
+	
+	Class<? extends PresenterInterface<?, ? extends EventBus>>[] deactivate() default {};
+
+	String[] deactivateNames() default {};	
 
 	class NoHistoryConverter implements HistoryConverter<EventBus> {
 

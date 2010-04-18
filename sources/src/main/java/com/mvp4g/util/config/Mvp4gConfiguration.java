@@ -94,6 +94,7 @@ public class Mvp4gConfiguration {
 	private static final String PARENT_EVENT_BUS_WARNING = "Parent's event bus is a XML event bus. Mvp4g framework can't verify if parent's event bus can handle events forwarded to it.";
 	private static final String NO_PARENT_ERROR = "Event %s: No parent module has been found for this module but this event must be forwarded to it. Have you forgotten to add setParentModule method to your module?";
 	private static final String CHILD_MODULE_SAME_HISTORY_NAME = "Module %s: You can't have two child modules with the same history name \"%s\".";
+	private static final String ACTIVATE_DEACTIVATE_SAME_TIME = "Event %s: an event can't activate and deactivate the same presenter: %s.";
 
 	private Set<PresenterElement> presenters = new HashSet<PresenterElement>();
 	private Set<ViewElement> views = new HashSet<ViewElement>();
@@ -655,28 +656,22 @@ public class Mvp4gConfiguration {
 	 * these elements are valid. Remove the ones that don't handle events or aren't associated with
 	 * the start view.</p>
 	 * 
-	 * @throws UnknownConfigurationElementException
-	 *             if an event handler cannot be found among the configured elements.
-	 * 
-	 * @throws InvalidTypeException
-	 *             if the class of event bus or view injected in the presenter is not compatible
-	 *             with the event bus/view managed by the presenter.
-	 * 
-	 * @throws InvalidClassException
-	 *             if presenter element class doesn't implement PresenterInterface.
-	 * 
-	 * @throws NotFoundClassException
-	 *             if a class can not be found
+	 * @throws InvalidMvp4gConfigurationException
 	 */
-	void validateEventHandlers() throws UnknownConfigurationElementException, InvalidTypeException, InvalidClassException, NotFoundClassException {
+	void validateEventHandlers() throws InvalidMvp4gConfigurationException {
 
 		Map<String, List<EventElement>> presenterMap = new HashMap<String, List<EventElement>>();
+		Map<String, List<EventElement>> activateMap = new HashMap<String, List<EventElement>>();
+		Map<String, List<EventElement>> deactivateMap = new HashMap<String, List<EventElement>>();
 
 		// Add presenter that handles event
-		List<EventElement> eventList = null;
+		List<EventElement> eventList, eventActivateList, eventDeactivateList;
 		String[] handlers;
+		List<String> activates, deactivates;
 		for ( EventElement event : events ) {
 			handlers = event.getHandlers();
+			activates = event.getActivate();
+			deactivates = event.getDeactivate();
 			if ( handlers != null ) {
 				for ( String handler : handlers ) {
 					eventList = presenterMap.get( handler );
@@ -685,6 +680,32 @@ public class Mvp4gConfiguration {
 						presenterMap.put( handler, eventList );
 					}
 					eventList.add( event );
+				}
+			}
+			if ( activates != null ) {
+
+				for ( String activate : activates ) {
+					eventActivateList = presenterMap.get( activate );
+					if ( ( deactivates != null ) && ( deactivates.contains( activate ) ) ) {
+						throw new InvalidMvp4gConfigurationException( String.format( ACTIVATE_DEACTIVATE_SAME_TIME, event, activate ) );
+					}
+
+					if ( eventActivateList == null ) {
+						eventActivateList = new ArrayList<EventElement>();
+						activateMap.put( activate, eventActivateList );
+					}
+					eventActivateList.add( event );
+				}
+			}
+			if ( deactivates != null ) {
+
+				for ( String deactivate : deactivates ) {
+					eventDeactivateList = presenterMap.get( deactivate );
+					if ( eventDeactivateList == null ) {
+						eventDeactivateList = new ArrayList<EventElement>();
+						deactivateMap.put( deactivate, eventDeactivateList );
+					}
+					eventDeactivateList.add( event );
 				}
 			}
 		}
@@ -701,9 +722,12 @@ public class Mvp4gConfiguration {
 		JParameterizedType genPresenter = null;
 
 		Set<PresenterElement> toRemove = new HashSet<PresenterElement>();
-
+		String name;
 		for ( PresenterElement presenter : presenters ) {
-			eventList = presenterMap.remove( presenter.getName() );
+			name = presenter.getName();
+			eventList = presenterMap.remove( name );
+			eventDeactivateList = deactivateMap.remove( name );
+			eventActivateList = activateMap.remove( name );
 			viewName = presenter.getView();
 			if ( eventList != null || viewName.equals( startView ) ) {
 				presenterType = getType( presenter, presenter.getClassName() );
@@ -730,6 +754,16 @@ public class Mvp4gConfiguration {
 				}
 
 			} else {
+				if ( eventActivateList != null ) {
+					for ( EventElement event : eventActivateList ) {
+						event.getActivate().remove( presenter.getName() );
+					}
+				}
+				if ( eventDeactivateList != null ) {
+					for ( EventElement event : eventDeactivateList ) {
+						event.getDeactivate().remove( presenter.getName() );
+					}
+				}
 				// this object is not used, you can remove it
 				toRemove.add( presenter );
 			}
@@ -739,6 +773,15 @@ public class Mvp4gConfiguration {
 		if ( !presenterMap.isEmpty() ) {
 			String it = presenterMap.keySet().iterator().next();
 			throw new UnknownConfigurationElementException( presenterMap.get( it ).get( 0 ), it );
+		}
+		if ( !activateMap.isEmpty() ) {
+			String it = activateMap.keySet().iterator().next();
+			throw new UnknownConfigurationElementException( activateMap.get( it ).get( 0 ), it );
+		}
+
+		if ( !deactivateMap.isEmpty() ) {
+			String it = deactivateMap.keySet().iterator().next();
+			throw new UnknownConfigurationElementException( activateMap.get( it ).get( 0 ), it );
 		}
 
 		removeUselessElements( presenters, toRemove );
@@ -1177,7 +1220,7 @@ public class Mvp4gConfiguration {
 	void loadGinModule( XMLConfiguration xmlConfig ) throws Mvp4gXmlException, NotFoundClassException {
 		GinModuleLoader loader = new GinModuleLoader( xmlConfig );
 		ginModule = loader.loadElement();
-		if(ginModule == null){
+		if ( ginModule == null ) {
 			ginModule = new GinModuleElement();
 			try {
 				ginModule.setClassName( DefaultMvp4gGinModule.class.getCanonicalName() );
@@ -1186,6 +1229,7 @@ public class Mvp4gConfiguration {
 			}
 		}
 	}
+
 	/**
 	 * Pre-loads the History element in the configuration file.
 	 * 

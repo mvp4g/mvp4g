@@ -15,6 +15,9 @@
  */
 package com.mvp4g.util.config.element;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 /**
@@ -24,8 +27,33 @@ import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
  */
 public class EventElement extends Mvp4gElement {
 
+	private List<String> activate, deactivate;
+
 	public EventElement() {
 		super( "event" );
+	}
+
+	@Override
+	public void setValues( String name, String[] values ) throws DuplicatePropertyNameException {
+		if ( "activate".equals( name ) ) {
+			if ( activate != null ) {
+				throw new DuplicatePropertyNameException( name );
+			}
+			activate = new ArrayList<String>();
+			for(String value: values){
+				activate.add( value );
+			}
+		} else if ( "deactivate".equals( name ) ) {
+			if ( deactivate != null ) {
+				throw new DuplicatePropertyNameException( name );
+			}
+			deactivate = new ArrayList<String>();
+			for(String value: values){
+				deactivate.add( value );
+			}
+		} else {
+			super.setValues( name, values );
+		}
 	}
 
 	public void setType( String type ) throws DuplicatePropertyNameException {
@@ -112,5 +140,21 @@ public class EventElement extends Mvp4gElement {
 	@Override
 	public String getUniqueIdentifierName() {
 		return "type";
+	}
+
+	public List<String> getActivate() {
+		return activate;
+	}
+
+	public void setActivate( String[] presenters ) throws DuplicatePropertyNameException {
+		setValues( "activate", presenters );
+	}
+
+	public List<String> getDeactivate() {
+		return deactivate;
+	}
+
+	public void setDeactivate( String[] presenters ) throws DuplicatePropertyNameException {
+		setValues( "deactivate", presenters );
 	}
 }

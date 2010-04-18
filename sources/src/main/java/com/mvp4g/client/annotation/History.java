@@ -35,5 +35,7 @@ import java.lang.annotation.RetentionPolicy;
 public @interface History {
 
 	String name() default "";
+	
+	boolean convertParams() default true;
 
 }

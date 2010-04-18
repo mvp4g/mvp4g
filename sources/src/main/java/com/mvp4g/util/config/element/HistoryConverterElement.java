@@ -15,6 +15,8 @@
  */
 package com.mvp4g.util.config.element;
 
+import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
+
 /**
  * An Mvp4g History converter configuration element.</p>
  * 
@@ -24,6 +26,20 @@ public class HistoryConverterElement extends Mvp4gWithServicesElement {
 
 	public HistoryConverterElement() {
 		super( "historyConverter" );
+	}
+	
+	public void setConvertParams( String convertParams ) throws DuplicatePropertyNameException {
+		setProperty( "convertParams", convertParams );
+	}
+
+	public String getConvertParams() {
+		String convertParams = getProperty( "convertParams" );
+		// By default it's true
+		return ( convertParams == null ) ? "true" : getProperty( "convertParams" );
+	}
+
+	public boolean isConvertParams() {
+		return Boolean.TRUE.toString().equals( getConvertParams() );
 	}
 
 }

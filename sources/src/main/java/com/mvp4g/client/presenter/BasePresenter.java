@@ -39,6 +39,7 @@ import com.mvp4g.client.event.EventBus;
 public class BasePresenter<V, E extends EventBus> implements PresenterInterface<V, E> {
 
 	private boolean binded = false;
+	private boolean activated = true;
 
 	protected E eventBus = null;
 	protected V view = null;
@@ -69,11 +70,16 @@ public class BasePresenter<V, E extends EventBus> implements PresenterInterface<
 		return eventBus;
 	}
 
-	public void bindIfNeeded() {
-		if ( !binded ) {
+	public boolean isActivated() {
+		if ( activated && !binded ) {
 			bind();
 			binded = true;
 		}
+		return activated;
+	}
+
+	public void setActivated( boolean activated ) {
+		this.activated = activated;
 	}
 
 }

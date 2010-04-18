@@ -72,9 +72,20 @@ public interface PresenterInterface<V, E extends EventBus> {
 	public void bind();
 
 	/**
-	 * Call the bind method is needed. Usually, the first time this method is called, the bind
-	 * method should be called, the other time nothing should be done.
+	 * Indicates if the presenter is activated or not. If the presenter is activated and if the bind
+	 * method hasn't been called yet, then the bind method should be called.
+	 * 
+	 * @return
+	 *       true if the presenter is activated, false otherwise
 	 */
-	public void bindIfNeeded();
+	public boolean isActivated();
+
+	/**
+	 * Set if the presenter is activated or not. By default, a presenter should be activated.
+	 * 
+	 * @param activated
+	 * 				new activation parameter
+	 */
+	public void setActivated( boolean activated );
 
 }

@@ -36,6 +36,7 @@ import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
+import com.mvp4g.client.presenter.PresenterInterface;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
@@ -271,10 +272,12 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			element = new EventElement();
 			try {
 				element.setType( method.getName() );
-				element.setHandlers( buildEventHandlers( c, method, event, configuration ) );
+				element.setHandlers( buildPresenters( c, method, event.handlers(), event.handlerNames(), configuration ) );
 				element.setCalledMethod( event.calledMethod() );
 				element.setModulesToLoad( buildChildModules( c, method, event, configuration ) );
 				element.setForwardToParent( Boolean.toString( event.forwardToParent() ) );
+				element.setActivate( buildPresenters( c, method, event.activate(), event.activateNames(), configuration ) );
+				element.setDeactivate( buildPresenters( c, method, event.deactivate(), event.deactivateNames(), configuration ) );
 
 				if ( paramClasses != null ) {
 					element.setEventObjectClasses( paramClasses );
@@ -319,18 +322,16 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 	 * @throws Mvp4gAnnotationException
 	 *             if no instance of a given handler class can be found
 	 */
-	private String[] buildEventHandlers( JClassType c, JMethod method, Event event, Mvp4gConfiguration configuration )
+	private String[] buildPresenters( JClassType c, JMethod method, Class<? extends PresenterInterface<?, ? extends EventBus>>[] presenterClasses, String[] presenterNames, Mvp4gConfiguration configuration )
 			throws Mvp4gAnnotationException {
 
 		Set<PresenterElement> presenters = configuration.getPresenters();
 
-		String[] handlerNames = event.handlerNames();
-		Class<?>[] handlerClasses = event.handlers();
-		String[] handlers = new String[handlerNames.length + handlerClasses.length];
+		String[] handlers = new String[presenterNames.length + presenterClasses.length];
 
 		String handlerName = null;
 		int index = 0;
-		for ( Class<?> handler : handlerClasses ) {
+		for ( Class<?> handler : presenterClasses ) {
 			handlerName = getElementName( presenters, handler.getCanonicalName() );
 			if ( handlerName == null ) {
 				String err = "No instance of " + handler.getCanonicalName()
@@ -341,7 +342,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			index++;
 		}
 
-		for ( String h : handlerNames ) {
+		for ( String h : presenterNames ) {
 			handlers[index] = h;
 			index++;
 		}
