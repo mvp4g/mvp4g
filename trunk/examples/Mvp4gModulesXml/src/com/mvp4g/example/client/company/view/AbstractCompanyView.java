@@ -1,6 +1,7 @@
 package com.mvp4g.example.client.company.view;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -12,6 +13,7 @@ public abstract class AbstractCompanyView extends SimplePanel implements Company
 
 	private Button leftButton = null;
 	private Button rightButton = null;
+	private Button selectButton = null;
 
 	public HasClickHandlers getLeftButton() {
 		return leftButton;
@@ -20,12 +22,21 @@ public abstract class AbstractCompanyView extends SimplePanel implements Company
 	public HasClickHandlers getRightButton() {
 		return rightButton;
 	}
+	
+	public HasClickHandlers getSelectNameButton() {
+		return selectButton;
+	}
 
 	public Widget getViewWidget() {
 		return this;
 	}
+	
+	public void alert(String message){
+		Window.alert( message );
+	}
 
 	public void createView() {
+		selectButton = new Button( "Select Name");
 		leftButton = new Button( getLeftButtonName() );
 		rightButton = new Button( getRightButtonName() );
 
@@ -34,6 +45,7 @@ public abstract class AbstractCompanyView extends SimplePanel implements Company
 		grid.setWidget( 0, 1, createAndGetNameWidget() );
 
 		HorizontalPanel buttons = new HorizontalPanel();
+		buttons.add( selectButton );
 		buttons.add( leftButton );
 		buttons.add( rightButton );
 
