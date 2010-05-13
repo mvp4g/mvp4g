@@ -22,7 +22,7 @@ import com.mvp4g.example.client.product.ProductModule;
 		@ChildModule( moduleClass = ProductModule.class, async = false, autoDisplay = false ) } )
 public interface MainEventBus extends EventBusWithLookup {
 
-	@Event( modulesToLoad = CompanyModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class )
+	@Event( modulesToLoad = CompanyModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, historyName="companies" )
 	public void goToCompany(int start, int end);
 
 	//use Integer instead of int here just to test passing object, in real project, you should have int

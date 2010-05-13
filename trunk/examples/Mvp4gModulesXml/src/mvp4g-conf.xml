@@ -17,7 +17,7 @@
 		<presenter name="rootPresenter" class="MainPresenter" view="rootView" />		
 	</presenters>
 	<events>
-		<event type="goToCompany" modulesToLoad="companyModule" history="menuHC" eventObjectClass="java.lang.Integer,java.lang.Integer"/>
+		<event type="goToCompany" modulesToLoad="companyModule" history="menuHC" eventObjectClass="java.lang.Integer,java.lang.Integer" historyName="company"/>
 		<event type="goToProduct" modulesToLoad="productModule" history="menuHC" eventObjectClass="java.lang.Integer,java.lang.Integer" />
 		<event type="changeBody" handlers="rootPresenter" />
 		<event type="errorOnLoad" handlers="rootPresenter" />

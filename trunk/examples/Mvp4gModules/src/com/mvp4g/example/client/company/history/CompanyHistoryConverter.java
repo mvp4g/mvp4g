@@ -15,13 +15,17 @@ public class CompanyHistoryConverter implements HistoryConverter<CompanyEventBus
 		company.setName( paramTab[1].split( "=" )[1] );
 		eventBus.goToDisplay( company );
 	}
-	
-	public String onGoToDisplay( CompanyBean company ){
+
+	public String onGoToDisplay( CompanyBean company ) {
 		return convertCompanyToToken( company );
 	}
 
 	private String convertCompanyToToken( CompanyBean company ) {
 		return "id=" + company.getId() + "&name=" + company.getName();
+	}
+
+	public boolean isCrawlable() {
+		return true;
 	}
 
 }
