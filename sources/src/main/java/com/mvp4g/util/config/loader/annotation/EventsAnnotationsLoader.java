@@ -244,6 +244,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		JClassType eventBusWithLookupType = configuration.getOracle().findType( EventBusWithLookup.class.getCanonicalName() );
 		JClassType eventBusType = configuration.getOracle().findType( EventBus.class.getCanonicalName() );
 		JClassType enclosingType = null;
+		String historyName;
 		for ( JMethod method : c.getOverridableMethods() ) {
 			event = method.getAnnotation( Event.class );
 			if ( event == null ) {
@@ -268,6 +269,8 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			else{
 				paramClasses = null;
 			}
+			
+			historyName = event.historyName();
 
 			element = new EventElement();
 			try {
@@ -278,9 +281,12 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				element.setForwardToParent( Boolean.toString( event.forwardToParent() ) );
 				element.setActivate( buildPresenters( c, method, event.activate(), event.activateNames(), configuration ) );
 				element.setDeactivate( buildPresenters( c, method, event.deactivate(), event.deactivateNames(), configuration ) );
-
+				
 				if ( paramClasses != null ) {
 					element.setEventObjectClasses( paramClasses );
+				}
+				if(!Event.DEFAULT_NAME.equals( historyName )){
+					element.setHistoryName( historyName );
 				}
 			} catch ( DuplicatePropertyNameException e ) {
 				// setters are only called once, so this error can't occur.

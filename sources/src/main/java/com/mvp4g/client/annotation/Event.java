@@ -59,6 +59,8 @@ import com.mvp4g.client.presenter.PresenterInterface;
 @Target( ElementType.METHOD )
 public @interface Event {
 
+	public static final String DEFAULT_NAME = "#%!|&";
+
 	Class<? extends PresenterInterface<?, ? extends EventBus>>[] handlers() default {};
 
 	String[] handlerNames() default {};
@@ -72,14 +74,16 @@ public @interface Event {
 	String historyConverterName() default "";
 
 	Class<? extends HistoryConverter<?>> historyConverter() default NoHistoryConverter.class;
-	
+
 	Class<? extends PresenterInterface<?, ? extends EventBus>>[] activate() default {};
 
 	String[] activateNames() default {};
-	
+
 	Class<? extends PresenterInterface<?, ? extends EventBus>>[] deactivate() default {};
 
-	String[] deactivateNames() default {};	
+	String[] deactivateNames() default {};
+
+	String historyName() default DEFAULT_NAME;
 
 	class NoHistoryConverter implements HistoryConverter<EventBus> {
 
@@ -88,6 +92,10 @@ public @interface Event {
 		}
 
 		public void convertFromToken( String eventType, String param, EventBus eventBus ) {
+		}
+
+		public boolean isCrawlable() {
+			return false;
 		}
 
 	}

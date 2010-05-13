@@ -52,6 +52,8 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 
 	public static final String MODULE_SEPARATOR = "/";
 
+	public static final String CRAWLABLE = "!";
+
 	/**
 	 * Interface to define methods needed to manage history<br/>
 	 * <br/>
@@ -77,6 +79,8 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 
 	@SuppressWarnings( "unchecked" )
 	private Map<String, HistoryConverter> converters = new HashMap<String, HistoryConverter>();
+	private Map<String, String> toHistoryNames = new HashMap<String, String>();
+	private Map<String, String> toEventType = new HashMap<String, String>();
 
 	/**
 	 * Build a <code>PlaceService</code>.
@@ -126,7 +130,17 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 */
 	public void onValueChange( ValueChangeEvent<String> event ) {
 		String token = event.getValue();
-		if ( ( token != null ) && ( token.length() > 0 ) ) {
+
+		boolean toContinue = false;
+		if ( token != null ) {
+			if ( token.startsWith( CRAWLABLE ) ) {
+				token = token.substring( 1 );
+			}
+			toContinue = ( token.length() > 0 );
+		}
+
+		if ( toContinue ) {
+
 			String[] tokenTab = token.split( FIRST_RE );
 			final String eventType = tokenTab[0];
 			final String param = ( tokenTab.length > 1 ) ? tokenTab[1] : null;
@@ -152,14 +166,19 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	}
 
 	@SuppressWarnings( "unchecked" )
-	private void dispatchEvent( String eventType, String param, Mvp4gModule module ) {
-		HistoryConverter converter = converters.get( eventType );
-		if ( converter == null ) {
-			sendNotFoundEvent();
+	private void dispatchEvent( String historyName, String param, Mvp4gModule module ) {
+		String eventType = toEventType.get( historyName );
+		if ( eventType != null ) {
+			HistoryConverter converter = converters.get( eventType );
+			if ( converter == null ) {
+				sendNotFoundEvent();
+			} else {
+				String[] tab = eventType.split( MODULE_SEPARATOR );
+				String finalEventType = tab[tab.length - 1];
+				converter.convertFromToken( finalEventType, param, module.getEventBus() );
+			}
 		} else {
-			String[] tab = eventType.split( MODULE_SEPARATOR );
-			String finalEventType = tab[tab.length - 1];
-			converter.convertFromToken( finalEventType, param, module.getEventBus() );
+			sendNotFoundEvent();
 		}
 	}
 
@@ -174,8 +193,14 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 * @param form
 	 *            object associated with the event
 	 */
+	@SuppressWarnings( "unchecked" )
 	public void place( String eventType, String param ) {
-		String token = ( ( param == null ) || ( param.length() == 0 ) ) ? eventType : ( eventType + FIRST + param );
+		String historyName = toHistoryNames.get( eventType );
+		String token = ( ( param == null ) || ( param.length() == 0 ) ) ? historyName : ( historyName + FIRST + param );
+		HistoryConverter hc = converters.get( eventType );
+		if(hc.isCrawlable()){
+			token = CRAWLABLE + token;
+		}		
 		history.newItem( token, false );
 	}
 
@@ -193,8 +218,10 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 * @param converter
 	 */
 	@SuppressWarnings( "unchecked" )
-	public void addConverter( String eventType, HistoryConverter converter ) {
+	public void addConverter( String eventType, String historyName, HistoryConverter converter ) {
 		converters.put( eventType, converter );
+		toHistoryNames.put( eventType, historyName );
+		toEventType.put( historyName, eventType );
 	}
 
 	/**

@@ -32,4 +32,8 @@ public class ClearHistory implements HistoryConverter<EventBus> {
 		throw new RuntimeException( "ClearHistory: convertFromToken should never be called" );
 	}
 
+	public boolean isCrawlable() {
+		return false;
+	}
+
 }

@@ -43,5 +43,7 @@ public interface HistoryConverter<E extends EventBus> {
 	 *            event bus of the application
 	 */
 	public void convertFromToken( String eventType, String param, E eventBus );
+	
+	public boolean isCrawlable();
 
 }
