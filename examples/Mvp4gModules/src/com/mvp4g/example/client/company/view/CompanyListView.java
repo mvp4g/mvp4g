@@ -1,15 +1,15 @@
 package com.mvp4g.example.client.company.view;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.company.presenter.CompanyListPresenter.CompanyListViewInterface;
 
-public class CompanyListView extends SimplePanel implements CompanyListViewInterface {
+public class CompanyListView extends Composite implements CompanyListViewInterface {
 
 	private Image createButton = null;
 	private FlexTable table = null;
@@ -55,7 +55,7 @@ public class CompanyListView extends SimplePanel implements CompanyListViewInter
 		mainPanel.setHorizontalAlignment( HasHorizontalAlignment.ALIGN_RIGHT );
 		mainPanel.add( createButton );
 
-		setWidget( mainPanel );
+		initWidget( mainPanel );
 	}
 
 	public Widget getViewWidget() {

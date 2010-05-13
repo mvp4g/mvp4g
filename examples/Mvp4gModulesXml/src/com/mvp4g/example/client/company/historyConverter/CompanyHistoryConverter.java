@@ -24,5 +24,9 @@ public class CompanyHistoryConverter implements XmlHistoryConverter {
 		return "id=" + company.getId() + "&name=" + company.getName();
 	}
 
+	public boolean isCrawlable() {
+		return true;
+	}
+
 }
 

@@ -11,4 +11,8 @@ public class CompanyCreationHistoryConverter implements HistoryConverter<Company
 		eventBus.goToCreation();
 	}
 
+	public boolean isCrawlable() {
+		return true;
+	}
+
 }

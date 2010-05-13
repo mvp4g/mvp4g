@@ -24,5 +24,9 @@ public class ProductHistoryConverter implements XmlHistoryConverter {
 		return "id=" + product.getId() + "&name=" + product.getName();
 	}
 
+	public boolean isCrawlable() {
+		return false;
+	}
+
 }
 

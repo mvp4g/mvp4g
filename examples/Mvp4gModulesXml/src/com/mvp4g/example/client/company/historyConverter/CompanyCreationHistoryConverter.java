@@ -11,4 +11,8 @@ public class CompanyCreationHistoryConverter implements XmlHistoryConverter {
 		eventBus.dispatch( eventType );
 	}
 
+	public boolean isCrawlable() {
+		return true;
+	}
+
 }

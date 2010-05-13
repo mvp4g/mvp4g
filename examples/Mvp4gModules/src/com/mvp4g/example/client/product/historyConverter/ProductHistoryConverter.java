@@ -1,4 +1,4 @@
-package com.mvp4g.example.client.main.historyConverter;
+package com.mvp4g.example.client.product.historyConverter;
 
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.history.HistoryConverter;
@@ -15,13 +15,17 @@ public class ProductHistoryConverter implements HistoryConverter<ProductEventBus
 		product.setName( paramTab[1].split( "=" )[1] );
 		eventBus.goToDisplay( product );
 	}
-	
-	public String onGoToDisplay( ProductBean product ){
+
+	public String onGoToDisplay( ProductBean product ) {
 		return convertProductToToken( product );
 	}
 
 	public String convertProductToToken( ProductBean product ) {
 		return "id=" + product.getId() + "&name=" + product.getName();
+	}
+
+	public boolean isCrawlable() {
+		return false;
 	}
 
 }

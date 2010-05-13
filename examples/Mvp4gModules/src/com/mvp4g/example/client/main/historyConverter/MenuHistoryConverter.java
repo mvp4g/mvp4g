@@ -32,4 +32,8 @@ public class MenuHistoryConverter implements HistoryConverter<MainEventBus> {
 		eventBus.dispatch( eventType, start, end );
 	}
 
+	public boolean isCrawlable() {
+		return true;
+	}
+
 }
