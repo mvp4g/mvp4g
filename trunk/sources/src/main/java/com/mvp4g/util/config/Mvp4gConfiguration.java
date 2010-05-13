@@ -35,6 +35,7 @@ import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.client.history.HistoryConverter;
+import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.client.presenter.PresenterInterface;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
@@ -95,6 +96,11 @@ public class Mvp4gConfiguration {
 	private static final String NO_PARENT_ERROR = "Event %s: No parent module has been found for this module but this event must be forwarded to it. Have you forgotten to add setParentModule method to your module?";
 	private static final String CHILD_MODULE_SAME_HISTORY_NAME = "Module %s: You can't have two child modules with the same history name \"%s\".";
 	private static final String ACTIVATE_DEACTIVATE_SAME_TIME = "Event %s: an event can't activate and deactivate the same presenter: %s.";
+	private static final String NAME_WITH_NO_CONVERTER = "Event %s: you defined an history name for this event but this event has no history converter.";
+	private static final String EMPTY_HISTORY_NAME_ROOT = "Event %s: An event of the Mvp4g Root module can't have an history name equal to empty string.";
+	private static final String SAME_HISTORY_NAME = "Event %s: history name already used for another event: %s.";
+	private static final String WRONG_HISTORY_NAME = "%s %s: history name can't start with '" + PlaceService.CRAWLABLE + "' or contain '"
+			+ PlaceService.MODULE_SEPARATOR + "'.";
 
 	private Set<PresenterElement> presenters = new HashSet<PresenterElement>();
 	private Set<ViewElement> views = new HashSet<ViewElement>();
@@ -556,27 +562,16 @@ public class Mvp4gConfiguration {
 	 * element. Verify that these elements are valid. Remove all history converters that aren't used
 	 * by an event.
 	 * 
-	 * 
-	 * @throws InvalidClassException
-	 *             if an history converter don't implement History Converter
-	 * 
-	 * @throws InvalidTypeException
-	 *             if the class of event bus and object used by history converter to convert is not
-	 *             compatible with the event bus of the module or the object class linked with the
-	 *             event.
-	 * 
-	 * @throws UnknownConfigurationElementException
-	 *             if a history converter cannot be found among the configured elements.
-	 * 
-	 * @throws NotFoundClassException
-	 *             if a class can not be found
+	 * @throws InvalidMvp4gConfigurationException
 	 */
-	void validateHistoryConverters() throws InvalidClassException, InvalidTypeException, UnknownConfigurationElementException, NotFoundClassException {
+	void validateHistoryConverters() throws InvalidMvp4gConfigurationException {
 
 		Map<String, List<EventElement>> historyConverterMap = new HashMap<String, List<EventElement>>();
 
 		List<EventElement> eventList = null;
 		String hcName = null;
+		String historyName;
+		List<String> historyNames = new ArrayList<String>();
 		for ( EventElement event : events ) {
 			if ( event.hasHistory() ) {
 				hcName = event.getHistory();
@@ -586,6 +581,18 @@ public class Mvp4gConfiguration {
 					historyConverterMap.put( hcName, eventList );
 				}
 				eventList.add( event );
+				historyName = event.getHistoryName();
+				if ( isRootModule() && ( historyName.length() == 0 ) ) {
+					throw new InvalidMvp4gConfigurationException( String.format( EMPTY_HISTORY_NAME_ROOT, event.getType() ) );
+				}
+				validateHistoryName( historyName, event );
+				if ( historyNames.contains( historyName ) ) {
+					throw new InvalidMvp4gConfigurationException( String.format( SAME_HISTORY_NAME, event.getType(), event.getHistoryName(),
+							historyName ) );
+				}
+				historyNames.add( historyName );
+			} else if ( event.getHistoryName() != event.getType() ) {
+				throw new InvalidMvp4gConfigurationException( String.format( NAME_WITH_NO_CONVERTER, event.getType() ) );
 			}
 		}
 
@@ -1366,6 +1373,10 @@ public class Mvp4gConfiguration {
 		return parentModule;
 	}
 
+	private boolean isRootModule() {
+		return Mvp4gModule.class.getCanonicalName().equals( module.getQualifiedSourceName() );
+	}
+
 	void findChildModuleHistoryName() throws InvalidMvp4gConfigurationException {
 		JClassType childType;
 		HistoryName hName;
@@ -1375,18 +1386,26 @@ public class Mvp4gConfiguration {
 			hName = childType.getAnnotation( HistoryName.class );
 			if ( hName != null ) {
 				String hNameStr = hName.value();
+				validateHistoryName( hNameStr, childModule );
 				if ( historyNames.contains( hNameStr ) ) {
 					throw new InvalidMvp4gConfigurationException( String.format( CHILD_MODULE_SAME_HISTORY_NAME, module.getQualifiedSourceName(),
 							hNameStr ) );
-				} else {
-					historyNames.add( hNameStr );
-					try {
-						childModule.setHistoryName( hNameStr );
-					} catch ( DuplicatePropertyNameException e ) {
-						// exception can't occur, only time you set this value
-					}
+				}
+				historyNames.add( hNameStr );
+
+				try {
+					childModule.setHistoryName( hNameStr );
+				} catch ( DuplicatePropertyNameException e ) {
+					// exception can't occur, only time you set this value
 				}
 			}
+		}
+	}
+
+	void validateHistoryName( String historyName, Mvp4gElement element ) throws InvalidMvp4gConfigurationException {
+		if ( historyName.startsWith( PlaceService.CRAWLABLE ) || historyName.contains( PlaceService.MODULE_SEPARATOR ) ) {
+			throw new InvalidMvp4gConfigurationException( String.format( WRONG_HISTORY_NAME, element.getTagName(), element.getUniqueIdentifier(),
+					historyName ) );
 		}
 	}
 

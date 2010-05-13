@@ -52,7 +52,7 @@ public interface Mvp4gModule {
 	 * @param hc
 	 *            history converter to associate to the token
 	 */
-	public void addConverter( String token, HistoryConverter<?> hc );
+	public void addConverter( String eventType, String historyName, HistoryConverter<?> hc );
 
 	/**
 	 * Place an event and its associated object in the browser history

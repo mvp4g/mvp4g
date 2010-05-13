@@ -157,4 +157,16 @@ public class EventElement extends Mvp4gElement {
 	public void setDeactivate( String[] presenters ) throws DuplicatePropertyNameException {
 		setValues( "deactivate", presenters );
 	}
+	
+	public String getHistoryName() {
+		String historyName = getProperty( "historyName" );
+		if(historyName == null){
+			historyName = getType();
+		}
+		return historyName;
+	}
+
+	public void setHistoryName( String historyName ) throws DuplicatePropertyNameException {
+		setProperty( "historyName", historyName );
+	}
 }

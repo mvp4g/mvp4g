@@ -610,6 +610,8 @@ public class Mvp4gConfigurationFileWriter {
 		for ( EventElement event : eventsWithHistory ) {
 			sourceWriter.print( "addConverter( \"" );
 			sourceWriter.print( event.getType() );
+			sourceWriter.print( "\", \"" );
+			sourceWriter.print( event.getHistoryName() );
 			sourceWriter.print( "\"," );
 			sourceWriter.print( event.getHistory() );
 			sourceWriter.print( ");" );
@@ -708,7 +710,9 @@ public class Mvp4gConfigurationFileWriter {
 
 		if ( startPresenter != null ) {
 			sourceWriter.print( startPresenter );
-			sourceWriter.println( ".bind();" );
+			sourceWriter.println( ".setActivated(true);" );
+			sourceWriter.print( startPresenter );
+			sourceWriter.println( ".isActivated();" );
 		}
 
 		if ( start.hasEventType() ) {
@@ -904,7 +908,7 @@ public class Mvp4gConfigurationFileWriter {
 	}
 
 	private void writeHistoryConnection() {
-		sourceWriter.println( "public void addConverter(String token, HistoryConverter<?> hc){" );
+		sourceWriter.println( "public void addConverter(String eventType, String historyName, HistoryConverter<?> hc){" );
 		sourceWriter.indent();
 		if ( configuration.getParentModule() != null ) {
 			String historyName = configuration.getHistoryName();
@@ -912,10 +916,13 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.print( "parentModule.addConverter(\"" );
 				sourceWriter.print( historyName );
 				sourceWriter.print( PlaceService.MODULE_SEPARATOR );
-				sourceWriter.println( "\" + token, hc);" );
+				sourceWriter.print( "\" + eventType, \"" );
+				sourceWriter.print( historyName );
+				sourceWriter.print( PlaceService.MODULE_SEPARATOR );
+				sourceWriter.println( "\" + historyName, hc);" );
 			}
 		} else {
-			sourceWriter.println( "placeService.addConverter(token, hc);" );
+			sourceWriter.println( "placeService.addConverter(eventType, historyName, hc);" );
 		}
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );
