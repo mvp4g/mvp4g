@@ -15,6 +15,7 @@
  */
 package com.mvp4g.client.presenter;
 
+import com.mvp4g.client.event.BaseEventHandler;
 import com.mvp4g.client.event.EventBus;
 
 /**
@@ -36,16 +37,9 @@ import com.mvp4g.client.event.EventBus;
  * @author plcoirier
  * 
  */
-public class BasePresenter<V, E extends EventBus> implements PresenterInterface<V, E> {
+public class BasePresenter<V, E extends EventBus> extends BaseEventHandler<E> implements PresenterInterface<V, E> {
 
-	private boolean binded = false;
-	private boolean activated = true;
-
-	protected E eventBus = null;
 	protected V view = null;
-
-	public BasePresenter() {
-	}
 
 	public V getView() {
 		return view;
@@ -55,31 +49,6 @@ public class BasePresenter<V, E extends EventBus> implements PresenterInterface<
 		this.view = view;
 	}
 
-	public void bind() {
-		/*
-		 * Default implementation does nothing: extensions are responsible for (optionally) defining
-		 * binding specifics.
-		 */
-	}
 
-	public void setEventBus( E eventBus ) {
-		this.eventBus = eventBus;
-	}
-
-	public E getEventBus() {
-		return eventBus;
-	}
-
-	public boolean isActivated() {
-		if ( activated && !binded ) {
-			bind();
-			binded = true;
-		}
-		return activated;
-	}
-
-	public void setActivated( boolean activated ) {
-		this.activated = activated;
-	}
 
 }

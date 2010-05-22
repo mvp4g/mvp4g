@@ -15,25 +15,18 @@
  */
 package com.mvp4g.util.config.element;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
-
 /**
- * An Mvp4g Presenter configuration element.</p>
+ * An Mvp4g EventHandler configuration element.</p>
  * 
- * @author javier
+ * @author Dan Persa
  */
-public class PresenterElement extends EventHandlerElement {
+public class EventHandlerElement extends Mvp4gWithServicesElement {
 
-	public PresenterElement() {
-		super( "presenter" );
-	}
-
-	public void setView( String view ) throws DuplicatePropertyNameException {
-		setProperty( "view", view );
-	}
-
-	public String getView() {
-		return getProperty( "view" );
-	}
-
+    public EventHandlerElement() {
+        super("eventHandler");
+    }
+    
+    public EventHandlerElement(String tagName) {
+        super(tagName);
+    }
 }
