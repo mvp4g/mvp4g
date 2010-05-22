@@ -5,6 +5,9 @@
 		<converter name="companyHC" class="CompanyHistoryConverter" />
 		<converter name="companyCreationHC" class="CompanyCreationHistoryConverter" convertParams="false" />
 	</history>
+	<eventHandlers package="com.mvp4g.example.client.company.handler">
+		<eventHandler name="listHandler" class="CompanyListHandler" services="service"/>
+	</eventHandlers>
 	<views package="com.mvp4g.example.client.company.view">
 		<view name="listView" class="CompanyListView" />
 		<view name="displayView" class="CompanyDisplayView" />
@@ -42,6 +45,8 @@
 			eventObjectClass="" />
 		<event type="nameSelected" handlers="displayPresenter, editPresenter, creationPresenter" />
 		<event type="displayNameSelector" handlers="selectorPresenter" />
+		<event type="companyListRetrieved" handlers="listPresenter" />
+		<event type="getCompanyList" handlers="listHandler" />
 	</events>
 
 	<start view="listView" />

@@ -48,21 +48,16 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 	}
 
 	public void onGoToCompany(int start, int end) {
-		service.getCompanies( start, end, new AsyncCallback<List<CompanyBean>>() {
-
-			public void onSuccess( List<CompanyBean> result ) {
-				companies = result;
-				for ( int i = 0; i < result.size(); i++ ) {
-					addCompany( result.get( i ), i );
-				}
-				eventBus.changeBody( view.getViewWidget() );
-			}
-
-			public void onFailure( Throwable caught ) {
-
-			}
-		} );
 		view.clearTable();
+		eventBus.getCompanyList( start, end );		
+	}
+	
+	public void onCompanyListRetrieved( List<CompanyBean> companies ){
+		this.companies = companies;
+		for ( int i = 0; i < companies.size(); i++ ) {
+			addCompany( companies.get( i ), i );
+		}
+		eventBus.changeBody( view.getViewWidget() );
 	}
 
 	public void onGoToList() {
