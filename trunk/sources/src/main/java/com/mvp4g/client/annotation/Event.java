@@ -22,6 +22,7 @@ import java.lang.annotation.Target;
 
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.presenter.PresenterInterface;
 
@@ -61,7 +62,7 @@ public @interface Event {
 
 	public static final String DEFAULT_NAME = "#%!|&";
 
-	Class<? extends PresenterInterface<?, ? extends EventBus>>[] handlers() default {};
+	Class<? extends EventHandlerInterface<? extends EventBus>>[] handlers() default {};
 
 	String[] handlerNames() default {};
 

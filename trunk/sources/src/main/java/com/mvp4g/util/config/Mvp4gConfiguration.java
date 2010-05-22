@@ -25,6 +25,7 @@ import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.mvp4g.client.DefaultMvp4gGinModule;
 import com.mvp4g.client.Mvp4gModule;
+import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.Presenter;
@@ -33,6 +34,7 @@ import com.mvp4g.client.annotation.XmlFilePath;
 import com.mvp4g.client.annotation.module.HistoryName;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBusWithLookup;
+import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.history.PlaceService;
@@ -42,6 +44,7 @@ import com.mvp4g.util.config.element.ChildModulesElement;
 import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
+import com.mvp4g.util.config.element.EventHandlerElement;
 import com.mvp4g.util.config.element.GinModuleElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
@@ -52,6 +55,7 @@ import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.config.element.ViewElement;
+import com.mvp4g.util.config.loader.annotation.EventHandlerAnnotationsLoader;
 import com.mvp4g.util.config.loader.annotation.EventsAnnotationsLoader;
 import com.mvp4g.util.config.loader.annotation.HistoryAnnotationsLoader;
 import com.mvp4g.util.config.loader.annotation.PresenterAnnotationsLoader;
@@ -59,6 +63,7 @@ import com.mvp4g.util.config.loader.annotation.ServiceAnnotationsLoader;
 import com.mvp4g.util.config.loader.xml.ChildModuleLoader;
 import com.mvp4g.util.config.loader.xml.ChildModulesLoader;
 import com.mvp4g.util.config.loader.xml.DebugLoader;
+import com.mvp4g.util.config.loader.xml.EventHandlersLoader;
 import com.mvp4g.util.config.loader.xml.EventsLoader;
 import com.mvp4g.util.config.loader.xml.GinModuleLoader;
 import com.mvp4g.util.config.loader.xml.HistoryConverterLoader;
@@ -103,6 +108,7 @@ public class Mvp4gConfiguration {
 			+ PlaceService.MODULE_SEPARATOR + "'.";
 
 	private Set<PresenterElement> presenters = new HashSet<PresenterElement>();
+	private Set<EventHandlerElement> eventHandlers = new HashSet<EventHandlerElement>();
 	private Set<ViewElement> views = new HashSet<ViewElement>();
 	private Set<EventElement> events = new HashSet<EventElement>();
 	private Set<ServiceElement> services = new HashSet<ServiceElement>();
@@ -186,6 +192,7 @@ public class Mvp4gConfiguration {
 					loadServices( xmlConfig );
 					loadHistoryConverters( xmlConfig );
 					loadPresenters( xmlConfig );
+					loadEventHandlers( xmlConfig );
 					loadEvents( xmlConfig );
 					loadStart( xmlConfig );
 					loadHistory( xmlConfig );
@@ -205,6 +212,7 @@ public class Mvp4gConfiguration {
 		loadServices( scanResult.get( Service.class ) );
 		loadHistoryConverters( scanResult.get( History.class ) );
 		loadPresenters( scanResult.get( Presenter.class ) );
+		loadEventHandlers( scanResult.get( EventHandler.class ) );
 		loadEvents( scanResult.get( Events.class ) );
 		loadParentModule();
 
@@ -241,6 +249,13 @@ public class Mvp4gConfiguration {
 	 */
 	public Set<PresenterElement> getPresenters() {
 		return presenters;
+	}
+
+	/**
+	 * @return a set of Presenters loaded.
+	 */
+	public Set<EventHandlerElement> getEventHandlers() {
+		return eventHandlers;
 	}
 
 	/**
@@ -665,9 +680,16 @@ public class Mvp4gConfiguration {
 	 * 
 	 * @throws InvalidMvp4gConfigurationException
 	 */
+	/**
+	 * Checks that all event handler names correspond to a configured mvp4g element. Verify that
+	 * these elements are valid. Remove the ones that don't handle events or aren't associated with
+	 * the start view.</p>
+	 * 
+	 * @throws InvalidMvp4gConfigurationException
+	 */
 	void validateEventHandlers() throws InvalidMvp4gConfigurationException {
 
-		Map<String, List<EventElement>> presenterMap = new HashMap<String, List<EventElement>>();
+		Map<String, List<EventElement>> presenterAndEventHandlerMap = new HashMap<String, List<EventElement>>();
 		Map<String, List<EventElement>> activateMap = new HashMap<String, List<EventElement>>();
 		Map<String, List<EventElement>> deactivateMap = new HashMap<String, List<EventElement>>();
 
@@ -681,10 +703,10 @@ public class Mvp4gConfiguration {
 			deactivates = event.getDeactivate();
 			if ( handlers != null ) {
 				for ( String handler : handlers ) {
-					eventList = presenterMap.get( handler );
+					eventList = presenterAndEventHandlerMap.get( handler );
 					if ( eventList == null ) {
 						eventList = new ArrayList<EventElement>();
-						presenterMap.put( handler, eventList );
+						presenterAndEventHandlerMap.put( handler, eventList );
 					}
 					eventList.add( event );
 				}
@@ -692,7 +714,7 @@ public class Mvp4gConfiguration {
 			if ( activates != null ) {
 
 				for ( String activate : activates ) {
-					eventActivateList = presenterMap.get( activate );
+					eventActivateList = presenterAndEventHandlerMap.get( activate );
 					if ( ( deactivates != null ) && ( deactivates.contains( activate ) ) ) {
 						throw new InvalidMvp4gConfigurationException( String.format( ACTIVATE_DEACTIVATE_SAME_TIME, event, activate ) );
 					}
@@ -707,7 +729,7 @@ public class Mvp4gConfiguration {
 			if ( deactivates != null ) {
 
 				for ( String deactivate : deactivates ) {
-					eventDeactivateList = presenterMap.get( deactivate );
+					eventDeactivateList = presenterAndEventHandlerMap.get( deactivate );
 					if ( eventDeactivateList == null ) {
 						eventDeactivateList = new ArrayList<EventElement>();
 						deactivateMap.put( deactivate, eventDeactivateList );
@@ -719,10 +741,10 @@ public class Mvp4gConfiguration {
 
 		String startView = start.getView();
 		JGenericType presenterGenType = getType( null, PresenterInterface.class.getCanonicalName() ).isGenericType();
+		JGenericType eventHandlerGenType = getType( null, EventHandlerInterface.class.getCanonicalName() ).isGenericType();
 		JClassType eventBusType = getType( null, eventBus.getInterfaceClassName() );
 		JType[] noParam = new JType[0];
 		JClassType presenterType = null;
-		JClassType eventBusParam = null;
 		JClassType viewParam = null;
 		String viewName = null;
 		ViewElement view = null;
@@ -732,25 +754,21 @@ public class Mvp4gConfiguration {
 		String name;
 		for ( PresenterElement presenter : presenters ) {
 			name = presenter.getName();
-			eventList = presenterMap.remove( name );
+			eventList = presenterAndEventHandlerMap.remove( name );
 			eventDeactivateList = deactivateMap.remove( name );
 			eventActivateList = activateMap.remove( name );
 			viewName = presenter.getView();
 			if ( eventList != null || viewName.equals( startView ) ) {
+
+				controlEventBus( presenter, eventHandlerGenType, eventBusType );
+
 				presenterType = getType( presenter, presenter.getClassName() );
 				genPresenter = presenterType.asParameterizationOf( presenterGenType );
 				if ( genPresenter == null ) {
 					throw new InvalidClassException( presenter, PresenterInterface.class.getCanonicalName() );
 				}
 
-				eventBusParam = (JClassType)genPresenter.findMethod( "getEventBus", noParam ).getReturnType();
 				viewParam = (JClassType)genPresenter.findMethod( "getView", noParam ).getReturnType();
-
-				// Control if presenter event bus is compatible with module
-				// event bus
-				if ( !eventBusType.isAssignableTo( eventBusParam ) ) {
-					throw new InvalidTypeException( presenter, "Event Bus", eventBus.getInterfaceClassName(), eventBusParam.getQualifiedSourceName() );
-				}
 
 				// Control if view injected to the event bus is compatible with
 				// presenter view type
@@ -776,10 +794,35 @@ public class Mvp4gConfiguration {
 			}
 		}
 
-		// Missing presenter
-		if ( !presenterMap.isEmpty() ) {
-			String it = presenterMap.keySet().iterator().next();
-			throw new UnknownConfigurationElementException( presenterMap.get( it ).get( 0 ), it );
+		Set<EventHandlerElement> toRemoveEventHandlers = new HashSet<EventHandlerElement>();
+		for ( EventHandlerElement eventHandler : eventHandlers ) {
+			name = eventHandler.getName();
+			eventList = presenterAndEventHandlerMap.remove( name );
+			eventDeactivateList = deactivateMap.remove( name );
+			eventActivateList = activateMap.remove( name );
+
+			if ( eventList != null ) {
+				controlEventBus( eventHandler, eventHandlerGenType, eventBusType );
+			} else {
+				if ( eventActivateList != null ) {
+					for ( EventElement event : eventActivateList ) {
+						event.getActivate().remove( eventHandler.getName() );
+					}
+				}
+				if ( eventDeactivateList != null ) {
+					for ( EventElement event : eventDeactivateList ) {
+						event.getDeactivate().remove( eventHandler.getName() );
+					}
+				}
+				// this object is not used, you can remove it
+				toRemoveEventHandlers.add( eventHandler );
+			}
+		}
+
+		// Missing handlers
+		if ( !presenterAndEventHandlerMap.isEmpty() ) {
+			String it = presenterAndEventHandlerMap.keySet().iterator().next();
+			throw new UnknownConfigurationElementException( presenterAndEventHandlerMap.get( it ).get( 0 ), it );
 		}
 		if ( !activateMap.isEmpty() ) {
 			String it = activateMap.keySet().iterator().next();
@@ -792,7 +835,25 @@ public class Mvp4gConfiguration {
 		}
 
 		removeUselessElements( presenters, toRemove );
+		removeUselessElements( eventHandlers, toRemoveEventHandlers );
+	}
 
+	private void controlEventBus( EventHandlerElement eventHandler, JGenericType eventHandlerGenType, JClassType eventBusType )
+			throws InvalidClassException, InvalidTypeException, NotFoundClassException {
+
+		JClassType eventHandlerType = getType( eventHandler, eventHandler.getClassName() );
+		JParameterizedType genEventHandler = eventHandlerType.asParameterizationOf( eventHandlerGenType );
+		if ( genEventHandler == null ) {
+			throw new InvalidClassException( eventHandler, EventHandlerInterface.class.getCanonicalName() );
+		}
+
+		JClassType eventBusParam = (JClassType)genEventHandler.findMethod( "getEventBus", new JType[0] ).getReturnType();
+
+		// Control if presenter event bus is compatible with module
+		// event bus
+		if ( !eventBusType.isAssignableTo( eventBusParam ) ) {
+			throw new InvalidTypeException( eventHandler, "Event Bus", eventBus.getInterfaceClassName(), eventBusParam.getQualifiedSourceName() );
+		}
 	}
 
 	void validateChildModules() throws InvalidMvp4gConfigurationException {
@@ -972,6 +1033,7 @@ public class Mvp4gConfiguration {
 		Set<String> allIds = new HashSet<String>();
 		checkUniquenessOf( historyConverters, allIds );
 		checkUniquenessOf( presenters, allIds );
+		checkUniquenessOf( eventHandlers, allIds );
 		checkUniquenessOf( views, allIds );
 		checkUniquenessOf( events, allIds );
 		checkUniquenessOf( services, allIds );
@@ -1010,6 +1072,9 @@ public class Mvp4gConfiguration {
 	 */
 	void findEventObjectClass() throws InvalidMvp4gConfigurationException {
 
+		Set<EventHandlerElement> handlerSet = new HashSet<EventHandlerElement>( presenters );
+		handlerSet.addAll( eventHandlers );
+
 		for ( EventElement event : events ) {
 			String[] objectClasses = event.getEventObjectClasses();
 			if ( objectClasses == null ) {
@@ -1017,7 +1082,7 @@ public class Mvp4gConfiguration {
 
 				// if no handler, then event object class can't be deduce 
 				if ( ( handlers != null ) && ( handlers.length > 0 ) ) {
-					String presenterClass = getElement( handlers[0], presenters, event ).getClassName();
+					String presenterClass = getElement( handlers[0], handlerSet, event ).getClassName();
 
 					JClassType handlerClass = getType( event, presenterClass );
 					String eventMethod = event.getCalledMethod();
@@ -1073,6 +1138,19 @@ public class Mvp4gConfiguration {
 	 */
 	void loadPresenters( List<JClassType> annotedClasses ) throws Mvp4gAnnotationException {
 		PresenterAnnotationsLoader loader = new PresenterAnnotationsLoader();
+		loader.load( annotedClasses, this );
+	}
+
+	/**
+	 * Pre-loads information contained in EventHandler annotations.
+	 * 
+	 * @param annotedClasses
+	 *            classes with the EventHandler annotation
+	 * @throws Mvp4gAnnotationException
+	 *             thrown if event handler class associated with the annotation is not correct
+	 */
+	void loadEventHandlers( List<JClassType> annotedClasses ) throws Mvp4gAnnotationException {
+		EventHandlerAnnotationsLoader loader = new EventHandlerAnnotationsLoader();
 		loader.load( annotedClasses, this );
 	}
 
@@ -1133,6 +1211,21 @@ public class Mvp4gConfiguration {
 	void loadPresenters( XMLConfiguration xmlConfig ) throws Mvp4gXmlException {
 		PresentersLoader presentersConfig = new PresentersLoader( xmlConfig );
 		presenters = presentersConfig.loadElements();
+	}
+
+	/**
+	 * Pre-loads all EventHandlers in the configuration file.
+	 * 
+	 * @param xmlConfig
+	 *            raw representation of the configuration file.
+	 * 
+	 * @throws Mvp4gXmlException
+	 *             if eventHandler tags cannot be loaded.
+	 * 
+	 */
+	void loadEventHandlers( XMLConfiguration xmlConfig ) throws Mvp4gXmlException {
+		EventHandlersLoader eventHandlersConfig = new EventHandlersLoader( xmlConfig );
+		eventHandlers = eventHandlersConfig.loadElements();
 	}
 
 	/**

@@ -31,6 +31,7 @@ import com.mvp4g.util.config.element.ChildModulesElement;
 import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
+import com.mvp4g.util.config.element.EventHandlerElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.InjectedElement;
@@ -110,6 +111,10 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println();
 
 		writePresenters();
+
+		sourceWriter.println();
+
+		writeEventHandlers();
 
 		sourceWriter.println();
 
@@ -300,6 +305,12 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( presenter.getName() );
 			sourceWriter.println( "();" );
 		}
+		for ( EventHandlerElement eventHandler : configuration.getEventHandlers() ) {
+			sourceWriter.print( eventHandler.getClassName() );
+			sourceWriter.print( " get" );
+			sourceWriter.print( eventHandler.getName() );
+			sourceWriter.println( "();" );
+		}
 		for ( ViewElement view : configuration.getViews() ) {
 			sourceWriter.print( view.getClassName() );
 			sourceWriter.print( " get" );
@@ -418,6 +429,27 @@ public class Mvp4gConfigurationFileWriter {
 		}
 
 	}
+	
+	/**
+	 * Write the eventHandlers included in the configuration file.
+	 * 
+	 * Pre-condition: mvp4g configuration has been pre-loaded from configuration file.
+	 * 
+	 */
+	private void writeEventHandlers() {
+
+		String name = null;
+		String className = null;
+
+		for ( EventHandlerElement eventHandler : configuration.getEventHandlers() ) {
+			name = eventHandler.getName();
+			className = eventHandler.getClassName();
+
+			createInstance( name, className );
+
+			injectServices( name, eventHandler.getInjectedServices() );
+		}
+	}
 
 	/**
 	 * Write the presenters included in the configuration file.
@@ -429,6 +461,11 @@ public class Mvp4gConfigurationFileWriter {
 
 		for ( PresenterElement presenter : configuration.getPresenters() ) {
 			sourceWriter.print( presenter.getName() );
+			sourceWriter.println( ".setEventBus(eventBus);" );
+		}
+		
+		for ( EventHandlerElement eventHandler : configuration.getEventHandlers() ) {
+			sourceWriter.print( eventHandler.getName() );
 			sourceWriter.println( ".setEventBus(eventBus);" );
 		}
 

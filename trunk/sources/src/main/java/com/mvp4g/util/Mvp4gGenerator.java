@@ -37,6 +37,7 @@ import com.google.gwt.user.rebind.SourceWriter;
 import com.mvp4g.client.Mvp4gEventPasser;
 import com.mvp4g.client.Mvp4gException;
 import com.mvp4g.client.Mvp4gModule;
+import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.Presenter;
@@ -142,7 +143,7 @@ public class Mvp4gGenerator extends Generator {
 			TypeOracle oracle = context.getTypeOracle();
 
 			Map<Class<? extends Annotation>, List<JClassType>> scanResult = AnnotationScanner.scan( logger, oracle, new Class[] { Presenter.class,
-					History.class, Events.class, Service.class } );
+					History.class, Events.class, Service.class, EventHandler.class } );
 
 			Mvp4gConfiguration configuration = new Mvp4gConfiguration( logger, oracle );
 			configuration.load( module, scanResult );

@@ -15,6 +15,7 @@
  */
 package com.mvp4g.util.config.loader.annotation;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -36,17 +37,17 @@ import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
-import com.mvp4g.client.presenter.PresenterInterface;
+import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
 import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
+import com.mvp4g.util.config.element.EventHandlerElement;
 import com.mvp4g.util.config.element.GinModuleElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
-import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.config.element.ViewElement;
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
@@ -275,12 +276,12 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			element = new EventElement();
 			try {
 				element.setType( method.getName() );
-				element.setHandlers( buildPresenters( c, method, event.handlers(), event.handlerNames(), configuration ) );
+				element.setHandlers( buildPresentersAndEventHandlers( c, method, event.handlers(), event.handlerNames(), configuration ) );
 				element.setCalledMethod( event.calledMethod() );
 				element.setModulesToLoad( buildChildModules( c, method, event, configuration ) );
 				element.setForwardToParent( Boolean.toString( event.forwardToParent() ) );
-				element.setActivate( buildPresenters( c, method, event.activate(), event.activateNames(), configuration ) );
-				element.setDeactivate( buildPresenters( c, method, event.deactivate(), event.deactivateNames(), configuration ) );
+				element.setActivate( buildPresentersAndEventHandlers( c, method, event.activate(), event.activateNames(), configuration ) );
+				element.setDeactivate( buildPresentersAndEventHandlers( c, method, event.deactivate(), event.deactivateNames(), configuration ) );
 				
 				if ( paramClasses != null ) {
 					element.setEventObjectClasses( paramClasses );
@@ -328,27 +329,27 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 	 * @throws Mvp4gAnnotationException
 	 *             if no instance of a given handler class can be found
 	 */
-	private String[] buildPresenters( JClassType c, JMethod method, Class<? extends PresenterInterface<?, ? extends EventBus>>[] presenterClasses, String[] presenterNames, Mvp4gConfiguration configuration )
-			throws Mvp4gAnnotationException {
+	private String[] buildPresentersAndEventHandlers( JClassType c, JMethod method,
+			Class<? extends EventHandlerInterface<? extends EventBus>>[] presenterAndEventHandlerClasses, String[] presenterAndEventHandlerNames,
+			Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
 
-		Set<PresenterElement> presenters = configuration.getPresenters();
-
-		String[] handlers = new String[presenterNames.length + presenterClasses.length];
+		Set<EventHandlerElement> presentersAndEventHandlers = new HashSet<EventHandlerElement>( configuration.getPresenters() );
+		presentersAndEventHandlers.addAll( configuration.getEventHandlers() );
+		String[] handlers = new String[presenterAndEventHandlerNames.length + presenterAndEventHandlerClasses.length];
 
 		String handlerName = null;
 		int index = 0;
-		for ( Class<?> handler : presenterClasses ) {
-			handlerName = getElementName( presenters, handler.getCanonicalName() );
+		for ( Class<?> handler : presenterAndEventHandlerClasses ) {
+			handlerName = getElementName( presentersAndEventHandlers, handler.getCanonicalName() );
 			if ( handlerName == null ) {
-				String err = "No instance of " + handler.getCanonicalName()
-						+ " is defined. Have you forget to annotate your presenter with @Presenter?";
+				String err = "No instance of " + handler.getCanonicalName() + " is defined. Have you forget to annotate your event handler with @Presenter or @EventHandler?";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 			}
 			handlers[index] = handlerName;
 			index++;
 		}
 
-		for ( String h : presenterNames ) {
+		for ( String h : presenterAndEventHandlerNames ) {
 			handlers[index] = h;
 			index++;
 		}
