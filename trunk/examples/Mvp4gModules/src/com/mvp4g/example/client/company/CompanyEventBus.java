@@ -3,8 +3,10 @@ package com.mvp4g.example.client.company;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.example.client.company.bean.CompanyBean;
 import com.mvp4g.example.client.company.handler.CompanyListHandler;
@@ -18,7 +20,8 @@ import com.mvp4g.example.client.company.presenter.CompanyNameSelectorPresenter;
 import com.mvp4g.example.client.company.view.CompanyListView;
 import com.mvp4g.example.client.product.presenter.ProductCreationPresenter;
 
-@Events( startView = CompanyListView.class, module = CompanyModule.class, debug = true )
+@Events( startView = CompanyListView.class, module = CompanyModule.class )
+@Debug( logLevel = LogLevel.DETAILED )
 public interface CompanyEventBus extends EventBus {
 
 	@Event( handlers = CompanyListPresenter.class )
