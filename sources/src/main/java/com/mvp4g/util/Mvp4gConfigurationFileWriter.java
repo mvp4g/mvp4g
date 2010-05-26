@@ -22,6 +22,7 @@ import java.util.Set;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.client.history.PlaceService;
@@ -63,7 +64,7 @@ public class Mvp4gConfigurationFileWriter {
 	 * Parses the mvp4g-conf.xml and write the information in the source writer
 	 * 
 	 * @throws UnableToCompleteException
-	 *             exception thrown if the configuratin file is not correct
+	 *             exception thrown if the configuration file is not correct
 	 */
 	public void writeConf() {
 
@@ -99,6 +100,10 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println( "Mvp4gGinjector injector = GWT.create( Mvp4gGinjector.class );" );
 
 		writeViews();
+
+		sourceWriter.println();
+
+		writeLogger();
 
 		sourceWriter.println();
 
@@ -429,7 +434,7 @@ public class Mvp4gConfigurationFileWriter {
 		}
 
 	}
-	
+
 	/**
 	 * Write the eventHandlers included in the configuration file.
 	 * 
@@ -463,7 +468,7 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( presenter.getName() );
 			sourceWriter.println( ".setEventBus(eventBus);" );
 		}
-		
+
 		for ( EventHandlerElement eventHandler : configuration.getEventHandlers() ) {
 			sourceWriter.print( eventHandler.getName() );
 			sourceWriter.println( ".setEventBus(eventBus);" );
@@ -473,6 +478,26 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( "placeService.setModule(itself);" );
 		}
 
+	}
+
+	/**
+	 * Write the logger included in the configuration file.
+	 * 
+	 * Pre-condition: mvp4g configuration has been pre-loaded from configuration file.
+	 * 
+	 */
+	private void writeLogger() {
+
+		DebugElement debug = configuration.getDebug();
+		if ( debug != null ) {
+			sourceWriter.print( "final " );
+			sourceWriter.print( debug.getClassName() );
+			sourceWriter.print( " " );
+			sourceWriter.print( debug.getName() );
+			sourceWriter.print( " = new " );
+			sourceWriter.print( debug.getClassName() );
+			sourceWriter.println( "();" );
+		}
 	}
 
 	/**
@@ -626,12 +651,36 @@ public class Mvp4gConfigurationFileWriter {
 				for ( String handler : handlers ) {
 					sourceWriter.print( "if (" );
 					sourceWriter.print( handler );
-					sourceWriter.println( ".isActivated())" );
+					sourceWriter.println( ".isActivated()){" );
+					sourceWriter.indent();
+
+					sourceWriter.println( "int startLogDepth = BaseEventBus.logDepth;" );
+					
+					sourceWriter.println( "try {" );
+					sourceWriter.indent();
+					sourceWriter.println( "++BaseEventBus.logDepth;" );
+
+					writeDetailedLog( handler, type );
+
+					sourceWriter.println( "++BaseEventBus.logDepth;" );
+
 					sourceWriter.print( handler );
 					sourceWriter.print( "." );
 					sourceWriter.print( calledMethod );
 					sourceWriter.print( param );
 					sourceWriter.println( ";" );
+
+					sourceWriter.outdent();
+					sourceWriter.println( "}" );
+					sourceWriter.println( "finally {" );
+					sourceWriter.indent();
+					sourceWriter.println( "BaseEventBus.logDepth = startLogDepth;" );
+					sourceWriter.outdent();
+					sourceWriter.println( "}" );
+
+					sourceWriter.outdent();
+					sourceWriter.println( "}" );
+
 				}
 			}
 			sourceWriter.outdent();
@@ -1043,14 +1092,15 @@ public class Mvp4gConfigurationFileWriter {
 
 	private void writeLog( String type, String[] objectClasses ) {
 		DebugElement debug = configuration.getDebug();
-		if ( ( debug != null ) && debug.isEnabled() ) {
-			sourceWriter.print( "GWT.log(\"Module: " );
+		if ( debug != null ) {
+			sourceWriter.print( debug.getName() );
+			sourceWriter.print( ".log(\"Module: " );
 			sourceWriter.print( configuration.getModule().getSimpleSourceName() );
 			sourceWriter.print( " || event: " );
 			sourceWriter.print( type );
 			int nbClasses = ( objectClasses == null ) ? 0 : objectClasses.length;
 			if ( nbClasses > 0 ) {
-				sourceWriter.print( " || object(s): \" + attr0" );
+				sourceWriter.print( " || param(s): \" + attr0" );
 				for ( int i = 1; i < nbClasses; i++ ) {
 					sourceWriter.print( "+ \", \" + attr" );
 					sourceWriter.print( Integer.toString( i ) );
@@ -1059,7 +1109,20 @@ public class Mvp4gConfigurationFileWriter {
 			} else {
 				sourceWriter.print( "\"" );
 			}
-			sourceWriter.println( ", null);" );
+			sourceWriter.println( ");" );
+		}
+	}
+
+	private void writeDetailedLog( String handler, String eventType ) {
+		DebugElement debug = configuration.getDebug();
+
+		if ( debug != null && debug.getLogLevel().equals( LogLevel.DETAILED.name() ) ) {
+			sourceWriter.print( debug.getName() );
+			sourceWriter.print( ".log(" );
+			sourceWriter.print( handler );
+			sourceWriter.print( ".toString() + \" handles " );
+			sourceWriter.print( eventType );
+			sourceWriter.print( "\");" );
 		}
 	}
 

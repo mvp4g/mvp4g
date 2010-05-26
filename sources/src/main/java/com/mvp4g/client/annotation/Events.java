@@ -40,8 +40,6 @@ import com.mvp4g.client.Mvp4gModule;
  * Root Module (first module to be loaded and only module without parent).</li>
  * <li>historyOnStart: if true, the current history state will be fired when the application starts.
  * </li>
- * <li>debug: if true, activate the debug mode by showing events log in the dev mode console. These
- * logs will be removed when the application is compiled.</li>
  * </ul>
  * 
  * 
@@ -60,8 +58,6 @@ public @interface Events {
 
 	boolean historyOnStart() default false;
 
-	boolean debug() default false;
-	
 	Class<? extends GinModule> ginModule() default DefaultMvp4gGinModule.class;
 
 }

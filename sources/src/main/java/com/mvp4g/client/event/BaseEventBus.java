@@ -25,6 +25,8 @@ import com.mvp4g.client.Mvp4gModule;
  */
 public class BaseEventBus implements EventBus {
 
+	public static int logDepth = 0;
+
 	private boolean historyStored = true;
 	private boolean changeForNextOne = false;
 
@@ -77,14 +79,14 @@ public class BaseEventBus implements EventBus {
 			changeForNextOne = false;
 		}
 	}
-	
+
 	/**
 	 * Interact with place service to clear history when needed thanks to the module
 	 * 
 	 * @param module
 	 *            module that knows the place service
 	 */
-	protected void clearHistory(Mvp4gModule module) {
+	protected void clearHistory( Mvp4gModule module ) {
 		if ( historyStored ) {
 			module.clearHistory();
 		}
