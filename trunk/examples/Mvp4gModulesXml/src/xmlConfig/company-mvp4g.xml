@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/tags/mvp4g-1.1.0/xsd/mvp4g-conf.xsd">
+	<debug logLevel="DETAILED" />
 	<history package="com.mvp4g.example.client.company.historyConverter">
 		<converter name="companyHC" class="CompanyHistoryConverter" />
 		<converter name="companyCreationHC" class="CompanyCreationHistoryConverter" convertParams="false" />
