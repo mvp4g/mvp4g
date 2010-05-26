@@ -527,8 +527,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			Class<? extends Mvp4gLogger> loggerClass = debug.logger();
 			DebugElement debugElem = new DebugElement();
 			try {
-				debugElem.setName( buildElementName( loggerClass.getCanonicalName(), "" ) );
-				debugElem.setClassName( loggerClass.getCanonicalName() );
+				debugElem.setLogger( loggerClass.getCanonicalName() );
 				debugElem.setLogLevel( debug.logLevel().name() );
 			} catch ( DuplicatePropertyNameException e ) {
 				// setter is only called once, so this error can't occur.
