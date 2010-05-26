@@ -491,11 +491,9 @@ public class Mvp4gConfigurationFileWriter {
 		DebugElement debug = configuration.getDebug();
 		if ( debug != null ) {
 			sourceWriter.print( "final " );
-			sourceWriter.print( debug.getClassName() );
-			sourceWriter.print( " " );
-			sourceWriter.print( debug.getName() );
-			sourceWriter.print( " = new " );
-			sourceWriter.print( debug.getClassName() );
+			sourceWriter.print( debug.getLogger() );
+			sourceWriter.print( " logger = new " );
+			sourceWriter.print( debug.getLogger() );
 			sourceWriter.println( "();" );
 		}
 	}
@@ -1093,8 +1091,7 @@ public class Mvp4gConfigurationFileWriter {
 	private void writeLog( String type, String[] objectClasses ) {
 		DebugElement debug = configuration.getDebug();
 		if ( debug != null ) {
-			sourceWriter.print( debug.getName() );
-			sourceWriter.print( ".log(\"Module: " );
+			sourceWriter.print( "logger.log(\"Module: " );
 			sourceWriter.print( configuration.getModule().getSimpleSourceName() );
 			sourceWriter.print( " || event: " );
 			sourceWriter.print( type );
@@ -1117,8 +1114,7 @@ public class Mvp4gConfigurationFileWriter {
 		DebugElement debug = configuration.getDebug();
 
 		if ( debug != null && debug.getLogLevel().equals( LogLevel.DETAILED.name() ) ) {
-			sourceWriter.print( debug.getName() );
-			sourceWriter.print( ".log(" );
+			sourceWriter.print( "logger.log(" );
 			sourceWriter.print( handler );
 			sourceWriter.print( ".toString() + \" handles " );
 			sourceWriter.print( eventType );

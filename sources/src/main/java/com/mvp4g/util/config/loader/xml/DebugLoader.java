@@ -25,7 +25,8 @@ import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 
 public class DebugLoader extends Mvp4gElementLoader<DebugElement> {
 
-	static final String[] REQUIRED_ATTRIBUTES = { "enabled" };
+    static final String[] REQUIRED_ATTRIBUTES = { };
+    static final String[] OPTIONAL_ATTRIBUTES = { "logLevel", "logger" };
 
 	@SuppressWarnings( "unchecked" )
 	public DebugLoader( XMLConfiguration xmlConfig ) {
@@ -34,12 +35,17 @@ public class DebugLoader extends Mvp4gElementLoader<DebugElement> {
 
 	@Override
 	String getElementLabel() {
-		return "Debug";
+		return "debug";
 	}
 
 	@Override
 	String[] getRequiredAttributeNames() {
 		return REQUIRED_ATTRIBUTES;
+	}
+
+    @Override
+	String[] getOptionalAttributeNames() {
+        return OPTIONAL_ATTRIBUTES;
 	}
 
 	@Override
