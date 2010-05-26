@@ -42,6 +42,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.annotation.Service;
+import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.history.PlaceService;
@@ -127,6 +128,7 @@ public class Mvp4gGenerator extends Generator {
 		classFactory.addImport( Mvp4gModule.class.getName() );
 		classFactory.addImport( GinModules.class.getName() );
 		classFactory.addImport( Ginjector.class.getName() );
+		classFactory.addImport( BaseEventBus.class.getName() );
 
 		PrintWriter printWriter = context.tryCreate( logger, packageName, generatedClassName );
 		if ( printWriter == null ) {

@@ -22,6 +22,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
+import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.InitHistory;
@@ -38,6 +39,7 @@ import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.EventHandlerInterface;
+import com.mvp4g.client.event.Mvp4gLogger;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
@@ -96,7 +98,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				loadChildModules( c, annotation, configuration );
 				loadStartView( c, annotation, configuration );
 				loadEvents( c, annotation, configuration );
-				loadDebug( annotation, configuration );
+				loadDebug( c, annotation, configuration );
 				loadGinModule( annotation, configuration );
 			} else {
 				String err = "this class must implement " + EventBus.class.getCanonicalName() + " since it is annoted with "
@@ -263,14 +265,13 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			String[] paramClasses;
 			if ( nbParams > 0 ) {
 				paramClasses = new String[nbParams];
-				for(int i=0; i<nbParams; i++){
+				for ( int i = 0; i < nbParams; i++ ) {
 					paramClasses[i] = params[i].getType().getQualifiedSourceName();
-				}				
-			}
-			else{
+				}
+			} else {
 				paramClasses = null;
 			}
-			
+
 			historyName = event.historyName();
 
 			element = new EventElement();
@@ -282,11 +283,11 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				element.setForwardToParent( Boolean.toString( event.forwardToParent() ) );
 				element.setActivate( buildPresentersAndEventHandlers( c, method, event.activate(), event.activateNames(), configuration ) );
 				element.setDeactivate( buildPresentersAndEventHandlers( c, method, event.deactivate(), event.deactivateNames(), configuration ) );
-				
+
 				if ( paramClasses != null ) {
 					element.setEventObjectClasses( paramClasses );
 				}
-				if(!Event.DEFAULT_NAME.equals( historyName )){
+				if ( !Event.DEFAULT_NAME.equals( historyName ) ) {
 					element.setHistoryName( historyName );
 				}
 			} catch ( DuplicatePropertyNameException e ) {
@@ -342,7 +343,8 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		for ( Class<?> handler : presenterAndEventHandlerClasses ) {
 			handlerName = getElementName( presentersAndEventHandlers, handler.getCanonicalName() );
 			if ( handlerName == null ) {
-				String err = "No instance of " + handler.getCanonicalName() + " is defined. Have you forget to annotate your event handler with @Presenter or @EventHandler?";
+				String err = "No instance of " + handler.getCanonicalName()
+						+ " is defined. Have you forget to annotate your event handler with @Presenter or @EventHandler?";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 			}
 			handlers[index] = handlerName;
@@ -518,16 +520,23 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 
 	}
 
-	private void loadDebug( Events annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
-		DebugElement debug = new DebugElement();
-		try {
-			debug.setEnabled( Boolean.toString( annotation.debug() ) );
-		} catch ( DuplicatePropertyNameException e ) {
-			// setter is only called once, so this error can't occur.
+	private void loadDebug( JClassType c, Events annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
+		Debug debug = c.getAnnotation( Debug.class );
+
+		if ( debug != null ) {
+			Class<? extends Mvp4gLogger> loggerClass = debug.logger();
+			DebugElement debugElem = new DebugElement();
+			try {
+				debugElem.setName( buildElementName( loggerClass.getCanonicalName(), "" ) );
+				debugElem.setClassName( loggerClass.getCanonicalName() );
+				debugElem.setLogLevel( debug.logLevel().name() );
+			} catch ( DuplicatePropertyNameException e ) {
+				// setter is only called once, so this error can't occur.
+			}
+			configuration.setDebug( debugElem );
 		}
-		configuration.setDebug( debug );
 	}
-	
+
 	private void loadGinModule( Events annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
 		GinModuleElement ginModule = new GinModuleElement();
 		try {
