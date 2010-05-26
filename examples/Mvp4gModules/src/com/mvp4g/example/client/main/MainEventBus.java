@@ -1,9 +1,11 @@
 package com.mvp4g.example.client.main;
 
 import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.InitHistory;
+import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.module.AfterLoadChildModule;
 import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
 import com.mvp4g.client.annotation.module.ChildModule;
@@ -17,7 +19,8 @@ import com.mvp4g.example.client.company.CompanyModule;
 import com.mvp4g.example.client.main.historyConverter.MenuHistoryConverter;
 import com.mvp4g.example.client.product.ProductModule;
 
-@Events( startView = MainView.class, historyOnStart = true, debug = true, ginModule=Mvp4gGinModule.class )
+@Events( startView = MainView.class, historyOnStart = true, ginModule=Mvp4gGinModule.class )
+@Debug( logLevel = LogLevel.SIMPLE, logger = CustomLogger.class )
 @ChildModules( { @ChildModule( moduleClass = CompanyModule.class ),
 		@ChildModule( moduleClass = ProductModule.class, async = false, autoDisplay = false ) } )
 public interface MainEventBus extends EventBusWithLookup {
