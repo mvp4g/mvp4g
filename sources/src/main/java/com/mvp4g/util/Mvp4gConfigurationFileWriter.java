@@ -32,6 +32,7 @@ import com.mvp4g.util.config.element.ChildModulesElement;
 import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
+import com.mvp4g.util.config.element.EventFilterElement;
 import com.mvp4g.util.config.element.EventHandlerElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
@@ -54,6 +55,8 @@ public class Mvp4gConfigurationFileWriter {
 	private SourceWriter sourceWriter = null;
 
 	private Mvp4gConfiguration configuration = null;
+	
+	private List<String> presenterNames = new ArrayList<String>();
 
 	public Mvp4gConfigurationFileWriter( SourceWriter sourceWriter, Mvp4gConfiguration configuration ) {
 		this.sourceWriter = sourceWriter;
@@ -116,6 +119,10 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println();
 
 		writePresenters();
+
+		sourceWriter.println();
+		
+		writeEventFilters();
 
 		sourceWriter.println();
 
@@ -305,9 +312,12 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println( "public interface Mvp4gGinjector extends Ginjector {" );
 		sourceWriter.indent();
 		for ( PresenterElement presenter : configuration.getPresenters() ) {
+			String presenterName = presenter.getName();
+			presenterNames.add( presenterName );
+			
 			sourceWriter.print( presenter.getClassName() );
 			sourceWriter.print( " get" );
-			sourceWriter.print( presenter.getName() );
+			sourceWriter.print( presenterName );
 			sourceWriter.println( "();" );
 		}
 		for ( EventHandlerElement eventHandler : configuration.getEventHandlers() ) {
@@ -327,6 +337,15 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( " get" );
 			sourceWriter.print( history.getName() );
 			sourceWriter.println( "();" );
+		}
+		for ( EventFilterElement filter : configuration.getEventFilters() ) {
+			String filterName = filter.getName();
+			if ( !presenterNames.contains( filterName ) ) {
+				sourceWriter.print( filter.getClassName() );
+				sourceWriter.print( " get" );
+				sourceWriter.print( filterName );
+				sourceWriter.println( "();" );
+			}
 		}
 		sourceWriter.outdent();
 		sourceWriter.print( "}" );
@@ -604,6 +623,20 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.println( "){" );
 
 			sourceWriter.indent();
+			
+			for ( EventFilterElement filter : configuration.getEventFilters() ) {
+				sourceWriter.print( "if (!" );
+				sourceWriter.print( filter.getName() );
+				sourceWriter.print( ".filterEvent(\"" );
+				sourceWriter.print( type );
+				sourceWriter.print( "\", new Object[] {" );
+				if ( parentParam != null )
+					sourceWriter.print( parentParam );
+				sourceWriter.println( "}))" );
+				sourceWriter.indent();
+				sourceWriter.println( "return;" );
+				sourceWriter.outdent();
+			}
 
 			writeLog( type, objectClasses );
 
@@ -699,6 +732,17 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( "\"," );
 			sourceWriter.print( event.getHistory() );
 			sourceWriter.print( ");" );
+		}
+	}
+
+	private void writeEventFilters() {
+		
+		String filterName = null;
+		
+		for ( EventFilterElement filter : configuration.getEventFilters() ) {
+			filterName = filter.getName();
+			if ( !presenterNames.contains( filterName ) )
+				createInstance( filterName, filter.getClassName() );
 		}
 	}
 
