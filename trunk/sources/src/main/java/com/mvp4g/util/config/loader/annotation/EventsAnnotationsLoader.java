@@ -25,6 +25,7 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.Filters;
 import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.NotFoundHistory;
 import com.mvp4g.client.annotation.Start;
@@ -38,6 +39,7 @@ import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
+import com.mvp4g.client.event.EventFilter;
 import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.event.Mvp4gLogger;
 import com.mvp4g.util.config.Mvp4gConfiguration;
@@ -46,6 +48,7 @@ import com.mvp4g.util.config.element.ChildModulesElement;
 import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
+import com.mvp4g.util.config.element.EventFilterElement;
 import com.mvp4g.util.config.element.EventHandlerElement;
 import com.mvp4g.util.config.element.GinModuleElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
@@ -95,6 +98,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 
 			if ( eventBus != null ) {
 				configuration.setEventBus( eventBus );
+				loadEventFilters( c, annotation, configuration );
 				loadChildModules( c, annotation, configuration );
 				loadStartView( c, annotation, configuration );
 				loadEvents( c, annotation, configuration );
@@ -135,6 +139,37 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		return eventBus;
 	}
 
+	private void loadEventFilters( JClassType c, Events annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
+		Filters filters = c.getAnnotation( Filters.class );
+		if ( filters != null ) {
+			Class<? extends EventFilter>[] filterClasses = filters.filterClasses();
+			if ( ( filterClasses == null ) || ( filterClasses.length == 0 ) ) {
+				String err = "Useless " + Filters.class.getSimpleName()
+						+ " annotation. Don't use this annotation if your module doesn't have any event filters.";
+				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
+			}
+			
+			Set<EventFilterElement> filterElements = configuration.getEventFilters();
+			String filterClassName = null;
+			EventFilterElement filterElement = null;
+			for ( Class<? extends EventFilter> filterClass : filterClasses ) {
+				filterClassName = filterClass.getCanonicalName();
+				if ( getElementName( filterElements, filterClassName ) != null ) {
+					String err = "Multiple definitions for event filter " + filterClassName + " on type " + c.getClass().getCanonicalName();
+					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
+				}
+				filterElement = new EventFilterElement();
+				try {
+					filterElement.setName( buildElementName( filterClassName, "" ) );
+					filterElement.setClassName( filterClassName );
+				} catch ( DuplicatePropertyNameException e ) {
+					// setters are only called once, so this error can't occur.
+				}
+				addElement( filterElements, filterElement, c, null );
+			}
+		}
+	}
+	
 	private void loadChildModules( JClassType c, Events annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
 		ChildModules childModules = c.getAnnotation( ChildModules.class );
 		if ( childModules != null ) {

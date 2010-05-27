@@ -2,6 +2,7 @@ package com.mvp4g.example.client.product.presenter;
 
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -9,6 +10,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.event.EventFilter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import com.mvp4g.example.client.product.ProductEventBus;
@@ -17,7 +19,7 @@ import com.mvp4g.example.client.product.bean.ProductBean;
 import com.mvp4g.example.client.product.view.ProductListView;
 
 @Presenter( view = ProductListView.class )
-public class ProductListPresenter extends LazyPresenter<ProductListPresenter.ProductListViewInterface, ProductEventBus> {
+public class ProductListPresenter extends LazyPresenter<ProductListPresenter.ProductListViewInterface, ProductEventBus> implements EventFilter {
 
 	private ProductServiceAsync service = null;
 	private List<ProductBean> products = null;
@@ -125,6 +127,11 @@ public class ProductListPresenter extends LazyPresenter<ProductListPresenter.Pro
 		products.remove( row );
 		view.removeProduct( row );
 		eventBus.displayMessage( "Deletion Succeeded" );
+	}
+
+	public boolean filterEvent( String eventType, Object[] params ) {
+		GWT.log( "ProductListPresenter filter: " + eventType );
+		return true;
 	}
 
 }

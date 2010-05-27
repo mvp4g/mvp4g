@@ -44,6 +44,7 @@ import com.mvp4g.util.config.element.ChildModulesElement;
 import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
+import com.mvp4g.util.config.element.EventFilterElement;
 import com.mvp4g.util.config.element.EventHandlerElement;
 import com.mvp4g.util.config.element.GinModuleElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
@@ -63,6 +64,7 @@ import com.mvp4g.util.config.loader.annotation.ServiceAnnotationsLoader;
 import com.mvp4g.util.config.loader.xml.ChildModuleLoader;
 import com.mvp4g.util.config.loader.xml.ChildModulesLoader;
 import com.mvp4g.util.config.loader.xml.DebugLoader;
+import com.mvp4g.util.config.loader.xml.EventFiltersLoader;
 import com.mvp4g.util.config.loader.xml.EventHandlersLoader;
 import com.mvp4g.util.config.loader.xml.EventsLoader;
 import com.mvp4g.util.config.loader.xml.GinModuleLoader;
@@ -113,6 +115,7 @@ public class Mvp4gConfiguration {
 	private Set<EventElement> events = new HashSet<EventElement>();
 	private Set<ServiceElement> services = new HashSet<ServiceElement>();
 	private Set<HistoryConverterElement> historyConverters = new HashSet<HistoryConverterElement>();
+	private Set<EventFilterElement> eventFilters = new HashSet<EventFilterElement>();
 	private Set<ChildModuleElement> childModules = new HashSet<ChildModuleElement>();
 	private StartElement start = null;
 	private HistoryElement history = null;
@@ -193,6 +196,7 @@ public class Mvp4gConfiguration {
 					loadHistoryConverters( xmlConfig );
 					loadPresenters( xmlConfig );
 					loadEventHandlers( xmlConfig );
+					loadEventFilters( xmlConfig );
 					loadEvents( xmlConfig );
 					loadStart( xmlConfig );
 					loadHistory( xmlConfig );
@@ -284,6 +288,13 @@ public class Mvp4gConfiguration {
 	 */
 	public Set<ServiceElement> getServices() {
 		return services;
+	}
+	
+	/**
+	 * @return a set of Event Filters loaded
+	 */
+	public Set<EventFilterElement> getEventFilters() {
+		return eventFilters;
 	}
 
 	/**
@@ -1226,6 +1237,21 @@ public class Mvp4gConfiguration {
 	void loadEventHandlers( XMLConfiguration xmlConfig ) throws Mvp4gXmlException {
 		EventHandlersLoader eventHandlersConfig = new EventHandlersLoader( xmlConfig );
 		eventHandlers = eventHandlersConfig.loadElements();
+	}
+
+	/**
+	 * Pre-loads all EventFilters in the configuration file.
+	 * 
+	 * @param xmlConfig
+	 *            raw representation of the configuration file.
+	 * 
+	 * @throws Mvp4gXmlException
+	 *             if eventHandler tags cannot be loaded.
+	 * 
+	 */
+	void loadEventFilters( XMLConfiguration xmlConfig ) throws Mvp4gXmlException {
+		EventFiltersLoader eventHandlersConfig = new EventFiltersLoader( xmlConfig );
+		eventFilters = eventHandlersConfig.loadElements();
 	}
 
 	/**
