@@ -142,7 +142,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 	private void loadEventFilters( JClassType c, Events annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
 		Filters filters = c.getAnnotation( Filters.class );
 		if ( filters != null ) {
-			Class<? extends EventFilter>[] filterClasses = filters.filterClasses();
+			Class<? extends EventFilter<?>>[] filterClasses = filters.filterClasses();
 			if ( ( filterClasses == null ) || ( filterClasses.length == 0 ) ) {
 				String err = "Useless " + Filters.class.getSimpleName()
 						+ " annotation. Don't use this annotation if your module doesn't have any event filters.";
@@ -152,7 +152,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			Set<EventFilterElement> filterElements = configuration.getEventFilters();
 			String filterClassName = null;
 			EventFilterElement filterElement = null;
-			for ( Class<? extends EventFilter> filterClass : filterClasses ) {
+			for ( Class<? extends EventFilter<?>> filterClass : filterClasses ) {
 				filterClassName = filterClass.getCanonicalName();
 				if ( getElementName( filterElements, filterClassName ) != null ) {
 					String err = "Multiple definitions for event filter " + filterClassName + " on type " + c.getClass().getCanonicalName();

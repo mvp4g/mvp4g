@@ -146,6 +146,24 @@ public class Mvp4gConfigurationFileWriter {
 
 	}
 
+	private void writeEventFilterConnection() {
+		sourceWriter.println( "public boolean doFilterEvent(String eventType, Object[] params){" );
+		sourceWriter.indent();
+		
+		for ( EventFilterElement filter : configuration.getEventFilters() ) {
+			sourceWriter.print( "if (!" );
+			sourceWriter.print( filter.getName() );
+			sourceWriter.println( ".filterEvent(eventType, params, eventBus))" );
+			sourceWriter.indent();
+			sourceWriter.println( "return false;" );
+			sourceWriter.outdent();
+		}
+
+		sourceWriter.println( "return true;" );
+		sourceWriter.outdent();
+		sourceWriter.println( "}" );
+	}
+
 	private void writeGetters() {
 		sourceWriter.println( "public Object getStartView(){" );
 		sourceWriter.indent();
@@ -623,20 +641,16 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.println( "){" );
 
 			sourceWriter.indent();
-			
-			for ( EventFilterElement filter : configuration.getEventFilters() ) {
-				sourceWriter.print( "if (!" );
-				sourceWriter.print( filter.getName() );
-				sourceWriter.print( ".filterEvent(\"" );
-				sourceWriter.print( type );
-				sourceWriter.print( "\", new Object[] {" );
-				if ( parentParam != null )
-					sourceWriter.print( parentParam );
-				sourceWriter.println( "}))" );
-				sourceWriter.indent();
-				sourceWriter.println( "return;" );
-				sourceWriter.outdent();
-			}
+
+			sourceWriter.print( "if (!filterEvent(\"" );
+			sourceWriter.print( type );
+			sourceWriter.print( "\", new Object[] {" );
+			if ( parentParam != null )
+				sourceWriter.print( parentParam );
+			sourceWriter.println( "}))" );
+			sourceWriter.indent();
+			sourceWriter.println( "return;" );
+			sourceWriter.outdent();
 
 			writeLog( type, objectClasses );
 
@@ -722,6 +736,9 @@ public class Mvp4gConfigurationFileWriter {
 		if ( eventBus.isWithLookUp() ) {
 			writeEventLookUp();
 		}
+		
+		writeEventFilterConnection();
+		
 		sourceWriter.println( "};" );
 
 		for ( EventElement event : eventsWithHistory ) {
@@ -1162,7 +1179,7 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( handler );
 			sourceWriter.print( ".toString() + \" handles " );
 			sourceWriter.print( eventType );
-			sourceWriter.print( "\");" );
+			sourceWriter.println( "\");" );
 		}
 	}
 
