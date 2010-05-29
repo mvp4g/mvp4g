@@ -26,5 +26,7 @@ public @interface Presenter {
 	Class<?> view();
 
 	String viewName() default "";
+	
+	boolean multiple() default false;
 
 }

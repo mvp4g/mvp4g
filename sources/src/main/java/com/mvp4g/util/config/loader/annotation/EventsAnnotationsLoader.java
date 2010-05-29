@@ -16,6 +16,7 @@
 package com.mvp4g.util.config.loader.annotation;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -112,6 +113,13 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		} else {
 			// save event bus type of potentiel child module
 			configuration.getOthersEventBusClassMap().put( annotation.module().getCanonicalName(), c );
+			ChildModules children = c.getAnnotation( ChildModules.class );
+			if ( children != null ) {
+				Map<String, JClassType> moduleParentEventBus = configuration.getModuleParentEventBusClassMap();
+				for ( ChildModule child : children.value() ) {
+					moduleParentEventBus.put( child.moduleClass().getCanonicalName(), c );
+				}
+			}
 		}
 	}
 

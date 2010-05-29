@@ -54,6 +54,7 @@ public class PresenterAnnotationsLoader extends Mvp4gAnnotationsWithServiceLoade
 			presenter.setName( presenterName );
 			presenter.setClassName( className );
 			presenter.setView( viewName );
+			presenter.setMultiple( Boolean.toString( annotation.multiple() ) );
 		} catch ( DuplicatePropertyNameException e ) {
 			//setters are only called once, so this error can't occur.
 		}
