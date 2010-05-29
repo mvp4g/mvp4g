@@ -18,6 +18,7 @@ import com.mvp4g.example.client.company.presenter.CompanyDisplayPresenter;
 import com.mvp4g.example.client.company.presenter.CompanyEditPresenter;
 import com.mvp4g.example.client.company.presenter.CompanyListPresenter;
 import com.mvp4g.example.client.company.presenter.CompanyNameSelectorPresenter;
+import com.mvp4g.example.client.company.presenter.CompanyRowPresenter;
 import com.mvp4g.example.client.company.view.CompanyListView;
 import com.mvp4g.example.client.product.presenter.ProductCreationPresenter;
 
@@ -26,24 +27,26 @@ import com.mvp4g.example.client.product.presenter.ProductCreationPresenter;
 @Filters(filterClasses = CompanyEventFilter.class )
 public interface CompanyEventBus extends EventBus {
 
-	@Event( handlers = CompanyListPresenter.class )
+	@Event( handlers = CompanyListPresenter.class, activate = CompanyRowPresenter.class, deactivate = { CompanyEditPresenter.class,
+		CompanyDisplayPresenter.class, CompanyCreationPresenter.class } )
 	public void goToCompany( int start, int end );
 
 	@Event( handlers = CompanyCreationPresenter.class, activate = CompanyCreationPresenter.class, deactivate = { CompanyEditPresenter.class,
 			CompanyDisplayPresenter.class }, historyConverter = CompanyCreationHistoryConverter.class, historyName = "create" )
 	public void goToCreation();
 
-	@Event( handlers = CompanyListPresenter.class )
+	@Event( handlers = CompanyListPresenter.class, activate = CompanyRowPresenter.class, deactivate = { CompanyEditPresenter.class,
+			CompanyDisplayPresenter.class, CompanyCreationPresenter.class } )
 	public void goToList();
 
 	//I have ProductCreationPresenter.class here just to test if Mvp4g ignores useless presenter for activate
 	@Event( handlers = CompanyEditPresenter.class, activate = { CompanyEditPresenter.class, ProductCreationPresenter.class }, deactivate = {
-			CompanyCreationPresenter.class, CompanyDisplayPresenter.class } )
+			CompanyCreationPresenter.class, CompanyDisplayPresenter.class, CompanyRowPresenter.class } )
 	public void goToEdit( CompanyBean company );
 
 	//I have ProductCreationPresenter.class here just to test if Mvp4g ignores useless presenter for deactivate
 	@Event( handlers = CompanyDisplayPresenter.class, historyConverter = CompanyHistoryConverter.class, activate = CompanyDisplayPresenter.class, deactivate = {
-			CompanyCreationPresenter.class, CompanyEditPresenter.class, ProductCreationPresenter.class }, historyName = "" )
+			CompanyCreationPresenter.class, CompanyEditPresenter.class, ProductCreationPresenter.class, CompanyRowPresenter.class }, historyName = "" )
 	public void goToDisplay( CompanyBean company );
 
 	@Event( forwardToParent = true )
@@ -56,22 +59,27 @@ public interface CompanyEventBus extends EventBus {
 	public void selectCompanyMenu();
 
 	//CompanyCreationPresenter deactivate itself (see clickOnLeftButton method of this class)
-	@Event( handlers = { CompanyListPresenter.class, CompanyDisplayPresenter.class }, activate = CompanyDisplayPresenter.class, deactivate = CompanyEditPresenter.class )
+	@Event( handlers = { CompanyListPresenter.class, CompanyDisplayPresenter.class }, activate = CompanyDisplayPresenter.class, deactivate = {
+			CompanyEditPresenter.class, CompanyRowPresenter.class } )
 	public void companyCreated( CompanyBean newBean );
 
 	@Event( handlers = CompanyListPresenter.class )
 	public void companyDeleted( CompanyBean newBean );
 
+	@Event( handlers = CompanyRowPresenter.class, activate = CompanyRowPresenter.class, deactivate = { CompanyEditPresenter.class,
+		CompanyDisplayPresenter.class, CompanyCreationPresenter.class } )
+	public void companyUpdated( CompanyBean newBean );
+
 	@Event( handlers = CompanyNameSelectorPresenter.class )
 	public void displayNameSelector();
 
-	@Event( handlers = { CompanyCreationPresenter.class, CompanyEditPresenter.class, CompanyDisplayPresenter.class } )
+	@Event( handlers = { CompanyCreationPresenter.class, CompanyEditPresenter.class, CompanyDisplayPresenter.class, CompanyRowPresenter.class } )
 	public void nameSelected( String name );
 
 	@Event( handlers = CompanyListPresenter.class )
 	public void companyListRetrieved( List<CompanyBean> companies );
-	
-	@Event(handlers = CompanyListHandler.class)
-	public void getCompanyList(final int start, int end );
+
+	@Event( handlers = CompanyListHandler.class )
+	public void getCompanyList( final int start, int end );
 
 }

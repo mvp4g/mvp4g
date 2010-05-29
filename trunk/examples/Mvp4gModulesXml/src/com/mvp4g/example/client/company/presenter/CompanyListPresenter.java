@@ -1,37 +1,33 @@
 package com.mvp4g.example.client.company.presenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.client.annotation.InjectService;
-import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.event.EventBusWithLookup;
+import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.presenter.LazyXmlPresenter;
 import com.mvp4g.client.view.LazyView;
-import com.mvp4g.example.client.company.CompanyServiceAsync;
 import com.mvp4g.example.client.company.bean.CompanyBean;
-import com.mvp4g.example.client.company.view.CompanyListView;
 
-@Presenter( view = CompanyListView.class )
 public class CompanyListPresenter extends LazyXmlPresenter<CompanyListPresenter.CompanyListViewInterface> {
 
-	private CompanyServiceAsync service = null;
 	private List<CompanyBean> companies = null;
+	
+	private List<EventHandlerInterface<EventBusWithLookup>> rows = new ArrayList<EventHandlerInterface<EventBusWithLookup>>();
 
 	public interface CompanyListViewInterface extends LazyView {
 		public HasClickHandlers getCreateButton();
 
-		public HasClickHandlers[] addCompany( String name, int row );
+		public void addCompany( Widget w );
 
 		public void removeCompany( int row );
 
-		public void updateCompany( String name, int row );
-
 		public Widget getViewWidget();
-		
+
 		public void clearTable();
 	}
 
@@ -40,21 +36,21 @@ public class CompanyListPresenter extends LazyXmlPresenter<CompanyListPresenter.
 		view.getCreateButton().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				eventBus.dispatch( "goToCreation" );
+				eventBus.dispatch( "goToCreation()");
 			}
 
 		} );
 	}
 
-	public void onGoToCompany(int start, int end) {
+	public void onGoToCompany( int start, int end ) {
 		view.clearTable();
-		eventBus.dispatch( "getCompanyList", start, end );		
+		eventBus.dispatch( "getCompanyList", start, end );
 	}
-	
-	public void onCompanyListRetrieved( List<CompanyBean> companies ){
+
+	public void onCompanyListRetrieved( List<CompanyBean> companies ) {
 		this.companies = companies;
 		for ( int i = 0; i < companies.size(); i++ ) {
-			addCompany( companies.get( i ), i );
+			addCompany( companies.get( i ) );
 		}
 		eventBus.dispatch( "changeBody", view.getViewWidget() );
 	}
@@ -69,53 +65,21 @@ public class CompanyListPresenter extends LazyXmlPresenter<CompanyListPresenter.
 	}
 
 	public void onCompanyCreated( CompanyBean company ) {
-		int row = companies.size();
 		companies.add( company );
-		view.addCompany( company.getName(), row );
+		addCompany( company );
 	}
 
-	@InjectService
-	public void setService( CompanyServiceAsync service ) {
-		this.service = service;
-	}
-
-	private void addCompany( final CompanyBean company, int row ) {
-		HasClickHandlers[] buttons = view.addCompany( company.getName(), row );
-		buttons[0].addClickHandler( new ClickHandler() {
-
-			public void onClick( ClickEvent event ) {
-				eventBus.dispatch( "goToDisplay", company );
-			}
-		} );
-		buttons[1].addClickHandler( new ClickHandler() {
-
-			public void onClick( ClickEvent event ) {
-				eventBus.dispatch( "goToEdit", company );
-			}
-		} );
-		buttons[2].addClickHandler( new ClickHandler() {
-
-			public void onClick( ClickEvent event ) {
-				deleteCompany( company );
-			}
-		} );
-	}
-
-	private void deleteCompany( final CompanyBean company ) {
-		service.deleteCompany( company, new AsyncCallback<Void>() {
-
-			public void onFailure( Throwable caught ) {
-
-			}
-
-			public void onSuccess( Void result ) {
-				finishDeletion( company );
-			}
-		} );
+	private void addCompany( CompanyBean company ) {
+		CompanyRowPresenter presenter = eventBus.addHandler( CompanyRowPresenter.class );
+		presenter.setCompany( company );
+		view.addCompany( presenter.getView().getViewWidget() );
+		rows.add( presenter );
 	}
 
 	private void finishDeletion( CompanyBean company ) {
 		int row = companies.indexOf( company );
+		EventHandlerInterface<EventBusWithLookup> handler = rows.remove( row );
+		eventBus.removeHandler( handler );
 		companies.remove( row );
 		view.removeCompany( row );
 		eventBus.dispatch( "displayMessage", "Deletion Succeeded" );

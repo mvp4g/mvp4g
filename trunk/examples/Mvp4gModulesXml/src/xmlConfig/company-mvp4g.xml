@@ -7,10 +7,12 @@
 	</filters>
 	<history package="com.mvp4g.example.client.company.historyConverter">
 		<converter name="companyHC" class="CompanyHistoryConverter" />
-		<converter name="companyCreationHC" class="CompanyCreationHistoryConverter" convertParams="false" />
+		<converter name="companyCreationHC" class="CompanyCreationHistoryConverter"
+			convertParams="false" />
 	</history>
 	<eventHandlers package="com.mvp4g.example.client.company.handler">
-		<eventHandler name="listHandler" class="CompanyListHandler" services="service"/>
+		<eventHandler name="listHandler" class="CompanyListHandler"
+			services="service" />
 	</eventHandlers>
 	<views package="com.mvp4g.example.client.company.view">
 		<view name="listView" class="CompanyListView" />
@@ -18,13 +20,14 @@
 		<view name="editView" class="CompanyEditView" />
 		<view name="creationView" class="CompanyCreationView" />
 		<view name="selectorView" class="CompanyNameSelectorView" />
+		<view name="rowView" class="CompanyRowView" />
 	</views>
 	<services package="com.mvp4g.example.client.company">
 		<service name="service" class="CompanyService" />
 	</services>
 	<presenters package="com.mvp4g.example.client.company.presenter">
 		<presenter name="listPresenter" class="CompanyListPresenter"
-			view="listView" services="service" />
+			view="listView" />
 		<presenter name="displayPresenter" class="CompanyDisplayPresenter"
 			view="displayView" services="service" />
 		<presenter name="editPresenter" class="CompanyEditPresenter"
@@ -33,21 +36,33 @@
 			view="creationView" services="service" />
 		<presenter name="selectorPresenter" class="CompanyNameSelectorPresenter"
 			view="selectorView" />
+		<presenter name="rowPresenter" view="rowView" class="CompanyRowPresenter" multiple="true" services="service"/>
 	</presenters>
 	<events>
-		<event type="goToCompany" handlers="listPresenter" />
-		<event type="goToCreation" handlers="creationPresenter" activate="creationPresenter" deactivate="editPresenter, displayPresenter" history="companyCreationHC"  historyName="create"/>
-		<event type="goToEdit" handlers="editPresenter" activate="editPresenter" deactivate="creationPresenter, displayPresenter" />
-		<event type="goToDisplay" handlers="displayPresenter" history="companyHC"  activate="displayPresenter" deactivate="editPresenter, creationPresenter"  historyName=""/>
+		<event type="goToCompany" handlers="listPresenter" activate="rowPresenter"
+			deactivate="creationPresenter, displayPresenter, editPresenter" />
+		<event type="goToList" handlers="listPresenter" activate="rowPresenter"
+			deactivate="creationPresenter, displayPresenter, editPresenter" />
+		<event type="goToCreation" handlers="creationPresenter"
+			activate="creationPresenter" deactivate="editPresenter, displayPresenter, rowPresenter"
+			history="companyCreationHC" historyName="create" />
+		<event type="goToEdit" handlers="editPresenter" activate="editPresenter"
+			deactivate="creationPresenter, displayPresenter, rowPresenter" />
+		<event type="goToDisplay" handlers="displayPresenter" history="companyHC"
+			activate="displayPresenter" deactivate="editPresenter, creationPresenter, rowPresenter"
+			historyName="" />
 		<event type="displayMessage" forwardToParent="true"
 			eventObjectClass="java.lang.String" />
 		<event type="changeBody" eventObjectClass="com.google.gwt.user.client.ui.Widget"
 			forwardToParent="true" />
-		<event type="companyCreated" handlers="listPresenter, displayPresenter" activate="displayPresenter" deactivate="editPresenter"/>
+		<event type="companyCreated" handlers="listPresenter, displayPresenter"
+			activate="displayPresenter" deactivate="editPresenter" />
+		<event type="companyUpdated" handlers="rowPresenter" activate="rowPresenter"
+			deactivate="creationPresenter, displayPresenter, editPresenter"/>
 		<event type="companyDeleted" handlers="listPresenter" />
 		<event type="selectCompanyMenu" forwardToParent="true"
 			eventObjectClass="" />
-		<event type="nameSelected" handlers="displayPresenter, editPresenter, creationPresenter" />
+		<event type="nameSelected" handlers="displayPresenter, editPresenter, creationPresenter, rowPresenter" />
 		<event type="displayNameSelector" handlers="selectorPresenter" />
 		<event type="companyListRetrieved" handlers="listPresenter" />
 		<event type="getCompanyList" handlers="listHandler" />
