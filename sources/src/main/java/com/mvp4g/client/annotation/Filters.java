@@ -32,6 +32,6 @@ import com.mvp4g.client.event.EventFilter;
 @Retention( RetentionPolicy.RUNTIME )
 public @interface Filters {
 
-	Class<? extends EventFilter>[] filterClasses();
+	Class<? extends EventFilter<?>>[] filterClasses();
 
 }

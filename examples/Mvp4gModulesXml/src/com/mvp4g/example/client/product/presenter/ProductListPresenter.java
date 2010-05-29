@@ -10,6 +10,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.EventFilter;
 import com.mvp4g.client.presenter.LazyXmlPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -18,7 +19,7 @@ import com.mvp4g.example.client.product.bean.ProductBean;
 import com.mvp4g.example.client.product.view.ProductListView;
 
 @Presenter( view = ProductListView.class )
-public class ProductListPresenter extends LazyXmlPresenter<ProductListPresenter.ProductListViewInterface> implements EventFilter {
+public class ProductListPresenter extends LazyXmlPresenter<ProductListPresenter.ProductListViewInterface> implements EventFilter<EventBusWithLookup> {
 
 	private ProductServiceAsync service = null;
 	private List<ProductBean> products = null;
@@ -129,7 +130,7 @@ public class ProductListPresenter extends LazyXmlPresenter<ProductListPresenter.
 		eventBus.dispatch( "displayMessage", "Deletion Succeeded" );
 	}
 
-	public boolean filterEvent(String eventType, Object[] params) {
+	public boolean filterEvent( String eventType, Object[] params, EventBusWithLookup eventBus ) {
 		GWT.log( "ProductListPresenter filter: " + eventType );
 		return true;
 	}

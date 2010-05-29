@@ -19,7 +19,7 @@ import com.mvp4g.example.client.product.bean.ProductBean;
 import com.mvp4g.example.client.product.view.ProductListView;
 
 @Presenter( view = ProductListView.class )
-public class ProductListPresenter extends LazyPresenter<ProductListPresenter.ProductListViewInterface, ProductEventBus> implements EventFilter {
+public class ProductListPresenter extends LazyPresenter<ProductListPresenter.ProductListViewInterface, ProductEventBus> implements EventFilter<ProductEventBus> {
 
 	private ProductServiceAsync service = null;
 	private List<ProductBean> products = null;
@@ -129,7 +129,7 @@ public class ProductListPresenter extends LazyPresenter<ProductListPresenter.Pro
 		eventBus.displayMessage( "Deletion Succeeded" );
 	}
 
-	public boolean filterEvent( String eventType, Object[] params ) {
+	public boolean filterEvent( String eventType, Object[] params, ProductEventBus eventBus ) {
 		GWT.log( "ProductListPresenter filter: " + eventType );
 		return true;
 	}

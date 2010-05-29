@@ -23,12 +23,15 @@ import com.mvp4g.client.Mvp4gModule;
  * @author plcoirier
  * 
  */
-public class BaseEventBus implements EventBus {
+public abstract class BaseEventBus implements EventBus {
 
 	public static int logDepth = 0;
 
 	private boolean historyStored = true;
-	private boolean changeForNextOne = false;
+	private boolean changeHistoryStoredForNextOne = false;
+
+	private boolean filteringEnabled = true;
+	private boolean changeFilteringEnabledForNextOne = false;
 
 	/*
 	 * (non-Javadoc)
@@ -55,8 +58,38 @@ public class BaseEventBus implements EventBus {
 	 */
 	public void setHistoryStoredForNextOne( boolean historyStored ) {
 		if ( historyStored != this.historyStored ) {
-			changeForNextOne = true;
+			changeHistoryStoredForNextOne = true;
 			this.historyStored = historyStored;
+		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.mvp4g.client.event.EventBus#isFilterEnabled(boolean)
+	 */
+	public boolean isFilteringEnabled() {
+		return filteringEnabled;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.mvp4g.client.event.EventBus#setFilterEnabled(boolean)
+	 */
+	public void setFilteringEnabled(boolean filteringEnabled) {
+		this.filteringEnabled = filteringEnabled;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.mvp4g.client.event.EventBus#setFilterEnabledForNextOne(boolean)
+	 */
+	public void setFilteringEnabledForNextOne(boolean filteringEnabled) {
+		if ( filteringEnabled != this.filteringEnabled ) {
+			changeFilteringEnabledForNextOne = true;
+			this.filteringEnabled = filteringEnabled;
 		}
 	}
 
@@ -74,9 +107,9 @@ public class BaseEventBus implements EventBus {
 		if ( historyStored ) {
 			module.place( type, form );
 		}
-		if ( changeForNextOne ) {
+		if ( changeHistoryStoredForNextOne ) {
 			historyStored = !historyStored;
-			changeForNextOne = false;
+			changeHistoryStoredForNextOne = false;
 		}
 	}
 
@@ -90,10 +123,41 @@ public class BaseEventBus implements EventBus {
 		if ( historyStored ) {
 			module.clearHistory();
 		}
-		if ( changeForNextOne ) {
+		if ( changeHistoryStoredForNextOne ) {
 			historyStored = !historyStored;
-			changeForNextOne = false;
+			changeHistoryStoredForNextOne = false;
 		}
 	}
+
+	/**
+	 * If filtering is enabled, executes event filters associated with this event bus.
+	 * 
+	 * @param eventType
+	 *            name of the event to filter
+	 * @param params
+	 *            event parameters for this event
+	 */
+	protected boolean filterEvent( String eventType, Object[] params ) {
+		boolean ret = true;
+		if ( filteringEnabled ) {
+			ret = doFilterEvent( eventType, params );
+		}
+		if ( changeFilteringEnabledForNextOne ) {
+			filteringEnabled = !filteringEnabled;
+			changeFilteringEnabledForNextOne = false;
+		}
+		return ret;
+	}
+
+	/**
+	 * Performs the actual filtering by calling each associated event filter in turn.
+     * If any event filter returns false, then the event will be cancelled.
+	 * 
+	 * @param eventType
+	 *            name of the event to filter
+	 * @param params
+	 *            event parameters for this event
+	 */
+	protected abstract boolean doFilterEvent( String eventType, Object[] params );
 
 }

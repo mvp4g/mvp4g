@@ -24,8 +24,8 @@ package com.mvp4g.client.event;
  * 
  * @author Nick Hebner
  */
-public interface EventFilter {
+public interface EventFilter<E extends EventBus> {
 
-	public boolean filterEvent( String eventType, Object[] params );
+	public boolean filterEvent( String eventType, Object[] params, E eventBus );
 
 }

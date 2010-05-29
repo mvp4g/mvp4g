@@ -51,4 +51,31 @@ public interface EventBus {
 	 * @return true if events can be stored in browse history
 	 */
 	public boolean isHistoryStored();
+	
+	/**
+	 * Indicate for all events if the associated event filters should be executed before sendint the
+	 * event to the associated handlers.
+	 * 
+	 * @param filterEnabled
+	 *            true if events filters should be executed
+	 */
+	public void setFilteringEnabled( boolean filteringEnabled );
+
+	/**
+	 * Indicate whether or not the associated event filters should be executed before sending the
+	 * next event to the associated event handlers.<br/>
+	 * <br/>
+	 * This method should be called only right before sending an event that could be filtered.
+	 * 
+	 * @param filterEnabled
+	 *            true if events filters should be executed
+	 */
+	public void setFilteringEnabledForNextOne( boolean filteringEnabled );
+
+	/**
+	 * Indicate if event filters should be executed before sending events to handlers.
+	 * 
+	 * @return true if events filters should be executed
+	 */
+	public boolean isFilteringEnabled();
 }
