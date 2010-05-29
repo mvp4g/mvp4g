@@ -20,7 +20,7 @@ import com.mvp4g.example.client.main.historyConverter.MenuHistoryConverter;
 import com.mvp4g.example.client.product.ProductModule;
 
 @Events( startView = MainView.class, historyOnStart = true, ginModule=Mvp4gGinModule.class )
-@Debug( logLevel = LogLevel.SIMPLE, logger = CustomLogger.class )
+@Debug( logLevel = LogLevel.DETAILED, logger = CustomLogger.class )
 @ChildModules( { @ChildModule( moduleClass = CompanyModule.class ),
 		@ChildModule( moduleClass = ProductModule.class, async = false, autoDisplay = false ) } )
 public interface MainEventBus extends EventBusWithLookup {

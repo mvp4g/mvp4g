@@ -6,6 +6,4 @@ import com.mvp4g.client.annotation.module.HistoryName;
 @HistoryName( "company" )
 public interface CompanyModule extends Mvp4gModule {
 
-	public void setParentModule( Mvp4gModule parentModule );
-
 }

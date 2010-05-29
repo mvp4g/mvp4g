@@ -5,7 +5,6 @@ import com.mvp4g.client.event.EventFilter;
 
 public class CompanyEventFilter implements EventFilter<CompanyEventBus> {
 
-	@Override
 	public boolean filterEvent( String eventType, Object[] params, CompanyEventBus eventBus )	{
 		GWT.log( "CompanyEventFilter: " + eventType );
 		return true;

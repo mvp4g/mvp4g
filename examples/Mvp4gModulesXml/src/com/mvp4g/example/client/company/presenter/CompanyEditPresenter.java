@@ -26,7 +26,7 @@ public class CompanyEditPresenter extends AbstractCompanyPresenter {
 		service.updateCompany( company, new AsyncCallback<Void>() {
 
 			public void onSuccess( Void result ) {
-				eventBus.dispatch( "goToDisplay", company );
+				eventBus.dispatch( "companyUpdated", company );
 				eventBus.dispatch( "displayMessage", "Update Succeeded" );
 			}
 
