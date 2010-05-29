@@ -15,6 +15,8 @@
  */
 package com.mvp4g.client.event;
 
+import com.mvp4g.client.Mvp4gException;
+
 /**
  * Interface that defines an event bus. All classes defining an event bus must implement it.
  * 
@@ -78,4 +80,28 @@ public interface EventBus {
 	 * @return true if events filters should be executed
 	 */
 	public boolean isFilteringEnabled();
+
+	/**
+	 * Create a new instance of the handler and add it to event bus
+	 * 
+	 * @param <T>
+	 *            type of the handler created
+	 * @param handlerClass
+	 *            class of the handler to create
+	 * @return new instance of the handler created
+	 * 
+	 * @throws Mvp4gException
+	 *             thrown if the instance of the handler can not be created by the event bus
+	 */
+	public <T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass ) throws Mvp4gException;
+
+	/**
+	 * Remove the instance of the handler from the event bus
+	 * 
+	 * @param <T>
+	 *            type of the handler to remove
+	 * @param handler
+	 *            handler to remove
+	 */
+	public <T extends EventHandlerInterface<?>> void removeHandler( T handler );
 }

@@ -15,6 +15,12 @@
  */
 package com.mvp4g.client.event;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.mvp4g.client.Mvp4gException;
 import com.mvp4g.client.Mvp4gModule;
 
 /**
@@ -32,6 +38,8 @@ public abstract class BaseEventBus implements EventBus {
 
 	private boolean filteringEnabled = true;
 	private boolean changeFilteringEnabledForNextOne = false;
+
+	private Map<Class<?>, List<EventHandlerInterface<?>>> handlersMap = new HashMap<Class<?>, List<EventHandlerInterface<?>>>();
 
 	/*
 	 * (non-Javadoc)
@@ -128,7 +136,7 @@ public abstract class BaseEventBus implements EventBus {
 			changeHistoryStoredForNextOne = false;
 		}
 	}
-
+	
 	/**
 	 * If filtering is enabled, executes event filters associated with this event bus.
 	 * 
@@ -159,5 +167,64 @@ public abstract class BaseEventBus implements EventBus {
 	 *            event parameters for this event
 	 */
 	protected abstract boolean doFilterEvent( String eventType, Object[] params );
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.mvp4g.client.event.EventBus#addHandler(java.lang.Class)
+	 */
+	public <T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass ) throws Mvp4gException {
+		T handler = createHandler( handlerClass );
+		if ( handler == null ) {
+			throw new Mvp4gException(
+					"Handler with type "
+							+ handlerClass.getName()
+							+ " couldn't be created by the Mvp4g. Have you forgotten to set multiple attribute to true for this handler or are you trying to create an handler that belongs to another module (another type of event bus injected in this handler)?" );
+		}
+		List<EventHandlerInterface<?>> handlers = handlersMap.get( handlerClass );
+		if ( handlers == null ) {
+			handlers = new ArrayList<EventHandlerInterface<?>>();
+			handlersMap.put( handlerClass, handlers );
+		}
+		handlers.add( handler );
+		return handler;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.mvp4g.client.event.EventBus#removeHandler(com.mvp4g.client.event.EventHandlerInterface)
+	 */
+	public <T extends EventHandlerInterface<?>> void removeHandler( T handler ) {
+		List<EventHandlerInterface<?>> handlers = handlersMap.get( handler.getClass() );
+		if ( handlers != null ) {
+			handlers.remove( handler );
+		}
+	}
+	
+	/**
+	 * Returns the list of handlers with the given class
+	 * 
+	 * @param <T>
+	 * 			type of the handlers
+	 * @param handlerClass
+	 * 			class of the handlers
+	 * @return
+	 * 			list of handlers
+	 */
+	@SuppressWarnings( "unchecked" )
+	protected <T extends EventHandlerInterface<?>> List<T> getHandlers( Class<T> handlerClass ) {
+		return (List<T>) handlersMap.get( handlerClass );
+	} 
+
+	/**
+	 * Create a new instance of the given handler class.
+	 * 
+	 * @param <T>
+	 * 			type of the handler
+	 * @param handlerClass
+	 * 			class of the handler
+	 * @return
+	 * 		new instance created
+	 */
+	abstract protected <T extends EventHandlerInterface<?>> T createHandler( Class<T> handlerClass );
 
 }

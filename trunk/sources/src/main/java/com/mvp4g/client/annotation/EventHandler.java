@@ -12,4 +12,6 @@ import java.lang.annotation.RetentionPolicy;
 public @interface EventHandler {
 
     String name() default "";
+    
+    boolean multiple() default false;
 }

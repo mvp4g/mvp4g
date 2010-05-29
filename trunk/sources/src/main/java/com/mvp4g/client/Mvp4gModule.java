@@ -80,5 +80,7 @@ public interface Mvp4gModule {
 	 * Clear the history token stored in the browse history url by adding a new empty token
 	 */
 	public void clearHistory();
+	
+	public void setParentModule(Mvp4gModule parentModule);
 
 }

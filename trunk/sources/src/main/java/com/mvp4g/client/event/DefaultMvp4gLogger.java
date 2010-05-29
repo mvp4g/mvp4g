@@ -19,7 +19,6 @@ import com.google.gwt.core.client.GWT;
 
 public class DefaultMvp4gLogger implements Mvp4gLogger {
 
-	@Override
 	public void log( String message ) {
 		String indent = "";
 		for ( int i = 0; i < BaseEventBus.logDepth; ++i )

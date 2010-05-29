@@ -29,6 +29,7 @@ public class PresentersLoader extends Mvp4gElementLoader<PresenterElement> {
 
 	static final String[] REQUIRED_ATTRIBUTES = { "name", "class", "view" };
 	static final String[] PARENT_ATTRIBUTES = { "package" };
+	static final String[] OPTIONAL_ATTRIBUTES = { "multiple" };
 	static final String[] OPTIONAL_MULTI_VALUE_ATTRIBUTES = { "services" };
 
 	@SuppressWarnings( "unchecked" )
@@ -44,6 +45,11 @@ public class PresentersLoader extends Mvp4gElementLoader<PresenterElement> {
 	@Override
 	protected String[] getRequiredAttributeNames() {
 		return REQUIRED_ATTRIBUTES;
+	}
+
+	@Override
+	protected String[] getOptionalAttributeNames() {
+		return OPTIONAL_ATTRIBUTES;
 	}
 
 	@Override
