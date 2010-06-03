@@ -18,15 +18,8 @@ package com.mvp4g.util.config.element;
 
 public class EventFilterElement extends SimpleMvp4gElement {
 
-	private static final String EVENT_FILTER_ELEMENT_ID = EventFilterElement.class.getName();
-	
 	public EventFilterElement() {
-		super("event_filter");
-	}
-
-	@Override
-	public String getUniqueIdentifierName() {
-		return EVENT_FILTER_ELEMENT_ID;
+		super( "event_filter" );
 	}
 
 }

@@ -31,7 +31,7 @@ import com.mvp4g.client.Mvp4gModule;
  */
 public abstract class BaseEventBus implements EventBus {
 
-	public static int logDepth = 0;
+	public static int logDepth = -1;
 
 	private boolean historyStored = true;
 	private boolean changeHistoryStoredForNextOne = false;
