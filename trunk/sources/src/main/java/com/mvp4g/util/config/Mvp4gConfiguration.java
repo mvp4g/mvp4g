@@ -34,6 +34,7 @@ import com.mvp4g.client.annotation.XmlFilePath;
 import com.mvp4g.client.annotation.module.HistoryName;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBusWithLookup;
+import com.mvp4g.client.event.EventFilter;
 import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.client.history.HistoryConverter;
@@ -236,6 +237,7 @@ public class Mvp4gConfiguration {
 		checkUniquenessOfAllElements();
 		validateStart();
 		validateEventHandlers();
+		validateEventFilters();
 		validateHistoryConverters();
 		validateViews();
 		validateServices();
@@ -292,7 +294,7 @@ public class Mvp4gConfiguration {
 	public Set<ServiceElement> getServices() {
 		return services;
 	}
-	
+
 	/**
 	 * @return a set of Event Filters loaded
 	 */
@@ -687,13 +689,6 @@ public class Mvp4gConfiguration {
 	 * 
 	 * @throws InvalidMvp4gConfigurationException
 	 */
-	/**
-	 * Checks that all event handler names correspond to a configured mvp4g element. Verify that
-	 * these elements are valid. Remove the ones that don't handle events or aren't associated with
-	 * the start view.</p>
-	 * 
-	 * @throws InvalidMvp4gConfigurationException
-	 */
 	void validateEventHandlers() throws InvalidMvp4gConfigurationException {
 
 		Map<String, List<EventElement>> presenterAndEventHandlerMap = new HashMap<String, List<EventElement>>();
@@ -844,6 +839,34 @@ public class Mvp4gConfiguration {
 
 		removeUselessElements( presenters, toRemove );
 		removeUselessElements( eventHandlers, toRemoveEventHandlers );
+	}
+
+	/**
+	 * Verify that filters are valid.
+	 * 
+	 * @throws InvalidMvp4gConfigurationException
+	 */
+	void validateEventFilters() throws InvalidMvp4gConfigurationException {
+
+		JGenericType filterGenType = getType( null, EventFilter.class.getCanonicalName() ).isGenericType();
+		JClassType eventBusType = getType( null, eventBus.getInterfaceClassName() );
+		JClassType filterType, eventBusParam;
+		JParameterizedType genEventFilter;
+		for ( EventFilterElement filter : eventFilters ) {
+			filterType = getType( filter, filter.getClassName() );
+			genEventFilter = filterType.asParameterizationOf( filterGenType );
+			if ( genEventFilter == null ) {
+				throw new InvalidClassException( filter, EventFilter.class.getCanonicalName() );
+			}
+
+			eventBusParam = (JClassType)genEventFilter.getMethods()[0].getParameters()[2].getType();
+
+			// Control if filter event bus is compatible with module
+			// event bus
+			if ( !eventBusType.isAssignableTo( eventBusParam ) ) {
+				throw new InvalidTypeException( filter, "Event Bus", eventBus.getInterfaceClassName(), eventBusParam.getQualifiedSourceName() );
+			}
+		}
 	}
 
 	/**

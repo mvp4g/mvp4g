@@ -19,9 +19,9 @@ import com.google.gwt.core.client.GWT;
 
 public class DefaultMvp4gLogger implements Mvp4gLogger {
 
-	public void log( String message ) {
+	public void log( String message, int depth ) {
 		String indent = "";
-		for ( int i = 0; i < BaseEventBus.logDepth; ++i )
+		for ( int i = 0; i < depth; ++i )
 			indent += "    ";
 		GWT.log( indent + message, null );
 	}

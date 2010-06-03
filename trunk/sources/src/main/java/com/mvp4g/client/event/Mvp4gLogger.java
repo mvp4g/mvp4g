@@ -17,6 +17,6 @@ package com.mvp4g.client.event;
 
 public interface Mvp4gLogger {
 
-	public void log( String message );
+	public void log( String message, int depth );
 
 }

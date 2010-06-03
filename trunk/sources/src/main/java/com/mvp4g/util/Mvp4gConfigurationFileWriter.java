@@ -57,7 +57,7 @@ public class Mvp4gConfigurationFileWriter {
 	private SourceWriter sourceWriter = null;
 
 	private Mvp4gConfiguration configuration = null;
-	
+
 	private List<String> presenterNames = new ArrayList<String>();
 
 	public Mvp4gConfigurationFileWriter( SourceWriter sourceWriter, Mvp4gConfiguration configuration ) {
@@ -124,7 +124,7 @@ public class Mvp4gConfigurationFileWriter {
 		writePresenters();
 
 		sourceWriter.println();
-		
+
 		writeEventFilters();
 
 		sourceWriter.println();
@@ -152,7 +152,7 @@ public class Mvp4gConfigurationFileWriter {
 	private void writeEventFilterConnection() {
 		sourceWriter.println( "public boolean doFilterEvent(String eventType, Object[] params){" );
 		sourceWriter.indent();
-		
+
 		for ( EventFilterElement filter : configuration.getEventFilters() ) {
 			sourceWriter.print( "if (!" );
 			sourceWriter.print( filter.getName() );
@@ -342,7 +342,7 @@ public class Mvp4gConfigurationFileWriter {
 		for ( PresenterElement presenter : configuration.getPresenters() ) {
 			String presenterName = presenter.getName();
 			presenterNames.add( presenterName );
-			
+
 			sourceWriter.print( presenter.getClassName() );
 			sourceWriter.print( " get" );
 			sourceWriter.print( presenterName );
@@ -619,7 +619,10 @@ public class Mvp4gConfigurationFileWriter {
 		String history;
 		List<String> activate;
 		List<String> deactivate;
-		EventHandlerElement eventHandler;		
+		EventHandlerElement eventHandler;
+		boolean hasLog = ( configuration.getDebug() != null );
+		Set<EventFilterElement> filters = configuration.getEventFilters();
+		boolean hasFilter = ( filters != null ) && ( filters.size() > 0 );
 
 		for ( EventElement event : configuration.getEvents() ) {
 			type = event.getType();
@@ -665,19 +668,27 @@ public class Mvp4gConfigurationFileWriter {
 			}
 			sourceWriter.println( "){" );
 
-			sourceWriter.indent();
+			if ( hasFilter ) {
+				sourceWriter.indent();
+				sourceWriter.print( "if (!filterEvent(\"" );
+				sourceWriter.print( type );
+				sourceWriter.print( "\", new Object[] {" );
+				if ( parentParam != null )
+					sourceWriter.print( parentParam );
+				sourceWriter.println( "}))" );
+				sourceWriter.indent();
+				sourceWriter.println( "return;" );
+				sourceWriter.outdent();
+			}
 
-			sourceWriter.print( "if (!filterEvent(\"" );
-			sourceWriter.print( type );
-			sourceWriter.print( "\", new Object[] {" );
-			if ( parentParam != null )
-				sourceWriter.print( parentParam );
-			sourceWriter.println( "}))" );
-			sourceWriter.indent();
-			sourceWriter.println( "return;" );
-			sourceWriter.outdent();
-
-			writeLog( type, objectClasses );
+			if ( hasLog ) {
+				sourceWriter.println( "int startLogDepth = BaseEventBus.logDepth;" );
+				sourceWriter.println( "try {" );
+				sourceWriter.indent();
+				sourceWriter.println( "++BaseEventBus.logDepth;" );
+				writeLog( type, objectClasses );
+				sourceWriter.println( "++BaseEventBus.logDepth;" );
+			}
 
 			if ( ( activate != null ) && ( activate.size() > 0 ) ) {
 				writeActivation( activate, eventHandlers, true );
@@ -724,6 +735,15 @@ public class Mvp4gConfigurationFileWriter {
 					}
 				}
 			}
+			if ( hasLog ) {
+				sourceWriter.outdent();
+				sourceWriter.println( "}" );
+				sourceWriter.println( "finally {" );
+				sourceWriter.indent();
+				sourceWriter.println( "BaseEventBus.logDepth = startLogDepth;" );
+				sourceWriter.outdent();
+				sourceWriter.println( "}" );
+			}
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
 
@@ -732,9 +752,9 @@ public class Mvp4gConfigurationFileWriter {
 		if ( eventBus.isWithLookUp() ) {
 			writeEventLookUp();
 		}
-		
+
 		writeEventFilterConnection();
-		
+
 		sourceWriter.println( "};" );
 
 		for ( EventElement event : eventsWithHistory ) {
@@ -749,9 +769,9 @@ public class Mvp4gConfigurationFileWriter {
 	}
 
 	private void writeEventFilters() {
-		
+
 		String filterName = null;
-		
+
 		for ( EventFilterElement filter : configuration.getEventFilters() ) {
 			filterName = filter.getName();
 			if ( !presenterNames.contains( filterName ) )
@@ -764,25 +784,25 @@ public class Mvp4gConfigurationFileWriter {
 		String elementName = eventHandler.getName() + varSubName;
 		sourceWriter.print( "List<" );
 		sourceWriter.print( className );
-		sourceWriter.print( "> handlers");
+		sourceWriter.print( "> handlers" );
 		sourceWriter.print( elementName );
 		sourceWriter.print( " = getHandlers(" );
 		sourceWriter.print( className );
 		sourceWriter.println( ".class);" );
 		sourceWriter.print( "if(handlers" );
-		sourceWriter.print(elementName);
-		sourceWriter.println("!= null){" );
+		sourceWriter.print( elementName );
+		sourceWriter.println( "!= null){" );
 		sourceWriter.indent();
 		sourceWriter.print( className );
 		sourceWriter.println( " handler;" );
-		sourceWriter.print( "int handlerCount = handlers");
-		sourceWriter.print(elementName);
-		sourceWriter.println(".size();" );
+		sourceWriter.print( "int handlerCount = handlers" );
+		sourceWriter.print( elementName );
+		sourceWriter.println( ".size();" );
 		sourceWriter.println( "for(int i=0; i<handlerCount; i++){" );
 		sourceWriter.indent();
-		sourceWriter.print( "handler = handlers");
-		sourceWriter.print(elementName);
-		sourceWriter.println(".get(i);" );
+		sourceWriter.print( "handler = handlers" );
+		sourceWriter.print( elementName );
+		sourceWriter.println( ".get(i);" );
 	}
 
 	private void writeMultipleActionEnd() {
@@ -794,7 +814,7 @@ public class Mvp4gConfigurationFileWriter {
 
 	private void writeActivation( List<String> activateList, Set<EventHandlerElement> handlers, boolean activate ) {
 		String activateStr = ".setActivated(" + Boolean.toString( activate ) + ");";
-		String varSubName = (activate) ? "act" : "de";
+		String varSubName = ( activate ) ? "act" : "de";
 		EventHandlerElement handler;
 		for ( String handlerName : activateList ) {
 			handler = getElement( handlerName, handlers );
@@ -816,29 +836,13 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println( ".isActivated()){" );
 		sourceWriter.indent();
 
-		sourceWriter.println( "int startLogDepth = BaseEventBus.logDepth;" );
-
-		sourceWriter.println( "try {" );
-		sourceWriter.indent();
-		sourceWriter.println( "++BaseEventBus.logDepth;" );
-
 		writeDetailedLog( handler, type );
-
-		sourceWriter.println( "++BaseEventBus.logDepth;" );
 
 		sourceWriter.print( handler );
 		sourceWriter.print( "." );
 		sourceWriter.print( calledMethod );
 		sourceWriter.print( param );
 		sourceWriter.println( ";" );
-
-		sourceWriter.outdent();
-		sourceWriter.println( "}" );
-		sourceWriter.println( "finally {" );
-		sourceWriter.indent();
-		sourceWriter.println( "BaseEventBus.logDepth = startLogDepth;" );
-		sourceWriter.outdent();
-		sourceWriter.println( "}" );
 
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );
@@ -1309,7 +1313,7 @@ public class Mvp4gConfigurationFileWriter {
 			} else {
 				sourceWriter.print( "\"" );
 			}
-			sourceWriter.println( ");" );
+			sourceWriter.println( ", BaseEventBus.logDepth);" );
 		}
 	}
 
@@ -1321,7 +1325,7 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( handler );
 			sourceWriter.print( ".toString() + \" handles " );
 			sourceWriter.print( eventType );
-			sourceWriter.println( "\");" );
+			sourceWriter.println( "\", BaseEventBus.logDepth);" );
 		}
 	}
 
