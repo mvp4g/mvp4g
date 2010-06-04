@@ -6,6 +6,9 @@ import java.util.List;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.EventHandlerInterface;
@@ -29,6 +32,8 @@ public class CompanyListPresenter extends LazyXmlPresenter<CompanyListPresenter.
 		public Widget getViewWidget();
 
 		public void clearTable();
+		
+		public HasValue<Boolean> isFiltered();
 	}
 
 	@Override
@@ -40,10 +45,24 @@ public class CompanyListPresenter extends LazyXmlPresenter<CompanyListPresenter.
 			}
 
 		} );
+		HasValue<Boolean> isFiltered = view.isFiltered();
+		isFiltered.setValue( false );
+		eventBus.setFilteringEnabled( false );
+		isFiltered.addValueChangeHandler( new ValueChangeHandler<Boolean>() {
+			
+			public void onValueChange( ValueChangeEvent<Boolean> event ) {
+				eventBus.setFilteringEnabled( event.getValue() );
+			}
+			
+		});
 	}
 
 	public void onGoToCompany( int start, int end ) {
 		view.clearTable();
+		for(EventHandlerInterface<EventBusWithLookup> row : rows){
+			eventBus.removeHandler( row );
+		}
+		rows.clear();
 		eventBus.dispatch( "getCompanyList", start, end );
 	}
 
