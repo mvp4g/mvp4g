@@ -5,7 +5,7 @@ import com.mvp4g.client.event.Mvp4gLogger;
 
 public class CustomLogger implements Mvp4gLogger {
 
-    public void log( String message ) {
+    public void log( String message, int depth ) {
         GWT.log( "CustomLogger: " + message );
     }
 

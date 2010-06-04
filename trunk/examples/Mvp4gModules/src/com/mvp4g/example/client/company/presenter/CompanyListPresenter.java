@@ -1,5 +1,6 @@
 package com.mvp4g.example.client.company.presenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -10,6 +11,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import com.mvp4g.example.client.company.CompanyEventBus;
@@ -20,6 +22,8 @@ import com.mvp4g.example.client.company.view.CompanyListView;
 public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.CompanyListViewInterface, CompanyEventBus> {
 
 	private List<CompanyBean> companies = null;
+	
+	private List<EventHandlerInterface<CompanyEventBus>> rows = new ArrayList<EventHandlerInterface<CompanyEventBus>>();
 
 	public interface CompanyListViewInterface extends LazyView {
 		public HasClickHandlers getCreateButton();
@@ -58,6 +62,10 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 
 	public void onGoToCompany( int start, int end ) {
 		view.clearTable();
+		for(EventHandlerInterface<CompanyEventBus> row : rows){
+			eventBus.removeHandler( row );
+		}
+		rows.clear();
 		eventBus.getCompanyList( start, end );
 	}
 
@@ -87,10 +95,13 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 		CompanyRowPresenter presenter = eventBus.addHandler( CompanyRowPresenter.class );
 		presenter.setCompany( company );
 		view.addCompany( presenter.getView().getViewWidget() );
+		rows.add( presenter );
 	}
 
 	private void finishDeletion( CompanyBean company ) {
 		int row = companies.indexOf( company );
+		EventHandlerInterface<CompanyEventBus> handler = rows.remove( row );
+		eventBus.removeHandler( handler );
 		companies.remove( row );
 		view.removeCompany( row );
 		eventBus.displayMessage( "Deletion Succeeded" );
