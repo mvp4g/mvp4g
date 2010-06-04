@@ -145,7 +145,7 @@ public abstract class BaseEventBus implements EventBus {
 	 * @param params
 	 *            event parameters for this event
 	 */
-	protected boolean filterEvent( String eventType, Object[] params ) {
+	protected boolean filterEvent( String eventType, Object... params ) {
 		boolean ret = true;
 		if ( filteringEnabled ) {
 			ret = doFilterEvent( eventType, params );

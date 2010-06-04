@@ -50,6 +50,7 @@ import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.EventFilterElement;
+import com.mvp4g.util.config.element.EventFiltersElement;
 import com.mvp4g.util.config.element.EventHandlerElement;
 import com.mvp4g.util.config.element.GinModuleElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
@@ -175,6 +176,14 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				}
 				addElement( filterElements, filterElement, c, null );
 			}
+			boolean afterHistory = filters.afterHistory();
+			EventFiltersElement filtersElement = new EventFiltersElement();
+			try {
+				filtersElement.setAfterHistory( Boolean.toString( afterHistory ) );
+			} catch ( DuplicatePropertyNameException e ) {
+				// setters are only called once, so this error can't occur.
+			}
+			configuration.setEventFilterConfiguration( filtersElement );
 		}
 	}
 	

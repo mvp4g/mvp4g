@@ -33,5 +33,7 @@ import com.mvp4g.client.event.EventFilter;
 public @interface Filters {
 
 	Class<? extends EventFilter<?>>[] filterClasses();
+	
+	boolean afterHistory() default false;
 
 }
