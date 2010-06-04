@@ -46,6 +46,7 @@ import com.mvp4g.util.config.element.DebugElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.EventFilterElement;
+import com.mvp4g.util.config.element.EventFiltersElement;
 import com.mvp4g.util.config.element.EventHandlerElement;
 import com.mvp4g.util.config.element.GinModuleElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
@@ -65,6 +66,7 @@ import com.mvp4g.util.config.loader.annotation.ServiceAnnotationsLoader;
 import com.mvp4g.util.config.loader.xml.ChildModuleLoader;
 import com.mvp4g.util.config.loader.xml.ChildModulesLoader;
 import com.mvp4g.util.config.loader.xml.DebugLoader;
+import com.mvp4g.util.config.loader.xml.EventFilterConfigurationLoader;
 import com.mvp4g.util.config.loader.xml.EventFiltersLoader;
 import com.mvp4g.util.config.loader.xml.EventHandlersLoader;
 import com.mvp4g.util.config.loader.xml.EventsLoader;
@@ -132,6 +134,7 @@ public class Mvp4gConfiguration {
 	private String historyName = null;
 	private DebugElement debug = null;
 	private GinModuleElement ginModule = null;
+	private EventFiltersElement eventFilterConfiguration = null;
 
 	private TreeLogger logger = null;
 	private TypeOracle oracle = null;
@@ -208,6 +211,7 @@ public class Mvp4gConfiguration {
 					loadChildModules( xmlConfig );
 					loadDebug( xmlConfig );
 					loadGinModule( xmlConfig );
+					loadEventFilterConfiguration( xmlConfig );
 				} catch ( Mvp4gXmlException e ) {
 					e.setXmlFilePath( xmlFilePath.value() );
 					throw e;
@@ -481,10 +485,25 @@ public class Mvp4gConfiguration {
 	public void setGinModule( GinModuleElement ginModule ) {
 		this.ginModule = ginModule;
 	}
+	
+	/**
+	 * @return the filters
+	 */
+	public EventFiltersElement getEventFilterConfiguration() {
+		return eventFilterConfiguration;
+	}
+
+	/**
+	 * @param filters the filters to set
+	 */
+	public void setEventFilterConfiguration( EventFiltersElement eventFilterConfiguration ) {
+		this.eventFilterConfiguration = eventFilterConfiguration;
+	}	
+	
 
 	/*
 	 * Validation
-	 */
+	 */	
 
 	/**
 	 * Checks that all injected views correspond to a configured mvp4g element. Remove views that
@@ -1439,6 +1458,11 @@ public class Mvp4gConfiguration {
 	void loadHistory( XMLConfiguration xmlConfig ) throws InvalidMvp4gConfigurationException {
 		HistoryLoader historyConfig = new HistoryLoader( xmlConfig );
 		history = historyConfig.loadElement();
+	}
+	
+	void loadEventFilterConfiguration( XMLConfiguration xmlConfig ) throws InvalidMvp4gConfigurationException {
+		EventFilterConfigurationLoader eventFilterConfig = new EventFilterConfigurationLoader( xmlConfig );
+		eventFilterConfiguration = eventFilterConfig.loadElement();
 	}
 
 	void loadParentModule() throws NotFoundClassException {
