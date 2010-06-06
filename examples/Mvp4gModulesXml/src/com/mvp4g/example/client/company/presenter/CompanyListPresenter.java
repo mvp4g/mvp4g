@@ -19,7 +19,7 @@ import com.mvp4g.example.client.company.bean.CompanyBean;
 public class CompanyListPresenter extends LazyXmlPresenter<CompanyListPresenter.CompanyListViewInterface> {
 
 	private List<CompanyBean> companies = null;
-	
+
 	private List<EventHandlerInterface<EventBusWithLookup>> rows = new ArrayList<EventHandlerInterface<EventBusWithLookup>>();
 
 	public interface CompanyListViewInterface extends LazyView {
@@ -32,7 +32,7 @@ public class CompanyListPresenter extends LazyXmlPresenter<CompanyListPresenter.
 		public Widget getViewWidget();
 
 		public void clearTable();
-		
+
 		public HasValue<Boolean> isFiltered();
 	}
 
@@ -41,7 +41,7 @@ public class CompanyListPresenter extends LazyXmlPresenter<CompanyListPresenter.
 		view.getCreateButton().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				eventBus.dispatch( "goToCreation()");
+				eventBus.dispatch( "goToCreation" );
 			}
 
 		} );
@@ -49,17 +49,17 @@ public class CompanyListPresenter extends LazyXmlPresenter<CompanyListPresenter.
 		isFiltered.setValue( false );
 		eventBus.setFilteringEnabled( false );
 		isFiltered.addValueChangeHandler( new ValueChangeHandler<Boolean>() {
-			
+
 			public void onValueChange( ValueChangeEvent<Boolean> event ) {
 				eventBus.setFilteringEnabled( event.getValue() );
 			}
-			
-		});
+
+		} );
 	}
 
 	public void onGoToCompany( int start, int end ) {
 		view.clearTable();
-		for(EventHandlerInterface<EventBusWithLookup> row : rows){
+		for ( EventHandlerInterface<EventBusWithLookup> row : rows ) {
 			eventBus.removeHandler( row );
 		}
 		rows.clear();
@@ -86,6 +86,10 @@ public class CompanyListPresenter extends LazyXmlPresenter<CompanyListPresenter.
 	public void onCompanyCreated( CompanyBean company ) {
 		companies.add( company );
 		addCompany( company );
+	}
+
+	public void onForward() {
+		eventBus.dispatch( "selectCompanyMenu" );
 	}
 
 	private void addCompany( CompanyBean company ) {

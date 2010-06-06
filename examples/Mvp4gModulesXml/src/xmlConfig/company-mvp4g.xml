@@ -2,8 +2,9 @@
 <mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/tags/mvp4g-1.1.0/xsd/mvp4g-conf.xsd">
 	<debug logLevel="DETAILED" />
-	<filters afterHistory="true">
-		<filter name="companyEventFilter" class="com.mvp4g.example.client.company.CompanyEventFilter" />
+	<filters afterHistory="true" filterForward="false">
+		<filter name="companyEventFilter"
+			class="com.mvp4g.example.client.company.CompanyEventFilter" />
 	</filters>
 	<history package="com.mvp4g.example.client.company.historyConverter">
 		<converter name="companyHC" class="CompanyHistoryConverter" />
@@ -36,14 +37,16 @@
 			view="creationView" services="service" />
 		<presenter name="selectorPresenter" class="CompanyNameSelectorPresenter"
 			view="selectorView" />
-		<presenter name="rowPresenter" view="rowView" class="CompanyRowPresenter" multiple="true" services="service"/>
+		<presenter name="rowPresenter" view="rowView" class="CompanyRowPresenter"
+			multiple="true" services="service" />
 	</presenters>
 	<events>
+		<event type="forward" handlers="listPresenter" />
 		<event type="goToCompany" handlers="listPresenter" activate="rowPresenter"
 			deactivate="creationPresenter, displayPresenter, editPresenter" />
 		<event type="goToList" handlers="listPresenter" activate="rowPresenter"
 			deactivate="creationPresenter, displayPresenter, editPresenter" />
-		<event type="goToCreation" handlers="creationPresenter"
+		<event type="goToCreation" handlers="creationPresenter"		             
 			activate="creationPresenter" deactivate="editPresenter, displayPresenter, rowPresenter"
 			history="companyCreationHC" historyName="create" />
 		<event type="goToEdit" handlers="editPresenter" activate="editPresenter"
@@ -58,16 +61,17 @@
 		<event type="companyCreated" handlers="listPresenter, displayPresenter"
 			activate="displayPresenter" deactivate="editPresenter" />
 		<event type="companyUpdated" handlers="rowPresenter" activate="rowPresenter"
-			deactivate="creationPresenter, displayPresenter, editPresenter"/>
+			deactivate="creationPresenter, displayPresenter, editPresenter" />
 		<event type="companyDeleted" handlers="listPresenter" />
 		<event type="selectCompanyMenu" forwardToParent="true"
 			eventObjectClass="" />
-		<event type="nameSelected" handlers="displayPresenter, editPresenter, creationPresenter, rowPresenter" />
+		<event type="nameSelected"
+			handlers="displayPresenter, editPresenter, creationPresenter, rowPresenter" />
 		<event type="displayNameSelector" handlers="selectorPresenter" />
 		<event type="companyListRetrieved" handlers="listPresenter" />
 		<event type="getCompanyList" handlers="listHandler" />
 	</events>
 
-	<start view="listView" />
+	<start view="listView" forwardEventType="forward" />
 
 </mvp4g>		

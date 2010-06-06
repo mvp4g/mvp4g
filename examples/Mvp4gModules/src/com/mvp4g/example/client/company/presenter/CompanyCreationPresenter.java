@@ -10,8 +10,7 @@ import com.mvp4g.example.client.company.view.CompanyCreationView;
 public class CompanyCreationPresenter extends AbstractCompanyPresenter {
 
 	public void onGoToCreation() {
-		eventBus.changeBody( view.getViewWidget() );
-		eventBus.selectCompanyMenu();
+		eventBus.changeBody( view.getViewWidget() );		
 	}
 	
 	public void onNameSelected( String name ){

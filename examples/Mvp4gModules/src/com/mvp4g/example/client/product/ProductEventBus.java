@@ -3,7 +3,6 @@ package com.mvp4g.example.client.product;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
-import com.mvp4g.client.annotation.Filters;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.example.client.product.bean.ProductBean;
 import com.mvp4g.example.client.product.historyConverter.ProductHistoryConverter;
@@ -14,7 +13,6 @@ import com.mvp4g.example.client.product.presenter.ProductListPresenter;
 import com.mvp4g.example.client.product.view.ProductListView;
 
 @Events( startView = ProductListView.class, module = ProductModule.class )
-@Filters(filterClasses = ProductListPresenter.class )
 public interface ProductEventBus extends EventBus {
 
 	@Event( handlers = ProductCreationPresenter.class )
