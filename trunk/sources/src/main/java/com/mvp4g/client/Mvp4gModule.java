@@ -33,6 +33,11 @@ public interface Mvp4gModule {
 	 * Method called to create the module and fire the start event.
 	 */
 	public void createAndStartModule();
+	
+	/**
+	 * Method called when an event is received from the parent module.
+	 */
+	public void onForward();
 
 	/**
 	 * @return start view of the module

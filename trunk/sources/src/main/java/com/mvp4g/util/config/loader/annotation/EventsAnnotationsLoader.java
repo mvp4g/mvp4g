@@ -27,6 +27,7 @@ import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Filters;
+import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.NotFoundHistory;
 import com.mvp4g.client.annotation.Start;
@@ -176,10 +177,12 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				}
 				addElement( filterElements, filterElement, c, null );
 			}
-			boolean afterHistory = filters.afterHistory();
+			
 			EventFiltersElement filtersElement = new EventFiltersElement();
 			try {
-				filtersElement.setAfterHistory( Boolean.toString( afterHistory ) );
+				filtersElement.setAfterHistory( Boolean.toString( filters.afterHistory() ) );
+				filtersElement.setFilterForward( Boolean.toString( filters.filterForward() ) );
+				filtersElement.setFilterStart( Boolean.toString( filters.filterStart() ) );
 			} catch ( DuplicatePropertyNameException e ) {
 				// setters are only called once, so this error can't occur.
 			}
@@ -353,6 +356,14 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 					configuration.getStart().setEventType( method.getName() );
 				} catch ( DuplicatePropertyNameException e ) {
 					String err = "Duplicate value for Start event. It is already defined by another method.";
+					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
+				}
+			}
+			if ( method.getAnnotation( Forward.class ) != null ) {
+				try {
+					configuration.getStart().setForwardEventType( method.getName() );
+				} catch ( DuplicatePropertyNameException e ) {
+					String err = "Duplicate value for Forward event. It is already defined by another method.";
 					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 				}
 			}

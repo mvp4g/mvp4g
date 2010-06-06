@@ -40,6 +40,8 @@ public abstract class BaseEventBus implements EventBus {
 	private boolean changeFilteringEnabledForNextOne = false;
 
 	private Map<Class<?>, List<EventHandlerInterface<?>>> handlersMap = new HashMap<Class<?>, List<EventHandlerInterface<?>>>();
+	
+	private List<EventFilter<?>> filters = new ArrayList<EventFilter<? extends EventBus>>();
 
 	/*
 	 * (non-Javadoc)
@@ -70,7 +72,7 @@ public abstract class BaseEventBus implements EventBus {
 			this.historyStored = historyStored;
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -85,7 +87,7 @@ public abstract class BaseEventBus implements EventBus {
 	 * 
 	 * @see com.mvp4g.client.event.EventBus#setFilterEnabled(boolean)
 	 */
-	public void setFilteringEnabled(boolean filteringEnabled) {
+	public void setFilteringEnabled( boolean filteringEnabled ) {
 		this.filteringEnabled = filteringEnabled;
 	}
 
@@ -94,7 +96,7 @@ public abstract class BaseEventBus implements EventBus {
 	 * 
 	 * @see com.mvp4g.client.event.EventBus#setFilterEnabledForNextOne(boolean)
 	 */
-	public void setFilteringEnabledForNextOne(boolean filteringEnabled) {
+	public void setFilteringEnabledForNextOne( boolean filteringEnabled ) {
 		if ( filteringEnabled != this.filteringEnabled ) {
 			changeFilteringEnabledForNextOne = true;
 			this.filteringEnabled = filteringEnabled;
@@ -136,7 +138,7 @@ public abstract class BaseEventBus implements EventBus {
 			changeHistoryStoredForNextOne = false;
 		}
 	}
-	
+
 	/**
 	 * If filtering is enabled, executes event filters associated with this event bus.
 	 * 
@@ -157,19 +159,49 @@ public abstract class BaseEventBus implements EventBus {
 		return ret;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.mvp4g.client.event.EventBus#addEventFilter(com.mvp4g.client.event.EventFilter)
+	 */
+	public void addEventFilter( EventFilter<? extends EventBus> filter ) {
+		filters.add( filter );
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.mvp4g.client.event.EventBus#removeEventFilter(com.mvp4g.client.event.EventFilter)
+	 */
+	public void removeEventFilter( EventFilter<? extends EventBus> filter ) {
+		filters.remove( filter );
+	}
+
 	/**
-	 * Performs the actual filtering by calling each associated event filter in turn.
-     * If any event filter returns false, then the event will be cancelled.
+	 * Performs the actual filtering by calling each associated event filter in turn. If any event
+	 * filter returns false, then the event will be cancelled.
 	 * 
 	 * @param eventType
 	 *            name of the event to filter
 	 * @param params
 	 *            event parameters for this event
 	 */
-	protected abstract boolean doFilterEvent( String eventType, Object[] params );
+	@SuppressWarnings( "unchecked" )
+	private boolean doFilterEvent( String eventType, Object[] params ){
+		int filterCount = filters.size();
+		EventFilter filter;
+		for(int i=0; i<filterCount; i++){
+			filter = filters.get( i );
+			if(!filter.filterEvent( eventType, params, this )){
+				return false;
+			}
+		}
+		return true;
+	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.mvp4g.client.event.EventBus#addHandler(java.lang.Class)
 	 */
 	public <T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass ) throws Mvp4gException {
@@ -191,7 +223,9 @@ public abstract class BaseEventBus implements EventBus {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.mvp4g.client.event.EventBus#removeHandler(com.mvp4g.client.event.EventHandlerInterface)
+	 * 
+	 * @see
+	 * com.mvp4g.client.event.EventBus#removeHandler(com.mvp4g.client.event.EventHandlerInterface)
 	 */
 	public <T extends EventHandlerInterface<?>> void removeHandler( T handler ) {
 		List<EventHandlerInterface<?>> handlers = handlersMap.get( handler.getClass() );
@@ -199,31 +233,29 @@ public abstract class BaseEventBus implements EventBus {
 			handlers.remove( handler );
 		}
 	}
-	
+
 	/**
 	 * Returns the list of handlers with the given class
 	 * 
 	 * @param <T>
-	 * 			type of the handlers
+	 *            type of the handlers
 	 * @param handlerClass
-	 * 			class of the handlers
-	 * @return
-	 * 			list of handlers
+	 *            class of the handlers
+	 * @return list of handlers
 	 */
 	@SuppressWarnings( "unchecked" )
 	protected <T extends EventHandlerInterface<?>> List<T> getHandlers( Class<T> handlerClass ) {
-		return (List<T>) handlersMap.get( handlerClass );
-	} 
+		return (List<T>)handlersMap.get( handlerClass );
+	}
 
 	/**
 	 * Create a new instance of the given handler class.
 	 * 
 	 * @param <T>
-	 * 			type of the handler
+	 *            type of the handler
 	 * @param handlerClass
-	 * 			class of the handler
-	 * @return
-	 * 		new instance created
+	 *            class of the handler
+	 * @return new instance created
 	 */
 	abstract protected <T extends EventHandlerInterface<?>> T createHandler( Class<T> handlerClass );
 

@@ -33,7 +33,7 @@ import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 public class StartLoader extends Mvp4gElementLoader<StartElement> {
 
 	static final String[] REQUIRED_ATTRIBUTES = { "view" };
-	static final String[] OPTIONAL_ATTRIBUTES = { "eventType", "history" };
+	static final String[] OPTIONAL_ATTRIBUTES = { "eventType", "history", "forwardEventType" };
 
 	@SuppressWarnings( "unchecked" )
 	public StartLoader( XMLConfiguration xmlConfig ) {

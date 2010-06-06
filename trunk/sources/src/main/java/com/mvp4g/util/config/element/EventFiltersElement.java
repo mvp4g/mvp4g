@@ -45,7 +45,31 @@ public class EventFiltersElement extends Mvp4gElement {
 	}
 	
 	public boolean isAfterHistory(){
-		return "true".equals( getAfterHistory() );
+		return "true".equalsIgnoreCase( getAfterHistory() );
 	}
+	
+	public void setFilterForward( String filterForward ) throws DuplicatePropertyNameException {
+		setProperty( "filterForward", filterForward );
+	}
+
+	public String getFilterForward() {
+		return getProperty( "filterForward" );
+	}
+	
+	public boolean isFilterForward(){
+		return !"false".equalsIgnoreCase( getFilterForward() );
+	}
+	
+	public void setFilterStart( String filterStart ) throws DuplicatePropertyNameException {
+		setProperty( "filterStart", filterStart );
+	}
+
+	public String getFilterStart() {
+		return getProperty( "filterStart" );
+	}
+	
+	public boolean isFilterStart(){
+		return !"false".equalsIgnoreCase( getFilterStart() );
+	}	
 
 }
