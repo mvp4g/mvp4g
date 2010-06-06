@@ -10,8 +10,7 @@ import com.mvp4g.example.client.company.view.CompanyDisplayView;
 public class CompanyDisplayPresenter extends AbstractCompanyPresenter {
 
 	public void onGoToDisplay( CompanyBean company ) {
-		displayCompany( company );
-		eventBus.dispatch( "selectCompanyMenu" );
+		displayCompany( company );		
 	}
 
 	public void onCompanyCreated( CompanyBean company ) {

@@ -10,8 +10,7 @@ import com.mvp4g.example.client.company.view.CompanyCreationView;
 public class CompanyCreationPresenter extends AbstractCompanyPresenter {
 
 	public void onGoToCreation() {
-		eventBus.dispatch( "changeBody", view.getViewWidget() );
-		eventBus.dispatch( "selectCompanyMenu" );
+		eventBus.dispatch( "changeBody", view.getViewWidget() );		
 	}
 
 	@Override

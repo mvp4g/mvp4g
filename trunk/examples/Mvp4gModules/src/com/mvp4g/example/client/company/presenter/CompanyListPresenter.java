@@ -90,6 +90,10 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 		companies.add( company );
 		addCompany( company );
 	}
+	
+	public void onForward(){
+		eventBus.selectCompanyMenu();
+	}
 
 	private void addCompany( CompanyBean company ) {
 		CompanyRowPresenter presenter = eventBus.addHandler( CompanyRowPresenter.class );
