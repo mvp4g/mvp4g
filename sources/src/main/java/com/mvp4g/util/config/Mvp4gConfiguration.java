@@ -114,6 +114,7 @@ public class Mvp4gConfiguration {
 	private static final String SAME_HISTORY_NAME = "Event %s: history name already used for another event: %s.";
 	private static final String WRONG_HISTORY_NAME = "%s %s: history name can't start with '" + PlaceService.CRAWLABLE + "' or contain '"
 			+ PlaceService.MODULE_SEPARATOR + "'.";
+	private static final String WRONG_FORWARD_EVENT = "You can't define a forward event for RootModule since no event from parent can be forwarded to it.";
 
 	private Set<PresenterElement> presenters = new HashSet<PresenterElement>();
 	private Set<EventHandlerElement> eventHandlers = new HashSet<EventHandlerElement>();
@@ -485,7 +486,7 @@ public class Mvp4gConfiguration {
 	public void setGinModule( GinModuleElement ginModule ) {
 		this.ginModule = ginModule;
 	}
-	
+
 	/**
 	 * @return the filters
 	 */
@@ -494,16 +495,16 @@ public class Mvp4gConfiguration {
 	}
 
 	/**
-	 * @param filters the filters to set
+	 * @param filters
+	 *            the filters to set
 	 */
 	public void setEventFilterConfiguration( EventFiltersElement eventFilterConfiguration ) {
 		this.eventFilterConfiguration = eventFilterConfiguration;
-	}	
-	
+	}
 
 	/*
 	 * Validation
-	 */	
+	 */
 
 	/**
 	 * Checks that all injected views correspond to a configured mvp4g element. Remove views that
@@ -1049,10 +1050,28 @@ public class Mvp4gConfiguration {
 			}
 		}
 
-		String event = null;
+		String event;
+		EventElement eventElt;
+		String[] objClasses;
 		if ( start.hasEventType() ) {
 			event = start.getEventType();
-			getElement( event, events, start );
+			eventElt = getElement( event, events, start );
+			objClasses = eventElt.getEventObjectClasses();
+			if ( ( objClasses != null ) && ( objClasses.length > 0 ) ) {
+				throw new InvalidMvp4gConfigurationException( String.format( NOT_EMPTY_EVENT_OBJ, "Start", "Start", eventElt.getType() ) );
+			}
+		}
+
+		if ( start.hasForwardEventType() ) {
+			if ( isRootModule() ) {
+				throw new InvalidMvp4gConfigurationException( WRONG_FORWARD_EVENT );
+			}
+			event = start.getForwardEventType();
+			eventElt = getElement( event, events, start );
+			objClasses = eventElt.getEventObjectClasses();
+			if ( ( objClasses != null ) && ( objClasses.length > 0 ) ) {
+				throw new InvalidMvp4gConfigurationException( String.format( NOT_EMPTY_EVENT_OBJ, "Forward", "Forward", eventElt.getType() ) );
+			}
 		}
 
 		if ( ( history != null ) && isRootModule() ) {
@@ -1061,8 +1080,6 @@ public class Mvp4gConfiguration {
 		}
 
 		if ( loadChildConfig != null ) {
-			EventElement eventElt = null;
-			String[] objClasses = null;
 			String eventName = loadChildConfig.getErrorEvent();
 			if ( ( eventName != null ) && ( eventName.length() > 0 ) ) {
 				eventElt = getElement( eventName, events, loadChildConfig );
@@ -1139,6 +1156,7 @@ public class Mvp4gConfiguration {
 		checkUniquenessOf( events, allIds );
 		checkUniquenessOf( services, allIds );
 		checkUniquenessOf( childModules, allIds );
+		checkUniquenessOf( eventFilters, allIds );
 	}
 
 	/**
@@ -1459,7 +1477,7 @@ public class Mvp4gConfiguration {
 		HistoryLoader historyConfig = new HistoryLoader( xmlConfig );
 		history = historyConfig.loadElement();
 	}
-	
+
 	void loadEventFilterConfiguration( XMLConfiguration xmlConfig ) throws InvalidMvp4gConfigurationException {
 		EventFilterConfigurationLoader eventFilterConfig = new EventFilterConfigurationLoader( xmlConfig );
 		eventFilterConfiguration = eventFilterConfig.loadElement();

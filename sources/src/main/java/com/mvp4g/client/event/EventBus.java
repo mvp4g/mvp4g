@@ -104,4 +104,20 @@ public interface EventBus {
 	 *            handler to remove
 	 */
 	public <T extends EventHandlerInterface<?>> void removeHandler( T handler );
+	
+	/**
+	 * Add a new event filter
+	 * 
+	 * @param filter
+	 * 			new event filter to add
+	 */
+	public void addEventFilter(EventFilter<? extends EventBus> filter);
+	
+	/**
+	 * Remove event filter
+	 * 
+	 * @param filter
+	 * 			event filter to remove
+	 */
+	public void removeEventFilter(EventFilter<? extends EventBus> filter);
 }

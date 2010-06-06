@@ -13,31 +13,31 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
 package com.mvp4g.client.annotation;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-
-import com.mvp4g.client.event.EventFilter;
+import java.lang.annotation.Target;
 
 /**
- * This annotation may be used to define an event filter for the framework.<br/>
+ * This annotation indicates what event should be fired when an event is forwarded from the parent
+ * to the module.<br/>
  * <br/>
- * This annotation can be used only on classes that implement <code>EventBus</code>
- * or <code>EventBusWithLookup</code>.
+ * It must be used only on interface that has the annotation <code>Events</code>.<br/>
+ * <br/>
+ * You can only annotate methods with no parameter (ie only event with no object associated can be
+ * used).<br/>
+ * <br/>
+ * You must not have more than one <code>Start</code> annotation in a class.<br/>
+ * <br/>
  * 
- * @author Nick Hebner
+ * 
+ * @author plcoirier
+ * 
  */
 @Retention( RetentionPolicy.RUNTIME )
-public @interface Filters {
-
-	Class<? extends EventFilter<?>>[] filterClasses();
-	
-	boolean afterHistory() default false;
-	
-	boolean filterStart() default true;
-	
-	boolean filterForward() default true;
+@Target( ElementType.METHOD )
+public @interface Forward {
 
 }
