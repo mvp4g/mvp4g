@@ -70,9 +70,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 
 	@Test
 	public void testGetValuesWhenNameNotFound() {
-		String[] emptyArray = new String[] {};
-
-		assertArrayEquals( emptyArray, element.getValues( "nonExistent" ) );
+		assertArrayEquals( null, element.getValues( "nonExistent" ) );
 	}
 
 	@Test

@@ -19,7 +19,7 @@ package com.mvp4g.util.config.element;
 public class EventFilterElement extends SimpleMvp4gElement {
 
 	public EventFilterElement() {
-		super( "event_filter" );
+		super( "eventFilter" );
 	}
 
 }

@@ -75,7 +75,7 @@ public class StartElement extends Mvp4gElement {
 	}
 
 	public boolean hasHistory() {
-		return "true".equalsIgnoreCase( getHistory() );
+		return Boolean.TRUE.toString().equalsIgnoreCase( getHistory() );
 	}
 	
 	public void setForwardEventType( String forwardEventType ) throws DuplicatePropertyNameException {

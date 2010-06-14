@@ -27,7 +27,7 @@ public class EventFiltersElement extends Mvp4gElement {
 	private static final String EVENT_FILTERS_ELEMENT_ID = EventFiltersElement.class.getName();
 
 	public EventFiltersElement() {
-		super( "event_filters" );
+		super( "eventFilters" );
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class EventFiltersElement extends Mvp4gElement {
 	}
 	
 	public boolean isAfterHistory(){
-		return "true".equalsIgnoreCase( getAfterHistory() );
+		return Boolean.TRUE.toString().equalsIgnoreCase( getAfterHistory() );
 	}
 	
 	public void setFilterForward( String filterForward ) throws DuplicatePropertyNameException {
@@ -57,7 +57,7 @@ public class EventFiltersElement extends Mvp4gElement {
 	}
 	
 	public boolean isFilterForward(){
-		return !"false".equalsIgnoreCase( getFilterForward() );
+		return !Boolean.FALSE.toString().equalsIgnoreCase( getFilterForward() );
 	}
 	
 	public void setFilterStart( String filterStart ) throws DuplicatePropertyNameException {
@@ -69,7 +69,7 @@ public class EventFiltersElement extends Mvp4gElement {
 	}
 	
 	public boolean isFilterStart(){
-		return !"false".equalsIgnoreCase( getFilterStart() );
+		return !Boolean.FALSE.toString().equalsIgnoreCase( getFilterStart() );
 	}	
 
 }

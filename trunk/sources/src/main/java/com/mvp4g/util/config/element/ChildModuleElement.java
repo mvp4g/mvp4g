@@ -42,7 +42,7 @@ public class ChildModuleElement extends SimpleMvp4gElement {
 	}
 
 	public boolean isAsync() {
-		return "true".equalsIgnoreCase( getAsync() );
+		return Boolean.TRUE.toString().equalsIgnoreCase( getAsync() );
 	}
 
 	public void setAutoDisplay( String autoDisplay ) throws DuplicatePropertyNameException {
@@ -56,7 +56,7 @@ public class ChildModuleElement extends SimpleMvp4gElement {
 	}
 
 	public boolean isAutoDisplay() {
-		return "true".equalsIgnoreCase( getAutoDisplay() );
+		return Boolean.TRUE.toString().equalsIgnoreCase( getAutoDisplay() );
 	}
 
 	public String getHistoryName() {

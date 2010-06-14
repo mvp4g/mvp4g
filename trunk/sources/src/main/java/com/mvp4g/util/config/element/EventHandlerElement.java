@@ -41,6 +41,6 @@ public class EventHandlerElement extends Mvp4gWithServicesElement {
 	}
 	
 	public boolean isMultiple(){
-		return "true".equalsIgnoreCase( getMultiple() );
+		return Boolean.TRUE.toString().equalsIgnoreCase( getMultiple() );
 	}
 }

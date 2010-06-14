@@ -1,30 +1,25 @@
 package com.mvp4g.util.config.element;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mvp4g.client.annotation.Debug.LogLevel;
+import com.mvp4g.client.event.DefaultMvp4gLogger;
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 public class DebugElementTest extends AbstractMvp4gElementTest<DebugElement> {
 
-	protected static final String[] properties = { "enabled" };
+	protected static final String[] properties = { "logLevel", "logger" };
 
 	@Test
-	public void testIsEnabled() throws DuplicatePropertyNameException {
-		DebugElement childModuleElement = new DebugElement();
-		assertFalse( childModuleElement.isEnabled() );
-		childModuleElement.setEnabled( "true" );
-		assertTrue( childModuleElement.isEnabled() );
+	public void testNullLogLevel() throws DuplicatePropertyNameException {
+		assertEquals( LogLevel.SIMPLE.name(), element.getLogLevel() );
+	}
 
-		childModuleElement = new DebugElement();
-		childModuleElement.setEnabled( "false" );
-		assertFalse( childModuleElement.isEnabled() );
-
-		childModuleElement = new DebugElement();
-		childModuleElement.setEnabled( "123" );
-		assertFalse( childModuleElement.isEnabled() );
+	@Test
+	public void testLoggerLevel() throws DuplicatePropertyNameException {
+		assertEquals( DefaultMvp4gLogger.class.getName(), element.getLogger() );
 	}
 
 	@Override

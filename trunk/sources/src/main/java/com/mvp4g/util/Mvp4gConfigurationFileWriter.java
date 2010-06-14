@@ -237,7 +237,7 @@ public class Mvp4gConfigurationFileWriter {
 
 		String formError = null;
 		if ( isError ) {
-			String[] params = getElement( errorEvent, configuration.getEvents() ).getEventObjectClasses();
+			String[] params = getElement( errorEvent, configuration.getEvents() ).getEventObjectClass();
 			if ( ( params != null ) && ( params.length > 0 ) ) {
 				formError = "reason";
 			}
@@ -286,7 +286,7 @@ public class Mvp4gConfigurationFileWriter {
 
 			if ( module.isAutoDisplay() ) {
 				event = getElement( module.getEventToDisplayView(), events );
-				writeDispatchEvent( event.getType(), "(" + event.getEventObjectClasses()[0] + ") newModule.getStartView()", isXml );
+				writeDispatchEvent( event.getType(), "(" + event.getEventObjectClass()[0] + ") newModule.getStartView()", isXml );
 			}
 
 			sourceWriter.println( "if(passer != null) passer.pass(newModule);" );
@@ -612,7 +612,7 @@ public class Mvp4gConfigurationFileWriter {
 		for ( EventElement event : configuration.getEvents() ) {
 			type = event.getType();
 			calledMethod = event.getCalledMethod();
-			objectClasses = event.getEventObjectClasses();
+			objectClasses = event.getEventObjectClass();
 
 			handlers = event.getHandlers();
 			history = event.getHistory();
@@ -861,7 +861,7 @@ public class Mvp4gConfigurationFileWriter {
 		for ( EventElement event : configuration.getEvents() ) {
 			type = event.getType();
 
-			objectClasses = event.getEventObjectClasses();
+			objectClasses = event.getEventObjectClass();
 
 			if ( ( objectClasses == null ) || ( objectClasses.length == 0 ) ) {
 				param = "();";
@@ -1119,7 +1119,7 @@ public class Mvp4gConfigurationFileWriter {
 		if ( modulesToLoad != null ) {
 			for ( String moduleName : modulesToLoad ) {
 				module = getElement( moduleName, modules );
-				eventObjectClasses = event.getEventObjectClasses();
+				eventObjectClasses = event.getEventObjectClass();
 				sourceWriter.print( "load" );
 				sourceWriter.print( module.getName() );
 

@@ -1,8 +1,11 @@
 package com.mvp4g.client.test_tools;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
 import com.google.gwt.user.client.Command;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
-import static junit.framework.Assert.*;
+import com.mvp4g.client.event.EventHandlerInterface;
 
 public class EventBusWithLookUpStub extends BaseEventBusWithLookUp {
 
@@ -10,9 +13,9 @@ public class EventBusWithLookUpStub extends BaseEventBusWithLookUp {
 	public static final String CLASS_CAST_EXCEPTION = "classCastException";
 
 	private String lastDispatchedEventType = null;
-	private Object lastDispatchedObject = null;
+	private Object[] lastDispatchedObject = null;
 
-	public void dispatch( String eventType, Object form ) {
+	public void dispatch( String eventType, Object... form ) {
 		lastDispatchedEventType = eventType;
 		lastDispatchedObject = form;
 		if ( MVP4G_EXCEPTION.equals( eventType ) ) {
@@ -40,13 +43,21 @@ public class EventBusWithLookUpStub extends BaseEventBusWithLookUp {
 		return lastDispatchedEventType;
 	}
 
-	public Object getLastDispatchedObject() {
+	public Object[] getLastDispatchedObject() {
 		return lastDispatchedObject;
 	}
 
-	public void assertEvent( String expectedEventType, Object expectedDispatchedObject ) {
+	public void assertEvent( String expectedEventType, Object[] expectedDispatchedObject ) {
 		assertEquals( expectedEventType, lastDispatchedEventType );
-		assertEquals( expectedDispatchedObject, lastDispatchedObject );
+		assertTrue( expectedDispatchedObject.length == lastDispatchedObject.length );
+		for(int i=0; i<expectedDispatchedObject.length; i++){
+			assertEquals( expectedDispatchedObject[i], lastDispatchedObject[i] );
+		}
+	}
+
+	@Override
+	protected <T extends EventHandlerInterface<?>> T createHandler( Class<T> handlerClass ) {
+		return null;
 	}
 
 }

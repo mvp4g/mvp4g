@@ -19,11 +19,22 @@ import com.google.gwt.core.client.GWT;
 
 public class DefaultMvp4gLogger implements Mvp4gLogger {
 
+	static final String INDENT = "    ";
+
 	public void log( String message, int depth ) {
-		String indent = "";
-		for ( int i = 0; i < depth; ++i )
-			indent += "    ";
-		GWT.log( indent + message, null );
+		GWT.log( createLog( message, depth ), null );
 	}
 
+	String createLog( String message, int depth ) {
+		if ( depth == 0 ) {
+			return message;
+		} else {
+			StringBuilder indent = new StringBuilder( message.length() + depth * INDENT.length() );
+			for ( int i = 0; i < depth; ++i ) {
+				indent.append( INDENT );
+			}
+			indent.append( message );
+			return indent.toString();
+		}
+	}
 }

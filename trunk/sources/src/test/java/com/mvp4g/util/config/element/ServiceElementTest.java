@@ -20,16 +20,22 @@ public class ServiceElementTest extends SimpleMvp4gElementTest {
 
 	@Test
 	public void testSetGeneratedClassName() throws DuplicatePropertyNameException {
-
 		String className = "Test";
 		ServiceElement serviceElement = (ServiceElement)element;
 		serviceElement.setGeneratedClassName( className );
 		assertEquals( element.getProperty( "generatedClassName" ), className );
 	}
+	
+	@Test
+	public void testDefaultGeneratedClassName() throws DuplicatePropertyNameException {
+		String className = "com.Test";
+		ServiceElement serviceElement = (ServiceElement)element;
+		serviceElement.setClassName( className );
+		assertEquals( serviceElement.getGeneratedClassName(), className + "Async" );
+	}
 
 	@Test
 	public void testGetGeneratedClassName() throws DuplicatePropertyNameException {
-
 		String packageName = "com.test";
 		String className = "Test";
 		ServiceElement serviceElement = (ServiceElement)element;

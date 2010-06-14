@@ -2,12 +2,11 @@ package com.mvp4g.client.test_tools;
 
 import static junit.framework.Assert.assertEquals;
 
-import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.history.PlaceService;
 
-public class PlaceServiceStub<E extends EventBus> extends PlaceService {
+public class PlaceServiceStub extends PlaceService {
 
-	Object lastForm = null;
+	String lastParam = null;
 	String lastEventType = null;
 
 	public PlaceServiceStub() {
@@ -15,13 +14,13 @@ public class PlaceServiceStub<E extends EventBus> extends PlaceService {
 	}
 
 	@Override
-	public <T> void place( String eventType, T form ) {
+	public void place( String eventType, String param ) {
 		this.lastEventType = eventType;
-		this.lastForm = form;
+		this.lastParam = param;
 	}
 
 	public Object getLastForm() {
-		return lastForm;
+		return lastParam;
 	}
 
 	public String getLastEventType() {
@@ -30,7 +29,7 @@ public class PlaceServiceStub<E extends EventBus> extends PlaceService {
 
 	public void assertEvent( String expectedEventType, Object expectedForm ) {
 		assertEquals( expectedEventType, lastEventType );
-		assertEquals( expectedForm, lastForm );
+		assertEquals( expectedForm, lastParam );
 	}
 
 	@Override

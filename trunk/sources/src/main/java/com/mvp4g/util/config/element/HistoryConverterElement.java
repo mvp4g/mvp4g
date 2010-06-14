@@ -33,13 +33,11 @@ public class HistoryConverterElement extends Mvp4gWithServicesElement {
 	}
 
 	public String getConvertParams() {
-		String convertParams = getProperty( "convertParams" );
-		// By default it's true
-		return ( convertParams == null ) ? "true" : getProperty( "convertParams" );
+		return getProperty( "convertParams" );
 	}
 
 	public boolean isConvertParams() {
-		return Boolean.TRUE.toString().equals( getConvertParams() );
+		return !Boolean.FALSE.toString().equalsIgnoreCase( getConvertParams() );
 	}
 
 }

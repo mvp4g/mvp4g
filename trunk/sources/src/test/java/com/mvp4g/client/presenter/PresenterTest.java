@@ -1,7 +1,6 @@
 package com.mvp4g.client.presenter;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
@@ -13,6 +12,7 @@ import org.junit.Test;
 import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
+import com.mvp4g.client.event.EventHandlerInterface;
 
 public class PresenterTest {
 
@@ -32,30 +32,18 @@ public class PresenterTest {
 	@Test
 	public void testSetter() {
 		String view = "View";
-		BaseEventBus bus = new BaseEventBus();
+		BaseEventBus bus = new BaseEventBus(){
+
+			@Override
+			protected <T extends EventHandlerInterface<?>> T createHandler( Class<T> handlerClass ) {
+				return null;
+			}
+			
+		};
 		presenter.setEventBus( bus );
 		presenter.setView( view );
 		assertSame( presenter.getView(), view );
 		assertSame( presenter.getEventBus(), bus );
-	}
-
-	@Test
-	public void testBindIfNeeded() {
-		final String bind = "bind";
-
-		BasePresenter<String, EventBus> p = new BasePresenter<String, EventBus>() {
-			@Override
-			public void bind() {
-				view = bind;
-			}
-		};
-
-		assertNull( p.getView() );
-		p.bindIfNeeded();
-		assertEquals( p.getView(), bind );
-		p.setView( "notBind" );
-		p.bindIfNeeded();
-		assertFalse( bind.equals( p.getView() ) );
 	}
 
 	@Test

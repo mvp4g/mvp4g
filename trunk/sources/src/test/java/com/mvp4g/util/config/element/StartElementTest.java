@@ -1,5 +1,6 @@
 package com.mvp4g.util.config.element;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -9,7 +10,7 @@ import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 public class StartElementTest extends AbstractMvp4gElementTest<StartElement> {
 
-	protected static final String[] properties = { "eventType", "view", "history" };
+	protected static final String[] properties = { "eventType", "view", "history", "forwardEventType" };
 
 	@Test
 	public void testHasEventType() throws DuplicatePropertyNameException {
@@ -44,6 +45,15 @@ public class StartElementTest extends AbstractMvp4gElementTest<StartElement> {
 		assertFalse( element.hasHistory() );
 		element.setHistory( "laksjd123" );
 		assertFalse( element.hasHistory() );
+	}
+	
+	@Test
+	public void testHasForward() throws DuplicatePropertyNameException{
+		assertFalse( element.hasForwardEventType() );
+		String test = "test";
+		element.setForwardEventType( test );
+		assertEquals( test, element.getForwardEventType() );
+		assertTrue( element.hasForwardEventType() );
 	}
 
 	@Override
