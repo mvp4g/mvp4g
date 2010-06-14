@@ -1,6 +1,13 @@
 package com.mvp4g.util.config.element;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.List;
 
 import org.junit.Test;
 
@@ -8,8 +15,8 @@ import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 
-	private static final String[] properties = { "eventObjectClass", "calledMethod", "type", "history", "forwardToParent" };
-	private static final String[] values = { "handlers", "modulesToLoad" };
+	private static final String[] properties = { "calledMethod", "type", "history", "forwardToParent", "historyName" };
+	private static final String[] values = { "handlers", "modulesToLoad", "eventObjectClass" };
 
 	@Test
 	public void testGetCalledMethod() throws DuplicatePropertyNameException {
@@ -52,6 +59,88 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 		childModuleElement = new EventElement();
 		childModuleElement.setForwardToParent( "123" );
 		assertFalse( childModuleElement.hasForwardToParent() );
+	}
+
+	@Test
+	public void testActivateSetterGetter() throws DuplicatePropertyNameException {
+		EventElement element = newElement();
+		assertNull( element.getActivate() );
+		assertNull( element.getValues( "activate" ) );
+		String[] test = { "test1", "test2" };
+		element.setActivate( test );
+		List<String> activate = element.getActivate();
+		assertTrue( test.length == activate.size() );
+		for ( int i = 0; i < test.length; i++ ) {
+			assertSame( test[i], activate.get( i ) );
+		}
+		assertNull( element.getValues( "activate" ) );
+
+		element = newElement();
+		element.setValues( "activate", test );
+		activate = element.getActivate();
+		assertTrue( test.length == activate.size() );
+		for ( int i = 0; i < test.length; i++ ) {
+			assertSame( test[i], activate.get( i ) );
+		}
+		assertNull( element.getValues( "activate" ) );
+
+		try {
+			element.setActivate( test );
+			fail();
+		} catch ( DuplicatePropertyNameException e ) {
+
+		}
+
+		try {
+			element.setValues( "activate", test );
+			fail();
+		} catch ( DuplicatePropertyNameException e ) {
+
+		}
+	}
+
+	@Test
+	public void testDeactivateSetterGetter() throws DuplicatePropertyNameException {
+		assertNull( element.getDeactivate() );
+		assertNull( element.getValues( "deactivate" ) );
+		String[] test = { "test1", "test2" };
+		element.setDeactivate( test );
+		List<String> deactivate = element.getDeactivate();
+		assertTrue( test.length == deactivate.size() );
+		for ( int i = 0; i < test.length; i++ ) {
+			assertSame( test[i], deactivate.get( i ) );
+		}
+		assertNull( element.getValues( "deactivate" ) );
+
+		element = newElement();
+		element.setValues( "deactivate", test );
+		deactivate = element.getDeactivate();
+		assertTrue( test.length == deactivate.size() );
+		for ( int i = 0; i < test.length; i++ ) {
+			assertSame( test[i], deactivate.get( i ) );
+		}
+		assertNull( element.getValues( "deactivate" ) );
+
+		try {
+			element.setDeactivate( test );
+			fail();
+		} catch ( DuplicatePropertyNameException e ) {
+
+		}
+
+		try {
+			element.setValues( "deactivate", test );
+			fail();
+		} catch ( DuplicatePropertyNameException e ) {
+
+		}
+	}
+	
+	@Test
+	public void testDefaultHistoryName() throws DuplicatePropertyNameException{
+		String test = "test";
+		element.setType( test );
+		assertEquals( test, element.getHistoryName() );
 	}
 
 	@Override

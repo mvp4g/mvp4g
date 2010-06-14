@@ -73,9 +73,10 @@ public class PlaceServiceTest {
 	@Test
 	public void testPlaceNoParam() {
 		String eventType = "eventType";
-		placeService.addConverter( eventType, buildHistoryConverter() );
+		String historyName = "historyName";
+		placeService.addConverter( eventType, historyName, buildHistoryConverter( false ) );
 		placeService.place( eventType, null );
-		assertEquals( eventType, history.getToken() );
+		assertEquals( historyName, history.getToken() );
 		assertFalse( history.isIssueEvent() );
 	}
 
@@ -83,9 +84,10 @@ public class PlaceServiceTest {
 	public void testPlaceWithParam() {
 		String eventType = "eventType";
 		String form = "form";
-		placeService.addConverter( eventType, buildHistoryConverter() );
+		String historyName = "historyName";
+		placeService.addConverter( eventType, historyName, buildHistoryConverter( false ) );
 		placeService.place( eventType, form );
-		assertEquals( eventType + "?" + form, history.getToken() );
+		assertEquals( historyName + "?" + form, history.getToken() );
 		assertFalse( history.isIssueEvent() );
 	}
 
@@ -106,38 +108,41 @@ public class PlaceServiceTest {
 	@Test
 	public void testConverterNoParameter() {
 		String eventType = "eventType";
-		placeService.addConverter( eventType, buildHistoryConverter() );
-		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( "eventType" );
+		String historyName = "historyName";
+		placeService.addConverter( eventType, historyName, buildHistoryConverter( false ) );
+		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( historyName );
 		placeService.onValueChange( event );
-		eventBus.assertEvent( eventType, null );
+		eventBus.assertEvent( eventType, new Object[] { null } );
 	}
 
 	@Test
 	public void testConverterWithParameters() {
 		String eventType = "eventType";
 		String form = "form";
-		placeService.addConverter( eventType, buildHistoryConverter() );
-		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( eventType + "?" + form );
+		String historyName = "historyName";
+		placeService.addConverter( eventType, historyName, buildHistoryConverter( false ) );
+		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( historyName + "?" + form );
 		placeService.onValueChange( event );
-		eventBus.assertEvent( eventType, form );
+		eventBus.assertEvent( eventType, new Object[] { form } );
 	}
 
 	@Test
 	public void testConverterForChildModuleNoParameter() {
 		String eventType = "child/eventType";
-		placeService.addConverter( eventType, buildHistoryConverter() );
-		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( eventType );
+		String historyName = "child/historyName";
+		placeService.addConverter( eventType, historyName, buildHistoryConverter( false ) );
+		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( historyName );
 		placeService.onValueChange( event );
 
-		assertEquals( eventType, module.getEventType() );
-		Mvp4gEventPasser<Boolean> passer = module.getPasser();
+		assertEquals( historyName, module.getEventType() );
+		Mvp4gEventPasser passer = module.getPasser();
 		passer.setEventObject( false );
 		passer.pass( module );
 		assertTrue( placeService.isNotFoundEvent() );
 
 		passer.setEventObject( true );
 		passer.pass( module );
-		eventBus.assertEvent( "eventType", null );
+		eventBus.assertEvent( "eventType", new Object[] { null } );
 
 	}
 
@@ -145,23 +150,26 @@ public class PlaceServiceTest {
 	public void testConverterForChildModuleWithParameter() {
 		String eventType = "child/eventType";
 		String form = "form";
-		placeService.addConverter( eventType, buildHistoryConverter() );
+		placeService.addConverter( eventType, eventType, buildHistoryConverter( false ) );
 		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( eventType + "?" + form );
 		placeService.onValueChange( event );
 
 		assertEquals( eventType, module.getEventType() );
-		Mvp4gEventPasser<Boolean> passer = module.getPasser();
+		Mvp4gEventPasser passer = module.getPasser();
 		passer.setEventObject( true );
 		passer.pass( module );
-		eventBus.assertEvent( "eventType", form );
+		eventBus.assertEvent( "eventType", new Object[] { form } );
 
 	}
 
 	@Test
 	public void testClearHistory() {
 		String eventType = "eventType";
-		placeService.addConverter( eventType, new ClearHistory() );
-		placeService.place( eventType, "form" );
+		placeService.addConverter( eventType, eventType, new ClearHistory() );
+		placeService.place( eventType, null );
+		assertEquals( eventType, history.getToken() );
+
+		placeService.clearHistory();
 		assertEquals( "", history.getToken() );
 	}
 
@@ -171,24 +179,38 @@ public class PlaceServiceTest {
 		clearHistory.convertFromToken( null, null, null );
 	}
 
-	@Test( expected = RuntimeException.class )
-	public void testClearHistoryConvertToToken() {
-		ClearHistory clearHistory = new ClearHistory();
-		clearHistory.convertToToken( null, null );
-	}
+	private HistoryConverter<EventBusWithLookUpStub> buildHistoryConverter( final boolean crawlable ) {
+		return new HistoryConverter<EventBusWithLookUpStub>() {
 
-	private HistoryConverter<String, EventBusWithLookUpStub> buildHistoryConverter() {
-		return new HistoryConverter<String, EventBusWithLookUpStub>() {
-
-			public void convertFromToken( String eventType, String param, EventBusWithLookUpStub eventBus ) {
-				eventBus.dispatch( eventType, param );
+			public void convertFromToken( String eventType, String form, EventBusWithLookUpStub eventBus ) {
+				eventBus.dispatch( eventType, form );
 			}
 
-			public String convertToToken( String eventType, String form ) {
-				return form;
+			public boolean isCrawlable() {
+				return crawlable;
 			}
 
 		};
+	}
+
+	@Test
+	public void testPlaceCrawlable() {
+		String eventType = "eventType";
+		String historyName = "historyName";
+		placeService.addConverter( eventType, historyName, buildHistoryConverter( true ) );
+		placeService.place( eventType, null );
+		assertEquals( "!" + historyName, history.getToken() );
+		assertFalse( history.isIssueEvent() );
+	}
+
+	@Test
+	public void testConverterCrawlable() {
+		String eventType = "eventType";
+		String historyName = "historyName";
+		placeService.addConverter( eventType, historyName, buildHistoryConverter( true ) );
+		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( "!" + historyName );
+		placeService.onValueChange( event );
+		eventBus.assertEvent( eventType, new Object[] { null } );
 	}
 
 }

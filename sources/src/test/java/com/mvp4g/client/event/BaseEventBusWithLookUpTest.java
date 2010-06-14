@@ -35,13 +35,13 @@ public class BaseEventBusWithLookUpTest {
 	@Test
 	public void testDispatch() {
 		bus.dispatch( TEST );
-		bus.assertEvent( TEST, null );
+		bus.assertEvent( TEST, new Object[0] );
 
 		bus.dispatch( EventType.TEST_TYPE );
-		bus.assertEvent( TEST, null );
+		bus.assertEvent( TEST, new Object[0] );
 
 		bus.dispatch( EventType.TEST_TYPE, FORM );
-		bus.assertEvent( TEST, FORM );
+		bus.assertEvent( TEST, new Object[]{FORM} );
 	}
 
 	@Test( expected = Mvp4gException.class )

@@ -10,13 +10,13 @@ public class Mvp4gModuleStub implements Mvp4gModule {
 	private EventBus eventBus;
 	private String eventType;
 	private Object form;
-	private Mvp4gEventPasser<Boolean> passer;
+	private Mvp4gEventPasser passer;
 
 	public Mvp4gModuleStub( EventBus eventBus ) {
 		this.eventBus = eventBus;
 	}
 
-	public void addConverter( String token, HistoryConverter<?, ?> hc ) {
+	public void addConverter( String token, HistoryConverter<?> hc ) {
 
 	}
 
@@ -24,7 +24,7 @@ public class Mvp4gModuleStub implements Mvp4gModule {
 
 	}
 
-	public void dispatchHistoryEvent( String eventType, Mvp4gEventPasser<Boolean> passer ) {
+	public void dispatchHistoryEvent( String eventType, Mvp4gEventPasser passer ) {
 		this.eventType = eventType;
 		this.passer = passer;
 	}
@@ -37,7 +37,7 @@ public class Mvp4gModuleStub implements Mvp4gModule {
 		return null;
 	}
 
-	public <T> void place( String token, T form ) {
+	public void place( String token, String form ) {
 		this.eventType = token;
 		this.form = form;
 	}
@@ -52,7 +52,7 @@ public class Mvp4gModuleStub implements Mvp4gModule {
 	/**
 	 * @return the passer
 	 */
-	public Mvp4gEventPasser<Boolean> getPasser() {
+	public Mvp4gEventPasser getPasser() {
 		return passer;
 	}
 
@@ -61,6 +61,26 @@ public class Mvp4gModuleStub implements Mvp4gModule {
 	 */
 	public Object getForm() {
 		return form;
+	}
+
+	public void addConverter( String eventType, String historyName, HistoryConverter<?> hc ) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void clearHistory() {
+		this.eventType = null;
+		this.form = null;
+	}
+
+	public void onForward() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void setParentModule( Mvp4gModule parentModule ) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

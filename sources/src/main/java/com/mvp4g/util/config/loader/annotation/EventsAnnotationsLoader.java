@@ -340,7 +340,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				element.setDeactivate( buildPresentersAndEventHandlers( c, method, event.deactivate(), event.deactivateNames(), configuration ) );
 
 				if ( paramClasses != null ) {
-					element.setEventObjectClasses( paramClasses );
+					element.setEventObjectClass( paramClasses );
 				}
 				if ( !Event.DEFAULT_NAME.equals( historyName ) ) {
 					element.setHistoryName( historyName );

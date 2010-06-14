@@ -23,7 +23,8 @@ package com.mvp4g.util.config.element;
 public class ViewElement extends SimpleMvp4gElement {
 
 	//a flag to indicate if an instance of the view should be created at start
-	//a view shouldn't be instantiate at start if it's injected into a multiple presenter
+	//a view shouldn't be instantiate at start if it's only injected into a multiple presenter
+	//This is not a configuration parameter from developer, it is set by the framework
 	boolean instantiateAtStart = false;
 
 	public ViewElement() {

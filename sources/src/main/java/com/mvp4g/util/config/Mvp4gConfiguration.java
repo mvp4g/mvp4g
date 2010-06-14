@@ -1005,7 +1005,7 @@ public class Mvp4gConfiguration {
 					}
 					// verify event exists
 					eventElt = getElement( eventName, events, childModule );
-					eventObjClasses = eventElt.getEventObjectClasses();
+					eventObjClasses = eventElt.getEventObjectClass();
 					if ( ( eventObjClasses == null ) || ( eventObjClasses.length != 1 ) ) {
 						throw new InvalidMvp4gConfigurationException( String.format( WRONG_NUMBER_ATT, eventElt.getType() ) );
 					}
@@ -1056,7 +1056,7 @@ public class Mvp4gConfiguration {
 		if ( start.hasEventType() ) {
 			event = start.getEventType();
 			eventElt = getElement( event, events, start );
-			objClasses = eventElt.getEventObjectClasses();
+			objClasses = eventElt.getEventObjectClass();
 			if ( ( objClasses != null ) && ( objClasses.length > 0 ) ) {
 				throw new InvalidMvp4gConfigurationException( String.format( NOT_EMPTY_EVENT_OBJ, "Start", "Start", eventElt.getType() ) );
 			}
@@ -1068,7 +1068,7 @@ public class Mvp4gConfiguration {
 			}
 			event = start.getForwardEventType();
 			eventElt = getElement( event, events, start );
-			objClasses = eventElt.getEventObjectClasses();
+			objClasses = eventElt.getEventObjectClass();
 			if ( ( objClasses != null ) && ( objClasses.length > 0 ) ) {
 				throw new InvalidMvp4gConfigurationException( String.format( NOT_EMPTY_EVENT_OBJ, "Forward", "Forward", eventElt.getType() ) );
 			}
@@ -1083,7 +1083,7 @@ public class Mvp4gConfiguration {
 			String eventName = loadChildConfig.getErrorEvent();
 			if ( ( eventName != null ) && ( eventName.length() > 0 ) ) {
 				eventElt = getElement( eventName, events, loadChildConfig );
-				objClasses = eventElt.getEventObjectClasses();
+				objClasses = eventElt.getEventObjectClass();
 				if ( ( objClasses != null )
 						&& ( ( objClasses.length > 1 ) || ( ( objClasses.length == 1 ) && ( !Throwable.class.getName().equals( objClasses[0] ) ) ) ) ) {
 					throw new InvalidMvp4gConfigurationException( String.format( WRONG_EVENT_OBJ, loadChildConfig.getTagName(), "Error", eventElt
@@ -1094,7 +1094,7 @@ public class Mvp4gConfiguration {
 			eventName = loadChildConfig.getAfterEvent();
 			if ( ( eventName != null ) && ( eventName.length() > 0 ) ) {
 				eventElt = getElement( eventName, events, loadChildConfig );
-				objClasses = eventElt.getEventObjectClasses();
+				objClasses = eventElt.getEventObjectClass();
 				if ( ( objClasses != null ) && ( objClasses.length > 0 ) ) {
 					throw new InvalidMvp4gConfigurationException( String.format( NOT_EMPTY_EVENT_OBJ, loadChildConfig.getTagName(), "After", eventElt
 							.getType() ) );
@@ -1104,7 +1104,7 @@ public class Mvp4gConfiguration {
 			eventName = loadChildConfig.getBeforeEvent();
 			if ( ( eventName != null ) && ( eventName.length() > 0 ) ) {
 				eventElt = getElement( eventName, events, loadChildConfig );
-				objClasses = eventElt.getEventObjectClasses();
+				objClasses = eventElt.getEventObjectClass();
 				if ( ( objClasses != null ) && ( objClasses.length > 0 ) ) {
 					throw new InvalidMvp4gConfigurationException( String.format( NOT_EMPTY_EVENT_OBJ, loadChildConfig.getTagName(), "Before",
 							eventElt.getType() ) );
@@ -1173,7 +1173,7 @@ public class Mvp4gConfiguration {
 		if ( ( startEvent != null ) && ( startEvent.length() > 0 ) ) {
 			EventElement eventElt = getElement( startEvent, events, start );
 
-			String[] objClasses = eventElt.getEventObjectClasses();
+			String[] objClasses = eventElt.getEventObjectClass();
 			if ( ( objClasses != null ) && ( objClasses.length > 0 ) ) {
 				throw new InvalidMvp4gConfigurationException( String.format( NOT_EMPTY_EVENT_OBJ, start.getTagName(), "start", eventElt.getType() ) );
 			}
@@ -1195,7 +1195,7 @@ public class Mvp4gConfiguration {
 		handlerSet.addAll( eventHandlers );
 
 		for ( EventElement event : events ) {
-			String[] objectClasses = event.getEventObjectClasses();
+			String[] objectClasses = event.getEventObjectClass();
 			if ( objectClasses == null ) {
 				String[] handlers = event.getHandlers();
 
@@ -1217,7 +1217,7 @@ public class Mvp4gConfiguration {
 								newObjectClasses[i] = parameters[i].getType().getQualifiedSourceName();
 							}
 							try {
-								event.setEventObjectClasses( newObjectClasses );
+								event.setEventObjectClass( newObjectClasses );
 							} catch ( DuplicatePropertyNameException e ) {
 								// exception can't occur, only time you set this value
 							}

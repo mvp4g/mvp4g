@@ -84,11 +84,11 @@ public class EventElement extends Mvp4gElement {
 		return calledMethod;
 	}
 
-	public void setEventObjectClasses( String[] eventObjectClasses ) throws DuplicatePropertyNameException {
+	public void setEventObjectClass( String[] eventObjectClasses ) throws DuplicatePropertyNameException {
 		setValues( "eventObjectClass", eventObjectClasses );
 	}
 
-	public String[] getEventObjectClasses() {
+	public String[] getEventObjectClass() {
 		return getValues( "eventObjectClass" );
 	}
 
@@ -129,7 +129,7 @@ public class EventElement extends Mvp4gElement {
 	}
 
 	public boolean hasForwardToParent() {
-		return "true".equalsIgnoreCase( getProperty( "forwardToParent" ) );
+		return Boolean.TRUE.toString().equalsIgnoreCase( getProperty( "forwardToParent" ) );
 	}
 
 	@Override

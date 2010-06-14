@@ -384,7 +384,7 @@ public class EventsAnnotationsLoaderTest {
 
 		for ( EventElement e : events ) {
 			if ( "event1".equals( e.getType() ) ) {
-				assertEquals( String.class.getName(), e.getEventObjectClass() );
+				assertEquals( String.class.getName(), e.getEventObjectClass()[0] );
 				assertEquals( "treatEvent1", e.getCalledMethod() );
 			} else if ( "event2".equals( e.getType() ) ) {
 				assertNull( e.getEventObjectClass() );

@@ -117,10 +117,7 @@ public abstract class BaseEventBus implements EventBus {
 		if ( historyStored ) {
 			module.place( type, form );
 		}
-		if ( changeHistoryStoredForNextOne ) {
-			historyStored = !historyStored;
-			changeHistoryStoredForNextOne = false;
-		}
+		resetHistoryStored();
 	}
 
 	/**
@@ -133,6 +130,13 @@ public abstract class BaseEventBus implements EventBus {
 		if ( historyStored ) {
 			module.clearHistory();
 		}
+		resetHistoryStored();
+	}
+
+	/**
+	 * Change history stored flag value if needed
+	 */
+	private void resetHistoryStored(){
 		if ( changeHistoryStoredForNextOne ) {
 			historyStored = !historyStored;
 			changeHistoryStoredForNextOne = false;

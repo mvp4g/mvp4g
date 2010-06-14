@@ -1,10 +1,15 @@
 package com.mvp4g.client.presenter;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+
+import java.lang.reflect.ParameterizedType;
 
 import org.junit.Test;
 
 import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.view.LazyView;
 
 public class LazyPresenterTest {
@@ -60,6 +65,14 @@ public class LazyPresenterTest {
 		assertTrue( view.isCreated() );
 		assertTrue( presenter.isCreated() );
 		assertTrue( presenter.isBinded() );
+
+	}
+	
+	@Test
+	public void testLazyXmlPresenter() {
+		LazyXmlPresenter<LazyViewImpl> presenter = new LazyXmlPresenter<LazyViewImpl>();
+		assertEquals( EventBusWithLookup.class,
+				(Class<?>)( (ParameterizedType)presenter.getClass().getGenericSuperclass() ).getActualTypeArguments()[1] );
 
 	}
 
