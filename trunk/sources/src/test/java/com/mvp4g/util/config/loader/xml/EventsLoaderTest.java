@@ -1,9 +1,10 @@
 package com.mvp4g.util.config.loader.xml;
 
+import static org.junit.Assert.assertEquals;
+
 import org.apache.commons.configuration.XMLConfiguration;
 
 import com.mvp4g.util.config.element.EventElement;
-import com.mvp4g.util.config.loader.xml.EventsLoader;
 
 public class EventsLoaderTest extends AbstractMvp4gElementLoaderTest<EventElement, EventsLoader> {
 
@@ -20,6 +21,16 @@ public class EventsLoaderTest extends AbstractMvp4gElementLoaderTest<EventElemen
 	@Override
 	protected boolean isSingleNode() {
 		return false;
+	}
+
+	protected void assertMultiValue( String value, EventElement element ) {
+		if ( "activate".equals( value ) ) {
+			assertEquals( value, element.getActivate().get( 0 ) );
+		} else if ( "deactivate".equals( value ) ) {
+			assertEquals( value, element.getDeactivate().get( 0 ) );
+		} else {
+			super.assertMultiValue( value, element );
+		}
 	}
 
 }

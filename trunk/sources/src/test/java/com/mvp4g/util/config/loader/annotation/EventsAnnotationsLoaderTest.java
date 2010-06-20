@@ -16,22 +16,33 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.mvp4g.client.DefaultMvp4gGinModule;
 import com.mvp4g.client.Mvp4gModule;
+import com.mvp4g.client.annotation.Filters;
+import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
+import com.mvp4g.client.event.DefaultMvp4gLogger;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
+import com.mvp4g.util.config.element.EventFilterElement;
+import com.mvp4g.util.config.element.EventFiltersElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 import com.mvp4g.util.test_tools.Modules;
 import com.mvp4g.util.test_tools.TypeOracleStub;
+import com.mvp4g.util.test_tools.annotation.EventFilters;
 import com.mvp4g.util.test_tools.annotation.Events;
 import com.mvp4g.util.test_tools.annotation.HistoryConverters;
 import com.mvp4g.util.test_tools.annotation.Presenters;
+import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter1;
+import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter2;
+import com.mvp4g.util.test_tools.annotation.Events.TestGinModule;
+import com.mvp4g.util.test_tools.annotation.Events.TestLogger;
 
 public class EventsAnnotationsLoaderTest {
 
@@ -233,24 +244,6 @@ public class EventsAnnotationsLoaderTest {
 	}
 
 	@Test( expected = Mvp4gAnnotationException.class )
-	public void testEventWithMoreThanOneParameter() throws Mvp4gAnnotationException {
-		try {
-			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.SimplePresenter.class ) );
-			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
-
-			annotedClasses.clear();
-
-			JClassType type = oracle.addClass( Events.EventBusWithMethodWithMoreThanOneParameter.class );
-			annotedClasses.add( type );
-			loader.load( annotedClasses, configuration );
-		} catch ( Mvp4gAnnotationException e ) {
-			assertTrue( e.getMessage().contains( "Event method must not have more than 1 argument." ) );
-			throw e;
-		}
-	}
-
-	@Test( expected = Mvp4gAnnotationException.class )
 	public void testSameEvent() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
@@ -282,6 +275,24 @@ public class EventsAnnotationsLoaderTest {
 			loader.load( annotedClasses, configuration );
 		} catch ( Mvp4gAnnotationException e ) {
 			assertTrue( e.getMessage().contains( "Duplicate value for Start event. It is already defined by another method." ) );
+			throw e;
+		}
+	}
+
+	@Test( expected = Mvp4gAnnotationException.class )
+	public void testDoubleForward() throws Mvp4gAnnotationException {
+		try {
+			List<JClassType> annotedClasses = new ArrayList<JClassType>();
+			annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+			annotedClasses.clear();
+
+			JClassType type = oracle.addClass( Events.EventBusDoubleForward.class );
+			annotedClasses.add( type );
+			loader.load( annotedClasses, configuration );
+		} catch ( Mvp4gAnnotationException e ) {
+			assertTrue( e.getMessage().contains( "Duplicate value for Forward event. It is already defined by another method." ) );
 			throw e;
 		}
 	}
@@ -400,6 +411,7 @@ public class EventsAnnotationsLoaderTest {
 		assertEquals( "event2", configuration.getStart().getEventType() );
 		assertEquals( "event2", configuration.getHistory().getInitEvent() );
 		assertEquals( "event1", configuration.getHistory().getNotFoundEvent() );
+		assertEquals( "event2", configuration.getStart().getForwardEventType() );
 
 	}
 
@@ -628,6 +640,207 @@ public class EventsAnnotationsLoaderTest {
 			assertTrue( e.getMessage().contains(
 					"Module " + Modules.Module1.class.getCanonicalName() + ": you can't have two events to load this module view." ) );
 			throw e;
+		}
+	}
+
+	@Test
+	public void testParentEventBusOtherModule() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses.clear();
+
+		JClassType otherEventBus = oracle.addClass( Events.EventBusWithChildren.class );
+		annotedClasses.add( oracle.addClass( Events.EventBusForOtherModule.class ) );
+		annotedClasses.add( otherEventBus );
+
+		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
+		loader.load( annotedClasses, configuration );
+
+		Map<String, JClassType> othersParentEventBusClassMap = configuration.getModuleParentEventBusClassMap();
+		assertEquals( 2, othersParentEventBusClassMap.size() );
+		assertEquals( otherEventBus, othersParentEventBusClassMap.get( Modules.Module1.class.getCanonicalName() ) );
+	}
+
+	@Test( expected = Mvp4gAnnotationException.class )
+	public void testUselessEventFilterBus() throws Mvp4gAnnotationException {
+		try {
+			List<JClassType> annotedClasses = new ArrayList<JClassType>();
+			annotedClasses.add( oracle.addClass( Events.EventBusUselessFilter.class ) );
+			loader.load( annotedClasses, configuration );
+		} catch ( Mvp4gAnnotationException e ) {
+			assertTrue( e.getMessage().contains(
+					"Useless " + Filters.class.getSimpleName()
+							+ " annotation. Don't use this annotation if your module doesn't have any event filters." ) );
+			throw e;
+		}
+	}
+
+	@Test
+	public void testEventBusFilters() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses.clear();
+		annotedClasses.add( oracle.addClass( Events.EventBusWithFilters.class ) );
+		loader.load( annotedClasses, configuration );
+
+		Set<EventFilterElement> filters = configuration.getEventFilters();
+		assertEquals( 2, filters.size() );
+		Iterator<EventFilterElement> it = filters.iterator();
+		String filterClassName;
+		while ( it.hasNext() ) {
+			filterClassName = it.next().getClassName();
+			if ( !filterClassName.equals( EventFilter1.class.getCanonicalName() ) && !filterClassName.equals( EventFilter2.class.getCanonicalName() ) ) {
+				fail();
+			}
+		}
+
+		EventFiltersElement filterConf = configuration.getEventFilterConfiguration();
+		assertTrue( filterConf.isFilterForward() );
+		assertTrue( filterConf.isFilterStart() );
+		assertFalse( filterConf.isAfterHistory() );
+
+	}
+
+	@Test
+	public void testEventBusFiltersWithParam() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses.clear();
+		annotedClasses.add( oracle.addClass( Events.EventBusWithFiltersWithParam.class ) );
+		loader.load( annotedClasses, configuration );
+
+		Set<EventFilterElement> filters = configuration.getEventFilters();
+		assertEquals( 2, filters.size() );
+		Iterator<EventFilterElement> it = filters.iterator();
+		String filterClassName;
+		while ( it.hasNext() ) {
+			filterClassName = it.next().getClassName();
+			if ( !filterClassName.equals( EventFilter1.class.getCanonicalName() ) && !filterClassName.equals( EventFilter2.class.getCanonicalName() ) ) {
+				fail();
+			}
+		}
+
+		EventFiltersElement filterConf = configuration.getEventFilterConfiguration();
+		assertFalse( filterConf.isFilterForward() );
+		assertFalse( filterConf.isFilterStart() );
+		assertTrue( filterConf.isAfterHistory() );
+
+	}
+
+	@Test
+	public void testEventBusSameFilter() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses.clear();
+		annotedClasses.add( oracle.addClass( Events.EventBusWithSameFilter.class ) );
+		try {
+			loader.load( annotedClasses, configuration );
+			fail();
+		} catch ( Mvp4gAnnotationException e ) {
+			assertTrue( e.getMessage().contains( "Multiple definitions for event filter " + EventFilters.EventFilter1.class.getCanonicalName() + "." ) );
+		}
+	}
+
+	@Test
+	public void testDefaultGin() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses.clear();
+		annotedClasses.add( oracle.addClass( Events.SimpleEventBus.class ) );
+		loader.load( annotedClasses, configuration );
+		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), configuration.getGinModule().getClassName() );
+
+	}
+
+	@Test
+	public void testGin() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses.clear();
+		annotedClasses.add( oracle.addClass( Events.EventBusWithGin.class ) );
+		loader.load( annotedClasses, configuration );
+		assertEquals( TestGinModule.class.getCanonicalName(), configuration.getGinModule().getClassName() );
+
+	}
+
+	@Test
+	public void testNoLogger() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses.clear();
+		annotedClasses.add( oracle.addClass( Events.SimpleEventBus.class ) );
+		loader.load( annotedClasses, configuration );
+		assertNull( configuration.getDebug() );
+
+	}
+
+	@Test
+	public void testDefaultLogger() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses.clear();
+		annotedClasses.add( oracle.addClass( Events.EventBusWithDefaultLogger.class ) );
+		loader.load( annotedClasses, configuration );
+		assertEquals( configuration.getDebug().getLogger(), DefaultMvp4gLogger.class.getCanonicalName() );
+		assertEquals( configuration.getDebug().getLogLevel(), LogLevel.SIMPLE.toString() );
+
+	}
+
+	@Test
+	public void testCustomLogger() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses.clear();
+		annotedClasses.add( oracle.addClass( Events.EventBusWithCustomLogger.class ) );
+		loader.load( annotedClasses, configuration );
+		assertEquals( configuration.getDebug().getLogger(), TestLogger.class.getCanonicalName() );
+		assertEquals( configuration.getDebug().getLogLevel(), LogLevel.DETAILED.toString() );
+
+	}
+
+	@Test
+	public void testHistoryName() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses.clear();
+		annotedClasses.add( oracle.addClass( Events.EventBusWithHistoryName.class ) );
+		loader.load( annotedClasses, configuration );
+
+		Iterator<EventElement> it = configuration.getEvents().iterator();
+		int found = 0;
+		EventElement event;
+		while ( it.hasNext() ) {
+			event = it.next();
+			if ( "event1".equals( event.getType() ) ) {
+				assertEquals( "event1", event.getHistoryName() );
+				found++;
+			} else if ( "event2".equals( event.getType() ) ) {
+				assertEquals( "historyName", event.getHistoryName() );
+				found++;
+			}
+		}
+		if ( found < 2 ) {
+			fail();
 		}
 	}
 }

@@ -23,6 +23,7 @@ import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
+import com.google.gwt.inject.client.GinModule;
 import com.mvp4g.client.DefaultMvp4gGinModule;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.EventHandler;
@@ -36,6 +37,7 @@ import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.EventFilter;
 import com.mvp4g.client.event.EventHandlerInterface;
+import com.mvp4g.client.event.Mvp4gLogger;
 import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.history.PlaceService;
@@ -100,7 +102,7 @@ public class Mvp4gConfiguration {
 	private static final String REMOVE_OBJ = "%s %s: No instance of this class has been created since this class is not used.";
 	private static final String MISSING_ATTRIBUTE = "%s: child module %s doesn't define any event to load its view.";
 	private static final String NOT_EMPTY_EVENT_OBJ = "%s: %s event %s can't have any object associated with it.";
-	private static final String WRONG_EVENT_OBJ = "%s: %s event %s can only be associated one and only one object with type %s";
+	private static final String WRONG_EVENT_OBJ = "%s: %s event %s can only be associated with one and only one object with type %s";
 	private static final String WRONG_NUMBER_ATT = "Event %s: event must have one and only one an object associated with it as it loads a child view.";
 	private static final String WRONG_CHILD_LOAD_EVENT_OBJ = "Child Module %s: event %s can not load child module's start view. Can not convert %s to %s.";
 	private static final String START_VIEW_XML_WARNING = "Child Module %s: could not verify if child module's start view can be loaded by event %s since child module uses a XML event bus.";
@@ -108,7 +110,7 @@ public class Mvp4gConfiguration {
 	private static final String CHILD_EVENT_BUS_WARNING = "Child Module %s: child module's event bus is an XML event bus. Mvp4g framework can't verify if child module's event bus can handle events forwarded to it.";
 	private static final String NO_PARENT_ERROR = "Event %s: Root module has no parent so you can't forward event to parent.";
 	private static final String CHILD_MODULE_SAME_HISTORY_NAME = "Module %s: You can't have two child modules with the same history name \"%s\".";
-	private static final String ACTIVATE_DEACTIVATE_SAME_TIME = "Event %s: an event can't activate and deactivate the same presenter: %s.";
+	private static final String ACTIVATE_DEACTIVATE_SAME_TIME = "Event %s: an event can't activate and deactivate the same handler: %s.";
 	private static final String NAME_WITH_NO_CONVERTER = "Event %s: you defined an history name for this event but this event has no history converter.";
 	private static final String EMPTY_HISTORY_NAME_ROOT = "Event %s: An event of the Mvp4g Root module can't have an history name equal to empty string.";
 	private static final String SAME_HISTORY_NAME = "Event %s: history name already used for another event: %s.";
@@ -249,6 +251,8 @@ public class Mvp4gConfiguration {
 		validateEvents();
 		validateHistory();
 		validateChildModules();
+		validateDebug();
+		validateGinModule();
 	}
 
 	public boolean isAsyncEnabled() {
@@ -788,29 +792,31 @@ public class Mvp4gConfiguration {
 					presenterType = getType( presenter, presenter.getClassName() );
 					genPresenter = presenterType.asParameterizationOf( presenterGenType );
 					if ( genPresenter == null ) {
-						if ( presenter.isMultiple() ) {
+						if ( !presenter.isMultiple() ) {
 							throw new InvalidClassException( presenter, PresenterInterface.class.getCanonicalName() );
 						} else {
 							toKeep = false;
 						}
 					}
 
-					viewParam = (JClassType)genPresenter.findMethod( "getView", noParam ).getReturnType();
+					if ( toKeep ) {
+						viewParam = (JClassType)genPresenter.findMethod( "getView", noParam ).getReturnType();
 
-					// Control if view injected to the event bus is compatible with
-					// presenter view type
-					view = getElement( viewName, views, presenter );
+						// Control if view injected to the event bus is compatible with
+						// presenter view type
+						view = getElement( viewName, views, presenter );
 
-					if ( !getType( view, view.getClassName() ).isAssignableTo( viewParam ) ) {
-						if ( !presenter.isMultiple() ) {
-							throw new InvalidTypeException( presenter, "View", view.getClassName(), viewParam.getQualifiedSourceName() );
-						} else {
-							toKeep = false;
+						if ( !getType( view, view.getClassName() ).isAssignableTo( viewParam ) ) {
+							if ( !presenter.isMultiple() ) {
+								throw new InvalidTypeException( presenter, "View", view.getClassName(), viewParam.getQualifiedSourceName() );
+							} else {
+								toKeep = false;
+							}
 						}
-					}
 
-					if ( !presenter.isMultiple() ) {
-						view.setInstantiateAtStart( true );
+						if ( !presenter.isMultiple() ) {
+							view.setInstantiateAtStart( true );
+						}
 					}
 				}
 
@@ -854,7 +860,7 @@ public class Mvp4gConfiguration {
 
 		if ( !deactivateMap.isEmpty() ) {
 			String it = deactivateMap.keySet().iterator().next();
-			throw new UnknownConfigurationElementException( activateMap.get( it ).get( 0 ), it );
+			throw new UnknownConfigurationElementException( deactivateMap.get( it ).get( 0 ), it );
 		}
 
 		removeUselessElements( presenters, toRemove );
@@ -1053,14 +1059,6 @@ public class Mvp4gConfiguration {
 		String event;
 		EventElement eventElt;
 		String[] objClasses;
-		if ( start.hasEventType() ) {
-			event = start.getEventType();
-			eventElt = getElement( event, events, start );
-			objClasses = eventElt.getEventObjectClass();
-			if ( ( objClasses != null ) && ( objClasses.length > 0 ) ) {
-				throw new InvalidMvp4gConfigurationException( String.format( NOT_EMPTY_EVENT_OBJ, "Start", "Start", eventElt.getType() ) );
-			}
-		}
 
 		if ( start.hasForwardEventType() ) {
 			if ( isRootModule() ) {
@@ -1175,9 +1173,25 @@ public class Mvp4gConfiguration {
 
 			String[] objClasses = eventElt.getEventObjectClass();
 			if ( ( objClasses != null ) && ( objClasses.length > 0 ) ) {
-				throw new InvalidMvp4gConfigurationException( String.format( NOT_EMPTY_EVENT_OBJ, start.getTagName(), "start", eventElt.getType() ) );
+				throw new InvalidMvp4gConfigurationException( String.format( NOT_EMPTY_EVENT_OBJ, "Start", "Start", eventElt.getType() ) );
 			}
 
+		}
+	}
+
+	void validateDebug() throws NotFoundClassException, InvalidTypeException {
+		if ( debug != null ) {
+			JClassType debugType = getType( debug, debug.getLogger() );
+			if ( !debugType.isAssignableTo( oracle.findType( Mvp4gLogger.class.getCanonicalName() ) ) ) {
+				throw new InvalidTypeException( debug, "Logger", debug.getLogger(), Mvp4gLogger.class.getCanonicalName() );
+			}
+		}
+	}
+
+	void validateGinModule() throws NotFoundClassException, InvalidTypeException {
+		JClassType ginType = getType( ginModule, ginModule.getClassName() );
+		if ( !ginType.isAssignableTo( oracle.findType( GinModule.class.getCanonicalName() ) ) ) {
+			throw new InvalidTypeException( ginModule, "Logger", ginModule.getClassName(), GinModule.class.getCanonicalName());
 		}
 	}
 

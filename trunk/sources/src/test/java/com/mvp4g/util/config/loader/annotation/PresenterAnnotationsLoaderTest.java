@@ -1,6 +1,8 @@
 package com.mvp4g.util.config.loader.annotation;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,26 @@ public class PresenterAnnotationsLoaderTest extends AbstractMvp4gAnnotationsWith
 		assertEquals( view.getClassName(), Object.class.getName() );
 		assertEquals( view.getName(), "name" );
 
+	}
+
+	@Test
+	public void testNotMultiple() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		JClassType type = oracle.addClass( getSimpleClass() );
+		annotedClasses.add( type );
+		loader.load( annotedClasses, configuration );
+		PresenterElement element = configuration.getPresenters().iterator().next();
+		assertFalse( element.isMultiple() );
+	}
+
+	@Test
+	public void testMultiple() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		JClassType type = oracle.addClass( Presenters.MultiplePresenter.class );
+		annotedClasses.add( type );
+		loader.load( annotedClasses, configuration );
+		PresenterElement element = configuration.getPresenters().iterator().next();
+		assertTrue( element.isMultiple() );
 	}
 
 	@Override

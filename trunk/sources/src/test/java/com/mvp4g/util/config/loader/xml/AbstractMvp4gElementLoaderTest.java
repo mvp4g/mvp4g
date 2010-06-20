@@ -1,6 +1,5 @@
 package com.mvp4g.util.config.loader.xml;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -12,7 +11,6 @@ import org.apache.commons.configuration.XMLConfiguration;
 import org.junit.Test;
 
 import com.mvp4g.util.config.element.Mvp4gElement;
-import com.mvp4g.util.config.loader.xml.Mvp4gElementLoader;
 import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
 import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 import com.mvp4g.util.test_tools.XMLConfigurationBuilder;
@@ -112,16 +110,14 @@ public abstract class AbstractMvp4gElementLoaderTest<E extends Mvp4gElement, L e
 		multiValues.addAll( convertToList( basicLoader.getOptionalMultiValueAttributeNames() ) );
 		List<String> parents = convertToList( basicLoader.getParentAttributeNames() );
 		L loader = newLoader( xmlBuilder.getConfigAttribute( attributes, multiValues, parents, 1, false, isSingleNode() ) );
-		Mvp4gElement element = loader.loadElements().iterator().next();
+		E element = loader.loadElements().iterator().next();
 
 		for ( String attribute : attributes ) {
 			assertEquals( attribute, element.getProperty( attribute ) );
 		}
 
-		String[] tab = new String[1];
 		for ( String value : multiValues ) {
-			tab[0] = value;
-			assertArrayEquals( tab, element.getValues( value ) );
+			assertMultiValue( value, element );
 		}
 
 		for ( String parent : parents ) {
@@ -141,6 +137,10 @@ public abstract class AbstractMvp4gElementLoaderTest<E extends Mvp4gElement, L e
 
 	protected String getParentName() {
 		return getTagName() + "s";
+	}
+
+	protected void assertMultiValue( String value, E element ) {
+		assertEquals( value, element.getValues( value )[0] );
 	}
 
 }

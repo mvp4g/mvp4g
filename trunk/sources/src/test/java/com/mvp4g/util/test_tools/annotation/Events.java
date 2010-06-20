@@ -1,9 +1,15 @@
 package com.mvp4g.util.test_tools.annotation;
 
+import com.google.gwt.inject.client.GinModule;
+import com.google.gwt.inject.client.binder.GinBinder;
+import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
+import com.mvp4g.client.annotation.Filters;
+import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.NotFoundHistory;
 import com.mvp4g.client.annotation.Start;
+import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.module.AfterLoadChildModule;
 import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
 import com.mvp4g.client.annotation.module.ChildModule;
@@ -12,6 +18,7 @@ import com.mvp4g.client.annotation.module.DisplayChildModuleView;
 import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
+import com.mvp4g.client.event.Mvp4gLogger;
 import com.mvp4g.util.test_tools.Modules;
 
 public class Events {
@@ -47,13 +54,6 @@ public class Events {
 	}
 
 	@com.mvp4g.client.annotation.Events( startView = Object.class )
-	public static interface EventBusWithMethodWithMoreThanOneParameter extends EventBus {
-
-		@Event
-		public void event( String obj, String obj2 );
-	}
-
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
 	public static interface EventBusWithSameMethod extends EventBus {
 
 		@Event
@@ -72,6 +72,7 @@ public class Events {
 
 		@Start
 		@InitHistory
+		@Forward
 		@Event( handlers = Presenters.PresenterWithName.class, historyConverter = HistoryConverters.HistoryConverterForEvent.class )
 		public void event2();
 	}
@@ -84,6 +85,18 @@ public class Events {
 		public void event1( String obj );
 
 		@Start
+		@Event( handlers = Presenters.PresenterWithName.class )
+		public void event2();
+	}
+
+	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	public static interface EventBusDoubleForward extends EventBus {
+
+		@Forward
+		@Event( handlerNames = "name", calledMethod = "treatEvent1" )
+		public void event1( String obj );
+
+		@Forward
 		@Event( handlers = Presenters.PresenterWithName.class )
 		public void event2();
 	}
@@ -235,5 +248,72 @@ public class Events {
 		@Event( handlers = Presenters.PresenterWithName.class )
 		public void event2();
 
+	}
+
+	@Filters( filterClasses = {} )
+	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	public static interface EventBusUselessFilter extends EventBus {
+
+	}
+
+	@Filters( filterClasses = { EventFilters.EventFilter1.class, EventFilters.EventFilter2.class } )
+	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	public static interface EventBusWithFilters extends EventBus {
+
+	}
+
+	@Filters( filterClasses = { EventFilters.EventFilter1.class, EventFilters.EventFilter2.class }, afterHistory = true, filterForward = false, filterStart = false )
+	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	public static interface EventBusWithFiltersWithParam extends EventBus {
+
+	}
+
+	@Filters( filterClasses = { EventFilters.EventFilter1.class, EventFilters.EventFilter1.class } )
+	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	public static interface EventBusWithSameFilter extends EventBus {
+
+	}
+
+	public class TestGinModule implements GinModule {
+
+		public void configure( GinBinder binder ) {
+
+		}
+
+	}
+
+	@com.mvp4g.client.annotation.Events( startView = Object.class, ginModule = TestGinModule.class )
+	public static interface EventBusWithGin extends EventBus {
+
+	}
+
+	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@Debug
+	public static interface EventBusWithDefaultLogger extends EventBus {
+
+	}
+
+	public class TestLogger implements Mvp4gLogger {
+
+		public void log( String message, int depth ) {
+			// TODO Auto-generated method stub			
+		}
+
+	}
+
+	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@Debug( logger = TestLogger.class, logLevel = LogLevel.DETAILED )
+	public static interface EventBusWithCustomLogger extends EventBus {
+
+	}
+	
+	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	public static interface EventBusWithHistoryName extends EventBus {
+
+		@Event
+		public void event1( String obj );
+
+		@Event( historyName="historyName" )
+		public void event2();
 	}
 }

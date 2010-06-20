@@ -15,9 +15,13 @@
  */
 package com.mvp4g.client.annotation;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import com.mvp4g.client.event.DefaultMvp4gLogger;
 import com.mvp4g.client.event.Mvp4gLogger;
 
+@Retention( RetentionPolicy.RUNTIME )
 public @interface Debug {
 
 	public enum LogLevel {

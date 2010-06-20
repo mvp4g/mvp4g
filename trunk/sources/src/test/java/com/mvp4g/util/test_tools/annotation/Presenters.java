@@ -11,6 +11,10 @@ public class Presenters {
 	public static class SimplePresenter extends BasePresenter<Object, EventBus> {
 	}
 
+	@Presenter( view = Object.class, multiple = true )
+	public static class MultiplePresenter extends BasePresenter<Object, EventBus> {
+	}
+
 	@Presenter( view = Object.class, name = "name" )
 	public static class PresenterWithName extends BasePresenter<Object, EventBus> {
 	}

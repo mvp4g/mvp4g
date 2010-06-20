@@ -1,38 +1,59 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/xsd/mvp4g-conf.xsd">
+<mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/tags/mvp4g-1.0.0/xsd/mvp4g-conf.xsd">
 
-	<debug enabled="true" />
+	<debug />
 
-	<childModules package="com.mvp4g.example.client" beforeEvent="beforeLoad" afterEvent="afterLoad" errorEvent="errorOnLoad">
-		<childModule name="companyModule" class=".company.CompanyModule" eventToDisplayView="changeBody"/>
-		<childModule name="productModule" class=".product.ProductModule" async="false" autoLoad="false"/>	
+	<filters afterHistory="true" filterForward="false">
+		<filter name="filter1"
+			class="com.mvp4g.example.client.company.CompanyEventFilter" />
+		<filter name="filter2"
+			class="com.mvp4g.example.client.company.CompanyEventFilter" />
+	</filters>
+	<eventHandlers package="com.mvp4g.example.client.company.handler">
+		<eventHandler name="handler1" class="CompanyListHandler"
+			services="service" />
+		<eventHandler name="handler2" class="CompanyListHandler"
+			services="service" />
+	</eventHandlers>
+
+	<childModules package="com.mvp4g.example.client"
+		beforeEvent="beforeLoad" afterEvent="afterLoad" errorEvent="errorOnLoad">
+		<childModule name="companyModule" class=".company.CompanyModule"
+			eventToDisplayView="changeBody" />
+		<childModule name="productModule" class=".product.ProductModule"
+			async="false" autoLoad="false" />
 	</childModules>
 
 	<views package="com.mvp4g.example.client.view">
 		<view name="rootView" class="com.mvp4g.util.test_tools.RootView" />
 		<view name="userCreateView" class="UserCreateView" />
-		<view name="userDisplayView" class=".display.UserDisplayView" />		
+		<view name="userDisplayView" class=".display.UserDisplayView" />
 	</views>
 
 	<services package="com.mvp4g.example.client.services">
-		<service name="userService" class="UserService" path="/service/user"/>
+		<service name="userService" class="UserService" path="/service/user" />
 		<service name="userRpcService" class="com.mvp4g.example.client.rpc.UserService" />
 		<service name="userDisplayService" class=".display.UserService" />
 	</services>
 
 	<presenters package="com.mvp4g.example.client.presenter">
-		<presenter name="rootPresenter" class="com.mvp4g.util.test_tools.RootPresenter" view="rootView" />
+		<presenter name="rootPresenter" class="com.mvp4g.util.test_tools.RootPresenter"
+			view="rootView" />
 		<presenter name="createUserPresenter" class="UserCreatePresenter"
 			view="userCreateView" services="userService" />
 		<presenter name="displayUserPresenter" class=".display.UserDisplayPresenter"
 			view="userDisplayView" />
 	</presenters>
 
-	<history package="com.mvp4g.example.client.history" initEvent="init" notFoundEvent="event404">
+	<history package="com.mvp4g.example.client.history" initEvent="init"
+		notFoundEvent="event404">
 		<converter name="userConverter" class=".display.UserHistoryConverter"
 			services="userService" />
-		<converter name="stringConverter" class="StringHistoryConverter" services=""/>
-		<converter name="particularConverter" class="com.mvp4g.example.client.StringHistoryConverter" />
+		<converter name="stringConverter" class="StringHistoryConverter"
+			services="" />
+		<converter name="particularConverter"
+			class="com.mvp4g.example.client.StringHistoryConverter" />
 	</history>
 
 
@@ -46,8 +67,7 @@
 			eventObjectClass="com.mvp4g.example.client.view.widget.Page" />
 		<event type="displayMessage" calledMethod="onDisplayMessage"
 			handlers="rootPresenter" history="stringConverter" />
-		<event type="start" calledMethod="onStart"
-			handlers="rootPresenter" />
+		<event type="start" calledMethod="onStart" handlers="rootPresenter" />
 		<event type="init" handlers="rootPresenter" />
 		<event type="event404" handlers="rootPresenter" />
 		<event type="beforeLoad" handlers="rootPresenter" />

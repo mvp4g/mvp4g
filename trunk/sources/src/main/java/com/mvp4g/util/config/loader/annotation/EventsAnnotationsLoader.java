@@ -165,7 +165,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			for ( Class<? extends EventFilter<?>> filterClass : filterClasses ) {
 				filterClassName = filterClass.getCanonicalName();
 				if ( getElementName( filterElements, filterClassName ) != null ) {
-					String err = "Multiple definitions for event filter " + filterClassName + " on type " + c.getClass().getCanonicalName();
+					String err = "Multiple definitions for event filter " + filterClassName + "." ;
 					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 				}
 				filterElement = new EventFilterElement();
