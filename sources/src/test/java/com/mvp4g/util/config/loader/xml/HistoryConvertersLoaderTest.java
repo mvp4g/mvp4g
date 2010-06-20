@@ -4,7 +4,7 @@ import org.apache.commons.configuration.XMLConfiguration;
 
 import com.mvp4g.util.config.element.HistoryConverterElement;
 
-public class HistoryConvertersLoaderTest extends AbstractMvp4gElementLoaderTest<HistoryConverterElement, HistoryConverterLoader> {
+public class HistoryConvertersLoaderTest extends AbstractMvp4gElementWithServicesLoaderTest<HistoryConverterElement, HistoryConverterLoader> {
 
 	@Override
 	protected String getTagName() {

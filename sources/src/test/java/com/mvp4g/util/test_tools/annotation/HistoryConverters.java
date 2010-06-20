@@ -7,13 +7,13 @@ import com.mvp4g.client.history.HistoryConverter;
 
 public class HistoryConverters {
 
-	private static class BaseHistoryConverter implements HistoryConverter<Object, EventBus> {
+	private static class BaseHistoryConverter implements HistoryConverter<EventBus> {
 
 		public void convertFromToken( String eventType, String param, EventBus eventBus ) {
 		}
 
-		public String convertToToken( String eventType, Object form ) {
-			return null;
+		public boolean isCrawlable() {
+			return false;
 		}
 
 	}
