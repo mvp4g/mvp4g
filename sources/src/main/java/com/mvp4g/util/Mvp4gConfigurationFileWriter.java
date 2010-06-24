@@ -695,7 +695,7 @@ public class Mvp4gConfigurationFileWriter {
 			if ( ( activate != null ) && ( activate.size() > 0 ) ) {
 				writeActivation( activate, eventHandlers, true );
 			}
-			if ( ( deactivate != null ) && ( activate.size() > 0 ) ) {
+			if ( ( deactivate != null ) && ( deactivate.size() > 0 ) ) {
 				writeActivation( deactivate, eventHandlers, false );
 			}
 
@@ -833,7 +833,7 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( type );
 			sourceWriter.print( "\"" );
 			if ( parentParam != null ) {
-				sourceWriter.println( "," );
+				sourceWriter.print( "," );
 				sourceWriter.print( parentParam );
 			}
 			sourceWriter.println( ")){" );
