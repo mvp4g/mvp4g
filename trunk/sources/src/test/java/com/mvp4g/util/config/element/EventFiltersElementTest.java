@@ -54,7 +54,7 @@ public class EventFiltersElementTest extends AbstractMvp4gElementTest<EventFilte
 
 	@Override
 	protected String getTag() {
-		return "event_filters";
+		return "eventFilters";
 	}
 
 	@Override
