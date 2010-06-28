@@ -48,6 +48,7 @@ import com.mvp4g.util.test_tools.annotation.Presenters;
 import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter1;
 import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter2;
 import com.mvp4g.util.test_tools.annotation.HistoryConverters.SimpleHistoryConverter;
+import com.mvp4g.util.test_tools.annotation.Presenters.SimplePresenter;
 
 public class Mvp4gConfigurationFileReaderTest {
 
@@ -66,12 +67,23 @@ public class Mvp4gConfigurationFileReaderTest {
 		String eventBusClass = BaseEventBus.class.getName();
 		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, false ) );
 
+		ViewElement view = new ViewElement();
+		view.setClassName( Object.class.getName() );
+		view.setName( "startView" );
+		configuration.getViews().add( view );
+
+		PresenterElement presenter = new PresenterElement();
+		presenter.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenter.setName( "startPresenter" );
+		presenter.setView( "startView" );
+		configuration.getPresenters().add( presenter );
+
 		StartElement start = new StartElement();
-		start.setView( "view" );
+		start.setView( "startView" );
 		configuration.setStart( start );
 
 		GinModuleElement ginModule = new GinModuleElement();
-		ginModule.setClassName( DefaultMvp4gGinModule.class.getCanonicalName() );
+		ginModule.setModules( new String[] { DefaultMvp4gGinModule.class.getCanonicalName() } );
 		configuration.setGinModule( ginModule );
 
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
@@ -390,65 +402,50 @@ public class Mvp4gConfigurationFileReaderTest {
 	@Test
 	public void testWriteXmlStart() throws DuplicatePropertyNameException {
 
-		PresenterElement presenter = new PresenterElement();
-		presenter.setName( "startPresenter" );
-		presenter.setView( "rootView" );
-		presenter.setClassName( Object.class.getCanonicalName() );
-		configuration.getPresenters().add( presenter );
-
 		String eventBusInterface = EventBusWithLookup.class.getName();
 		String eventBusClass = BaseEventBusWithLookUp.class.getName();
 		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, false ) );
 
 		StartElement start = new StartElement();
-		start.setView( "rootView" );
+		start.setView( "startView" );
 		start.setEventType( "start" );
 		start.setHistory( "true" );
 		configuration.setStart( start );
 
 		assertOutput( getExpectedStartXmlEvent(), false );
+		assertOutput( getExpectedStartPresenterView(), false );
+		assertOutput( getExpectedStartPresenterViewMultiple(), false );
 		writer.writeConf();
 		assertOutput( getExpectedStartXmlEvent(), true );
+		assertOutput( getExpectedStartPresenterView(), true );
+		assertOutput( getExpectedStartPresenterViewMultiple(), false );
 
 	}
 
 	@Test
 	public void testWriteStart() throws DuplicatePropertyNameException {
 
-		PresenterElement presenter = new PresenterElement();
-		presenter.setName( "startPresenter" );
-		presenter.setView( "rootView" );
-		presenter.setClassName( Object.class.getCanonicalName() );
-		configuration.getPresenters().add( presenter );
-
-		StartElement start = new StartElement();
-		start.setView( "rootView" );
+		StartElement start = configuration.getStart();
 		start.setEventType( "start" );
-		start.setHistory( "true" );
-		configuration.setStart( start );
+		start.setHistory( Boolean.TRUE.toString() );
 
 		assertOutput( getExpectedStartEvent(), false );
 		assertOutput( getExpectedNoFiltering(), false );
+		assertOutput( getExpectedStartPresenterView(), false );
+		assertOutput( getExpectedStartPresenterViewMultiple(), false );
 		writer.writeConf();
 		assertOutput( getExpectedStartEvent(), true );
 		assertOutput( getExpectedNoFiltering(), false );
-
+		assertOutput( getExpectedStartPresenterView(), true );
+		assertOutput( getExpectedStartPresenterViewMultiple(), false );
 	}
 
 	@Test
 	public void testWriteStartNoFilter() throws DuplicatePropertyNameException {
 
-		PresenterElement presenter = new PresenterElement();
-		presenter.setName( "startPresenter" );
-		presenter.setView( "rootView" );
-		presenter.setClassName( Object.class.getCanonicalName() );
-		configuration.getPresenters().add( presenter );
-
-		StartElement start = new StartElement();
-		start.setView( "rootView" );
+		StartElement start = configuration.getStart();
 		start.setEventType( "start" );
-		start.setHistory( "true" );
-		configuration.setStart( start );
+		start.setHistory( Boolean.TRUE.toString() );
 
 		EventFiltersElement filterConf = new EventFiltersElement();
 		filterConf.setFilterStart( Boolean.FALSE.toString() );
@@ -456,9 +453,34 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		assertOutput( getExpectedStartEvent(), false );
 		assertOutput( getExpectedNoFiltering(), false );
+		assertOutput( getExpectedStartPresenterView(), false );
+		assertOutput( getExpectedStartPresenterViewMultiple(), false );
 		writer.writeConf();
 		assertOutput( getExpectedStartEvent(), true );
 		assertOutput( getExpectedNoFiltering(), true );
+		assertOutput( getExpectedStartPresenterView(), true );
+		assertOutput( getExpectedStartPresenterViewMultiple(), false );
+
+	}
+
+	@Test
+	public void testWriteStartMultiple() throws DuplicatePropertyNameException {
+
+		StartElement start = configuration.getStart();
+		start.setEventType( "start" );
+		start.setHistory( Boolean.TRUE.toString() );
+
+		configuration.getPresenters().iterator().next().setMultiple( Boolean.TRUE.toString() );
+
+		assertOutput( getExpectedStartEvent(), false );
+		assertOutput( getExpectedNoFiltering(), false );
+		assertOutput( getExpectedStartPresenterView(), false );
+		assertOutput( getExpectedStartPresenterViewMultiple(), false );
+		writer.writeConf();
+		assertOutput( getExpectedStartEvent(), true );
+		assertOutput( getExpectedNoFiltering(), false );
+		assertOutput( getExpectedStartPresenterView(), false );
+		assertOutput( getExpectedStartPresenterViewMultiple(), true );
 
 	}
 
@@ -478,9 +500,8 @@ public class Mvp4gConfigurationFileReaderTest {
 	@Test
 	public void testWriteForward() throws DuplicatePropertyNameException {
 
-		StartElement start = new StartElement();
+		StartElement start = configuration.getStart();
 		start.setForwardEventType( "forward" );
-		configuration.setStart( start );
 
 		assertOutput( getExpectedNoForwardEvent(), false );
 		assertOutput( getExpectedForwardEvent(), false );
@@ -495,9 +516,8 @@ public class Mvp4gConfigurationFileReaderTest {
 	@Test
 	public void testWriteForwardNoFilter() throws DuplicatePropertyNameException {
 
-		StartElement start = new StartElement();
+		StartElement start = configuration.getStart();
 		start.setForwardEventType( "forward" );
-		configuration.setStart( start );
 
 		EventFiltersElement filterConf = new EventFiltersElement();
 		filterConf.setFilterForward( Boolean.FALSE.toString() );
@@ -984,7 +1004,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		createHandlers();
 		GinModuleElement ginModule = new GinModuleElement();
-		ginModule.setClassName( OneGinModule.class.getName() );
+		ginModule.setModules( new String[] { OneGinModule.class.getName(), DefaultMvp4gGinModule.class.getCanonicalName() } );
 		configuration.setGinModule( ginModule );
 		writer.writeConf();
 
@@ -997,6 +1017,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	@Test
 	public void testWriteEventFilters() throws DuplicatePropertyNameException {
 
+		assertOutput( getExpectedEventFiltersInstantiation(), false );
 		assertOutput( getExpectedEventFilters(), false );
 
 		EventFilterElement filter = new EventFilterElement();
@@ -1027,6 +1048,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		writer.writeConf();
 
 		assertOutput( getExpectedEventFilters(), true );
+		assertOutput( getExpectedEventFiltersInstantiation(), true );
 
 	}
 
@@ -1034,6 +1056,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	public void testWriteNoEventFilters() throws DuplicatePropertyNameException {
 
 		assertOutput( getExpectedEventFilters(), false );
+		assertOutput( getExpectedEventFiltersInstantiation(), false );
 
 		EventElement e1 = new EventElement();
 		e1.setType( "event1" );
@@ -1053,6 +1076,39 @@ public class Mvp4gConfigurationFileReaderTest {
 		writer.writeConf();
 
 		assertOutput( getExpectedEventFilters(), false );
+		assertOutput( getExpectedEventFiltersInstantiation(), false );
+
+	}
+
+	@Test
+	public void testWriteForceEventFilters() throws DuplicatePropertyNameException {
+
+		assertOutput( getExpectedEventFilters(), false );
+		assertOutput( getExpectedEventFiltersInstantiation(), false );
+
+		EventElement e1 = new EventElement();
+		e1.setType( "event1" );
+		e1.setEventObjectClass( new String[] { "java.lang.String", "java.lang.Object" } );
+
+		EventElement e2 = new EventElement();
+		e2.setType( "event2" );
+		e2.setEventObjectClass( new String[] { "java.lang.String" } );
+
+		EventElement e3 = new EventElement();
+		e3.setType( "event3" );
+
+		configuration.getEvents().add( e1 );
+		configuration.getEvents().add( e2 );
+		configuration.getEvents().add( e3 );
+
+		EventFiltersElement filterConf = new EventFiltersElement();
+		filterConf.setForceFilters( Boolean.TRUE.toString() );
+		configuration.setEventFilterConfiguration( filterConf );
+
+		writer.writeConf();
+
+		assertOutput( getExpectedEventFilters(), true );
+		assertOutput( getExpectedEventFiltersInstantiation(), false );
 
 	}
 
@@ -1061,6 +1117,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		assertOutput( getExpectedEventFilters(), false );
 		assertOutput( getExpectedEventFiltersLog(), false );
+		assertOutput( getExpectedEventFiltersInstantiation(), false );
 
 		EventFilterElement filter = new EventFilterElement();
 		filter.setClassName( EventFilter1.class.getCanonicalName() );
@@ -1095,6 +1152,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		assertOutput( getExpectedEventFilters(), true );
 		assertOutput( getExpectedEventFiltersLog(), true );
+		assertOutput( getExpectedEventFiltersInstantiation(), true );
 
 	}
 
@@ -1102,6 +1160,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	public void testWriteAfterEventFilters() throws DuplicatePropertyNameException {
 
 		assertOutput( getExpectedEventFilters(), false );
+		assertOutput( getExpectedEventFiltersInstantiation(), false );
 
 		EventFilterElement filter = new EventFilterElement();
 		filter.setClassName( EventFilter1.class.getCanonicalName() );
@@ -1135,9 +1194,10 @@ public class Mvp4gConfigurationFileReaderTest {
 		writer.writeConf();
 
 		assertOutput( getExpectedEventFilters(), true );
+		assertOutput( getExpectedEventFiltersInstantiation(), true );
 
 	}
-	
+
 	@Test
 	public void testWriteEventWithPrimitives() throws DuplicatePropertyNameException {
 
@@ -1157,7 +1217,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		EventElement e1 = new EventElement();
 		e1.setType( "event1" );
 		e1.setModulesToLoad( new String[] { "child" } );
-		e1.setEventObjectClass( new String[] {"boolean","byte","char","double","float","int","long","short"} );
+		e1.setEventObjectClass( new String[] { "boolean", "byte", "char", "double", "float", "int", "long", "short" } );
 
 		configuration.getEvents().add( e1 );
 
@@ -1280,6 +1340,15 @@ public class Mvp4gConfigurationFileReaderTest {
 		return new String[] { "eventBus.dispatch(\"start\");", "startPresenter.setActivated(true);", "History.fireCurrentHistoryState();" };
 	}
 
+	private String[] getExpectedStartPresenterView() {
+		return new String[] { "this.startPresenter = startPresenter;", "this.startView = startView;" };
+	}
+
+	private String[] getExpectedStartPresenterViewMultiple() {
+		return new String[] { "this.startPresenter = eventBus.addHandler(com.mvp4g.util.test_tools.annotation.Presenters.SimplePresenter.class);",
+				"this.startView = startPresenter.getView();" };
+	}
+
 	private String[] getExpectedStartEvent() {
 		return new String[] { "eventBus.start();", "startPresenter.setActivated(true);", "History.fireCurrentHistoryState();" };
 	}
@@ -1399,11 +1468,11 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedDefaultGinModule() {
-		return new String[] { "@GinModules( com.mvp4g.client.DefaultMvp4gGinModule.class)" };
+		return new String[] { "@GinModules({com.mvp4g.client.DefaultMvp4gGinModule.class})" };
 	}
 
 	private String[] getExpectedCustomGinModule() {
-		return new String[] { "@GinModules( com.mvp4g.util.test_tools.OneGinModule.class)" };
+		return new String[] { "@GinModules({com.mvp4g.util.test_tools.OneGinModule.class,com.mvp4g.client.DefaultMvp4gGinModule.class})" };
 	}
 
 	private String[] getExpectedActivateDeactivate() {
@@ -1432,16 +1501,20 @@ public class Mvp4gConfigurationFileReaderTest {
 				"com.mvp4g.util.test_tools.annotation.HistoryConverters.SimpleHistoryConverter gethistory();" };
 	}
 
-	private String[] getExpectedEventFilters() {
+	private String[] getExpectedEventFiltersInstantiation() {
 		return new String[] { "com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter2 getfilter2();",
-				"com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter1 getfilter1();", "if (!filterEvent(\"event2\",attr0)){",
-				"if (!filterEvent(\"event3\")){", "if (!filterEvent(\"event1\",attr0,attr1)){", "return;",
+				"com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter1 getfilter1();",
 				"final com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter2 filter2 = injector.getfilter2();",
 				"eventBus.addEventFilter(filter2);",
 				"final com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter1 filter1 = injector.getfilter1();",
 				"eventBus.addEventFilter(filter1);" };
 	}
-	
+
+	private String[] getExpectedEventFilters() {
+		return new String[] { "if (!filterEvent(\"event2\",attr0)){", "if (!filterEvent(\"event3\")){", "if (!filterEvent(\"event1\",attr0,attr1)){",
+				"return;", };
+	}
+
 	private String[] getExpectedPrimitives() {
 		return new String[] { "eventBus.dispatch(\"event1\", (Boolean) eventObjects[0],(Byte) eventObjects[1],(Character) eventObjects[2],(Double) eventObjects[3],(Float) eventObjects[4],(Integer) eventObjects[5],(Long) eventObjects[6],(Short) eventObjects[7]);" };
 	}

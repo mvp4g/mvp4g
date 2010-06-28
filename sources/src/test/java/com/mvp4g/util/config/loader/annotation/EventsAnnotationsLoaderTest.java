@@ -670,11 +670,25 @@ public class EventsAnnotationsLoaderTest {
 			annotedClasses.add( oracle.addClass( Events.EventBusUselessFilter.class ) );
 			loader.load( annotedClasses, configuration );
 		} catch ( Mvp4gAnnotationException e ) {
-			assertTrue( e.getMessage().contains(
-					"Useless " + Filters.class.getSimpleName()
-							+ " annotation. Don't use this annotation if your module doesn't have any event filters." ) );
+			assertTrue( e
+					.getMessage()
+					.contains(
+							"Useless "
+									+ Filters.class.getSimpleName()
+									+ " annotation. Don't use this annotation if your module doesn't have any event filters. If you plan on adding filters when the application runs, set the forceFilters option to true." ) );
 			throw e;
 		}
+	}
+
+	@Test
+	public void testEventNoFilterWithForceBus() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+		
+		annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Events.EventBusNoFilterWithForce.class ) );
+		loader.load( annotedClasses, configuration );
 	}
 
 	@Test
@@ -702,6 +716,7 @@ public class EventsAnnotationsLoaderTest {
 		assertTrue( filterConf.isFilterForward() );
 		assertTrue( filterConf.isFilterStart() );
 		assertFalse( filterConf.isAfterHistory() );
+		assertFalse( filterConf.isForceFilters() );
 
 	}
 
@@ -730,6 +745,7 @@ public class EventsAnnotationsLoaderTest {
 		assertFalse( filterConf.isFilterForward() );
 		assertFalse( filterConf.isFilterStart() );
 		assertTrue( filterConf.isAfterHistory() );
+		assertTrue( filterConf.isForceFilters() );
 
 	}
 
@@ -758,7 +774,7 @@ public class EventsAnnotationsLoaderTest {
 		annotedClasses.clear();
 		annotedClasses.add( oracle.addClass( Events.SimpleEventBus.class ) );
 		loader.load( annotedClasses, configuration );
-		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), configuration.getGinModule().getClassName() );
+		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), configuration.getGinModule().getModules()[0] );
 
 	}
 
@@ -771,7 +787,21 @@ public class EventsAnnotationsLoaderTest {
 		annotedClasses.clear();
 		annotedClasses.add( oracle.addClass( Events.EventBusWithGin.class ) );
 		loader.load( annotedClasses, configuration );
-		assertEquals( TestGinModule.class.getCanonicalName(), configuration.getGinModule().getClassName() );
+		assertEquals( TestGinModule.class.getCanonicalName(), configuration.getGinModule().getModules()[0] );
+
+	}
+
+	@Test
+	public void testGins() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses.clear();
+		annotedClasses.add( oracle.addClass( Events.EventBusWithGins.class ) );
+		loader.load( annotedClasses, configuration );
+		assertEquals( TestGinModule.class.getCanonicalName(), configuration.getGinModule().getModules()[0] );
+		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), configuration.getGinModule().getModules()[1] );
 
 	}
 

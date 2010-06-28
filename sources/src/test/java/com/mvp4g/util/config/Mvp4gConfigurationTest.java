@@ -62,6 +62,7 @@ import com.mvp4g.util.test_tools.annotation.HistoryConverters;
 import com.mvp4g.util.test_tools.annotation.Presenters;
 import com.mvp4g.util.test_tools.annotation.Services;
 import com.mvp4g.util.test_tools.annotation.EventHandlers.SimpleEventHandler;
+import com.mvp4g.util.test_tools.annotation.Events.TestGinModule;
 import com.mvp4g.util.test_tools.annotation.HistoryConverters.SimpleHistoryConverter;
 import com.mvp4g.util.test_tools.annotation.Presenters.SimplePresenter;
 
@@ -472,9 +473,9 @@ public class Mvp4gConfigurationTest {
 		assertTrue( views.contains( view2 ) );
 		assertTrue( views.contains( view3 ) );
 		configuration.validateViews();
-		assertEquals( views.size(), 2 );
+		assertEquals( views.size(), 1 );
 		assertTrue( views.contains( view1 ) );
-		assertTrue( views.contains( view2 ) );
+		assertFalse( views.contains( view2 ) );
 		assertFalse( views.contains( view3 ) );
 	}
 
@@ -1211,7 +1212,7 @@ public class Mvp4gConfigurationTest {
 		DebugElement debug = configuration.getDebug();
 		assertEquals( debug.getLogger(), DefaultMvp4gLogger.class.getCanonicalName() );
 		assertEquals( debug.getLogLevel(), LogLevel.SIMPLE.toString() );
-		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), configuration.getGinModule().getClassName() );
+		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), configuration.getGinModule().getModules()[0] );
 		assertEquals( 2, configuration.getEventFilters().size() );
 		assertEquals( 2, configuration.getEventHandlers().size() );
 		assertTrue( configuration.getEventFilterConfiguration().isAfterHistory() );
@@ -1248,7 +1249,7 @@ public class Mvp4gConfigurationTest {
 		aService.add( oracle.findType( Services.ServiceWithName.class.getName() ) );
 		configuration.loadServices( aService );
 		assertEquals( 2, services.size() );
-		
+
 		List<JClassType> aEventHandlers = new ArrayList<JClassType>();
 		aEventHandlers.add( oracle.findType( SimpleEventHandler.class.getName() ) );
 		aEventHandlers.add( oracle.findType( EventHandlers.EventHandlerWithEvent.class.getName() ) );
@@ -1760,10 +1761,21 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testGin() throws NotFoundClassException, DuplicatePropertyNameException, InvalidTypeException {
+	public void testGin() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
 		GinModuleElement gin = new GinModuleElement();
+		configuration.setGinModule( gin );
+		try {
+			configuration.validateGinModule();
+			fail();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertEquals(
+					e.getMessage(),
+					"You need to define at least one GIN module. If you don't want to specify a GIN module, don't override the GIN modules option to use the default Mvp4g GIN module." );
+		}
+
+		gin = new GinModuleElement();
 		oracle.addClass( Object.class );
-		gin.setClassName( Object.class.getCanonicalName() );
+		gin.setModules( new String[] { Object.class.getCanonicalName() } );
 		configuration.setGinModule( gin );
 		try {
 			configuration.validateGinModule();
@@ -1774,13 +1786,22 @@ public class Mvp4gConfigurationTest {
 
 		gin = new GinModuleElement();
 		oracle.addClass( DefaultMvp4gGinModule.class );
-		gin.setClassName( DefaultMvp4gGinModule.class.getCanonicalName() );
+		gin.setModules( new String[] { DefaultMvp4gGinModule.class.getCanonicalName() } );
 		configuration.setGinModule( gin );
 		configuration.validateGinModule();
+		assertEquals( gin.getModules().length, 1 );
+
+		gin = new GinModuleElement();
+		oracle.addClass( DefaultMvp4gGinModule.class );
+		oracle.addClass( TestGinModule.class );
+		gin.setModules( new String[] { DefaultMvp4gGinModule.class.getCanonicalName(), TestGinModule.class.getCanonicalName() } );
+		configuration.setGinModule( gin );
+		configuration.validateGinModule();
+		assertEquals( gin.getModules().length, 2 );
 	}
-	
+
 	@Test
-	public void testXmlEventBus(){
+	public void testXmlEventBus() {
 		assertFalse( configuration.isParentEventBusXml() );
 		configuration.setParentEventBus( oracle.addClass( EventBus.class ) );
 		assertFalse( configuration.isParentEventBusXml() );

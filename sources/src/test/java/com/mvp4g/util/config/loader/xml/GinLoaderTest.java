@@ -35,7 +35,7 @@ public class GinLoaderTest extends AbstractMvp4gElementLoaderTest<GinModuleEleme
 
 	@Override
 	protected String getTagName() {
-		return "ginModule";
+		return "gin";
 	}
 
 	@Override

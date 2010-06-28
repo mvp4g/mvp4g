@@ -23,6 +23,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
+import com.google.gwt.inject.client.GinModule;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -152,20 +153,21 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 	private void loadEventFilters( JClassType c, Events annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
 		Filters filters = c.getAnnotation( Filters.class );
 		if ( filters != null ) {
+			boolean forceFilters = filters.forceFilters();
 			Class<? extends EventFilter<?>>[] filterClasses = filters.filterClasses();
-			if ( ( filterClasses == null ) || ( filterClasses.length == 0 ) ) {
+			if ( ( ( filterClasses == null ) || ( filterClasses.length == 0 ) ) && !forceFilters ) {
 				String err = "Useless " + Filters.class.getSimpleName()
-						+ " annotation. Don't use this annotation if your module doesn't have any event filters.";
+						+ " annotation. Don't use this annotation if your module doesn't have any event filters. If you plan on adding filters when the application runs, set the forceFilters option to true.";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 			}
-			
+
 			Set<EventFilterElement> filterElements = configuration.getEventFilters();
 			String filterClassName = null;
 			EventFilterElement filterElement = null;
 			for ( Class<? extends EventFilter<?>> filterClass : filterClasses ) {
 				filterClassName = filterClass.getCanonicalName();
 				if ( getElementName( filterElements, filterClassName ) != null ) {
-					String err = "Multiple definitions for event filter " + filterClassName + "." ;
+					String err = "Multiple definitions for event filter " + filterClassName + ".";
 					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 				}
 				filterElement = new EventFilterElement();
@@ -177,19 +179,20 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				}
 				addElement( filterElements, filterElement, c, null );
 			}
-			
+
 			EventFiltersElement filtersElement = new EventFiltersElement();
 			try {
 				filtersElement.setAfterHistory( Boolean.toString( filters.afterHistory() ) );
 				filtersElement.setFilterForward( Boolean.toString( filters.filterForward() ) );
 				filtersElement.setFilterStart( Boolean.toString( filters.filterStart() ) );
+				filtersElement.setForceFilters( Boolean.toString( filters.forceFilters() ) );
 			} catch ( DuplicatePropertyNameException e ) {
 				// setters are only called once, so this error can't occur.
 			}
 			configuration.setEventFilterConfiguration( filtersElement );
 		}
 	}
-	
+
 	private void loadChildModules( JClassType c, Events annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
 		ChildModules childModules = c.getAnnotation( ChildModules.class );
 		if ( childModules != null ) {
@@ -601,8 +604,14 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 
 	private void loadGinModule( Events annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
 		GinModuleElement ginModule = new GinModuleElement();
+		Class<? extends GinModule>[] modules = annotation.ginModules();
+		int modulesCount = modules.length;
+		String[] modulesClassNames = new String[modules.length];
+		for ( int i = 0; i < modulesCount; i++ ) {
+			modulesClassNames[i] = modules[i].getCanonicalName();
+		}
 		try {
-			ginModule.setClassName( annotation.ginModule().getCanonicalName() );
+			ginModule.setModules( modulesClassNames );
 		} catch ( DuplicatePropertyNameException e ) {
 			// setter is only called once, so this error can't occur.
 		}
