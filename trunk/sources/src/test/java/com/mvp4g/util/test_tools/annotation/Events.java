@@ -2,6 +2,7 @@ package com.mvp4g.util.test_tools.annotation;
 
 import com.google.gwt.inject.client.GinModule;
 import com.google.gwt.inject.client.binder.GinBinder;
+import com.mvp4g.client.DefaultMvp4gGinModule;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Filters;
@@ -256,13 +257,19 @@ public class Events {
 
 	}
 
+	@Filters( filterClasses = {}, forceFilters = true )
+	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	public static interface EventBusNoFilterWithForce extends EventBus {
+
+	}
+
 	@Filters( filterClasses = { EventFilters.EventFilter1.class, EventFilters.EventFilter2.class } )
 	@com.mvp4g.client.annotation.Events( startView = Object.class )
 	public static interface EventBusWithFilters extends EventBus {
 
 	}
 
-	@Filters( filterClasses = { EventFilters.EventFilter1.class, EventFilters.EventFilter2.class }, afterHistory = true, filterForward = false, filterStart = false )
+	@Filters( filterClasses = { EventFilters.EventFilter1.class, EventFilters.EventFilter2.class }, afterHistory = true, filterForward = false, filterStart = false, forceFilters = true )
 	@com.mvp4g.client.annotation.Events( startView = Object.class )
 	public static interface EventBusWithFiltersWithParam extends EventBus {
 
@@ -282,8 +289,13 @@ public class Events {
 
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class, ginModule = TestGinModule.class )
+	@com.mvp4g.client.annotation.Events( startView = Object.class, ginModules = TestGinModule.class )
 	public static interface EventBusWithGin extends EventBus {
+
+	}
+
+	@com.mvp4g.client.annotation.Events( startView = Object.class, ginModules = { TestGinModule.class, DefaultMvp4gGinModule.class } )
+	public static interface EventBusWithGins extends EventBus {
 
 	}
 
@@ -306,14 +318,14 @@ public class Events {
 	public static interface EventBusWithCustomLogger extends EventBus {
 
 	}
-	
+
 	@com.mvp4g.client.annotation.Events( startView = Object.class )
 	public static interface EventBusWithHistoryName extends EventBus {
 
 		@Event
 		public void event1( String obj );
 
-		@Event( historyName="historyName" )
+		@Event( historyName = "historyName" )
 		public void event2();
 	}
 }

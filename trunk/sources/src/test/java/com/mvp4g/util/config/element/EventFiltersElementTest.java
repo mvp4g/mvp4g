@@ -9,7 +9,7 @@ import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 public class EventFiltersElementTest extends AbstractMvp4gElementTest<EventFiltersElement> {
 
-	protected static final String[] properties = { "afterHistory", "filterForward", "filterStart" };
+	protected static final String[] properties = { "afterHistory", "filterForward", "filterStart", "forceFilters" };
 
 	@Test
 	public void testAfterHistory() throws DuplicatePropertyNameException {
@@ -45,6 +45,18 @@ public class EventFiltersElementTest extends AbstractMvp4gElementTest<EventFilte
 		element = newElement();
 		element.setFilterForward( "true" );
 		assertTrue( element.isFilterForward() );
+	}
+	
+	@Test
+	public void testForceFilters() throws DuplicatePropertyNameException {
+		EventFiltersElement element = newElement();
+		assertFalse( element.isForceFilters() );
+		element.setForceFilters( "true" );
+		assertTrue( element.isForceFilters() );
+
+		element = newElement();
+		element.setForceFilters( "false" );
+		assertFalse( element.isForceFilters() );
 	}
 
 	@Override

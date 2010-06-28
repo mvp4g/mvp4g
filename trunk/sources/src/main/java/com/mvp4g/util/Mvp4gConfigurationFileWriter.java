@@ -139,10 +139,10 @@ public class Mvp4gConfigurationFileWriter {
 		injectEventBus();
 
 		sourceWriter.println();
-		
+
 		writeEventFilters();
 
-		sourceWriter.println();		
+		sourceWriter.println();
 
 		writeStartEvent();
 		sourceWriter.outdent();
@@ -151,8 +151,6 @@ public class Mvp4gConfigurationFileWriter {
 		writeGetters();
 
 	}
-
-	
 
 	private void writeGetters() {
 		sourceWriter.println( "public Object getStartView(){" );
@@ -323,9 +321,15 @@ public class Mvp4gConfigurationFileWriter {
 	}
 
 	private void writeGinInjector() {
-		sourceWriter.print( "@GinModules( " );
-		sourceWriter.print( configuration.getGinModule().getClassName() );
-		sourceWriter.println( ".class)" );
+		sourceWriter.print( "@GinModules({" );
+		String[] modules = configuration.getGinModule().getModules();
+		int modulesCount = modules.length - 1;
+		for ( int i = 0; i < modulesCount; i++ ) {
+			sourceWriter.print( modules[i] );
+			sourceWriter.print( ".class," );
+		}
+		sourceWriter.print( modules[modulesCount] );
+		sourceWriter.println( ".class})" );
 		sourceWriter.println( "public interface Mvp4gGinjector extends Ginjector {" );
 		sourceWriter.indent();
 		for ( PresenterElement presenter : configuration.getPresenters() ) {
@@ -605,9 +609,9 @@ public class Mvp4gConfigurationFileWriter {
 		EventHandlerElement eventHandler;
 		boolean hasLog = ( configuration.getDebug() != null );
 		Set<EventFilterElement> filters = configuration.getEventFilters();
-		boolean hasFilter = ( filters != null ) && ( filters.size() > 0 );
 		EventFiltersElement filtersElement = configuration.getEventFilterConfiguration();
 		boolean filterAfterHistory = ( filtersElement == null ) ? false : filtersElement.isAfterHistory();
+		boolean hasFilter = ( filters != null ) && ( filters.size() > 0 ) || ( ( filtersElement != null ) && ( filtersElement.isForceFilters() ) );
 
 		for ( EventElement event : configuration.getEvents() ) {
 			type = event.getType();
@@ -751,9 +755,9 @@ public class Mvp4gConfigurationFileWriter {
 		for ( EventFilterElement filter : configuration.getEventFilters() ) {
 			filterName = filter.getName();
 			createInstance( filterName, filter.getClassName(), true );
-			sourceWriter.print("eventBus.addEventFilter(");
-			sourceWriter.print(filterName);
-			sourceWriter.print(");");
+			sourceWriter.print( "eventBus.addEventFilter(" );
+			sourceWriter.print( filterName );
+			sourceWriter.print( ");" );
 		}
 	}
 
@@ -929,16 +933,21 @@ public class Mvp4gConfigurationFileWriter {
 	private void writeStartEvent() {
 
 		StartElement start = configuration.getStart();
+
 		// Start view
-		sourceWriter.print( "this.startView = " );
-		sourceWriter.print( start.getView() );
-		sourceWriter.println( ";" );
-
 		String startPresenter = findStartPresenter();
-
-		if ( startPresenter != null ) {
-			sourceWriter.print( "startPresenter = " );
+		PresenterElement presenter = getElement( startPresenter, configuration.getPresenters() );
+		if ( presenter.isMultiple() ) {
+			sourceWriter.print( "this.startPresenter = eventBus.addHandler(" );
+			sourceWriter.print( presenter.getClassName() );
+			sourceWriter.println( ".class);" );
+			sourceWriter.println( "this.startView = startPresenter.getView();" );
+		} else {
+			sourceWriter.print( "this.startPresenter = " );
 			sourceWriter.print( startPresenter );
+			sourceWriter.println( ";" );
+			sourceWriter.print( "this.startView = " );
+			sourceWriter.print( start.getView() );
 			sourceWriter.println( ";" );
 		}
 

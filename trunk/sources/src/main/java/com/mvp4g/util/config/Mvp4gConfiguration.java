@@ -117,6 +117,8 @@ public class Mvp4gConfiguration {
 	private static final String WRONG_HISTORY_NAME = "%s %s: history name can't start with '" + PlaceService.CRAWLABLE + "' or contain '"
 			+ PlaceService.MODULE_SEPARATOR + "'.";
 	private static final String WRONG_FORWARD_EVENT = "You can't define a forward event for RootModule since no event from parent can be forwarded to it.";
+	private static final String NO_START_VIEW = "You must define a view to load when the application starts that is associated to a presenter.";
+	private static final String NO_GIN_MODULE = "You need to define at least one GIN module. If you don't want to specify a GIN module, don't override the GIN modules option to use the default Mvp4g GIN module.";
 
 	private Set<PresenterElement> presenters = new HashSet<PresenterElement>();
 	private Set<EventHandlerElement> eventHandlers = new HashSet<EventHandlerElement>();
@@ -242,7 +244,6 @@ public class Mvp4gConfiguration {
 		}
 		findChildModuleHistoryName();
 		checkUniquenessOfAllElements();
-		validateStart();
 		validateEventHandlers();
 		validateEventFilters();
 		validateHistoryConverters();
@@ -253,6 +254,7 @@ public class Mvp4gConfiguration {
 		validateChildModules();
 		validateDebug();
 		validateGinModule();
+		validateStart();
 	}
 
 	public boolean isAsyncEnabled() {
@@ -534,10 +536,9 @@ public class Mvp4gConfiguration {
 		}
 
 		Set<ViewElement> toRemove = new HashSet<ViewElement>();
-		String startView = start.getView();
 		for ( ViewElement view : views ) {
 			viewName = view.getName();
-			if ( ( viewMap.remove( viewName ) == null ) && ( !startView.equals( viewName ) ) ) {
+			if ( ( viewMap.remove( viewName ) == null ) ) {
 				// this object is not used, you can remove it
 				toRemove.add( view );
 			}
@@ -1165,7 +1166,7 @@ public class Mvp4gConfiguration {
 	 */
 	void validateStart() throws InvalidMvp4gConfigurationException {
 		if ( ( start == null ) || ( start.getView() == null ) || ( start.getView().length() == 0 ) ) {
-			throw new InvalidMvp4gConfigurationException( "You must define a view to load when the application starts." );
+			throw new InvalidMvp4gConfigurationException( NO_START_VIEW );
 		}
 		String startEvent = start.getEventType();
 		if ( ( startEvent != null ) && ( startEvent.length() > 0 ) ) {
@@ -1188,10 +1189,18 @@ public class Mvp4gConfiguration {
 		}
 	}
 
-	void validateGinModule() throws NotFoundClassException, InvalidTypeException {
-		JClassType ginType = getType( ginModule, ginModule.getClassName() );
-		if ( !ginType.isAssignableTo( oracle.findType( GinModule.class.getCanonicalName() ) ) ) {
-			throw new InvalidTypeException( ginModule, "Logger", ginModule.getClassName(), GinModule.class.getCanonicalName());
+	void validateGinModule() throws InvalidMvp4gConfigurationException {
+		String[] modulesClassName = ginModule.getModules();
+		if ( ( modulesClassName == null ) || ( modulesClassName.length == 0 ) ) {
+			throw new InvalidMvp4gConfigurationException( NO_GIN_MODULE );
+		}
+
+		JClassType ginType;
+		for ( String module : modulesClassName ) {
+			ginType = getType( ginModule, module );
+			if ( !ginType.isAssignableTo( oracle.findType( GinModule.class.getCanonicalName() ) ) ) {
+				throw new InvalidTypeException( ginModule, "Logger", module, GinModule.class.getCanonicalName() );
+			}
 		}
 	}
 
@@ -1471,7 +1480,7 @@ public class Mvp4gConfiguration {
 		if ( ginModule == null ) {
 			ginModule = new GinModuleElement();
 			try {
-				ginModule.setClassName( DefaultMvp4gGinModule.class.getCanonicalName() );
+				ginModule.setModules( new String[] { DefaultMvp4gGinModule.class.getCanonicalName() } );
 			} catch ( DuplicatePropertyNameException e ) {
 				//nothing to do, setter is called only once
 			}

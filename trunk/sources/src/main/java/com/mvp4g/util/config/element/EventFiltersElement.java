@@ -71,5 +71,17 @@ public class EventFiltersElement extends Mvp4gElement {
 	public boolean isFilterStart(){
 		return !Boolean.FALSE.toString().equalsIgnoreCase( getFilterStart() );
 	}	
+	
+	public void setForceFilters( String forceFilters ) throws DuplicatePropertyNameException {
+		setProperty( "forceFilters", forceFilters );
+	}
+
+	public String getForceFilters() {
+		return getProperty( "forceFilters" );
+	}
+	
+	public boolean isForceFilters(){
+		return Boolean.TRUE.toString().equalsIgnoreCase( getForceFilters() );
+	}
 
 }

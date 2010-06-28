@@ -33,7 +33,7 @@ import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 public class EventFilterConfigurationLoader extends Mvp4gElementLoader<EventFiltersElement> {
 
 	static final String[] REQUIRED_ATTRIBUTES = {};
-	static final String[] OPTIONAL_ATTRIBUTES = { "afterHistory", "filterStart", "filterForward" };
+	static final String[] OPTIONAL_ATTRIBUTES = { "afterHistory", "filterStart", "filterForward", "forceFilters" };
 
 	@SuppressWarnings( "unchecked" )
 	public EventFilterConfigurationLoader( XMLConfiguration xmlConfig ) {

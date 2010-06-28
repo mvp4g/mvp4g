@@ -14,11 +14,11 @@ public class GinModuleElement extends Mvp4gElement {
 		return GIN_ELEMENT_ID;
 	}
 
-	public void setClassName( String className ) throws DuplicatePropertyNameException {
-		setProperty( "class", className );
+	public void setModules( String[] modules ) throws DuplicatePropertyNameException {
+		setValues( "modules", modules );
 	}
 
-	public String getClassName() {
-		return getProperty( "class" );
+	public String[] getModules() {
+		return getValues( "modules" );
 	}
 }

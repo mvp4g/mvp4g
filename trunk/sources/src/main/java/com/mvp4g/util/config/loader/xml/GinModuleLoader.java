@@ -25,21 +25,28 @@ import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 
 public class GinModuleLoader extends Mvp4gElementLoader<GinModuleElement> {
 
-	static final String[] REQUIRED_ATTRIBUTES = { "class" };
+	static final String[] REQUIRED_ATTRIBUTES = {};
+
+	static final String[] MULTI_VALUE_ATTRIBUTES = { "modules" };
 
 	@SuppressWarnings( "unchecked" )
 	public GinModuleLoader( XMLConfiguration xmlConfig ) {
-		super( xmlConfig.configurationsAt( "ginModule" ) );
+		super( xmlConfig.configurationsAt( "gin" ) );
 	}
 
 	@Override
 	String getElementLabel() {
-		return "GIN";
+		return "gin";
 	}
 
 	@Override
 	String[] getRequiredAttributeNames() {
 		return REQUIRED_ATTRIBUTES;
+	}
+
+	@Override
+	String[] getMultiValueAttributeNames() {
+		return MULTI_VALUE_ATTRIBUTES;
 	}
 
 	@Override

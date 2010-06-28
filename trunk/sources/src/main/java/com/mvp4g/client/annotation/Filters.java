@@ -39,5 +39,7 @@ public @interface Filters {
 	boolean filterStart() default true;
 	
 	boolean filterForward() default true;
+	
+	boolean forceFilters() default false;
 
 }
