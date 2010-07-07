@@ -4,17 +4,17 @@ import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.example.client.presenter.view_interface.UserProfileViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyListBoxInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyTextBoxInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
-import com.mvp4g.example.client.view.widget.MyButton;
-import com.mvp4g.example.client.view.widget.MyListBox;
-import com.mvp4g.example.client.view.widget.MyPasswordTextBox;
-import com.mvp4g.example.client.view.widget.MyTextBox;
+import com.mvp4g.example.client.presenter.UserProfilePresenter.IUserProfileView;
+import com.mvp4g.example.client.widget.impl.MyButton;
+import com.mvp4g.example.client.widget.impl.MyListBox;
+import com.mvp4g.example.client.widget.impl.MyPasswordTextBox;
+import com.mvp4g.example.client.widget.impl.MyTextBox;
+import com.mvp4g.example.client.widget.interfaces.IButton;
+import com.mvp4g.example.client.widget.interfaces.IListBox;
+import com.mvp4g.example.client.widget.interfaces.ITextBox;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
 
-public class UserProfileView extends Composite implements UserProfileViewInterface, MyWidgetInterface {
+public class UserProfileView extends Composite implements IUserProfileView {
 
 	private MyTextBox firstName = new MyTextBox();
 	private MyTextBox lastName = new MyTextBox();
@@ -56,43 +56,43 @@ public class UserProfileView extends Composite implements UserProfileViewInterfa
 		initWidget( cp );
 	}
 
-	public MyWidgetInterface getViewWidget() {
+	public IWidget getViewWidget() {
 		return this;
 	}
 
-	public MyButtonInterface getCancelButton() {
+	public IButton getCancelButton() {
 		return cancel;
 	}
 
-	public MyTextBoxInterface getConfirmPassword() {
+	public ITextBox getConfirmPassword() {
 		return confirmPassword;
 	}
 
-	public MyListBoxInterface getDepartment() {
+	public IListBox getDepartment() {
 		return department;
 	}
 
-	public MyTextBoxInterface getEmail() {
+	public ITextBox getEmail() {
 		return email;
 	}
 
-	public MyTextBoxInterface getFirstName() {
+	public ITextBox getFirstName() {
 		return firstName;
 	}
 
-	public MyTextBoxInterface getLastName() {
+	public ITextBox getLastName() {
 		return lastName;
 	}
 
-	public MyTextBoxInterface getPassword() {
+	public ITextBox getPassword() {
 		return password;
 	}
 
-	public MyButtonInterface getUpdateButton() {
+	public IButton getUpdateButton() {
 		return update;
 	}
 
-	public MyTextBoxInterface getUsername() {
+	public ITextBox getUsername() {
 		return username;
 	}
 

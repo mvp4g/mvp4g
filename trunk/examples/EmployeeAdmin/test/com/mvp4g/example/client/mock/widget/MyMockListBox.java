@@ -7,9 +7,9 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyListBoxInterface;
+import com.mvp4g.example.client.widget.interfaces.IListBox;
 
-public class MyMockListBox implements MyListBoxInterface {
+public class MyMockListBox implements IListBox {
 
 	private List<String> items = new ArrayList<String>();
 	private int selected = -1;

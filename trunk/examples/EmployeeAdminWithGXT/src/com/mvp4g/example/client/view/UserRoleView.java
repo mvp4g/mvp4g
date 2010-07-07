@@ -9,12 +9,11 @@ import com.extjs.gxt.ui.client.widget.form.ListField;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.example.client.Constants;
+import com.mvp4g.example.client.presenter.UserRolePresenter.IUserRoleView;
 import com.mvp4g.example.client.presenter.gxt.MyListModel;
-import com.mvp4g.example.client.presenter.view_interface.UserRoleViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
 
-public class UserRoleView extends LayoutContainer implements UserRoleViewInterface, MyWidgetInterface, Constants {
+public class UserRoleView extends LayoutContainer implements IUserRoleView {
 
 	private ListField<MyListModel> selectedRoles = new ListField<MyListModel>();
 	private SimpleComboBox<String> rolesChoices = new SimpleComboBox<String>();
@@ -42,7 +41,7 @@ public class UserRoleView extends LayoutContainer implements UserRoleViewInterfa
 		add( form );
 	}
 
-	public MyWidgetInterface getViewWidget() {
+	public IWidget getViewWidget() {
 		return this;
 	}
 

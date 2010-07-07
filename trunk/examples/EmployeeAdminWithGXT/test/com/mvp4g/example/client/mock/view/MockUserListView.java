@@ -7,14 +7,14 @@ import com.mvp4g.example.client.mock.widget.MyMockLabel;
 import com.mvp4g.example.client.mock.widget.gxt.MyGXTMockButton;
 import com.mvp4g.example.client.mock.widget.gxt.MyGXTMockPagingToolBar;
 import com.mvp4g.example.client.mock.widget.gxt.MyGXTMockTable;
-import com.mvp4g.example.client.presenter.view_interface.UserListViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyLabelInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.MyGXTPagingToolBarInterface;
+import com.mvp4g.example.client.presenter.UserListPresenter.IUserListView;
+import com.mvp4g.example.client.widget.interfaces.ILabel;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
+import com.mvp4g.example.client.widget.interfaces.gxt.IGXTPagingToolBar;
 
-public class MockUserListView implements UserListViewInterface, MyWidgetInterface {
+public class MockUserListView implements IUserListView {
 
-	private MyLabelInterface confirmText = new MyMockLabel();
+	private ILabel confirmText = new MyMockLabel();
 	private MyGXTMockButton deleteButton = new MyGXTMockButton();
 	private MyGXTMockButton newButton = new MyGXTMockButton();
 	private MyGXTMockButton yesButton = new MyGXTMockButton();
@@ -24,7 +24,7 @@ public class MockUserListView implements UserListViewInterface, MyWidgetInterfac
 
 	private ListStore<BeanModel> store = null;
 
-	public MyLabelInterface getConfirmText() {
+	public ILabel getConfirmText() {
 		return confirmText;
 	}
 
@@ -44,7 +44,7 @@ public class MockUserListView implements UserListViewInterface, MyWidgetInterfac
 		return table;
 	}
 
-	public MyWidgetInterface getViewWidget() {
+	public IWidget getViewWidget() {
 		return this;
 	}
 
@@ -60,7 +60,7 @@ public class MockUserListView implements UserListViewInterface, MyWidgetInterfac
 		this.store = store;
 	}
 
-	public MyGXTPagingToolBarInterface getToolBar() {
+	public IGXTPagingToolBar getToolBar() {
 		return toolBar;
 	}
 

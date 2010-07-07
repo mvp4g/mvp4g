@@ -45,7 +45,7 @@ public class UserListPresenterTest implements Constants {
 		presenter.setView( view );
 		presenter.setEventBus( eventBus );
 		presenter.setUserService( service );
-		presenter.bindIfNeeded();
+		presenter.bind();
 		presenter.onStart();
 	}
 

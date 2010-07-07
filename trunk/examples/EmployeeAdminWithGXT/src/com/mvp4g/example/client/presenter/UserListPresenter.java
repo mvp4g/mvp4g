@@ -22,13 +22,37 @@ import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.EmployeeAdminWithGXTEventBus;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
-import com.mvp4g.example.client.presenter.view_interface.UserListViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.MyGXTButtonInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.MyGXTTableInterface;
 import com.mvp4g.example.client.view.UserListView;
+import com.mvp4g.example.client.widget.interfaces.ILabel;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
+import com.mvp4g.example.client.widget.interfaces.gxt.IGXTButton;
+import com.mvp4g.example.client.widget.interfaces.gxt.IGXTPagingToolBar;
+import com.mvp4g.example.client.widget.interfaces.gxt.IGXTTable;
 
 @Presenter( view = UserListView.class )
-public class UserListPresenter extends BasePresenter<UserListViewInterface, EmployeeAdminWithGXTEventBus> {
+public class UserListPresenter extends BasePresenter<UserListPresenter.IUserListView, EmployeeAdminWithGXTEventBus> {
+
+	public interface IUserListView extends IWidget {
+
+		void buildWidget( ListStore<BeanModel> store );
+
+		IWidget getViewWidget();
+
+		IGXTTable getTable();
+
+		IGXTPagingToolBar getToolBar();
+
+		IGXTButton getDeleteButton();
+
+		IGXTButton getNewButton();
+
+		IGXTButton getYesButton();
+
+		IGXTButton getNoButton();
+
+		ILabel getConfirmText();
+
+	}
 
 	private BeanModelFactory factory = BeanModelLookup.get().getFactory( UserBean.class );
 
@@ -57,7 +81,7 @@ public class UserListPresenter extends BasePresenter<UserListViewInterface, Empl
 
 		view.buildWidget( store );
 
-		MyGXTButtonInterface delete = view.getDeleteButton();
+		IGXTButton delete = view.getDeleteButton();
 		delete.setEnabled( false );
 		delete.addListener( Events.Select, new Listener<ButtonEvent>() {
 
@@ -73,7 +97,7 @@ public class UserListPresenter extends BasePresenter<UserListViewInterface, Empl
 			}
 
 		} );
-		MyGXTTableInterface table = view.getTable();
+		IGXTTable table = view.getTable();
 		table.addListener( Events.RowClick, new Listener<GridEvent>() {
 
 			public void handleEvent( GridEvent be ) {
@@ -128,7 +152,7 @@ public class UserListPresenter extends BasePresenter<UserListViewInterface, Empl
 	}
 
 	private void selectUser( int row ) {
-		MyGXTTableInterface table = view.getTable();
+		IGXTTable table = view.getTable();
 
 		if ( indexSelected > -1 ) {
 			table.unSelectRow( indexSelected );

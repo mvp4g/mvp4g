@@ -2,10 +2,10 @@ package com.mvp4g.example.client.view;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.mvp4g.example.client.presenter.view_interface.RootTemplateViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
+import com.mvp4g.example.client.presenter.RootTemplatePresenter.IRootTemplateView;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
 
-public class RootTemplateView extends Composite implements RootTemplateViewInterface {
+public class RootTemplateView extends Composite implements IRootTemplateView {
 
 	private FlexTable table = new FlexTable();
 
@@ -17,15 +17,15 @@ public class RootTemplateView extends Composite implements RootTemplateViewInter
 
 	}
 
-	public void setLeftBottomWidget( MyWidgetInterface widget ) {
+	public void setLeftBottomWidget( IWidget widget ) {
 		table.setWidget( 1, 0, widget.getMyWidget() );
 	}
 
-	public void setRightBottomWidget( MyWidgetInterface widget ) {
+	public void setRightBottomWidget( IWidget widget ) {
 		table.setWidget( 1, 1, widget.getMyWidget() );
 	}
 
-	public void setTopWidget( MyWidgetInterface widget ) {
+	public void setTopWidget( IWidget widget ) {
 		table.setWidget( 0, 0, widget.getMyWidget() );
 	}
 

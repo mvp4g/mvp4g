@@ -26,7 +26,7 @@ public class GXTBridge extends GWTBridge {
 
 	@Override
 	public boolean isClient() {
-		return false;
+		return true;
 	}
 
 	@Override

@@ -3,12 +3,12 @@ package com.mvp4g.example.client.mock.view;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.mock.widget.MyMockButton;
 import com.mvp4g.example.client.mock.widget.MyMockListBox;
-import com.mvp4g.example.client.presenter.view_interface.UserRoleViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyListBoxInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
+import com.mvp4g.example.client.presenter.UserRolePresenter.IUserRoleView;
+import com.mvp4g.example.client.widget.interfaces.IButton;
+import com.mvp4g.example.client.widget.interfaces.IListBox;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
 
-public class MockUserRoleView implements UserRoleViewInterface, MyWidgetInterface {
+public class MockUserRoleView implements IUserRoleView {
 
 	private String error = null;
 	private MyMockButton add = new MyMockButton();
@@ -20,23 +20,23 @@ public class MockUserRoleView implements UserRoleViewInterface, MyWidgetInterfac
 		this.error = error;
 	}
 
-	public MyButtonInterface getAddButton() {
+	public IButton getAddButton() {
 		return add;
 	}
 
-	public MyButtonInterface getRemoveButton() {
+	public IButton getRemoveButton() {
 		return remove;
 	}
 
-	public MyListBoxInterface getRoleChoiceListBox() {
+	public IListBox getRoleChoiceListBox() {
 		return choices;
 	}
 
-	public MyListBoxInterface getSelectedRolesListBox() {
+	public IListBox getSelectedRolesListBox() {
 		return selectedRoles;
 	}
 
-	public MyWidgetInterface getViewWidget() {
+	public IWidget getViewWidget() {
 		return this;
 	}
 

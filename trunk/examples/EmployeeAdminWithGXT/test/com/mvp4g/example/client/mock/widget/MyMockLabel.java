@@ -1,8 +1,8 @@
 package com.mvp4g.example.client.mock.widget;
 
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyLabelInterface;
+import com.mvp4g.example.client.widget.interfaces.ILabel;
 
-public class MyMockLabel implements MyLabelInterface {
+public class MyMockLabel implements ILabel {
 
 	private boolean visible = true;
 

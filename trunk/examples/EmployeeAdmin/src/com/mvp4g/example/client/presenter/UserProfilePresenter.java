@@ -12,13 +12,42 @@ import com.mvp4g.example.client.Constants;
 import com.mvp4g.example.client.EmployeeAdminEventBus;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
-import com.mvp4g.example.client.presenter.view_interface.UserProfileViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyListBoxInterface;
 import com.mvp4g.example.client.view.UserProfileView;
+import com.mvp4g.example.client.widget.interfaces.IButton;
+import com.mvp4g.example.client.widget.interfaces.IListBox;
+import com.mvp4g.example.client.widget.interfaces.ITextBox;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
 
+//This presenter illustrates how you can test your presenter
+//by creating your own mock (without any external mock library)
 @Presenter( view = UserProfileView.class )
-public class UserProfilePresenter extends BasePresenter<UserProfileViewInterface, EmployeeAdminEventBus> implements Constants {
+public class UserProfilePresenter extends BasePresenter<UserProfilePresenter.IUserProfileView, EmployeeAdminEventBus> implements Constants {
+
+	public interface IUserProfileView extends IWidget {
+
+		ITextBox getFirstName();
+
+		ITextBox getLastName();
+
+		ITextBox getEmail();
+
+		ITextBox getUsername();
+
+		ITextBox getPassword();
+
+		ITextBox getConfirmPassword();
+
+		IListBox getDepartment();
+
+		IButton getUpdateButton();
+
+		IButton getCancelButton();
+
+		void showAddMode();
+
+		void showUpdateMode();
+
+	}
 
 	private boolean toUpdate = true;
 	private boolean enabled = false;
@@ -29,7 +58,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileViewInterface
 
 	@Override
 	public void bind() {
-		MyListBoxInterface list = view.getDepartment();
+		IListBox list = view.getDepartment();
 		list.addItem( "--None Selected--" );
 		for ( String dep : DEPARTMENTS ) {
 			list.addItem( dep );
@@ -68,7 +97,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileViewInterface
 		view.getUsername().addKeyUpHandler( handler );
 		view.getPassword().addKeyUpHandler( handler );
 		view.getConfirmPassword().addKeyUpHandler( handler );
-		MyListBoxInterface department = view.getDepartment();
+		IListBox department = view.getDepartment();
 		department.addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
@@ -88,7 +117,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileViewInterface
 	}
 
 	public void onStart() {
-		eventBus.changeLeftBottomWidget( view.getViewWidget() );
+		eventBus.changeLeftBottomWidget( view );
 	}
 
 	public void onSelectUser( UserBean user ) {
@@ -97,7 +126,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileViewInterface
 
 		toUpdate = true;
 		fillForm();
-		MyButtonInterface update = view.getUpdateButton();
+		IButton update = view.getUpdateButton();
 		update.setEnabled( true );
 		view.showUpdateMode();
 		view.getCancelButton().setEnabled( true );
@@ -112,7 +141,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileViewInterface
 	public void onCreateNewUser( UserBean user ) {
 		this.user = user;
 		init();
-		MyButtonInterface update = view.getUpdateButton();
+		IButton update = view.getUpdateButton();
 		update.setEnabled( false );
 		view.showAddMode();
 		view.getCancelButton().setEnabled( true );
@@ -134,7 +163,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileViewInterface
 		view.getPassword().setValue( "" );
 		view.getConfirmPassword().setValue( "" );
 		view.getDepartment().setSelectedIndex( 0 );
-		MyButtonInterface update = view.getUpdateButton();
+		IButton update = view.getUpdateButton();
 		update.setEnabled( false );
 		view.showUpdateMode();
 		view.getCancelButton().setEnabled( false );

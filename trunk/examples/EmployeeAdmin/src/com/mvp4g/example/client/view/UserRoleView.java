@@ -6,14 +6,14 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.example.client.presenter.view_interface.UserRoleViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyListBoxInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
-import com.mvp4g.example.client.view.widget.MyButton;
-import com.mvp4g.example.client.view.widget.MyListBox;
+import com.mvp4g.example.client.presenter.UserRolePresenter.IUserRoleView;
+import com.mvp4g.example.client.widget.impl.MyButton;
+import com.mvp4g.example.client.widget.impl.MyListBox;
+import com.mvp4g.example.client.widget.interfaces.IButton;
+import com.mvp4g.example.client.widget.interfaces.IListBox;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
 
-public class UserRoleView extends Composite implements UserRoleViewInterface, MyWidgetInterface {
+public class UserRoleView extends Composite implements IUserRoleView {
 
 	private MyListBox selectedRoles = new MyListBox();
 	private MyListBox rolesChoices = new MyListBox();
@@ -45,7 +45,7 @@ public class UserRoleView extends Composite implements UserRoleViewInterface, My
 		initWidget( cp );
 	}
 
-	public MyWidgetInterface getViewWidget() {
+	public IWidget getViewWidget() {
 		return this;
 	}
 
@@ -53,19 +53,19 @@ public class UserRoleView extends Composite implements UserRoleViewInterface, My
 		Window.alert( error );
 	}
 
-	public MyButtonInterface getAddButton() {
+	public IButton getAddButton() {
 		return add;
 	}
 
-	public MyButtonInterface getRemoveButton() {
+	public IButton getRemoveButton() {
 		return remove;
 	}
 
-	public MyListBoxInterface getRoleChoiceListBox() {
+	public IListBox getRoleChoiceListBox() {
 		return rolesChoices;
 	}
 
-	public MyListBoxInterface getSelectedRolesListBox() {
+	public IListBox getSelectedRolesListBox() {
 		return selectedRoles;
 	}
 

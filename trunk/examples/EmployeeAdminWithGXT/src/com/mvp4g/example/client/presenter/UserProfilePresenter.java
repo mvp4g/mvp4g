@@ -1,5 +1,7 @@
 package com.mvp4g.example.client.presenter;
 
+import static com.mvp4g.example.client.Constants.DEPARTMENTS;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
@@ -8,17 +10,45 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
-import com.mvp4g.example.client.Constants;
 import com.mvp4g.example.client.EmployeeAdminWithGXTEventBus;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
-import com.mvp4g.example.client.presenter.view_interface.UserProfileViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyListBoxInterface;
 import com.mvp4g.example.client.view.UserProfileView;
+import com.mvp4g.example.client.widget.interfaces.IButton;
+import com.mvp4g.example.client.widget.interfaces.IListBox;
+import com.mvp4g.example.client.widget.interfaces.ITextBox;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
 
 @Presenter( view = UserProfileView.class )
-public class UserProfilePresenter extends BasePresenter<UserProfileViewInterface, EmployeeAdminWithGXTEventBus> implements Constants {
+public class UserProfilePresenter extends BasePresenter<UserProfilePresenter.IUserProfileView, EmployeeAdminWithGXTEventBus> {
+	
+	public interface IUserProfileView extends IWidget {
+
+		 IWidget getViewWidget();
+
+		 ITextBox getFirstName();
+
+		 ITextBox getLastName();
+
+		 ITextBox getEmail();
+
+		 ITextBox getUsername();
+
+		 ITextBox getPassword();
+
+		 ITextBox getConfirmPassword();
+
+		 IListBox getDepartment();
+
+		 IButton getUpdateButton();
+
+		 IButton getCancelButton();
+
+		 void showAddMode();
+
+		 void showUpdateMode();
+
+	}
 
 	private boolean toUpdate = true;
 	private boolean enabled = false;
@@ -29,7 +59,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileViewInterface
 
 	@Override
 	public void bind() {
-		MyListBoxInterface list = view.getDepartment();
+		IListBox list = view.getDepartment();
 		list.addItem( "--None Selected--" );
 		for ( String dep : DEPARTMENTS ) {
 			list.addItem( dep );
@@ -68,7 +98,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileViewInterface
 		view.getUsername().addKeyUpHandler( handler );
 		view.getPassword().addKeyUpHandler( handler );
 		view.getConfirmPassword().addKeyUpHandler( handler );
-		MyListBoxInterface department = view.getDepartment();
+		IListBox department = view.getDepartment();
 		department.addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
@@ -97,7 +127,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileViewInterface
 
 		toUpdate = true;
 		fillForm();
-		MyButtonInterface update = view.getUpdateButton();
+		IButton update = view.getUpdateButton();
 		update.setEnabled( true );
 		view.showUpdateMode();
 		view.getCancelButton().setEnabled( true );
@@ -112,7 +142,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileViewInterface
 	public void onCreateNewUser( UserBean user ) {
 		this.user = user;
 		init();
-		MyButtonInterface update = view.getUpdateButton();
+		IButton update = view.getUpdateButton();
 		update.setEnabled( false );
 		view.showAddMode();
 		view.getCancelButton().setEnabled( true );
@@ -134,7 +164,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileViewInterface
 		view.getPassword().setValue( "" );
 		view.getConfirmPassword().setValue( "" );
 		view.getDepartment().setSelectedIndex( 0 );
-		MyButtonInterface update = view.getUpdateButton();
+		IButton update = view.getUpdateButton();
 		update.setEnabled( false );
 		view.showUpdateMode();
 		view.getCancelButton().setEnabled( false );

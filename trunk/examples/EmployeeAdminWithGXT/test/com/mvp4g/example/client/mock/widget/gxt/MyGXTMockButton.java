@@ -1,8 +1,8 @@
 package com.mvp4g.example.client.mock.widget.gxt;
 
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.MyGXTButtonInterface;
+import com.mvp4g.example.client.widget.interfaces.gxt.IGXTButton;
 
-public class MyGXTMockButton extends MyGXTMockWidget implements MyGXTButtonInterface {
+public class MyGXTMockButton extends MyGXTMockWidget implements IGXTButton {
 
 	private boolean enabled = true;
 	private boolean visible = true;
