@@ -18,7 +18,7 @@ public class RootTemplatePresenterTest {
 		presenter = new RootTemplatePresenter();
 		view = new MockRootTemplateView();
 		presenter.setView( view );
-		presenter.bindIfNeeded();
+		presenter.bind();
 	}
 
 	@Test

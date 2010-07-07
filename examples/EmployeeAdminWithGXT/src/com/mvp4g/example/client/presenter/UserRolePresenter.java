@@ -1,5 +1,7 @@
 package com.mvp4g.example.client.presenter;
 
+import static com.mvp4g.example.client.Constants.ROLES;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,16 +17,31 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
-import com.mvp4g.example.client.Constants;
 import com.mvp4g.example.client.EmployeeAdminWithGXTEventBus;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
 import com.mvp4g.example.client.presenter.gxt.MyListModel;
-import com.mvp4g.example.client.presenter.view_interface.UserRoleViewInterface;
 import com.mvp4g.example.client.view.UserRoleView;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
 
 @Presenter( view = UserRoleView.class )
-public class UserRolePresenter extends BasePresenter<UserRoleViewInterface, EmployeeAdminWithGXTEventBus> implements Constants {
+public class UserRolePresenter extends BasePresenter<UserRolePresenter.IUserRoleView, EmployeeAdminWithGXTEventBus> {
+
+	public interface IUserRoleView extends IWidget {
+
+		IWidget getViewWidget();
+
+		ListField<MyListModel> getSelectedRolesListBox();
+
+		SimpleComboBox<String> getRoleChoiceListBox();
+
+		Button getAddButton();
+
+		Button getRemoveButton();
+
+		void displayError( String error );
+
+	}
 
 	private final static String NONE_SELECTED = "--None Selected--";
 

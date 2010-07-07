@@ -1,12 +1,18 @@
 package com.mvp4g.example.client.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.extjs.gxt.ui.client.data.BeanModelTag;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class UserBean implements BeanModelTag, IsSerializable {
+public class UserBean implements BeanModelTag, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3753261133597556847L;
+	
 	private String firstName = null;
 	private String lastName = null;
 	private String email = null;

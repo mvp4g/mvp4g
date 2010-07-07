@@ -4,13 +4,13 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.mock.widget.MyMockButton;
 import com.mvp4g.example.client.mock.widget.MyMockListBox;
 import com.mvp4g.example.client.mock.widget.MyMockTextBox;
-import com.mvp4g.example.client.presenter.view_interface.UserProfileViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyListBoxInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyTextBoxInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
+import com.mvp4g.example.client.presenter.UserProfilePresenter.IUserProfileView;
+import com.mvp4g.example.client.widget.interfaces.IButton;
+import com.mvp4g.example.client.widget.interfaces.IListBox;
+import com.mvp4g.example.client.widget.interfaces.ITextBox;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
 
-public class MockUserProfileView implements UserProfileViewInterface, MyWidgetInterface {
+public class MockUserProfileView implements IUserProfileView {
 
 	private boolean updateMode = true;
 
@@ -25,43 +25,43 @@ public class MockUserProfileView implements UserProfileViewInterface, MyWidgetIn
 	private MyMockTextBox password = new MyMockTextBox();
 	private MyMockTextBox username = new MyMockTextBox();
 
-	public MyButtonInterface getCancelButton() {
+	public IButton getCancelButton() {
 		return cancel;
 	}
 
-	public MyTextBoxInterface getConfirmPassword() {
+	public ITextBox getConfirmPassword() {
 		return confirmPassword;
 	}
 
-	public MyListBoxInterface getDepartment() {
+	public IListBox getDepartment() {
 		return department;
 	}
 
-	public MyTextBoxInterface getEmail() {
+	public ITextBox getEmail() {
 		return email;
 	}
 
-	public MyTextBoxInterface getFirstName() {
+	public ITextBox getFirstName() {
 		return firstName;
 	}
 
-	public MyTextBoxInterface getLastName() {
+	public ITextBox getLastName() {
 		return lastName;
 	}
 
-	public MyTextBoxInterface getPassword() {
+	public ITextBox getPassword() {
 		return password;
 	}
 
-	public MyButtonInterface getUpdateButton() {
+	public IButton getUpdateButton() {
 		return update;
 	}
 
-	public MyTextBoxInterface getUsername() {
+	public ITextBox getUsername() {
 		return username;
 	}
 
-	public MyWidgetInterface getViewWidget() {
+	public IWidget getViewWidget() {
 		return this;
 	}
 

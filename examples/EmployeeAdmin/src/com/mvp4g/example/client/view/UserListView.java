@@ -5,16 +5,16 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.example.client.presenter.view_interface.UserListViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyLabelInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyTableInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
-import com.mvp4g.example.client.view.widget.MyButton;
-import com.mvp4g.example.client.view.widget.MyLabel;
-import com.mvp4g.example.client.view.widget.MyTable;
+import com.mvp4g.example.client.presenter.UserListPresenter.IUserListView;
+import com.mvp4g.example.client.widget.impl.MyButton;
+import com.mvp4g.example.client.widget.impl.MyLabel;
+import com.mvp4g.example.client.widget.impl.MyTable;
+import com.mvp4g.example.client.widget.interfaces.IButton;
+import com.mvp4g.example.client.widget.interfaces.ILabel;
+import com.mvp4g.example.client.widget.interfaces.ITable;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
 
-public class UserListView extends Composite implements UserListViewInterface, MyWidgetInterface {
+public class UserListView extends Composite implements IUserListView {
 
 	private MyButton delete = new MyButton( "Delete" );
 	private MyButton newButton = new MyButton( "New" );
@@ -60,31 +60,31 @@ public class UserListView extends Composite implements UserListViewInterface, My
 		return this;
 	}
 
-	public MyButtonInterface getDeleteButton() {
+	public IButton getDeleteButton() {
 		return delete;
 	}
 
-	public MyTableInterface getTable() {
+	public ITable getTable() {
 		return userList;
 	}
 
-	public MyButtonInterface getNewButton() {
+	public IButton getNewButton() {
 		return newButton;
 	}
 
-	public MyLabelInterface getConfirmText() {
+	public ILabel getConfirmText() {
 		return confirmText;
 	}
 
-	public MyButtonInterface getNoButton() {
+	public IButton getNoButton() {
 		return no;
 	}
 
-	public MyButtonInterface getYesButton() {
+	public IButton getYesButton() {
 		return yes;
 	}
 
-	public MyWidgetInterface getViewWidget() {
+	public IWidget getViewWidget() {
 		return this;
 	}
 

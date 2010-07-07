@@ -4,9 +4,9 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyTextBoxInterface;
+import com.mvp4g.example.client.widget.interfaces.ITextBox;
 
-public class MyMockTextBox implements MyTextBoxInterface {
+public class MyMockTextBox implements ITextBox {
 
 	private String value = null;
 	private ValueChangeHandler<String> valueChangeHandler = null;

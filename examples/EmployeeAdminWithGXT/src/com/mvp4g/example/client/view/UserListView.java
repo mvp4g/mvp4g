@@ -11,17 +11,17 @@ import com.extjs.gxt.ui.client.widget.HorizontalPanel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.example.client.presenter.view_interface.UserListViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyLabelInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.MyGXTPagingToolBarInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.gxt.MyGXTTableInterface;
-import com.mvp4g.example.client.view.gxt.MyGXTPagingToolBar;
-import com.mvp4g.example.client.view.gxt.MyGXTTable;
-import com.mvp4g.example.client.view.gxt.MyLabel;
-import com.mvp4g.example.client.view.gxt.MySimpleGXTButton;
+import com.mvp4g.example.client.presenter.UserListPresenter.IUserListView;
+import com.mvp4g.example.client.widget.impl.MyGXTPagingToolBar;
+import com.mvp4g.example.client.widget.impl.MyGXTTable;
+import com.mvp4g.example.client.widget.impl.MyLabel;
+import com.mvp4g.example.client.widget.impl.MySimpleGXTButton;
+import com.mvp4g.example.client.widget.interfaces.ILabel;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
+import com.mvp4g.example.client.widget.interfaces.gxt.IGXTPagingToolBar;
+import com.mvp4g.example.client.widget.interfaces.gxt.IGXTTable;
 
-public class UserListView extends ContentPanel implements UserListViewInterface, MyWidgetInterface {
+public class UserListView extends ContentPanel implements IUserListView {
 
 	private MySimpleGXTButton delete = new MySimpleGXTButton( "Delete" );
 	private MySimpleGXTButton newButton = new MySimpleGXTButton( "New" );
@@ -80,7 +80,7 @@ public class UserListView extends ContentPanel implements UserListViewInterface,
 		return delete;
 	}
 
-	public MyGXTTableInterface getTable() {
+	public IGXTTable getTable() {
 		return userList;
 	}
 
@@ -88,7 +88,7 @@ public class UserListView extends ContentPanel implements UserListViewInterface,
 		return newButton;
 	}
 
-	public MyLabelInterface getConfirmText() {
+	public ILabel getConfirmText() {
 		return confirmText;
 	}
 
@@ -100,11 +100,11 @@ public class UserListView extends ContentPanel implements UserListViewInterface,
 		return yes;
 	}
 
-	public MyWidgetInterface getViewWidget() {
+	public IWidget getViewWidget() {
 		return this;
 	}
 
-	public MyGXTPagingToolBarInterface getToolBar() {
+	public IGXTPagingToolBar getToolBar() {
 		return toolBar;
 	}
 

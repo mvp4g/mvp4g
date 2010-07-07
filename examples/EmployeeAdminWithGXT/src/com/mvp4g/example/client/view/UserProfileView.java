@@ -4,16 +4,16 @@ import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.example.client.presenter.view_interface.UserProfileViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyListBoxInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyTextBoxInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
-import com.mvp4g.example.client.view.gxt.MyGXTButton;
-import com.mvp4g.example.client.view.gxt.MyGXTComboBox;
-import com.mvp4g.example.client.view.gxt.MyGXTTextBox;
+import com.mvp4g.example.client.presenter.UserProfilePresenter.IUserProfileView;
+import com.mvp4g.example.client.widget.impl.MyGXTButton;
+import com.mvp4g.example.client.widget.impl.MyGXTComboBox;
+import com.mvp4g.example.client.widget.impl.MyGXTTextBox;
+import com.mvp4g.example.client.widget.interfaces.IButton;
+import com.mvp4g.example.client.widget.interfaces.IListBox;
+import com.mvp4g.example.client.widget.interfaces.ITextBox;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
 
-public class UserProfileView extends LayoutContainer implements UserProfileViewInterface, MyWidgetInterface {
+public class UserProfileView extends LayoutContainer implements IUserProfileView {
 
 	private MyGXTTextBox firstName = new MyGXTTextBox( "First Name" );
 	private MyGXTTextBox lastName = new MyGXTTextBox( "Last Name" );
@@ -50,43 +50,43 @@ public class UserProfileView extends LayoutContainer implements UserProfileViewI
 		add( form );
 	}
 
-	public MyWidgetInterface getViewWidget() {
+	public IWidget getViewWidget() {
 		return this;
 	}
 
-	public MyButtonInterface getCancelButton() {
+	public IButton getCancelButton() {
 		return cancel;
 	}
 
-	public MyTextBoxInterface getConfirmPassword() {
+	public ITextBox getConfirmPassword() {
 		return confirmPassword;
 	}
 
-	public MyListBoxInterface getDepartment() {
+	public IListBox getDepartment() {
 		return department;
 	}
 
-	public MyTextBoxInterface getEmail() {
+	public ITextBox getEmail() {
 		return email;
 	}
 
-	public MyTextBoxInterface getFirstName() {
+	public ITextBox getFirstName() {
 		return firstName;
 	}
 
-	public MyTextBoxInterface getLastName() {
+	public ITextBox getLastName() {
 		return lastName;
 	}
 
-	public MyTextBoxInterface getPassword() {
+	public ITextBox getPassword() {
 		return password;
 	}
 
-	public MyButtonInterface getUpdateButton() {
+	public IButton getUpdateButton() {
 		return update;
 	}
 
-	public MyTextBoxInterface getUsername() {
+	public ITextBox getUsername() {
 		return username;
 	}
 

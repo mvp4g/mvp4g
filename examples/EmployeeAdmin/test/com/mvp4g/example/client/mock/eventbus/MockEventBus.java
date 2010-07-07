@@ -5,16 +5,18 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
+import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.example.client.EmployeeAdminEventBus;
 import com.mvp4g.example.client.bean.UserBean;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
 
 public class MockEventBus extends BaseEventBusWithLookUp implements EmployeeAdminEventBus {
 
 	private String lastDispatchedEventType = null;
-	private Object lastDispatchedObject = null;
+	private Object[] lastDispatchedObject = null;
 
-	public void dispatch( String eventType, Object form ) {
+	@Override
+	public void dispatch( String eventType, Object... form ) {
 		lastDispatchedEventType = eventType;
 		lastDispatchedObject = form;
 	}
@@ -23,51 +25,55 @@ public class MockEventBus extends BaseEventBusWithLookUp implements EmployeeAdmi
 		return lastDispatchedEventType;
 	}
 
-	public Object getLastDispatchedObject() {
+	public Object[] getLastDispatchedObject() {
 		return lastDispatchedObject;
 	}
 
-	public void assertEvent( String expectedEventType, Object expectedDispatchedObject ) {
+	public void assertEvent( String expectedEventType, Object[] expectedDispatchedObject ) {
 		assertEquals( expectedEventType, lastDispatchedEventType );
-		assertEquals( expectedDispatchedObject, lastDispatchedObject );
+		assertEquals( expectedDispatchedObject.length, lastDispatchedObject.length );
+		for ( int i = 0; i < expectedDispatchedObject.length; i++ ) {
+			assertEquals( expectedDispatchedObject[i], lastDispatchedObject[i] );
+		}
 	}
 
 	private boolean changeLeftBottomWidgetEvent = false;
 
-	public void changeLeftBottomWidget( MyWidgetInterface widget ) {
+	public void changeLeftBottomWidget( IWidget widget ) {
 		changeLeftBottomWidgetEvent = true;
-		lastDispatchedObject = widget;
+		lastDispatchedObject = new Object[] { widget };
 	}
 
-	public void assertChangeLeftBottomWidget( MyWidgetInterface widget ) {
+	public void assertChangeLeftBottomWidget( IWidget widget ) {
 		assertTrue( changeLeftBottomWidgetEvent );
-		assertEquals( widget, lastDispatchedObject );
+		assertEquals( widget, lastDispatchedObject[0] );
 		changeLeftBottomWidgetEvent = false;
 	}
 
 	private boolean changeRightBottomWidgetEvent = false;
 
-	public void changeRightBottomWidget( MyWidgetInterface widget ) {
+	public void changeRightBottomWidget( IWidget widget ) {
 		changeRightBottomWidgetEvent = true;
-		lastDispatchedObject = widget;
+		lastDispatchedObject = new Object[] { widget };
+		;
 	}
 
-	public void assertChangeRightBottomWidget( MyWidgetInterface widget ) {
+	public void assertChangeRightBottomWidget( IWidget widget ) {
 		assertTrue( changeRightBottomWidgetEvent );
-		assertEquals( widget, lastDispatchedObject );
+		assertEquals( widget, lastDispatchedObject[0] );
 		changeRightBottomWidgetEvent = false;
 	}
 
 	private boolean changeTopWidgetEvent = false;
 
-	public void changeTopWidget( MyWidgetInterface widget ) {
+	public void changeTopWidget( IWidget widget ) {
 		changeTopWidgetEvent = true;
-		lastDispatchedObject = widget;
+		lastDispatchedObject = new Object[] { widget };
 	}
 
-	public void assertChangeTopWidget( MyWidgetInterface widget ) {
+	public void assertChangeTopWidget( IWidget widget ) {
 		assertTrue( changeTopWidgetEvent );
-		assertEquals( widget, lastDispatchedObject );
+		assertEquals( widget, lastDispatchedObject[0] );
 		changeTopWidgetEvent = false;
 	}
 
@@ -75,12 +81,12 @@ public class MockEventBus extends BaseEventBusWithLookUp implements EmployeeAdmi
 
 	public void createNewUser( UserBean user ) {
 		createNewUserEvent = true;
-		lastDispatchedObject = user;
+		lastDispatchedObject = new Object[] { user };
 	}
 
 	public void assertCreateNewUser() {
 		assertTrue( createNewUserEvent );
-		UserBean u = (UserBean)lastDispatchedObject;
+		UserBean u = (UserBean)lastDispatchedObject[0];
 		assertNull( u.getFirstName() );
 		assertNull( u.getLastName() );
 		assertNull( u.getEmail() );
@@ -95,12 +101,13 @@ public class MockEventBus extends BaseEventBusWithLookUp implements EmployeeAdmi
 
 	public void selectUser( UserBean user ) {
 		selectUserEvent = true;
-		lastDispatchedObject = user;
+		lastDispatchedObject = new Object[] { user };
+		;
 	}
 
 	public void assertSelectUser( UserBean user ) {
 		assertTrue( selectUserEvent );
-		assertEquals( user, lastDispatchedObject );
+		assertEquals( user, lastDispatchedObject[0] );
 		selectUserEvent = false;
 	}
 
@@ -130,12 +137,12 @@ public class MockEventBus extends BaseEventBusWithLookUp implements EmployeeAdmi
 
 	public void userCreated( UserBean user ) {
 		userCreatedEvent = true;
-		lastDispatchedObject = user;
+		lastDispatchedObject = new Object[] { user };
 	}
 
 	public void assertUserCreated( UserBean user ) {
 		assertTrue( userCreatedEvent );
-		assertEquals( user, lastDispatchedObject );
+		assertEquals( user, lastDispatchedObject[0] );
 		userCreatedEvent = false;
 	}
 
@@ -143,13 +150,19 @@ public class MockEventBus extends BaseEventBusWithLookUp implements EmployeeAdmi
 
 	public void userUpdated( UserBean user ) {
 		userUpdatedEvent = true;
-		lastDispatchedObject = user;
+		lastDispatchedObject = new Object[] { user };
 	}
 
 	public void assertUserUpdated( UserBean user ) {
 		assertTrue( userUpdatedEvent );
-		assertEquals( user, lastDispatchedObject );
+		assertEquals( user, lastDispatchedObject[0] );
 		userUpdatedEvent = false;
+	}
+
+	@Override
+	protected <T extends EventHandlerInterface<?>> T createHandler( Class<T> handlerClass ) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

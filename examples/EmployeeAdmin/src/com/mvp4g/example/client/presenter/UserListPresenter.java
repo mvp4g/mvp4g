@@ -11,13 +11,32 @@ import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.EmployeeAdminEventBus;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
-import com.mvp4g.example.client.presenter.view_interface.UserListViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyTableInterface;
 import com.mvp4g.example.client.view.UserListView;
+import com.mvp4g.example.client.widget.interfaces.IButton;
+import com.mvp4g.example.client.widget.interfaces.ILabel;
+import com.mvp4g.example.client.widget.interfaces.ITable;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
 
+//This presenter illustrate how you can build your presenter in order to test it
+//with a mock library (in this case EasyMock)
 @Presenter( view = UserListView.class )
-public class UserListPresenter extends BasePresenter<UserListViewInterface, EmployeeAdminEventBus> {
+public class UserListPresenter extends BasePresenter<UserListPresenter.IUserListView, EmployeeAdminEventBus> {
+
+	public interface IUserListView extends IWidget {
+
+		ITable getTable();
+
+		IButton getDeleteButton();
+
+		IButton getNewButton();
+
+		IButton getYesButton();
+
+		IButton getNoButton();
+
+		ILabel getConfirmText();
+
+	}
 
 	protected int indexSelected = 0;
 	protected List<UserBean> users = null;
@@ -26,50 +45,19 @@ public class UserListPresenter extends BasePresenter<UserListViewInterface, Empl
 
 	@Override
 	public void bind() {
-		MyButtonInterface delete = view.getDeleteButton();
-		delete.setEnabled( false );
-		delete.addClickHandler( new ClickHandler() {
 
-			public void onClick( ClickEvent event ) {
-				setVisibleConfirmDeletion( true );
-			}
+		//create inner classes for ClickHandler in order to ease testing with EasyMock
 
-		} );
-		view.getNewButton().addClickHandler( new ClickHandler() {
+		IButton delete = view.getDeleteButton();
+		delete.addClickHandler( new DeleteClickHandler() );
 
-			public void onClick( ClickEvent event ) {
-				eventBus.createNewUser( new UserBean() );
-			}
+		view.getNewButton().addClickHandler( new NewClickHandler() );
 
-		} );
-		MyTableInterface table = view.getTable();
-		table.addClickHandler( new ClickHandler() {
+		ITable table = view.getTable();
+		table.addClickHandler( new TableClickHandler() );
 
-			public void onClick( ClickEvent event ) {
-				MyTableInterface table = view.getTable();
-
-				selectUser( table.getRowForEvent( event ) );
-
-			}
-
-		} );
-
-		view.getYesButton().addClickHandler( new ClickHandler() {
-
-			public void onClick( ClickEvent event ) {
-				deleteUser();
-			}
-
-		} );
-		view.getNoButton().addClickHandler( new ClickHandler() {
-
-			public void onClick( ClickEvent event ) {
-				setVisibleConfirmDeletion( false );
-			}
-
-		} );
-		setVisibleConfirmDeletion( false );
-
+		view.getYesButton().addClickHandler( new YesClickHandler() );
+		view.getNoButton().addClickHandler( new NoClickHandler() );
 	}
 
 	public void onStart() {
@@ -81,17 +69,13 @@ public class UserListPresenter extends BasePresenter<UserListViewInterface, Empl
 			}
 
 			public void onSuccess( List<UserBean> result ) {
-				users = result;
-				int nbUsers = result.size();
-				for ( int i = 0; i < nbUsers; i++ ) {
-					displayUser( users.get( i ), i + 1 );
-				}
-
-				eventBus.changeTopWidget( view.getViewWidget() );
-
+				setUsers( result );
+				eventBus.changeTopWidget( view );
 			}
 
 		} );
+		view.getDeleteButton().setEnabled( false );
+		setVisibleConfirmDeletion( false );
 
 	}
 
@@ -114,8 +98,16 @@ public class UserListPresenter extends BasePresenter<UserListViewInterface, Empl
 		this.service = service;
 	}
 
-	private void selectUser( int row ) {
-		MyTableInterface table = view.getTable();
+	void setUsers( List<UserBean> users ) {
+		this.users = users;
+		int nbUsers = users.size();
+		for ( int i = 0; i < nbUsers; i++ ) {
+			displayUser( users.get( i ), i + 1 );
+		}
+	}
+
+	void selectUser( int row ) {
+		ITable table = view.getTable();
 
 		if ( row > 0 ) {
 
@@ -130,7 +122,7 @@ public class UserListPresenter extends BasePresenter<UserListViewInterface, Empl
 		}
 	}
 
-	private void deleteUser() {
+	void deleteUser() {
 		service.deleteUser( users.get( indexSelected - 1 ), new AsyncCallback<Void>() {
 
 			public void onFailure( Throwable caught ) {
@@ -149,8 +141,8 @@ public class UserListPresenter extends BasePresenter<UserListViewInterface, Empl
 		} );
 	}
 
-	private void displayUser( UserBean user, int row ) {
-		MyTableInterface table = view.getTable();
+	void displayUser( UserBean user, int row ) {
+		ITable table = view.getTable();
 		table.setText( row, 0, user.getUsername() );
 		table.setText( row, 1, user.getFirstName() );
 		table.setText( row, 2, user.getLastName() );
@@ -158,9 +150,50 @@ public class UserListPresenter extends BasePresenter<UserListViewInterface, Empl
 		table.setText( row, 4, user.getDepartment() );
 	}
 
-	private void setVisibleConfirmDeletion( boolean visible ) {
+	void setVisibleConfirmDeletion( boolean visible ) {
 		view.getConfirmText().setVisible( visible );
 		view.getYesButton().setVisible( visible );
 		view.getNoButton().setVisible( visible );
+	}
+
+	class YesClickHandler implements ClickHandler {
+
+		public void onClick( ClickEvent event ) {
+			deleteUser();
+		}
+
+	}
+
+	class NoClickHandler implements ClickHandler {
+
+		public void onClick( ClickEvent event ) {
+			setVisibleConfirmDeletion( false );
+		}
+
+	}
+
+	class NewClickHandler implements ClickHandler {
+
+		public void onClick( ClickEvent event ) {
+			eventBus.createNewUser( new UserBean() );
+		}
+
+	}
+
+	class DeleteClickHandler implements ClickHandler {
+
+		public void onClick( ClickEvent event ) {
+			setVisibleConfirmDeletion( true );
+		}
+
+	}
+
+	class TableClickHandler implements ClickHandler {
+
+		public void onClick( ClickEvent event ) {
+			ITable table = view.getTable();
+			selectUser( table.getRowForEvent( event ) );
+		}
+
 	}
 }

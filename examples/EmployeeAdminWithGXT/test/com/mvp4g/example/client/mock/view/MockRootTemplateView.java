@@ -1,35 +1,35 @@
 package com.mvp4g.example.client.mock.view;
 
-import com.mvp4g.example.client.presenter.view_interface.RootTemplateViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyWidgetInterface;
+import com.mvp4g.example.client.presenter.RootTemplatePresenter.IRootTemplateView;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
 
-public class MockRootTemplateView implements RootTemplateViewInterface {
+public class MockRootTemplateView implements IRootTemplateView {
 
-	private MyWidgetInterface topWidget = null;
-	private MyWidgetInterface leftBottomWidget = null;
-	private MyWidgetInterface rightBottomWidget = null;
+	private IWidget topWidget = null;
+	private IWidget leftBottomWidget = null;
+	private IWidget rightBottomWidget = null;
 
-	public MyWidgetInterface getTopWidget() {
+	public IWidget getTopWidget() {
 		return topWidget;
 	}
 
-	public void setTopWidget( MyWidgetInterface topWidget ) {
+	public void setTopWidget( IWidget topWidget ) {
 		this.topWidget = topWidget;
 	}
 
-	public MyWidgetInterface getLeftBottomWidget() {
+	public IWidget getLeftBottomWidget() {
 		return leftBottomWidget;
 	}
 
-	public void setLeftBottomWidget( MyWidgetInterface leftBottomWidget ) {
+	public void setLeftBottomWidget( IWidget leftBottomWidget ) {
 		this.leftBottomWidget = leftBottomWidget;
 	}
 
-	public MyWidgetInterface getRightBottomWidget() {
+	public IWidget getRightBottomWidget() {
 		return rightBottomWidget;
 	}
 
-	public void setRightBottomWidget( MyWidgetInterface rightBottomWidget ) {
+	public void setRightBottomWidget( IWidget rightBottomWidget ) {
 		this.rightBottomWidget = rightBottomWidget;
 	}
 

@@ -3,9 +3,9 @@ package com.mvp4g.example.client.mock.widget;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
+import com.mvp4g.example.client.widget.interfaces.IButton;
 
-public class MyMockButton implements MyButtonInterface {
+public class MyMockButton implements IButton {
 
 	private ClickHandler clickHandler = null;
 

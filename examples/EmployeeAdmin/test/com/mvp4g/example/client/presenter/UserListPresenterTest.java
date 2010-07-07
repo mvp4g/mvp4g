@@ -1,151 +1,308 @@
 package com.mvp4g.example.client.presenter;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
+import static org.easymock.EasyMock.and;
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.reset;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.example.client.Constants;
+import com.mvp4g.example.client.EmployeeAdminEventBus;
+import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
 import com.mvp4g.example.client.mock.MockGwtEvent;
-import com.mvp4g.example.client.mock.eventbus.MockEventBus;
-import com.mvp4g.example.client.mock.service.MockUserServiceAsync;
-import com.mvp4g.example.client.mock.view.MockUserListView;
-import com.mvp4g.example.client.mock.widget.MyMockButton;
-import com.mvp4g.example.client.mock.widget.MyMockLabel;
-import com.mvp4g.example.client.mock.widget.MyMockTable;
+import com.mvp4g.example.client.presenter.UserListPresenter.DeleteClickHandler;
+import com.mvp4g.example.client.presenter.UserListPresenter.IUserListView;
+import com.mvp4g.example.client.presenter.UserListPresenter.NewClickHandler;
+import com.mvp4g.example.client.presenter.UserListPresenter.NoClickHandler;
+import com.mvp4g.example.client.presenter.UserListPresenter.TableClickHandler;
+import com.mvp4g.example.client.presenter.UserListPresenter.YesClickHandler;
+import com.mvp4g.example.client.widget.interfaces.IButton;
+import com.mvp4g.example.client.widget.interfaces.ILabel;
+import com.mvp4g.example.client.widget.interfaces.ITable;
 
 public class UserListPresenterTest implements Constants {
 
 	UserListPresenter presenter = null;
-	MockUserListView view = null;
-	MockEventBus eventBus = null;
-	MockUserServiceAsync service = null;
 	List<UserBean> users = null;
+	IUserListView mockView;
+	UserServiceAsync mockService;
+	EmployeeAdminEventBus mockEventBus;
+
+	IButton delete;
+	IButton yes;
+	IButton no;
+	IButton newButton;
+	ITable table;
+	ILabel confirmText;
 
 	@Before
 	public void setUp() {
+
+		delete = createMock( IButton.class );
+		yes = createMock( IButton.class );
+		no = createMock( IButton.class );
+		newButton = createMock( IButton.class );
+		table = createMock( ITable.class );
+		confirmText = createMock( ILabel.class );
+
 		presenter = new UserListPresenter();
-		view = new MockUserListView();
-		eventBus = new MockEventBus();
+		mockView = createMock( IUserListView.class );
+		mockService = createMock( UserServiceAsync.class );
+		mockEventBus = createMock( EmployeeAdminEventBus.class );
+		presenter.setView( mockView );
+		presenter.setEventBus( mockEventBus );
+		presenter.setUserService( mockService );
 		users = createUsers();
-		service = new MockUserServiceAsync( users );
-		presenter.setView( view );
-		presenter.setEventBus( eventBus );
-		presenter.setUserService( service );
-		presenter.bindIfNeeded();
-		presenter.onStart();
+
 	}
 
 	@Test
 	public void testBind() {
-		MyMockButton delete = (MyMockButton)view.getDeleteButton();
-		assertFalse( delete.isEnabled() );
-		assertConfirmDeletionBar( false );
+		expect( mockView.getDeleteButton() ).andReturn( delete );
+		expect( delete.addClickHandler( isA( DeleteClickHandler.class ) ) ).andReturn( null );
+
+		expect( mockView.getNewButton() ).andReturn( newButton );
+		expect( newButton.addClickHandler( isA( NewClickHandler.class ) ) ).andReturn( null );
+
+		expect( mockView.getTable() ).andReturn( table );
+		expect( table.addClickHandler( isA( TableClickHandler.class ) ) ).andReturn( null );
+
+		expect( mockView.getYesButton() ).andReturn( yes );
+		expect( yes.addClickHandler( isA( YesClickHandler.class ) ) ).andReturn( null );
+
+		expect( mockView.getNoButton() ).andReturn( no );
+		expect( no.addClickHandler( isA( NoClickHandler.class ) ) ).andReturn( null );
+
+		replay( mockView, delete, newButton, table, yes, no );
+		presenter.bind();
+		verify( mockView );
 	}
 
+	@SuppressWarnings( "unchecked" )
 	@Test
 	public void testOnStart() {
-		int nbUser = users.size();
-		for ( int i = 0; i < nbUser; i++ ) {
-			assertTableRow( i + 1, users.get( i ) );
-		}
-		eventBus.assertChangeTopWidget( view.getViewWidget() );
+		Capture<AsyncCallback<List<UserBean>>> callback = new Capture<AsyncCallback<List<UserBean>>>();
+		mockService.getUsers( and( capture( callback ), isA( AsyncCallback.class ) ) );
 
+		setVisibleConfirmDeletion( false );
+
+		expect( mockView.getDeleteButton() ).andReturn( delete );
+		delete.setEnabled( false );
+
+		replay( mockView, mockService, yes, no, confirmText, delete );
+
+		presenter.onStart();
+		verify( mockView, mockService, yes, no, confirmText, delete );
+		reset( mockView, mockService, yes, no, confirmText, delete );
+
+		for ( int i = 0; i < users.size(); i++ ) {
+			checkOneRow( users.get( i ), i + 1 );
+		}
+		mockEventBus.changeTopWidget( mockView );
+		replay( table, mockView, mockEventBus );
+		callback.getValue().onSuccess( users );
+		verify( table, mockView );
+		reset( table, mockView, mockEventBus );
 	}
 
 	@Test
 	public void testOnUserUpdated() {
+		setRows();
+
 		UserBean user = users.get( 0 );
 		fillUser( user );
+		checkOneRow( user, 1 );
+
+		replay( table, mockView );
+
+		int previousSize = users.size();
 		presenter.onUserUpdated( user );
-		assertTableRow( 1, user );
+		assertTrue( users.size() == previousSize );
+
+		verify( table, mockView );
 	}
 
 	@Test
 	public void testOnUserCreated() {
+		setRows();
+
 		UserBean user = new UserBean();
 		fillUser( user );
+		checkOneRow( user, users.size() + 1 );
+
+		replay( table, mockView );
+
+		int previousSize = users.size();
 		presenter.onUserCreated( user );
-		assertTableRow( users.size(), user );
+		assertTrue( users.size() == ( previousSize + 1 ) );
+
+		verify( table, mockView );
+	}
+
+	@Test
+	public void testOnUserunselected() {
+		setRows();
+		selectUser( 2 );
+
+		expect( mockView.getTable() ).andReturn( table );
+		table.unSelectRow( 2 );
+		replay( mockView, table );
+		presenter.onUnselectUser();
+		verify( mockView, table );
+		reset( mockView, table );
+
+		//verify selectIndex has been set to 0
+		expect( mockView.getTable() ).andReturn( table );
+		table.unSelectRow( 0 );
+		replay( mockView, table );
+		presenter.onUnselectUser();
+		verify( mockView, table );
 	}
 
 	@Test
 	public void testDeleteClick() {
-		MyMockButton delete = (MyMockButton)view.getDeleteButton();
-		delete.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		assertConfirmDeletionBar( true );
+
+		expect( mockView.getConfirmText() ).andReturn( confirmText );
+		expect( mockView.getYesButton() ).andReturn( yes );
+		expect( mockView.getNoButton() ).andReturn( no );
+
+		yes.setVisible( true );
+		no.setVisible( true );
+		confirmText.setVisible( true );
+		replay( mockView, yes, no, confirmText );
+		presenter.new DeleteClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
+		verify( mockView, yes, no, confirmText );
 	}
 
 	@Test
 	public void testNewClick() {
-		MyMockButton newButton = (MyMockButton)view.getNewButton();
-		newButton.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		eventBus.assertCreateNewUser();
+		mockEventBus.createNewUser( isA( UserBean.class ) );
+		replay( mockEventBus );
+		presenter.new NewClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
+		verify( mockEventBus );
 	}
 
 	@Test
+	public void testTableClick() {
+		setRows();
+
+		expect( table.getRowForEvent( isA( ClickEvent.class ) ) ).andReturn( 2 );
+		expect( mockView.getTable() ).andReturn( table );
+		expectLastCall().times( 2 );
+
+		table.selectRow( 2 );
+		mockEventBus.selectUser( users.get( 1 ) );
+
+		expect( mockView.getDeleteButton() ).andReturn( delete );
+		delete.setEnabled( true );
+
+		replay( table, delete, mockView, mockEventBus );
+		presenter.new TableClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
+		verify( table, delete, mockView, mockEventBus );
+
+	}
+
+	@SuppressWarnings( "unchecked" )
+	@Test
 	public void testYesClick() {
 
-		MyMockTable table = (MyMockTable)view.getTable();
-		table.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
+		setRows();
+		selectUser( 2 );
 
-		int tableSize = table.getRowCount();
-		int usersSize = users.size();
-		MyMockButton yes = (MyMockButton)view.getYesButton();
-		yes.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		assertEquals( tableSize - 1, table.getRowCount() );
-		assertEquals( usersSize - 1, users.size() );
+		Capture<AsyncCallback<Void>> callback = new Capture<AsyncCallback<Void>>();
+		mockService.deleteUser( eq( users.get( 1 ) ), and( capture( callback ), isA( AsyncCallback.class ) ) );
+		replay( mockService );
+		presenter.new YesClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
+		verify( mockService );
+
+		int previousSize = users.size();
+		UserBean user = users.get( 1 );
+		expect( mockView.getTable() ).andReturn( table );
+		expect( mockView.getDeleteButton() ).andReturn( delete );
+		table.removeRow( 2 );
+		delete.setEnabled( false );
+		setVisibleConfirmDeletion( false );
+		replay( table, delete, mockView, yes, no, confirmText );
+		callback.getValue().onSuccess( null );
+		verify( table, delete, mockView, yes, no, confirmText );
+		assertTrue( users.size() == ( previousSize - 1 ) );
+		assertFalse( users.contains( user ) );
 	}
 
 	@Test
 	public void testNoClick() {
-		MyMockButton no = (MyMockButton)view.getNoButton();
-		no.getClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
-		assertConfirmDeletionBar( false );
+
+		setVisibleConfirmDeletion( false );
+		replay( mockView, yes, no );
+		presenter.new NoClickHandler().onClick( MockGwtEvent.CLICK_EVENT );
+		verify( mockView, yes, no );
 	}
 
 	@Test
 	public void testSelectAndUnselect() {
-		MyMockTable table = (MyMockTable)view.getTable();
-		ClickEvent event = MockGwtEvent.CLICK_EVENT;
-		table.getClickHandler().onClick( event );
-		assertEquals( table.getRowForEvent( event ), table.getLastSelected() );
+		setRows();
+		selectUser( 2 );
 
-		presenter.onUnselectUser();
-		assertEquals( -1, table.getLastSelected() );
-
+		table.unSelectRow( 2 );
+		selectUser( 3 );
 	}
 
-	private void assertTableRow( int row, UserBean user ) {
-		MyMockTable table = (MyMockTable)view.getTable();
-		assertEquals( user.getUsername(), table.getText( row, 0 ) );
-		assertEquals( user.getFirstName(), table.getText( row, 1 ) );
-		assertEquals( user.getLastName(), table.getText( row, 2 ) );
-		assertEquals( user.getEmail(), table.getText( row, 3 ) );
-		assertEquals( user.getDepartment(), table.getText( row, 4 ) );
+	private void setVisibleConfirmDeletion( boolean visible ) {
+		expect( mockView.getYesButton() ).andReturn( yes );
+		expect( mockView.getNoButton() ).andReturn( no );
+		expect( mockView.getConfirmText() ).andReturn( confirmText );
+
+		yes.setVisible( visible );
+		no.setVisible( visible );
+		confirmText.setVisible( visible );
 	}
 
-	private void assertConfirmDeletionBar( boolean visible ) {
-		MyMockButton yes = (MyMockButton)view.getYesButton();
-		MyMockButton no = (MyMockButton)view.getNoButton();
-		MyMockLabel text = (MyMockLabel)view.getConfirmText();
-		assertEquals( visible, yes.isVisible() );
-		assertEquals( visible, no.isVisible() );
-		assertEquals( visible, text.isVisible() );
+	private void setRows() {
+		for ( int i = 0; i < users.size(); i++ ) {
+			checkOneRow( users.get( i ), i + 1 );
+		}
+		replay( mockView, table );
+		presenter.setUsers( users );
+		verify( mockView, table );
+		reset( mockView, table );
 	}
 
-	private void fillUser( UserBean user ) {
-		user.setUsername( "username" );
-		user.setFirstName( "firstName" );
-		user.setLastName( "lastName" );
-		user.setEmail( "email" );
-		user.setDepartment( "department" );
+	private void checkOneRow( UserBean user, int row ) {
+		expect( mockView.getTable() ).andReturn( table );
+		table.setText( row, 0, user.getUsername() );
+		table.setText( row, 1, user.getFirstName() );
+		table.setText( row, 2, user.getLastName() );
+		table.setText( row, 3, user.getEmail() );
+		table.setText( row, 4, user.getDepartment() );
+	}
+
+	private void selectUser( int row ) {
+		expect( mockView.getTable() ).andReturn( table );
+		expect( mockView.getDeleteButton() ).andReturn( delete );
+		table.selectRow( row );
+		mockEventBus.selectUser( users.get( row - 1 ) );
+		delete.setEnabled( true );
+		replay( mockView, table, delete, mockEventBus );
+		presenter.selectUser( row );
+		verify( mockView, table, delete, mockEventBus );
+		reset( mockView, table, delete, mockEventBus );
 	}
 
 	private List<UserBean> createUsers() {
@@ -186,6 +343,14 @@ public class UserListPresenterTest implements Constants {
 			users.add( user );
 		}
 		return users;
+	}
+
+	private void fillUser( UserBean user ) {
+		user.setUsername( "username" );
+		user.setFirstName( "firstName" );
+		user.setLastName( "lastName" );
+		user.setEmail( "email" );
+		user.setDepartment( "department" );
 	}
 
 }

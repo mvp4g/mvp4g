@@ -15,13 +15,29 @@ import com.mvp4g.example.client.Constants;
 import com.mvp4g.example.client.EmployeeAdminEventBus;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
-import com.mvp4g.example.client.presenter.view_interface.UserRoleViewInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyButtonInterface;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyListBoxInterface;
 import com.mvp4g.example.client.view.UserRoleView;
+import com.mvp4g.example.client.widget.interfaces.IButton;
+import com.mvp4g.example.client.widget.interfaces.IListBox;
+import com.mvp4g.example.client.widget.interfaces.IWidget;
 
+//This presenter illustrates how you can test your presenter
+//by creating your own mock (without any external mock library)
 @Presenter( view = UserRoleView.class )
-public class UserRolePresenter extends BasePresenter<UserRoleViewInterface, EmployeeAdminEventBus> implements Constants {
+public class UserRolePresenter extends BasePresenter<UserRolePresenter.IUserRoleView, EmployeeAdminEventBus> implements Constants {
+
+	public interface IUserRoleView extends IWidget {
+
+		IListBox getSelectedRolesListBox();
+
+		IListBox getRoleChoiceListBox();
+
+		IButton getAddButton();
+
+		IButton getRemoveButton();
+
+		void displayError( String error );
+
+	}
 
 	private UserBean user = null;
 
@@ -31,7 +47,7 @@ public class UserRolePresenter extends BasePresenter<UserRoleViewInterface, Empl
 
 	@Override
 	public void bind() {
-		MyButtonInterface add = view.getAddButton();
+		IButton add = view.getAddButton();
 		add.addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
@@ -40,7 +56,7 @@ public class UserRolePresenter extends BasePresenter<UserRoleViewInterface, Empl
 
 		} );
 
-		MyButtonInterface remove = view.getRemoveButton();
+		IButton remove = view.getRemoveButton();
 		remove.addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
@@ -49,7 +65,7 @@ public class UserRolePresenter extends BasePresenter<UserRoleViewInterface, Empl
 
 		} );
 
-		MyListBoxInterface selectedRoles = view.getSelectedRolesListBox();
+		IListBox selectedRoles = view.getSelectedRolesListBox();
 		selectedRoles.addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
@@ -65,7 +81,7 @@ public class UserRolePresenter extends BasePresenter<UserRoleViewInterface, Empl
 
 		} );
 
-		MyListBoxInterface rolesChoices = view.getRoleChoiceListBox();
+		IListBox rolesChoices = view.getRoleChoiceListBox();
 		rolesChoices.addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
@@ -90,12 +106,12 @@ public class UserRolePresenter extends BasePresenter<UserRoleViewInterface, Empl
 	}
 
 	public void onStart() {
-		eventBus.changeRightBottomWidget( view.getViewWidget() );
+		eventBus.changeRightBottomWidget( view );
 	}
 
 	public void onSelectUser( UserBean user ) {
 		this.user = user;
-		MyListBoxInterface selectedRoles = view.getSelectedRolesListBox();
+		IListBox selectedRoles = view.getSelectedRolesListBox();
 		selectedRoles.clear();
 		List<String> roles = user.getRoles();
 		if ( roles != null ) {
@@ -104,7 +120,7 @@ public class UserRolePresenter extends BasePresenter<UserRoleViewInterface, Empl
 			}
 		}
 		enabled = true;
-		MyListBoxInterface rolesChoices = view.getRoleChoiceListBox();
+		IListBox rolesChoices = view.getRoleChoiceListBox();
 		rolesChoices.setSelectedIndex( 0 );
 		rolesChoices.setEnabled( true );
 		view.getRemoveButton().setEnabled( false );
@@ -169,7 +185,7 @@ public class UserRolePresenter extends BasePresenter<UserRoleViewInterface, Empl
 			}
 
 			public void onSuccess( Void result ) {
-				MyListBoxInterface selectedRoles = view.getSelectedRolesListBox();
+				IListBox selectedRoles = view.getSelectedRolesListBox();
 				selectedRoles.removeItem( role );
 				if ( selectedRoles.getSelectedValue() == null ) {
 					view.getRemoveButton().setEnabled( false );
@@ -201,7 +217,7 @@ public class UserRolePresenter extends BasePresenter<UserRoleViewInterface, Empl
 		view.getAddButton().setEnabled( false );
 		view.getSelectedRolesListBox().clear();
 		enabled = false;
-		MyListBoxInterface rolesChoices = view.getRoleChoiceListBox();
+		IListBox rolesChoices = view.getRoleChoiceListBox();
 		rolesChoices.setSelectedIndex( 0 );
 		rolesChoices.setEnabled( false );
 	}

@@ -7,9 +7,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.MyTableInterface;
+import com.mvp4g.example.client.widget.interfaces.ITable;
 
-public class MyMockTable implements MyTableInterface {
+public class MyMockTable implements ITable {
 
 	private ClickHandler clickHandler = null;
 

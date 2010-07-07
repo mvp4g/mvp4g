@@ -1,5 +1,8 @@
 package com.mvp4g.example.server;
 
+import static com.mvp4g.example.client.Constants.DEPARTMENTS;
+import static com.mvp4g.example.client.Constants.ROLES;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -10,11 +13,10 @@ import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
 import com.extjs.gxt.ui.client.data.PagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.mvp4g.example.client.Constants;
 import com.mvp4g.example.client.UserService;
 import com.mvp4g.example.client.bean.UserBean;
 
-public class UserServiceImpl extends RemoteServiceServlet implements UserService, Constants {
+public class UserServiceImpl extends RemoteServiceServlet implements UserService {
 
 	/**
 	 * 
