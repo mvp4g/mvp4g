@@ -7,6 +7,13 @@
 	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="test/lib/junit-4.5.jar"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/mvp4g-1.1.0.jar"/>
+	<classpathentry kind="lib" path="test/lib/easymock-3.0.jar"/>
+	<classpathentry kind="lib" path="test/lib/cglib-2.2.jar"/>
+	<classpathentry kind="lib" path="test/lib/objenesis-1.2.jar"/>
+	<classpathentry kind="lib" path="test/lib/asm-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/mvp4g-1.2.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/aopalliance.jar"/>
+	<classpathentry kind="lib" path="lib/gin-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/guice-2.0.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
