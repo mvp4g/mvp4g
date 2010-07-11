@@ -16,6 +16,8 @@
 package com.mvp4g.example.client.view;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -23,6 +25,8 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HTMLTable.Cell;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mvp4g.example.client.presenter.MailListPresenter;
 
@@ -48,9 +52,11 @@ public class MailListView extends ResizeComposite implements MailListPresenter.I
 	@UiField
 	SelectionStyle selectionStyle;
 
-	public MailListView() {
+	@Inject
+	public MailListView( NavBarView navView ) {
 		initWidget( binder.createAndBindUi( this ) );
 		initTable();
+		header.setWidget( 0, 3, navView );
 	}
 
 	/**
@@ -71,22 +77,34 @@ public class MailListView extends ResizeComposite implements MailListPresenter.I
 		// Initialize the table.
 		table.getColumnFormatter().setWidth( 0, "128px" );
 		table.getColumnFormatter().setWidth( 1, "192px" );
+
 	}
 
-	public String getSelectedStyle() {
-		return selectionStyle.selectedRow();
+	public void setRow( int row, String sender, String email, String subject ) {
+		table.setText( row, 0, sender );
+		table.setText( row, 1, email );
+		table.setText( row, 2, subject );
 	}
 
-	public FlexTable getTable() {
+	public void clearEmails() {
+		table.clear( true );
+	}
+
+	public int getClickedRow( ClickEvent event ) {
+		Cell cell = table.getCellForEvent( event );
+		return ( cell == null ) ? -1 : cell.getRowIndex();
+	}
+
+	public void selectRow( int row, boolean selected ) {
+		if ( selected ) {
+			table.getRowFormatter().addStyleName( row, selectionStyle.selectedRow() );
+		} else {
+			table.getRowFormatter().removeStyleName( row, selectionStyle.selectedRow() );
+		}
+	}
+
+	public HasClickHandlers getTable() {
 		return table;
-	}
-
-	public Widget getViewWidget() {
-		return this;
-	}
-
-	public void setNavigationBar( Widget navigationBar ) {
-		header.setWidget( 0, 3, navigationBar );
 	}
 
 }

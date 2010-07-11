@@ -6,14 +6,18 @@ import java.util.Map;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.example.client.TestInjector;
 import com.mvp4g.example.client.util.index.IndexGenerator;
 
-@Presenter( view = MainView.class )
+@Presenter( view = MainView.class, multiple = true )
 public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface, MainEventBus> {
 
 	public Map<Class<? extends Mvp4gModule>, Mvp4gModule> modules = new HashMap<Class<? extends Mvp4gModule>, Mvp4gModule>();
@@ -43,13 +47,22 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 		public int getStartIndex();
 
 		public int getLastIndex();
+		
+		public HasValue<Boolean> getFilter();
 
 	}
 
-	@Inject
+	
 	private IndexGenerator indexGenerator;
+	
+	@Inject
+	private TestInjector injector;
+	
+	//have this filter to test force filter option & add/remove event filter
+	private MainEventFilter filter = new MainEventFilter();
 
 	public void bind() {
+		indexGenerator = injector.getIndexGenerator();
 		view.getCompanyMenu().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
@@ -68,6 +81,17 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 				eventBus.clearHistory();
 			}
 		} );
+		view.getFilter().addValueChangeHandler( new ValueChangeHandler<Boolean>() {
+			
+			public void onValueChange( ValueChangeEvent<Boolean> event ) {
+				if(event.getValue()){
+					eventBus.addEventFilter( filter );
+				}
+				else{
+					eventBus.removeEventFilter( filter );
+				}
+			}
+		});
 
 	}
 

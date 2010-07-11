@@ -18,7 +18,6 @@ package com.mvp4g.example.client.presenter;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.MailEventBus;
@@ -31,17 +30,15 @@ import com.mvp4g.example.client.view.NavBarView;
 public class NavBarPresenter extends BasePresenter<NavBarPresenter.INavBarView, MailEventBus> {
 
 	public interface INavBarView {
-		public Anchor getNewerButton();
+		Anchor getNewerButton();
 
-		public Anchor getOlderButton();
+		Anchor getOlderButton();
 
-		public void setNavText( String text );
-
-		public Widget getViewWidget();
+		void setNavText( String text );
 	}
 
 	public void onStart() {
-		eventBus.setNavigationBar( view.getViewWidget() );
+		//do nothing, just here to instantiate the view before being injected
 	}
 
 	public void bind() {
@@ -62,7 +59,7 @@ public class NavBarPresenter extends BasePresenter<NavBarPresenter.INavBarView, 
 		} );
 	}
 
-	public void onSetNavStatus( int startIndex, int endIndex, int numberOfElements ){
+	public void onSetNavStatus( int startIndex, int endIndex, int numberOfElements ) {
 		view.getNewerButton().setVisible( startIndex != 1 );
 		view.getOlderButton().setVisible( ( startIndex + MailListPresenter.VISIBLE_EMAIL_COUNT ) <= numberOfElements );
 		view.setNavText( "" + startIndex + " - " + endIndex + " of " + numberOfElements );

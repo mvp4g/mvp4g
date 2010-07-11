@@ -6,6 +6,9 @@ import java.util.Map;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.mvp4g.client.Mvp4gModule;
@@ -39,8 +42,13 @@ public class MainPresenter extends XmlPresenter<MainPresenter.MainViewInterface>
 		public int getStartIndex();
 
 		public int getLastIndex();
+		
+		public HasValue<Boolean> getFilter();
 
 	}
+	
+	//have this filter to test force filter option & add/remove event filter
+	private MainEventFilter filter = new MainEventFilter();
 
 	@Inject
 	private IndexGenerator index;
@@ -58,6 +66,18 @@ public class MainPresenter extends XmlPresenter<MainPresenter.MainViewInterface>
 				eventBus.dispatch( "goToProduct", index.generateIndex( view.getStartIndex() ), index.generateIndex( view.getLastIndex() ) );
 			}
 		} );
+view.getFilter().addValueChangeHandler( new ValueChangeHandler<Boolean>() {
+			
+			public void onValueChange( ValueChangeEvent<Boolean> event ) {
+				if(event.getValue()){
+					eventBus.addEventFilter( filter );
+				}
+				else{
+					eventBus.removeEventFilter( filter );
+				}
+			}
+		});
+
 
 	}
 

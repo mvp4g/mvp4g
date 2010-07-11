@@ -3,7 +3,6 @@ package com.mvp4g.example.client.presenter;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.MailEventBus;
@@ -18,15 +17,13 @@ public class ShortCutsPresenter extends BasePresenter<ShortCutsPresenter.IShortC
 	};
 
 	public interface IShortCutsView {
-		public Anchor addContact( String name );
+		 Anchor addContact( String name );
 
-		public void addTask( String task );
+		 void addTask( String task );
 
-		public void addFolder( FOLDER_TYPE folder );
+		 void addFolder( FOLDER_TYPE folder );
 
-		public Widget getViewWidget();
-
-		public void showContactPopup( String name, String email, int left, int top );
+		 void showContactPopup( String name, String email, int left, int top );
 	}
 
 	private Contact[] contacts = new Contact[] { new Contact( "Benoit Mandelbrot", "benoit@example.com" ),
