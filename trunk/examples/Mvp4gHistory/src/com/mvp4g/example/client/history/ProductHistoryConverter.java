@@ -7,6 +7,10 @@ import com.mvp4g.example.client.bean.ProductBean;
 
 @History
 public class ProductHistoryConverter extends AbstractHistoryConverter<ProductBean> {
+	
+	public String onDisplayProduct(ProductBean product){
+		return convertToToken( product );
+	}
 
 	@Override
 	void serviceCall( String id, AsyncCallback<ProductBean> callback ) {

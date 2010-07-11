@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.example.client.presenter.view_interface.TopBarViewInterface;
+import com.mvp4g.example.client.presenter.TopBarPresenter.TopBarViewInterface;
 
 public class TopBarView extends BaseView implements TopBarViewInterface {
 
@@ -41,14 +41,6 @@ public class TopBarView extends BaseView implements TopBarViewInterface {
 		return mainPanel;
 	}
 
-	public ListBox getDealList() {
-		return deals;
-	}
-
-	public ListBox getProductList() {
-		return products;
-	}
-
 	public HasClickHandlers getShowDealButton() {
 		return showDeal;
 	}
@@ -63,6 +55,30 @@ public class TopBarView extends BaseView implements TopBarViewInterface {
 
 	public Widget getViewWidget() {
 		return this;
+	}
+
+	public void addDeal( String text, String value ) {
+		deals.addItem( text, value );
+	}
+
+	public void addProduct( String text, String value ) {
+		products.addItem( text, value );
+	}
+
+	public String getSelectedDeal() {
+		return deals.getValue( deals.getSelectedIndex() );
+	}
+
+	public String getSelectedProduct() {
+		return products.getValue( products.getSelectedIndex() );
+	}
+
+	public void setSelectedDeal( int index ) {
+		deals.setSelectedIndex( index );
+	}
+
+	public void setSelectedProduct( int index ) {
+		products.setSelectedIndex( index );
 	}
 
 }

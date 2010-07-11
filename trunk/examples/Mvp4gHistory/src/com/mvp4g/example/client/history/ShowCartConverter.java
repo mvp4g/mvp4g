@@ -6,8 +6,8 @@ import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.example.client.Constants;
 import com.mvp4g.example.client.MyEventBus;
 
-@History
-public class ShowCartConverter implements HistoryConverter<Object, MyEventBus> {
+@History( convertParams = false )
+public class ShowCartConverter implements HistoryConverter<MyEventBus> {
 
 	public void convertFromToken( String eventType, String param, MyEventBus eventBus ) {
 		String username = Cookies.getCookie( Constants.USERNAME );
@@ -18,8 +18,8 @@ public class ShowCartConverter implements HistoryConverter<Object, MyEventBus> {
 		}
 	}
 
-	public String convertToToken( String eventType, Object form ) {
-		return null;
+	public boolean isCrawlable() {
+		return false;
 	}
 
 }

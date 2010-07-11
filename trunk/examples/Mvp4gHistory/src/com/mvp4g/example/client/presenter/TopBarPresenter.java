@@ -4,33 +4,61 @@ import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.HasValue;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
+import com.mvp4g.client.view.LazyView;
 import com.mvp4g.example.client.MyEventBus;
 import com.mvp4g.example.client.ServiceAsync;
 import com.mvp4g.example.client.bean.BasicBean;
 import com.mvp4g.example.client.bean.DealBean;
 import com.mvp4g.example.client.bean.ProductBean;
-import com.mvp4g.example.client.presenter.view_interface.TopBarViewInterface;
 import com.mvp4g.example.client.view.TopBarView;
+import com.mvp4g.example.client.widget.IView;
 
 @Presenter( view = TopBarView.class )
-public class TopBarPresenter extends LazyPresenter<TopBarViewInterface, MyEventBus> {
+public class TopBarPresenter extends LazyPresenter<TopBarPresenter.TopBarViewInterface, MyEventBus> {
+
+	public interface TopBarViewInterface extends LazyView, IView {
+
+		String getSelectedProduct();
+
+		void setSelectedProduct( int index );
+
+		void addProduct( String text, String value );
+
+		String getSelectedDeal();
+
+		void setSelectedDeal( int index );
+
+		void addDeal( String text, String value );
+
+		HasClickHandlers getShowProductButton();
+
+		HasClickHandlers getShowDealButton();
+
+		HasValue<Boolean> getSave();
+
+	}
 
 	private ServiceAsync service = null;
 
+	private List<BasicBean> products;
 	private ProductBean productSelected = null;
+
+	private List<BasicBean> deals;
 	private DealBean dealSelected = null;
 
 	public void bindView() {
 		view.getShowDealButton().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				ListBox listBox = view.getDealList();
-				String dealId = listBox.getValue( listBox.getSelectedIndex() );
+				String dealId = view.getSelectedDeal();
 				service.getDealDetails( dealId, new AsyncCallback<DealBean>() {
 
 					public void onFailure( Throwable caught ) {
@@ -39,7 +67,6 @@ public class TopBarPresenter extends LazyPresenter<TopBarViewInterface, MyEventB
 
 					public void onSuccess( DealBean deal ) {
 						dealSelected = deal;
-						eventBus.setHistoryStored( view.getSave().getValue().booleanValue() );
 						eventBus.displayDeal( deal );
 					}
 
@@ -51,8 +78,7 @@ public class TopBarPresenter extends LazyPresenter<TopBarViewInterface, MyEventB
 		view.getShowProductButton().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				ListBox listBox = view.getProductList();
-				String productId = listBox.getValue( listBox.getSelectedIndex() );
+				String productId = view.getSelectedProduct();
 				service.getProductDetails( productId, new AsyncCallback<ProductBean>() {
 
 					public void onFailure( Throwable caught ) {
@@ -60,8 +86,7 @@ public class TopBarPresenter extends LazyPresenter<TopBarViewInterface, MyEventB
 					}
 
 					public void onSuccess( ProductBean product ) {
-						productSelected = product;
-						eventBus.setHistoryStored( view.getSave().getValue().booleanValue() );
+						productSelected = product;						
 						eventBus.displayProduct( product );
 					}
 
@@ -69,6 +94,12 @@ public class TopBarPresenter extends LazyPresenter<TopBarViewInterface, MyEventB
 			}
 
 		} );
+		view.getSave().addValueChangeHandler( new ValueChangeHandler<Boolean>() {
+			
+			public void onValueChange( ValueChangeEvent<Boolean> event ) {
+				eventBus.setHistoryStored( event.getValue() );				
+			}
+		});
 
 	}
 
@@ -87,20 +118,26 @@ public class TopBarPresenter extends LazyPresenter<TopBarViewInterface, MyEventB
 					}
 
 					public void onSuccess( List<BasicBean> products ) {
-						ListBox productsBox = view.getProductList();
-						fillListBox( productsBox, products );
-						if ( productSelected != null ) {
-							selectRightIndex( productsBox, productSelected.getId() );
+						TopBarPresenter.this.products = products;
+						for ( BasicBean product : products ) {
+							view.addProduct( product.getName(), product.getId() );
 						}
-						eventBus.changeTopWidget( view.getViewWidget() );
+
+						if ( productSelected != null ) {
+							view.setSelectedProduct( products.indexOf( productSelected ) );
+						}
+						eventBus.changeTopWidget( view );
 					}
 
 				} );
 
-				ListBox dealsBox = view.getDealList();
-				fillListBox( dealsBox, deals );
+				TopBarPresenter.this.deals = deals;
+				for ( BasicBean deal : deals ) {
+					view.addDeal( deal.getName(), deal.getId() );
+				}
+
 				if ( dealSelected != null ) {
-					selectRightIndex( dealsBox, dealSelected.getId() );
+					view.setSelectedDeal( deals.indexOf( dealSelected ) );
 				}
 
 			}
@@ -115,43 +152,25 @@ public class TopBarPresenter extends LazyPresenter<TopBarViewInterface, MyEventB
 
 	public void onDisplayDeal( DealBean bean ) {
 		if ( ( bean != null ) && ( !bean.equals( dealSelected ) ) ) {
-			selectRightIndex( view.getDealList(), bean.getId() );
 			dealSelected = bean;
+			if ( deals != null ) {
+				view.setSelectedDeal( deals.indexOf( dealSelected ) );
+			}
 		}
 	}
 
 	public void onDisplayProduct( ProductBean bean ) {
 		if ( ( bean != null ) && ( !bean.equals( productSelected ) ) ) {
-			selectRightIndex( view.getProductList(), bean.getId() );
 			productSelected = bean;
+			if ( products != null ) {
+				view.setSelectedDeal( products.indexOf( productSelected ) );
+			}
 		}
 	}
 
 	public void onInit() {
-		view.getDealList().setSelectedIndex( 0 );
-		view.getProductList().setSelectedIndex( 0 );
-	}
-
-	private void fillListBox( ListBox listBox, List<BasicBean> list ) {
-
-		int size = list.size();
-		BasicBean bean = null;
-
-		for ( int i = 0; i < size; i++ ) {
-			bean = list.get( i );
-			listBox.addItem( bean.getName(), bean.getId() );
-		}
-
-	}
-
-	private void selectRightIndex( ListBox listBox, String value ) {
-		int size = listBox.getItemCount();
-		for ( int index = 0; index < size; index++ ) {
-			if ( listBox.getValue( index ).equals( value ) ) {
-				listBox.setSelectedIndex( index );
-				break;
-			}
-		}
+		view.setSelectedProduct( 0 );
+		view.setSelectedDeal( 0 );
 	}
 
 }

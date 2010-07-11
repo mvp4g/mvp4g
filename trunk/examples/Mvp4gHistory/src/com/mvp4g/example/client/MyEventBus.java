@@ -1,6 +1,5 @@
 package com.mvp4g.example.client;
 
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.InitHistory;
@@ -20,18 +19,19 @@ import com.mvp4g.example.client.presenter.display.CartDisplayPresenter;
 import com.mvp4g.example.client.presenter.display.DealDisplayPresenter;
 import com.mvp4g.example.client.presenter.display.ProductDisplayPresenter;
 import com.mvp4g.example.client.view.RootTemplateView;
+import com.mvp4g.example.client.widget.IView;
 
 @Events( startView = RootTemplateView.class, historyOnStart = true )
 public interface MyEventBus extends EventBus {
 
 	@Event( handlers = RootTemplatePresenter.class )
-	public void changeTopWidget( Widget w );
+	public void changeTopWidget( IView w );
 
 	@Event( handlers = RootTemplatePresenter.class )
-	public void changeBottomWidget( Widget w );
+	public void changeBottomWidget( IView w );
 
 	@Event( handlers = RootTemplatePresenter.class )
-	public void changeMainWidget( Widget w );
+	public void changeMainWidget( IView w );
 
 	@Event( handlers = { RootTemplatePresenter.class, CartDisplayPresenter.class }, historyConverter = ShowCartConverter.class )
 	public void displayCart( String username );

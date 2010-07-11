@@ -42,4 +42,14 @@ public class BasicBean implements IsSerializable {
 		this.description = description;
 	}
 
+	@Override
+	public boolean equals( Object obj ) {
+		if ( obj instanceof BasicBean ) {
+			String id = getId();
+			return ( id != null ) && id.equals( ( (BasicBean)obj ).getId() );
+		} else {
+			return false;
+		}
+	}
+
 }

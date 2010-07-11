@@ -3,8 +3,7 @@ package com.mvp4g.example.client.view.display;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.example.client.bean.ProductBean;
-import com.mvp4g.example.client.presenter.view_interface.display.CartDisplayViewInterface;
+import com.mvp4g.example.client.presenter.display.CartDisplayPresenter.CartDisplayViewInterface;
 import com.mvp4g.example.client.view.BaseView;
 
 public class CartDisplayView extends BaseView implements CartDisplayViewInterface {
@@ -17,10 +16,6 @@ public class CartDisplayView extends BaseView implements CartDisplayViewInterfac
 		return mainPanel;
 	}
 
-	public void addProduct( ProductBean product ) {
-		mainPanel.add( new HTML( buildElement( product ) ) );
-	}
-
 	public void clear() {
 		mainPanel.clear();
 	}
@@ -29,14 +24,19 @@ public class CartDisplayView extends BaseView implements CartDisplayViewInterfac
 		return this;
 	}
 
-	private String buildElement( ProductBean product ) {
+	public void addProduct( String name, String price, String description ) {
+		mainPanel.add( new HTML( buildElement( name, price, description ) ) );
+
+	}
+
+	private String buildElement( String name, String price, String description ) {
 		StringBuilder element = new StringBuilder( 200 );
 		element.append( "<div><span class=\"name\">" );
-		element.append( product.getName() );
+		element.append( name );
 		element.append( "</span><span class=\"price\" >" );
-		element.append( product.getPrice() );
+		element.append( price );
 		element.append( "</span></div><div>" );
-		element.append( product.getDescription() );
+		element.append( description );
 		element.append( "<div>" );
 		return element.toString();
 	}
