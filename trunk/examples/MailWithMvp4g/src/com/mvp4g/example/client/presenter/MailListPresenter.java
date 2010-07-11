@@ -17,10 +17,8 @@ package com.mvp4g.example.client.presenter;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.MailEventBus;
@@ -32,13 +30,17 @@ import com.mvp4g.example.client.view.MailListView;
 public class MailListPresenter extends BasePresenter<MailListPresenter.IMailListView, MailEventBus> {
 
 	public interface IMailListView {
-		public FlexTable getTable();
 
-		public void setNavigationBar( Widget navigationBar );
+		HasClickHandlers getTable();
 
-		public String getSelectedStyle();
+		void clearEmails();
 
-		public Widget getViewWidget();
+		void setRow( int row, String sender, String email, String subject );
+
+		int getClickedRow( ClickEvent event );
+
+		void selectRow( int row, boolean selected );
+
 	}
 
 	private int startIndex, selectedRow = -1;
@@ -54,9 +56,8 @@ public class MailListPresenter extends BasePresenter<MailListPresenter.IMailList
 		view.getTable().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				Cell cell = view.getTable().getCellForEvent( event );
-				if ( cell != null ) {
-					int row = cell.getRowIndex();
+				int row = view.getClickedRow( event );
+				if ( row != -1 ) {
 					selectRow( row );
 				}
 			}
@@ -71,10 +72,6 @@ public class MailListPresenter extends BasePresenter<MailListPresenter.IMailList
 		if ( selectedRow == -1 ) {
 			selectRow( 0 );
 		}
-	}
-
-	public void onSetNavigationBar( Widget navigationBar ) {
-		view.setNavigationBar( navigationBar );
 	}
 
 	public void onNewer() {
@@ -135,11 +132,9 @@ public class MailListPresenter extends BasePresenter<MailListPresenter.IMailList
 		// Update the nav bar.
 		eventBus.setNavStatus( startIndex + 1, max, count );
 
-		FlexTable table = view.getTable();
-
 		// Show the selected emails.
-		int i = 0;
-		for ( ; i < VISIBLE_EMAIL_COUNT; ++i ) {
+		view.clearEmails();
+		for ( int i = 0; i < VISIBLE_EMAIL_COUNT; ++i ) {
 			// Don't read past the end.
 			if ( startIndex + i >= MailItems.getMailItemCount() ) {
 				break;
@@ -149,26 +144,13 @@ public class MailListPresenter extends BasePresenter<MailListPresenter.IMailList
 
 			// Add a new row to the table, then set each of its columns to the
 			// email's sender and subject values.
-			table.setText( i, 0, item.sender );
-			table.setText( i, 1, item.email );
-			table.setText( i, 2, item.subject );
-		}
-
-		// Clear any remaining slots.
-		for ( ; i < VISIBLE_EMAIL_COUNT; ++i ) {
-			table.removeRow( table.getRowCount() - 1 );
+			view.setRow( i, item.sender, item.email, item.subject );
 		}
 	}
 
 	private void styleRow( int row, boolean selected ) {
 		if ( row != -1 ) {
-			String style = view.getSelectedStyle();
-
-			if ( selected ) {
-				view.getTable().getRowFormatter().addStyleName( row, style );
-			} else {
-				view.getTable().getRowFormatter().removeStyleName( row, style );
-			}
+			view.selectRow( row, selected );
 		}
 	}
 }

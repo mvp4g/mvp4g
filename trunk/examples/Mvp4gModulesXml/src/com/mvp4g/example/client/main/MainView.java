@@ -2,7 +2,9 @@ package com.mvp4g.example.client.main;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -22,6 +24,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 	private SimplePanel bodyContainer = new SimplePanel();
 	private PopupPanel wait = new PopupPanel();
 	private TabBar bar = new TabBar();
+	private CheckBox filter = new CheckBox( "Filter Main EventBus events" );
 
 	private Label messageBar = new Label();
 
@@ -62,6 +65,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 		mainPanel.add( bar );
 		mainPanel.add( messageBar );
 		mainPanel.add( bodyContainer );
+		mainPanel.add( filter );
 		wait.add( new Label( "Wait" ) );
 
 		initWidget( mainPanel );
@@ -115,5 +119,9 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 
 	public int getStartIndex() {
 		return startIndex.getSelectedIndex();
+	}
+
+	public HasValue<Boolean> getFilter() {
+		return filter;
 	}
 }

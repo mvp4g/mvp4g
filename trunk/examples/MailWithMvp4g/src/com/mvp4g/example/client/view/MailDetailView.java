@@ -49,10 +49,6 @@ public class MailDetailView extends ResizeComposite implements MailDetailPresent
 		initWidget( binder.createAndBindUi( this ) );
 	}
 
-	public Widget getViewWidget() {
-		return this;
-	}
-
 	public void setBody( String b ) {
 		// WARNING: For the purposes of this demo, we're using HTML directly, on
 		// the assumption that the "server" would have appropriately scrubbed

@@ -23,11 +23,13 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Singleton;
 import com.mvp4g.example.client.presenter.NavBarPresenter;
 
 /**
  * A simple widget representing prev/next page navigation.
  */
+@Singleton
 public class NavBarView extends Composite implements NavBarPresenter.INavBarView {
 
 	@UiTemplate( "NavBarView.ui.xml" )

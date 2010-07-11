@@ -1,6 +1,5 @@
 package com.mvp4g.example.client;
 
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Start;
@@ -17,7 +16,7 @@ import com.mvp4g.example.client.view.MailView;
 public interface MailEventBus extends EventBus {
 
 	@Start
-	@Event( handlers = { TopPresenter.class, MailListPresenter.class, MailDetailPresenter.class, NavBarPresenter.class, ShortCutsPresenter.class } )
+	@Event( handlers = { TopPresenter.class, NavBarPresenter.class, MailListPresenter.class, MailDetailPresenter.class, ShortCutsPresenter.class } )
 	public void start();
 
 	@Event( handlers = MailDetailPresenter.class )
@@ -25,9 +24,6 @@ public interface MailEventBus extends EventBus {
 
 	@Event( handlers = NavBarPresenter.class )
 	public void setNavStatus( int startIndex, int endIndex, int numberOfElements );
-
-	@Event( handlers = MailListPresenter.class )
-	public void setNavigationBar( Widget w );
 
 	@Event( handlers = MailListPresenter.class )
 	public void newer();

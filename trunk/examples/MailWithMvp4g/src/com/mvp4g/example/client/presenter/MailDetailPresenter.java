@@ -15,7 +15,6 @@
  */
 package com.mvp4g.example.client.presenter;
 
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.MailEventBus;
@@ -29,18 +28,17 @@ import com.mvp4g.example.client.view.MailDetailView;
 public class MailDetailPresenter extends BasePresenter<MailDetailPresenter.IMailDetailView, MailEventBus> {
 
 	public interface IMailDetailView {
-		public void setSubject( String subject );
+		 void setSubject( String subject );
 
-		public void setSender( String sender );
+		 void setSender( String sender );
 
-		public void setRecipient( String recipient );
+		 void setRecipient( String recipient );
 
-		public void setBody( String body );
-
-		public Widget getViewWidget();
+		 void setBody( String body );
 	}
 
 	public void onStart() {
+		//nothing to do, here just to create & bind the presenter's view before it's injected to the root view
 	}
 
 	public void onItemSelected( MailItem item ) {
