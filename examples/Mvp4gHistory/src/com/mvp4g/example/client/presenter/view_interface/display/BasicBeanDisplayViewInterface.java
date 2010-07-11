@@ -1,15 +1,12 @@
 package com.mvp4g.example.client.presenter.view_interface.display;
 
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
+import com.mvp4g.example.client.widget.IView;
 
-public interface BasicBeanDisplayViewInterface extends LazyView {
+public interface BasicBeanDisplayViewInterface extends LazyView, IView {
 
-	public Label getName();
+	void setName( String name );
 
-	public Label getDescription();
-
-	public Widget getViewWidget();
+	void setDescription( String description );
 
 }

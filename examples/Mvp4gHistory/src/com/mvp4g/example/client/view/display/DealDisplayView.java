@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.example.client.presenter.view_interface.display.DealDisplayViewInterface;
+import com.mvp4g.example.client.presenter.display.DealDisplayPresenter.DealDisplayViewInterface;
 
 public class DealDisplayView extends BasicBeanDisplayView implements DealDisplayViewInterface {
 
@@ -21,8 +21,10 @@ public class DealDisplayView extends BasicBeanDisplayView implements DealDisplay
 		return mainPanel;
 	}
 
-	public Label getCode() {
-		return code;
+	public void setCode( String code ) {
+		this.code.setText( code );		
 	}
+
+	
 
 }

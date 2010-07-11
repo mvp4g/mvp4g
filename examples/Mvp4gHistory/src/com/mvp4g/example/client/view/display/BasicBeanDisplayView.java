@@ -22,16 +22,16 @@ public class BasicBeanDisplayView extends BaseView implements BasicBeanDisplayVi
 		return mainPanel;
 	}
 
-	public Label getDescription() {
-		return description;
-	}
-
-	public Label getName() {
-		return name;
-	}
-
 	public Widget getViewWidget() {
 		return this;
+	}
+
+	public void setDescription( String description ) {
+		this.description.setText( description );
+	}
+
+	public void setName( String name ) {
+		this.name.setText( name );
 	}
 
 }

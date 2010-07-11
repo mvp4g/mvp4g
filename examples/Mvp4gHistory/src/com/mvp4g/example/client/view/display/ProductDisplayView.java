@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.example.client.presenter.view_interface.display.ProductDisplayViewInterface;
+import com.mvp4g.example.client.presenter.display.ProductDisplayPresenter.ProductDisplayViewInterface;
 
 public class ProductDisplayView extends BasicBeanDisplayView implements ProductDisplayViewInterface {
 
@@ -21,8 +21,8 @@ public class ProductDisplayView extends BasicBeanDisplayView implements ProductD
 		return mainPanel;
 	}
 
-	public Label getPrice() {
-		return price;
+	public void setPrice( String price ) {
+		this.price.setText( price );
 	}
 
 }

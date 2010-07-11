@@ -7,7 +7,7 @@ import com.mvp4g.example.client.MyEventBus;
 import com.mvp4g.example.client.ServiceAsync;
 import com.mvp4g.example.client.bean.BasicBean;
 
-public abstract class AbstractHistoryConverter<T extends BasicBean> implements HistoryConverter<T, MyEventBus> {
+public abstract class AbstractHistoryConverter<T extends BasicBean> implements HistoryConverter<MyEventBus> {
 
 	protected ServiceAsync service = null;
 
@@ -32,15 +32,20 @@ public abstract class AbstractHistoryConverter<T extends BasicBean> implements H
 		}
 	}
 
-	public String convertToToken( String eventType, T form ) {
-		return "id=" + form.getId();
-	}
-
+	
 	@InjectService
 	public void setService( ServiceAsync service ) {
 		this.service = service;
 	}
+	
+	public boolean isCrawlable() {
+		return false;
+	}
 
+	protected String convertToToken( T form ) {
+		return "id=" + form.getId();
+	}
+	
 	abstract void serviceCall( String id, AsyncCallback<T> callback );
 
 	abstract void sendEvent( MyEventBus eventBus, T result );

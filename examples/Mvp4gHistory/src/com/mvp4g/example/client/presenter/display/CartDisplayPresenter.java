@@ -6,14 +6,23 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
+import com.mvp4g.client.view.LazyView;
 import com.mvp4g.example.client.MyEventBus;
 import com.mvp4g.example.client.ServiceAsync;
 import com.mvp4g.example.client.bean.ProductBean;
-import com.mvp4g.example.client.presenter.view_interface.display.CartDisplayViewInterface;
 import com.mvp4g.example.client.view.display.CartDisplayView;
+import com.mvp4g.example.client.widget.IView;
 
 @Presenter( view = CartDisplayView.class )
-public class CartDisplayPresenter extends LazyPresenter<CartDisplayViewInterface, MyEventBus> {
+public class CartDisplayPresenter extends LazyPresenter<CartDisplayPresenter.CartDisplayViewInterface, MyEventBus> {
+
+	public interface CartDisplayViewInterface extends LazyView, IView {
+
+		void clear();
+
+		void addProduct( String name, String price, String description );
+
+	}
 
 	private ServiceAsync service = null;
 
@@ -27,12 +36,12 @@ public class CartDisplayPresenter extends LazyPresenter<CartDisplayViewInterface
 				}
 
 				public void onSuccess( List<ProductBean> products ) {
-					int size = products.size();
-					for ( int i = 0; i < size; i++ ) {
-						view.addProduct( products.get( i ) );
+										
+					for ( ProductBean product : products ) {
+						view.addProduct( product.getName(), product.getPrice(), product.getDescription() );
 					}
 
-					eventBus.changeMainWidget( view.getViewWidget() );
+					eventBus.changeMainWidget( view );
 				}
 
 			} );

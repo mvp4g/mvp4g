@@ -2,12 +2,12 @@ package com.mvp4g.example.client.view;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.example.client.presenter.view_interface.LoginViewInterface;
+import com.mvp4g.example.client.presenter.LoginPresenter.LoginViewInterface;
 
 public class LoginView extends BaseView implements LoginViewInterface {
 
@@ -31,7 +31,7 @@ public class LoginView extends BaseView implements LoginViewInterface {
 		return login;
 	}
 
-	public HasText getUserName() {
+	public HasValue<String> getUserName() {
 		return username;
 	}
 

@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.example.client.presenter.view_interface.AccountViewInterface;
+import com.mvp4g.example.client.presenter.AccountPresenter.AccountViewInterface;
 
 public class AccountView extends BaseView implements AccountViewInterface {
 
@@ -30,12 +30,12 @@ public class AccountView extends BaseView implements AccountViewInterface {
 		return showCart;
 	}
 
-	public Label getUsername() {
-		return username;
-	}
-
 	public Widget getViewWidget() {
 		return this;
+	}
+
+	public void setUsername( String username ) {
+		this.username.setText( username );
 	}
 
 }
