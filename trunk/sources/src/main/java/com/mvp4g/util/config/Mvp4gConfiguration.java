@@ -119,6 +119,7 @@ public class Mvp4gConfiguration {
 	private static final String WRONG_FORWARD_EVENT = "You can't define a forward event for RootModule since no event from parent can be forwarded to it.";
 	private static final String NO_START_VIEW = "You must define a view to load when the application starts that is associated to a presenter.";
 	private static final String NO_GIN_MODULE = "You need to define at least one GIN module. If you don't want to specify a GIN module, don't override the GIN modules option to use the default Mvp4g GIN module.";
+	private static final String ROOT_MODULE_NO_HISTORY_NAME = "Module %s can't have an history name since it's a root module.";
 
 	private Set<PresenterElement> presenters = new HashSet<PresenterElement>();
 	private Set<EventHandlerElement> eventHandlers = new HashSet<EventHandlerElement>();
@@ -442,7 +443,7 @@ public class Mvp4gConfiguration {
 	 * @return the parentModule
 	 */
 	public boolean isRootModule() {
-		return ROOT_MODULE_CLASS_NAME.equals( module.getQualifiedSourceName() );
+		return ROOT_MODULE_CLASS_NAME.equals( module.getQualifiedSourceName() ) || ( ( parentEventBus == null ) && !eventBus.isXml() );
 	}
 
 	/**
@@ -1122,7 +1123,7 @@ public class Mvp4gConfiguration {
 	 */
 	void validateHistory() throws InvalidMvp4gConfigurationException {
 		if ( historyConverters.size() > 0 ) {
-			if ( !ROOT_MODULE_CLASS_NAME.equals( module.getQualifiedSourceName() ) ) {
+			if ( !isRootModule() ) {
 				if ( ( history != null ) && ( ( history.getInitEvent() != null ) || ( history.getNotFoundEvent() != null ) ) ) {
 					throw new InvalidMvp4gConfigurationException(
 							"History configuration (init and not found event should be configure only for root module (only module with no parent)" );
@@ -1506,21 +1507,26 @@ public class Mvp4gConfiguration {
 		eventFilterConfiguration = eventFilterConfig.loadElement();
 	}
 
-	void loadParentModule() throws NotFoundClassException {
+	void loadParentModule() throws InvalidMvp4gConfigurationException {
 
 		if ( !ROOT_MODULE_CLASS_NAME.equals( module.getQualifiedSourceName() ) ) {
 
 			parentEventBus = findParentEventBus( module.getQualifiedSourceName() );
-			if ( parentEventBus == null ) {
+			//for xml event bus, only Mvp4gModule can be a root module
+			if ( ( parentEventBus == null ) && eventBus.isXml() ) {
 				parentEventBus = getType( null, EventBusWithLookup.class.getCanonicalName() );
 				logger.log( TreeLogger.WARN, PARENT_EVENT_BUS_WARNING );
 			}
 
-			HistoryName hName = module.getAnnotation( HistoryName.class );
-			if ( hName != null ) {
+		}
+
+		HistoryName hName = module.getAnnotation( HistoryName.class );
+		if ( hName != null ) {
+			if ( isRootModule() ) {
+				throw new InvalidMvp4gConfigurationException( String.format( ROOT_MODULE_NO_HISTORY_NAME, module.getQualifiedSourceName() ) );
+			} else {
 				historyName = hName.value();
 			}
-
 		}
 
 	}
