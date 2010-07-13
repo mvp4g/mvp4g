@@ -22,6 +22,7 @@ import com.mvp4g.util.config.element.EventFilterElement;
 public class EventFiltersLoader extends Mvp4gElementLoader<EventFilterElement> {
 
     static final String[] REQUIRED_ATTRIBUTES = { "name", "class" };
+    static final String[] PARENT_ATTRIBUTES = { "package" };
 
 	@SuppressWarnings( "unchecked" )
 	public EventFiltersLoader( XMLConfiguration xmlConfig ) {
@@ -41,6 +42,11 @@ public class EventFiltersLoader extends Mvp4gElementLoader<EventFilterElement> {
 	@Override
 	protected EventFilterElement newElement() {
 		return new EventFilterElement();
+	}
+	
+	@Override
+	protected String[] getParentAttributeNames() {
+		return PARENT_ATTRIBUTES;
 	}
 
 }

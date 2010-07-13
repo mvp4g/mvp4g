@@ -946,7 +946,7 @@ public class Mvp4gConfigurationTest {
 
 		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
 		JClassType parentEventBus = oracle.addClass( Events.EventBusOk.class );
-		configuration.getOthersEventBusClassMap().put( Mvp4gModule.class.getCanonicalName(), parentEventBus );
+		configuration.getModuleParentEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(), parentEventBus );
 		configuration.loadParentModule();
 		configuration.validateEvents();
 	}
@@ -1035,7 +1035,7 @@ public class Mvp4gConfigurationTest {
 
 		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
 		JClassType parentEventBus = oracle.addClass( Events.EventBusOk.class );
-		configuration.getOthersEventBusClassMap().put( Mvp4gModule.class.getCanonicalName(), parentEventBus );
+		configuration.getModuleParentEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(), parentEventBus );
 		configuration.loadParentModule();
 
 		configuration.getHistory().setInitEvent( "event" );
@@ -1072,7 +1072,7 @@ public class Mvp4gConfigurationTest {
 
 		configuration.setModule( oracle.addClass( Modules.ModuleWithParentNoName.class ) );
 		JClassType parentEventBus = oracle.addClass( Events.EventBusOk.class );
-		configuration.getOthersEventBusClassMap().put( Mvp4gModule.class.getCanonicalName(), parentEventBus );
+		configuration.getModuleParentEventBusClassMap().put( Modules.ModuleWithParentNoName.class.getCanonicalName(), parentEventBus );
 		configuration.loadParentModule();
 
 		assertNull( configuration.getHistoryName() );
@@ -1085,7 +1085,8 @@ public class Mvp4gConfigurationTest {
 		}
 
 		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
-		configuration.loadParentModule();
+		configuration.getModuleParentEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(), parentEventBus );
+		configuration.loadParentModule();		
 		assertEquals( "moduleWithParent", configuration.getHistoryName() );
 
 		configuration.validateHistory();
@@ -1614,6 +1615,7 @@ public class Mvp4gConfigurationTest {
 		start.setForwardEventType( "forward" );
 
 		try {
+			setEventBus();
 			configuration.validateEvents();
 			fail();
 		} catch ( InvalidMvp4gConfigurationException ex ) {
@@ -1642,6 +1644,7 @@ public class Mvp4gConfigurationTest {
 
 		StartElement start = configuration.getStart();
 		start.setForwardEventType( "forward" );
+		setEventBus();
 
 		configuration.validateEvents();
 	}
@@ -1721,20 +1724,38 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testRootModule() {
+		configuration.setModule( oracle.addClass( Mvp4gModule.class ) );		
 		assertTrue( configuration.isRootModule() );
+		
+		setEventBus();
 		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
 		assertFalse( configuration.isRootModule() );
+		
+		configuration.setParentEventBus( oracle.addClass( Events.EventBusOk.class ) );
+		assertFalse( configuration.isRootModule() );
+		
+		EventBusElement eventBus = new EventBusElement( Events.EventBusOk.class.getName(), BaseEventBus.class.getName(), false );
+		configuration.setEventBus( eventBus );
+		configuration.setParentEventBus( null );
+		assertTrue( configuration.isRootModule() );
 	}
 
 	@Test
-	public void testParentEventBus() throws NotFoundClassException {
+	public void testParentEventBus() throws InvalidMvp4gConfigurationException {
+		
+		EventBusElement eventBus = new EventBusElement( Events.EventBusOk.class.getName(), BaseEventBus.class.getName(), false );
+		configuration.setEventBus( eventBus );
+		
 		configuration.loadParentModule();
 		assertNull( configuration.getParentEventBus() );
+		assertTrue( configuration.isRootModule() );		
+		
 		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
 		JClassType c = oracle.addClass( EventBus.class );
 		configuration.getModuleParentEventBusClassMap().put( Modules.Module1.class.getCanonicalName(), c );
 		configuration.loadParentModule();
 		assertEquals( c, configuration.getParentEventBus() );
+		assertFalse( configuration.isRootModule() );
 	}
 
 	@Test
