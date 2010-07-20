@@ -9,7 +9,7 @@ import com.mvp4g.example.client.widget.interfaces.gxt.IGXTTable;
 public class MyGXTTable extends Grid<BeanModel> implements IGXTTable {
 
 	public MyGXTTable( ListStore<BeanModel> store, ColumnModel cm ) {
-		super( store, cm );
+		super( store, cm );		
 	}
 
 	public void selectRow( int row ) {

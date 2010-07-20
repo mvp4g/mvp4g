@@ -8,12 +8,15 @@ import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.ListField;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
+import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.presenter.gxt.MyListModel;
@@ -39,6 +42,8 @@ public class UserRoleView extends LayoutContainer implements IUserRoleView {
 		form.setHeading( "User Roles" );
 		selectedRoles.setHideLabel( true );
 		rolesChoices.setHideLabel( true );
+		rolesChoices.setTriggerAction(TriggerAction.ALL); 
+		
 		selectedRoles.setStore( new ListStore<MyListModel>() );
 		form.add( selectedRoles );
 		form.add( rolesChoices );
@@ -119,13 +124,14 @@ public class UserRoleView extends LayoutContainer implements IUserRoleView {
 
 		} );
 
-		selectedRoles.addListener( Events.Focus, new Listener<FieldEvent>() {
+		selectedRoles.addSelectionChangedListener(new SelectionChangedListener<MyListModel>(){
 
-			public void handleEvent( FieldEvent be ) {
-				presenter.onRoleSelected();
+			@Override
+			public void selectionChanged( SelectionChangedEvent<MyListModel> se ) {
+				presenter.onRoleSelected();				
 			}
-
-		} );
+			
+		});
 
 		rolesChoices.addListener( Events.Select, new Listener<FieldEvent>() {
 

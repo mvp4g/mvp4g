@@ -46,7 +46,7 @@ public class UserListView extends ContentPanel implements IUserListView {
 		buttons.add( yes );
 		buttons.add( no );
 
-		add( buttons );
+		add( buttons );		
 
 		setBottomComponent( toolBar );
 
@@ -66,9 +66,11 @@ public class UserListView extends ContentPanel implements IUserListView {
 		userList = new MyGXTTable( store, cm );
 		userList.setBorders( true );
 		userList.setAutoHeight( true );
+		userList.setAutoWidth( true );
 		userList.setStripeRows( true );
-
+		userList.getView().setForceFit( true );		
 		add( userList );
+		
 
 	}
 
