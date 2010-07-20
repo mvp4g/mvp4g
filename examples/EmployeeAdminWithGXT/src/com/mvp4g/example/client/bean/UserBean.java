@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.extjs.gxt.ui.client.data.BeanModelTag;
-import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class UserBean implements BeanModelTag, Serializable {
 

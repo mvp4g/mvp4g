@@ -26,4 +26,12 @@ public class MyListModel extends BaseModelData {
 		return get( TEXT );
 	}
 
+	public boolean equals( Object o ) {
+		boolean equal = o instanceof MyListModel;
+		if ( equal ) {
+			equal = ( (MyListModel)o ).getText().equals( getText() );
+		}
+		return equal;
+	}
+
 }

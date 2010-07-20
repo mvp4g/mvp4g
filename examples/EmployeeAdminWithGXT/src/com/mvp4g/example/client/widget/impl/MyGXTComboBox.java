@@ -14,6 +14,7 @@ public class MyGXTComboBox extends SimpleComboBox<String> implements IListBox {
 
 	public MyGXTComboBox( String fieldLabel ) {
 		setFieldLabel( fieldLabel );
+		setTriggerAction(TriggerAction.ALL);
 	}
 
 	public void addItem( String item ) {
