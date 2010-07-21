@@ -8,12 +8,12 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.TestEventBus;
 import com.mvp4g.example.client.bean.UserBean;
-import com.mvp4g.example.client.presenter.view_interface.UserViewInterface;
+import com.mvp4g.example.client.presenter.view_interface.IUserViewInterface;
 import com.mvp4g.example.client.service.UserServiceAsync;
 import com.mvp4g.example.client.view.UserCreateView;
 
 @Presenter( view = UserCreateView.class )
-public class UserCreatePresenter extends BasePresenter<UserViewInterface, TestEventBus> {
+public class UserCreatePresenter extends BasePresenter<IUserViewInterface, TestEventBus> {
 
 	private UserServiceAsync userService = null;
 
@@ -23,8 +23,8 @@ public class UserCreatePresenter extends BasePresenter<UserViewInterface, TestEv
 
 			public void onClick( ClickEvent event ) {
 				UserBean user = new UserBean();
-				user.setFirstName( view.getFirstName().getValue() );
-				user.setLastName( view.getLastName().getValue() );
+				user.setFirstName( view.getFirstName().getText() );
+				user.setLastName( view.getLastName().getText() );
 				createUser( user );
 			}
 
@@ -46,8 +46,8 @@ public class UserCreatePresenter extends BasePresenter<UserViewInterface, TestEv
 	}
 
 	public void onStart() {
-		view.getLastName().setValue( "" );
-		view.getFirstName().setValue( "" );
+		view.getLastName().setText( "" );
+		view.getFirstName().setText( "" );
 		eventBus.changeBody( view.getViewWidget() );
 	}
 

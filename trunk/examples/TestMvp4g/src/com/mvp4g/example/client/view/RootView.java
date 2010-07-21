@@ -1,18 +1,17 @@
 package com.mvp4g.example.client.view;
 
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.example.client.presenter.view_interface.RootViewInterface;
-import com.mvp4g.example.client.view.widget.LabelWithValue;
+import com.mvp4g.example.client.presenter.view_interface.IRootViewInterface;
 
-public class RootView extends Composite implements RootViewInterface {
+public class RootView extends Composite implements IRootViewInterface {
 
-	private LabelWithValue message = new LabelWithValue();
-	private Panel body = new SimplePanel();
+	private Label message = new Label();
+	private SimplePanel body = new SimplePanel();
 
 	public RootView() {
 		VerticalPanel mainPanel = new VerticalPanel();
@@ -22,12 +21,12 @@ public class RootView extends Composite implements RootViewInterface {
 		initWidget( mainPanel );
 	}
 
-	public HasValue<String> getMessage() {
+	public HasText getMessage() {
 		return message;
 	}
 
-	public Panel getBody() {
-		return body;
+	public void setBody( Widget body ) {
+		this.body.setWidget( body );
 	}
 
 	public Widget getViewWidget() {
