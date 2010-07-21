@@ -6,11 +6,11 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.TestEventBus;
 import com.mvp4g.example.client.bean.UserBean;
-import com.mvp4g.example.client.presenter.view_interface.UserViewInterface;
+import com.mvp4g.example.client.presenter.view_interface.IUserViewInterface;
 import com.mvp4g.example.client.view.UserDisplayView;
 
 @Presenter( view = UserDisplayView.class )
-public class UserDisplayPresenter extends BasePresenter<UserViewInterface, TestEventBus> {
+public class UserDisplayPresenter extends BasePresenter<IUserViewInterface, TestEventBus> {
 
 	@Override
 	public void bind() {
@@ -25,8 +25,8 @@ public class UserDisplayPresenter extends BasePresenter<UserViewInterface, TestE
 
 	public void setUserBean( UserBean user ) {
 		view.getId().setText( user.getId().toString() );
-		view.getLastName().setValue( user.getLastName() );
-		view.getFirstName().setValue( user.getFirstName() );
+		view.getLastName().setText( user.getLastName() );
+		view.getFirstName().setText( user.getFirstName() );
 	}
 
 	public void display() {

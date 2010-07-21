@@ -5,24 +5,23 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.example.client.presenter.view_interface.UserViewInterface;
-import com.mvp4g.example.client.view.widget.LabelWithValue;
+import com.mvp4g.example.client.presenter.view_interface.IUserViewInterface;
 
-public class UserDisplayView extends Composite implements UserViewInterface {
+public class UserDisplayView extends Composite implements IUserViewInterface {
 
 	private Button create = null;
-	private LabelWithValue id = null;
-	private LabelWithValue lastName = null;
-	private LabelWithValue firstName = null;
+	private Label id = null;
+	private Label lastName = null;
+	private Label firstName = null;
 
 	public UserDisplayView() {
 
-		id = new LabelWithValue();
-		lastName = new LabelWithValue();
-		firstName = new LabelWithValue();
+		id = new Label();
+		lastName = new Label();
+		firstName = new Label();
 
 		Grid grid = new Grid( 3, 2 );
 		grid.setText( 0, 0, "Last Name: " );
@@ -45,11 +44,11 @@ public class UserDisplayView extends Composite implements UserViewInterface {
 		return create;
 	}
 
-	public HasValue<String> getFirstName() {
+	public HasText getFirstName() {
 		return firstName;
 	}
 
-	public HasValue<String> getLastName() {
+	public HasText getLastName() {
 		return lastName;
 	}
 

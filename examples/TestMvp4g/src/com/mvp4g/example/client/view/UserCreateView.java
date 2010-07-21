@@ -5,14 +5,13 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.example.client.presenter.view_interface.UserViewInterface;
+import com.mvp4g.example.client.presenter.view_interface.IUserViewInterface;
 
-public class UserCreateView extends Composite implements UserViewInterface {
+public class UserCreateView extends Composite implements IUserViewInterface {
 
 	private Button create = null;
 	private Label id = null;
@@ -44,11 +43,11 @@ public class UserCreateView extends Composite implements UserViewInterface {
 		return create;
 	}
 
-	public HasValue<String> getFirstName() {
+	public HasText getFirstName() {
 		return firstName;
 	}
 
-	public HasValue<String> getLastName() {
+	public HasText getLastName() {
 		return lastName;
 	}
 
