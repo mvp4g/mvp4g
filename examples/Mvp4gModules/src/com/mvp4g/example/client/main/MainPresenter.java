@@ -14,7 +14,6 @@ import com.google.inject.Inject;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
-import com.mvp4g.example.client.TestInjector;
 import com.mvp4g.example.client.util.index.IndexGenerator;
 
 @Presenter( view = MainView.class, multiple = true )
@@ -47,22 +46,18 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 		public int getStartIndex();
 
 		public int getLastIndex();
-		
+
 		public HasValue<Boolean> getFilter();
 
 	}
 
-	
-	private IndexGenerator indexGenerator;
-	
 	@Inject
-	private TestInjector injector;
-	
+	private IndexGenerator indexGenerator;
+
 	//have this filter to test force filter option & add/remove event filter
 	private MainEventFilter filter = new MainEventFilter();
 
 	public void bind() {
-		indexGenerator = injector.getIndexGenerator();
 		view.getCompanyMenu().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
@@ -82,16 +77,15 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 			}
 		} );
 		view.getFilter().addValueChangeHandler( new ValueChangeHandler<Boolean>() {
-			
+
 			public void onValueChange( ValueChangeEvent<Boolean> event ) {
-				if(event.getValue()){
+				if ( event.getValue() ) {
 					eventBus.addEventFilter( filter );
-				}
-				else{
+				} else {
 					eventBus.removeEventFilter( filter );
 				}
 			}
-		});
+		} );
 
 	}
 
