@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/tags/mvp4g-1.1.0/xsd/mvp4g-conf.xsd">
+<mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/trunk/xsd/mvp4g-conf.xsd">
 
     <debug logLevel="SIMPLE" logger="com.mvp4g.example.client.main.CustomLogger" />
 	
-	<ginModule class="com.mvp4g.example.client.Mvp4gGinModule" />	
+	<gin modules="com.mvp4g.example.client.Mvp4gGinModule,com.mvp4g.client.DefaultMvp4gGinModule" />
+	
+	<filters forceFilters="true" />	
 
 	<childModules package="com.mvp4g.example.client" beforeEvent="beforeLoad" afterEvent="afterLoad" errorEvent="errorOnLoad">
 		<childModule name="companyModule" class=".company.CompanyModule" eventToDisplayView="changeBody"/>
