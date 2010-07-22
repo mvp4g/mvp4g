@@ -1316,7 +1316,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	private String[] getExpectedHistoryEvents() {
 		return new String[] { "place( itself, \"event2\",history.onEvent2(attr0));", "clearHistory(itself);",
 				"place( itself, \"event1\",history.onEvent1(attr0,attr1));", "place( itself, \"event4\",null);",
-				"addConverter( \"event4\", \"event4\",history2);addConverter( \"event2\", \"historyName\",history);addConverter( \"event1\", \"event1\",history);" };
+				"addConverter( \"event4\", \"event4\",history2);","addConverter( \"event2\", \"historyName\",history);","addConverter( \"event1\", \"event1\",history);" };
 	}
 
 	private String[] getExpectedEventsWithLookup() {
@@ -1329,7 +1329,7 @@ public class Mvp4gConfigurationFileReaderTest {
 				"event2((java.lang.String) data[0]);",
 				"} else if ( \"event3\".equals( eventType ) ){",
 				"event3();",
-				"} else if ( \"event1\".equals( eventType ) ){",
+				"if ( \"event1\".equals( eventType ) ){",
 				"event1((java.lang.String) data[0],(java.lang.Object) data[1]);",
 				"} else {",
 				"throw new Mvp4gException( \"Event \" + eventType + \" doesn't exist. Have you forgotten to add it to your Mvp4g configuration file?\" );",
