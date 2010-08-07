@@ -7,6 +7,7 @@ import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Filters;
 import com.mvp4g.client.annotation.Forward;
+import com.mvp4g.client.annotation.HistoryConfiguration;
 import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.NotFoundHistory;
 import com.mvp4g.client.annotation.Start;
@@ -20,6 +21,7 @@ import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.Mvp4gLogger;
+import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.util.test_tools.Modules;
 
 public class Events {
@@ -327,5 +329,11 @@ public class Events {
 
 		@Event( historyName = "historyName" )
 		public void event2();
+	}
+
+	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@HistoryConfiguration( paramSeparator = PlaceService.CRAWLABLE, paramSeparatorAlwaysAdded = true )
+	public static interface EventBusWithHistoryConfig extends EventBus {
+
 	}
 }

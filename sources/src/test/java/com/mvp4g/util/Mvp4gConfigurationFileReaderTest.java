@@ -19,6 +19,7 @@ import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.history.ClearHistory;
+import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
@@ -583,6 +584,23 @@ public class Mvp4gConfigurationFileReaderTest {
 		writer.writeConf();
 		assertOutput( getExpectedHistoryXml(), true );
 		assertOutput( getExpectedInheritHistory(), true );
+
+	}
+
+	@Test
+	public void testWriteHistoryWithConfig() throws DuplicatePropertyNameException {
+		String eventBusInterface = EventBusWithLookup.class.getName();
+		String eventBusClass = BaseEventBusWithLookUp.class.getName();
+		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, false ) );
+
+		HistoryElement history = new HistoryElement();
+		history.setParamSeparatorAlwaysAdded( "true" );
+		history.setParamSeparator( PlaceService.CRAWLABLE );
+		configuration.setHistory( history );
+
+		assertOutput( getExpectedHistoryWithConfig(), false );
+		writer.writeConf();
+		assertOutput( getExpectedHistoryWithConfig(), true );		
 
 	}
 
@@ -1250,7 +1268,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedHistory() {
-		return new String[] { "placeService = new PlaceService(){", "protected void sendInitEvent(){", "eventBus.init();",
+		return new String[] { "placeService = new PlaceService(\"?\",false){", "protected void sendInitEvent(){", "eventBus.init();",
 				"protected void sendNotFoundEvent(){", "eventBus.notFound()", "placeService.setModule(itself);",
 				"final com.mvp4g.example.client.history.display.UserHistoryConverter userConverter = injector.getuserConverter()",
 				"userConverter.setUserService(userService);",
@@ -1270,8 +1288,13 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedHistoryXml() {
-		return new String[] { "placeService = new PlaceService(){", "protected void sendInitEvent(){", "eventBus.dispatch(\"init\");",
+		return new String[] { "placeService = new PlaceService(\"?\",false){", "protected void sendInitEvent(){", "eventBus.dispatch(\"init\");",
 				"protected void sendNotFoundEvent(){", "eventBus.dispatch(\"notFound\")", "placeService.setModule(itself);", };
+
+	}
+
+	private String[] getExpectedHistoryWithConfig() {
+		return new String[] { "placeService = new PlaceService(\"!\",true){" };
 
 	}
 
@@ -1316,7 +1339,8 @@ public class Mvp4gConfigurationFileReaderTest {
 	private String[] getExpectedHistoryEvents() {
 		return new String[] { "place( itself, \"event2\",history.onEvent2(attr0));", "clearHistory(itself);",
 				"place( itself, \"event1\",history.onEvent1(attr0,attr1));", "place( itself, \"event4\",null);",
-				"addConverter( \"event4\", \"event4\",history2);","addConverter( \"event2\", \"historyName\",history);","addConverter( \"event1\", \"event1\",history);" };
+				"addConverter( \"event4\", \"event4\",history2);", "addConverter( \"event2\", \"historyName\",history);",
+				"addConverter( \"event1\", \"event1\",history);" };
 	}
 
 	private String[] getExpectedEventsWithLookup() {

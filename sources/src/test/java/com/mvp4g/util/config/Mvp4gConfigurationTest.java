@@ -306,8 +306,15 @@ public class Mvp4gConfigurationTest {
 		}
 
 		presenter.setMultiple( Boolean.TRUE.toString() );
-		configuration.validateEventHandlers();
-		assertTrue( presenters.size() == 0 );
+
+		try {
+			setEventBus();
+			configuration.validateEventHandlers();
+			fail();
+		} catch ( InvalidTypeException e ) {
+			assertTrue( e.getMessage().contains( "View" ) );
+		}
+
 	}
 
 	@Test( expected = UnknownConfigurationElementException.class )
@@ -1043,8 +1050,9 @@ public class Mvp4gConfigurationTest {
 			configuration.validateHistory();
 			fail();
 		} catch ( InvalidMvp4gConfigurationException e ) {
-			assertEquals( "History configuration (init and not found event should be configure only for root module (only module with no parent)", e
-					.getMessage() );
+			assertEquals(
+					"Module com.mvp4g.util.test_tools.Modules.ModuleWithParent: History configuration (init, not found event and history parameter separator) should be set only for root module (only module with no parent)",
+					e.getMessage() );
 		}
 
 		HistoryElement history = new HistoryElement();
@@ -1054,8 +1062,33 @@ public class Mvp4gConfigurationTest {
 			configuration.validateHistory();
 			fail();
 		} catch ( InvalidMvp4gConfigurationException e ) {
-			assertEquals( "History configuration (init and not found event should be configure only for root module (only module with no parent)", e
-					.getMessage() );
+			assertEquals(
+					"Module com.mvp4g.util.test_tools.Modules.ModuleWithParent: History configuration (init, not found event and history parameter separator) should be set only for root module (only module with no parent)",
+					e.getMessage() );
+		}
+
+		history = new HistoryElement();
+		configuration.setHistory( history );
+		history.setParamSeparator( "" );
+		try {
+			configuration.validateHistory();
+			fail();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertEquals(
+					"Module com.mvp4g.util.test_tools.Modules.ModuleWithParent: History configuration (init, not found event and history parameter separator) should be set only for root module (only module with no parent)",
+					e.getMessage() );
+		}
+
+		history = new HistoryElement();
+		configuration.setHistory( history );
+		history.setParamSeparator( "" );
+		try {
+			configuration.validateHistory();
+			fail();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertEquals(
+					"Module com.mvp4g.util.test_tools.Modules.ModuleWithParent: History configuration (init, not found event and history parameter separator) should be set only for root module (only module with no parent)",
+					e.getMessage() );
 		}
 
 		history = new HistoryElement();
@@ -1063,6 +1096,45 @@ public class Mvp4gConfigurationTest {
 		configuration.validateHistory();
 		assertNull( configuration.getHistory() );
 
+	}
+
+	@Test
+	public void testHistorySeparator() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+
+		historyConverters.add( new HistoryConverterElement() );
+		
+		EventBusElement eventBus = new EventBusElement( EventBus.class.getName(), BaseEventBus.class.getName(), false );
+		configuration.setEventBus( eventBus );
+
+		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
+		configuration.loadParentModule();
+
+		HistoryElement history = new HistoryElement();
+		history.setParamSeparator( "" );
+		history.setInitEvent( "event" );
+		configuration.setHistory( history );
+		try {
+			configuration.validateHistory();
+		} catch ( Exception e ) {
+			assertEquals( "History parameter separator can't be an empty string.", e.getMessage() );
+		}
+
+		history = new HistoryElement();
+		history.setParamSeparator( "/" );
+		history.setInitEvent( "event" );		
+		configuration.setHistory( history );
+		try {
+			configuration.validateHistory();
+		} catch ( Exception e ) {
+			assertEquals( "'/' can be used as an history parameter separator only if it is always added.", e.getMessage() );
+		}
+
+		history = new HistoryElement();
+		history.setParamSeparator( "/" );
+		history.setInitEvent( "event" );		
+		history.setParamSeparatorAlwaysAdded( "true" );
+		configuration.setHistory( history );
+		configuration.validateHistory();
 	}
 
 	@Test

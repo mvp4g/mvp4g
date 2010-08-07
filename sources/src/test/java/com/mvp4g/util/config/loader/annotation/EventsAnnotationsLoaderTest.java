@@ -24,6 +24,7 @@ import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.DefaultMvp4gLogger;
+import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
@@ -31,6 +32,7 @@ import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.EventFilterElement;
 import com.mvp4g.util.config.element.EventFiltersElement;
+import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 import com.mvp4g.util.test_tools.Modules;
@@ -685,7 +687,7 @@ public class EventsAnnotationsLoaderTest {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
 		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
-		
+
 		annotedClasses = new ArrayList<JClassType>();
 		annotedClasses.add( oracle.addClass( Events.EventBusNoFilterWithForce.class ) );
 		loader.load( annotedClasses, configuration );
@@ -872,5 +874,38 @@ public class EventsAnnotationsLoaderTest {
 		if ( found < 2 ) {
 			fail();
 		}
+	}
+
+	@Test
+	public void testNoHistoryConfiguration() throws Mvp4gAnnotationException {
+
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Presenters.SimplePresenter.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Events.SimpleEventBus.class ) );
+		loader.load( annotedClasses, configuration );
+
+		HistoryElement historyConfig = configuration.getHistory();
+		assertNull( historyConfig );
+
+	}
+
+	@Test
+	public void testHistoryConfiguration() throws Mvp4gAnnotationException {
+
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( Presenters.SimplePresenter.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses.clear();
+		annotedClasses.add( oracle.addClass( Events.EventBusWithHistoryConfig.class ) );
+		loader.load( annotedClasses, configuration );
+
+		HistoryElement historyConfig = configuration.getHistory();
+		assertEquals( PlaceService.CRAWLABLE, historyConfig.getParamSeparator() );
+		assertTrue( historyConfig.isParamSeparatorAlwaysAdded() );
+
 	}
 }

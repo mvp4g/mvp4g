@@ -379,7 +379,15 @@ public class Mvp4gConfigurationFileWriter {
 
 		if ( history != null ) {
 
-			sourceWriter.println( "placeService = new PlaceService(){" );
+			sourceWriter.print( "placeService = new PlaceService(\"" );
+			String paramSeparator = history.getParamSeparator();
+			if ( paramSeparator == null ) {
+				paramSeparator = PlaceService.DEFAULT_SEPARATOR;
+			}
+			sourceWriter.print( paramSeparator );
+			sourceWriter.print( "\"," );
+			sourceWriter.print( Boolean.toString( history.isParamSeparatorAlwaysAdded() ) );
+			sourceWriter.println( "){" );
 
 			sourceWriter.indent();
 			sourceWriter.println( "protected void sendInitEvent(){" );

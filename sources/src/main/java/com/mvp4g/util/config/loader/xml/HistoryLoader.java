@@ -33,7 +33,7 @@ import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 public class HistoryLoader extends Mvp4gElementLoader<HistoryElement> {
 
 	static final String[] REQUIRED_ATTRIBUTES = {};
-	static final String[] OPTIONAL_ATTRIBUTES = { "initEvent", "notFoundEvent" };
+	static final String[] OPTIONAL_ATTRIBUTES = { "initEvent", "notFoundEvent", "paramSeparator", "paramSeparatorAlwaysAdded" };
 
 	@SuppressWarnings( "unchecked" )
 	public HistoryLoader( XMLConfiguration xmlConfig ) {

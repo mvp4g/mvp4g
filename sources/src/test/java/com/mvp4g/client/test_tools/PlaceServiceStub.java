@@ -10,7 +10,7 @@ public class PlaceServiceStub extends PlaceService {
 	String lastEventType = null;
 
 	public PlaceServiceStub() {
-		super( new HistoryProxyStub() );
+		super( new HistoryProxyStub(), PlaceService.DEFAULT_SEPARATOR, false );
 	}
 
 	@Override
