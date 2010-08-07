@@ -15,6 +15,11 @@
  */
 package com.mvp4g.util.config.element;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 /**
@@ -50,6 +55,26 @@ public class HistoryElement extends Mvp4gElement {
 		setProperty( "initEvent", initEvent );
 	}
 
+	public String getParamSeparator() {
+		return getProperty( "paramSeparator" );
+	}
+
+	public void setParamSeparator( String paramSeparator ) throws DuplicatePropertyNameException {
+		setProperty( "paramSeparator", paramSeparator );
+	}
+
+	public String getParamSeparatorAlwaysAdded() {
+		return getProperty( "paramSeparatorAlwaysAdded" );
+	}
+
+	public boolean isParamSeparatorAlwaysAdded() {
+		return Boolean.TRUE.toString().equalsIgnoreCase( getProperty( "paramSeparatorAlwaysAdded" ) );
+	}
+
+	public void setParamSeparatorAlwaysAdded( String paramSeparatorAlwaysAdded ) throws DuplicatePropertyNameException {
+		setProperty( "paramSeparatorAlwaysAdded", paramSeparatorAlwaysAdded );
+	}
+
 	public String getInitEvent() {
 		return getProperty( "initEvent" );
 	}
@@ -64,6 +89,18 @@ public class HistoryElement extends Mvp4gElement {
 			event = getInitEvent();
 		}
 		return event;
+	}
+	
+	@Test
+	public void testMultiple() throws DuplicatePropertyNameException {
+		HistoryElement element = new HistoryElement();
+		assertFalse( element.isParamSeparatorAlwaysAdded() );
+		element.setParamSeparatorAlwaysAdded( "true" );
+		assertTrue( element.isParamSeparatorAlwaysAdded() );
+
+		element = new HistoryElement();
+		element.setParamSeparatorAlwaysAdded( "false" );
+		assertFalse( element.isParamSeparatorAlwaysAdded() );
 	}
 
 }

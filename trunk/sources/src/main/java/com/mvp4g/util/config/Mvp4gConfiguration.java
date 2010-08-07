@@ -121,6 +121,12 @@ public class Mvp4gConfiguration {
 	private static final String NO_GIN_MODULE = "You need to define at least one GIN module. If you don't want to specify a GIN module, don't override the GIN modules option to use the default Mvp4g GIN module.";
 	private static final String ROOT_MODULE_NO_HISTORY_NAME = "Module %s can't have an history name since it's a root module.";
 
+	private static final String HISTORY_ONLY_FOR_ROOT = "Module %s: History configuration (init, not found event and history parameter separator) should be set only for root module (only module with no parent)";
+	private static final String HISTORY_NAME_MISSING = "Module %s: Child module that defines history converter must have a @HistoryName annotation.";
+	private static final String HISTORY_INIT_MISSING = "You must define a History init event if you use history converters.";
+	private static final String WRONG_HISTORY_PARAM_SEPARATOR = "'/' can be used as an history parameter separator only if it is always added.";
+	private static final String EMPTY_PARAM_SEPARATOR = "History parameter separator can't be an empty string.";
+
 	private Set<PresenterElement> presenters = new HashSet<PresenterElement>();
 	private Set<EventHandlerElement> eventHandlers = new HashSet<EventHandlerElement>();
 	private Set<ViewElement> views = new HashSet<ViewElement>();
@@ -809,11 +815,7 @@ public class Mvp4gConfiguration {
 						view = getElement( viewName, views, presenter );
 
 						if ( !getType( view, view.getClassName() ).isAssignableTo( viewParam ) ) {
-							if ( !presenter.isMultiple() ) {
-								throw new InvalidTypeException( presenter, "View", view.getClassName(), viewParam.getQualifiedSourceName() );
-							} else {
-								toKeep = false;
-							}
+							throw new InvalidTypeException( presenter, "View", view.getClassName(), viewParam.getQualifiedSourceName() );
 						}
 
 						if ( !presenter.isMultiple() ) {
@@ -1122,20 +1124,33 @@ public class Mvp4gConfiguration {
 	 *             if history init event is not defined but history converters are used
 	 */
 	void validateHistory() throws InvalidMvp4gConfigurationException {
+
 		if ( historyConverters.size() > 0 ) {
 			if ( !isRootModule() ) {
-				if ( ( history != null ) && ( ( history.getInitEvent() != null ) || ( history.getNotFoundEvent() != null ) ) ) {
-					throw new InvalidMvp4gConfigurationException(
-							"History configuration (init and not found event should be configure only for root module (only module with no parent)" );
+				if ( ( history != null )
+						&& ( ( history.getInitEvent() != null ) || ( history.getNotFoundEvent() != null ) || ( history.getParamSeparator() != null ) || ( history
+								.getParamSeparatorAlwaysAdded() != null ) ) ) {
+					throw new InvalidMvp4gConfigurationException( String.format( HISTORY_ONLY_FOR_ROOT, module.getQualifiedSourceName() ) );
 				}
 				if ( ( historyName == null ) || ( historyName.length() == 0 ) ) {
-					throw new InvalidMvp4gConfigurationException( "Child module that defines history converter must have a @HistoryName annotation." );
+					throw new InvalidMvp4gConfigurationException( String.format( HISTORY_NAME_MISSING, module.getQualifiedSourceName() ) );
 				}
 				// make sure history is equal to null for the writer
 				history = null;
 			} else {
 				if ( ( history == null ) || ( history.getInitEvent() == null ) || ( history.getInitEvent().length() == 0 ) ) {
-					throw new InvalidMvp4gConfigurationException( "You must define a History init event if you use history converters." );
+					throw new InvalidMvp4gConfigurationException( HISTORY_INIT_MISSING );
+				}
+				String paramSeparator = history.getParamSeparator();
+				if ( ( paramSeparator != null ) ) {
+
+					if ( paramSeparator.length() == 0 ) {
+						throw new InvalidMvp4gConfigurationException( EMPTY_PARAM_SEPARATOR );
+					}
+
+					if ( !history.isParamSeparatorAlwaysAdded() && ( PlaceService.MODULE_SEPARATOR.equals( paramSeparator ) ) ) {
+						throw new InvalidMvp4gConfigurationException( WRONG_HISTORY_PARAM_SEPARATOR );
+					}
 				}
 			}
 		}

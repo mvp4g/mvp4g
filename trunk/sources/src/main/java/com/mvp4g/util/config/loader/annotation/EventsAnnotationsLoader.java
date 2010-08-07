@@ -29,6 +29,7 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Filters;
 import com.mvp4g.client.annotation.Forward;
+import com.mvp4g.client.annotation.HistoryConfiguration;
 import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.NotFoundHistory;
 import com.mvp4g.client.annotation.Start;
@@ -108,6 +109,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				loadEvents( c, annotation, configuration );
 				loadDebug( c, annotation, configuration );
 				loadGinModule( annotation, configuration );
+				loadHistoryConfiguration( c, configuration );
 			} else {
 				String err = "this class must implement " + EventBus.class.getCanonicalName() + " since it is annoted with "
 						+ Events.class.getSimpleName() + ".";
@@ -156,7 +158,8 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			boolean forceFilters = filters.forceFilters();
 			Class<? extends EventFilter<?>>[] filterClasses = filters.filterClasses();
 			if ( ( ( filterClasses == null ) || ( filterClasses.length == 0 ) ) && !forceFilters ) {
-				String err = "Useless " + Filters.class.getSimpleName()
+				String err = "Useless "
+						+ Filters.class.getSimpleName()
 						+ " annotation. Don't use this annotation if your module doesn't have any event filters. If you plan on adding filters when the application runs, set the forceFilters option to true.";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 			}
@@ -616,6 +619,25 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			// setter is only called once, so this error can't occur.
 		}
 		configuration.setGinModule( ginModule );
+	}
+
+	private void loadHistoryConfiguration( JClassType c, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
+
+		HistoryConfiguration historyConfig = c.getAnnotation( HistoryConfiguration.class );
+		if ( historyConfig != null ) {
+			HistoryElement history = configuration.getHistory();
+			if ( history == null ) {
+				history = new HistoryElement();
+				configuration.setHistory( history );
+			}
+
+			try {
+				history.setParamSeparator( historyConfig.paramSeparator() );
+				history.setParamSeparatorAlwaysAdded( Boolean.toString( historyConfig.paramSeparatorAlwaysAdded() ) );
+			} catch ( DuplicatePropertyNameException e ) {
+				//can't occur
+			}
+		}
 	}
 
 	/*

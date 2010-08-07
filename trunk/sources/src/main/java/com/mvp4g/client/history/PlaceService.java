@@ -53,6 +53,8 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	public static final String MODULE_SEPARATOR = "/";
 
 	public static final String CRAWLABLE = "!";
+	
+	public static final String DEFAULT_SEPARATOR = "?";
 
 	/**
 	 * Interface to define methods needed to manage history<br/>
@@ -71,9 +73,6 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 
 	}
 
-	private static final String FIRST = "?";
-	private static final String FIRST_RE = "\\" + FIRST;
-
 	private HistoryProxy history = null;
 	private Mvp4gModule module = null;
 
@@ -82,11 +81,14 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	private Map<String, String> toHistoryNames = new HashMap<String, String>();
 	private Map<String, String> toEventType = new HashMap<String, String>();
 
+	private String paramSeparator;
+	private boolean alwaysAdded;
+
 	/**
 	 * Build a <code>PlaceService</code>.
 	 * 
 	 */
-	public PlaceService() {
+	public PlaceService( String paramSeparator, boolean alwaysAdded ) {
 		this( new HistoryProxy() {
 
 			public void addValueChangeHandler( ValueChangeHandler<String> handler ) {
@@ -97,7 +99,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 				History.newItem( historyToken, issueEvent );
 			}
 
-		} );
+		}, paramSeparator, alwaysAdded );
 	}
 
 	/**
@@ -111,9 +113,11 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 * @param history
 	 *            history proxy to inject
 	 */
-	protected PlaceService( HistoryProxy history ) {
+	protected PlaceService( HistoryProxy history, String paramSeparator, boolean alwaysAdded ) {
 		this.history = history;
 		history.addValueChangeHandler( this );
+		this.paramSeparator = paramSeparator;
+		this.alwaysAdded = alwaysAdded;
 	}
 
 	/**
@@ -141,9 +145,9 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 
 		if ( toContinue ) {
 
-			String[] tokenTab = token.split( FIRST_RE );
-			final String eventType = tokenTab[0];
-			final String param = ( tokenTab.length > 1 ) ? tokenTab[1] : null;
+			int index = token.lastIndexOf( paramSeparator );
+			final String eventType = ( index == -1 ) ? token : token.substring( 0, index );
+			final String param = ( index == -1 ) ? null : token.substring( index + 1 );
 			if ( eventType.contains( MODULE_SEPARATOR ) ) {
 				Mvp4gEventPasser passer = new Mvp4gEventPasser( true ) {
 
@@ -196,11 +200,22 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	@SuppressWarnings( "unchecked" )
 	public void place( String eventType, String param ) {
 		String historyName = toHistoryNames.get( eventType );
-		String token = ( ( param == null ) || ( param.length() == 0 ) ) ? historyName : ( historyName + FIRST + param );
+		String token;
+		if( ( param == null ) || ( param.length() == 0 ) ){
+			if(alwaysAdded){
+				token = historyName + paramSeparator;
+			}
+			else{
+				token = historyName;
+			}
+		}
+		else{
+			token = historyName + paramSeparator + param;
+		}
 		HistoryConverter hc = converters.get( eventType );
-		if(hc.isCrawlable()){
+		if ( hc.isCrawlable() ) {
 			token = CRAWLABLE + token;
-		}		
+		}
 		history.newItem( token, false );
 	}
 

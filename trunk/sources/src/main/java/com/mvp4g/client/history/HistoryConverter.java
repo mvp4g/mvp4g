@@ -22,8 +22,6 @@ import com.mvp4g.client.event.EventBus;
  * 
  * @author plcoirier
  *
- * @param <T>
- *            type of the object used with the event associated with the converter.
  * @param <E>
  *            type of the event bus where the event is defined. 
  */

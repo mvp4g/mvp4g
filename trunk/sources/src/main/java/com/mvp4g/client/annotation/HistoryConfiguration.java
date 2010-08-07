@@ -13,25 +13,29 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.mvp4g.client.annotation.module;
+
+package com.mvp4g.client.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * This annotation can be used to add child modules to a parent module. It annotates interfaces that
- * extends <code>EventBus</code>.<br/>
+ * This annotation allows to define an history converter for the framework.<br/>
  * <br/>
- * To add child modules, you need to specify the attribute with one or several <code>ChildModule</code>
- * annotations.
- * 
+ * You can define the name of the history converter thanks to the optional attribute <i>name</i>. If
+ * you don't give a name, the framework will generate one.<br/>
+ * It is recommended to affect a name only if needed.<br/>
+ * <br/>
+ * This annotation can be used only on classes that implements <code>HistoryConverter</code>.
  * 
  * @author plcoirier
  * 
  */
 @Retention( RetentionPolicy.RUNTIME )
-public @interface ChildModules {
+public @interface HistoryConfiguration {
 
-	ChildModule[] value();
+	String paramSeparator(); 
+	
+	boolean paramSeparatorAlwaysAdded() default false;
 
 }
