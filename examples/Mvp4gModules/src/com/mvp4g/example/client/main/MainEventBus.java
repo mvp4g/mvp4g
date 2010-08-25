@@ -5,6 +5,7 @@ import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Filters;
+import com.mvp4g.client.annotation.HistoryConfiguration;
 import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.module.AfterLoadChildModule;
@@ -25,6 +26,7 @@ import com.mvp4g.example.client.product.ProductModule;
 @ChildModules( { @ChildModule( moduleClass = CompanyModule.class ),
 		@ChildModule( moduleClass = ProductModule.class, async = false, autoDisplay = false ) } )
 @Filters( filterClasses = {}, forceFilters = true )
+@HistoryConfiguration( paramSeparator = "/", paramSeparatorAlwaysAdded = true )
 public interface MainEventBus extends EventBusWithLookup {
 
 	@Event( modulesToLoad = CompanyModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, historyName = "companies" )
