@@ -573,28 +573,23 @@ public class Mvp4gConfiguration {
 
 		Map<String, List<Mvp4gWithServicesElement>> serviceMap = new HashMap<String, List<Mvp4gWithServicesElement>>();
 
-		// Add presenter that handles event
+		Set<Mvp4gWithServicesElement> currentElements = new HashSet<Mvp4gWithServicesElement>(presenters);
+		currentElements.addAll( eventHandlers );
+		currentElements.addAll( historyConverters );
+		
+
 		List<Mvp4gWithServicesElement> elementList = null;
-		for ( PresenterElement presenter : presenters ) {
-			for ( InjectedElement service : presenter.getInjectedServices() ) {
+		for ( Mvp4gWithServicesElement elementWithService : currentElements ) {
+			for ( InjectedElement service : elementWithService.getInjectedServices() ) {
 				elementList = serviceMap.get( service.getElementName() );
 				if ( elementList == null ) {
 					elementList = new ArrayList<Mvp4gWithServicesElement>();
 					serviceMap.put( service.getElementName(), elementList );
 				}
-				elementList.add( presenter );
+				elementList.add( elementWithService );
 			}
 		}
-		for ( HistoryConverterElement hc : historyConverters ) {
-			for ( InjectedElement service : hc.getInjectedServices() ) {
-				elementList = serviceMap.get( service.getElementName() );
-				if ( elementList == null ) {
-					elementList = new ArrayList<Mvp4gWithServicesElement>();
-					serviceMap.put( service.getElementName(), elementList );
-				}
-				elementList.add( hc );
-			}
-		}
+		
 		Set<ServiceElement> toRemove = new HashSet<ServiceElement>();
 		for ( ServiceElement service : services ) {
 			if ( serviceMap.remove( service.getName() ) == null ) {

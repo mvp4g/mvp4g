@@ -536,10 +536,12 @@ public class Mvp4gConfigurationTest {
 		ServiceElement service1 = newService( "service1" );
 		ServiceElement service2 = newService( "service2" );
 		ServiceElement service3 = newService( "service3" );
+		ServiceElement service4 = newService( "service4" );
 
 		services.add( service1 );
 		services.add( service2 );
 		services.add( service3 );
+		services.add( service4 );
 
 		PresenterElement presenter = newPresenter( "testPresenter" );
 		presenter.getInjectedServices().add( new InjectedElement( "service1", "setTestService" ) );
@@ -548,16 +550,22 @@ public class Mvp4gConfigurationTest {
 		HistoryConverterElement historyConverter = newHistoryConverter( "testHistoryConverter" );
 		historyConverter.getInjectedServices().add( new InjectedElement( "service2", "setTestService" ) );
 		historyConverters.add( historyConverter );
+		
+		EventHandlerElement eventHandlerElement = newEventHandler( "testEventHandler" );
+		eventHandlerElement.getInjectedServices().add( new InjectedElement( "service3", "setTestService" ) );
+		eventHandlers.add( eventHandlerElement );
 
+		assertEquals( services.size(), 4 );
+		assertTrue( services.contains( service1 ) );
+		assertTrue( services.contains( service2 ) );
+		assertTrue( services.contains( service3 ) );
+		assertTrue( services.contains( service4 ) );
+		configuration.validateServices();
 		assertEquals( services.size(), 3 );
 		assertTrue( services.contains( service1 ) );
 		assertTrue( services.contains( service2 ) );
 		assertTrue( services.contains( service3 ) );
-		configuration.validateServices();
-		assertEquals( services.size(), 2 );
-		assertTrue( services.contains( service1 ) );
-		assertTrue( services.contains( service2 ) );
-		assertFalse( services.contains( service3 ) );
+		assertFalse( services.contains( service4 ) );
 	}
 
 	@Test( expected = UnknownConfigurationElementException.class )
