@@ -20,13 +20,20 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * This annotation allows to define an history converter for the framework.<br/>
+ * This annotation allows to define history configuration for the framework.<br/>
  * <br/>
- * You can define the name of the history converter thanks to the optional attribute <i>name</i>. If
- * you don't give a name, the framework will generate one.<br/>
- * It is recommended to affect a name only if needed.<br/>
+ * This annotation can be used only on classes that implement <code>EventBus</code> and that are
+ * annotated with <code>@Events</code>.<br/>
  * <br/>
- * This annotation can be used only on classes that implements <code>HistoryConverter</code>.
+ * The annotation has the following attributes:
+ * <ul>
+ * <li>paramSeparator: character that should be used to separate in the history token the event name
+ * and the parameters. By default, this parameter is equal to "?". This parameter shouldn't be use
+ * in parameter values.</li>
+ * <li>paramSeparatorAlwaysAdded (default false): add the separator between the event name and the
+ * parameters even if there is no parameter. This parameter has to be set to true if you use "/" to
+ * allow the framework to differentiate this the parameter separator from the child modules
+ * separator.
  * 
  * @author plcoirier
  * 
@@ -34,8 +41,8 @@ import java.lang.annotation.RetentionPolicy;
 @Retention( RetentionPolicy.RUNTIME )
 public @interface HistoryConfiguration {
 
-	String paramSeparator(); 
-	
+	String paramSeparator();
+
 	boolean paramSeparatorAlwaysAdded() default false;
 
 }

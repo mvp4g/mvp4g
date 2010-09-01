@@ -34,12 +34,14 @@ import com.mvp4g.client.Mvp4gModule;
  * one of the view injected to a presenter.</li>
  * <li>startViewName: you can also specify the name of the start view (in case you have several
  * views with the same class, in this case you would need to name your views). In any case, you
- * still need to specify the class of the view. String startViewName() default "";</li>
+ * still need to specify the class of the view.</li>
  * <li>module: class of the module for which the annotated interface should be used to generate the
  * event bus. If no module is specified, it means that the interface should be used to generate the
  * Root Module (first module to be loaded and only module without parent).</li>
  * <li>historyOnStart: if true, the current history state will be fired when the application starts.
  * </li>
+ * <li>ginModules: classes of the GIN modules the framework should use when generating presenters,
+ * event handlers, history converters & views. You can specify zero to severals GIN modules.</li>
  * </ul>
  * 
  * 

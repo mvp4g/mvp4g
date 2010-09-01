@@ -202,6 +202,28 @@ public class BaseEventBusTest {
 		list = bus.getHandlers( SimplePresenter.class );
 		assertTrue( list.size() == 0 );
 	}
+	
+	@Test
+	public void testDefaultAddHandler() {
+		List<SimplePresenter> list = bus.getHandlers( SimplePresenter.class );	
+
+		SimplePresenter p = bus.addHandler( SimplePresenter.class );
+		list = bus.getHandlers( SimplePresenter.class );
+		assertTrue( list.size() == 1 );
+		assertEquals( list.get( 0 ), p );
+		assertTrue( p.isBindCalled() );
+		
+		p = bus.addHandler( SimplePresenter.class, true );
+		assertTrue( list.size() == 2 );
+		assertEquals( list.get( 1 ), p );
+		assertTrue( p.isBindCalled() );
+		
+		p = bus.addHandler( SimplePresenter.class, false );
+		assertTrue( list.size() == 3 );
+		assertEquals( list.get( 2 ), p );
+		assertFalse( p.isBindCalled() );
+
+	}
 
 	@Test
 	public void testAddUnknownHanlder() {

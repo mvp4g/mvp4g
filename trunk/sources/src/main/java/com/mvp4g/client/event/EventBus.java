@@ -26,8 +26,8 @@ import com.mvp4g.client.Mvp4gException;
 public interface EventBus {
 
 	/**
-	 * Indicate for all events if they should be stored or not in browser history when possible (ie
-	 * when associated with an history converter).
+	 * Set for all events if they should be stored or not in browser history when possible (ie when
+	 * associated with an history converter).
 	 * 
 	 * @param historyStored
 	 *            true if events should be stored
@@ -35,8 +35,8 @@ public interface EventBus {
 	public void setHistoryStored( boolean historyStored );
 
 	/**
-	 * Indicate for next event that can be stored in history only if it should be stored or not in
-	 * browser history.<br/>
+	 * Set for next event that can be stored in history if it should be stored or not in browser
+	 * history.<br/>
 	 * <br/>
 	 * This method should be called only right before sending an event that could be stored in
 	 * browser history.
@@ -53,10 +53,10 @@ public interface EventBus {
 	 * @return true if events can be stored in browse history
 	 */
 	public boolean isHistoryStored();
-	
+
 	/**
-	 * Indicate for all events if the associated event filters should be executed before sendint the
-	 * event to the associated handlers.
+	 * Set whether or not the associated event filters should be executed before sending the event
+	 * to the associated event handlers.<br/>
 	 * 
 	 * @param filterEnabled
 	 *            true if events filters should be executed
@@ -64,8 +64,8 @@ public interface EventBus {
 	public void setFilteringEnabled( boolean filteringEnabled );
 
 	/**
-	 * Indicate whether or not the associated event filters should be executed before sending the
-	 * next event to the associated event handlers.<br/>
+	 * Set whether or not the associated event filters should be executed before sending the next
+	 * event to the associated event handlers.<br/>
 	 * <br/>
 	 * This method should be called only right before sending an event that could be filtered.
 	 * 
@@ -82,7 +82,10 @@ public interface EventBus {
 	public boolean isFilteringEnabled();
 
 	/**
-	 * Create a new instance of the handler and add it to event bus
+	 * Create a new instance of the handler, bind it and add it to event bus.<br/>
+	 * <br/>
+	 * . Calling this method is equivalent to addHandler(handlerClass, true);
+	 * 
 	 * 
 	 * @param <T>
 	 *            type of the handler created
@@ -96,6 +99,25 @@ public interface EventBus {
 	public <T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass ) throws Mvp4gException;
 
 	/**
+	 * Create a new instance of the handler, bind it only if this option is set to true and add it
+	 * to event bus. If you decide not to set the handler at creation, you will have either make
+	 * sure the handler is displayed only after it handles its first method (otherwise the view is
+	 * not binded so it seems inactive) or call manualy the bind method.
+	 * 
+	 * @param <T>
+	 *            type of the handler created
+	 * @param handlerClass
+	 *            class of the handler to create
+	 * @param bind
+	 *            if true, bind the handler at creation, otherwise do nothing.
+	 * @return new instance of the handler created
+	 * 
+	 * @throws Mvp4gException
+	 *             thrown if the instance of the handler can not be created by the event bus
+	 */
+	public <T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass, boolean bind ) throws Mvp4gException;
+
+	/**
 	 * Remove the instance of the handler from the event bus
 	 * 
 	 * @param <T>
@@ -104,20 +126,20 @@ public interface EventBus {
 	 *            handler to remove
 	 */
 	public <T extends EventHandlerInterface<?>> void removeHandler( T handler );
-	
+
 	/**
 	 * Add a new event filter
 	 * 
 	 * @param filter
-	 * 			new event filter to add
+	 *            new event filter to add
 	 */
-	public void addEventFilter(EventFilter<? extends EventBus> filter);
-	
+	public void addEventFilter( EventFilter<? extends EventBus> filter );
+
 	/**
 	 * Remove event filter
 	 * 
 	 * @param filter
-	 * 			event filter to remove
+	 *            event filter to remove
 	 */
-	public void removeEventFilter(EventFilter<? extends EventBus> filter);
+	public void removeEventFilter( EventFilter<? extends EventBus> filter );
 }
