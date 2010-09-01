@@ -18,8 +18,8 @@ package com.mvp4g.client.event;
 import com.mvp4g.client.Mvp4gException;
 
 /**
- * Abstract implementation of <code>EventBusWithLookup</code>. This class should be used by the
- * framework and by the <code>XmlPresenter</code>.
+ * Abstract implementation of <code>EventBusWithLookup</code>. This class should only be used by the
+ * framework.
  * 
  * @author plcoirier
  * 
@@ -31,7 +31,7 @@ public abstract class BaseEventBusWithLookUp extends BaseEventBus implements Eve
 	 * 
 	 * @see com.mvp4g.client.event.EventBusWithLookup#dispatch(java.lang.String, java.lang.Object)
 	 */
-	abstract public void dispatch( String eventType, Object... data);
+	abstract public void dispatch( String eventType, Object... data );
 
 	/*
 	 * (non-Javadoc)

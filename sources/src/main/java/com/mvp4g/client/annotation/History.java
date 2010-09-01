@@ -26,6 +26,10 @@ import java.lang.annotation.RetentionPolicy;
  * you don't give a name, the framework will generate one.<br/>
  * It is recommended to affect a name only if needed.<br/>
  * <br/>
+ * This annotation also has a convertParams attribute. By default, an history converter must define
+ * an handling method for each event it converts. If you set this attribute to false, you won't have
+ * to define these methods.<br/>
+ * <br/>
  * This annotation can be used only on classes that implements <code>HistoryConverter</code>.
  * 
  * @author plcoirier
@@ -35,7 +39,7 @@ import java.lang.annotation.RetentionPolicy;
 public @interface History {
 
 	String name() default "";
-	
+
 	boolean convertParams() default true;
 
 }

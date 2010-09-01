@@ -14,6 +14,9 @@ import java.lang.annotation.RetentionPolicy;
  * attribute <i>name</i> and <i>viewName</i>. If you don't give a name, the framework will generate
  * one.<br/>
  * It is recommended to affect a name only if needed.<br/>
+ * <br/>
+ * You can also activate the multiple feature. This feature allows you to create several instance of
+ * the same handler.
  * 
  * @author plcoirier
  * 
@@ -26,7 +29,7 @@ public @interface Presenter {
 	Class<?> view();
 
 	String viewName() default "";
-	
+
 	boolean multiple() default false;
 
 }

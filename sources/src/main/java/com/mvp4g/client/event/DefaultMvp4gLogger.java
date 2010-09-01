@@ -17,6 +17,12 @@ package com.mvp4g.client.event;
 
 import com.google.gwt.core.client.GWT;
 
+/**
+ * Default implementation of Mvp4gLogger.
+ * 
+ * @author plcoirier
+ *  
+ */
 public class DefaultMvp4gLogger implements Mvp4gLogger {
 
 	static final String INDENT = "    ";

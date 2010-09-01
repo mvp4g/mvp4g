@@ -21,6 +21,20 @@ import java.lang.annotation.RetentionPolicy;
 import com.mvp4g.client.event.DefaultMvp4gLogger;
 import com.mvp4g.client.event.Mvp4gLogger;
 
+/**
+ * This annotation should be used to activate the logs. It has the following attributes: <li>
+ * <ul>
+ * <li>logLevel: level of the logs. If the level is set to simple, only the fired events will be
+ * displayed in the log, otherwise fired events and handlers of these events will be logged.</li>
+ * <li>logger: class of the logger to use.</li>
+ * </ul>
+ * <br/>
+ * <br/>
+ * This annotation should be used only on interfaces that extend <code>EventBus</code>. 
+ * 
+ * @author plcoirier
+ * 
+ */
 @Retention( RetentionPolicy.RUNTIME )
 public @interface Debug {
 

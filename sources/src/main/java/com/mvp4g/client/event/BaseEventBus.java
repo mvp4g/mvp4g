@@ -183,7 +183,7 @@ public abstract class BaseEventBus implements EventBus {
 
 	/**
 	 * Performs the actual filtering by calling each associated event filter in turn. If any event
-	 * filter returns false, then the event will be cancelled.
+	 * filter returns false, then the event will be canceled.
 	 * 
 	 * @param eventType
 	 *            name of the event to filter
@@ -205,10 +205,9 @@ public abstract class BaseEventBus implements EventBus {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see com.mvp4g.client.event.EventBus#addHandler(java.lang.Class)
+	 * @see com.mvp4g.client.event.EventBus#addHandler(java.lang.Class, boolean)
 	 */
-	public <T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass ) throws Mvp4gException {
+	public <T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass, boolean bind ) throws Mvp4gException {
 		T handler = createHandler( handlerClass );
 		if ( handler == null ) {
 			throw new Mvp4gException(
@@ -216,6 +215,11 @@ public abstract class BaseEventBus implements EventBus {
 							+ handlerClass.getName()
 							+ " couldn't be created by the Mvp4g. Have you forgotten to set multiple attribute to true for this handler or are you trying to create an handler that belongs to another module (another type of event bus injected in this handler)?" );
 		}
+		
+		if(bind){
+			handler.isActivated();
+		}
+		
 		List<EventHandlerInterface<?>> handlers = handlersMap.get( handlerClass );
 		if ( handlers == null ) {
 			handlers = new ArrayList<EventHandlerInterface<?>>();
@@ -223,6 +227,14 @@ public abstract class BaseEventBus implements EventBus {
 		}
 		handlers.add( handler );
 		return handler;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.mvp4g.client.event.EventBus#addHandler(java.lang.Class, boolean)
+	 */
+	public <T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass) throws Mvp4gException {
+		return addHandler( handlerClass, true );
 	}
 
 	/*

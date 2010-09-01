@@ -9,6 +9,17 @@ public class Presenters {
 
 	@Presenter( view = Object.class )
 	public static class SimplePresenter extends BasePresenter<Object, EventBus> {
+		
+		private boolean bindCalled = false;
+		
+		public void bind(){
+			this.bindCalled = true;
+		}
+		
+		public boolean isBindCalled(){
+			return bindCalled;
+		}
+		
 	}
 
 	@Presenter( view = Object.class, multiple = true )

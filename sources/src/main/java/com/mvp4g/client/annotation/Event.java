@@ -32,18 +32,18 @@ import com.mvp4g.client.presenter.PresenterInterface;
  * <br/>
  * The annotation has the following attributes:
  * <ul>
- *<li>handlers: classes of the presenters that handle this event. You can have zero to several
- * handlers for an event.</li>
+ *<li>handlers: classes of the handlers of this event. You can have zero to several handlers for an
+ * event.</li>
  *<li>handlerNames: instead of using their classes, you can define handlers thanks to their name
  * (in case you have given names to your handlers). Not recommended because this method tends to
  * create typo errors.</li>
  * <li>modulesToLoad: child modules that should be loaded if necessary and to which the event should
  * be forwarded. Child modules to which the event is forwarded must be one of the child modules of
  * the <code>EventBus</code> interface's module (ie one of the modules defined inside
- * <code>ChildModules</code> annotation). If an object is associated to the event, it will also be
- * forwarded. An event can be forwarded to zero to several child modules.</li>
+ * <code>ChildModules</code> annotation). If object(s) are associated to the event, they will also
+ * be forwarded. An event can be forwarded to zero to several child modules.</li>
  * <li>forwardToParent: if true, event will be forwarded to the parent module. In this case, the
- * module should have a parent.</li>
+ * module must have a parent.</li>
  * <li>calledMethod: name of the method that handlers should define and that will be called when the
  * event is fired. By default it's equal to "on" + event's method name.</li>
  * <li>historyConverter: class of the history converter that should be used to store the event in
@@ -52,6 +52,19 @@ import com.mvp4g.client.presenter.PresenterInterface;
  * <li>historyConverterName: instead of using its class, you can define the history converter thanks
  * to his name (in case you have given names to your history converter). Not recommended because
  * this method tends to create typo errors.</li>
+ * <li>historyName: name of the event that should be stored in the history token. By default, this
+ * name is equal to the name of the event's method.
+ * <li>activate: classes of handlers that should be activated with this event. You can activate zero
+ * to several handlers. Handlers to activate don't have to handle the event.</li>
+ *<li>activateNames: instead of using their classes, you can activate handlers thanks to their name
+ * (in case you have given names to your handlers). Not recommended because this method tends to
+ * create typo errors.</li>
+ * <li>deactivate: classes of handlers that should be deactivated with this event. You can activate
+ * zero to several handlers. Handlers to deactivate must not handle the event.</li>
+ *<li>deactivateNames: instead of using their classes, you can activate handlers thanks to their
+ * name (in case you have given names to your handlers). Not recommended because this method tends
+ * to create typo errors.</li>
+ * </ul>
  * 
  * @author plcoirier
  * 
@@ -60,6 +73,7 @@ import com.mvp4g.client.presenter.PresenterInterface;
 @Target( ElementType.METHOD )
 public @interface Event {
 
+	//default name that developers are unlikely to enter to know when method name should be used
 	public static final String DEFAULT_NAME = "#%!|&";
 
 	Class<? extends EventHandlerInterface<? extends EventBus>>[] handlers() default {};

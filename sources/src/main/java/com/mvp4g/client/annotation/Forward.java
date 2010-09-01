@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
  * You can only annotate methods with no parameter (ie only event with no object associated can be
  * used).<br/>
  * <br/>
- * You must not have more than one <code>Start</code> annotation in a class.<br/>
+ * You must not have more than one <code>Forward</code> annotation in a class.<br/>
  * <br/>
  * 
  * 

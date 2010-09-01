@@ -1064,9 +1064,7 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.print( viewElementName );
 				sourceWriter.println( ");" );
 				sourceWriter.print( elementName );
-				sourceWriter.println( ".setEventBus(eventBus);" );
-				sourceWriter.print( elementName );
-				sourceWriter.println( ".isActivated();" );
+				sourceWriter.println( ".setEventBus(eventBus);" );				
 				injectServices( elementName, presenter.getInjectedServices() );
 				sourceWriter.print( "return (T) " );
 				sourceWriter.print( elementName );
