@@ -33,7 +33,7 @@ public interface Mvp4gModule {
 	 * Method called to create the module and fire the start event.
 	 */
 	public void createAndStartModule();
-	
+
 	/**
 	 * Method called when an event is received from the parent module.
 	 */
@@ -52,10 +52,12 @@ public interface Mvp4gModule {
 	/**
 	 * Add a converter to the associate token
 	 * 
-	 * @param token
-	 *            ascendant modules history name + event type
+	 * @param eventType
+	 * 			type of the event
+	 * @param historyName
+	 * 			name of the event to store in the token
 	 * @param hc
-	 *            history converter to associate to the token
+	 * 			converter to associate with the event
 	 */
 	public void addConverter( String eventType, String historyName, HistoryConverter<?> hc );
 
@@ -72,7 +74,7 @@ public interface Mvp4gModule {
 	public void place( String event, String form );
 
 	/**
-	 * Deal the event receive from browse history change or pass it to a child module if needed.
+	 * Deal the event received from browser history change or pass it to a child module if needed.
 	 * 
 	 * @param eventType
 	 *            token stored in the browse history (event type + ascendant modules history name)
@@ -80,12 +82,17 @@ public interface Mvp4gModule {
 	 *            passer to execute the event.
 	 */
 	public void dispatchHistoryEvent( String eventType, Mvp4gEventPasser passer );
-	
+
 	/**
 	 * Clear the history token stored in the browse history url by adding a new empty token
 	 */
 	public void clearHistory();
-	
-	public void setParentModule(Mvp4gModule parentModule);
+
+	/**
+	 * 
+	 * @param parentModule
+	 * 			parent module to set
+	 */
+	public void setParentModule( Mvp4gModule parentModule );
 
 }

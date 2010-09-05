@@ -21,24 +21,35 @@ package com.mvp4g.client;
  * @author plcoirier
  * 
  * @param <T>
- * 			type of the object associated with the event
+ *            type of the object associated with the event
  */
 public abstract class Mvp4gEventPasser {
 
 	protected Object[] eventObjects = null;
 
+	/**
+	 * Build a passer object by passing a list of objects associated with an event.
+	 * 
+	 * @param eventObjects
+	 */
 	public Mvp4gEventPasser( Object... eventObjects ) {
 		this.eventObjects = eventObjects;
 	}
 
 	/**
 	 * @param eventObject
-	 *            the eventObject to set
+	 *            objects associated with an event
 	 */
 	public void setEventObject( Object... eventObjects ) {
 		this.eventObjects = eventObjects;
 	}
 
+	/**
+	 * Method call to execute the event of the sendee.
+	 * 
+	 * @param module
+	 *            module of the receiver
+	 */
 	public abstract void pass( Mvp4gModule module );
 
 }

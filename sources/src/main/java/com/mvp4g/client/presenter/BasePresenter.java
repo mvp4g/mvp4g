@@ -41,10 +41,18 @@ public class BasePresenter<V, E extends EventBus> extends BaseEventHandler<E> im
 
 	protected V view = null;
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.mvp4g.client.presenter.PresenterInterface#getView()
+	 */
 	public V getView() {
 		return view;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.mvp4g.client.presenter.PresenterInterface#setView(java.lang.Object)
+	 */
 	public void setView( V view ) {
 		this.view = view;
 	}
