@@ -268,7 +268,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		} else {
 			viewName = getElementName( views, viewClass.getCanonicalName() );
 			if ( viewName == null ) {
-				String err = "There is no instance of " + viewClass.getCanonicalName() + ". Have you forgetten to inject it to a presenter?";
+				String err = "There is no instance of " + viewClass.getCanonicalName() + ". Have you forgotten to inject it to a presenter?";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 			}
 		}
@@ -413,7 +413,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			handlerName = getElementName( presentersAndEventHandlers, handler.getCanonicalName() );
 			if ( handlerName == null ) {
 				String err = "No instance of " + handler.getCanonicalName()
-						+ " is defined. Have you forgetten to annotate your event handler with @Presenter or @EventHandler?";
+						+ " is defined. Have you forgotten to annotate your event handler with @Presenter or @EventHandler?";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 			}
 			handlers[index] = handlerName;
@@ -481,7 +481,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			Set<HistoryConverterElement> historyConverters = configuration.getHistoryConverters();
 			hcName = getElementName( historyConverters, hcClassName );
 			if ( hcName == null ) {
-				String err = "No instance of " + hcClassName + " is defined. Have you forgetten to annotate your history converter with @History?";
+				String err = "No instance of " + hcClassName + " is defined. Have you forgotten to annotate your history converter with @History?";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 			}
 			try {
