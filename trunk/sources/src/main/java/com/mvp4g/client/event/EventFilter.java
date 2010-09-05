@@ -26,6 +26,18 @@ package com.mvp4g.client.event;
  */
 public interface EventFilter<E extends EventBus> {
 
+	/**
+	 * Filter an event
+	 * 
+	 * @param eventType
+	 * 			type of the event
+	 * @param params
+	 * 			objects sent with the event
+	 * @param eventBus
+	 * 			event bus used to fire the event
+	 * @return
+	 * 		false if event should be stopped, true otherwise
+	 */
 	public boolean filterEvent( String eventType, Object[] params, E eventBus );
 
 }

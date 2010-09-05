@@ -30,18 +30,23 @@ import com.mvp4g.client.Mvp4gModule;
  * When an event needs to be stored in the history, the place method of <code>PlaceService</code> is
  * called. This method will transform the event to an history token the following way:<br/>
  * <br/>
- * <b>myurl#eventType?params</b><br/>
+ * <b>myurl#eventName?params</b><br/>
  * <br/>
- * where params is the string returned by the convertToToken method of the history converter
- * associated with the event.<br/>
+ * where params is the string returned by the handling method of the history converter for the
+ * event.<br/>
  * If params is null, then the URL will be:<br/>
  * <br/>
- * <b>myurl#eventType</b><br/>
+ * <b>myurl#eventName</b><br/>
  * <br/>
  * In case an event of a child module is stored, its history name and history names of all its
  * ascendant except the Root Module will be stored in the token:<br/>
  * <br/>
  * <b>myurl#childModule/subChildModule/eventType?params</b><br/>
+ * <br/>
+ * By default "?" is used to seperate the event name from the parameters. You can change it thanks
+ * to <code>@HistoryConfiguration</code>.<br/>
+ * <br/>
+ * If the token generated is supposed to be crawlable, then a "!" will be added before the token.
  * 
  * 
  * 
@@ -53,7 +58,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	public static final String MODULE_SEPARATOR = "/";
 
 	public static final String CRAWLABLE = "!";
-	
+
 	public static final String DEFAULT_SEPARATOR = "?";
 
 	/**
@@ -187,29 +192,25 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	}
 
 	/**
-	 * Convert an event and its associated object to a token.<br/>
-	 * <br/>
-	 * The object is converted to a string thanks to the history converter associated with the
-	 * event.<br/>
+	 * Convert an event and its associated parameters to a token.<br/>
 	 * 
 	 * @param eventType
 	 *            type of the event to store
-	 * @param form
-	 *            object associated with the event
+	 * @param param
+	 *            string representation of the objects associated with the event that needs to be
+	 *            stored in the token
 	 */
 	@SuppressWarnings( "unchecked" )
 	public void place( String eventType, String param ) {
 		String historyName = toHistoryNames.get( eventType );
 		String token;
-		if( ( param == null ) || ( param.length() == 0 ) ){
-			if(alwaysAdded){
+		if ( ( param == null ) || ( param.length() == 0 ) ) {
+			if ( alwaysAdded ) {
 				token = historyName + paramSeparator;
-			}
-			else{
+			} else {
 				token = historyName;
 			}
-		}
-		else{
+		} else {
 			token = historyName + paramSeparator + param;
 		}
 		HistoryConverter hc = converters.get( eventType );
@@ -227,10 +228,14 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	}
 
 	/**
-	 * Add a converter for an event.<br/>
+	 * Add a converter for an event.
 	 * 
 	 * @param eventType
+	 * 			type of the event
+	 * @param historyName
+	 * 			name of the event to store in the token
 	 * @param converter
+	 * 			converter associated with this event
 	 */
 	@SuppressWarnings( "unchecked" )
 	public void addConverter( String eventType, String historyName, HistoryConverter converter ) {

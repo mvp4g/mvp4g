@@ -19,7 +19,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.view.LazyView;
 
 /**
- * Lazy presenter to use when the event bus is defined thanks to an XML file. It's an lazy presenter
+ * Lazy presenter to use when the event bus is defined thanks to an XML file. It's a lazy presenter
  * where event bus type has been set to automatically match the type of the event bus generated
  * thanks to an XML file.
  * 

@@ -18,7 +18,7 @@ package com.mvp4g.client.history;
 import com.mvp4g.client.event.EventBus;
 
 /**
- * Interface that defines method to convert a token from/to an event.<br/>
+ * Interface that defines methods to convert a token from/to an event.<br/>
  * 
  * @author plcoirier
  *
@@ -42,6 +42,12 @@ public interface HistoryConverter<E extends EventBus> {
 	 */
 	public void convertFromToken( String eventType, String param, E eventBus );
 	
+	/**
+	 * Return true if the token generated should be crawlable
+	 * 
+	 * @return
+	 * 		true if crawlable
+	 */
 	public boolean isCrawlable();
 
 }
