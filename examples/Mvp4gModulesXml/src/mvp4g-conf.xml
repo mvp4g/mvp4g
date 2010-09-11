@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/trunk/xsd/mvp4g-conf.xsd">
+<mvp4g xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://mvp4g.googlecode.com/svn/tags/mvp4g-1.2.0/xsd/mvp4g-conf.xsd">
 
     <debug logLevel="SIMPLE" logger="com.mvp4g.example.client.main.CustomLogger" />
 	
@@ -11,7 +11,7 @@
 		<childModule name="companyModule" class=".company.CompanyModule" eventToDisplayView="changeBody"/>
 		<childModule name="productModule" class=".product.ProductModule" async="false" autoDisplay="false"/>	
 	</childModules>
-	<history package="com.mvp4g.example.client.main.historyConverter" initEvent="start">
+	<history package="com.mvp4g.example.client.main.historyConverter" initEvent="start" paramSeparator="/" paramSeparatorAlwaysAdded="true">
 		<converter name="menuHC" class="MenuHistoryConverter"/>
 	</history>
 	<views package="com.mvp4g.example.client.main" >
