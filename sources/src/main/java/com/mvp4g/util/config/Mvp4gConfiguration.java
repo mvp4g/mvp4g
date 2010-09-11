@@ -520,8 +520,8 @@ public class Mvp4gConfiguration {
 	}
 
 	/**
-	 * @param filters
-	 *            the filters to set
+	 * @param eventFilterConfiguration
+	 *            the eventFilterConfiguration to set
 	 */
 	public void setEventFilterConfiguration( EventFiltersElement eventFilterConfiguration ) {
 		this.eventFilterConfiguration = eventFilterConfiguration;

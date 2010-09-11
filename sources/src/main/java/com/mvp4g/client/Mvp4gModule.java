@@ -64,8 +64,6 @@ public interface Mvp4gModule {
 	/**
 	 * Place an event and its associated object in the browser history
 	 * 
-	 * @param <T>
-	 *            type of the object associated with the event
 	 * @param event
 	 *            event to store
 	 * @param form
