@@ -10,7 +10,7 @@
 	<name>Mvp4g</name>
 
 	<description>Model View Presenter with Event Bus For GWT</description>
-	<url>http://mvp4g.googlecode.com</url>
+	<url>http://code.googlecode.com/p/mvp4g</url>
 
 	<licenses>
 		<license>
@@ -19,6 +19,12 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
+	<scm>
+		<connection>scm:svn:http://mvp4g.googlecode.com/svn/trunk/</connection>
+		<developerConnection>scm:svn:https://mvp4g.googlecode.com/svn/trunk/</developerConnection>
+		<url>http://mvp4g.googlecode.com/svn/trunk/</url>
+	</scm>
 
 	<properties>
 		<gwt.version>1.7.0</gwt.version>
@@ -117,6 +123,22 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.5</version>
 				<configuration>
@@ -132,6 +154,20 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 
