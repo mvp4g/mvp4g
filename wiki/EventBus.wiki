@@ -103,8 +103,8 @@ eventBus.companyCreated(new CompanyBean("company"));
 
 [http://mvp4g.googlecode.com/svn/tags/mvp4g-1.2.0/documentation/uml/event_broadcast.png]
 
-1: you can filter events and stop them if needed. This mechanism is automatically removed by Mvp4g if no filter is set [http://code.google.com/p/mvp4g/wiki/EventBus#Event_Filtering see Event filtering]
-2: this method has 2 goals: 
+# you can filter events and stop them if needed. This mechanism is automatically removed by Mvp4g if no filter is set [http://code.google.com/p/mvp4g/wiki/EventBus#Event_Filtering see Event filtering]
+# this method has 2 goals: 
  * check if the presenter is activated, if not, the event won't be forwarded to it
  * if activated and if it's the first event handled by the presenter, it calls the bind method.
 
