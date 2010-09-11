@@ -19,6 +19,21 @@ import com.mvp4g.example.client.widget.interfaces.IListBox;
 import com.mvp4g.example.client.widget.interfaces.ITextBox;
 import com.mvp4g.example.client.widget.interfaces.IWidget;
 
+/**
+ * SOLUTION 1
+ * 
+ * Description: use GXT only in the view implementation. View interface and presenter use only basic
+ * GWT interfaces and extra classes are created to wrap GXT widgets with these interfaces.
+ * 
+ * Advantages:
+ * -You can easily switch widget libraries
+ * -You can easily test presenters with JUnit and Mock libraries
+ * 
+ * Drawbacks:
+ * -You have to create a lot of wrapping classes.
+ * -You lose GXT logic by using GWT events instead of GXT ones. Hard work might be needed in order 
+ * GXT widgets to answer correctly to GWT events.
+ */
 @Presenter( view = UserProfileView.class )
 public class UserProfilePresenter extends BasePresenter<UserProfilePresenter.IUserProfileView, EmployeeAdminWithGXTEventBus> {
 	
