@@ -29,6 +29,24 @@ import com.mvp4g.example.client.widget.interfaces.gxt.IGXTButton;
 import com.mvp4g.example.client.widget.interfaces.gxt.IGXTPagingToolBar;
 import com.mvp4g.example.client.widget.interfaces.gxt.IGXTTable;
 
+/**
+ * SOLUTION 3
+ * 
+ * Description: 
+ * use GXT widget only in the view implementation but use GXT events directly in presenters and view 
+ * interfaces (so in presenters and view interfaces, instead of using addClickHandler, 
+ * addValueChangeHandler... methods, GXT addListener method is used). Extra classes are still needed 
+ * to wrap GXT widgets.
+ *  
+ * Advantages:
+ * -You can easily test presenters with JUnit and Mock libraries
+ * -You keep GXT logic
+ * -Wrapping classes are easy to code 
+ * 
+ * Drawbacks:
+ * -You have to create a lot of wrapping classes.
+ * -Switching widget library has an impact on your code 
+ */
 @Presenter( view = UserListView.class )
 public class UserListPresenter extends BasePresenter<UserListPresenter.IUserListView, EmployeeAdminWithGXTEventBus> {
 

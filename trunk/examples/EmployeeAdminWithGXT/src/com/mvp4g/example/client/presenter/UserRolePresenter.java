@@ -16,6 +16,26 @@ import com.mvp4g.example.client.presenter.view_interface.widget_interface.IUserR
 import com.mvp4g.example.client.presenter.view_interface.widget_interface.IUserRoleView.IUserRolePresenter;
 import com.mvp4g.example.client.view.UserRoleView;
 
+/**
+ * SOLUTION 4
+ * 
+ * Description: 
+ * Use the reverse pattern for MVP described by GWT in this article (...) and have the
+ * view knows the presenter.
+ * 
+ * Advantages: 
+ * -You can easily switch widget libraries 
+ * -You can easily test presenters with JUnit and Mock libraries
+ * -No extra class needed, it's easier to code.
+ * -You keep GXT logic
+ * 
+ * Drawbacks:
+ * -view interface is more complicated (but the way I did it may not be the best way,
+ * there is probably a way to simplify it).
+ * 
+ * @author plcoirier
+ * 
+ */
 @Presenter( view = UserRoleView.class )
 public class UserRolePresenter extends BasePresenter<IUserRoleView, EmployeeAdminWithGXTEventBus> implements IUserRolePresenter {
 
@@ -75,8 +95,8 @@ public class UserRolePresenter extends BasePresenter<IUserRoleView, EmployeeAdmi
 	public void onUnselectUser() {
 		user = null;
 		disable();
-	}	
-	
+	}
+
 	public void onAddButtonClicked() {
 		addRole( view.getPossibleRoleSelected() );
 	}
@@ -95,7 +115,7 @@ public class UserRolePresenter extends BasePresenter<IUserRoleView, EmployeeAdmi
 	public void onRoleSelected() {
 		enableRemoveButton();
 	}
-	
+
 	@InjectService
 	public void setUserService( UserServiceAsync service ) {
 		this.service = service;
@@ -166,7 +186,7 @@ public class UserRolePresenter extends BasePresenter<IUserRoleView, EmployeeAdmi
 		enabled = false;
 		view.setPossibleRole( NONE_SELECTED );
 		view.setPossibleRoleEnabled( false );
-	}	
+	}
 
 	private boolean isPossibleRoleSelected() {
 		return !NONE_SELECTED.equals( view.getPossibleRoleSelected() );
