@@ -1,9 +1,9 @@
-#summary Creating presenters, views & services
+#summary Creating presenters, views & services (Draft for 1.2.0)
 
 <wiki:toc max_depth="3" />
 
 Mvp4g mainly helps you define 3 types of elements:
- * Presenter 
+ * Presenter (or Event Handlers)
  * View
  * Services
 
@@ -26,16 +26,33 @@ You also have the oppurtinity to override the method bind() to bind your view to
 
 Instead of extending BasePresenter, you can also implement PresenterInterface<V,E>.
 
- 2. have a constructor with no parameter
+ 2. have a constructor with no parameter or compatible with GIN (ie annotated with @Inject, see [http://code.google.com/p/google-gin/ see GIN website for more information]).
 
  3. annotate it with @Presenter and set the attribute 'view'. This attribute must define the class of the view that implements the presenter's view interface.
 
-Mvp4g will automaticaly create an instance for each class annoted with @Presenter. Mvp4g will also create its own instance of its view for each presenter. If two presenters are injected with views with the same class, two instances of this view class will be created.
+Mvp4g will automaticaly create an instance for each class annoted with @Presenter. Mvp4g will also create one instance of the view for each presenter. If two presenters are injected with views with the same class, two instances of this view will be created.
 
 You can also decide to create a Lazy Presenter ([http://code.google.com/p/mvp4g/wiki/Mvp4gOptimization#Lazy_Loading see Mvp4g Lazy Loading for more information]).
 
 ==Injecting services==
 
+===With GIN===
+
+With GIN, you can easily inject your service into your presenter thanks to @Inject:
+{{{
+@Presenter(view=OneView.class)
+public class OnePresenter extends BasePresenter<IOneView, OneEventBus>{
+	
+	@Inject
+	private ServiceAsync service;
+	
+}
+}}}
+
+GIN will automatically create your service by calling GWT.create(Service.class).
+
+===Mvp4g @InjectServices (Deprecated)===
+__it is recommanded to use the GIN injection__
 You can easily inject services to a presenter by: 
  * creating a setter method for your service 
  * annotating this method with @InjectService
@@ -47,23 +64,64 @@ public void setService( ServiceAsync service ) {
 }
 }}}
 
-When you inject a service to a presenter, Mvp4g will automaticaly find the instance of the service. If you inject the same service into multiples presenters, only one instance of the service will be created.
 
-You can also decide to inject a service thanks to its name by specifying the attribute 'serviceName' of the @InjectService annotation (not recommended). In this case you need to make sure that a service with this name exists.
+==Multiple presenter==
+By default, a presenter will be created as a singleton, which means that you will have one instance of the presenter when the application starts. A multiple feature is available in order to allow developers to have several instances of the same presenter. When the multiple feature is activated for a presenter, all the instances of this presenter will have to be created manualy by the developer (which means that no instance is created when the application starts).
+
+To activate the multiple feature, you need to set the multiple attribute of the @Presenter to "true":
+{{{
+@Presenter(view=OneView.class, multiple=true)
+public class OnePresenter extends BasePresenter<IOneView, OneEventBus>{...}
+}}}
+
+When you have activated the multiple feature for a presenter, you can create a new instance by calling the addHandler method of the event bus with the class of the presenter to create:
+{{{
+OnePresenter presenter = eventBus.addHandler( OnePresenter.class );
+}}}
+
+You can also delete an instance of the presenter set as multiple by calling the removeHandler of the event bus with the instance to remove:
+{{{
+eventBus.removeHandler( handler );
+}}}
+
+[http://www.qondio.com/graphics/attention.png] Only presenters set as multiple can be added/removed. If you try to add/remove a presenter not set as multiple, an error will occur at runtime.
+
+=Event Handlers=
+
+An event handler is a presenter with no view. It can be used the same way as a presenter and has the same properties (except for the view).
+
+To create an event handler, you need to:
+ 1. extend BaseEventHandler<E>:
+   * E: type of your event bus interface. 
+
+By extending BaseEventHandler, you will have access to the following protected attributes:
+ * E eventBus: instance of the event bus injected to the presenter
+
+Instead of extending BaseEventHandler, you can also implement EventHandlerInterface<E>.
+
+ 2. have a constructor with no parameter or compatible with GIN (ie annotated with @Inject, see [http://code.google.com/p/google-gin/ see GIN website for more information]).
+
+ 3. annotate it with @EventHandler.
+
 
 =View=
 
-To create a view, all you need is to create a class with a constructor with no parameter.
+To create a view, all you need is to create a class with a constructor with no parameter or compatible with GIN (ie annotated with @Inject, see [http://code.google.com/p/google-gin/ see GIN website for more information]).
 
 You can also decide to create a Lazy View ([http://code.google.com/p/mvp4g/wiki/Mvp4gOptimization#Lazy_Loading see Mvp4g Lazy Loading for more information]).
 
 =Service=
 
-==Creating a service==
-Create your service the same way as a regular GWT application. No extra-code is needed and it is <b>NOT MANDATORY</b> to annotate your service with @Service. This annotation is here in case you need to set Mvp4g options for your service.
+==GIN==
+When you use GIN feature to inject a service to a presenter, it automatically detects that a call to GWT.create is needed.
 
-==@Service Annotation==
-This annotation is used to define options for your service and it is not mandatory to create a service.
+This is also true for any object that are created with GWT.create
+
+==Mvp4g @Service (deprecated)==
+This annotation will be used only if services are injected with Mvp4g @InjectService. It is recommanded to use the GIN injection that offers the same feature.
+
+===@Service Annotation===
+This annotation is used to define options for your service and it is not mandatory to create a service injected thanks to Mvp4g @Service.
 
 This annotation has the following attributes:
  * name: to specify the name of the service in case you want to inject the service thanks to its name.
@@ -73,7 +131,7 @@ service.setServiceEntryPoint("/myapp/myservice");
 }}}
  * generatedClass: class that GWT.create should generate when creating the service (by default service class name + "Async", useful only to define non-rpc service, see ... for more information)
 
-==Using a non-rpc service==
+===Using a non-rpc service===
 You can use a non-rpc service as long as your service generation uses the same process as GWT rpc service, which means that you create your service the following way:
 {{{
 MyNonRpcService service = GWT.create(MyNonRpcService.class)
