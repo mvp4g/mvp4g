@@ -119,9 +119,12 @@ public interface CompanyEventBus extends EventBus {
 
 [http://mvp4g.googlecode.com/svn/tags/mvp4g-1.2.0/documentation/uml/forward_children.png]
 
-1: these methods are called only the first time the child module is loaded<br/>
-2: child module is created thanks to GWT.create process<br/>
-3: when you decide not to load your child module asynchronously (ie load your child module at first), these methods are still called.
+ # these methods are called only the first time an event is forwarded to the child module.
+ # child module is created thanks to GWT.create process.
+ # when you decide not to load your child module asynchronously (ie load your child module at first), these methods are still called.
+ # called only if the child module auto-display feature is activated
+ # called only if you have configured a forward event
+ # you can set any event for the start, forward or display child view events
 
 ===Understanding events fired when an event is forwarded to a child module===
 
@@ -142,4 +145,4 @@ public void changeBody(Widget body);
 
 [http://mvp4g.googlecode.com/svn/tags/mvp4g-1.2.0/documentation/uml/forward_parent.png]
 
-1: these methods are called when the child module is loaded and allow it to retrieve the parent event bus.
+1: these methods are called when the child module is loaded and allow to retrieve the parent event bus.
