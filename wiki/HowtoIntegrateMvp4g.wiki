@@ -1,8 +1,8 @@
-#summary How to integrate Mvp4g to your project
+#summary How to integrate Mvp4g to your project (Draft for Mvp4g 1.2.0)
 
 == Introduction ==
 To integrate Mvp4g into your project, the following steps need to be done
-  # Add needed library to your project
+  # Add needed library to your project or add a Maven dependency
   # Modify your GWT configuration file (`*`.gwt.xml)
   # Set your entry point
   # Create your event bus, presenters, views...
@@ -12,8 +12,27 @@ To integrate Mvp4g into your project, the following steps need to be done
 Add the following libraries to your project:
   * Commons Lang ([http://commons.apache.org/downloads/download_lang.cgi Download here])
   * Commons Configuration ([http://commons.apache.org/downloads/download_configuration.cgi Download here])
+  * GIN libraries (gin-1.0.jar, guice-2.0.jar, aopalliance.jar [http://code.google.com/p/google-gin/downloads/list Download here])
   * Mvp4g ([http://code.google.com/p/mvp4g/downloads/list Download here])  
 
+__You can also download the Mvp4g examples and copy the libraries inside the lib directory___
+  
+== Maven Dependency == 
+
+Add the Mvp4g maven repository:
+<repository>
+	<id>mvp4g</id>
+	<url>http://mvp4g.googlecode.com/svn/maven2/releases/</url>
+</repository>
+
+__I'm hoping to add it to Maven central repository soon__
+
+Add the maven dependency:
+<dependency>
+	<groupId>com.googlecode.mvp4g</groupId>
+	<artifactId>mvp4g</artifactId>
+	<version>1.2.0</version>
+</dependency>
 
 == GWT configuration file ==
 
