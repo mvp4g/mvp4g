@@ -7,12 +7,16 @@ public class MenuItem extends TreeItem {
 	private String description = null;
 	private String appId = null;
 	private String projectName = null;
+	private String eventBusName = null;
+	private boolean withXml = false;
 
-	public MenuItem(String description, String appId, String projectName ) {
+	public MenuItem( String description, String appId, String projectName, String eventBusName, boolean withXml ) {
 		super( projectName );
 		this.description = description;
 		this.appId = appId;
 		this.projectName = projectName;
+		this.eventBusName = eventBusName;
+		this.withXml = withXml;
 	}
 
 	public String getDescription() {
@@ -25,6 +29,14 @@ public class MenuItem extends TreeItem {
 
 	public String getProjectName() {
 		return projectName;
+	}
+
+	public String getEventBusName() {
+		return eventBusName;
+	}
+
+	public boolean isWithXml() {
+		return withXml;
 	}
 
 }
