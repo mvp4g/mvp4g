@@ -20,8 +20,6 @@ package com.mvp4g.client;
  * 
  * @author plcoirier
  * 
- * @param <T>
- *            type of the object associated with the event
  */
 public abstract class Mvp4gEventPasser {
 
@@ -37,7 +35,7 @@ public abstract class Mvp4gEventPasser {
 	}
 
 	/**
-	 * @param eventObject
+	 * @param eventObjects
 	 *            objects associated with an event
 	 */
 	public void setEventObject( Object... eventObjects ) {

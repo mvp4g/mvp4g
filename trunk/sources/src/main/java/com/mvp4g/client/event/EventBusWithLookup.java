@@ -34,8 +34,8 @@ public interface EventBusWithLookup extends EventBus {
 	 * 
 	 * @param eventType
 	 *            type of the event to dispatch
-	 * @param form
-	 *            form to forward to the handlers
+	 * @param objects
+	 *            objects to fire with the event
 	 * @throws Mvp4gException
 	 *             exception thrown in case an error occurs while the event is dispatched.<br/>
 	 *             The most common cases that this error could be thrown is in case:
@@ -49,7 +49,7 @@ public interface EventBusWithLookup extends EventBus {
 	 *             there is an error in the application that needs to be fixed (most of the time, an
 	 *             error in the configuration file).
 	 */
-	public void dispatch( String eventType, Object... data );
+	public void dispatch( String eventType, Object... objects );
 
 	/**
 	 * Call the method associated with the event type in order to trigger the presenters that can
@@ -93,8 +93,8 @@ public interface EventBusWithLookup extends EventBus {
 	 * 
 	 * @param enumEventType
 	 *            type of the event to dispatch
-	 * @param form
-	 *            form to forward to the handlers
+	 * @param objects
+	 *            objects to fire with the event
 	 * @throws Mvp4gException
 	 *             exception thrown in case an error occurs while the event is dispatched.<br/>
 	 *             The most common cases that this error could be thrown is in case:
@@ -108,7 +108,7 @@ public interface EventBusWithLookup extends EventBus {
 	 *             there is an error in the application that needs to be fixed (most of the time, an
 	 *             error in the configuration file).
 	 */
-	public <E extends Enum<E>> void dispatch( Enum<E> enumEventType, Object... data );
+	public <E extends Enum<E>> void dispatch( Enum<E> enumEventType, Object... objects );
 
 	/**
 	 * Call the method associated with the event type in order to trigger the presenters that can

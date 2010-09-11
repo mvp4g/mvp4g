@@ -15,11 +15,6 @@
  */
 package com.mvp4g.util.config.element;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 /**
@@ -89,18 +84,6 @@ public class HistoryElement extends Mvp4gElement {
 			event = getInitEvent();
 		}
 		return event;
-	}
-	
-	@Test
-	public void testMultiple() throws DuplicatePropertyNameException {
-		HistoryElement element = new HistoryElement();
-		assertFalse( element.isParamSeparatorAlwaysAdded() );
-		element.setParamSeparatorAlwaysAdded( "true" );
-		assertTrue( element.isParamSeparatorAlwaysAdded() );
-
-		element = new HistoryElement();
-		element.setParamSeparatorAlwaysAdded( "false" );
-		assertFalse( element.isParamSeparatorAlwaysAdded() );
 	}
 
 }

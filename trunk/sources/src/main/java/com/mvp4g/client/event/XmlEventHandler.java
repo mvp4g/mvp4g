@@ -22,8 +22,6 @@ package com.mvp4g.client.event;
  * 
  * @author plcoirier
  * 
- * @param <V>
- *            Type of the view injected into the presenter. Must extends <code>LazyView</code>.
  */
 public class XmlEventHandler extends BaseEventHandler<EventBusWithLookup> {
 

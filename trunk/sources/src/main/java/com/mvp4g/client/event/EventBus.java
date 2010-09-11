@@ -58,7 +58,7 @@ public interface EventBus {
 	 * Set whether or not the associated event filters should be executed before sending the event
 	 * to the associated event handlers.<br/>
 	 * 
-	 * @param filterEnabled
+	 * @param filteringEnabled
 	 *            true if events filters should be executed
 	 */
 	public void setFilteringEnabled( boolean filteringEnabled );
@@ -69,7 +69,7 @@ public interface EventBus {
 	 * <br/>
 	 * This method should be called only right before sending an event that could be filtered.
 	 * 
-	 * @param filterEnabled
+	 * @param filteringEnabled
 	 *            true if events filters should be executed
 	 */
 	public void setFilteringEnabledForNextOne( boolean filteringEnabled );

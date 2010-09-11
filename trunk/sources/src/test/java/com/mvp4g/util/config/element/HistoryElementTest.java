@@ -16,7 +16,7 @@ public class HistoryElementTest extends AbstractMvp4gElementTest<HistoryElement>
 		element.setInitEvent( initEvent );
 		assertEquals( initEvent, element.getNotFoundEvent() );
 	}
-	
+
 	@Test
 	public void testMultiple() throws DuplicatePropertyNameException {
 		HistoryElement element = new HistoryElement();
