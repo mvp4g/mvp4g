@@ -12,6 +12,12 @@
 			<xs:pattern value="SIMPLE|DETAILED" />
 		</xs:restriction>
 	</xs:simpleType>
+	
+	<xs:simpleType name="paramSeparator">
+		<xs:restriction base="xs:string">
+			<xs:pattern value=".{1,}" />
+		</xs:restriction>
+	</xs:simpleType>
 
 	<xs:simpleType name="package">
 		<xs:restriction base="xs:string">
@@ -120,6 +126,8 @@
 			<xs:attribute name="package" type="package" use="optional" />
 			<xs:attribute name="initEvent" type="name" use="optional" />
 			<xs:attribute name="notFoundEvent" type="name" use="optional" />
+			<xs:attribute name="paramSeparator" type="paramSeparator" use="optional" />
+			<xs:attribute name="paramSeparatorAlwaysAdded" type="boolean" use="optional" />
 		</xs:complexType>
 	</xs:element>
 
