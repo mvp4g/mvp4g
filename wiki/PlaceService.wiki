@@ -31,7 +31,7 @@ If you need to retrieve event information when browser history changes, you can 
 
 To create an history converter, you have to:
  * create a class that implements HistoryConverter 
- * have a constructor with no parameter or compatible with GIN  (ie annotated with @Inject, see see GIN website for more information).
+ * have a constructor with no parameter or compatible with GIN  (ie annotated with @Inject, see [http://code.google.com/p/google-gin/ see GIN website for more information]).
  * annotate your class with @History
  * have your history converter implement the handling method of the event
 
