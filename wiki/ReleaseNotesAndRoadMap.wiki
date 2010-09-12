@@ -1,16 +1,24 @@
-#summary Release Notes and Road Map
+#summary Release Notes and Road Map (Draft for Mvp4g 1.2.0)
 
 =Road Map=
- * Support more than one argument for events (see Issue 21)
- * Be compliant with JSR 330
- * Have the possibility to inject view into other view without events (to take advantage of all the possibility of UiBinder, see Issue 17)
-
+ TDB
 
 = Release Notes =
 
+==1.2.0 (09/12/10)==
+ * Integration of GIN
+ * Event Filtering
+ * Support for more than one object for events
+ * Support of crawlable url
+ * Support of customed history name for events
+ * Detailed logs & possibility to use an external logger
+ * Presenter Activation/Deactivation
+ * Support of non-singleton presenters
+ * Support of Event Handlers (= view less presenter)
+
 ==1.1.0 (03/17/10)==
  * Add possibility to configure the framework with annotations and an event bus interface
- * Add multi-module feature to take advantages of GWT2.0 Code splitting feature
+ * Add multi-module feature to take advantages of GWT Code splitting feature
  * Add lazy loading for views and presenters
  * Add the possibility to use non-RPC services build with GWT deferred binding.
 
