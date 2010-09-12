@@ -9,7 +9,7 @@
 Mvp4g instantiates a Place Service to easily manage history based on History converter.
 
 History converters have two goals: 
- * convert event parameters to a string (to add it to the token) and/or store them (in cookie for example) when an event is stored in browser history. In order to do this convertion, the history converter must implement the handling method of the event except that it must return a string. This string will then be stored in the token ([see this section for more information]).
+ * convert event parameters to a string (to add it to the token) and/or store them (in cookie for example) when an event is stored in browser history. In order to do this convertion, the history converter must implement the handling method of the event except that it must return a string. This string will then be stored in the token ([http://code.google.com/p/mvp4g/wiki/PlaceService#Associate_an_History_Converter_to_an_event see Associate an History Converter to an event]).
  * convert, when history changes, a token to an event, retrieve information to build its parameters (thanks to the token, database, cookie...) and then fires the converted event to event bus. This conversion is done by convertFromToken method.
 
 This is how Mvp4g stores an event to the browser history:
@@ -76,7 +76,7 @@ public void goToCompany(long id);
 
 You may need to call the server while converting your event to/from a token, that's why Mvp4g allows you to easily inject services inside history converters.
 
-You can inject services the same way as for presenters (...).
+You can inject services the same way as for presenters ([http://code.google.com/p/mvp4g/wiki/PresenterViewService#Injecting_services see this section for more information]).
 
 ==Init and NotFound events==
 
