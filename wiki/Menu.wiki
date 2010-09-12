@@ -4,6 +4,6 @@
   * [MultiModules Multi-modules feature]
   * [PlaceService Mvp4g & Browser History]
   * [Mvp4gOptimization Mvp4g Optimization]
-  * [XML Using an XML configuration]
+  * [GinIntegration GIN integration]
   * [FAQ FAQ]
   * [ReleaseNotesAndRoadMap Release Notes and Road Map]
