@@ -1,4 +1,4 @@
-#summary Mvp4g faq
+#summary Mvp4g faq (Draft for Mvp4g 1.2.0)
 
 If you have other questions about the framework or would like further information about a question, just let me know by leaving a message on the FAQ discusion in the Mvp4g Google group (http://groups.google.com/group/mvp4g/browse_thread/thread/d8ee207598bf02fa).
 
@@ -7,7 +7,7 @@ If you have other questions about the framework or would like further informatio
 
 =General=
 ==What's the class diagram of the framework?==
-http://mvp4g.googlecode.com/svn/tags/mvp4g-1.1.0/documentation/uml/mvp4g_class_diagram_overview.png
+http://mvp4g.googlecode.com/svn/tags/mvp4g-1.2.0/documentation/uml/mvp4g_class_diagram_overview.png
 
 ==What's a presenter?==
 In a MVP architecture, the presenter is in charge of the logic of the application. It acts upon the model and the view.<br/>
@@ -32,7 +32,7 @@ module.createAndStartModule();
 RootLayoutPanel.get().add( (Widget)module.getStartView() );
 }}}
 
-The first line creates a Java class thanks to the configuration (annotations or XML) using GWT Deferred Binding feature.
+The first line creates a Java class thanks to the configuration using GWT Deferred Binding feature.
 
 The call to the createAndStartModule method will:
  * create the needed instance of views, services, presenters and history converters.
@@ -48,5 +48,14 @@ Mvp4g is 100% Java so it is guaranted to be compatible with all the browsers tha
 ==How fast is Mvp4g compared to GWT Handler Manager?==
 
 You can look at this page [Mvp4gPerformances Mvp4g Performances] that compares Mvp4g and GWT Handler Manager. As you can see with the result, Mvp4g event bus processes events faster than GWT HandlerManager. However time to process a few events is almost equal to 0 for both event bus and in most cases applications won't send more than 1 or 2 events at a time. To sum up, you can use Mvp4g without worrying to make your application slow. 
- 
 
+==Can Mvp4g be used with gwt-dispath or restful services?==
+
+Yes, Mvp4g let you use anything you want for the back-end communication. You can look at
+ * [http://code.google.com/p/mvp4g/source/browse/#svn/tags/mvp4g-1.2.0/examples/Mvp4gWithEdgebox this simple project] to see a working of Mvp4g with restful services.
+ * [http://groups.google.com/group/mvp4g/browse_thread/thread/f68783da19b776f/dda6a4b432f6552a?lnk=gst&q=dispatch#dda6a4b432f6552a this thread] to have feedbacks about integrating gwt-dispatch with mvp4g.
+ 
+==Can I still use an xml file to configure my application?==
+Mvp4g 1.2.0 still supports XML configuration for all its features. You can find an example of XML configuration here: [http://code.google.com/p/mvp4g/source/browse/#svn/tags/mvp4g-1.2.0/examples/Mvp4gModulesXml Mvp4gModulesXml].<br/>
+
+However it is strongly recommanded to use annotations. Unlike XML, annotations provides a strongly typed event bus and can prevent a lot of typo errors. Also for future developments, the priority will be given to annotations.
