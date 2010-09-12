@@ -28,7 +28,7 @@ Before forwarding any event to a presenter, Mvp4g framework makes sure that the 
 
 [http://mvp4g.googlecode.com/svn/tags/mvp4g-1.2.0/documentation/uml/lazy_loading.png]
 
-1: these methods are called only the first time the presenter has to handle an event.
+1: these methods are called only the first time the presenter has to handle an event. The isActivated method has 2 purposes: check if the presenter is activated, call the bind method if needed.
 
 To create a Lazy Presenter, your presenter has to extend LazyPresenter and overrides the following methods:
  * createPresenter: in this method, you should create your presenter (ie instantiate all the attributes of your presenter). By default this method does nothing.
