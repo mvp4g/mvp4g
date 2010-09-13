@@ -20,20 +20,22 @@ __You can also download the Mvp4g examples and copy the libraries inside the lib
 == Maven Dependency == 
 
 Add the Mvp4g maven repository:
+{{{
 <repository>
 	<id>mvp4g</id>
 	<url>http://mvp4g.googlecode.com/svn/maven2/releases/</url>
 </repository>
-
+}}}
 __I'm hoping to add it to Maven central repository soon__
 
 Add the maven dependency:
+{{{
 <dependency>
 	<groupId>com.googlecode.mvp4g</groupId>
 	<artifactId>mvp4g</artifactId>
 	<version>1.2.0</version>
 </dependency>
-
+}}}
 == GWT configuration file ==
 
 Insert Mvp4g module into your project:
