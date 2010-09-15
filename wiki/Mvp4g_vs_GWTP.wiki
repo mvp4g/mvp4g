@@ -1,0 +1,367 @@
+#summary Comparaison between Mvp4g and GWTP (draft not completed yet)
+#labels Deprecated
+
+*THIS IS A DRAFT AND IS NOT COMPLETE YET*
+
+Mvp4g vs GWT-P (or gwt-platform)
+
+Mvp4g and GWTP are 2 frameworks implementing the MVP / Event bus pattern presented by Ray Ryan last year. The main issue I see with 
+this pattern is that you can easily end up with a lot of classes just for your events. You have 2 solutions to solve this 
+issue:
+-simplify the way to create events, which is the solution chosen by Mvp4g
+-define mechanisms to lower the number of events you need to create, which is the solution chosen by GWTP
+
+Here is a comparaison of the main features offered by the 2 frameworks
+
+==Events==
+
+Gwt-platform is based on the GWT handler manager whereas Mvp4g introduce a new way to create events. 
+
+This is how you would create an event and add an handler.
+
+Here is how you would create an event and add an handler with Mvp4g
+//this method is define inside your event bus interface, you need one interface for your whole application
+@Event(handlers = OnePresenter.class)
+void oneEvent(BeanOne one, BeanTwo two);
+
+public class OnePresenter ... {
+
+    public void onOneEvent(BeanOne one, BeanTwo two){
+      //do sthg
+    }
+
+}
+
+This is how you would fire an event:
+eventBus.oneEvent(beanOne, beanTwo);
+
+With GWTP:
+
+//To create an event
+public class OneEvent extends
+    GwtEvent<OneEvent.OneHandler> {
+  public interface OneHandler extends EventHandler {
+    void onOneEvent(OneEvent event);
+  }
+
+  private static Type<OneHandler> TYPE = new Type<OneHandler>();
+  
+  private BeanOne one;
+  private BeanTwo two;
+  
+  public OneEvent(BeanOne one, BeanTwo two){
+    this.one = one;
+    this.two = two;
+  }
+  
+  @Override
+  public Type<ShowMessageHandler> getAssociatedType() {
+    return TYPE;
+  }
+
+  @Override
+  protected void dispatch(OneHandler handler) {
+    handler.onOneEvent(this);
+  }    
+  
+} 
+
+or
+
+//a new tool has been added to gwt-platform to automatically generated 
+//the code above thanks to the following code 
+@GenEvent  
+public class OneEvent {
+ 
+  @Order(1) BeanOne one;       
+  @Order(2) BeanTwo two;
+   
+}
+
+
+//add an handler
+public class OnePresenter ... implements OneHandler {
+
+    public void onOneEvent(BeanOne one, BeanTwo two){
+      //do sthg
+    }
+    
+    public void onBind(){
+        addRegisteredHandler( OneEvent.Type, this );
+    }
+
+} 
+
+
+Even if Gwt-platform has introduced a new mechanism to generate events, Mvp4g process is still simpler: one line of code & one annotation to create an event & add x handlers againts few annotations, a class and x lines of code for gwt-platform.
+
+Another main advantage of Mvp4g compared to Gwt-platform is that you can easily control your event and their flow. Indeed with the way Mvp4g implements events, you have all your events listed at one place 
+and you can easily see the handlers of your event:
+{{{
+@Event(handlers = {PresenterOne.class, PresenterTwo.class})
+void oneEvent(BeanOne one, BeanTwo two);
+}}}   
+For example, here, right away, you can see that oneEvent is handled by PresenterOne & PresenterTwo.
+
+With Gwt-platform (or any framework based on GWT HandlerManager), you have to go through several classes to retrieve this information.
+
+Here is a list of other features related to the event bus available with Mvp4g:
+||Mvp4g|| GWTP
+||Event Filtering||Not available but GWTP offers a mechanism to protect presenters instead||
+||Event Logs||Not available||
+||Activation/deactivation of handlers||can be done but with more lines of codes||
+
+==Creating a presenter==
+
+//Mvp4g
+
+//presenter class
+@Presenter(view=OneView)
+public class OnePresenter extends LazyPresenter<OneEventBus, IOneView){...}
+
+//GWTP
+
+//presenter class
+public class OnePresenter extends PresenterImpl<IOneView, OnePresenter.MyProxy> {   
+    @ProxyStandard     
+    public interface MyProxy extends Proxy<MainPagePresenter> {} 
+    ...
+}
+
+//GIN module
+bindPresenter(OnePresenter.class, IOneView.class, OneView.class, OnePresenter.MyProxy.class);         
+
+//GIN injector
+Provider<OnePresenter> getOnePresenter(); 
+
+As you can see the process with Mvp4g is easier since you can create your presenter and inject the view thanks to one annotation.
+Also even if Mvp4g uses GIN to generate the presenters/views, it hides its complexity and you will have to manipulate GIN classes only
+if you need extra configuration.
+
+Also both Mvp4g & GWTP manages non-singleton presenters.  
+
+
+==Nested Presenters==
+
+As I said before, Gwt-platform integrates mechanism to lower the number of events. The main one is the nested presenter supports that allows presenter views inside other presenters and all this is managed by one event provided by gwt-p.
+At the opposite, Mvp4g doesn't provide any specific mechanism and relies on events. However if we compare the 2 frameworks, the amount of code needed is pretty much the same.
+
+//Mvp4g
+
+//event bus
+@Event(handlers = ParentPresenter.class)
+void setView(Widget childView);
+
+//Parent presenter
+public void onSetView(Widget childView){
+  parentView.setView(childView);
+}
+
+//Parent view
+public void setView(Widget childView){
+  //place view
+}
+
+
+//GWTP
+
+//Parent Presenter
+public static final Type<RevealContentHandler<?>> TYPE_ChildView = new Type<RevealContentHandler<?>>();
+
+//Parent View
+@Override 
+public void setContent(Object slot, Widget content) { 
+  if (slot == ParentPresenter.TYPE_ChildView) { 
+     setChildView(content); 
+  } else { 
+     super.setContent(slot, content); 
+  } 
+}
+
+public void setChildView(Widget content){
+  ...
+}
+
+Even if Mvp4g doesn't integrate a special mechanism for nested presenters, since creating an event is really easy with Mvp4g, the amount 
+of code needed for both framework is basically the same.
+
+GWTP also provides a particular type of nested presenter: Tabbed presenters.
+
+
+===Place Service===
+
+Mvp4g links a place to an event whereas GWTP links a place to a presenter. Linking a place to an event is more flexible because this way
+you can have a many-to-many relationship between tokens and presenters (since a token transformed to an event can be handled by several presenters 
+and a presenter can handled several events). With the GWTP solution, you have a one-to-one relationship. With the one-to-one relationship, 
+these problems can't resolved directly:
+-for a particular token, you want two actions: for example, you want to display a presenter's view and select a menu.
+-you want a presenter to react to several tokens: for example, you have a menu bar that needs to display different menus according to the token.
+There are workaroung with GWTP to solve these problems. Also an issue has been accepted for GWTP to create many-to-many relationship (issue 78).
+
+Also linking a place to an event is something that I found really powerful. Indeed thanks to this mechanism, you can fire events by url. It is really
+useful when you want another application to interact with your GWT project (for example, you can easily add a confirmation link inside an email).
+
+They are 2 things I like about GWTP place service that I'd like to add to Mvp4g:
+ * when you switch place (ie token), you can display a confirm message
+ (usefull incase you're in a create page and you want user's confirmation to leave the page). Right now, you can only use the browser confirm. 
+ It would be nice to be able to use a customed one.
+ * you can easily ask a presenter to reveal itselft by calling:
+{{{
+placeManager.revealPlace( new PlaceRequest("desiredNameToken") ); 
+}}}      
+
+
+These is the code needed in case you want to create a place with one parameter: 
+
+//Mvp4g
+
+//History converter to convert the event to/from a token
+public class OneHistoryConverter ... {
+
+  public String onOneEvent(String id){
+      return "id=" + id;
+  }
+  
+  public void convertFromToken( String eventType, String param, OneEventBus eventBus ){
+      long id = Long.parse(param.split("=")[1]);
+      eventBus.oneEvent(id);
+  }
+  
+}
+
+//inside the event bus
+@Event(..., historyConverter=OneHistoryConverter.class, historyName="oneHistoryEvent")
+void oneEvent(long id);  
+
+
+//GWTP
+public class OnePresenter ... {
+
+  private long id;
+  
+  @ProxyCodeSplit
+  @NameToken("oneHistoryEvent")
+  public interface MyProxy extends ProxyPlace<AboutUsPresenter> {...}
+  
+  @Override   
+  public void prepareFromRequest(PlaceRequest placeRequest) {
+       super.prepareFromRequest(placeRequest);      
+       long id = placeRequest.getParameter("id", null);     
+       getProxy().manualReveal(this);
+  }    
+        
+  @Override   
+  public PlaceRequest prepareRequest(PlaceRequest placeRequest) {     
+        PlaceRequest result = new PlaceRequest(getProxy().getNameToken());
+        result = result.with("id", id);
+        return result;
+  } 
+
+}
+
+You basically have the same amount of code for both framework. However I think Mvp4g mechanism is easier to understand & cleaner since you don't mix in the same class your application logic and your token convertion process.
+
+
+==Code splitting==
+Both frameworks manage code splitting however their approach is a bit different:
+-Mvp4g forces you to divide your application into sub-modules. Each sub-module will have its own event bus and its own presenters/views. Sub-modules can communicate with each other thanks to events.
+-GWTP is more flexible and let you split any presenters or group of presenters. 
+
+//Mvp4g
+
+//Mvp4g Child Module
+public interface OneSubModule extends Mvp4gModule {...}
+
+//Create an event bus for a child module
+@Events(..., module = OneSubModule.class)
+public interface OneSubEventBus extends EventBus {
+
+    //settings events to forward to parent if needed
+    @Event(forwardToParent = true)
+    public void oneParentEvent(...)
+
+    @Event(forwardToParent = true)
+    public void anotherParentEvent(...)
+
+}
+
+//Add the sub module to the root module
+@ChildModules( { @ChildModule(moduleClass = OneSubModule.class) })
+@Events(...)
+public interface RootEventBus ... { 
+
+    //settings events to forward to child module
+    @Event(modulesToLoad = {OneSubModule.class } )
+    public void oneChildEvent(...)
+
+    //settings events to forward to child module
+    @Event(modulesToLoad = {OneSubModule.class } )
+    public void anotherChildEvent(...)
+
+}
+
+//GWTP
+
+//To split a single presenter
+public class OnePresenter ... {   
+
+    @ProxyCodeSplit   
+    public interface MyProxy extends ProxyPlace<HomePresenter>  {}
+    ...
+} 
+    
+//To split a group presenter, first a bundle
+public class OnePresenterBundle extends ProviderBundle {
+      //one for each presenter
+      public static final int ID_OnePresenter = 0;
+      public static final int ID_AnotherPresenter = 1;    
+      public static final int BUNDLE_SIZE = 2;        
+      @Inject    
+      TabbedPresenterBundle(final Provider<OnePresenter> onePresenter, final Provider<AnotherPresenter> anotherPresenter) {
+            super(BUNDLE_SIZE);
+            providers[ID_OnePresenter] = anotherPresenter;
+            providers[ID_AnotherPresenter] = anotherPresenter;    
+       }
+}
+
+//config needed for each presenter
+public class OnePresenter ... {
+
+    @ProxyCodeSplitBundle( bundleClass = OnePresenterBundle.class, id = OnePresenterBundle.ID_OnePresenter)
+    public interface MyProxy extends Proxy<UserSettingsTabPresenter> { }
+    ...
+} 
+
+
+I have to admit code splitting is easier with GWTP and a lot more flexible. It is really easy to add or remove a presenter from a slice.
+The only thing I would say is that splitting a presenter by itself should be used with a lot of caution as you don't want to create slice that are
+too small.
+
+One thing I like with Mvp4g, it's that it forces you:
+-to divide your application into sub-modules
+-set the communication between each sub-modules via events
+
+This way you end up with a project divided in small pieces that are pretty independant from each other. You can then have different developers to work on them.
+
+==Optimization==
+
+Both frameworks implement a pattern to build presenters only when you need them, thanks to lazy loading for Mvp4g or proxies for GWTP.
+
+==Server Communication==
+Mvp4g doesn't integrate any library to communicate with the server, it let you choose the one you want. Mvp4g can be used with gwt-dispatch for example.
+GWTP integrate and improve gwt-dispatch (http://code.google.com/p/gwt-platform/wiki/ComparisonWithGwtDispatch)
+
+
+==Conclusion==
+With this comparaison, I haven't gone over all the features offered by Mvp4g or GWT-P but I hope it gives a better idea of the differences between
+the 2 frameworks.
+
+I think GWT-P is a good framework that allow you to build efficient application. However I still prefer Mvp4g because like GWT-P, you can build fast and efficient application but I think it's easier to understand and also in the overall you need less code to do the same thing.
+The main advantage of Mvp4g over GWT-P is definetely the way you can define your event bus: it's simple, fast and so convenient to maintain big application.
+Now my opinion may not be fair (since I'm the creator of Mvp4g) so I'd like to hear yours
+
+
+
+
+
+
