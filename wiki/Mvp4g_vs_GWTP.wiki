@@ -379,14 +379,12 @@ GWTP integrate and improve gwt-dispatch (http://code.google.com/p/gwt-platform/w
 
 ==Conclusion==
 
-I haven't gone over all the features offered by Mvp4g or GWTP but I hope it gives a better idea of the differences between the 2 frameworks.
+I haven't gone over all the features offered by Mvp4g or GWTP but I hope it gives you a better idea of the 2 frameworks.
 
-I think GWTP is a good framework that allow you to build efficient application. However I still prefer Mvp4g because like GWTP, you can build fast and efficient application but I think it's simpler and also in the overall you need to write less code to do the same thing.
+I think GWTP is a good framework that allows you to build efficient applications. However I still prefer Mvp4g because you can also build fast and efficient application with Mvp4g but you need less code and also it's simpler.
 
-The main advantage of Mvp4g over GWTP is definetely the way you can define your event bus: easy, fast and so convenient to maintain big application.
+The main advantage of Mvp4g over GWTP is definetely the way you can define your event bus: it's easy, fast and so convenient to maintain big application. Above all the event bus is really the heart of your application so it's even more important for it to be well done.
 
 Now my opinion may not be fair (since I'm the creator of Mvp4g) so I'd like to hear yours
-
-
 
 
