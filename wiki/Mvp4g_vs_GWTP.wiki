@@ -5,7 +5,7 @@
 
 =Mvp4g vs GWT-P (or gwt-platform)=
 
-Mvp4g and GWTP are 2 frameworks implementing the MVP / Event bus pattern presented by Ray Ryan last year. The main issue I see with this pattern is that you can easily end up with a lot of classes just for your events. You have 2 solutions to solve this issue:
+Mvp4g and GWTP are 2 frameworks implementing the MVP / Event bus pattern presented by Ray Ryan last year. The main issue I see with this pattern is that you have a lot of boilerplate code just to create your event bus. You have 2 solutions to solve this issue:
  * simplify the way to create events, which is the solution chosen by Mvp4g
  * define mechanisms to lower the number of events you need to create, which is the solution chosen by GWTP
 
@@ -386,5 +386,3 @@ I think GWTP is a good framework that allows you to build efficient applications
 The main advantage of Mvp4g over GWTP is definetely the way you can define your event bus: it's easy, fast and so convenient to maintain big application. Above all the event bus is really the heart of your application so it's even more important for it to be well done.
 
 Now my opinion may not be fair (since I'm the creator of Mvp4g) so I'd like to hear yours
-
-
