@@ -3,19 +3,19 @@
 
 *THIS IS A DRAFT AND IS NOT COMPLETE YET*
 
-=Mvp4g vs GWT-P (or gwt-platform)=
+=Mvp4g vs GWTP (or gwt-platform)=
 
 Mvp4g and GWTP are 2 frameworks that implement the best practices presented by Ray Ryan last year (MVP/Event bus/Dependency Injection). Their approach, however, is a little bit different.
 
 The idea behind Mvp4g is simple: whenever a presenter doesn't know how to do something, it asks the rest of the application to do it via an event. Thus a presenter will fire an event to display its view, to ask other presenters to reveal themselves...This means that you have to create a lot of events so it can work under only 2 conditions: creating events and managing them (ie set/control handlers) must be easy to do. And this is exactly what Mvp4g aims to do: all you need to create and set handlers is one method and one annotation.
 
-GWT-P has another approach. Their event bus is based on GWT Handler Manager so you need some code to create an event (one class and one handler). To solve this issue, they're going to implement mechanism to reduce the number of events needed. For example, you need only one event (provided by GWT-P) for a presenter to ask the rest of the application to display its view. You will also tend to use history token (via the place service) instead of events to ask other presenters to reveal themselves.
+GWTP has another approach. Their event bus is based on GWT Handler Manager so you need some code to create an event (one class and one handler). To solve this issue, they're going to implement mechanisms to reduce the number of events needed. For example, you need only one event (provided by GWTP) for a presenter to ask the rest of the application to display its view. You will also tend to use history token (via the place service) instead of events to ask other presenters to reveal themselves.
 
 Here is a comparison of how the 2 frameworks deal with the main features needed for a GWT application based on MVP/Event bus.
 
 ==Events==
 
-Even if GWT-P tries to reduce the number of events needed for an application, you will still need to create a certain number of them. As I said before, GWT-P is based on the GWT handler manager whereas Mvp4g introduces a new way to create events. 
+Even if GWTP tries to reduce the number of events needed for an application, you will still need to create a certain number of them. As I said before, GWTP is based on the GWT handler manager whereas Mvp4g introduces a new way to create events. 
 
 This is how you would create an event and add a handler.
 
@@ -107,22 +107,26 @@ eventBus.fire(new OneEvent(bean1, bean2));
 }}}
 </td></tr></table>
 
-Even if GWTP has introduced a new mechanism to generate the boilerplate code needed by events, Mvp4g process is still simpler: *1 line of code & 1 annotation* to create an event and add x handlers againts *few annotations, a class and x lines of code for GWTP*.
+Even if GWTP has introduced a new mechanism to generate the boilerplate code needed by events, Mvp4g process is still simpler: *1 line of code & 1 annotation* to create an event and add x handlers againts *few annotations, a class and x lines of code for GWTP*. When you have tens of events and handlers (which is most likely going to happen any application no matter what framework you use), you can save a lot of lines of codes with Mvp4g.
 
-I think another main advantage of Mvp4g compared to GWTP is that you can easily control your events and their flow. The manner in which Mvp4g implements events allows you have all your events listed at one place and you can easily see the handlers of your event:
+I think another main advantage of Mvp4g compared to GWTP is that you can easily control your events and their flow. The manner in which Mvp4g implements events allows you to have all your events listed at one place. You can then easily see the handlers of your event:
 {{{
 @Event(handlers = {PresenterOne.class, PresenterTwo.class})
 void oneEvent(BeanOne one, BeanTwo two);
 }}}   
 For example, here, right away, you can see that oneEvent is handled by PresenterOne & PresenterTwo.
 
+Which is great is that just by looking at one interface, you can have a good idea on how the application works.
+
 With GWTP (or any framework based on GWT HandlerManager), you have to go through several classes to retrieve this information.
 
 Here is a list of other available features related to the event bus:
-||Mvp4g|| GWTP||
+<table width="100%"><tr><td align="center">
+||*Mvp4g*|| *GWTP*||
 ||Event Filtering||Not available||
 ||Event Logs||Not available||
 ||Activation/deactivation of handlers||can be done but with more lines of codes||
+</td></tr></table>
 
 ==Creating a presenter==
 
@@ -222,10 +226,11 @@ Also linking a place to an event is something that I have found to be really pow
 
 They are 2 things I like about GWTP place service that I'd like to add to Mvp4g:
  * when you switch place (ie token), you can display a confirm message (useful incase you're in a create page and you want user's confirmation to leave the page). Right now, you can only use the browser confirm and it would be nice to be able to use a custom one.
- * you can easily ask a presenter to reveal itself by calling:
+ * you can easily ask a presenter to reveal itself if you don't need to any object to pass to it :
 {{{
 placeManager.revealPlace( new PlaceRequest("desiredNameToken") ); 
 }}}      
+If you do have to pass an object, then you will have no other choice than creating an event (which is easier with Mvp4g).
 
 
 Here is the code needed in case you want to create a place with one parameter: 
