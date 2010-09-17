@@ -1,7 +1,5 @@
-#summary Comparison between Mvp4g and GWTP (draft not completed yet)
+#summary Comparison between Mvp4g and GWTP
 #labels Deprecated
-
-*THIS IS A DRAFT AND IS NOT COMPLETE YET*
 
 =Mvp4g vs GWTP (or gwt-platform)=
 
@@ -9,7 +7,7 @@ Mvp4g and GWTP are 2 frameworks that implement the best practices presented by R
 
 The idea behind Mvp4g is simple: whenever a presenter doesn't know how to do something, it asks the rest of the application to do it via an event. Thus a presenter will fire an event to display its view, ask other presenters to reveal themselves, pass information to other presenters, etc... This means that you have to create a lot of events, so it can work only if creating events and managing them (ie set/control handlers) is easy to do. And this is exactly what Mvp4g aims to do: all you need to create and set handlers is one method and one annotation.
 
-GWTP has another approach. Its event bus is based on GWT Handler Manager so you need some lines of code to create an event (one class and one handler). To solve this issue, GWTP implements mechanisms to reduce the number of events needed. For example, you need only one event (provided by GWTP) for a presenter to ask the rest of the application to display its view. You will also tend to use a history token (via the place service) instead of events to ask other presenter to reveal itself.
+GWTP has another approach. Its event bus is based on GWT Handler Manager so you need some lines of code to create an event (one class and one handler). To solve this issue, GWTP implements technics to reduce the number of events needed. For example, you need only one event (provided by GWTP) for any presenter to ask the rest of the application to display its view. You will also tend to use a history token (via the place service) instead of events to ask other presenter to reveal itself.
 
 Here is a comparison of how the 2 frameworks deal with the main features needed for a GWT application based on MVP/Event bus.
 
@@ -21,7 +19,7 @@ This is how you would create an event and add a handler.
 
 <table><tr align="center"><td>Mvp4g</td><td>GWTP</td></tr>
 <tr valign="top"><td>
-_EventBus: creating an event and registering an handler_
+_Event bus: creating an event and registering an handler_
 {{{
 //this method is defined inside your event bus interface, 
 //you need one interface for your whole application
@@ -107,7 +105,7 @@ eventBus.fire(new OneEvent(bean1, bean2));
 }}}
 </td></tr></table>
 
-Even if GWTP has introduced a new mechanism to generate the boilerplate code needed by events, the Mvp4g process is still simpler: *1 line of code & 1 annotation* to create an event and add x handlers compared to a *few annotations, a class and x lines of code for GWTP*. When you have dozens of events and handlers (which is most likely going to happen for any application no matter what framework you use), you can save a lot of lines of codes with Mvp4g.
+Even if GWTP has introduced a new tool to generate the boilerplate code needed by events, the Mvp4g process is still simpler: *1 line of code & 1 annotation* to create an event and add x handlers compared to a *few annotations, a class and x lines of code for GWTP*. When you have dozens of events and handlers (which is most likely going to happen for any application no matter what framework you use), you can save a lot of lines of codes with Mvp4g.
 
 I think another main advantage of Mvp4g compared to GWTP is that you can easily control your events and their flow. The manner in which Mvp4g implements events allows you to have all your events listed in one place. You can then easily see your event handlers:
 {{{
@@ -163,9 +161,9 @@ GWTP offers a system to protect presenters so that developers can control user a
 
 ==Nested Presenters (or how to display presenter's view inside other presenters' view)==
 
-GWTP integrates a mechanism to do this thanks to one event provided by GWTP.
+GWTP integrates a tool to do this thanks to one event provided by GWTP.
 
-On the contrary, Mvp4g doesn't provide any specific mechanism and relies on events. However, if we compare the 2 frameworks, the amount of code needed is pretty much the same.
+On the contrary, Mvp4g doesn't provide any specific tool and relies on events. However, if we compare the 2 frameworks, the amount of code needed is pretty much the same.
 
 <table><tr align="center"><td>*Mvp4g*</td><td>*GWTP*</td></tr>
 <tr valign="top"><td>
@@ -222,7 +220,7 @@ With the GWTP solution, you have a one-to-one relationship. With the one-to-one 
  * you want a presenter to react to several tokens: for example, you have a menu bar that needs to display different menus according to the token.
 GWTP plans to remove this limitation to allow many-to-many relationships between token and presenter (see GWTP issue 78).
 
-Also linking a place to an event is something that I have found to be really powerful. Thanks to this mechanism, you can fire events by url. It is especially useful when you want another application to interact with your GWT project (for example, you can easily add a confirmation link inside an email).
+Also linking a place to an event is something that I have found to be really powerful. Thanks to this technic, you can fire events by url. It is especially useful when you want another application to interact with your GWT project (for example, you can easily add a confirmation link inside an email).
 
 They are 2 things I like about GWTP place service that I'd like to add to Mvp4g:
  * when you switch place (ie token), you can display a confirm message (useful incase you're in a create page and you want user's confirmation to leave the page). Right now, you can only use the browser confirm and it would be nice to be able to use a custom one.
@@ -287,7 +285,7 @@ public class OnePresenter ... {
 }}}
 </td></tr></table>
 
-Both frameworks have basically the same amount of code. However, I think the Mvp4g place service is easier to understand & cleaner since you don't mix your application logic and your token covertion process in the same class. 
+Both frameworks have basically the same amount of code. However, I think the Mvp4g place service is easier to understand & cleaner since you don't mix your application logic and your token convertion process in the same class. 
 
 ==Code splitting==
 Both frameworks manage code splitting, however once again their approach is different:
