@@ -270,15 +270,7 @@ public class OnePresenter ... {
   public void prepareFromRequest(PlaceRequest placeRequest) {
        super.prepareFromRequest(placeRequest);      
        long id = placeRequest.getParameter("id", null);     
-       getProxy().manualReveal(this);
-  }    
-        
-  @Override   
-  public PlaceRequest prepareRequest(PlaceRequest placeRequest) {     
-        PlaceRequest result = new PlaceRequest(getProxy().getNameToken());
-        result = result.with("id", id);
-        return result;
-  } 
+  }            
 
 }
 }}}
