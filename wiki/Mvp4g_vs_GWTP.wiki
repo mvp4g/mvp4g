@@ -7,7 +7,7 @@
 
 Mvp4g and GWTP are 2 frameworks that implement the best practices presented by Ray Ryan last year (MVP/Event bus/Dependency Injection). Their approach, however, is a little bit different.
 
-The idea behind Mvp4g is simple: whenever a presenter doesn't know how to do something, it asks the rest of the application to do it via an event. Thus a presenter will fire an event to display its view, to ask other presenters to reveal themselves...This means that you have to create a lot of events so it can work under only if creating events and managing them (ie set/control handlers) must be easy to do. And this is exactly what Mvp4g aims to do: all you need to create and set handlers is one method and one annotation.
+The idea behind Mvp4g is simple: whenever a presenter doesn't know how to do something, it asks the rest of the application to do it via an event. Thus a presenter will fire an event to display its view, ask other presenters to reveal themselves, pass information to other presenters, etc... This means that you have to create a lot of events, so it can work only if creating events and managing them (ie set/control handlers) is easy to do. And this is exactly what Mvp4g aims to do: all you need to create and set handlers is one method and one annotation.
 
 GWTP has another approach. Its event bus is based on GWT Handler Manager so you need some lines of code to create an event (one class and one handler). To solve this issue, GWTP implements mechanisms to reduce the number of events needed. For example, you need only one event (provided by GWTP) for a presenter to ask the rest of the application to display its view. You will also tend to use a history token (via the place service) instead of events to ask other presenter to reveal itself.
 
@@ -159,7 +159,7 @@ As you can see the process is easier with Mvp4g since you can create your presen
 
 Mvp4g & GWTP both manage non-singleton presenters. 
 
-GWT-P also offers a system to protect presenters and only allows them to be accessed if you have the right to access it (with Mvp4g, you would use event filtering to prevent your handlers from being called).
+GWTP offers a system to protect presenters so that developers can control user access (with Mvp4g, you would use event filtering to prevent your presenters from being called).
 
 ==Nested Presenters (or how to display presenter's view inside other presenters' view)==
 
