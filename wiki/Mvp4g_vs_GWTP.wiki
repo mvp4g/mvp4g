@@ -1,5 +1,4 @@
 #summary Comparison between Mvp4g and GWTP
-#labels Deprecated
 
 =Mvp4g vs GWTP (or gwt-platform)=
 
