@@ -59,3 +59,6 @@ Yes, Mvp4g let you use anything you want for the back-end communication. You can
 Mvp4g 1.2.0 still supports XML configuration for all its features. You can find an example of XML configuration here: [http://code.google.com/p/mvp4g/source/browse/#svn/tags/mvp4g-1.2.0/examples/Mvp4gModulesXml Mvp4gModulesXml].<br/>
 
 However it is strongly recommanded to use annotations. Unlike XML, annotations provides a strongly typed event bus and can prevent a lot of typo errors. Also for future developments, the priority will be given to annotations.
+
+==Moving from 1.1 to 1.2==
+The impact on your code should be limited. The main change needed is for HistoryConverter: you need to replace the convertToToken method by handling methods of the event(s) to convert. These handling method(s) must return the same string that was previously returned by convertToToken. If the convertToToken method always returned an empty string, you can then set to false the convertParams attribute of the @History. This way, you won't have to define the handling methods and an empty string will automatically be returned.
