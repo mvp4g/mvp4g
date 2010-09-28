@@ -1,4 +1,5 @@
 #summary How to integrate Mvp4g to your project (Draft for Mvp4g 1.2.0)
+#labels Featured
 
 == Introduction ==
 To integrate Mvp4g into your project, the following steps need to be done
