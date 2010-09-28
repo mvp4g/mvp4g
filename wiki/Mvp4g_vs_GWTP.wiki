@@ -1,4 +1,5 @@
 #summary Comparison between Mvp4g and GWTP
+#labels Featured
 
 =Mvp4g vs GWTP (or gwt-platform)=
 
