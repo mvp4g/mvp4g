@@ -123,7 +123,7 @@ public void displayCreatePage();
 @Event(..., activate=EditPresenter.class, deactivate=CreatePresenter.class)
 public void displayEditPage();
 
-@Event(handlers={activate=EditPresenter.class, deactivate=CreatePresenter.class})
+@Event(handlers={EditPresenter.class, CreatePresenter.class})
 public void valueChosen(String value);
 }}}
 
