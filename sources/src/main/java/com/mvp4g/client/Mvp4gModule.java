@@ -15,9 +15,11 @@
  */
 package com.mvp4g.client;
 
+import com.google.gwt.user.client.Command;
 import com.mvp4g.client.annotation.XmlFilePath;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.history.HistoryConverter;
+import com.mvp4g.client.history.NavigationConfirmationInterface;
 
 /**
  * This interface defines a module for Mvp4g. This interface is only used by the framework to
@@ -32,34 +34,34 @@ public interface Mvp4gModule {
 	/**
 	 * Method called to create the module and fire the start event.
 	 */
-	public void createAndStartModule();
+	void createAndStartModule();
 
 	/**
 	 * Method called when an event is received from the parent module.
 	 */
-	public void onForward();
+	void onForward();
 
 	/**
 	 * @return start view of the module
 	 */
-	public Object getStartView();
+	Object getStartView();
 
 	/**
 	 * @return event bus of the module
 	 */
-	public EventBus getEventBus();
+	EventBus getEventBus();
 
 	/**
 	 * Add a converter to the associate token
 	 * 
 	 * @param eventType
-	 * 			type of the event
+	 *            type of the event
 	 * @param historyName
-	 * 			name of the event to store in the token
+	 *            name of the event to store in the token
 	 * @param hc
-	 * 			converter to associate with the event
+	 *            converter to associate with the event
 	 */
-	public void addConverter( String eventType, String historyName, HistoryConverter<?> hc );
+	void addConverter( String eventType, String historyName, HistoryConverter<?> hc );
 
 	/**
 	 * Place an event and its associated object in the browser history
@@ -69,7 +71,7 @@ public interface Mvp4gModule {
 	 * @param form
 	 *            object associated with the event
 	 */
-	public void place( String event, String form );
+	void place( String event, String form );
 
 	/**
 	 * Deal the event received from browser history change or pass it to a child module if needed.
@@ -79,18 +81,34 @@ public interface Mvp4gModule {
 	 * @param passer
 	 *            passer to execute the event.
 	 */
-	public void dispatchHistoryEvent( String eventType, Mvp4gEventPasser passer );
+	void dispatchHistoryEvent( String eventType, Mvp4gEventPasser passer );
 
 	/**
 	 * Clear the history token stored in the browse history url by adding a new empty token
 	 */
-	public void clearHistory();
+	void clearHistory();
 
 	/**
 	 * 
 	 * @param parentModule
-	 * 			parent module to set
+	 *            parent module to set
 	 */
-	public void setParentModule( Mvp4gModule parentModule );
+	void setParentModule( Mvp4gModule parentModule );
+	
+	/**
+	 * Set a confirmation that will be called before each navigation event or when history token
+	 * changes.
+	 * 
+	 * @param navigationConfirmation
+	 */
+	void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation );
+	
+	/**
+	 * Ask for user's confirmation before firing an event
+	 * 
+	 * @param event
+	 * 			event to confirm
+	 */
+	void confirmEvent( Command event );
 
 }

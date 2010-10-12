@@ -64,6 +64,7 @@ import com.mvp4g.client.presenter.PresenterInterface;
  *<li>deactivateNames: instead of using their classes, you can activate handlers thanks to their
  * name (in case you have given names to your handlers). Not recommended because this method tends
  * to create typo errors.</li>
+ * <li>navigationEvent: 
  * </ul>
  * 
  * @author plcoirier
@@ -99,6 +100,8 @@ public @interface Event {
 	String[] deactivateNames() default {};
 
 	String historyName() default DEFAULT_NAME;
+	
+	boolean navigationEvent() default false;
 
 	class NoHistoryConverter implements HistoryConverter<EventBus> {
 

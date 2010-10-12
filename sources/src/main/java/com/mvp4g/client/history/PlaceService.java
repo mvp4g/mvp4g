@@ -20,6 +20,7 @@ import java.util.Map;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.History;
 import com.mvp4g.client.Mvp4gEventPasser;
 import com.mvp4g.client.Mvp4gModule;
@@ -89,6 +90,8 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	private String paramSeparator;
 	private boolean alwaysAdded;
 
+	private NavigationConfirmationInterface navigationConfirmation;
+
 	/**
 	 * Build a <code>PlaceService</code>.
 	 * 
@@ -137,41 +140,49 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 *            event containing the new history token
 	 * 
 	 */
-	public void onValueChange( ValueChangeEvent<String> event ) {
-		String token = event.getValue();
+	public void onValueChange( final ValueChangeEvent<String> event ) {
 
-		boolean toContinue = false;
-		if ( token != null ) {
-			if ( token.startsWith( CRAWLABLE ) ) {
-				token = token.substring( 1 );
-			}
-			toContinue = ( token.length() > 0 );
-		}
+		confirmEvent( new Command() {
 
-		if ( toContinue ) {
+			public void execute() {
+				String token = event.getValue();
 
-			int index = token.lastIndexOf( paramSeparator );
-			final String eventType = ( index == -1 ) ? token : token.substring( 0, index );
-			final String param = ( index == -1 ) ? null : token.substring( index + 1 );
-			if ( eventType.contains( MODULE_SEPARATOR ) ) {
-				Mvp4gEventPasser passer = new Mvp4gEventPasser( true ) {
-
-					@Override
-					public void pass( Mvp4gModule module ) {
-						if ( (Boolean)eventObjects[0] ) {
-							dispatchEvent( eventType, param, module );
-						} else {
-							sendNotFoundEvent();
-						}
+				boolean toContinue = false;
+				if ( token != null ) {
+					if ( token.startsWith( CRAWLABLE ) ) {
+						token = token.substring( 1 );
 					}
-				};
-				module.dispatchHistoryEvent( eventType, passer );
-			} else {
-				dispatchEvent( eventType, param, module );
+					toContinue = ( token.length() > 0 );
+				}
+
+				if ( toContinue ) {
+
+					int index = token.lastIndexOf( paramSeparator );
+					final String eventType = ( index == -1 ) ? token : token.substring( 0, index );
+					final String param = ( index == -1 ) ? null : token.substring( index + 1 );
+					if ( eventType.contains( MODULE_SEPARATOR ) ) {
+						Mvp4gEventPasser passer = new Mvp4gEventPasser( true ) {
+
+							@Override
+							public void pass( Mvp4gModule module ) {
+								if ( (Boolean)eventObjects[0] ) {
+									dispatchEvent( eventType, param, module );
+								} else {
+									sendNotFoundEvent();
+								}
+							}
+						};
+						module.dispatchHistoryEvent( eventType, passer );
+					} else {
+						dispatchEvent( eventType, param, module );
+					}
+				} else {
+					sendInitEvent();
+				}
 			}
-		} else {
-			sendInitEvent();
-		}
+
+		} );
+
 	}
 
 	@SuppressWarnings( "unchecked" )
@@ -231,11 +242,11 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 * Add a converter for an event.
 	 * 
 	 * @param eventType
-	 * 			type of the event
+	 *            type of the event
 	 * @param historyName
-	 * 			name of the event to store in the token
+	 *            name of the event to store in the token
 	 * @param converter
-	 * 			converter associated with this event
+	 *            converter associated with this event
 	 */
 	@SuppressWarnings( "unchecked" )
 	public void addConverter( String eventType, String historyName, HistoryConverter converter ) {
@@ -250,6 +261,22 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 */
 	public void setModule( Mvp4gModule module ) {
 		this.module = module;
+	}
+
+	/**
+	 * @param navigationConfirmation
+	 *            the navigationConfirmation to set
+	 */
+	public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {
+		this.navigationConfirmation = navigationConfirmation;
+	}
+
+	public void confirmEvent( Command event ) {
+		if ( navigationConfirmation == null ) {
+			event.execute();
+		} else {
+			navigationConfirmation.confirm( event );
+		}
 	}
 
 	/**

@@ -15,7 +15,9 @@
  */
 package com.mvp4g.client.event;
 
+import com.google.gwt.user.client.Command;
 import com.mvp4g.client.Mvp4gException;
+import com.mvp4g.client.history.NavigationConfirmationInterface;
 
 /**
  * Interface that defines an event bus. All classes defining an event bus must implement it.
@@ -32,7 +34,7 @@ public interface EventBus {
 	 * @param historyStored
 	 *            true if events should be stored
 	 */
-	public void setHistoryStored( boolean historyStored );
+	void setHistoryStored( boolean historyStored );
 
 	/**
 	 * Set for next event that can be stored in history if it should be stored or not in browser
@@ -44,7 +46,7 @@ public interface EventBus {
 	 * @param historyStored
 	 *            true if events should be stored
 	 */
-	public void setHistoryStoredForNextOne( boolean historyStored );
+	void setHistoryStoredForNextOne( boolean historyStored );
 
 	/**
 	 * Indicate if events are stored in browser history when possible (ie when associated with an
@@ -52,7 +54,7 @@ public interface EventBus {
 	 * 
 	 * @return true if events can be stored in browse history
 	 */
-	public boolean isHistoryStored();
+	boolean isHistoryStored();
 
 	/**
 	 * Set whether or not the associated event filters should be executed before sending the event
@@ -61,7 +63,7 @@ public interface EventBus {
 	 * @param filteringEnabled
 	 *            true if events filters should be executed
 	 */
-	public void setFilteringEnabled( boolean filteringEnabled );
+	void setFilteringEnabled( boolean filteringEnabled );
 
 	/**
 	 * Set whether or not the associated event filters should be executed before sending the next
@@ -72,14 +74,14 @@ public interface EventBus {
 	 * @param filteringEnabled
 	 *            true if events filters should be executed
 	 */
-	public void setFilteringEnabledForNextOne( boolean filteringEnabled );
+	void setFilteringEnabledForNextOne( boolean filteringEnabled );
 
 	/**
 	 * Indicate if event filters should be executed before sending events to handlers.
 	 * 
 	 * @return true if events filters should be executed
 	 */
-	public boolean isFilteringEnabled();
+	boolean isFilteringEnabled();
 
 	/**
 	 * Create a new instance of the handler, bind it and add it to event bus.<br/>
@@ -96,7 +98,7 @@ public interface EventBus {
 	 * @throws Mvp4gException
 	 *             thrown if the instance of the handler can not be created by the event bus
 	 */
-	public <T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass ) throws Mvp4gException;
+	<T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass ) throws Mvp4gException;
 
 	/**
 	 * Create a new instance of the handler, bind it only if this option is set to true and add it
@@ -115,7 +117,7 @@ public interface EventBus {
 	 * @throws Mvp4gException
 	 *             thrown if the instance of the handler can not be created by the event bus
 	 */
-	public <T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass, boolean bind ) throws Mvp4gException;
+	<T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass, boolean bind ) throws Mvp4gException;
 
 	/**
 	 * Remove the instance of the handler from the event bus
@@ -125,7 +127,7 @@ public interface EventBus {
 	 * @param handler
 	 *            handler to remove
 	 */
-	public <T extends EventHandlerInterface<?>> void removeHandler( T handler );
+	<T extends EventHandlerInterface<?>> void removeHandler( T handler );
 
 	/**
 	 * Add a new event filter
@@ -133,7 +135,7 @@ public interface EventBus {
 	 * @param filter
 	 *            new event filter to add
 	 */
-	public void addEventFilter( EventFilter<? extends EventBus> filter );
+	void addEventFilter( EventFilter<? extends EventBus> filter );
 
 	/**
 	 * Remove event filter
@@ -141,5 +143,21 @@ public interface EventBus {
 	 * @param filter
 	 *            event filter to remove
 	 */
-	public void removeEventFilter( EventFilter<? extends EventBus> filter );
+	void removeEventFilter( EventFilter<? extends EventBus> filter );
+
+	/**
+	 * Set a confirmation that will be called before each navigation event or when history token
+	 * changes.
+	 * 
+	 * @param navigationConfirmation
+	 */
+	void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation );
+	
+	/**
+	 * Method to manually ask if a navigation event can occur
+	 * 
+	 * @param event
+	 */
+	void confirmNavigation(Command event);
+
 }

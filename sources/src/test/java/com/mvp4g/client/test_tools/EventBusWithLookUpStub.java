@@ -1,11 +1,12 @@
 package com.mvp4g.client.test_tools;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 import static junit.framework.Assert.assertTrue;
 
 import com.google.gwt.user.client.Command;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventHandlerInterface;
+import com.mvp4g.client.history.NavigationConfirmationInterface;
 
 public class EventBusWithLookUpStub extends BaseEventBusWithLookUp {
 
@@ -49,15 +50,27 @@ public class EventBusWithLookUpStub extends BaseEventBusWithLookUp {
 
 	public void assertEvent( String expectedEventType, Object[] expectedDispatchedObject ) {
 		assertEquals( expectedEventType, lastDispatchedEventType );
-		assertTrue( expectedDispatchedObject.length == lastDispatchedObject.length );
-		for(int i=0; i<expectedDispatchedObject.length; i++){
-			assertEquals( expectedDispatchedObject[i], lastDispatchedObject[i] );
+		if ( expectedDispatchedObject == null ) {
+			assertNull( lastDispatchedObject );
+		} else {
+			assertTrue( expectedDispatchedObject.length == lastDispatchedObject.length );
+			for ( int i = 0; i < expectedDispatchedObject.length; i++ ) {
+				assertEquals( expectedDispatchedObject[i], lastDispatchedObject[i] );
+			}
 		}
 	}
 
 	@Override
 	protected <T extends EventHandlerInterface<?>> T createHandler( Class<T> handlerClass ) {
 		return null;
+	}
+
+	public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {
+
+	}
+
+	public void confirmNavigation( Command event ) {
+		
 	}
 
 }

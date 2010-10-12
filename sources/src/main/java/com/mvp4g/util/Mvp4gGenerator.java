@@ -30,6 +30,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
@@ -47,6 +48,7 @@ import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventFilter;
 import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.history.HistoryConverter;
+import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.client.presenter.PresenterInterface;
 import com.mvp4g.util.config.Mvp4gConfiguration;
@@ -134,6 +136,8 @@ public class Mvp4gGenerator extends Generator {
 		classFactory.addImport( EventFilter.class.getName() );		
 		classFactory.addImport( EventHandlerInterface.class.getName() );
 		classFactory.addImport( List.class.getName() );
+		classFactory.addImport( Command.class.getName() );
+		classFactory.addImport( NavigationConfirmationInterface.class.getName() );
 
 		PrintWriter printWriter = context.tryCreate( logger, packageName, generatedClassName );
 		if ( printWriter == null ) {

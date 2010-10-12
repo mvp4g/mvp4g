@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.user.client.Command;
 import com.mvp4g.client.Mvp4gEventPasser;
 import com.mvp4g.client.test_tools.EventBusWithLookUpStub;
 import com.mvp4g.client.test_tools.HistoryProxyStub;
@@ -50,6 +51,20 @@ public class PlaceServiceTest {
 			notFoundEvent = true;
 		}
 
+	}
+	
+	private class MyTestNavigationConfirmation implements NavigationConfirmationInterface {
+		
+		private Command event;
+
+		public void confirm( Command event ) {
+			this.event = event;
+		}
+		
+		public Command getEvent(){
+			return event;
+		}
+		
 	}
 
 	MyTestPlaceService placeServiceDefault = null;
@@ -370,5 +385,64 @@ public class PlaceServiceTest {
 		placeServiceDefault.onValueChange( event );
 		eventBus.assertEvent( eventType, new Object[] { null } );
 	}
+	
+	@Test
+	public void testNavigationConfirmationForHistory(){
+		String eventType = "eventType";
+		String historyName = "historyName";
+		placeServiceDefault.addConverter( eventType, historyName, buildHistoryConverter( true ) );
+		
+		MyTestNavigationConfirmation navConf = new MyTestNavigationConfirmation();
+		placeServiceDefault.setNavigationConfirmation( navConf );
+		
+		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( historyName );
+		placeServiceDefault.onValueChange( event );
+		eventBus.assertEvent( null, null );
+		
+		navConf.getEvent().execute();
+		eventBus.assertEvent( eventType, new Object[] { null } );
+		
+	}
+	
+	@Test
+	public void testNoNavigationConfirmationForEvent(){
+		final String eventType = "eventType";
+		final String form = "form";
+		
+		Command event = new Command() {
+			
+			public void execute() {
+				eventBus.dispatch( eventType, form );
+			}
+		};
+		
+		placeServiceDefault.confirmEvent( event );		
+		eventBus.assertEvent( eventType, new Object[] { form } );
+		
+	}
+	
+	@Test
+	public void testNavigationConfirmationForEvent(){
+		final String eventType = "eventType";
+		final String form = "form";
+		
+		Command event = new Command() {
+			
+			public void execute() {
+				eventBus.dispatch( eventType, form );
+			}
+		};
+		
+		MyTestNavigationConfirmation navConf = new MyTestNavigationConfirmation();
+		placeServiceDefault.setNavigationConfirmation( navConf );
+		
+		placeServiceDefault.confirmEvent( event );
+		
+		eventBus.assertEvent( null, null );
+		
+		navConf.getEvent().execute();
+		eventBus.assertEvent( eventType, new Object[] { form } );
+		
+	}	
 
 }
