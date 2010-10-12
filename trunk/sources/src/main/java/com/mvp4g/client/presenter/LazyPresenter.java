@@ -49,8 +49,8 @@ public class LazyPresenter<V extends LazyView, E extends EventBus> extends BaseP
 	//Method is final. If you need to overwrite this method, then you shouldn't extend LazyPresenter but BasePresenter.
 	@Override
 	final public void bind() {
-		view.createView();
 		createPresenter();
+		view.createView();
 		bindView();
 	}
 

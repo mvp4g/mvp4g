@@ -109,7 +109,10 @@ public class Mvp4gConfigurationFileReaderTest {
 	public void testWriteEvents() throws DuplicatePropertyNameException {
 
 		assertOutput( getExpectedEvents(), false );
+		assertOutput( getExpectedNotNavigationEvents(), false );
+		assertOutput( getExpectedEventsInheritMethods(), false );
 		assertOutput( getExpectedEventsWithLookup(), false );
+		assertOutput( getExpectedNavigationEvents(), false );
 
 		createHandlers();
 
@@ -141,7 +144,10 @@ public class Mvp4gConfigurationFileReaderTest {
 		writer.writeConf();
 
 		assertOutput( getExpectedEvents(), true );
+		assertOutput( getExpectedNotNavigationEvents(), true );
+		assertOutput( getExpectedEventsInheritMethods(), true );
 		assertOutput( getExpectedEventsWithLookup(), false );
+		assertOutput( getExpectedNavigationEvents(), false );
 
 	}
 
@@ -184,6 +190,28 @@ public class Mvp4gConfigurationFileReaderTest {
 		writer.writeConf();
 
 		assertOutput( getExpectedActivateDeactivate(), true );
+
+	}
+
+	@Test
+	public void testWriteNavigationEvents() throws DuplicatePropertyNameException {
+
+		assertOutput( getExpectedNotNavigationEvents(), false );
+		assertOutput( getExpectedNavigationEvents(), false );
+
+		Set<EventElement> events = configuration.getEvents();
+
+		EventElement e1 = new EventElement();
+		e1.setType( "event1" );
+		e1.setNavigationEvent( "true" );
+		e1.setEventObjectClass( new String[] { "java.lang.String", "java.lang.Object" } );
+
+		events.add( e1 );
+
+		writer.writeConf();
+
+		assertOutput( getExpectedNotNavigationEvents(), false );
+		assertOutput( getExpectedNavigationEvents(), true );
 
 	}
 
@@ -247,6 +275,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, true ) );
 
 		assertOutput( getExpectedEvents(), false );
+		assertOutput( getExpectedEventsInheritMethods(), false );
 		assertOutput( getExpectedEventsWithLookup(), false );
 
 		createHandlers();
@@ -279,6 +308,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		assertOutput( getExpectedEvents(), true );
 		assertOutput( getExpectedEventsWithLookup(), true );
+		assertOutput( getExpectedEventsInheritMethods(), true );
 
 	}
 
@@ -560,11 +590,13 @@ public class Mvp4gConfigurationFileReaderTest {
 		history.setNotFoundEvent( "notFound" );
 		configuration.setHistory( history );
 
-		assertOutput( getExpectedHistory(), false );
-		assertOutput( getExpectedInheritHistory(), false );
+		assertOutput( getExpectedDefaultHistory(), false );
+		assertOutput( getExpectedWithHistory(), false );
+		assertOutput( getExpectedInheritModuleMethods(), false );
 		writer.writeConf();
-		assertOutput( getExpectedHistory(), true );
-		assertOutput( getExpectedInheritHistory(), true );
+		assertOutput( getExpectedDefaultHistory(), true );
+		assertOutput( getExpectedWithHistory(), true );
+		assertOutput( getExpectedInheritModuleMethods(), true );
 
 	}
 
@@ -579,11 +611,13 @@ public class Mvp4gConfigurationFileReaderTest {
 		history.setNotFoundEvent( "notFound" );
 		configuration.setHistory( history );
 
+		assertOutput( getExpectedDefaultHistory(), false );
 		assertOutput( getExpectedHistoryXml(), false );
-		assertOutput( getExpectedInheritHistory(), false );
+		assertOutput( getExpectedInheritModuleMethods(), false );
 		writer.writeConf();
+		assertOutput( getExpectedDefaultHistory(), true );
 		assertOutput( getExpectedHistoryXml(), true );
-		assertOutput( getExpectedInheritHistory(), true );
+		assertOutput( getExpectedInheritModuleMethods(), true );
 
 	}
 
@@ -600,7 +634,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		assertOutput( getExpectedHistoryWithConfig(), false );
 		writer.writeConf();
-		assertOutput( getExpectedHistoryWithConfig(), true );		
+		assertOutput( getExpectedHistoryWithConfig(), true );
 
 	}
 
@@ -609,11 +643,13 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		configuration.setHistory( null );
 
-		assertOutput( getExpectedHistory(), false );
-		assertOutput( getExpectedInheritHistory(), false );
+		assertOutput( getExpectedDefaultHistory(), false );
+		assertOutput( getExpectedWithHistory(), false );
+		assertOutput( getExpectedInheritModuleMethods(), false );
 		writer.writeConf();
-		assertOutput( getExpectedHistory(), false );
-		assertOutput( getExpectedInheritHistory(), true );
+		assertOutput( getExpectedDefaultHistory(), true );
+		assertOutput( getExpectedWithHistory(), false );
+		assertOutput( getExpectedInheritModuleMethods(), true );
 
 		String eventBusInterface = EventBusWithLookup.class.getName();
 		String eventBusClass = BaseEventBusWithLookUp.class.getName();
@@ -959,15 +995,15 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteChildHistory() {
+	public void testWriteChildModuleMethods() {
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
 		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
 		configuration.setParentEventBus( oracle.addClass( EventBusWithLookup.class ) );
 		configuration.setHistoryName( "child" );
 
-		assertOutput( getExpectedHistoryChild(), false );
+		assertOutput( getExpectedChildMethod(), false );
 		writer.writeConf();
-		assertOutput( getExpectedHistoryChild(), true );
+		assertOutput( getExpectedChildMethod(), true );
 	}
 
 	@Test
@@ -1267,16 +1303,21 @@ public class Mvp4gConfigurationFileReaderTest {
 		"final com.mvp4g.example.client.view.display.UserDisplayView " + "userDisplayView = injector.getuserDisplayView();" };
 	}
 
-	private String[] getExpectedHistory() {
-		return new String[] { "placeService = new PlaceService(\"?\",false){", "protected void sendInitEvent(){", "eventBus.init();",
-				"protected void sendNotFoundEvent(){", "eventBus.notFound()", "placeService.setModule(itself);",
+	private String[] getExpectedWithHistory() {
+		return new String[] { "eventBus.init();", "eventBus.notFound()",
 				"final com.mvp4g.example.client.history.display.UserHistoryConverter userConverter = injector.getuserConverter()",
 				"userConverter.setUserService(userService);",
 				"final com.mvp4g.example.client.history.StringHistoryConverter stringConverter = injector.getstringConverter()", };
 
 	}
 
-	private String[] getExpectedInheritHistory() {
+	private String[] getExpectedDefaultHistory() {
+		return new String[] { "placeService = new PlaceService(\"?\",false){", "protected void sendInitEvent(){",
+				"protected void sendNotFoundEvent(){", "placeService.setModule(itself);", };
+
+	}
+
+	private String[] getExpectedInheritModuleMethods() {
 		return new String[] { "public void addConverter(String eventType, String historyName, HistoryConverter<?> hc){",
 				"placeService.addConverter(eventType, historyName, hc);", "public void place(String token, String form){",
 				"placeService.place( token, form );", "public void dispatchHistoryEvent(String eventType, final Mvp4gEventPasser passer){",
@@ -1284,12 +1325,14 @@ public class Mvp4gConfigurationFileReaderTest {
 				"String moduleHistoryName = eventType.substring(0, index);", "String nextToken = eventType.substring(index + 1);",
 				"Mvp4gEventPasser nextPasser = new Mvp4gEventPasser(nextToken) {", "public void pass(Mvp4gModule module) {",
 				"module.dispatchHistoryEvent((String) eventObjects[0], passer);", "passer.setEventObject(false);", "passer.pass(this);", "}else{",
-				"passer.pass(this);" };
+				"passer.pass(this);", "public void confirmEvent( Command event ){",
+				"placeService.setNavigationConfirmation(navigationConfirmation);",
+				"public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {",
+				"placeService.confirmEvent(event);" };
 	}
 
 	private String[] getExpectedHistoryXml() {
-		return new String[] { "placeService = new PlaceService(\"?\",false){", "protected void sendInitEvent(){", "eventBus.dispatch(\"init\");",
-				"protected void sendNotFoundEvent(){", "eventBus.dispatch(\"notFound\")", "placeService.setModule(itself);", };
+		return new String[] { "eventBus.dispatch(\"init\");", "eventBus.dispatch(\"notFound\")" };
 
 	}
 
@@ -1332,8 +1375,17 @@ public class Mvp4gConfigurationFileReaderTest {
 				"if(handlershandler2!= null){", "com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter handler;",
 				"int handlerCount = handlershandler2.size();", "for(int i=0; i<handlerCount; i++){", "handler = handlershandler2.get(i);",
 				"if (handler.isActivated()){", "handler.onEvent2(attr0);", "public void event3(){", "if (handler3.isActivated()){",
-				"handler3.onEvent3();", "public void event1(java.lang.String attr0,java.lang.Object attr1){", "if (handler1.isActivated()){",
-				"handler1.onEvent1(attr0,attr1);" };
+				"handler3.onEvent3();", "if (handler1.isActivated()){", "handler1.onEvent1(attr0,attr1);" };
+	}
+
+	private String[] getExpectedNotNavigationEvents() {
+		return new String[] { "public void event1(java.lang.String attr0,java.lang.Object attr1){" };
+	};
+
+	private String[] getExpectedEventsInheritMethods() {
+		return new String[] { "public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {",
+				"itself.setNavigationConfirmation(navigationConfirmation);", "public void confirmNavigation(Command event){",
+				"itself.confirmEvent(event);" };
 	}
 
 	private String[] getExpectedHistoryEvents() {
@@ -1482,9 +1534,10 @@ public class Mvp4gConfigurationFileReaderTest {
 				"logger.log(handler.toString() + \" handles test2\", BaseEventBus.logDepth);" };
 	}
 
-	private String[] getExpectedHistoryChild() {
+	private String[] getExpectedChildMethod() {
 		return new String[] { "parentModule.addConverter(\"child/\" + eventType, \"child/\" + historyName, hc);",
-				"parentModule.place(\"child/\" + token, form );" };
+				"parentModule.place(\"child/\" + token, form );", "parentModule.place(\"child/\" + token, form );", "parentModule.clearHistory();",
+				"parentModule.setNavigationConfirmation(navigationConfirmation);", "parentModule.confirmEvent(event);" };
 	}
 
 	private String[] getExpectedHistoryParent() {
@@ -1514,6 +1567,11 @@ public class Mvp4gConfigurationFileReaderTest {
 				"if(handlershandler4act!= null){", "com.mvp4g.util.test_tools.annotation.EventHandlers.EventHandlerWithEvent handler;",
 				"int handlerCount = handlershandler4act.size();", "for(int i=0; i<handlerCount; i++){", "handler = handlershandler4act.get(i);",
 				"handler.setActivated(true);" };
+	}
+
+	public String[] getExpectedNavigationEvents() {
+		return new String[] { "public void event1(final java.lang.String attr0,final java.lang.Object attr1){",
+				"itself.confirmEvent(new Command(){", "public void execute(){" };
 	}
 
 	private String[] getExpectedGinInjector() {

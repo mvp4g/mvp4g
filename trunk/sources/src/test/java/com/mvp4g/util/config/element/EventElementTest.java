@@ -142,6 +142,22 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 		element.setType( test );
 		assertEquals( test, element.getHistoryName() );
 	}
+	
+	@Test
+	public void testNavigationEventTrue() throws DuplicatePropertyNameException{
+		String test = "true";
+		element.setNavigationEvent( "true" );
+		assertEquals( test, element.getNavigationEvent() );
+		assertTrue( element.isNavigationEvent() );
+	}
+	
+	@Test
+	public void testNavigationEventFalse() throws DuplicatePropertyNameException{
+		String test = "false";
+		element.setNavigationEvent( "false" );
+		assertEquals( test, element.getNavigationEvent() );
+		assertFalse( element.isNavigationEvent() );
+	}
 
 	@Override
 	protected String[] getProperties() {

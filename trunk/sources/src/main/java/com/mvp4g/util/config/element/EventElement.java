@@ -169,4 +169,16 @@ public class EventElement extends Mvp4gElement {
 	public void setHistoryName( String historyName ) throws DuplicatePropertyNameException {
 		setProperty( "historyName", historyName );
 	}
+	
+	public String getNavigationEvent() {
+		return getProperty( "navigationEvent" );
+	}
+
+	public boolean isNavigationEvent() {
+		return Boolean.TRUE.toString().equalsIgnoreCase( getNavigationEvent() );
+	}
+
+	public void setNavigationEvent( String navigationEvent ) throws DuplicatePropertyNameException {
+		setProperty( "navigationEvent", navigationEvent );
+	}
 }

@@ -76,7 +76,7 @@ public class Events {
 		@Start
 		@InitHistory
 		@Forward
-		@Event( handlers = Presenters.PresenterWithName.class, historyConverter = HistoryConverters.HistoryConverterForEvent.class )
+		@Event( handlers = Presenters.PresenterWithName.class, historyConverter = HistoryConverters.HistoryConverterForEvent.class, navigationEvent = true )
 		public void event2();
 	}
 

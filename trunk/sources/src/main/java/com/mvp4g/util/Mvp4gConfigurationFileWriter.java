@@ -375,53 +375,57 @@ public class Mvp4gConfigurationFileWriter {
 	 */
 	private void writeHistory() {
 
-		HistoryElement history = configuration.getHistory();
+		if ( configuration.isRootModule() ) {
 
-		if ( history != null ) {
+			HistoryElement history = configuration.getHistory();
+			boolean hasHistoryConfiguration = ( history != null );
 
 			sourceWriter.print( "placeService = new PlaceService(\"" );
-			String paramSeparator = history.getParamSeparator();
+			String paramSeparator = ( hasHistoryConfiguration ) ? history.getParamSeparator() : null;
 			if ( paramSeparator == null ) {
 				paramSeparator = PlaceService.DEFAULT_SEPARATOR;
 			}
 			sourceWriter.print( paramSeparator );
 			sourceWriter.print( "\"," );
-			sourceWriter.print( Boolean.toString( history.isParamSeparatorAlwaysAdded() ) );
+			sourceWriter.print( Boolean.toString( ( hasHistoryConfiguration ) ? history.isParamSeparatorAlwaysAdded() : false ) );
 			sourceWriter.println( "){" );
 
 			sourceWriter.indent();
 			sourceWriter.println( "protected void sendInitEvent(){" );
 			sourceWriter.indent();
-			sourceWriter.print( "eventBus." );
+			if ( hasHistoryConfiguration ) {
+				sourceWriter.print( "eventBus." );
 
-			if ( configuration.getEventBus().isXml() ) {
-				sourceWriter.print( "dispatch(\"" );
-				sourceWriter.print( history.getInitEvent() );
-				sourceWriter.println( "\");" );
-			} else {
-				sourceWriter.print( history.getInitEvent() );
-				sourceWriter.println( "();" );
+				if ( configuration.getEventBus().isXml() ) {
+					sourceWriter.print( "dispatch(\"" );
+					sourceWriter.print( history.getInitEvent() );
+					sourceWriter.println( "\");" );
+				} else {
+					sourceWriter.print( history.getInitEvent() );
+					sourceWriter.println( "();" );
+				}
 			}
-
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
 			sourceWriter.outdent();
 			sourceWriter.indent();
 			sourceWriter.println( "protected void sendNotFoundEvent(){" );
 			sourceWriter.indent();
-			sourceWriter.print( "eventBus." );
+			if ( hasHistoryConfiguration ) {
+				sourceWriter.print( "eventBus." );
 
-			if ( configuration.getEventBus().isXml() ) {
-				sourceWriter.print( "dispatch(\"" );
-				sourceWriter.print( history.getNotFoundEvent() );
-				sourceWriter.println( "\");" );
-			} else {
-				sourceWriter.print( history.getNotFoundEvent() );
-				sourceWriter.println( "();" );
+				if ( configuration.getEventBus().isXml() ) {
+					sourceWriter.print( "dispatch(\"" );
+					sourceWriter.print( history.getNotFoundEvent() );
+					sourceWriter.println( "\");" );
+				} else {
+					sourceWriter.print( history.getNotFoundEvent() );
+					sourceWriter.println( "();" );
+				}
 			}
-
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
+
 			sourceWriter.outdent();
 			sourceWriter.println( "};" );
 
@@ -525,7 +529,7 @@ public class Mvp4gConfigurationFileWriter {
 			}
 		}
 
-		if ( configuration.getHistory() != null ) {
+		if ( configuration.isRootModule() ) {
 			sourceWriter.print( "placeService.setModule(itself);" );
 		}
 
@@ -620,11 +624,13 @@ public class Mvp4gConfigurationFileWriter {
 		EventFiltersElement filtersElement = configuration.getEventFilterConfiguration();
 		boolean filterAfterHistory = ( filtersElement == null ) ? false : filtersElement.isAfterHistory();
 		boolean hasFilter = ( filters != null ) && ( filters.size() > 0 ) || ( ( filtersElement != null ) && ( filtersElement.isForceFilters() ) );
-
+		boolean isNavigationEvent;
 		for ( EventElement event : configuration.getEvents() ) {
 			type = event.getType();
 			calledMethod = event.getCalledMethod();
 			objectClasses = event.getEventObjectClass();
+
+			isNavigationEvent = event.isNavigationEvent();
 
 			handlers = event.getHandlers();
 			history = event.getHistory();
@@ -642,6 +648,9 @@ public class Mvp4gConfigurationFileWriter {
 				StringBuilder paramBuilder = new StringBuilder( 50 * nbParams );
 				int i;
 				for ( i = 0; i < ( nbParams - 1 ); i++ ) {
+					if ( isNavigationEvent ) {
+						sourceWriter.print( "final " );
+					}
 					sourceWriter.print( objectClasses[i] );
 					sourceWriter.print( " attr" );
 					sourceWriter.print( Integer.toString( i ) );
@@ -652,6 +661,9 @@ public class Mvp4gConfigurationFileWriter {
 					paramBuilder.append( "," );
 				}
 
+				if ( isNavigationEvent ) {
+					sourceWriter.print( "final " );
+				}
 				sourceWriter.print( objectClasses[i] );
 				sourceWriter.print( " attr" );
 				sourceWriter.print( Integer.toString( i ) );
@@ -665,12 +677,22 @@ public class Mvp4gConfigurationFileWriter {
 			}
 			sourceWriter.println( "){" );
 
+			if ( isNavigationEvent ) {
+				if ( hasLog ) {
+					writeLog( "Asking for user confirmation: ", type, objectClasses );
+				}
+				sourceWriter.println( "itself.confirmEvent(new Command(){" );
+				sourceWriter.indent();
+				sourceWriter.println( "public void execute(){" );
+				sourceWriter.indent();
+			}
+
 			if ( hasLog ) {
 				sourceWriter.println( "int startLogDepth = BaseEventBus.logDepth;" );
 				sourceWriter.println( "try {" );
 				sourceWriter.indent();
 				sourceWriter.println( "++BaseEventBus.logDepth;" );
-				writeLog( type, objectClasses );
+				writeLog( "", type, objectClasses );
 				sourceWriter.println( "++BaseEventBus.logDepth;" );
 			}
 
@@ -736,6 +758,14 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.outdent();
 				sourceWriter.println( "}" );
 			}
+
+			if ( isNavigationEvent ) {
+				sourceWriter.outdent();
+				sourceWriter.println( "}" );
+				sourceWriter.outdent();
+				sourceWriter.println( "});" );
+			}
+
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
 
@@ -744,6 +774,18 @@ public class Mvp4gConfigurationFileWriter {
 		if ( eventBus.isWithLookUp() ) {
 			writeEventLookUp();
 		}
+
+		sourceWriter.println( "public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {" );
+		sourceWriter.indent();
+		sourceWriter.println( "itself.setNavigationConfirmation(navigationConfirmation);" );
+		sourceWriter.outdent();
+		sourceWriter.println( "}" );
+
+		sourceWriter.println( "public void confirmNavigation(Command event){" );
+		sourceWriter.indent();
+		sourceWriter.println( "itself.confirmEvent(event);" );
+		sourceWriter.outdent();
+		sourceWriter.println( "}" );
 
 		sourceWriter.println( "};" );
 
@@ -1064,7 +1106,7 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.print( viewElementName );
 				sourceWriter.println( ");" );
 				sourceWriter.print( elementName );
-				sourceWriter.println( ".setEventBus(eventBus);" );				
+				sourceWriter.println( ".setEventBus(eventBus);" );
 				injectServices( elementName, presenter.getInjectedServices() );
 				sourceWriter.print( "return (T) " );
 				sourceWriter.print( elementName );
@@ -1331,12 +1373,34 @@ public class Mvp4gConfigurationFileWriter {
 
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );
+
+		sourceWriter.println( "public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {" );
+		sourceWriter.indent();
+		if ( !configuration.isRootModule() ) {
+			sourceWriter.println( "parentModule.setNavigationConfirmation(navigationConfirmation);" );
+		} else {
+			sourceWriter.println( "placeService.setNavigationConfirmation(navigationConfirmation);" );
+		}
+		sourceWriter.outdent();
+		sourceWriter.println( "}" );
+
+		sourceWriter.println( "public void confirmEvent( Command event ){" );
+		sourceWriter.indent();
+		if ( !configuration.isRootModule() ) {
+			sourceWriter.println( "parentModule.confirmEvent(event);" );
+		} else {
+			sourceWriter.println( "placeService.confirmEvent(event);" );
+		}
+		sourceWriter.outdent();
+		sourceWriter.println( "}" );
 	}
 
-	private void writeLog( String type, String[] objectClasses ) {
+	private void writeLog( String beforeText, String type, String[] objectClasses ) {
 		DebugElement debug = configuration.getDebug();
 		if ( debug != null ) {
-			sourceWriter.print( "logger.log(\"Module: " );
+			sourceWriter.print( "logger.log(\"" );
+			sourceWriter.print( beforeText );
+			sourceWriter.print( "Module: " );
 			sourceWriter.print( configuration.getModule().getSimpleSourceName() );
 			sourceWriter.print( " || event: " );
 			sourceWriter.print( type );
