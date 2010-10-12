@@ -5,11 +5,11 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.view.BaseCycleView;
 import com.mvp4g.example.client.company.presenter.AbstractCompanyPresenter.CompanyViewInterface;
 
-public abstract class AbstractCompanyView extends SimplePanel implements CompanyViewInterface {
+public abstract class AbstractCompanyView extends BaseCycleView implements CompanyViewInterface {
 
 	private Button leftButton = null;
 	private Button rightButton = null;
@@ -34,6 +34,10 @@ public abstract class AbstractCompanyView extends SimplePanel implements Company
 	public void alert(String message){
 		Window.alert( message );
 	}
+	
+	public boolean confirm(String message){
+		return Window.confirm( message );
+	}
 
 	public void createView() {
 		selectButton = new Button( "Select Name");
@@ -51,7 +55,7 @@ public abstract class AbstractCompanyView extends SimplePanel implements Company
 
 		grid.setWidget( 1, 1, buttons );
 
-		setWidget( grid );
+		initWidget( grid );
 	}
 
 	abstract protected String getLeftButtonName();

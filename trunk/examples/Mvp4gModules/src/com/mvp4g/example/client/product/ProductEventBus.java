@@ -15,21 +15,23 @@ import com.mvp4g.example.client.product.view.ProductListView;
 @Events( startView = ProductListView.class, module = ProductModule.class )
 public interface ProductEventBus extends EventBus {
 
-	@Event( handlers = ProductCreationPresenter.class )
+	/* Navigation events */
+	@Event( handlers = ProductCreationPresenter.class, navigationEvent = true )
 	public void goToCreation();
 
-	@Event( handlers = ProductListPresenter.class )
-	public void goToList();
+	@Event( handlers = ProductListPresenter.class, navigationEvent = true )
+	public void backToList();
 
-	@Event( handlers = ProductEditPresenter.class )
+	@Event( handlers = ProductEditPresenter.class, navigationEvent = true )
 	public void goToEdit( ProductBean product );
 
-	@Event( handlers = ProductDisplayPresenter.class, historyConverter = ProductHistoryConverter.class )
+	@Event( handlers = ProductDisplayPresenter.class, historyConverter = ProductHistoryConverter.class, navigationEvent = true )
 	public void goToDisplay( ProductBean product );
 
-	@Event( handlers = ProductListPresenter.class )
-	public void goToProduct(Integer start, Integer end);
+	@Event( handlers = ProductListPresenter.class, navigationEvent = true )
+	public void goToProduct( Integer start, Integer end );
 
+	/* Business events */
 	@Event( forwardToParent = true )
 	public void displayMessage( String message );
 
@@ -39,7 +41,7 @@ public interface ProductEventBus extends EventBus {
 	@Event( forwardToParent = true )
 	public void selectProductMenu();
 
-	@Event( handlers = { ProductListPresenter.class, ProductDisplayPresenter.class } )
+	@Event( handlers = ProductListPresenter.class )
 	public void productCreated( ProductBean product );
 
 	@Event( handlers = ProductListPresenter.class )

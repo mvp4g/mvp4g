@@ -29,13 +29,16 @@ import com.mvp4g.example.client.product.ProductModule;
 @HistoryConfiguration( paramSeparator = "/", paramSeparatorAlwaysAdded = true )
 public interface MainEventBus extends EventBusWithLookup {
 
-	@Event( modulesToLoad = CompanyModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, historyName = "companies" )
+	/*Navigation events*/
+	@Event( modulesToLoad = CompanyModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, historyName = "companies", navigationEvent = true )
 	public void goToCompany( int start, int end );
 
 	//use Integer instead of int here just to test passing object, in real project, you should have int
-	@Event( modulesToLoad = ProductModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class )
+	@Event( modulesToLoad = ProductModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, navigationEvent = true  )
 	public void goToProduct( Integer start, Integer end );
 
+	
+	/*Business events*/
 	@DisplayChildModuleView( CompanyModule.class )
 	@Event( handlers = MainPresenter.class )
 	public void changeBody( Widget newBody );

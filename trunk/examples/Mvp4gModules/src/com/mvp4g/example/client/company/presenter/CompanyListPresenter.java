@@ -74,15 +74,13 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 		for ( int i = 0; i < companies.size(); i++ ) {
 			addCompany( companies.get( i ) );
 		}
-		eventBus.changeBody( view.getViewWidget() );
 	}
 
-	public void onGoToList() {
+	public void onBackToList() {
 		eventBus.changeBody( view.getViewWidget() );
 	}
 
 	public void onCompanyDeleted( CompanyBean company ) {
-		eventBus.changeBody( view.getViewWidget() );
 		finishDeletion( company );
 	}
 
