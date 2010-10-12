@@ -65,12 +65,11 @@ public class ProductListPresenter extends LazyPresenter<ProductListPresenter.Pro
 		view.clearTable();
 	}
 
-	public void onGoToList() {
+	public void onBackToList() {
 		eventBus.changeBody( view.getViewWidget() );
 	}
 
 	public void onProductDeleted( ProductBean product ) {
-		eventBus.changeBody( view.getViewWidget() );
 		finishDeletion( product );
 	}
 

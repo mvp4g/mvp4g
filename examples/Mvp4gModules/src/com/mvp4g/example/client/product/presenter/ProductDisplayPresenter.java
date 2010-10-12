@@ -14,10 +14,6 @@ public class ProductDisplayPresenter extends AbstractProductPresenter {
 		eventBus.selectProductMenu();
 	}
 
-	public void onProductCreated( ProductBean product ) {
-		displayProduct( product );
-	}
-
 	@Override
 	protected void clickOnLeftButton( ClickEvent event ) {
 		eventBus.goToEdit( product );
@@ -30,6 +26,7 @@ public class ProductDisplayPresenter extends AbstractProductPresenter {
 
 			public void onSuccess( Void result ) {
 				eventBus.productDeleted( product );
+				eventBus.backToList();
 			}
 
 			public void onFailure( Throwable caught ) {

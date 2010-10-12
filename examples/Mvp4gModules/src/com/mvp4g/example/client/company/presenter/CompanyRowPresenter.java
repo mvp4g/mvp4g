@@ -89,8 +89,7 @@ public class CompanyRowPresenter extends BasePresenter<CompanyRowPresenter.IComp
 	public void onCompanyUpdated( CompanyBean newBean ) {
 		if ( newBean.equals( company ) ) {
 			company = newBean;
-			view.setName( company.getName() );
-			eventBus.goToList();
+			view.setName( company.getName() );			
 		}
 	}
 

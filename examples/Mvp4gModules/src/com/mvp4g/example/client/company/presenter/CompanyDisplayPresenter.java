@@ -33,6 +33,7 @@ public class CompanyDisplayPresenter extends AbstractCompanyPresenter {
 
 			public void onSuccess( Void result ) {
 				eventBus.companyDeleted( company );
+				eventBus.backToList();
 			}
 
 			public void onFailure( Throwable caught ) {

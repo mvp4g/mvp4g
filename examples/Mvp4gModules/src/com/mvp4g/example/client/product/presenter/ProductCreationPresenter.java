@@ -21,6 +21,7 @@ public class ProductCreationPresenter extends AbstractProductPresenter {
 
 			public void onSuccess( Void result ) {
 				eventBus.productCreated( product );
+				eventBus.goToDisplay( product );
 				eventBus.displayMessage( "Creation Succeeded" );
 			}
 

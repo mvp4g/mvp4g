@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TabBar;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -25,7 +24,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 	private SimplePanel bodyContainer = new SimplePanel();
 	private PopupPanel wait = new PopupPanel();
 	private Label message = new Label();
-	private TabBar bar = new TabBar();
+	private HorizontalPanel bar = new HorizontalPanel();
 	private Label clearHistory = new Label( "Clear History" );
 	private CheckBox filter = new CheckBox( "Filter Main EventBus events" );
 
@@ -34,6 +33,10 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 
 	@Inject
 	public MainView(IndexDisplayer indexDisplayer) {
+		
+		c.setStyleName( "tab" );
+		p.setStyleName( "tab" );
+		
 		message.setStyleName( "messageBar" );
 		message.setVisible( false );
 
@@ -56,8 +59,8 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 		hp.add( lastIndex );
 		hp.setSpacing( 5 );
 
-		bar.addTab( c );
-		bar.addTab( p );
+		bar.add( c );
+		bar.add( p );
 
 		VerticalPanel mainPanel = new VerticalPanel();
 		mainPanel.setHorizontalAlignment( HasHorizontalAlignment.ALIGN_RIGHT );
@@ -109,11 +112,13 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 	}
 
 	public void selectCompanyMenu() {
-		bar.selectTab( 0 );
+		p.removeStyleName( "selected" );
+		c.addStyleName( "selected" );		
 	}
 
 	public void selectProductMenu() {
-		bar.selectTab( 1 );
+		c.removeStyleName( "selected" );
+		p.addStyleName( "selected" );
 	}
 
 	public void displayAlertMessage( String message ) {

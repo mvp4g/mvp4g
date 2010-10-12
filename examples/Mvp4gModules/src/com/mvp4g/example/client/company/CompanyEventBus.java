@@ -28,51 +28,37 @@ import com.mvp4g.example.client.product.presenter.ProductCreationPresenter;
 @Filters( filterClasses = CompanyEventFilter.class, filterForward = false )
 public interface CompanyEventBus extends EventBus {
 
-	@Forward
-	@Event( handlers = CompanyListPresenter.class )
-	public void forward();
-
+	/* Navigation Events */
 	@Event( handlers = CompanyListPresenter.class, activate = CompanyRowPresenter.class, deactivate = { CompanyEditPresenter.class,
-			CompanyDisplayPresenter.class, CompanyCreationPresenter.class } )
+			CompanyDisplayPresenter.class, CompanyCreationPresenter.class }, navigationEvent = true )
 	public void goToCompany( int start, int end );
 
-	@Event( handlers = CompanyCreationPresenter.class, activate = CompanyCreationPresenter.class, deactivate = { CompanyEditPresenter.class,
-			CompanyDisplayPresenter.class }, historyConverter = CompanyCreationHistoryConverter.class, historyName = "create" )
-	public void goToCreation();
-
 	@Event( handlers = CompanyListPresenter.class, activate = CompanyRowPresenter.class, deactivate = { CompanyEditPresenter.class,
 			CompanyDisplayPresenter.class, CompanyCreationPresenter.class } )
-	public void goToList();
+	public void backToList();
 
-	//I have ProductCreationPresenter.class here just to test if Mvp4g ignores useless presenter for activate
-	@Event( handlers = CompanyEditPresenter.class, activate = { CompanyEditPresenter.class, ProductCreationPresenter.class }, deactivate = {
-			CompanyCreationPresenter.class, CompanyDisplayPresenter.class, CompanyRowPresenter.class } )
-	public void goToEdit( CompanyBean company );
+	@Event( handlers = CompanyCreationPresenter.class, activate = CompanyCreationPresenter.class, deactivate = { CompanyEditPresenter.class,
+			CompanyDisplayPresenter.class }, historyConverter = CompanyCreationHistoryConverter.class, historyName = "create", navigationEvent = true )
+	public void goToCreation();
 
 	//I have ProductCreationPresenter.class here just to test if Mvp4g ignores useless presenter for deactivate
 	@Event( handlers = CompanyDisplayPresenter.class, historyConverter = CompanyHistoryConverter.class, activate = CompanyDisplayPresenter.class, deactivate = {
-			CompanyCreationPresenter.class, CompanyEditPresenter.class, ProductCreationPresenter.class, CompanyRowPresenter.class }, historyName = "" )
+			CompanyCreationPresenter.class, CompanyEditPresenter.class, ProductCreationPresenter.class, CompanyRowPresenter.class }, historyName = "", navigationEvent = true )
 	public void goToDisplay( CompanyBean company );
 
-	@Event( forwardToParent = true )
-	public void displayMessage( String message );
+	//I have ProductCreationPresenter.class here just to test if Mvp4g ignores useless presenter for activate
+	@Event( handlers = CompanyEditPresenter.class, activate = { CompanyEditPresenter.class, ProductCreationPresenter.class }, deactivate = {
+			CompanyCreationPresenter.class, CompanyDisplayPresenter.class, CompanyRowPresenter.class }, navigationEvent = true )
+	public void goToEdit( CompanyBean company );
 
-	@Event( forwardToParent = true )
-	public void changeBody( Widget body );
-
-	@Event( forwardToParent = true )
-	public void selectCompanyMenu();
-
-	//CompanyCreationPresenter deactivate itself (see clickOnLeftButton method of this class)
-	@Event( handlers = { CompanyListPresenter.class, CompanyDisplayPresenter.class }, activate = CompanyDisplayPresenter.class, deactivate = {
-			CompanyEditPresenter.class, CompanyRowPresenter.class } )
+	/* Business Events */
+	@Event( handlers = CompanyListPresenter.class )
 	public void companyCreated( CompanyBean newBean );
 
 	@Event( handlers = CompanyListPresenter.class )
 	public void companyDeleted( CompanyBean newBean );
 
-	@Event( handlers = CompanyRowPresenter.class, activate = CompanyRowPresenter.class, deactivate = { CompanyEditPresenter.class,
-			CompanyDisplayPresenter.class, CompanyCreationPresenter.class } )
+	@Event( handlers = CompanyRowPresenter.class )
 	public void companyUpdated( CompanyBean newBean );
 
 	@Event( handlers = CompanyNameSelectorPresenter.class )
@@ -86,5 +72,18 @@ public interface CompanyEventBus extends EventBus {
 
 	@Event( handlers = CompanyListHandler.class )
 	public void getCompanyList( final int start, int end );
+
+	@Forward
+	@Event( handlers = CompanyListPresenter.class )
+	public void forward();
+
+	@Event( forwardToParent = true )
+	public void displayMessage( String message );
+
+	@Event( forwardToParent = true )
+	public void changeBody( Widget body );
+
+	@Event( forwardToParent = true )
+	public void selectCompanyMenu();
 
 }
