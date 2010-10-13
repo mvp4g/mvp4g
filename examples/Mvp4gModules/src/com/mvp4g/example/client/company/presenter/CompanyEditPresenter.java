@@ -1,10 +1,10 @@
 package com.mvp4g.example.client.company.presenter;
 
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.example.client.company.bean.CompanyBean;
 import com.mvp4g.example.client.company.view.CompanyEditView;
 
@@ -13,10 +13,10 @@ public class CompanyEditPresenter extends AbstractCompanyPresenter {
 
 	private NavigationConfirmationInterface navConf = new NavigationConfirmationInterface() {
 
-		public void confirm( Command event ) {
+		public void confirm( NavigationEventCommand event ) {
 			if ( ( view.getName().getValue().equals( company.getName() ) )
 					|| ( view.confirm( "Are you sure you want to navigate away from this page? Your company hasn't been saved." ) ) ) {
-				event.execute();
+				event.fireEvent();
 			}
 		}
 	};
