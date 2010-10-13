@@ -1,10 +1,10 @@
 package com.mvp4g.example.client.company.presenter;
 
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.example.client.company.bean.CompanyBean;
 import com.mvp4g.example.client.company.view.CompanyCreationView;
 
@@ -13,10 +13,10 @@ public class CompanyCreationPresenter extends AbstractCompanyPresenter {
 
 	private NavigationConfirmationInterface navConf = new NavigationConfirmationInterface() {
 
-		public void confirm( Command event ) {
+		public void confirm( NavigationEventCommand event ) {
 			if ( ( view.getName().getValue().length() == 0 )
 					|| ( view.confirm( "Are you sure you want to navigate away from this page? Your company hasn't been created." ) ) ) {
-				event.execute();
+				event.fireEvent();
 			}
 		}
 	};
@@ -34,7 +34,7 @@ public class CompanyCreationPresenter extends AbstractCompanyPresenter {
 	protected void clickOnLeftButton( ClickEvent event ) {
 		company = new CompanyBean();
 		fillBean();
-		
+
 		service.createCompany( company, new AsyncCallback<Void>() {
 
 			public void onSuccess( Void result ) {
@@ -57,13 +57,8 @@ public class CompanyCreationPresenter extends AbstractCompanyPresenter {
 	}
 
 	@Override
-	public void onLoad() {
+	public void onBeforeEvent() {
 		eventBus.setNavigationConfirmation( navConf );
-	}
-
-	@Override
-	public void onUnload() {
-		eventBus.setNavigationConfirmation( null );
 	}
 
 }
