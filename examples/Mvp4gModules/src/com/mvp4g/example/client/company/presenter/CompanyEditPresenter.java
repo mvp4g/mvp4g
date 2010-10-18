@@ -9,17 +9,7 @@ import com.mvp4g.example.client.company.bean.CompanyBean;
 import com.mvp4g.example.client.company.view.CompanyEditView;
 
 @Presenter( view = CompanyEditView.class )
-public class CompanyEditPresenter extends AbstractCompanyPresenter {
-
-	private NavigationConfirmationInterface navConf = new NavigationConfirmationInterface() {
-
-		public void confirm( NavigationEventCommand event ) {
-			if ( ( view.getName().getValue().equals( company.getName() ) )
-					|| ( view.confirm( "Are you sure you want to navigate away from this page? Your company hasn't been saved." ) ) ) {
-				event.fireEvent();
-			}
-		}
-	};
+public class CompanyEditPresenter extends AbstractCompanyPresenter implements NavigationConfirmationInterface {
 
 	public void onGoToEdit( CompanyBean company ) {
 		this.company = company;
@@ -56,13 +46,15 @@ public class CompanyEditPresenter extends AbstractCompanyPresenter {
 	}
 
 	@Override
-	public void onLoad() {
-		eventBus.setNavigationConfirmation( navConf );
+	public void onBeforeEvent() {
+		eventBus.setNavigationConfirmation( this );
 	}
-
-	@Override
-	public void onUnload() {
-		eventBus.setNavigationConfirmation( null );
+	
+	public void confirm( NavigationEventCommand event ) {
+		if ( ( view.getName().getValue().equals( company.getName() ) )
+				|| ( view.confirm( " Your company hasn't been saved. Are you sure you want to navigate away from this page?" ) ) ) {
+			event.fireEvent();
+		}
 	}
 
 }

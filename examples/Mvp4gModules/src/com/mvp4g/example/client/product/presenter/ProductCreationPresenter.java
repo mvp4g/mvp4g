@@ -10,6 +10,7 @@ import com.mvp4g.example.client.product.view.ProductCreationView;
 public class ProductCreationPresenter extends AbstractProductPresenter {
 
 	public void onGoToCreation() {
+		view.getName().setValue( "" );
 		eventBus.changeBody( view.getViewWidget() );
 	}
 

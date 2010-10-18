@@ -52,13 +52,13 @@ public interface CompanyEventBus extends EventBus {
 	public void goToEdit( CompanyBean company );
 
 	/* Business Events */
-	@Event( handlers = CompanyListPresenter.class )
+	@Event( handlers = CompanyListPresenter.class, activate = CompanyListPresenter.class  )
 	public void companyCreated( CompanyBean newBean );
 
-	@Event( handlers = CompanyListPresenter.class )
+	@Event( handlers = CompanyListPresenter.class, activate = CompanyListPresenter.class   )
 	public void companyDeleted( CompanyBean newBean );
 
-	@Event( handlers = CompanyRowPresenter.class )
+	@Event( handlers = CompanyRowPresenter.class, activate = CompanyRowPresenter.class )
 	public void companyUpdated( CompanyBean newBean );
 
 	@Event( handlers = CompanyNameSelectorPresenter.class )
