@@ -37,7 +37,9 @@ public class BaseEventHandler<E extends EventBus> implements EventHandlerInterfa
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.mvp4g.client.event.EventHandlerInterface#setEventBus(com.mvp4g.client.event.EventBus)
+	 * 
+	 * @see
+	 * com.mvp4g.client.event.EventHandlerInterface#setEventBus(com.mvp4g.client.event.EventBus)
 	 */
 	public void setEventBus( E eventBus ) {
 		this.eventBus = eventBus;
@@ -45,6 +47,7 @@ public class BaseEventHandler<E extends EventBus> implements EventHandlerInterfa
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.mvp4g.client.event.EventHandlerInterface#getEventBus()
 	 */
 	public E getEventBus() {
@@ -53,6 +56,7 @@ public class BaseEventHandler<E extends EventBus> implements EventHandlerInterfa
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.mvp4g.client.event.EventHandlerInterface#bind()
 	 */
 	public void bind() {
@@ -64,21 +68,33 @@ public class BaseEventHandler<E extends EventBus> implements EventHandlerInterfa
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.mvp4g.client.event.EventHandlerInterface#isActivated()
 	 */
 	public boolean isActivated() {
-		if ( activated && !binded ) {
-			bind();
-			binded = true;
+		if ( activated ) {
+			onBeforeEvent();
+			if ( !binded ) {
+				bind();
+				binded = true;
+			}
 		}
 		return activated;
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.mvp4g.client.event.EventHandlerInterface#setActivated(boolean)
 	 */
 	public void setActivated( boolean activated ) {
 		this.activated = activated;
+	}
+
+	/**
+	 * Method called before each time an handler has to handle an event. 
+	 */
+	public void onBeforeEvent() {
+
 	}
 }

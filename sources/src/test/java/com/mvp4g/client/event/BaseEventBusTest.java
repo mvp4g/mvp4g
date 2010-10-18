@@ -11,9 +11,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gwt.user.client.Command;
 import com.mvp4g.client.Mvp4gException;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.test_tools.EventFilterStub;
 import com.mvp4g.client.test_tools.Mvp4gModuleStub;
 import com.mvp4g.util.test_tools.annotation.Presenters;
@@ -39,7 +39,7 @@ public class BaseEventBusTest {
 								
 			}
 
-			public void confirmNavigation( Command event ) {
+			public void confirmNavigation( NavigationEventCommand event ) {
 								
 			}
 

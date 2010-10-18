@@ -20,7 +20,6 @@ import java.util.Map;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.History;
 import com.mvp4g.client.Mvp4gEventPasser;
 import com.mvp4g.client.Mvp4gModule;
@@ -142,9 +141,9 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 */
 	public void onValueChange( final ValueChangeEvent<String> event ) {
 
-		confirmEvent( new Command() {
+		confirmEvent( new NavigationEventCommand( module.getEventBus() ) {
 
-			public void execute() {
+			protected void execute() {
 				String token = event.getValue();
 
 				boolean toContinue = false;
@@ -271,9 +270,16 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 		this.navigationConfirmation = navigationConfirmation;
 	}
 
-	public void confirmEvent( Command event ) {
+	/**
+	 * Ask for user's confirmation before firing an event
+	 * 
+	 * @param event
+	 *            event to confirm
+	 */
+	public void confirmEvent( NavigationEventCommand event ) {
 		if ( navigationConfirmation == null ) {
-			event.execute();
+			//no need to remove the confirmation, there is none
+			event.fireEvent( false );
 		} else {
 			navigationConfirmation.confirm( event );
 		}
