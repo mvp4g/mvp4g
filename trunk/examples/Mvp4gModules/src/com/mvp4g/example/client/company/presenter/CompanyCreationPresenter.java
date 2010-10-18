@@ -9,20 +9,11 @@ import com.mvp4g.example.client.company.bean.CompanyBean;
 import com.mvp4g.example.client.company.view.CompanyCreationView;
 
 @Presenter( view = CompanyCreationView.class )
-public class CompanyCreationPresenter extends AbstractCompanyPresenter {
-
-	private NavigationConfirmationInterface navConf = new NavigationConfirmationInterface() {
-
-		public void confirm( NavigationEventCommand event ) {
-			if ( ( view.getName().getValue().length() == 0 )
-					|| ( view.confirm( "Are you sure you want to navigate away from this page? Your company hasn't been created." ) ) ) {
-				event.fireEvent();
-			}
-		}
-	};
+public class CompanyCreationPresenter extends AbstractCompanyPresenter implements NavigationConfirmationInterface {
 
 	public void onGoToCreation() {
-		eventBus.changeBody( view.getViewWidget() );
+		view.getName().setValue( "" );
+		eventBus.changeBody( view.getViewWidget() );		
 	}
 
 	public void onNameSelected( String name ) {
@@ -58,7 +49,14 @@ public class CompanyCreationPresenter extends AbstractCompanyPresenter {
 
 	@Override
 	public void onBeforeEvent() {
-		eventBus.setNavigationConfirmation( navConf );
+		eventBus.setNavigationConfirmation( this );
+	}
+	
+	public void confirm( NavigationEventCommand event ) {
+		if ( ( view.getName().getValue().length() == 0 )
+				|| ( view.confirm( "Your company hasn't been created. Are you sure you want to navigate away from this page?" ) ) ) {
+			event.fireEvent();
+		}
 	}
 
 }

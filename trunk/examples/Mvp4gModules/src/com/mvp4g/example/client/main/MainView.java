@@ -35,6 +35,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 	public MainView(IndexDisplayer indexDisplayer) {
 		
 		c.setStyleName( "tab" );
+		c.addStyleName( "first" );
 		p.setStyleName( "tab" );
 		
 		message.setStyleName( "messageBar" );
@@ -61,6 +62,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 
 		bar.add( c );
 		bar.add( p );
+		bar.setStyleName( "tabs" );
 
 		VerticalPanel mainPanel = new VerticalPanel();
 		mainPanel.setHorizontalAlignment( HasHorizontalAlignment.ALIGN_RIGHT );
@@ -77,6 +79,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 
 		initWidget( mainPanel );
 
+		bodyContainer.setStyleName( "body" );
 		bodyContainer.setWidget( new Label( "Click on one of the tab to start." ) );
 	}
 
