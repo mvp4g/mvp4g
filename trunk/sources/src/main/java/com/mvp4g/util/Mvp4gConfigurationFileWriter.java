@@ -681,7 +681,7 @@ public class Mvp4gConfigurationFileWriter {
 				if ( hasLog ) {
 					writeLog( "Asking for user confirmation: ", type, objectClasses );
 				}
-				sourceWriter.println( "itself.confirmEvent(new Command(){" );
+				sourceWriter.println( "itself.confirmEvent(new NavigationEventCommand(this){" );
 				sourceWriter.indent();
 				sourceWriter.println( "public void execute(){" );
 				sourceWriter.indent();
@@ -781,7 +781,7 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );
 
-		sourceWriter.println( "public void confirmNavigation(Command event){" );
+		sourceWriter.println( "public void confirmNavigation(NavigationEventCommand event){" );
 		sourceWriter.indent();
 		sourceWriter.println( "itself.confirmEvent(event);" );
 		sourceWriter.outdent();
@@ -1384,7 +1384,7 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );
 
-		sourceWriter.println( "public void confirmEvent( Command event ){" );
+		sourceWriter.println( "public void confirmEvent( NavigationEventCommand event ){" );
 		sourceWriter.indent();
 		if ( !configuration.isRootModule() ) {
 			sourceWriter.println( "parentModule.confirmEvent(event);" );

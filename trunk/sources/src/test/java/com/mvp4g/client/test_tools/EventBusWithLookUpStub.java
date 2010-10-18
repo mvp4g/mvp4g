@@ -1,12 +1,14 @@
 package com.mvp4g.client.test_tools;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
 import com.google.gwt.user.client.Command;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 
 public class EventBusWithLookUpStub extends BaseEventBusWithLookUp {
 
@@ -15,6 +17,7 @@ public class EventBusWithLookUpStub extends BaseEventBusWithLookUp {
 
 	private String lastDispatchedEventType = null;
 	private Object[] lastDispatchedObject = null;
+	private NavigationConfirmationInterface conf;
 
 	public void dispatch( String eventType, Object... form ) {
 		lastDispatchedEventType = eventType;
@@ -66,11 +69,15 @@ public class EventBusWithLookUpStub extends BaseEventBusWithLookUp {
 	}
 
 	public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {
+		conf = navigationConfirmation;
+	}
+
+	public void confirmNavigation( NavigationEventCommand event ) {
 
 	}
 
-	public void confirmNavigation( Command event ) {
-		
+	public NavigationConfirmationInterface getLastNavigationConfirmation() {
+		return conf;
 	}
 
 }

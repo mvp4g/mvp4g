@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.user.client.Command;
 import com.mvp4g.client.Mvp4gEventPasser;
 import com.mvp4g.client.test_tools.EventBusWithLookUpStub;
 import com.mvp4g.client.test_tools.HistoryProxyStub;
@@ -55,13 +54,13 @@ public class PlaceServiceTest {
 	
 	private class MyTestNavigationConfirmation implements NavigationConfirmationInterface {
 		
-		private Command event;
+		private NavigationEventCommand event;
 
-		public void confirm( Command event ) {
+		public void confirm( NavigationEventCommand event ) {
 			this.event = event;
 		}
 		
-		public Command getEvent(){
+		public NavigationEventCommand getEvent(){
 			return event;
 		}
 		
@@ -409,7 +408,7 @@ public class PlaceServiceTest {
 		final String eventType = "eventType";
 		final String form = "form";
 		
-		Command event = new Command() {
+		NavigationEventCommand event = new NavigationEventCommand(eventBus) {
 			
 			public void execute() {
 				eventBus.dispatch( eventType, form );
@@ -426,7 +425,7 @@ public class PlaceServiceTest {
 		final String eventType = "eventType";
 		final String form = "form";
 		
-		Command event = new Command() {
+		NavigationEventCommand event = new NavigationEventCommand(eventBus) {
 			
 			public void execute() {
 				eventBus.dispatch( eventType, form );

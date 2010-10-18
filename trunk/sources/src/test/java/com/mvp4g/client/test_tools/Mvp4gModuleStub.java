@@ -1,11 +1,11 @@
 package com.mvp4g.client.test_tools;
 
-import com.google.gwt.user.client.Command;
 import com.mvp4g.client.Mvp4gEventPasser;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 
 public class Mvp4gModuleStub implements Mvp4gModule {
 
@@ -85,7 +85,7 @@ public class Mvp4gModuleStub implements Mvp4gModule {
 
 	}
 
-	public void confirmEvent( Command event ) {
+	public void confirmEvent( NavigationEventCommand event ) {
 		// TODO Auto-generated method stub
 		
 	}

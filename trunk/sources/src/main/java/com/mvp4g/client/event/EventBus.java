@@ -15,9 +15,9 @@
  */
 package com.mvp4g.client.event;
 
-import com.google.gwt.user.client.Command;
 import com.mvp4g.client.Mvp4gException;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 
 /**
  * Interface that defines an event bus. All classes defining an event bus must implement it.
@@ -147,17 +147,18 @@ public interface EventBus {
 
 	/**
 	 * Set a confirmation that will be called before each navigation event or when history token
-	 * changes.
+	 * changes. This will set the navigationConfirmation for the whole application. You can have
+	 * only one navigationConfirmation for the whole application.
 	 * 
 	 * @param navigationConfirmation
 	 */
 	void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation );
-	
+
 	/**
-	 * Method to manually ask if a navigation event can occur
+	 * Method to manually ask if an action can occur
 	 * 
 	 * @param event
 	 */
-	void confirmNavigation(Command event);
+	void confirmNavigation( NavigationEventCommand event );
 
 }

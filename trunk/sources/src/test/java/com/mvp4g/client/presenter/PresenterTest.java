@@ -9,12 +9,12 @@ import java.lang.reflect.ParameterizedType;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gwt.user.client.Command;
 import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 
 public class PresenterTest {
 
@@ -45,7 +45,7 @@ public class PresenterTest {
 								
 			}
 
-			public void confirmNavigation( Command event ) {
+			public void confirmNavigation( NavigationEventCommand event ) {
 				
 			}
 			

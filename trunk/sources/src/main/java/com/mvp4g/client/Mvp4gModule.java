@@ -15,11 +15,11 @@
  */
 package com.mvp4g.client;
 
-import com.google.gwt.user.client.Command;
 import com.mvp4g.client.annotation.XmlFilePath;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 
 /**
  * This interface defines a module for Mvp4g. This interface is only used by the framework to
@@ -109,6 +109,6 @@ public interface Mvp4gModule {
 	 * @param event
 	 * 			event to confirm
 	 */
-	void confirmEvent( Command event );
+	void confirmEvent( NavigationEventCommand event );
 
 }

@@ -1325,7 +1325,7 @@ public class Mvp4gConfigurationFileReaderTest {
 				"String moduleHistoryName = eventType.substring(0, index);", "String nextToken = eventType.substring(index + 1);",
 				"Mvp4gEventPasser nextPasser = new Mvp4gEventPasser(nextToken) {", "public void pass(Mvp4gModule module) {",
 				"module.dispatchHistoryEvent((String) eventObjects[0], passer);", "passer.setEventObject(false);", "passer.pass(this);", "}else{",
-				"passer.pass(this);", "public void confirmEvent( Command event ){",
+				"passer.pass(this);", "public void confirmEvent( NavigationEventCommand event ){",
 				"placeService.setNavigationConfirmation(navigationConfirmation);",
 				"public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {",
 				"placeService.confirmEvent(event);" };
@@ -1384,7 +1384,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	private String[] getExpectedEventsInheritMethods() {
 		return new String[] { "public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {",
-				"itself.setNavigationConfirmation(navigationConfirmation);", "public void confirmNavigation(Command event){",
+				"itself.setNavigationConfirmation(navigationConfirmation);", "public void confirmNavigation(NavigationEventCommand event){",
 				"itself.confirmEvent(event);" };
 	}
 
@@ -1571,7 +1571,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	public String[] getExpectedNavigationEvents() {
 		return new String[] { "public void event1(final java.lang.String attr0,final java.lang.Object attr1){",
-				"itself.confirmEvent(new Command(){", "public void execute(){" };
+				"itself.confirmEvent(new NavigationEventCommand(this){", "public void execute(){" };
 	}
 
 	private String[] getExpectedGinInjector() {

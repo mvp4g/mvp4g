@@ -11,8 +11,8 @@ import java.lang.reflect.ParameterizedType;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gwt.user.client.Command;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 
 public class BaseEventHandlerTest {
 
@@ -43,7 +43,7 @@ public class BaseEventHandlerTest {
 								
 			}
 
-			public void confirmNavigation( Command event ) {
+			public void confirmNavigation( NavigationEventCommand event ) {
 								
 			}
 

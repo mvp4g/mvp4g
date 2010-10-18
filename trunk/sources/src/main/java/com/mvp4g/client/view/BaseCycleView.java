@@ -7,6 +7,13 @@ import com.mvp4g.client.gwt_event.LoadHandler;
 import com.mvp4g.client.gwt_event.UnloadEvent;
 import com.mvp4g.client.gwt_event.UnloadHandler;
 
+/**
+ * Base implementation of a {@link CycleView}. Fire {@link LoadEvent) and {@link UnloadEvent} when
+ * it is attached to/detached from the DOM.
+ * 
+ * @author plcoirier
+ * 
+ */
 public abstract class BaseCycleView extends Composite implements CycleView {
 
 	public HandlerRegistration addUnloadHandler( UnloadHandler handler ) {
@@ -16,17 +23,17 @@ public abstract class BaseCycleView extends Composite implements CycleView {
 	public HandlerRegistration addLoadHandler( LoadHandler handler ) {
 		return addHandler( handler, LoadEvent.TYPE );
 	}
-	
+
 	@Override
-	public void onLoad(){
+	public void onLoad() {
 		super.onLoad();
-		fireEvent( new LoadEvent() );		
+		fireEvent( new LoadEvent() );
 	}
-	
+
 	@Override
-	public void onUnload(){
+	public void onUnload() {
 		super.onUnload();
-		fireEvent( new UnloadEvent() );		
+		fireEvent( new UnloadEvent() );
 	}
 
 }
