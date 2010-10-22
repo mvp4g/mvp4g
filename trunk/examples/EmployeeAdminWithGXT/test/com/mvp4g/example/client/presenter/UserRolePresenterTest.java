@@ -27,7 +27,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.example.client.EmployeeAdminWithGXTEventBus;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.IUserRoleView;
+import com.mvp4g.example.client.presenter.view_interface.IUserRoleView;
 
 public class UserRolePresenterTest {
 

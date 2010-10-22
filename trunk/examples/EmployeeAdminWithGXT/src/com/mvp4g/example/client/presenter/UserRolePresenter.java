@@ -12,8 +12,8 @@ import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.EmployeeAdminWithGXTEventBus;
 import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.IUserRoleView;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.IUserRoleView.IUserRolePresenter;
+import com.mvp4g.example.client.presenter.view_interface.IUserRoleView;
+import com.mvp4g.example.client.presenter.view_interface.IUserRoleView.IUserRolePresenter;
 import com.mvp4g.example.client.view.UserRoleView;
 
 /**
