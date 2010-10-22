@@ -22,6 +22,9 @@ import com.mvp4g.client.event.EventFilter;
 import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.presenter.PresenterInterface;
+import com.mvp4g.client.view.ReverseViewInterface;
+import com.mvp4g.util.test_tools.annotation.Presenters.SimplePresenter;
+import com.mvp4g.util.test_tools.annotation.Views.SimpleView;
 
 public class TypeOracleStub extends TypeOracle {
 
@@ -140,8 +143,11 @@ public class TypeOracleStub extends TypeOracle {
 					method.setReturnType( findType( EventBusWithLookup.class.getName() ) );
 				} else if ( getQualifiedSourceName().equals( PresenterInterface.class.getName() ) ) {
 					method = new JMethod( this.getBaseType(), name );
-					method.setReturnType( findType( String.class.getName() ) );
-				}				
+					method.setReturnType( findType( SimpleView.class.getCanonicalName() ) );
+				} else if (getQualifiedSourceName().equals( ReverseViewInterface.class.getName() )){
+					method = new JMethod( this.getBaseType(), name );
+					method.setReturnType( findType( SimplePresenter.class.getCanonicalName() ) );
+				}
 			}
 
 			return method;

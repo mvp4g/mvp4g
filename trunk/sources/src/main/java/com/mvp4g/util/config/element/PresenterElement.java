@@ -35,5 +35,17 @@ public class PresenterElement extends EventHandlerElement {
 	public String getView() {
 		return getProperty( "view" );
 	}
+	
+	public String getInverseView() {
+		return getProperty( "inverseView" );
+	}
+
+	public boolean hasInverseView() {
+		return Boolean.TRUE.toString().equalsIgnoreCase( getInverseView() );
+	}
+
+	public void setInverseView( String inverseView ) throws DuplicatePropertyNameException {
+		setProperty( "inverseView", inverseView );
+	}
 
 }

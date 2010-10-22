@@ -61,6 +61,7 @@ import com.mvp4g.util.test_tools.annotation.Events;
 import com.mvp4g.util.test_tools.annotation.HistoryConverters;
 import com.mvp4g.util.test_tools.annotation.Presenters;
 import com.mvp4g.util.test_tools.annotation.Services;
+import com.mvp4g.util.test_tools.annotation.Views;
 import com.mvp4g.util.test_tools.annotation.EventHandlers.SimpleEventHandler;
 import com.mvp4g.util.test_tools.annotation.Events.TestGinModule;
 import com.mvp4g.util.test_tools.annotation.HistoryConverters.SimpleHistoryConverter;
@@ -82,6 +83,8 @@ public class Mvp4gConfigurationTest {
 	@Before
 	public void setUp() {
 		oracle = new TypeOracleStub();
+		oracle.addClass( Views.SimpleView.class );
+
 		configuration = new Mvp4gConfiguration( new UnitTestTreeLogger.Builder().createLogger(), oracle );
 		presenters = configuration.getPresenters();
 		views = configuration.getViews();
@@ -333,10 +336,10 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testEventHandlerValidationSucceedsForPresenter() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventHandlerValidationSucceedsNoInjectedView() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
 
 		ViewElement view = newView( "view" );
-		view.setClassName( String.class.getName() );
+		view.setClassName( Views.SimpleView.class.getCanonicalName() );
 		views.add( view );
 
 		PresenterElement presenter = newPresenter( "testHandler" );
@@ -349,13 +352,76 @@ public class Mvp4gConfigurationTest {
 
 		setEventBus();
 		configuration.validateEventHandlers();
+		assertFalse( presenter.hasInverseView() );
+	}
+
+	@Test
+	public void testEventHandlerValidationSucceedsWithInjectedView() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+
+		ViewElement view = newView( "view" );
+		Class<?> c = Views.SimpleInjectedView.class;
+		view.setClassName( c.getCanonicalName() );
+		oracle.addClass( c );
+		views.add( view );
+
+		PresenterElement presenter = new PresenterElement();
+		presenter.setName( "testHandler" );
+		c = Presenters.SimplePresenter.class;
+		presenter.setClassName( c.getCanonicalName() );
+		oracle.addClass( c );
+		presenter.setView( "view" );
+		presenters.add( presenter );
+
+		EventElement event = newEvent( "testEvent" );
+		event.setHandlers( new String[] { "testHandler" } );
+		events.add( event );
+
+		setEventBus();
+		configuration.validateEventHandlers();
+		assertTrue( presenter.hasInverseView() );
+
+	}
+
+	@Test
+	public void testEventHandlerWrongInjectedView() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+
+		ViewElement view = newView( "view" );
+		Class<?> c = Views.SimpleInjectedView.class;
+		view.setClassName( c.getCanonicalName() );
+		oracle.addClass( c );
+		views.add( view );
+
+		PresenterElement presenter = new PresenterElement();
+		presenter.setName( "testHandler" );
+		c = Presenters.MultiplePresenter.class;
+		presenter.setClassName( c.getCanonicalName() );
+		oracle.addClass( c );
+		presenter.setView( "view" );
+		presenters.add( presenter );
+
+		EventElement event = newEvent( "testEvent" );
+		event.setHandlers( new String[] { "testHandler" } );
+		events.add( event );
+
+		setEventBus();
+		try {
+			configuration.validateEventHandlers();
+			fail();
+		} catch ( InvalidTypeException e ) {
+			assertEquals(
+					"view view: Invalid Presenter. Can not convert com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter to com.mvp4g.util.test_tools.annotation.Presenters.SimplePresenter",
+					e.getMessage() );
+		}
+
 	}
 
 	@Test
 	public void testEventHandlerRemove() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
 
 		ViewElement view = newView( "view" );
-		view.setClassName( String.class.getName() );
+		Class<?> c = Views.SimpleView.class;
+		view.setClassName( c.getCanonicalName() );
+		oracle.addClass( c );
 		views.add( view );
 
 		PresenterElement presenter1 = newPresenter( "presenter1" );
@@ -550,7 +616,7 @@ public class Mvp4gConfigurationTest {
 		HistoryConverterElement historyConverter = newHistoryConverter( "testHistoryConverter" );
 		historyConverter.getInjectedServices().add( new InjectedElement( "service2", "setTestService" ) );
 		historyConverters.add( historyConverter );
-		
+
 		EventHandlerElement eventHandlerElement = newEventHandler( "testEventHandler" );
 		eventHandlerElement.getInjectedServices().add( new InjectedElement( "service3", "setTestService" ) );
 		eventHandlers.add( eventHandlerElement );
@@ -1110,7 +1176,7 @@ public class Mvp4gConfigurationTest {
 	public void testHistorySeparator() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
 
 		historyConverters.add( new HistoryConverterElement() );
-		
+
 		EventBusElement eventBus = new EventBusElement( EventBus.class.getName(), BaseEventBus.class.getName(), false );
 		configuration.setEventBus( eventBus );
 
@@ -1129,7 +1195,7 @@ public class Mvp4gConfigurationTest {
 
 		history = new HistoryElement();
 		history.setParamSeparator( "/" );
-		history.setInitEvent( "event" );		
+		history.setInitEvent( "event" );
 		configuration.setHistory( history );
 		try {
 			configuration.validateHistory();
@@ -1139,7 +1205,7 @@ public class Mvp4gConfigurationTest {
 
 		history = new HistoryElement();
 		history.setParamSeparator( "/" );
-		history.setInitEvent( "event" );		
+		history.setInitEvent( "event" );
 		history.setParamSeparatorAlwaysAdded( "true" );
 		configuration.setHistory( history );
 		configuration.validateHistory();

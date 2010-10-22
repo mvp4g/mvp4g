@@ -54,8 +54,6 @@ public class UserRolePresenter extends BasePresenter<IUserRoleView, EmployeeAdmi
 			view.addPossibleRole( role );
 		}
 
-		view.setPresenter( this );
-
 		disable();
 	}
 

@@ -56,8 +56,6 @@ public class UserRolePresenterTest {
 		for ( String role : ROLES ) {
 			mockView.addPossibleRole( role );
 		}
-
-		mockView.setPresenter( presenter );
 		disable();
 
 		replay( mockView );

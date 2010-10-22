@@ -150,4 +150,8 @@ public class UserRoleView extends LayoutContainer implements IUserRoleView {
 		return this;
 	}
 
+	public IUserRolePresenter getPresenter() {
+		return presenter;
+	}
+
 }
