@@ -20,7 +20,7 @@ import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.presenter.gxt.MyListModel;
-import com.mvp4g.example.client.presenter.view_interface.widget_interface.IUserRoleView;
+import com.mvp4g.example.client.presenter.view_interface.IUserRoleView;
 import com.mvp4g.example.client.widget.interfaces.IWidget;
 
 public class UserRoleView extends LayoutContainer implements IUserRoleView {
