@@ -465,18 +465,23 @@ public class Mvp4gConfigurationFileWriter {
 	 */
 	private void writePresenters() {
 
-		String name = null;
+		String name, view;
 		String className = null;
 
 		for ( PresenterElement presenter : configuration.getPresenters() ) {
 			if ( !presenter.isMultiple() ) {
 				name = presenter.getName();
 				className = presenter.getClassName();
+				view = presenter.getView();
 
 				createInstance( name, className, true );
 
 				sourceWriter.print( name );
-				sourceWriter.println( ".setView(" + presenter.getView() + ");" );
+				sourceWriter.println( ".setView(" + view + ");" );
+				if ( presenter.hasInverseView() ) {
+					sourceWriter.print( view );
+					sourceWriter.println( ".setPresenter(" + name + ");" );	
+				}
 
 				injectServices( name, presenter.getInjectedServices() );
 			}
@@ -1107,6 +1112,12 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.println( ");" );
 				sourceWriter.print( elementName );
 				sourceWriter.println( ".setEventBus(eventBus);" );
+				
+				if ( presenter.hasInverseView() ) {
+					sourceWriter.print( viewElementName );
+					sourceWriter.println( ".setPresenter(" + elementName + ");" );	
+				}				
+				
 				injectServices( elementName, presenter.getInjectedServices() );
 				sourceWriter.print( "return (T) " );
 				sourceWriter.print( elementName );

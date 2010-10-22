@@ -8,7 +8,7 @@ import com.mvp4g.client.gwt_event.UnloadEvent;
 import com.mvp4g.client.gwt_event.UnloadHandler;
 
 /**
- * Base implementation of a {@link CycleView}. Fire {@link LoadEvent) and {@link UnloadEvent} when
+ * Base implementation of a {@link CycleView}. Fire {@link LoadEvent} and {@link UnloadEvent} when
  * it is attached to/detached from the DOM.
  * 
  * @author plcoirier

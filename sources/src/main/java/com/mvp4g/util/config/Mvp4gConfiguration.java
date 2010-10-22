@@ -54,6 +54,7 @@ import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.client.presenter.PresenterInterface;
+import com.mvp4g.client.view.ReverseViewInterface;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
 import com.mvp4g.util.config.element.DebugElement;
@@ -585,10 +586,9 @@ public class Mvp4gConfiguration {
 
 		Map<String, List<Mvp4gWithServicesElement>> serviceMap = new HashMap<String, List<Mvp4gWithServicesElement>>();
 
-		Set<Mvp4gWithServicesElement> currentElements = new HashSet<Mvp4gWithServicesElement>(presenters);
+		Set<Mvp4gWithServicesElement> currentElements = new HashSet<Mvp4gWithServicesElement>( presenters );
 		currentElements.addAll( eventHandlers );
 		currentElements.addAll( historyConverters );
-		
 
 		List<Mvp4gWithServicesElement> elementList = null;
 		for ( Mvp4gWithServicesElement elementWithService : currentElements ) {
@@ -601,7 +601,7 @@ public class Mvp4gConfiguration {
 				elementList.add( elementWithService );
 			}
 		}
-		
+
 		Set<ServiceElement> toRemove = new HashSet<ServiceElement>();
 		for ( ServiceElement service : services ) {
 			if ( serviceMap.remove( service.getName() ) == null ) {
@@ -783,13 +783,17 @@ public class Mvp4gConfiguration {
 		String startView = start.getView();
 		JGenericType presenterGenType = getType( null, PresenterInterface.class.getCanonicalName() ).isGenericType();
 		JGenericType eventHandlerGenType = getType( null, EventHandlerInterface.class.getCanonicalName() ).isGenericType();
+		JGenericType reverseViewGenType = getType( null, ReverseViewInterface.class.getCanonicalName() ).isGenericType();
 		JClassType eventBusType = getType( null, eventBus.getInterfaceClassName() );
 		JType[] noParam = new JType[0];
 		JClassType presenterType = null;
 		JClassType viewParam = null;
+		JClassType presenterParam = null;
+		JClassType viewType = null;
 		String viewName = null;
 		ViewElement view = null;
 		JParameterizedType genPresenter = null;
+		JParameterizedType genView = null;
 
 		Set<PresenterElement> toRemove = new HashSet<PresenterElement>();
 		String name;
@@ -820,9 +824,22 @@ public class Mvp4gConfiguration {
 						// Control if view injected to the event bus is compatible with
 						// presenter view type
 						view = getElement( viewName, views, presenter );
-
-						if ( !getType( view, view.getClassName() ).isAssignableTo( viewParam ) ) {
+						viewType = getType( view, view.getClassName() );
+						if ( !viewType.isAssignableTo( viewParam ) ) {
 							throw new InvalidTypeException( presenter, "View", view.getClassName(), viewParam.getQualifiedSourceName() );
+						}
+
+						if ( viewType.isAssignableTo( reverseViewGenType ) ) {
+							genView = viewType.asParameterizationOf( reverseViewGenType );
+							presenterParam = (JClassType)genView.findMethod( "getPresenter", noParam ).getReturnType();
+							if ( !presenterType.isAssignableTo( presenterParam ) ) {
+								throw new InvalidTypeException( view, "Presenter", presenter.getClassName(), presenterParam.getQualifiedSourceName() );
+							}
+							try {
+								presenter.setInverseView( Boolean.TRUE.toString() );
+							} catch ( DuplicatePropertyNameException e ) {
+								//called only once
+							}
 						}
 
 						if ( !presenter.isMultiple() ) {

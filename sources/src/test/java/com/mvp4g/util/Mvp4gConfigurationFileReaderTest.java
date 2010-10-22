@@ -399,10 +399,93 @@ public class Mvp4gConfigurationFileReaderTest {
 		presenters.add( p3 );
 
 		assertOutput( getExpectedPresenters(), false );
+		assertOutput( getReverseView(), false );
 		writer.writeConf();
 		assertOutput( getExpectedPresenters(), true );
+		assertOutput( getReverseView(), false );
+	}
+	
+	@Test
+	public void testWritePresentersWithReverseView() throws DuplicatePropertyNameException {
+
+		PresenterElement p1 = new PresenterElement();
+		p1.setName( "rootPresenter" );
+		p1.setClassName( "com.mvp4g.util.test_tools.RootPresenter" );
+		p1.setView( "rootView" );
+		p1.setInverseView( "true" );
+
+		PresenterElement p2 = new PresenterElement();
+		p2.setName( "createUserPresenter" );
+		p2.setClassName( "com.mvp4g.example.client.presenter.UserCreatePresenter" );
+		p2.setView( "userCreateView" );
+		p2.getInjectedServices().add( new InjectedElement( "userService", "setUserService" ) );
+
+		PresenterElement p3 = new PresenterElement();
+		p3.setName( "displayUserPresenter" );
+		p3.setClassName( "com.mvp4g.example.client.presenter.display.UserDisplayPresenter" );
+		p3.setView( "userDisplayView" );
+
+		Set<PresenterElement> presenters = configuration.getPresenters();
+		presenters.add( p1 );
+		presenters.add( p2 );
+		presenters.add( p3 );
+
+		assertOutput( getExpectedPresenters(), false );
+		assertOutput( getReverseView(), false );
+		writer.writeConf();
+		assertOutput( getExpectedPresenters(), true );
+		assertOutput( getReverseView(), true );
+	}
+	
+	@Test
+	public void testWriteMultiplePresenters() throws DuplicatePropertyNameException {
+
+		PresenterElement p1 = new PresenterElement();
+		p1.setName( "rootPresenter" );
+		p1.setClassName( "com.mvp4g.util.test_tools.RootPresenter" );
+		p1.setView( "rootView" );
+		p1.setMultiple( "true" );
+
+		configuration.getPresenters().add( p1 );
+		
+		ViewElement view = new ViewElement();
+		view.setName( "rootView" );
+		view.setClassName( "com.mvp4g.util.test_tools.RootView" );
+		
+		configuration.getViews().add( view );
+
+		assertOutput( getReverseView(), false );
+		assertOutput( getMultiplePresenters(), false );
+		writer.writeConf();
+		assertOutput( getReverseView(), false );
+		assertOutput( getMultiplePresenters(), true );
 	}
 
+	@Test
+	public void testWriteMultiplePresentersWithInverseView() throws DuplicatePropertyNameException {
+
+		PresenterElement p1 = new PresenterElement();
+		p1.setName( "rootPresenter" );
+		p1.setClassName( "com.mvp4g.util.test_tools.RootPresenter" );
+		p1.setView( "rootView" );
+		p1.setMultiple( "true" );
+		p1.setInverseView( "true" );
+
+		configuration.getPresenters().add( p1 );
+		
+		ViewElement view = new ViewElement();
+		view.setName( "rootView" );
+		view.setClassName( "com.mvp4g.util.test_tools.RootView" );
+		
+		configuration.getViews().add( view );
+
+		assertOutput( getReverseView(), false );
+		assertOutput( getMultiplePresenters(), false );
+		writer.writeConf();
+		assertOutput( getReverseView(), true );
+		assertOutput( getMultiplePresenters(), true );
+	}	
+	
 	@Test
 	public void testWriteServices() throws DuplicatePropertyNameException {
 
@@ -1358,6 +1441,23 @@ public class Mvp4gConfigurationFileReaderTest {
 
 				"displayUserPresenter.setEventBus(eventBus);", "displayUserPresenter.setView(userDisplayView);" };
 	}
+	
+	private String[] getReverseView() {
+		return new String[] {
+				"rootView.setPresenter(rootPresenter);"
+		};
+	}
+	
+	private String[] getMultiplePresenters(){
+		return new String[] {
+				"if (com.mvp4g.util.test_tools.RootPresenter.class.equals(handlerClass)){",
+				"com.mvp4g.util.test_tools.RootPresenter rootPresenter = injector.getrootPresenter();",
+				"com.mvp4g.util.test_tools.RootView rootView = injector.getrootView();",
+				"rootPresenter.setView(rootView);",
+				"rootPresenter.setEventBus(eventBus);",
+				"return (T) rootPresenter;"
+		};
+	}
 
 	private String[] getExpectedEvents() {
 		return new String[] {
@@ -1385,7 +1485,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	private String[] getExpectedEventsInheritMethods() {
 		return new String[] { "public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {",
 				"itself.setNavigationConfirmation(navigationConfirmation);", "public void confirmNavigation(NavigationEventCommand event){",
-				"itself.confirmEvent(event);" };
+				"itself.confirmEvent(event);","protected <T extends EventHandlerInterface<?>> T createHandler( Class<T> handlerClass ){" };
 	}
 
 	private String[] getExpectedHistoryEvents() {

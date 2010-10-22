@@ -2,9 +2,10 @@ package com.mvp4g.example.client.presenter.view_interface.widget_interface;
 
 import java.util.List;
 
+import com.mvp4g.client.view.ReverseViewInterface;
 import com.mvp4g.example.client.widget.interfaces.IWidget;
 
-public interface IUserRoleView extends IWidget {
+public interface IUserRoleView extends IWidget, ReverseViewInterface<IUserRoleView.IUserRolePresenter> {
 
 	public interface IUserRolePresenter {
 		void onAddButtonClicked();
@@ -18,8 +19,6 @@ public interface IUserRoleView extends IWidget {
 
 	void displayError( String error );
 	
-	void setPresenter( IUserRolePresenter presenter );
-
 	void setAddButtonEnabled( boolean enabled );
 
 	void setRemoveButtonEnabled( boolean enabled );
