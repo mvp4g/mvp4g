@@ -2,6 +2,7 @@ package com.mvp4g.client.history;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -51,19 +52,19 @@ public class PlaceServiceTest {
 		}
 
 	}
-	
+
 	private class MyTestNavigationConfirmation implements NavigationConfirmationInterface {
-		
+
 		private NavigationEventCommand event;
 
 		public void confirm( NavigationEventCommand event ) {
 			this.event = event;
 		}
-		
-		public NavigationEventCommand getEvent(){
+
+		public NavigationEventCommand getEvent() {
 			return event;
 		}
-		
+
 	}
 
 	MyTestPlaceService placeServiceDefault = null;
@@ -106,18 +107,21 @@ public class PlaceServiceTest {
 		String eventType = "eventType";
 		String historyName = "historyName";
 		placeServiceDefault.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		placeServiceDefault.place( eventType, null );
+		String token = placeServiceDefault.place( eventType, null, false );
 		assertEquals( historyName, history.getToken() );
 		assertFalse( history.isIssueEvent() );
+		assertEquals( historyName, token );
 
 		placeServiceSeparator.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		placeServiceSeparator.place( eventType, null );
+		token = placeServiceSeparator.place( eventType, null, false );
 		assertEquals( historyName, historySeparator.getToken() );
+		assertEquals( historyName, token );
 		assertFalse( historySeparator.isIssueEvent() );
 
 		placeServiceSeparatorAdd.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		placeServiceSeparatorAdd.place( eventType, null );
+		token = placeServiceSeparatorAdd.place( eventType, null, false );
 		assertEquals( historyName + PlaceService.CRAWLABLE, historySeparatorAdd.getToken() );
+		assertEquals( historyName + PlaceService.CRAWLABLE, token );
 		assertFalse( historySeparatorAdd.isIssueEvent() );
 
 	}
@@ -128,19 +132,33 @@ public class PlaceServiceTest {
 		String form = "form";
 		String historyName = "historyName";
 		placeServiceDefault.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		placeServiceDefault.place( eventType, form );
+		String token = placeServiceDefault.place( eventType, form, false );
 		assertEquals( historyName + "?" + form, history.getToken() );
 		assertFalse( history.isIssueEvent() );
+		assertEquals( historyName + "?" + form, token );
 
 		placeServiceSeparator.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		placeServiceSeparator.place( eventType, form );
+		token = placeServiceSeparator.place( eventType, form, false );
 		assertEquals( historyName + PlaceService.CRAWLABLE + form, historySeparator.getToken() );
 		assertFalse( historySeparator.isIssueEvent() );
+		assertEquals( historyName + PlaceService.CRAWLABLE + form, token );
 
 		placeServiceSeparatorAdd.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		placeServiceSeparatorAdd.place( eventType, form );
+		token = placeServiceSeparatorAdd.place( eventType, form, false );
 		assertEquals( historyName + PlaceService.CRAWLABLE + form, historySeparatorAdd.getToken() );
 		assertFalse( historySeparatorAdd.isIssueEvent() );
+		assertEquals( historyName + PlaceService.CRAWLABLE + form, token );
+	}
+
+	@Test
+	public void testPlaceTokenOnly() {
+		String eventType = "eventType";
+		String form = "form";
+		String historyName = "historyName";
+		placeServiceDefault.addConverter( eventType, historyName, buildHistoryConverter( false ) );
+		String token = placeServiceDefault.place( eventType, form, true );
+		assertEquals( historyName + "?" + form, token );
+		assertNull( history.getToken() );
 	}
 
 	@Test
@@ -324,21 +342,21 @@ public class PlaceServiceTest {
 	public void testClearHistory() {
 		String eventType = "eventType";
 		placeServiceDefault.addConverter( eventType, eventType, new ClearHistory() );
-		placeServiceDefault.place( eventType, null );
+		placeServiceDefault.place( eventType, null, false );
 		assertEquals( eventType, history.getToken() );
 
 		placeServiceDefault.clearHistory();
 		assertEquals( "", history.getToken() );
 
 		placeServiceSeparator.addConverter( eventType, eventType, new ClearHistory() );
-		placeServiceSeparator.place( eventType, null );
+		placeServiceSeparator.place( eventType, null, false );
 		assertEquals( eventType, historySeparator.getToken() );
 
 		placeServiceSeparator.clearHistory();
 		assertEquals( "", historySeparator.getToken() );
 
 		placeServiceSeparatorAdd.addConverter( eventType, eventType, new ClearHistory() );
-		placeServiceSeparatorAdd.place( eventType, null );
+		placeServiceSeparatorAdd.place( eventType, null, false );
 		assertEquals( eventType + PlaceService.CRAWLABLE, historySeparatorAdd.getToken() );
 
 		placeServiceSeparatorAdd.clearHistory();
@@ -370,7 +388,7 @@ public class PlaceServiceTest {
 		String eventType = "eventType";
 		String historyName = "historyName";
 		placeServiceDefault.addConverter( eventType, historyName, buildHistoryConverter( true ) );
-		placeServiceDefault.place( eventType, null );
+		placeServiceDefault.place( eventType, null, false );
 		assertEquals( "!" + historyName, history.getToken() );
 		assertFalse( history.isIssueEvent() );
 	}
@@ -384,64 +402,64 @@ public class PlaceServiceTest {
 		placeServiceDefault.onValueChange( event );
 		eventBus.assertEvent( eventType, new Object[] { null } );
 	}
-	
+
 	@Test
-	public void testNavigationConfirmationForHistory(){
+	public void testNavigationConfirmationForHistory() {
 		String eventType = "eventType";
 		String historyName = "historyName";
 		placeServiceDefault.addConverter( eventType, historyName, buildHistoryConverter( true ) );
-		
+
 		MyTestNavigationConfirmation navConf = new MyTestNavigationConfirmation();
 		placeServiceDefault.setNavigationConfirmation( navConf );
-		
+
 		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( historyName );
 		placeServiceDefault.onValueChange( event );
 		eventBus.assertEvent( null, null );
-		
+
 		navConf.getEvent().execute();
 		eventBus.assertEvent( eventType, new Object[] { null } );
-		
+
 	}
-	
+
 	@Test
-	public void testNoNavigationConfirmationForEvent(){
+	public void testNoNavigationConfirmationForEvent() {
 		final String eventType = "eventType";
 		final String form = "form";
-		
-		NavigationEventCommand event = new NavigationEventCommand(eventBus) {
-			
+
+		NavigationEventCommand event = new NavigationEventCommand( eventBus ) {
+
 			public void execute() {
 				eventBus.dispatch( eventType, form );
 			}
 		};
-		
-		placeServiceDefault.confirmEvent( event );		
+
+		placeServiceDefault.confirmEvent( event );
 		eventBus.assertEvent( eventType, new Object[] { form } );
-		
+
 	}
-	
+
 	@Test
-	public void testNavigationConfirmationForEvent(){
+	public void testNavigationConfirmationForEvent() {
 		final String eventType = "eventType";
 		final String form = "form";
-		
-		NavigationEventCommand event = new NavigationEventCommand(eventBus) {
-			
+
+		NavigationEventCommand event = new NavigationEventCommand( eventBus ) {
+
 			public void execute() {
 				eventBus.dispatch( eventType, form );
 			}
 		};
-		
+
 		MyTestNavigationConfirmation navConf = new MyTestNavigationConfirmation();
 		placeServiceDefault.setNavigationConfirmation( navConf );
-		
+
 		placeServiceDefault.confirmEvent( event );
-		
+
 		eventBus.assertEvent( null, null );
-		
+
 		navConf.getEvent().execute();
 		eventBus.assertEvent( eventType, new Object[] { form } );
-		
-	}	
+
+	}
 
 }

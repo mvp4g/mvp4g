@@ -34,6 +34,7 @@ import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.inject.client.GinModule;
 import com.mvp4g.client.DefaultMvp4gGinModule;
@@ -125,6 +126,7 @@ public class Mvp4gConfiguration {
 	private static final String CHILD_MODULE_SAME_HISTORY_NAME = "Module %s: You can't have two child modules with the same history name \"%s\".";
 	private static final String ACTIVATE_DEACTIVATE_SAME_TIME = "Event %s: an event can't activate and deactivate the same handler: %s.";
 	private static final String NAME_WITH_NO_CONVERTER = "Event %s: you defined an history name for this event but this event has no history converter.";
+	private static final String TOKEN_WITH_NO_CONVERTER = "Event %s: you can't generate a token for this event if it has no history converter.";
 	private static final String EMPTY_HISTORY_NAME_ROOT = "Event %s: An event of the Mvp4g Root module can't have an history name equal to empty string.";
 	private static final String SAME_HISTORY_NAME = "Event %s: history name already used for another event: %s.";
 	private static final String WRONG_HISTORY_NAME = "%s %s: history name can't start with '" + PlaceService.CRAWLABLE + "' or contain '"
@@ -654,6 +656,16 @@ public class Mvp4gConfiguration {
 							historyName ) );
 				}
 				historyNames.add( historyName );
+			} else if ( event.isWithTokenGeneration() ) {
+				if ( !( event.hasForwardToParent() && checkIfParentEventReturnsString( event ) ) ) {
+					throw new InvalidMvp4gConfigurationException( String.format( TOKEN_WITH_NO_CONVERTER, event.getType() ) );
+				} else {
+					try {
+						event.setTokenGenerationFromParent( Boolean.toString( Boolean.TRUE ) );
+					} catch ( DuplicatePropertyNameException e ) {
+						//nothing to do
+					}
+				}
 			} else if ( event.getHistoryName() != event.getType() ) {
 				throw new InvalidMvp4gConfigurationException( String.format( NAME_WITH_NO_CONVERTER, event.getType() ) );
 			}
@@ -1694,4 +1706,20 @@ public class Mvp4gConfiguration {
 		}
 	}
 
+	boolean checkIfParentEventReturnsString( EventElement e ) {
+		if ( parentEventBus != null ) {
+			try {
+				String eventType = e.getType();
+				JClassType string = oracle.getType( java.lang.String.class.getName() );
+				for ( JMethod m : parentEventBus.getMethods() ) {
+					if ( eventType.equals( m.getName() ) ) {
+						return m.getReturnType().equals( string );
+					}
+				}
+			} catch ( NotFoundException e1 ) {
+				// nothing to do
+			}
+		}
+		return false;
+	}
 }

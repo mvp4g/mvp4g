@@ -158,7 +158,39 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 		assertEquals( test, element.getNavigationEvent() );
 		assertFalse( element.isNavigationEvent() );
 	}
-
+	
+	@Test
+	public void testWithTokenGenerationTrue() throws DuplicatePropertyNameException{
+		String test = "true";
+		element.setWithTokenGeneration( test );
+		assertEquals( test, element.getWithTokenGeneration() );
+		assertTrue( element.isWithTokenGeneration() );
+	}
+	
+	@Test
+	public void testWithTokenGenerationFalse() throws DuplicatePropertyNameException{
+		String test = "false";
+		element.setWithTokenGeneration( test );
+		assertEquals( test, element.getWithTokenGeneration() );
+		assertFalse( element.isWithTokenGeneration() );
+	}
+	
+	@Test
+	public void testTokenGenerationFromParentTrue() throws DuplicatePropertyNameException{
+		String test = "true";
+		element.setTokenGenerationFromParent( test );
+		assertEquals( test, element.getTokenGenerationFromParent() );
+		assertTrue( element.isTokenGenerationFromParent() );
+	}
+	
+	@Test
+	public void testTokenGenerationFromParentFalse() throws DuplicatePropertyNameException{
+		String test = "false";
+		element.setTokenGenerationFromParent( test );
+		assertEquals( test, element.getTokenGenerationFromParent() );
+		assertFalse( element.isTokenGenerationFromParent() );
+	}
+	
 	@Override
 	protected String[] getProperties() {
 		return properties;

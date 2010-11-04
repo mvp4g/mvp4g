@@ -400,10 +400,12 @@ public class EventsAnnotationsLoaderTest {
 				assertEquals( String.class.getName(), e.getEventObjectClass()[0] );
 				assertEquals( "treatEvent1", e.getCalledMethod() );
 				assertFalse( e.isNavigationEvent() );
+				assertFalse( e.isWithTokenGeneration() );
 			} else if ( "event2".equals( e.getType() ) ) {
 				assertNull( e.getEventObjectClass() );
 				assertEquals( "onEvent2", e.getCalledMethod() );
 				assertTrue( e.isNavigationEvent() );
+				assertTrue( e.isWithTokenGeneration() );
 			} else {
 				fail( "Unknown event name" );
 			}

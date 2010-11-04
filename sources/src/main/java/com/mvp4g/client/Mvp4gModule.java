@@ -71,7 +71,7 @@ public interface Mvp4gModule {
 	 * @param form
 	 *            object associated with the event
 	 */
-	void place( String event, String form );
+	String place( String event, String form, boolean onlyToken );
 
 	/**
 	 * Deal the event received from browser history change or pass it to a child module if needed.

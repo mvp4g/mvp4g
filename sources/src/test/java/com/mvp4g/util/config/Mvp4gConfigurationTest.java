@@ -1995,6 +1995,63 @@ public class Mvp4gConfigurationTest {
 		assertTrue( configuration.isParentEventBusXml() );
 	}
 
+	@Test
+	public void testTokenGenerationNotOk() throws DuplicatePropertyNameException {
+		EventElement event = new EventElement();
+		event.setWithTokenGeneration( "true" );
+		event.setType( "event1" );
+		events.add( event );
+
+		try {
+			configuration.validateHistoryConverters();
+			fail();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertEquals( "Event event1: you can't generate a token for this event if it has no history converter.", e.getMessage() );
+		}
+
+		event.setForwardToParent( "true" );
+
+		try {
+			configuration.validateHistoryConverters();
+			fail();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertEquals( "Event event1: you can't generate a token for this event if it has no history converter.", e.getMessage() );
+		}
+
+		configuration.setParentEventBus( oracle.addClass( Events.EventBusOk.class ) );
+
+		try {
+			configuration.validateHistoryConverters();
+			fail();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertEquals( "Event event1: you can't generate a token for this event if it has no history converter.", e.getMessage() );
+		}
+	}
+
+	@Test
+	public void testTokenGenerationOk() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+		EventElement event = new EventElement();
+		event.setWithTokenGeneration( "true" );
+		event.setType( "event1" );
+		event.setHistory( "history" );
+		events.add( event );
+		
+		event = new EventElement();
+		event.setWithTokenGeneration( "true" );
+		event.setType( "event2" );
+		event.setForwardToParent( "true" );
+		events.add( event );
+		
+		HistoryConverterElement hc1 = newHistoryConverter( "history" );
+		historyConverters.add( hc1 );
+
+		setEventBus();
+		configuration.setParentEventBus( oracle.addClass( Events.EventBusOk.class ) );
+		configuration.validateHistoryConverters();
+		
+		
+	}
+
 	private PresenterElement newPresenter( String name ) throws DuplicatePropertyNameException {
 		PresenterElement presenter = new PresenterElement();
 		presenter.setName( name );

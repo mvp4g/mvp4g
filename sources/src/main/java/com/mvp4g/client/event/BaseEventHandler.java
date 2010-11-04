@@ -30,8 +30,8 @@ package com.mvp4g.client.event;
  */
 public class BaseEventHandler<E extends EventBus> implements EventHandlerInterface<E> {
 
-	private boolean binded = false;
-	private boolean activated = true;
+	protected boolean binded = false;
+	protected boolean activated = true;
 
 	protected E eventBus;
 
@@ -92,9 +92,14 @@ public class BaseEventHandler<E extends EventBus> implements EventHandlerInterfa
 	}
 
 	/**
-	 * Method called before each time an handler has to handle an event. 
+	 * Method called before each time an handler has to handle an event.
 	 */
 	public void onBeforeEvent() {
 
+	}
+
+	public E getTokenGenerator() {
+		( (BaseEventBus)eventBus ).tokenMode = true;
+		return eventBus;
 	}
 }

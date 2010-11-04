@@ -38,9 +38,10 @@ public abstract class BaseEventBus implements EventBus {
 
 	private boolean filteringEnabled = true;
 	private boolean changeFilteringEnabledForNextOne = false;
+	public boolean tokenMode = false;
 
 	private Map<Class<?>, List<EventHandlerInterface<?>>> handlersMap = new HashMap<Class<?>, List<EventHandlerInterface<?>>>();
-	
+
 	private List<EventFilter<?>> filters = new ArrayList<EventFilter<? extends EventBus>>();
 
 	/*
@@ -113,11 +114,16 @@ public abstract class BaseEventBus implements EventBus {
 	 * @param form
 	 *            object of the event to store
 	 */
-	protected void place( Mvp4gModule module, String type, String form ) {
-		if ( historyStored ) {
-			module.place( type, form );
+	protected String place( Mvp4gModule module, String type, String form, boolean onlyToken ) {
+		String token;
+		if ( tokenMode ) {
+			tokenMode = false;
+			token = module.place( type, form, onlyToken );
+		} else {
+			token = ( historyStored ) ? module.place( type, form, onlyToken ) : null;
+			resetHistoryStored();
 		}
-		resetHistoryStored();
+		return token;
 	}
 
 	/**
@@ -136,7 +142,7 @@ public abstract class BaseEventBus implements EventBus {
 	/**
 	 * Change history stored flag value if needed
 	 */
-	private void resetHistoryStored(){
+	private void resetHistoryStored() {
 		if ( changeHistoryStoredForNextOne ) {
 			historyStored = !historyStored;
 			changeHistoryStoredForNextOne = false;
@@ -191,12 +197,12 @@ public abstract class BaseEventBus implements EventBus {
 	 *            event parameters for this event
 	 */
 	@SuppressWarnings( "unchecked" )
-	private boolean doFilterEvent( String eventType, Object[] params ){
+	private boolean doFilterEvent( String eventType, Object[] params ) {
 		int filterCount = filters.size();
 		EventFilter filter;
-		for(int i=0; i<filterCount; i++){
+		for ( int i = 0; i < filterCount; i++ ) {
 			filter = filters.get( i );
-			if(!filter.filterEvent( eventType, params, this )){
+			if ( !filter.filterEvent( eventType, params, this ) ) {
 				return false;
 			}
 		}
@@ -205,6 +211,7 @@ public abstract class BaseEventBus implements EventBus {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.mvp4g.client.event.EventBus#addHandler(java.lang.Class, boolean)
 	 */
 	public <T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass, boolean bind ) throws Mvp4gException {
@@ -215,11 +222,11 @@ public abstract class BaseEventBus implements EventBus {
 							+ handlerClass.getName()
 							+ " couldn't be created by the Mvp4g. Have you forgotten to set multiple attribute to true for this handler or are you trying to create an handler that belongs to another module (another type of event bus injected in this handler)?" );
 		}
-		
-		if(bind){
+
+		if ( bind ) {
 			handler.isActivated();
 		}
-		
+
 		List<EventHandlerInterface<?>> handlers = handlersMap.get( handlerClass );
 		if ( handlers == null ) {
 			handlers = new ArrayList<EventHandlerInterface<?>>();
@@ -228,12 +235,13 @@ public abstract class BaseEventBus implements EventBus {
 		handlers.add( handler );
 		return handler;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.mvp4g.client.event.EventBus#addHandler(java.lang.Class, boolean)
 	 */
-	public <T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass) throws Mvp4gException {
+	public <T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass ) throws Mvp4gException {
 		return addHandler( handlerClass, true );
 	}
 
