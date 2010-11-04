@@ -87,6 +87,7 @@ public class TypeOracleStub extends TypeOracle {
 
 			if ( c.getPackage().getName().contains( getClass().getPackage().getName() ) ) {
 				JMethod method = null;
+				String returnType;
 				for ( Method m : c.getDeclaredMethods() ) {
 					annotations = new HashMap<Class<? extends Annotation>, Annotation>();
 					for ( Annotation a : m.getAnnotations() ) {
@@ -94,6 +95,12 @@ public class TypeOracleStub extends TypeOracle {
 					}
 
 					method = new JMethod( type, m.getName(), annotations, null );
+					returnType = m.getReturnType().getCanonicalName();
+					//if return type not an object, just return object
+					if(!returnType.contains( "." )){
+						returnType = Object.class.getName();
+					}
+					method.setReturnType( findType( returnType ) );
 					if ( m.getModifiers() == Modifier.PUBLIC ) {
 						method.addModifierBits( 0x00000020 );
 					} else {

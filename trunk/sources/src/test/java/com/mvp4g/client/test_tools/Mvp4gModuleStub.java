@@ -9,8 +9,11 @@ import com.mvp4g.client.history.NavigationEventCommand;
 
 public class Mvp4gModuleStub implements Mvp4gModule {
 
+	public final String TOKEN = "token";
+	
 	private EventBus eventBus;
 	private String eventType;
+	private boolean tokenOnly;
 	private Object form;
 	private Mvp4gEventPasser passer;
 
@@ -39,9 +42,11 @@ public class Mvp4gModuleStub implements Mvp4gModule {
 		return null;
 	}
 
-	public void place( String token, String form ) {
+	public String place( String token, String form, boolean tokenOnly ) {
 		this.eventType = token;
 		this.form = form;
+		this.tokenOnly = tokenOnly;
+		return TOKEN;
 	}
 
 	/**
@@ -63,6 +68,13 @@ public class Mvp4gModuleStub implements Mvp4gModule {
 	 */
 	public Object getForm() {
 		return form;
+	}
+	
+	/**
+	 * @return the tokenOnly
+	 */
+	public Object getTokenOnly() {
+		return tokenOnly;
 	}
 
 	public void addConverter( String eventType, String historyName, HistoryConverter<?> hc ) {

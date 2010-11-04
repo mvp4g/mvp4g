@@ -40,7 +40,7 @@ public class EventElement extends Mvp4gElement {
 				throw new DuplicatePropertyNameException( name );
 			}
 			activate = new ArrayList<String>();
-			for(String value: values){
+			for ( String value : values ) {
 				activate.add( value );
 			}
 		} else if ( "deactivate".equals( name ) ) {
@@ -48,7 +48,7 @@ public class EventElement extends Mvp4gElement {
 				throw new DuplicatePropertyNameException( name );
 			}
 			deactivate = new ArrayList<String>();
-			for(String value: values){
+			for ( String value : values ) {
 				deactivate.add( value );
 			}
 		} else {
@@ -157,10 +157,10 @@ public class EventElement extends Mvp4gElement {
 	public void setDeactivate( String[] presenters ) throws DuplicatePropertyNameException {
 		setValues( "deactivate", presenters );
 	}
-	
+
 	public String getHistoryName() {
 		String historyName = getProperty( "historyName" );
-		if(historyName == null){
+		if ( historyName == null ) {
 			historyName = getType();
 		}
 		return historyName;
@@ -169,7 +169,7 @@ public class EventElement extends Mvp4gElement {
 	public void setHistoryName( String historyName ) throws DuplicatePropertyNameException {
 		setProperty( "historyName", historyName );
 	}
-	
+
 	public String getNavigationEvent() {
 		return getProperty( "navigationEvent" );
 	}
@@ -181,4 +181,45 @@ public class EventElement extends Mvp4gElement {
 	public void setNavigationEvent( String navigationEvent ) throws DuplicatePropertyNameException {
 		setProperty( "navigationEvent", navigationEvent );
 	}
+
+	public String getWithTokenGeneration() {
+		return getProperty("withTokenGeneration");
+	}
+	
+	public boolean isWithTokenGeneration() {
+		return Boolean.TRUE.toString().equalsIgnoreCase( getWithTokenGeneration() );
+	}
+
+	/**
+	 * @param withTokenGeneration
+	 *            the withTokenGeneration to set
+	 * @throws DuplicatePropertyNameException 
+	 */
+	public void setWithTokenGeneration( String withTokenGeneration ) throws DuplicatePropertyNameException {
+		setProperty( "withTokenGeneration", withTokenGeneration );
+	}
+
+	/**
+	 * @return the tokenGenerationFromParent
+	 */
+	public String getTokenGenerationFromParent() {
+		return getProperty("tokenGenerationFromParent");
+	}
+	
+	/**
+	 * @return the tokenGenerationFromParent
+	 */
+	public boolean isTokenGenerationFromParent() {
+		return Boolean.TRUE.toString().equalsIgnoreCase( getTokenGenerationFromParent() );
+	}
+
+	/**
+	 * @param tokenGenerationFromParent
+	 *            the tokenGenerationFromParent to set
+	 * @throws DuplicatePropertyNameException 
+	 */
+	public void setTokenGenerationFromParent( String tokenGenerationFromParent ) throws DuplicatePropertyNameException {
+		setProperty( "tokenGenerationFromParent", tokenGenerationFromParent );
+	}
+
 }

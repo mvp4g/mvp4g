@@ -25,6 +25,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Debug.LogLevel;
+import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.client.history.PlaceService;
@@ -480,7 +481,7 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.println( ".setView(" + view + ");" );
 				if ( presenter.hasInverseView() ) {
 					sourceWriter.print( view );
-					sourceWriter.println( ".setPresenter(" + name + ");" );	
+					sourceWriter.println( ".setPresenter(" + name + ");" );
 				}
 
 				injectServices( name, presenter.getInjectedServices() );
@@ -630,6 +631,7 @@ public class Mvp4gConfigurationFileWriter {
 		boolean filterAfterHistory = ( filtersElement == null ) ? false : filtersElement.isAfterHistory();
 		boolean hasFilter = ( filters != null ) && ( filters.size() > 0 ) || ( ( filtersElement != null ) && ( filtersElement.isForceFilters() ) );
 		boolean isNavigationEvent;
+		boolean isWithTokenGeneration;
 		for ( EventElement event : configuration.getEvents() ) {
 			type = event.getType();
 			calledMethod = event.getCalledMethod();
@@ -641,8 +643,10 @@ public class Mvp4gConfigurationFileWriter {
 			history = event.getHistory();
 			activate = event.getActivate();
 			deactivate = event.getDeactivate();
+			isWithTokenGeneration = event.isWithTokenGeneration();
 
-			sourceWriter.print( "public void " );
+			sourceWriter.print( "public " );
+			sourceWriter.print( ( isWithTokenGeneration ) ? "String " : "void " );
 			sourceWriter.print( type );
 			sourceWriter.print( "(" );
 			if ( ( objectClasses == null ) || ( objectClasses.length == 0 ) ) {
@@ -682,6 +686,25 @@ public class Mvp4gConfigurationFileWriter {
 			}
 			sourceWriter.println( "){" );
 
+			if ( isWithTokenGeneration ) {
+				sourceWriter.println( "if(tokenMode){" );
+				sourceWriter.indent();
+				if ( event.isTokenGenerationFromParent() ) {
+					sourceWriter.println( "tokenMode=false;" );
+					sourceWriter.print( "((" );
+					sourceWriter.print( BaseEventBus.class.getName() );
+					sourceWriter.println( ") parentEventBus).tokenMode = true;" );
+					sourceWriter.print( "return " );
+					writeParentEvent( event, parentParam );
+				} else {
+					sourceWriter.print( "return " );
+					writeEventHistoryConvertion( event, getElement( history, configuration.getHistoryConverters() ), param, true );
+				}
+				sourceWriter.outdent();
+				sourceWriter.println( "} else {" );
+				sourceWriter.indent();
+			}
+
 			if ( isNavigationEvent ) {
 				if ( hasLog ) {
 					writeLog( "Asking for user confirmation: ", type, objectClasses );
@@ -702,7 +725,7 @@ public class Mvp4gConfigurationFileWriter {
 			}
 
 			if ( !filterAfterHistory ) {
-				writeEventFilter( hasFilter, type, parentParam );
+				writeEventFilter( hasFilter, event, parentParam );
 			}
 
 			if ( history != null ) {
@@ -711,24 +734,13 @@ public class Mvp4gConfigurationFileWriter {
 				if ( ClearHistory.class.getCanonicalName().equals( historyConverterElement.getClassName() ) ) {
 					sourceWriter.println( "clearHistory(itself);" );
 				} else {
-					sourceWriter.print( "place( itself, \"" );
-					sourceWriter.print( type );
-					sourceWriter.print( "\"," );
-					if ( historyConverterElement.isConvertParams() ) {
-						sourceWriter.print( history );
-						sourceWriter.print( "." );
-						sourceWriter.print( calledMethod );
-						sourceWriter.print( param );
-					} else {
-						sourceWriter.print( "null" );
-					}
-					sourceWriter.println( ");" );
+					writeEventHistoryConvertion( event, historyConverterElement, param, false );
 					eventsWithHistory.add( event );
 				}
 			}
 
 			if ( filterAfterHistory ) {
-				writeEventFilter( hasFilter, type, parentParam );
+				writeEventFilter( hasFilter, event, parentParam );
 			}
 
 			if ( ( activate != null ) && ( activate.size() > 0 ) ) {
@@ -769,6 +781,12 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.println( "}" );
 				sourceWriter.outdent();
 				sourceWriter.println( "});" );
+			}
+
+			if ( isWithTokenGeneration ) {
+				sourceWriter.outdent();
+				sourceWriter.println( "return null;" );
+				sourceWriter.println( "}" );
 			}
 
 			sourceWriter.outdent();
@@ -814,6 +832,24 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( filterName );
 			sourceWriter.print( ");" );
 		}
+	}
+
+	private void writeEventHistoryConvertion( EventElement event, HistoryConverterElement historyConverterElement, String param, boolean onlyTokens ) {
+		sourceWriter.print( "place( itself, \"" );
+		sourceWriter.print( event.getType() );
+		sourceWriter.print( "\"," );
+		if ( historyConverterElement.isConvertParams() ) {
+			sourceWriter.print( historyConverterElement.getName() );
+			sourceWriter.print( "." );
+			sourceWriter.print( event.getCalledMethod() );
+			sourceWriter.print( param );
+		} else {
+			sourceWriter.print( "null" );
+		}
+		sourceWriter.print( "," );
+		sourceWriter.print( Boolean.toString( onlyTokens ) );
+		sourceWriter.println( ");" );
+
 	}
 
 	private void writeMultipleActionBegin( EventHandlerElement eventHandler, String varSubName ) {
@@ -885,8 +921,9 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println( "}" );
 	}
 
-	private void writeEventFilter( boolean hasFilter, String type, String parentParam ) {
+	private void writeEventFilter( boolean hasFilter, EventElement event, String parentParam ) {
 		if ( hasFilter ) {
+			String type = event.getType();
 			sourceWriter.indent();
 			sourceWriter.print( "if (!filterEvent(\"" );
 			sourceWriter.print( type );
@@ -899,7 +936,11 @@ public class Mvp4gConfigurationFileWriter {
 
 			sourceWriter.indent();
 			writeEventFiltersLog( type );
-			sourceWriter.println( "return;" );
+			sourceWriter.print( "return" );
+			if ( event.isWithTokenGeneration() && !event.isNavigationEvent() ) {
+				sourceWriter.print( " null" );
+			}
+			sourceWriter.println( ";" );
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
 		}
@@ -1112,12 +1153,12 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.println( ");" );
 				sourceWriter.print( elementName );
 				sourceWriter.println( ".setEventBus(eventBus);" );
-				
+
 				if ( presenter.hasInverseView() ) {
 					sourceWriter.print( viewElementName );
-					sourceWriter.println( ".setPresenter(" + elementName + ");" );	
-				}				
-				
+					sourceWriter.println( ".setPresenter(" + elementName + ");" );
+				}
+
 				injectServices( elementName, presenter.getInjectedServices() );
 				sourceWriter.print( "return (T) " );
 				sourceWriter.print( elementName );
@@ -1322,18 +1363,18 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );
 
-		sourceWriter.println( "public void place(String token, String form){" );
+		sourceWriter.println( "public String place(String token, String form, boolean onlyToken){" );
 		sourceWriter.indent();
 		if ( !configuration.isRootModule() ) {
 			String historyName = configuration.getHistoryName();
 			if ( historyName != null ) {
-				sourceWriter.print( "parentModule.place(\"" );
+				sourceWriter.print( "return parentModule.place(\"" );
 				sourceWriter.print( historyName );
 				sourceWriter.print( PlaceService.MODULE_SEPARATOR );
-				sourceWriter.println( "\" + token, form );" );
+				sourceWriter.println( "\" + token, form, onlyToken );" );
 			}
 		} else {
-			sourceWriter.println( "placeService.place( token, form );" );
+			sourceWriter.println( "return placeService.place( token, form, onlyToken );" );
 		}
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );

@@ -36,11 +36,11 @@ public class BaseEventBusTest {
 			}
 
 			public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {
-								
+
 			}
 
 			public void confirmNavigation( NavigationEventCommand event ) {
-								
+
 			}
 
 		};
@@ -62,25 +62,25 @@ public class BaseEventBusTest {
 		bus.setHistoryStored( false );
 		bus.setHistoryStoredForNextOne( true );
 		assertTrue( bus.isHistoryStored() );
-		bus.place( module, "", "" );
+		bus.place( module, "", "", false );
 		assertFalse( bus.isHistoryStored() );
 
 		bus.setHistoryStored( true );
 		bus.setHistoryStoredForNextOne( false );
 		assertFalse( bus.isHistoryStored() );
-		bus.place( module, "", "" );
+		bus.place( module, "", "", false );
 		assertTrue( bus.isHistoryStored() );
 
 		bus.setHistoryStored( true );
 		bus.setHistoryStoredForNextOne( true );
 		assertTrue( bus.isHistoryStored() );
-		bus.place( module, "", "" );
+		bus.place( module, "", "", false );
 		assertTrue( bus.isHistoryStored() );
 
 		bus.setHistoryStored( false );
 		bus.setHistoryStoredForNextOne( false );
 		assertFalse( bus.isHistoryStored() );
-		bus.place( module, "", "" );
+		bus.place( module, "", "", false );
 		assertFalse( bus.isHistoryStored() );
 
 	}
@@ -89,7 +89,7 @@ public class BaseEventBusTest {
 	public void testClearHistory() {
 		String test = "test";
 		String form = "form";
-		module.place( test, form );
+		module.place( test, form, false );
 		assertEquals( module.getEventType(), test );
 		assertEquals( module.getForm(), form );
 
@@ -97,7 +97,7 @@ public class BaseEventBusTest {
 		assertNull( module.getEventType() );
 		assertNull( module.getForm() );
 
-		module.place( test, form );
+		module.place( test, form, false );
 		assertEquals( module.getEventType(), test );
 		assertEquals( module.getForm(), form );
 
@@ -119,16 +119,33 @@ public class BaseEventBusTest {
 		String form = "form";
 
 		bus.setHistoryStored( false );
-		bus.place( module, eventType, form );
+		String token = bus.place( module, eventType, form, false );
 
 		assertNull( module.getEventType() );
 		assertNull( module.getForm() );
+		assertNull( token );
 
 		bus.setHistoryStored( true );
-		bus.place( module, eventType, form );
+		token = bus.place( module, eventType, form, false );
 
 		assertEquals( module.getEventType(), eventType );
 		assertEquals( module.getForm(), form );
+		assertEquals( module.TOKEN, token );
+
+		bus.setHistoryStored( false );
+		bus.tokenMode = true;
+		token = bus.place( module, eventType, form, false );
+		assertEquals( module.getEventType(), eventType );
+		assertEquals( module.getForm(), form );
+		assertEquals( module.TOKEN, token );
+		assertFalse( bus.isHistoryStored() );
+		assertFalse( bus.tokenMode );
+
+		bus.setHistoryStored( true );
+		bus.setHistoryStoredForNextOne( false );
+		bus.tokenMode = true;
+		token = bus.place( module, eventType, form, false );
+		assertFalse( bus.isHistoryStored() );
 
 	}
 
@@ -212,22 +229,22 @@ public class BaseEventBusTest {
 		list = bus.getHandlers( SimplePresenter.class );
 		assertTrue( list.size() == 0 );
 	}
-	
+
 	@Test
 	public void testDefaultAddHandler() {
-		List<SimplePresenter> list = bus.getHandlers( SimplePresenter.class );	
+		List<SimplePresenter> list = bus.getHandlers( SimplePresenter.class );
 
 		SimplePresenter p = bus.addHandler( SimplePresenter.class );
 		list = bus.getHandlers( SimplePresenter.class );
 		assertTrue( list.size() == 1 );
 		assertEquals( list.get( 0 ), p );
 		assertTrue( p.isBindCalled() );
-		
+
 		p = bus.addHandler( SimplePresenter.class, true );
 		assertTrue( list.size() == 2 );
 		assertEquals( list.get( 1 ), p );
 		assertTrue( p.isBindCalled() );
-		
+
 		p = bus.addHandler( SimplePresenter.class, false );
 		assertTrue( list.size() == 3 );
 		assertEquals( list.get( 2 ), p );

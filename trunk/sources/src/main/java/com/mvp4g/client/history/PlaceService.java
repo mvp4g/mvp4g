@@ -211,7 +211,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 *            stored in the token
 	 */
 	@SuppressWarnings( "unchecked" )
-	public void place( String eventType, String param ) {
+	public String place( String eventType, String param, boolean onlyToken ) {
 		String historyName = toHistoryNames.get( eventType );
 		String token;
 		if ( ( param == null ) || ( param.length() == 0 ) ) {
@@ -227,7 +227,10 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 		if ( hc.isCrawlable() ) {
 			token = CRAWLABLE + token;
 		}
-		history.newItem( token, false );
+		if ( !onlyToken ) {
+			history.newItem( token, false );
+		}
+		return token;
 	}
 
 	/**

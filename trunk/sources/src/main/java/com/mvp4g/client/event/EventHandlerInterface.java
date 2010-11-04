@@ -34,35 +34,45 @@ public interface EventHandlerInterface<E extends EventBus> {
 	 * @param eventBus
 	 *            event bus to set
 	 */
-	public void setEventBus( E eventBus );
+	void setEventBus( E eventBus );
 
 	/**
 	 * Get the event bus associated with the event handler
 	 * 
 	 * @return eventBus manipulated by the event handler.
 	 */
-	public E getEventBus();
+	E getEventBus();
+
+	/**
+	 * Get the event bus associated with the event handler but in token generation mode.
+	 * 
+	 * The next event fire won't be fired but its token will be returned.
+	 * 
+	 * @return eventBus manipulated by the event handler.
+	 */
+	E getTokenGenerator();
 
 	/**
 	 * Call by the event bus when the handler handles its first event.
 	 * 
 	 */
-	public void bind();
+	void bind();
 
 	/**
-	 * Indicates if the presenter is activated or not. If the event handler is activated and if the bind
-	 * method hasn't been called yet, then the bind method should be called.
+	 * Indicates if the presenter is activated or not. If the event handler is activated and if the
+	 * bind method hasn't been called yet, then the bind method should be called.
 	 * 
 	 * @return true if the presenter is activated, false otherwise
 	 */
-	public boolean isActivated();
+	boolean isActivated();
 
 	/**
-	 * Set if the event handler is activated or not. By default, an event handler should be activated.
+	 * Set if the event handler is activated or not. By default, an event handler should be
+	 * activated.
 	 * 
 	 * @param activated
 	 *            new activation parameter
 	 */
-	public void setActivated( boolean activated );
+	void setActivated( boolean activated );
 
 }

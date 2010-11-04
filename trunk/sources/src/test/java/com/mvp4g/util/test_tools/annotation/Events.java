@@ -77,7 +77,7 @@ public class Events {
 		@InitHistory
 		@Forward
 		@Event( handlers = Presenters.PresenterWithName.class, historyConverter = HistoryConverters.HistoryConverterForEvent.class, navigationEvent = true )
-		public void event2();
+		public String event2();
 	}
 
 	@com.mvp4g.client.annotation.Events( startView = Object.class )
