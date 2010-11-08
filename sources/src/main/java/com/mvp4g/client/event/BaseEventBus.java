@@ -113,6 +113,9 @@ public abstract class BaseEventBus implements EventBus {
 	 *            type of the event to store
 	 * @param form
 	 *            object of the event to store
+	 * @param onlyToken
+	 *            if true, only the token will be generated and browser history won't change
+	 * @return the generated token
 	 */
 	protected String place( Mvp4gModule module, String type, String form, boolean onlyToken ) {
 		String token;
