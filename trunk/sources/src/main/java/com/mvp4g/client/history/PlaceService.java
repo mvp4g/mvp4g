@@ -209,6 +209,9 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 * @param param
 	 *            string representation of the objects associated with the event that needs to be
 	 *            stored in the token
+	 * @param onlyToken
+	 *            if true, only the token will be generated and browser history won't change
+	 * @return the generated token
 	 */
 	@SuppressWarnings( "unchecked" )
 	public String place( String eventType, String param, boolean onlyToken ) {

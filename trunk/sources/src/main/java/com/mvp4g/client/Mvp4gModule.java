@@ -70,6 +70,9 @@ public interface Mvp4gModule {
 	 *            event to store
 	 * @param form
 	 *            object associated with the event
+	 * @param onlyToken
+	 *            if true, only the token will be generated and browser history won't change
+	 * @return the generated token
 	 */
 	String place( String event, String form, boolean onlyToken );
 
@@ -94,7 +97,7 @@ public interface Mvp4gModule {
 	 *            parent module to set
 	 */
 	void setParentModule( Mvp4gModule parentModule );
-	
+
 	/**
 	 * Set a confirmation that will be called before each navigation event or when history token
 	 * changes.
@@ -102,12 +105,12 @@ public interface Mvp4gModule {
 	 * @param navigationConfirmation
 	 */
 	void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation );
-	
+
 	/**
 	 * Ask for user's confirmation before firing an event
 	 * 
 	 * @param event
-	 * 			event to confirm
+	 *            event to confirm
 	 */
 	void confirmEvent( NavigationEventCommand event );
 
