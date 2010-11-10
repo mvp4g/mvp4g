@@ -61,8 +61,8 @@ public interface MainEventBus extends EventBusWithLookup {
  * historyConverter, historyConverterName & historyName: used only for history management([http://code.google.com/p/mvp4g/wiki/PlaceService see Mvp4g & Browse history])
  * modulesToLoad and forwardToParent ([http://code.google.com/p/mvp4g/wiki/MultiModules see Multi-modules feature])
  * activate, activateNames, deactivate, deactivateNames (see [http://code.google.com/p/mvp4g/wiki/EventBus?ts=1284236703&updated=EventBus#Activating/Deactivating_presenters see Activating/Deactivating presenters])
- * navigationEvent (see ...)
- * passive (see ...)
+ * navigationEvent (see [http://code.google.com/p/mvp4g/wiki/EventBus_130#Navigation_Event Navigation Event])
+ * passive (see [http://code.google.com/p/mvp4g/wiki/EventBus_130#Passive_Event Passive Event])
 
 ==Adding an handler to an event==
 
@@ -393,7 +393,9 @@ You can set only one NavigationConfirmationInterface instance for the whole appl
 ==Passive Event==
 
 Unlike a regular event, a passive event won't automatically build presenters or load child modules that handles it. Thus a passive event will be forwarded only
-to presenters/child modules that have already been build/loaded. To set an event as passive, you just need to set the passive attribute of @Event to true (by default it is set to false):
+to presenters/child modules that have already been build/loaded.
+
+To set an event as passive, you just need to set the passive attribute of @Event to true (by default it is set to false):
 {{{
 @Event(..., passive = true)
 void sessionExpired();
