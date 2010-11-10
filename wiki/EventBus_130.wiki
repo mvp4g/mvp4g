@@ -62,6 +62,7 @@ public interface MainEventBus extends EventBusWithLookup {
  * modulesToLoad and forwardToParent ([http://code.google.com/p/mvp4g/wiki/MultiModules see Multi-modules feature])
  * activate, activateNames, deactivate, deactivateNames (see [http://code.google.com/p/mvp4g/wiki/EventBus?ts=1284236703&updated=EventBus#Activating/Deactivating_presenters see Activating/Deactivating presenters])
  * navigationEvent (see ...)
+ * passive (see ...)
 
 ==Adding an handler to an event==
 
@@ -388,3 +389,12 @@ eventBus.setNavigationConfirmation(null);
 }}}
 
 You can set only one NavigationConfirmationInterface instance for the whole application. This instance will be used to control any navigation events even fired by other Mvp4g modules.
+
+==Passive Event==
+
+Unlike a regular event, a passive event won't automatically build presenters or load child modules that handles it. Thus a passive event will be forwarded only
+to presenters/child modules that have already been build/loaded. To set an event as passive, you just need to set the passive attribute of @Event to true (by default it is set to false):
+{{{
+@Event(..., passive = true)
+void sessionExpired();
+}}}

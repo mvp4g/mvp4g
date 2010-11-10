@@ -129,6 +129,31 @@ To create a view, all you need is to create a class with a constructor with no p
 
 You can also decide to create a Lazy View ([http://code.google.com/p/mvp4g/wiki/Mvp4gOptimization#Lazy_Loading see Mvp4g Lazy Loading for more information]).
 
+==Reverse View==
+
+Depending on what approach you decide to follow to implement the MVP pattern, you may need to inject the presenter into the view. The GWT team describred such strategy in their second article about MVP (). 
+Mvp4g introduces a new feature, Reverse View, so that you can tell the framework that a view needs to be injected with a presenter. All you have to do is having your view implement the ReverseViewInterface.
+
+{{{
+public OneView extends Composite implements ReverseViewInterface<IOnePresenter>{
+	
+	private IOnePresenter presenter;
+
+	void setPresenter(IOnePresenter presenter){
+		this.presenter = presenter;
+	}
+	
+	IOnePresenter getPresenter(){
+		return presenter;
+	}
+	
+	...
+
+}
+}}}
+
+The presenter injected to your view will be the presenter where your view is injected.
+
 =Service=
 
 ==GIN==

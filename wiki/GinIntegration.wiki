@@ -89,3 +89,32 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.INestedView, 
 	
 }
 }}}
+
+==Creating Cross-Module Singleton==
+
+Each module has its own injector. If you define a class as a singleton with GIN, you will still have one instance for each module. If you ever need a cross-module singleton, this would be the best approach:
+{{{
+public class MyGinModule extends AbstractGinModule { 
+
+    private static CrossModuleSingleton SINGLETON; 
+
+    @Override 
+    protected void configure() { 
+        //add here any extra configuration you need 
+    } 
+
+
+    @Provides 
+    public CrossModuleSingleton getCrossModuleObject(){ 
+		if(SINGLETON == null){ 
+			SINGLETON = new CrossModuleSingleton(); 
+        } 
+		return SINGLETON; 
+	} 
+	
+} 
+
+//for each event bus 
+@EventBus(ginModules = MyGinModule.class) 
+public interface MyEventBus ... { ... } 
+}}}
