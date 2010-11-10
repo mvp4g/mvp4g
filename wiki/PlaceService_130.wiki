@@ -1,4 +1,4 @@
-#summary Mvp4g & Browser History (Draft for Mvp4g 1.2.0)
+#summary Mvp4g & Browser History (Draft for Mvp4g 1.3.0)
 #labels 1.3.0
 
 =Draft for Mvp4g 1.3.0=
