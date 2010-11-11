@@ -1,6 +1,7 @@
 package com.mvp4g.example.client.company.view;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -52,6 +53,10 @@ public class CompanyListView extends Composite implements CompanyListViewInterfa
 
 	public HasValue<Boolean> isFiltered() {
 		return filter;
+	}
+
+	public void alert( String msg ) {
+		Window.alert( msg );
 	}
 
 }

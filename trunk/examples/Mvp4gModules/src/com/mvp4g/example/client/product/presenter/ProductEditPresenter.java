@@ -35,5 +35,10 @@ public class ProductEditPresenter extends AbstractProductPresenter {
 	protected void clickOnRightButton( ClickEvent event ) {
 		clear();
 	}
+	
+	@Override
+	protected String getPageName() {
+		return "Product Edit Page";
+	}
 
 }

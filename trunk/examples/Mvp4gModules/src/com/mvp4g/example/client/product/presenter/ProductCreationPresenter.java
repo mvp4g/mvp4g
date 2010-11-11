@@ -37,4 +37,9 @@ public class ProductCreationPresenter extends AbstractProductPresenter {
 		clear();
 	}
 
+	@Override
+	protected String getPageName() {
+		return "Product Create Page";
+	}
+
 }

@@ -40,5 +40,10 @@ public class ProductDisplayPresenter extends AbstractProductPresenter {
 		fillView();
 		eventBus.changeBody( view.getViewWidget() );
 	}
+	
+	@Override
+	protected String getPageName() {
+		return "Product Display Page";
+	}
 
 }

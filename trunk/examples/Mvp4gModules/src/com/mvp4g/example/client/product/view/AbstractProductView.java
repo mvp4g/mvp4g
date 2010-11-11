@@ -1,6 +1,7 @@
 package com.mvp4g.example.client.product.view;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -40,6 +41,10 @@ public abstract class AbstractProductView extends SimplePanel implements Product
 		grid.setWidget( 1, 1, buttons );
 
 		setWidget( grid );
+	}
+	
+	public void alert(String message){
+		Window.alert( message );
 	}
 
 	abstract protected String getLeftButtonName();

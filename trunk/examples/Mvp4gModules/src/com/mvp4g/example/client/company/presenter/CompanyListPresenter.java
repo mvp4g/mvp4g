@@ -26,17 +26,19 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 	private List<EventHandlerInterface<CompanyEventBus>> rows = new ArrayList<EventHandlerInterface<CompanyEventBus>>();
 
 	public interface CompanyListViewInterface extends LazyView {
-		public HasClickHandlers getCreateButton();
+		 HasClickHandlers getCreateButton();
 
-		public void addCompany( Widget w );
+		 void addCompany( Widget w );
 
-		public void removeCompany( int row );
+		 void removeCompany( int row );
 
-		public Widget getViewWidget();
+		 Widget getViewWidget();
 
-		public void clearTable();
+		 void clearTable();
 		
-		public HasValue<Boolean> isFiltered();
+		 HasValue<Boolean> isFiltered();
+		 
+		 void alert(String msg);
 	}
 
 	@Override
@@ -91,6 +93,10 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 	
 	public void onForward(){
 		eventBus.selectCompanyMenu();
+	}
+	
+	public void onHasBeenThere(){
+		view.alert( "Has been on Company list page" );
 	}
 
 	private void addCompany( CompanyBean company ) {

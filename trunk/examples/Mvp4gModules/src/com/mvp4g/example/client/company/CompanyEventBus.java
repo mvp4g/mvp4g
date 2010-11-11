@@ -31,59 +31,65 @@ public interface CompanyEventBus extends EventBus {
 	/* Navigation Events */
 	@Event( handlers = CompanyListPresenter.class, activate = CompanyRowPresenter.class, deactivate = { CompanyEditPresenter.class,
 			CompanyDisplayPresenter.class, CompanyCreationPresenter.class }, navigationEvent = true )
-	public void goToCompany( int start, int end );
+	void goToCompany( int start, int end );
 
 	@Event( handlers = CompanyListPresenter.class, activate = CompanyRowPresenter.class, deactivate = { CompanyEditPresenter.class,
 			CompanyDisplayPresenter.class, CompanyCreationPresenter.class } )
-	public void backToList();
+	void backToList();
 
 	@Event( handlers = CompanyCreationPresenter.class, activate = CompanyCreationPresenter.class, deactivate = { CompanyEditPresenter.class,
 			CompanyDisplayPresenter.class }, historyConverter = CompanyCreationHistoryConverter.class, historyName = "create", navigationEvent = true )
-	public void goToCreation();
+	String goToCreation();
 
 	//I have ProductCreationPresenter.class here just to test if Mvp4g ignores useless presenter for deactivate
 	@Event( handlers = CompanyDisplayPresenter.class, historyConverter = CompanyHistoryConverter.class, activate = CompanyDisplayPresenter.class, deactivate = {
 			CompanyCreationPresenter.class, CompanyEditPresenter.class, ProductCreationPresenter.class, CompanyRowPresenter.class }, historyName = "", navigationEvent = true )
-	public void goToDisplay( CompanyBean company );
+	void goToDisplay( CompanyBean company );
 
 	//I have ProductCreationPresenter.class here just to test if Mvp4g ignores useless presenter for activate
 	@Event( handlers = CompanyEditPresenter.class, activate = { CompanyEditPresenter.class, ProductCreationPresenter.class }, deactivate = {
 			CompanyCreationPresenter.class, CompanyDisplayPresenter.class, CompanyRowPresenter.class }, navigationEvent = true )
-	public void goToEdit( CompanyBean company );
+	void goToEdit( CompanyBean company );
 
 	/* Business Events */
-	@Event( handlers = CompanyListPresenter.class, activate = CompanyListPresenter.class  )
-	public void companyCreated( CompanyBean newBean );
+	@Event( handlers = CompanyListPresenter.class, activate = CompanyListPresenter.class )
+	void companyCreated( CompanyBean newBean );
 
-	@Event( handlers = CompanyListPresenter.class, activate = CompanyListPresenter.class   )
-	public void companyDeleted( CompanyBean newBean );
+	@Event( handlers = CompanyListPresenter.class, activate = CompanyListPresenter.class )
+	void companyDeleted( CompanyBean newBean );
 
 	@Event( handlers = CompanyRowPresenter.class, activate = CompanyRowPresenter.class )
-	public void companyUpdated( CompanyBean newBean );
+	void companyUpdated( CompanyBean newBean );
 
 	@Event( handlers = CompanyNameSelectorPresenter.class )
-	public void displayNameSelector();
+	void displayNameSelector();
 
 	@Event( handlers = { CompanyCreationPresenter.class, CompanyEditPresenter.class, CompanyDisplayPresenter.class, CompanyRowPresenter.class } )
-	public void nameSelected( String name );
+	void nameSelected( String name );
 
 	@Event( handlers = CompanyListPresenter.class )
-	public void companyListRetrieved( List<CompanyBean> companies );
+	void companyListRetrieved( List<CompanyBean> companies );
 
 	@Event( handlers = CompanyListHandler.class )
-	public void getCompanyList( final int start, int end );
+	void getCompanyList( final int start, int end );
 
 	@Forward
 	@Event( handlers = CompanyListPresenter.class )
-	public void forward();
+	void forward();
 
 	@Event( forwardToParent = true )
-	public void displayMessage( String message );
+	void displayMessage( String message );
 
 	@Event( forwardToParent = true )
-	public void changeBody( Widget body );
+	void changeBody( Widget body );
 
 	@Event( forwardToParent = true )
-	public void selectCompanyMenu();
+	void selectCompanyMenu();
+
+	@Event( handlers = CompanyListPresenter.class, passive = true )
+	void hasBeenThere();
+
+	@Event( forwardToParent = true )
+	String goToProduct( Integer start, Integer end );
 
 }

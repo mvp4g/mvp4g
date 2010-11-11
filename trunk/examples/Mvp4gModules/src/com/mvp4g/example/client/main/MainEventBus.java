@@ -29,46 +29,48 @@ import com.mvp4g.example.client.product.ProductModule;
 @HistoryConfiguration( paramSeparator = "/", paramSeparatorAlwaysAdded = true )
 public interface MainEventBus extends EventBusWithLookup {
 
-	/*Navigation events*/
+	/* Navigation events */
 	@Event( modulesToLoad = CompanyModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, historyName = "companies", navigationEvent = true )
-	public void goToCompany( int start, int end );
+	void goToCompany( int start, int end );
 
 	//use Integer instead of int here just to test passing object, in real project, you should have int
-	@Event( modulesToLoad = ProductModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, navigationEvent = true  )
-	public void goToProduct( Integer start, Integer end );
+	@Event( modulesToLoad = ProductModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, navigationEvent = true )
+	String goToProduct( Integer start, Integer end );
 
-	
-	/*Business events*/
+	/* Business events */
 	@DisplayChildModuleView( CompanyModule.class )
 	@Event( handlers = MainPresenter.class )
-	public void changeBody( Widget newBody );
+	void changeBody( Widget newBody );
 
 	@LoadChildModuleError
 	@Event( handlers = MainPresenter.class )
-	public void errorOnLoad( Throwable reason );
+	void errorOnLoad( Throwable reason );
 
 	@BeforeLoadChildModule
 	@Event( handlers = MainPresenter.class )
-	public void beforeLoad();
+	void beforeLoad();
 
 	@AfterLoadChildModule
 	@Event( handlers = MainPresenter.class )
-	public void afterLoad();
+	void afterLoad();
 
 	@Event( handlers = MainPresenter.class )
-	public void displayMessage( String message );
+	void displayMessage( String message );
 
 	@InitHistory
 	@Event
-	public void onStart();
+	void onStart();
 
 	@Event( handlers = MainPresenter.class )
-	public void selectProductMenu();
+	void selectProductMenu();
 
 	@Event( handlers = MainPresenter.class )
-	public void selectCompanyMenu();
+	void selectCompanyMenu();
 
 	@Event( handlers = MainPresenter.class, historyConverter = ClearHistory.class )
-	public void clearHistory();
+	void clearHistory();
+
+	@Event( modulesToLoad = { ProductModule.class, CompanyModule.class }, passive = true )
+	void hasBeenThere();
 
 }
