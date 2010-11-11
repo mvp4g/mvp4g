@@ -17,34 +17,37 @@ public interface ProductEventBus extends EventBus {
 
 	/* Navigation events */
 	@Event( handlers = ProductCreationPresenter.class, navigationEvent = true )
-	public void goToCreation();
+	void goToCreation();
 
 	@Event( handlers = ProductListPresenter.class, navigationEvent = true )
-	public void backToList();
+	void backToList();
 
 	@Event( handlers = ProductEditPresenter.class, navigationEvent = true )
-	public void goToEdit( ProductBean product );
+	void goToEdit( ProductBean product );
 
 	@Event( handlers = ProductDisplayPresenter.class, historyConverter = ProductHistoryConverter.class, navigationEvent = true )
-	public void goToDisplay( ProductBean product );
+	void goToDisplay( ProductBean product );
 
 	@Event( handlers = ProductListPresenter.class, navigationEvent = true )
-	public void goToProduct( Integer start, Integer end );
+	void goToProduct( Integer start, Integer end );
 
 	/* Business events */
 	@Event( forwardToParent = true )
-	public void displayMessage( String message );
+	void displayMessage( String message );
 
 	@Event( forwardToParent = true )
-	public void changeBody( Widget body );
+	void changeBody( Widget body );
 
 	@Event( forwardToParent = true )
-	public void selectProductMenu();
+	void selectProductMenu();
 
 	@Event( handlers = ProductListPresenter.class )
-	public void productCreated( ProductBean product );
+	void productCreated( ProductBean product );
 
 	@Event( handlers = ProductListPresenter.class )
-	public void productDeleted( ProductBean product );
+	void productDeleted( ProductBean product );
+
+	@Event( handlers = { ProductCreationPresenter.class, ProductEditPresenter.class, ProductDisplayPresenter.class }, passive = true )
+	void hasBeenThere();
 
 }

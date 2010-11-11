@@ -23,17 +23,17 @@ public class ProductListPresenter extends LazyPresenter<ProductListPresenter.Pro
 	private List<ProductBean> products = null;
 
 	public interface ProductListViewInterface extends LazyView {
-		public HasClickHandlers getCreateButton();
+		 HasClickHandlers getCreateButton();
 
-		public HasClickHandlers[] addProduct( String product, int row );
+		 HasClickHandlers[] addProduct( String product, int row );
 
-		public void removeProduct( int row );
+		 void removeProduct( int row );
 
-		public void updateProduct( String product, int row );
+		 void updateProduct( String product, int row );
 
-		public Widget getViewWidget();
-		
-		public void clearTable();
+		 Widget getViewWidget();
+
+		 void clearTable();		 
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class ProductListPresenter extends LazyPresenter<ProductListPresenter.Pro
 		} );
 	}
 
-	public void onGoToProduct(Integer start, Integer end) {
+	public void onGoToProduct( Integer start, Integer end ) {
 		service.getProducts( start, end, new AsyncCallback<List<ProductBean>>() {
 
 			public void onSuccess( List<ProductBean> result ) {

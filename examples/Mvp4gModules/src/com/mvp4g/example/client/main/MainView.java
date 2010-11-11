@@ -2,6 +2,7 @@ package com.mvp4g.example.client.main;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -31,13 +32,15 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 	private ListBox startIndex = new ListBox();
 	private ListBox lastIndex = new ListBox();
 
+	private Anchor hasBeenThere = new Anchor( "Has been there!" );
+
 	@Inject
-	public MainView(IndexDisplayer indexDisplayer) {
-		
+	public MainView( IndexDisplayer indexDisplayer ) {
+
 		c.setStyleName( "tab" );
 		c.addStyleName( "first" );
 		p.setStyleName( "tab" );
-		
+
 		message.setStyleName( "messageBar" );
 		message.setVisible( false );
 
@@ -48,7 +51,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 		for ( i = 5; i < 10; i++ ) {
 			lastIndex.addItem( indexDisplayer.getDisplay( i ), Integer.toString( i ) );
 		}
-		
+
 		startIndex.setSelectedIndex( 0 );
 		lastIndex.setSelectedIndex( 0 );
 
@@ -68,13 +71,14 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 		mainPanel.setHorizontalAlignment( HasHorizontalAlignment.ALIGN_RIGHT );
 		clearHistory.setStyleName( "link" );
 		mainPanel.add( clearHistory );
-		
+
 		mainPanel.setHorizontalAlignment( HasHorizontalAlignment.ALIGN_LEFT );
 		mainPanel.add( hp );
 		mainPanel.add( bar );
 		mainPanel.add( message );
 		mainPanel.add( bodyContainer );
 		mainPanel.add( filter );
+		mainPanel.add( hasBeenThere );
 		wait.add( new Label( "Wait" ) );
 
 		initWidget( mainPanel );
@@ -116,7 +120,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 
 	public void selectCompanyMenu() {
 		p.removeStyleName( "selected" );
-		c.addStyleName( "selected" );		
+		c.addStyleName( "selected" );
 	}
 
 	public void selectProductMenu() {
@@ -142,6 +146,10 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 
 	public HasValue<Boolean> getFilter() {
 		return filter;
+	}
+
+	public HasClickHandlers getHasBeenThere() {
+		return hasBeenThere;
 	}
 
 }

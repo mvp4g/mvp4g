@@ -23,31 +23,33 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
 	public interface MainViewInterface {
 
-		public HasClickHandlers getCompanyMenu();
+		HasClickHandlers getCompanyMenu();
 
-		public HasClickHandlers getProductMenu();
+		HasClickHandlers getProductMenu();
 
-		public void setBody( Widget newBody );
+		void setBody( Widget newBody );
 
-		public void displayErrorMessage( String error );
+		void displayErrorMessage( String error );
 
-		public void setWaitVisible( boolean visible );
+		void setWaitVisible( boolean visible );
 
-		public void displayText( String message );
+		void displayText( String message );
 
-		public void selectCompanyMenu();
+		void selectCompanyMenu();
 
-		public void selectProductMenu();
+		void selectProductMenu();
 
-		public HasClickHandlers getClearHistoryButton();
+		HasClickHandlers getClearHistoryButton();
 
-		public void displayAlertMessage( String message );
+		void displayAlertMessage( String message );
 
-		public int getStartIndex();
+		int getStartIndex();
 
-		public int getLastIndex();
+		int getLastIndex();
 
-		public HasValue<Boolean> getFilter();
+		HasValue<Boolean> getFilter();
+
+		HasClickHandlers getHasBeenThere();
 
 	}
 
@@ -86,7 +88,13 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 				}
 			}
 		} );
+		view.getHasBeenThere().addClickHandler( new ClickHandler() {
 
+			public void onClick( ClickEvent event ) {
+				eventBus.hasBeenThere();
+			}
+
+		} );
 	}
 
 	public void onChangeBody( Widget w ) {

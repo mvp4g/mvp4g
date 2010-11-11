@@ -19,13 +19,15 @@ public abstract class AbstractProductPresenter extends LazyPresenter<AbstractPro
 	protected ProductServiceAsync service = null;
 
 	public interface ProductViewInterface extends LazyView {
-		public HasValue<String> getName();
+		HasValue<String> getName();
 
-		public HasClickHandlers getLeftButton();
+		HasClickHandlers getLeftButton();
 
-		public HasClickHandlers getRightButton();
+		HasClickHandlers getRightButton();
 
-		public Widget getViewWidget();
+		Widget getViewWidget();
+		
+		void alert( String message );
 	}
 
 	public void bindView() {
@@ -43,6 +45,10 @@ public abstract class AbstractProductPresenter extends LazyPresenter<AbstractPro
 			}
 		} );
 
+	}
+
+	public void onHasBeenThere() {
+		view.alert( "Has been on " + getPageName() );
 	}
 
 	@InjectService
@@ -65,5 +71,7 @@ public abstract class AbstractProductPresenter extends LazyPresenter<AbstractPro
 	abstract protected void clickOnLeftButton( ClickEvent event );
 
 	abstract protected void clickOnRightButton( ClickEvent event );
+
+	abstract protected String getPageName();
 
 }
