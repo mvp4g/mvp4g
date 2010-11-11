@@ -135,62 +135,78 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 
 		}
 	}
-	
+
 	@Test
-	public void testDefaultHistoryName() throws DuplicatePropertyNameException{
+	public void testDefaultHistoryName() throws DuplicatePropertyNameException {
 		String test = "test";
 		element.setType( test );
 		assertEquals( test, element.getHistoryName() );
 	}
-	
+
 	@Test
-	public void testNavigationEventTrue() throws DuplicatePropertyNameException{
+	public void testNavigationEventTrue() throws DuplicatePropertyNameException {
 		String test = "true";
 		element.setNavigationEvent( test );
 		assertEquals( test, element.getNavigationEvent() );
 		assertTrue( element.isNavigationEvent() );
 	}
-	
+
 	@Test
-	public void testNavigationEventFalse() throws DuplicatePropertyNameException{
+	public void testNavigationEventFalse() throws DuplicatePropertyNameException {
 		String test = "false";
 		element.setNavigationEvent( test );
 		assertEquals( test, element.getNavigationEvent() );
 		assertFalse( element.isNavigationEvent() );
 	}
-	
+
 	@Test
-	public void testWithTokenGenerationTrue() throws DuplicatePropertyNameException{
+	public void testWithTokenGenerationTrue() throws DuplicatePropertyNameException {
 		String test = "true";
 		element.setWithTokenGeneration( test );
 		assertEquals( test, element.getWithTokenGeneration() );
 		assertTrue( element.isWithTokenGeneration() );
 	}
-	
+
 	@Test
-	public void testWithTokenGenerationFalse() throws DuplicatePropertyNameException{
+	public void testWithTokenGenerationFalse() throws DuplicatePropertyNameException {
 		String test = "false";
 		element.setWithTokenGeneration( test );
 		assertEquals( test, element.getWithTokenGeneration() );
 		assertFalse( element.isWithTokenGeneration() );
 	}
-	
+
 	@Test
-	public void testTokenGenerationFromParentTrue() throws DuplicatePropertyNameException{
+	public void testTokenGenerationFromParentTrue() throws DuplicatePropertyNameException {
 		String test = "true";
 		element.setTokenGenerationFromParent( test );
 		assertEquals( test, element.getTokenGenerationFromParent() );
 		assertTrue( element.isTokenGenerationFromParent() );
 	}
-	
+
 	@Test
-	public void testTokenGenerationFromParentFalse() throws DuplicatePropertyNameException{
+	public void testTokenGenerationFromParentFalse() throws DuplicatePropertyNameException {
 		String test = "false";
 		element.setTokenGenerationFromParent( test );
 		assertEquals( test, element.getTokenGenerationFromParent() );
 		assertFalse( element.isTokenGenerationFromParent() );
 	}
-	
+
+	@Test
+	public void testPassiveTrue() throws DuplicatePropertyNameException {
+		String test = "true";
+		element.setPassive( test );
+		assertEquals( test, element.getPassive() );
+		assertTrue( element.isPassive() );
+	}
+
+	@Test
+	public void testPassiveFalse() throws DuplicatePropertyNameException {
+		String test = "false";
+		element.setPassive( test );
+		assertEquals( test, element.getPassive() );
+		assertFalse( element.isPassive() );
+	}
+
 	@Override
 	protected String[] getProperties() {
 		return properties;
