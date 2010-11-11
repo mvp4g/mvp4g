@@ -227,7 +227,7 @@ public abstract class BaseEventBus implements EventBus {
 		}
 
 		if ( bind ) {
-			handler.isActivated();
+			handler.isActivated( false );
 		}
 
 		List<EventHandlerInterface<?>> handlers = handlersMap.get( handlerClass );

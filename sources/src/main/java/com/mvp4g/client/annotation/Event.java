@@ -64,7 +64,11 @@ import com.mvp4g.client.presenter.PresenterInterface;
  *<li>deactivateNames: instead of using their classes, you can activate handlers thanks to their
  * name (in case you have given names to your handlers). Not recommended because this method tends
  * to create typo errors.</li>
- * <li>navigationEvent: 
+ * <li>navigationEvent: indicates that when this event is fired, a navigation control is done to
+ * verify the event can be fired. Usually a navigation event is an event that will change the
+ * displayed screen.</li>
+ * <li>passive: when an event is fired, it will build any handlers not built yet and/or load any
+ * child modules not loaded yet expect if the event is passive.</li>
  * </ul>
  * 
  * @author plcoirier
@@ -100,8 +104,10 @@ public @interface Event {
 	String[] deactivateNames() default {};
 
 	String historyName() default DEFAULT_NAME;
-	
+
 	boolean navigationEvent() default false;
+
+	boolean passive() default false;
 
 	class NoHistoryConverter implements HistoryConverter<EventBus> {
 

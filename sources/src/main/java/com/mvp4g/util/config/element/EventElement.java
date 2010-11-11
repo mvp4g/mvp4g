@@ -221,5 +221,28 @@ public class EventElement extends Mvp4gElement {
 	public void setTokenGenerationFromParent( String tokenGenerationFromParent ) throws DuplicatePropertyNameException {
 		setProperty( "tokenGenerationFromParent", tokenGenerationFromParent );
 	}
+	
+	/**
+	 * @return the tokenGenerationFromParent
+	 */
+	public String getPassive() {
+		return getProperty("passive");
+	}
+	
+	/**
+	 * @return the tokenGenerationFromParent
+	 */
+	public boolean isPassive() {
+		return Boolean.TRUE.toString().equalsIgnoreCase( getPassive() );
+	}
+
+	/**
+	 * @param tokenGenerationFromParent
+	 *            the tokenGenerationFromParent to set
+	 * @throws DuplicatePropertyNameException 
+	 */
+	public void setPassive( String passive ) throws DuplicatePropertyNameException {
+		setProperty( "passive", passive );
+	}
 
 }

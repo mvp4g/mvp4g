@@ -104,15 +104,15 @@ public class CyclePresenterTest {
 		assertTrue( presenter.isOnUnload() );
 		assertFalse( presenter.isOnLoad() );
 	}
-	
+
 	@Test
-	public void testBeforeEvent(){
+	public void testBeforeEvent() {
 		presenter.setActivated( false );
-		presenter.isActivated();
+		presenter.isActivated( false );
 		assertFalse( presenter.isOnBeforeEvent() );
-		
+
 		presenter.setActivated( true );
-		presenter.isActivated();
+		presenter.isActivated( false );
 		assertTrue( presenter.isOnBeforeEvent() );
 	}
 

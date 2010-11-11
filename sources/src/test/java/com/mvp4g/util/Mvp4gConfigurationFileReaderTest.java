@@ -130,11 +130,12 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		EventElement e3 = new EventElement();
 		e3.setType( "event3" );
-		e3.setHandlers( new String[] { "handler3" } );
+		e3.setHandlers( new String[] { "handler3", "handler4" } );
 
 		EventElement e4 = new EventElement();
 		e4.setType( "event4" );
-		e4.setHandlers( new String[] { "handler4" } );
+		e4.setHandlers( new String[] { "handler3", "handler4" } );
+		e4.setPassive( "true" );
 
 		events.add( e1 );
 		events.add( e2 );
@@ -248,7 +249,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		EventFiltersElement filterConf = new EventFiltersElement();
 		filterConf.setForceFilters( "true" );
 		configuration.setEventFilterConfiguration( filterConf );
-		
+
 		Set<EventElement> events = configuration.getEvents();
 		events.add( e1 );
 		events.add( e2 );
@@ -337,11 +338,12 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		EventElement e3 = new EventElement();
 		e3.setType( "event3" );
-		e3.setHandlers( new String[] { "handler3" } );
+		e3.setHandlers( new String[] { "handler3", "handler4" } );
 
 		EventElement e4 = new EventElement();
 		e4.setType( "event4" );
-		e4.setHandlers( new String[] { "handler4" } );
+		e4.setHandlers( new String[] { "handler4", "handler3" } );
+		e4.setPassive( "true" );
 
 		Set<EventElement> events = configuration.getEvents();
 		events.add( e1 );
@@ -1027,6 +1029,45 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
+	public void testWriteChildPassiveEvent() throws DuplicatePropertyNameException {
+
+		configuration.setLoadChildConfig( new ChildModulesElement() );
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+
+		ChildModuleElement childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "child" );
+		childModule.setAutoDisplay( "false" );
+		childModule.setAsync( "false" );
+		configuration.getChildModules().add( childModule );
+
+		EventElement event1 = new EventElement();
+		event1.setType( "event1" );
+		event1.setModulesToLoad( new String[] { "child" } );
+		event1.setPassive( "true" );
+		EventElement event2 = new EventElement();
+		event2.setType( "event2" );
+		event2.setEventObjectClass( new String[] { "java.lang.String" } );
+		event2.setModulesToLoad( new String[] { "child" } );
+		event2.setPassive( "true" );
+		EventElement event3 = new EventElement();
+		event3.setType( "event3" );
+		event3.setEventObjectClass( new String[] { "java.lang.String", "java.lang.Object" } );
+		event3.setModulesToLoad( new String[] { "child" } );
+		event3.setPassive( "true" );
+		configuration.getEvents().add( event1 );
+		configuration.getEvents().add( event2 );
+		configuration.getEvents().add( event3 );
+		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(),
+				oracle.addClass( com.mvp4g.util.test_tools.annotation.Events.EventBusOk.class ) );
+
+		assertOutput( getExpectedPassiveEventChildModuleLoad(), false );
+		writer.writeConf();
+		assertOutput( getExpectedPassiveEventChildModuleLoad(), true );
+	}
+
+	@Test
 	public void testWriteForwardParent() throws DuplicatePropertyNameException {
 
 		EventElement event = new EventElement();
@@ -1508,14 +1549,17 @@ public class Mvp4gConfigurationFileReaderTest {
 				"int handlerCount = handlershandler4.size();",
 				"for(int i=0; i<handlerCount; i++){",
 				"handler = handlershandler4.get(i);",
-				"if (handler.isActivated()){",
+				"if (handler.isActivated(false)){",
+				"if (handler.isActivated(true)){",
 				"handler.onEvent4();",
+				"handler.onEvent3();",
 				"public void event2(java.lang.String attr0){",
 				"List<com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter> handlershandler2 = getHandlers(com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter.class);",
 				"if(handlershandler2!= null){", "com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter handler;",
 				"int handlerCount = handlershandler2.size();", "for(int i=0; i<handlerCount; i++){", "handler = handlershandler2.get(i);",
-				"if (handler.isActivated()){", "handler.onEvent2(attr0);", "public void event3(){", "if (handler3.isActivated()){",
-				"handler3.onEvent3();", "if (handler1.isActivated()){", "handler1.onEvent1(attr0,attr1);" };
+				"if (handler.isActivated(false)){", "handler.onEvent2(attr0);", "public void event3(){", "if (handler3.isActivated(false)){",
+				"if (handler3.isActivated(true)){", "handler3.onEvent4();", "handler3.onEvent3();", "if (handler1.isActivated(false)){",
+				"handler1.onEvent1(attr0,attr1);" };
 	}
 
 	private String[] getExpectedNotNavigationEvents() {
@@ -1641,6 +1685,19 @@ public class Mvp4gConfigurationFileReaderTest {
 				"eventBus.event3((java.lang.String) eventObjects[0],(java.lang.Object) eventObjects[1]);",
 				"loadchild(new Mvp4gEventPasser(){",
 				"public void pass(Mvp4gModule module){",
+				"com.mvp4g.util.test_tools.annotation.Events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.Events.EventBusOk) module.getEventBus();",
+				"eventBus.event1();" };
+	}
+
+	private String[] getExpectedPassiveEventChildModuleLoad() {
+		return new String[] {
+				"Mvp4gModule module;",
+				"module = modules.get(com.mvp4g.util.test_tools.Modules.ModuleWithParent.class);",
+				"if(module != null){",
+				"com.mvp4g.util.test_tools.annotation.Events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.Events.EventBusOk) module.getEventBus();",
+				"eventBus.event2((java.lang.String) eventObjects[0]);",
+				"com.mvp4g.util.test_tools.annotation.Events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.Events.EventBusOk) module.getEventBus();",
+				"eventBus.event3((java.lang.String) eventObjects[0],(java.lang.Object) eventObjects[1]);",
 				"com.mvp4g.util.test_tools.annotation.Events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.Events.EventBusOk) module.getEventBus();",
 				"eventBus.event1();" };
 	}

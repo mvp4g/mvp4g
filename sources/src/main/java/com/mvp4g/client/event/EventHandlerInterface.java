@@ -60,11 +60,18 @@ public interface EventHandlerInterface<E extends EventBus> {
 
 	/**
 	 * Indicates if the presenter is activated or not. If the event handler is activated and if the
-	 * bind method hasn't been called yet, then the bind method should be called.
+	 * bind method hasn't been called yet, then the bind method should be called only if the event
+	 * is active.<br/>
+	 * <br/>
+	 * If the event is passive and the presenter hasn't been built, the presenter will be consider
+	 * as inactive (ie isActivated will return false).
+	 * 
+	 * @param active
+	 *            indicate if it's an active event or not
 	 * 
 	 * @return true if the presenter is activated, false otherwise
 	 */
-	boolean isActivated();
+	boolean isActivated( boolean passive );
 
 	/**
 	 * Set if the event handler is activated or not. By default, an event handler should be

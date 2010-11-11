@@ -401,11 +401,13 @@ public class EventsAnnotationsLoaderTest {
 				assertEquals( "treatEvent1", e.getCalledMethod() );
 				assertFalse( e.isNavigationEvent() );
 				assertFalse( e.isWithTokenGeneration() );
+				assertFalse( e.isPassive() );
 			} else if ( "event2".equals( e.getType() ) ) {
 				assertNull( e.getEventObjectClass() );
 				assertEquals( "onEvent2", e.getCalledMethod() );
 				assertTrue( e.isNavigationEvent() );
 				assertTrue( e.isWithTokenGeneration() );
+				assertTrue( e.isPassive() );
 			} else {
 				fail( "Unknown event name" );
 			}

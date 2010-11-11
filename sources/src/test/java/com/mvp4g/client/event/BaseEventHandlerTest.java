@@ -39,7 +39,7 @@ public class BaseEventHandlerTest {
 
 			}
 
-		};		
+		};
 	}
 
 	@Test
@@ -62,15 +62,34 @@ public class BaseEventHandlerTest {
 			}
 		};
 
-		assertTrue( handler.isActivated() );
+		assertTrue( handler.isActivated( false ) );
 		assertTrue( bindCallCount == 1 );
 
-		assertTrue( handler.isActivated() );
+		assertTrue( handler.isActivated( false ) );
 		assertTrue( bindCallCount == 1 );
 
 		handler.setActivated( false );
 
-		assertFalse( handler.isActivated() );
+		assertFalse( handler.isActivated( false ) );
+		assertTrue( bindCallCount == 1 );
+	}
+	
+	@Test
+	public void testPassiveEvent() {
+		BaseEventHandler<EventBus> handler = new BaseEventHandler<EventBus>() {
+			public void bind() {
+				super.bind();
+				bindCallCount++;
+			}
+		};
+
+		assertFalse( handler.isActivated( true ) );
+		assertTrue( bindCallCount == 0 );
+
+		assertTrue( handler.isActivated( false ) );
+		assertTrue( bindCallCount == 1 );
+
+		assertTrue( handler.isActivated( true ) );
 		assertTrue( bindCallCount == 1 );
 	}
 

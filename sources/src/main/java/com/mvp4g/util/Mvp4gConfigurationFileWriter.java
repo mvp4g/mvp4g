@@ -159,7 +159,7 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println( "if (startPresenter != null) {" );
 		sourceWriter.indent();
 		sourceWriter.println( "startPresenter.setActivated(true);" );
-		sourceWriter.println( "startPresenter.isActivated();" );
+		sourceWriter.println( "startPresenter.isActivated(false);" );
 		sourceWriter.outdent();
 		sourceWriter.print( "}" );
 
@@ -630,8 +630,7 @@ public class Mvp4gConfigurationFileWriter {
 		EventFiltersElement filtersElement = configuration.getEventFilterConfiguration();
 		boolean filterAfterHistory = ( filtersElement == null ) ? false : filtersElement.isAfterHistory();
 		boolean hasFilter = ( filters != null ) && ( filters.size() > 0 ) || ( ( filtersElement != null ) && ( filtersElement.isForceFilters() ) );
-		boolean isNavigationEvent;
-		boolean isWithTokenGeneration;
+		boolean isNavigationEvent, isWithTokenGeneration;
 		for ( EventElement event : configuration.getEvents() ) {
 			type = event.getType();
 			calledMethod = event.getCalledMethod();
@@ -758,10 +757,10 @@ public class Mvp4gConfigurationFileWriter {
 				for ( String handler : handlers ) {
 					eventHandler = getElement( handler, eventHandlers );
 					if ( !eventHandler.isMultiple() ) {
-						writeEventHandling( handler, type, calledMethod, param );
+						writeEventHandling( handler, type, calledMethod, param, event.isPassive() );
 					} else {
 						writeMultipleActionBegin( eventHandler, "" );
-						writeEventHandling( "handler", type, calledMethod, param );
+						writeEventHandling( "handler", type, calledMethod, param, event.isPassive() );
 						writeMultipleActionEnd();
 					}
 				}
@@ -903,10 +902,12 @@ public class Mvp4gConfigurationFileWriter {
 		}
 	}
 
-	private void writeEventHandling( String handler, String type, String calledMethod, String param ) {
+	private void writeEventHandling( String handler, String type, String calledMethod, String param, boolean passive ) {
 		sourceWriter.print( "if (" );
 		sourceWriter.print( handler );
-		sourceWriter.println( ".isActivated()){" );
+		sourceWriter.print( ".isActivated(" );
+		sourceWriter.print( Boolean.toString( passive ) );
+		sourceWriter.println( ")){" );
 		sourceWriter.indent();
 
 		writeDetailedLog( handler, type );
@@ -1178,8 +1179,6 @@ public class Mvp4gConfigurationFileWriter {
 				createInstance( elementName, className, false );
 				sourceWriter.print( elementName );
 				sourceWriter.println( ".setEventBus(eventBus);" );
-				sourceWriter.print( elementName );
-				sourceWriter.println( ".isActivated();" );
 				injectServices( elementName, eventHandler.getInjectedServices() );
 				sourceWriter.print( "return (T) " );
 				sourceWriter.print( elementName );
@@ -1220,18 +1219,31 @@ public class Mvp4gConfigurationFileWriter {
 
 	private void writeLoadChildModule( EventElement event, String param ) {
 
+		boolean passive = event.isPassive();
+
 		ChildModuleElement module = null;
 		Set<ChildModuleElement> modules = configuration.getChildModules();
 		String[] eventObjectClasses = null;
 		String eventObject = null;
 		String[] modulesToLoad = event.getModulesToLoad();
 		if ( modulesToLoad != null ) {
+			if ( passive ) {
+				sourceWriter.println( "Mvp4gModule module;" );
+			}
 			for ( String moduleName : modulesToLoad ) {
 				module = getElement( moduleName, modules );
 				eventObjectClasses = event.getEventObjectClass();
-				sourceWriter.print( "load" );
-				sourceWriter.print( module.getName() );
 
+				JClassType eventBusType = configuration.getOthersEventBusClassMap().get( module.getClassName() );
+				boolean isXml = false;
+				String eventBusClass = null;
+				if ( eventBusType == null ) {
+					isXml = true;
+					eventBusClass = EventBusWithLookup.class.getCanonicalName();
+				} else {
+					eventBusClass = eventBusType.getQualifiedSourceName();
+				}
+				
 				if ( ( eventObjectClasses == null ) || ( eventObjectClasses.length == 0 ) ) {
 					eventObject = null;
 				} else {
@@ -1254,20 +1266,22 @@ public class Mvp4gConfigurationFileWriter {
 					eventObject = eventObjectBuilder.toString();
 				}
 
-				JClassType eventBusType = configuration.getOthersEventBusClassMap().get( module.getClassName() );
-				boolean isXml = false;
-				String eventBusClass = null;
-				if ( eventBusType == null ) {
-					isXml = true;
-					eventBusClass = EventBusWithLookup.class.getCanonicalName();
+				if ( passive ) {
+					sourceWriter.print( "module = modules.get(" );
+					sourceWriter.print( module.getClassName() );
+					sourceWriter.println( ".class);" );
+					sourceWriter.println( "if(module != null){" );
 				} else {
-					eventBusClass = eventBusType.getQualifiedSourceName();
+					sourceWriter.print( "load" );
+					sourceWriter.print( module.getName() );
+					sourceWriter.print( "(new Mvp4gEventPasser" );
+					sourceWriter.print( param );
+					sourceWriter.println( "{" );
+					sourceWriter.indent();
+					sourceWriter.println( "public void pass(Mvp4gModule module){" );
+
 				}
-				sourceWriter.print( "(new Mvp4gEventPasser" );
-				sourceWriter.print( param );
-				sourceWriter.println( "{" );
-				sourceWriter.indent();
-				sourceWriter.println( "public void pass(Mvp4gModule module){" );
+
 				sourceWriter.indent();
 				sourceWriter.print( eventBusClass );
 				sourceWriter.print( " eventBus = (" );
@@ -1276,8 +1290,10 @@ public class Mvp4gConfigurationFileWriter {
 				writeDispatchEvent( event.getType(), eventObject, isXml );
 				sourceWriter.outdent();
 				sourceWriter.println( "}" );
-				sourceWriter.outdent();
-				sourceWriter.println( "});" );
+				if ( !passive ) {
+					sourceWriter.outdent();
+					sourceWriter.println( "});" );
+				}
 
 			}
 		}

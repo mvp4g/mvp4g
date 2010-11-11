@@ -71,12 +71,16 @@ public class BaseEventHandler<E extends EventBus> implements EventHandlerInterfa
 	 * 
 	 * @see com.mvp4g.client.event.EventHandlerInterface#isActivated()
 	 */
-	public boolean isActivated() {
+	public boolean isActivated( boolean passive ) {
 		if ( activated ) {
-			onBeforeEvent();
-			if ( !binded ) {
-				bind();
-				binded = true;
+			if ( passive ) {
+				return binded;
+			} else {
+				onBeforeEvent();
+				if ( !binded ) {
+					bind();
+					binded = true;
+				}
 			}
 		}
 		return activated;
