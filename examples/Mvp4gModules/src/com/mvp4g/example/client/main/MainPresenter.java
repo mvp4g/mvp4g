@@ -91,7 +91,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 		view.getHasBeenThere().addClickHandler( new ClickHandler() {
 
 			public void onClick( ClickEvent event ) {
-				eventBus.hasBeenThere();
+				eventBus.hasBeenThere(false);
 			}
 
 		} );

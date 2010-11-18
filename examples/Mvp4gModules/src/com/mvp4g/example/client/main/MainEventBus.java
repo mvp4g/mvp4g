@@ -20,6 +20,7 @@ import com.mvp4g.example.client.Mvp4gGinModule;
 import com.mvp4g.example.client.company.CompanyModule;
 import com.mvp4g.example.client.main.historyConverter.MenuHistoryConverter;
 import com.mvp4g.example.client.product.ProductModule;
+import com.mvp4g.example.client.util.HasBeenThereHandler;
 
 @Events( startView = MainView.class, historyOnStart = true, ginModules = Mvp4gGinModule.class )
 @Debug( logLevel = LogLevel.DETAILED, logger = CustomLogger.class )
@@ -70,7 +71,7 @@ public interface MainEventBus extends EventBusWithLookup {
 	@Event( handlers = MainPresenter.class, historyConverter = ClearHistory.class )
 	void clearHistory();
 
-	@Event( modulesToLoad = { ProductModule.class, CompanyModule.class }, passive = true )
-	void hasBeenThere();
+	@Event( broadcastTo = HasBeenThereHandler.class, passive = true )
+	void hasBeenThere(boolean fakeParameter);
 
 }
