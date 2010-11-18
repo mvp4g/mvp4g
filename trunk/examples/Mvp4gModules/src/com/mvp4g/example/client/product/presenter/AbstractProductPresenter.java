@@ -11,8 +11,9 @@ import com.mvp4g.client.view.LazyView;
 import com.mvp4g.example.client.product.ProductEventBus;
 import com.mvp4g.example.client.product.ProductServiceAsync;
 import com.mvp4g.example.client.product.bean.ProductBean;
+import com.mvp4g.example.client.util.HasBeenThereHandler;
 
-public abstract class AbstractProductPresenter extends LazyPresenter<AbstractProductPresenter.ProductViewInterface, ProductEventBus> {
+public abstract class AbstractProductPresenter extends LazyPresenter<AbstractProductPresenter.ProductViewInterface, ProductEventBus> implements HasBeenThereHandler {
 
 	protected ProductBean product = null;
 
@@ -26,7 +27,7 @@ public abstract class AbstractProductPresenter extends LazyPresenter<AbstractPro
 		HasClickHandlers getRightButton();
 
 		Widget getViewWidget();
-		
+
 		void alert( String message );
 	}
 
@@ -47,7 +48,7 @@ public abstract class AbstractProductPresenter extends LazyPresenter<AbstractPro
 
 	}
 
-	public void onHasBeenThere() {
+	public void onHasBeenThere(boolean fakeParameter) {
 		view.alert( "Has been on " + getPageName() );
 	}
 

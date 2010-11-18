@@ -3,9 +3,6 @@ package com.mvp4g.example.client.company.presenter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.HasValue;
@@ -21,50 +18,48 @@ import com.mvp4g.example.client.company.view.CompanyListView;
 @Presenter( view = CompanyListView.class )
 public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.CompanyListViewInterface, CompanyEventBus> {
 
-	private List<CompanyBean> companies = null;
-	
-	private List<EventHandlerInterface<CompanyEventBus>> rows = new ArrayList<EventHandlerInterface<CompanyEventBus>>();
-
 	public interface CompanyListViewInterface extends LazyView {
-		 HasClickHandlers getCreateButton();
-
-		 void addCompany( Widget w );
-
-		 void removeCompany( int row );
-
-		 Widget getViewWidget();
-
-		 void clearTable();
+		void setGoToCreationToken(String token);
 		
-		 HasValue<Boolean> isFiltered();
-		 
-		 void alert(String msg);
+		void setGoToProductsToken(String token);
+
+		void addCompany( Widget w );
+
+		void removeCompany( int row );
+
+		Widget getViewWidget();
+
+		void clearTable();
+
+		HasValue<Boolean> isFiltered();
+
+		void alert( String msg );
 	}
+
+	private List<CompanyBean> companies;
+
+	private List<EventHandlerInterface<CompanyEventBus>> rows = new ArrayList<EventHandlerInterface<CompanyEventBus>>();
 
 	@Override
 	public void bindView() {
-		view.getCreateButton().addClickHandler( new ClickHandler() {
+		view.setGoToCreationToken( getTokenGenerator().goToCreation() );
+		view.setGoToProductsToken( getTokenGenerator().goToProduct( 0, 5 ) );
 
-			public void onClick( ClickEvent event ) {
-				eventBus.goToCreation();
-			}
-
-		} );
 		HasValue<Boolean> isFiltered = view.isFiltered();
 		isFiltered.setValue( false );
 		eventBus.setFilteringEnabled( false );
 		isFiltered.addValueChangeHandler( new ValueChangeHandler<Boolean>() {
-			
+
 			public void onValueChange( ValueChangeEvent<Boolean> event ) {
 				eventBus.setFilteringEnabled( event.getValue() );
 			}
-			
-		});
+
+		} );
 	}
 
 	public void onGoToCompany( int start, int end ) {
 		view.clearTable();
-		for(EventHandlerInterface<CompanyEventBus> row : rows){
+		for ( EventHandlerInterface<CompanyEventBus> row : rows ) {
 			eventBus.removeHandler( row );
 		}
 		rows.clear();
@@ -90,12 +85,12 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 		companies.add( company );
 		addCompany( company );
 	}
-	
-	public void onForward(){
+
+	public void onForward() {
 		eventBus.selectCompanyMenu();
 	}
-	
-	public void onHasBeenThere(){
+
+	public void onHasBeenThere( boolean fakeParameter ) {
 		view.alert( "Has been on Company list page" );
 	}
 

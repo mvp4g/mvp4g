@@ -11,6 +11,7 @@ import com.mvp4g.example.client.product.presenter.ProductDisplayPresenter;
 import com.mvp4g.example.client.product.presenter.ProductEditPresenter;
 import com.mvp4g.example.client.product.presenter.ProductListPresenter;
 import com.mvp4g.example.client.product.view.ProductListView;
+import com.mvp4g.example.client.util.HasBeenThereHandler;
 
 @Events( startView = ProductListView.class, module = ProductModule.class )
 public interface ProductEventBus extends EventBus {
@@ -47,7 +48,7 @@ public interface ProductEventBus extends EventBus {
 	@Event( handlers = ProductListPresenter.class )
 	void productDeleted( ProductBean product );
 
-	@Event( handlers = { ProductCreationPresenter.class, ProductEditPresenter.class, ProductDisplayPresenter.class }, passive = true )
-	void hasBeenThere();
+	@Event( broadcastTo = HasBeenThereHandler.class, passive = true )
+	void hasBeenThere(boolean fakeParameter);
 
 }

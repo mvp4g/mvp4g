@@ -6,16 +6,16 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.company.presenter.CompanyListPresenter.CompanyListViewInterface;
 
 public class CompanyListView extends Composite implements CompanyListViewInterface {
 
-	private Image createButton = null;
-	private VerticalPanel table = null;
-	private CheckBox filter = null;
+	private Hyperlink createButton, goToProduct;
+	private VerticalPanel table;
+	private CheckBox filter;
 
 	public HasClickHandlers getCreateButton() {
 		return createButton;
@@ -31,13 +31,15 @@ public class CompanyListView extends Composite implements CompanyListViewInterfa
 
 	public void createView() {
 		table = new VerticalPanel();
-		createButton = new Image( "images/add.png" );
+		createButton = new Hyperlink( "Create Company", "" );
+		goToProduct = new Hyperlink( "Go To Products", "" );
 		filter = new CheckBox( "Filter Company EventBus events" );
 
 		VerticalPanel mainPanel = new VerticalPanel();
 		mainPanel.add( table );
 		mainPanel.setHorizontalAlignment( HasHorizontalAlignment.ALIGN_RIGHT );
 		mainPanel.add( createButton );
+		mainPanel.add( goToProduct );
 		mainPanel.add( filter );
 
 		initWidget( mainPanel );
@@ -57,6 +59,14 @@ public class CompanyListView extends Composite implements CompanyListViewInterfa
 
 	public void alert( String msg ) {
 		Window.alert( msg );
+	}
+
+	public void setGoToCreationToken( String token ) {
+		createButton.setTargetHistoryToken( token );
+	}
+
+	public void setGoToProductsToken( String token ) {
+		goToProduct.setTargetHistoryToken( token );
 	}
 
 }
