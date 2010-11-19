@@ -281,8 +281,41 @@ public class Mvp4gConfigurationTest {
 		}
 
 		presenter.setMultiple( Boolean.TRUE.toString() );
+		try {
+			configuration.validateEventHandlers();
+			fail();
+		} catch ( InvalidTypeException e ) {
+			assertTrue( e.getMessage().contains( "Event Bus" ) );
+		}
+
+		events.clear();
+
 		configuration.validateEventHandlers();
 		assertTrue( presenters.size() == 0 );
+
+		EventHandlerElement eventHandler = newEventHandler( "testHandler" );
+		eventHandlers.add( eventHandler );
+
+		events.add( event );
+		try {
+			configuration.validateEventHandlers();
+			fail();
+		} catch ( InvalidTypeException e ) {
+			assertTrue( e.getMessage().contains( "Event Bus" ) );
+		}
+
+		eventHandler.setMultiple( Boolean.TRUE.toString() );
+		try {
+			configuration.validateEventHandlers();
+			fail();
+		} catch ( InvalidTypeException e ) {
+			assertTrue( e.getMessage().contains( "Event Bus" ) );
+		}
+
+		events.clear();
+
+		configuration.validateEventHandlers();
+		assertTrue( eventHandlers.size() == 0 );
 
 	}
 
@@ -432,8 +465,14 @@ public class Mvp4gConfigurationTest {
 		presenter2.setView( "view" );
 		presenters.add( presenter2 );
 
+		EventHandlerElement handler1 = newEventHandler( "handler1" );
+		eventHandlers.add( handler1 );
+
+		EventHandlerElement handler2 = newEventHandler( "handler2" );
+		eventHandlers.add( handler2 );
+
 		EventElement event = newEvent( "testEvent" );
-		event.setHandlers( new String[] { "presenter1" } );
+		event.setHandlers( new String[] { "presenter1", "handler1" } );
 		events.add( event );
 
 		setEventBus();
@@ -441,10 +480,35 @@ public class Mvp4gConfigurationTest {
 		assertEquals( 2, presenters.size() );
 		assertTrue( presenters.contains( presenter1 ) );
 		assertTrue( presenters.contains( presenter2 ) );
+		assertEquals( 2, eventHandlers.size() );
+		assertTrue( eventHandlers.contains( handler1 ) );
+		assertTrue( eventHandlers.contains( handler2 ) );
 		configuration.validateEventHandlers();
 		assertEquals( 1, presenters.size() );
 		assertTrue( presenters.contains( presenter1 ) );
 		assertFalse( presenters.contains( presenter2 ) );
+		assertEquals( 1, eventHandlers.size() );
+		assertTrue( eventHandlers.contains( handler1 ) );
+		assertFalse( eventHandlers.contains( handler2 ) );
+
+		presenter2.setMultiple( Boolean.TRUE.toString() );
+		presenters.add( presenter2 );
+		handler2.setMultiple( Boolean.TRUE.toString() );
+		eventHandlers.add( handler2 );
+
+		assertEquals( 2, presenters.size() );
+		assertTrue( presenters.contains( presenter1 ) );
+		assertTrue( presenters.contains( presenter2 ) );
+		assertEquals( 2, eventHandlers.size() );
+		assertTrue( eventHandlers.contains( handler1 ) );
+		assertTrue( eventHandlers.contains( handler2 ) );
+		configuration.validateEventHandlers();
+		assertEquals( 2, presenters.size() );
+		assertTrue( presenters.contains( presenter1 ) );
+		assertTrue( presenters.contains( presenter2 ) );
+		assertEquals( 2, eventHandlers.size() );
+		assertTrue( eventHandlers.contains( handler1 ) );
+		assertTrue( eventHandlers.contains( handler2 ) );
 
 	}
 
@@ -1521,8 +1585,12 @@ public class Mvp4gConfigurationTest {
 
 		handler.setMultiple( Boolean.TRUE.toString() );
 
-		configuration.validateEventHandlers();
-		assertTrue( presenters.size() == 0 );
+		try {
+			configuration.validateEventHandlers();
+			fail();
+		} catch ( InvalidClassException e ) {
+
+		}
 
 		PresenterElement presenter = new PresenterElement();
 		Class<?> c = SimpleEventHandler.class;
@@ -1540,8 +1608,12 @@ public class Mvp4gConfigurationTest {
 
 		presenter.setMultiple( Boolean.TRUE.toString() );
 
-		configuration.validateEventHandlers();
-		assertTrue( presenters.size() == 0 );
+		try {
+			configuration.validateEventHandlers();
+			fail();
+		} catch ( InvalidClassException e ) {
+
+		}
 
 	}
 
@@ -2035,21 +2107,20 @@ public class Mvp4gConfigurationTest {
 		event.setType( "event1" );
 		event.setHistory( "history" );
 		events.add( event );
-		
+
 		event = new EventElement();
 		event.setWithTokenGeneration( "true" );
 		event.setType( "event2" );
 		event.setForwardToParent( "true" );
 		events.add( event );
-		
+
 		HistoryConverterElement hc1 = newHistoryConverter( "history" );
 		historyConverters.add( hc1 );
 
 		setEventBus();
 		configuration.setParentEventBus( oracle.addClass( Events.EventBusOk.class ) );
 		configuration.validateHistoryConverters();
-		
-		
+
 	}
 
 	private PresenterElement newPresenter( String name ) throws DuplicatePropertyNameException {

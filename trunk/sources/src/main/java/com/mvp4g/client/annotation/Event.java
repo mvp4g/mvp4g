@@ -108,6 +108,8 @@ public @interface Event {
 	boolean navigationEvent() default false;
 
 	boolean passive() default false;
+	
+	Class<?> broadcastTo() default NoBroadcast.class;
 
 	class NoHistoryConverter implements HistoryConverter<EventBus> {
 
@@ -123,5 +125,7 @@ public @interface Event {
 		}
 
 	}
+	
+	class NoBroadcast { }
 
 }
