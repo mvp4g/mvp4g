@@ -28,6 +28,10 @@ public class EventsLoaderTest extends AbstractMvp4gElementLoaderTest<EventElemen
 			assertEquals( value, element.getActivate().get( 0 ) );
 		} else if ( "deactivate".equals( value ) ) {
 			assertEquals( value, element.getDeactivate().get( 0 ) );
+		} else if ("handlers".equals( value )){
+			assertEquals( value, element.getHandlers().get( 0 ) );
+		} else if ("modulesToLoad".equals( value )){
+			assertEquals( value, element.getModulesToLoad().get( 0 ) );			
 		} else {
 			super.assertMultiValue( value, element );
 		}

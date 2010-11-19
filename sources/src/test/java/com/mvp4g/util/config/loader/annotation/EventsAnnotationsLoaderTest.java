@@ -412,7 +412,7 @@ public class EventsAnnotationsLoaderTest {
 				fail( "Unknown event name" );
 			}
 
-			assertEquals( "name", e.getHandlers()[0] );
+			assertEquals( "name", e.getHandlers().get( 0 ));
 			assertEquals( "history", e.getHistory() );
 		}
 
@@ -496,20 +496,20 @@ public class EventsAnnotationsLoaderTest {
 		Set<EventElement> events = configuration.getEvents();
 		assertEquals( 4, events.size() );
 
-		String[] modules;
+		List<String> modules;
 		for ( EventElement e : events ) {
 			if ( "event1".equals( e.getType() ) ) {
 
 			} else if ( "event2".equals( e.getType() ) ) {
 				modules = e.getModulesToLoad();
-				assertEquals( 1, modules.length );
-				assertEquals( Modules.Module1.class.getCanonicalName().replace( ".", "_" ), modules[0] );
+				assertEquals( 1, modules.size() );
+				assertEquals( Modules.Module1.class.getCanonicalName().replace( ".", "_" ), modules.get(0) );
 				assertFalse( e.hasForwardToParent() );
 			} else if ( "event3".equals( e.getType() ) ) {
 				modules = e.getModulesToLoad();
-				assertEquals( 2, modules.length );
-				assertEquals( Modules.ModuleWithParent.class.getCanonicalName().replace( ".", "_" ), modules[0] );
-				assertEquals( Modules.Module1.class.getCanonicalName().replace( ".", "_" ), modules[1] );
+				assertEquals( 2, modules.size() );
+				assertEquals( Modules.ModuleWithParent.class.getCanonicalName().replace( ".", "_" ), modules.get(0) );
+				assertEquals( Modules.Module1.class.getCanonicalName().replace( ".", "_" ), modules.get(1) );
 				assertFalse( e.hasForwardToParent() );
 			} else if ( "event4".equals( e.getType() ) ) {
 				assertTrue( e.hasForwardToParent() );

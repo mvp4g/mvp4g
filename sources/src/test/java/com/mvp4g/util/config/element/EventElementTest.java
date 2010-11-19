@@ -16,7 +16,7 @@ import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 
 	private static final String[] properties = { "calledMethod", "type", "history", "forwardToParent", "historyName" };
-	private static final String[] values = { "handlers", "modulesToLoad", "eventObjectClass" };
+	private static final String[] values = { "eventObjectClass" };
 
 	@Test
 	public void testGetCalledMethod() throws DuplicatePropertyNameException {
@@ -135,6 +135,80 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 
 		}
 	}
+	
+	@Test
+	public void testHandlersGetter() throws DuplicatePropertyNameException {
+		assertNull( element.getHandlers() );
+		assertNull( element.getValues( "handlers" ) );
+		String[] test = { "test1", "test2" };
+		element.setHandlers( test );
+		List<String> handlers = element.getHandlers();
+		assertTrue( test.length == handlers.size() );
+		for ( int i = 0; i < test.length; i++ ) {
+			assertSame( test[i], handlers.get( i ) );
+		}
+		assertNull( element.getValues( "handlers" ) );
+
+		element = newElement();
+		element.setValues( "handlers", test );
+		handlers = element.getHandlers();
+		assertTrue( test.length == handlers.size() );
+		for ( int i = 0; i < test.length; i++ ) {
+			assertSame( test[i], handlers.get( i ) );
+		}
+		assertNull( element.getValues( "handlers" ) );
+
+		try {
+			element.setHandlers( test );
+			fail();
+		} catch ( DuplicatePropertyNameException e ) {
+
+		}
+
+		try {
+			element.setValues( "handlers", test );
+			fail();
+		} catch ( DuplicatePropertyNameException e ) {
+
+		}
+	}
+	
+	@Test
+	public void testModulesToLoadGetter() throws DuplicatePropertyNameException {
+		assertNull( element.getModulesToLoad() );
+		assertNull( element.getValues( "modulesToLoad" ) );
+		String[] test = { "test1", "test2" };
+		element.setModulesToLoad( test );
+		List<String> modulesToLoad = element.getModulesToLoad();
+		assertTrue( test.length == modulesToLoad.size() );
+		for ( int i = 0; i < test.length; i++ ) {
+			assertSame( test[i], modulesToLoad.get( i ) );
+		}
+		assertNull( element.getValues( "modulesToLoad" ) );
+
+		element = newElement();
+		element.setValues( "modulesToLoad", test );
+		modulesToLoad = element.getModulesToLoad();
+		assertTrue( test.length == modulesToLoad.size() );
+		for ( int i = 0; i < test.length; i++ ) {
+			assertSame( test[i], modulesToLoad.get( i ) );
+		}
+		assertNull( element.getValues( "modulesToLoad" ) );
+
+		try {
+			element.setModulesToLoad( test );
+			fail();
+		} catch ( DuplicatePropertyNameException e ) {
+
+		}
+
+		try {
+			element.setValues( "modulesToLoad", test );
+			fail();
+		} catch ( DuplicatePropertyNameException e ) {
+
+		}
+	}	
 
 	@Test
 	public void testDefaultHistoryName() throws DuplicatePropertyNameException {

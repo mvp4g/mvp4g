@@ -620,10 +620,8 @@ public class Mvp4gConfigurationFileWriter {
 		String[] objectClasses = null;
 		String param = null;
 		String parentParam = null;
-		String[] handlers = null;
 		String history;
-		List<String> activate;
-		List<String> deactivate;
+		List<String> activate, deactivate, handlers;
 		EventHandlerElement eventHandler;
 		boolean hasLog = ( configuration.getDebug() != null );
 		Set<EventFilterElement> filters = configuration.getEventFilters();
@@ -749,7 +747,7 @@ public class Mvp4gConfigurationFileWriter {
 				writeActivation( deactivate, eventHandlers, false );
 			}
 
-			writeLoadChildModule( event, param );
+			writeLoadChildModule( event, parentParam );
 			writeParentEvent( event, parentParam );
 
 			if ( handlers != null ) {
@@ -1225,7 +1223,7 @@ public class Mvp4gConfigurationFileWriter {
 		Set<ChildModuleElement> modules = configuration.getChildModules();
 		String[] eventObjectClasses = null;
 		String eventObject = null;
-		String[] modulesToLoad = event.getModulesToLoad();
+		List<String> modulesToLoad = event.getModulesToLoad();
 		if ( modulesToLoad != null ) {
 			if ( passive ) {
 				sourceWriter.println( "Mvp4gModule module;" );
@@ -1243,40 +1241,42 @@ public class Mvp4gConfigurationFileWriter {
 				} else {
 					eventBusClass = eventBusType.getQualifiedSourceName();
 				}
-				
-				if ( ( eventObjectClasses == null ) || ( eventObjectClasses.length == 0 ) ) {
-					eventObject = null;
-				} else {
-					int nbParam = eventObjectClasses.length;
-					StringBuilder eventObjectBuilder = new StringBuilder( nbParam * 70 );
-
-					int i;
-					for ( i = 0; i < ( nbParam - 1 ); i++ ) {
-						eventObjectBuilder.append( "(" );
-						eventObjectBuilder.append( getAssociatedClass( eventObjectClasses[i] ) );
-						eventObjectBuilder.append( ") eventObjects[" );
-						eventObjectBuilder.append( i );
-						eventObjectBuilder.append( "]," );
-					}
-					eventObjectBuilder.append( "(" );
-					eventObjectBuilder.append( getAssociatedClass( eventObjectClasses[i] ) );
-					eventObjectBuilder.append( ") eventObjects[" );
-					eventObjectBuilder.append( i );
-					eventObjectBuilder.append( "]" );
-					eventObject = eventObjectBuilder.toString();
-				}
 
 				if ( passive ) {
+					eventObject = param;
 					sourceWriter.print( "module = modules.get(" );
 					sourceWriter.print( module.getClassName() );
 					sourceWriter.println( ".class);" );
 					sourceWriter.println( "if(module != null){" );
 				} else {
+					if ( ( eventObjectClasses == null ) || ( eventObjectClasses.length == 0 ) ) {
+						eventObject = null;
+					} else {
+						int nbParam = eventObjectClasses.length;
+						StringBuilder eventObjectBuilder = new StringBuilder( nbParam * 70 );
+
+						int i;
+						for ( i = 0; i < ( nbParam - 1 ); i++ ) {
+							eventObjectBuilder.append( "(" );
+							eventObjectBuilder.append( getAssociatedClass( eventObjectClasses[i] ) );
+							eventObjectBuilder.append( ") eventObjects[" );
+							eventObjectBuilder.append( i );
+							eventObjectBuilder.append( "]," );
+						}
+						eventObjectBuilder.append( "(" );
+						eventObjectBuilder.append( getAssociatedClass( eventObjectClasses[i] ) );
+						eventObjectBuilder.append( ") eventObjects[" );
+						eventObjectBuilder.append( i );
+						eventObjectBuilder.append( "]" );
+						eventObject = eventObjectBuilder.toString();
+					}
 					sourceWriter.print( "load" );
 					sourceWriter.print( module.getName() );
-					sourceWriter.print( "(new Mvp4gEventPasser" );
-					sourceWriter.print( param );
-					sourceWriter.println( "{" );
+					sourceWriter.print( "(new Mvp4gEventPasser(" );
+					if ( param != null ) {
+						sourceWriter.print( param );
+					}
+					sourceWriter.println( "){" );
 					sourceWriter.indent();
 					sourceWriter.println( "public void pass(Mvp4gModule module){" );
 

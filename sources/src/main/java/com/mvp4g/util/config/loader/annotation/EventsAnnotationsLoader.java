@@ -309,6 +309,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		JClassType eventBusType = configuration.getOracle().findType( EventBus.class.getCanonicalName() );
 		JClassType enclosingType = null;
 		String historyName;
+		Class<?> broadcast;
 		for ( JMethod method : c.getOverridableMethods() ) {
 			event = method.getAnnotation( Event.class );
 			if ( event == null ) {
@@ -347,6 +348,10 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				element.setNavigationEvent( Boolean.toString( event.navigationEvent() ) );
 				element.setWithTokenGeneration( Boolean.toString( method.getReturnType().getQualifiedSourceName().equals( String.class.getName() ) ) );
 				element.setPassive( Boolean.toString( event.passive() ) );
+				broadcast = event.broadcastTo();
+				if ( !Event.NoBroadcast.class.equals( broadcast ) ) {
+					element.setBroadcastTo( broadcast.getCanonicalName() );
+				}
 				if ( paramClasses != null ) {
 					element.setEventObjectClass( paramClasses );
 				}

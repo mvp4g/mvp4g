@@ -1695,9 +1695,9 @@ public class Mvp4gConfigurationFileReaderTest {
 				"module = modules.get(com.mvp4g.util.test_tools.Modules.ModuleWithParent.class);",
 				"if(module != null){",
 				"com.mvp4g.util.test_tools.annotation.Events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.Events.EventBusOk) module.getEventBus();",
-				"eventBus.event2((java.lang.String) eventObjects[0]);",
+				"eventBus.event2(attr0);",
 				"com.mvp4g.util.test_tools.annotation.Events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.Events.EventBusOk) module.getEventBus();",
-				"eventBus.event3((java.lang.String) eventObjects[0],(java.lang.Object) eventObjects[1]);",
+				"eventBus.event3(attr0,attr1);",
 				"com.mvp4g.util.test_tools.annotation.Events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.Events.EventBusOk) module.getEventBus();",
 				"eventBus.event1();" };
 	}

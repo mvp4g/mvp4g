@@ -27,7 +27,7 @@ import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
  */
 public class EventElement extends Mvp4gElement {
 
-	private List<String> activate, deactivate;
+	private List<String> activate, deactivate, handlers, modulesToLoad;
 
 	public EventElement() {
 		super( "event" );
@@ -36,21 +36,13 @@ public class EventElement extends Mvp4gElement {
 	@Override
 	public void setValues( String name, String[] values ) throws DuplicatePropertyNameException {
 		if ( "activate".equals( name ) ) {
-			if ( activate != null ) {
-				throw new DuplicatePropertyNameException( name );
-			}
-			activate = new ArrayList<String>();
-			for ( String value : values ) {
-				activate.add( value );
-			}
+			activate = fillList( activate, values, "activate" );
 		} else if ( "deactivate".equals( name ) ) {
-			if ( deactivate != null ) {
-				throw new DuplicatePropertyNameException( name );
-			}
-			deactivate = new ArrayList<String>();
-			for ( String value : values ) {
-				deactivate.add( value );
-			}
+			deactivate = fillList( deactivate, values, "deactivate" );
+		} else if ( "handlers".equals( name ) ) {
+			handlers = fillList( handlers, values, "handlers" );
+		} else if ( "modulesToLoad".equals( name ) ) {
+			modulesToLoad = fillList( modulesToLoad, values, "modulesToLoad" );
 		} else {
 			super.setValues( name, values );
 		}
@@ -96,16 +88,16 @@ public class EventElement extends Mvp4gElement {
 		setValues( "handlers", handlers );
 	}
 
-	public String[] getHandlers() {
-		return getValues( "handlers" );
+	public List<String> getHandlers() {
+		return handlers;
 	}
 
 	public void setModulesToLoad( String[] modules ) throws DuplicatePropertyNameException {
 		setValues( "modulesToLoad", modules );
 	}
 
-	public String[] getModulesToLoad() {
-		return getValues( "modulesToLoad" );
+	public List<String> getModulesToLoad() {
+		return modulesToLoad;
 	}
 
 	public void setHistory( String history ) throws DuplicatePropertyNameException {
@@ -183,9 +175,9 @@ public class EventElement extends Mvp4gElement {
 	}
 
 	public String getWithTokenGeneration() {
-		return getProperty("withTokenGeneration");
+		return getProperty( "withTokenGeneration" );
 	}
-	
+
 	public boolean isWithTokenGeneration() {
 		return Boolean.TRUE.toString().equalsIgnoreCase( getWithTokenGeneration() );
 	}
@@ -193,7 +185,7 @@ public class EventElement extends Mvp4gElement {
 	/**
 	 * @param withTokenGeneration
 	 *            the withTokenGeneration to set
-	 * @throws DuplicatePropertyNameException 
+	 * @throws DuplicatePropertyNameException
 	 */
 	public void setWithTokenGeneration( String withTokenGeneration ) throws DuplicatePropertyNameException {
 		setProperty( "withTokenGeneration", withTokenGeneration );
@@ -203,9 +195,9 @@ public class EventElement extends Mvp4gElement {
 	 * @return the tokenGenerationFromParent
 	 */
 	public String getTokenGenerationFromParent() {
-		return getProperty("tokenGenerationFromParent");
+		return getProperty( "tokenGenerationFromParent" );
 	}
-	
+
 	/**
 	 * @return the tokenGenerationFromParent
 	 */
@@ -216,19 +208,19 @@ public class EventElement extends Mvp4gElement {
 	/**
 	 * @param tokenGenerationFromParent
 	 *            the tokenGenerationFromParent to set
-	 * @throws DuplicatePropertyNameException 
+	 * @throws DuplicatePropertyNameException
 	 */
 	public void setTokenGenerationFromParent( String tokenGenerationFromParent ) throws DuplicatePropertyNameException {
 		setProperty( "tokenGenerationFromParent", tokenGenerationFromParent );
 	}
-	
+
 	/**
 	 * @return the tokenGenerationFromParent
 	 */
 	public String getPassive() {
-		return getProperty("passive");
+		return getProperty( "passive" );
 	}
-	
+
 	/**
 	 * @return the tokenGenerationFromParent
 	 */
@@ -239,10 +231,29 @@ public class EventElement extends Mvp4gElement {
 	/**
 	 * @param tokenGenerationFromParent
 	 *            the tokenGenerationFromParent to set
-	 * @throws DuplicatePropertyNameException 
+	 * @throws DuplicatePropertyNameException
 	 */
 	public void setPassive( String passive ) throws DuplicatePropertyNameException {
 		setProperty( "passive", passive );
+	}
+
+	public void setBroadcastTo( String broadcastTo ) throws DuplicatePropertyNameException {
+		setProperty( "broadcastTo", broadcastTo );
+	}
+
+	public String getBroadcastTo() {
+		return getProperty( "broadcastTo" );
+	}
+
+	private List<String> fillList( List<String> previousList, String[] values, String propertyName ) throws DuplicatePropertyNameException {
+		if ( previousList != null ) {
+			throw new DuplicatePropertyNameException( propertyName );
+		}
+		List<String> newList = new ArrayList<String>();
+		for ( String value : values ) {
+			newList.add( value );
+		}
+		return newList;
 	}
 
 }
