@@ -63,6 +63,7 @@ public interface MainEventBus extends EventBusWithLookup {
  * activate, activateNames, deactivate, deactivateNames (see [http://code.google.com/p/mvp4g/wiki/EventBus?ts=1284236703&updated=EventBus#Activating/Deactivating_presenters see Activating/Deactivating presenters])
  * navigationEvent (see [http://code.google.com/p/mvp4g/wiki/EventBus_130#Navigation_Event Navigation Event])
  * passive (see [http://code.google.com/p/mvp4g/wiki/EventBus_130#Passive_Event Passive Event])
+ * broadcastTo (see [http://code.google.com/p/mvp4g/w/edit.do#Broadcast_Event Broadcast Event])
 
 ==Adding an handler to an event==
 
@@ -399,4 +400,21 @@ To set an event as passive, you just need to set the passive attribute of @Event
 {{{
 @Event(..., passive = true)
 void sessionExpired();
+}}}
+
+==Broadcast Event==
+
+You can easily forward an event to a lot of handlers or child modules thanks to the broadcast feature. You can specify a broadcast interface for an event and any handler or child module that implements this interface will receive it if:
+ * the handler is compatibable with the Mvp4g module defining the event (ie if the Mvp4g module's event bus can be injected into the handler). Otherwise the handler will be ignored.
+ * the child module is a child module of the Mvp4g module defining the event.
+
+This interface should be as simple as possible and doesn't need any method.
+
+{{{
+public interface OneBroadcastInterface {}
+}}}
+
+{{{
+@Event(...,broadcastTo=OneBroadcastInterface.class)
+void oneEventToBroadcast();
 }}}
