@@ -90,7 +90,7 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 		eventBus.selectCompanyMenu();
 	}
 
-	public void onHasBeenThere( boolean fakeParameter ) {
+	public void onHasBeenThere() {
 		view.alert( "Has been on Company list page" );
 	}
 
