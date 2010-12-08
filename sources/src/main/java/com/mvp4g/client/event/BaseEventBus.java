@@ -272,7 +272,8 @@ public abstract class BaseEventBus implements EventBus {
 	 */
 	@SuppressWarnings( "unchecked" )
 	protected <T extends EventHandlerInterface<?>> List<T> getHandlers( Class<T> handlerClass ) {
-		return (List<T>)handlersMap.get( handlerClass );
+		List<T> list = (List<T>)handlersMap.get( handlerClass ); 
+		return (list == null) ? null : new ArrayList<T>( list );
 	}
 
 	/**

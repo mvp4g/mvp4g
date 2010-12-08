@@ -1174,6 +1174,17 @@ public class Mvp4gConfigurationFileReaderTest {
 		writer.writeConf();
 		assertOutput( getExpectedChildMethod(), true );
 	}
+	
+	@Test
+	public void testWriteChildModuleMethodsNoHistory() {
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
+		configuration.setParentEventBus( oracle.addClass( EventBusWithLookup.class ) );		
+
+		assertOutput( getExpectedChildMethodNoHistory(), false );
+		writer.writeConf();
+		assertOutput( getExpectedChildMethodNoHistory(), true );
+	}
 
 	@Test
 	public void testWriteParentHistory() throws DuplicatePropertyNameException {
@@ -1736,6 +1747,10 @@ public class Mvp4gConfigurationFileReaderTest {
 				"return parentModule.place(\"child/\" + token, form, onlyToken );", "parentModule.clearHistory();",
 				"parentModule.setNavigationConfirmation(navigationConfirmation);", "parentModule.confirmEvent(event);" };
 	}
+	
+	private String[] getExpectedChildMethodNoHistory() {
+		return new String[] { "throw new Mvp4gException(\"This method shouldn't be called. There is no history support for this module.\");" };
+	}
 
 	private String[] getExpectedHistoryParent() {
 		return new String[] { "if(\"child\".equals(moduleHistoryName)){", "loadchild(nextPasser);", "return;" };
@@ -1781,7 +1796,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedGinInjector() {
-		return new String[] { "public interface Mvp4gGinjector extends Ginjector {",
+		return new String[] { "public interface com_mvp4g_client_Mvp4gModuleGinjector extends Ginjector {",
 				"com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter gethandler2();",
 				"com.mvp4g.util.test_tools.annotation.Presenters.SimplePresenter gethandler1();",
 				"com.mvp4g.util.test_tools.annotation.EventHandlers.SimpleEventHandler gethandler3();",
