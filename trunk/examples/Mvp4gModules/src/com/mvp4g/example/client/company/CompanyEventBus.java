@@ -87,7 +87,7 @@ public interface CompanyEventBus extends EventBus {
 	void selectCompanyMenu();
 
 	@Event( handlers = CompanyListPresenter.class, passive = true )
-	void hasBeenThere(boolean fakeParameter);
+	void hasBeenThere();
 
 	@Event( forwardToParent = true )
 	String goToProduct( Integer start, Integer end );

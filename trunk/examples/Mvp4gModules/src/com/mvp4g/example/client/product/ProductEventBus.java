@@ -5,7 +5,6 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.example.client.product.bean.ProductBean;
-import com.mvp4g.example.client.product.historyConverter.ProductHistoryConverter;
 import com.mvp4g.example.client.product.presenter.ProductCreationPresenter;
 import com.mvp4g.example.client.product.presenter.ProductDisplayPresenter;
 import com.mvp4g.example.client.product.presenter.ProductEditPresenter;
@@ -26,7 +25,7 @@ public interface ProductEventBus extends EventBus {
 	@Event( handlers = ProductEditPresenter.class, navigationEvent = true )
 	void goToEdit( ProductBean product );
 
-	@Event( handlers = ProductDisplayPresenter.class, historyConverter = ProductHistoryConverter.class, navigationEvent = true )
+	@Event( handlers = ProductDisplayPresenter.class, navigationEvent = true )
 	void goToDisplay( ProductBean product );
 
 	@Event( handlers = ProductListPresenter.class, navigationEvent = true )
@@ -49,6 +48,6 @@ public interface ProductEventBus extends EventBus {
 	void productDeleted( ProductBean product );
 
 	@Event( broadcastTo = HasBeenThereHandler.class, passive = true )
-	void hasBeenThere(boolean fakeParameter);
+	void hasBeenThere();
 
 }

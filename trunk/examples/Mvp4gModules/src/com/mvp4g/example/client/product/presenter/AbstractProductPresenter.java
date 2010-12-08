@@ -48,7 +48,7 @@ public abstract class AbstractProductPresenter extends LazyPresenter<AbstractPro
 
 	}
 
-	public void onHasBeenThere(boolean fakeParameter) {
+	public void onHasBeenThere() {
 		view.alert( "Has been on " + getPageName() );
 	}
 

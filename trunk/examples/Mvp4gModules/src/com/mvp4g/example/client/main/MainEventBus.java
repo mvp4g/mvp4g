@@ -72,6 +72,6 @@ public interface MainEventBus extends EventBusWithLookup {
 	void clearHistory();
 
 	@Event( broadcastTo = HasBeenThereHandler.class, passive = true )
-	void hasBeenThere(boolean fakeParameter);
+	void hasBeenThere();
 
 }
