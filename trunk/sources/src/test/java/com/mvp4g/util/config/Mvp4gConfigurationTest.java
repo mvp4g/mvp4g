@@ -526,6 +526,38 @@ public class Mvp4gConfigurationTest {
 
 		configuration.validateViews();
 	}
+	
+	@Test
+	public void testBroadcastHandlers() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+		
+		oracle.addClass( Presenters.TestBroadcast.class );
+
+		ViewElement view = newView( "view" );
+		Class<?> c = Views.SimpleView.class;
+		view.setClassName( c.getCanonicalName() );
+		oracle.addClass( c );
+		views.add( view );
+
+		PresenterElement presenter = new PresenterElement();
+		presenter.setName( "presenter" );		
+		c = Presenters.BroadcastPresenter.class;
+		presenter.setClassName( c.getCanonicalName() );
+		oracle.addClass( c );
+		presenter.setView( "view" );
+		presenters.add( presenter );
+
+		EventElement event = newEvent( "event" );		
+		event.setBroadcastTo( Presenters.TestBroadcast.class.getCanonicalName() );
+		event.setHandlers( new String[0] );
+		events.add( event );
+
+		setEventBus();
+		configuration.validateEventHandlers();
+		List<String> handlers = event.getHandlers();
+		assertEquals( 1, handlers.size() );
+		assertEquals( "presenter", handlers.get( 0 ) );
+
+	}
 
 	@Test( expected = UnknownConfigurationElementException.class )
 	public void testStartViewValidationFails() throws UnknownConfigurationElementException, InvalidTypeException, InvalidClassException,
@@ -538,7 +570,8 @@ public class Mvp4gConfigurationTest {
 		configuration.getStart().setView( "badView" );
 
 		configuration.validateViews();
-	}
+	}	
+
 
 	@Test
 	public void testStartMissing() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
@@ -846,6 +879,34 @@ public class Mvp4gConfigurationTest {
 		assertEquals( 1, childModules.size() );
 		assertTrue( childModules.contains( childModule1 ) );
 		assertFalse( childModules.contains( childModule2 ) );
+
+	}
+	
+	@Test
+	public void testChildModulesBroadcast() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+
+		oracle.addClass( Presenters.TestBroadcast.class );
+		
+		ChildModuleElement childModule = new ChildModuleElement();
+		childModule.setName( "child" );
+		Class<?> c = Modules.BroadcastModule.class;
+		oracle.addClass( c );
+		childModule.setClassName( c.getCanonicalName() );
+		childModule.setAutoDisplay( "false" );
+		childModules.add( childModule );
+		
+		EventElement event = newEvent( "testEvent" );
+		event.setBroadcastTo( Presenters.TestBroadcast.class.getCanonicalName() );	
+		event.setModulesToLoad( new String[0] );
+		events.add( event );
+
+		setEventBus();
+
+		configuration.validateChildModules();
+		
+		List<String> modules = event.getModulesToLoad();
+		assertEquals( 1, modules.size() );
+		assertEquals( "child", modules.get( 0 ) );
 
 	}
 

@@ -7,19 +7,22 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 public class Presenters {
 
+	public interface TestBroadcast {
+	}
+
 	@Presenter( view = Object.class )
 	public static class SimplePresenter extends BasePresenter<Object, EventBus> {
-		
+
 		private boolean bindCalled = false;
-		
-		public void bind(){
+
+		public void bind() {
 			this.bindCalled = true;
 		}
-		
-		public boolean isBindCalled(){
+
+		public boolean isBindCalled() {
 			return bindCalled;
 		}
-		
+
 	}
 
 	@Presenter( view = Object.class, multiple = true )
@@ -105,6 +108,11 @@ public class Presenters {
 
 		public void onEvent2() {
 		}
+
+	}
+
+	@Presenter( view = Object.class )
+	public static class BroadcastPresenter extends BasePresenter<Object, EventBus> implements TestBroadcast {
 
 	}
 

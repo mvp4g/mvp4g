@@ -106,8 +106,13 @@ public class Mvp4gConfigurationFileWriter {
 
 		sourceWriter.println( "public void createAndStartModule(){" );
 		sourceWriter.indent();
-
-		sourceWriter.println( "final Mvp4gGinjector injector = GWT.create( Mvp4gGinjector.class );" );
+		
+		String moduleName = configuration.getModule().getQualifiedSourceName().replace( ".", "_" );		
+		sourceWriter.print( "final " );
+		sourceWriter.print( moduleName );
+		sourceWriter.print( "Ginjector injector = GWT.create( " );
+		sourceWriter.print( moduleName );
+		sourceWriter.println( "Ginjector.class );" );
 
 		writeViews();
 
@@ -331,7 +336,11 @@ public class Mvp4gConfigurationFileWriter {
 		}
 		sourceWriter.print( modules[modulesCount] );
 		sourceWriter.println( ".class})" );
-		sourceWriter.println( "public interface Mvp4gGinjector extends Ginjector {" );
+		
+		String moduleName = configuration.getModule().getQualifiedSourceName().replace( ".", "_" );
+		sourceWriter.print( "public interface ");
+		sourceWriter.print( moduleName );
+		sourceWriter.println( "Ginjector extends Ginjector {" );
 		sourceWriter.indent();
 		for ( PresenterElement presenter : configuration.getPresenters() ) {
 			sourceWriter.print( presenter.getClassName() );
@@ -1388,6 +1397,8 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.print( historyName );
 				sourceWriter.print( PlaceService.MODULE_SEPARATOR );
 				sourceWriter.println( "\" + token, form, onlyToken );" );
+			} else {
+				sourceWriter.println( "throw new Mvp4gException(\"This method shouldn't be called. There is no history support for this module.\");" );
 			}
 		} else {
 			sourceWriter.println( "return placeService.place( token, form, onlyToken );" );

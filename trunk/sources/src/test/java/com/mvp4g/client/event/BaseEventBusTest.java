@@ -2,6 +2,7 @@ package com.mvp4g.client.event;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -228,7 +229,13 @@ public class BaseEventBusTest {
 		bus.removeHandler( p );
 		list = bus.getHandlers( SimplePresenter.class );
 		assertTrue( list.size() == 0 );
+		
+		List<SimplePresenter> list2 = bus.getHandlers( SimplePresenter.class );
+		assertNotSame( list, list2 );
+		assertEquals( list, list2 );
 	}
+	
+	
 
 	@Test
 	public void testDefaultAddHandler() {
@@ -241,11 +248,13 @@ public class BaseEventBusTest {
 		assertTrue( p.isBindCalled() );
 
 		p = bus.addHandler( SimplePresenter.class, true );
+		list = bus.getHandlers( SimplePresenter.class );
 		assertTrue( list.size() == 2 );
 		assertEquals( list.get( 1 ), p );
 		assertTrue( p.isBindCalled() );
 
 		p = bus.addHandler( SimplePresenter.class, false );
+		list = bus.getHandlers( SimplePresenter.class );
 		assertTrue( list.size() == 3 );
 		assertEquals( list.get( 2 ), p );
 		assertFalse( p.isBindCalled() );
