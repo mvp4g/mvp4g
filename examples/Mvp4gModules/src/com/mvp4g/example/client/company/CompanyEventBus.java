@@ -67,10 +67,12 @@ public interface CompanyEventBus extends EventBus {
 	@Event( handlers = { CompanyCreationPresenter.class, CompanyEditPresenter.class, CompanyDisplayPresenter.class, CompanyRowPresenter.class } )
 	void nameSelected( String name );
 
-	@Event( handlers = CompanyListPresenter.class )
+	//deactivate CompanyListHandler just to test event handler deactivation
+	@Event( handlers = CompanyListPresenter.class, deactivate = CompanyListHandler.class )
 	void companyListRetrieved( List<CompanyBean> companies );
 
-	@Event( handlers = CompanyListHandler.class )
+	//activate CompanyListHandler just to test event handler activation
+	@Event( handlers = CompanyListHandler.class, activate = CompanyListHandler.class )
 	void getCompanyList( final int start, int end );
 
 	@Forward

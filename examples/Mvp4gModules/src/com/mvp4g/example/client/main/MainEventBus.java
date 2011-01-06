@@ -60,7 +60,7 @@ public interface MainEventBus extends EventBusWithLookup {
 
 	@InitHistory
 	@Event
-	void onStart();
+	void start();
 
 	@Event( handlers = MainPresenter.class )
 	void selectProductMenu();
