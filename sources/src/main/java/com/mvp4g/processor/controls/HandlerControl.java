@@ -38,7 +38,7 @@ public class HandlerControl {
 				boolean found = false;
 				for ( ExecutableElement method : ElementFilter.methodsIn( processingEnv.getElementUtils().getAllMembers( type ) ) ) {
 					mName = method.getSimpleName().toString();
-					if ( mName.toString().equals( methodName ) ) {
+					if ( !found && mName.toString().equals( methodName ) ) {
 						if ( method.getModifiers().contains( Modifier.PUBLIC ) ) {
 							found = ProcessorUtil.sameParameters( e.getParameters(), method.getParameters(), e );
 						}

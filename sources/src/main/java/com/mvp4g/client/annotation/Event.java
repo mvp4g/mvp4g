@@ -24,7 +24,6 @@ import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.history.HistoryConverter;
-import com.mvp4g.client.presenter.PresenterInterface;
 
 /**
  * This annotation should be used to annotate methods of interfaces that extends
@@ -95,11 +94,11 @@ public @interface Event {
 
 	Class<? extends HistoryConverter<?>> historyConverter() default NoHistoryConverter.class;
 
-	Class<? extends PresenterInterface<?, ? extends EventBus>>[] activate() default {};
+	Class<? extends EventHandlerInterface<? extends EventBus>>[] activate() default {};
 
 	String[] activateNames() default {};
 
-	Class<? extends PresenterInterface<?, ? extends EventBus>>[] deactivate() default {};
+	Class<? extends EventHandlerInterface<? extends EventBus>>[] deactivate() default {};
 
 	String[] deactivateNames() default {};
 
