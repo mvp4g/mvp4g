@@ -104,6 +104,7 @@
 					<target>1.6</target>
 					<meminitial>128m</meminitial>
 					<maxmem>1024m</maxmem>
+					<compilerArgument>-proc:none</compilerArgument>					
 				</configuration>
 			</plugin>
 
