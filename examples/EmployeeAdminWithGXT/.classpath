@@ -16,10 +16,5 @@
 	<classpathentry kind="lib" path="test/lib/easymock-3.0.jar"/>
 	<classpathentry kind="lib" path="test/lib/objenesis-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/mvp4g-1.3.0-SNAPSHOT.jar"/>
-	<classpathentry kind="src" path=".apt_generated">
-		<attributes>
-			<attribute name="optional" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
