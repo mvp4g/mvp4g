@@ -16,6 +16,7 @@ The following errors can be detected thanks to the APT:
 == Configuring Eclipse to use Mvp4g APT ==
 __Mvp4g APT can be used with any IDE not only Eclipse__
 
+ * Download the Mvp4g APT jar ([http://code.google.com/p/mvp4g/downloads/list Download here])
  * Open the properties for your project. 
  * Ticking all the boxes on the Annotation Processing page.
  [http://mvp4g.googlecode.com/svn-history/r840/wiki/images/apt_eclipse1.png]
