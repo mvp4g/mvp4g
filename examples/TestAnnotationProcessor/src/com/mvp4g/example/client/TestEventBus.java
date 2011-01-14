@@ -2,7 +2,6 @@ package com.mvp4g.example.client;
 
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
-import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.example.client.history.HistoryConverter1;
 import com.mvp4g.example.client.history.HistoryConverter2;
@@ -14,14 +13,15 @@ import com.mvp4g.example.client.presenters.Handler3;
 import com.mvp4g.example.client.presenters.Handler4;
 import com.mvp4g.example.client.presenters.Handler5;
 import com.mvp4g.example.client.presenters.Handler6;
+import com.mvp4g.example.client.presenters.SubHandler;
 
 @Events( startView = Object.class )
-public interface TestEventBus extends EventBus {
+public interface TestEventBus extends ParentEventBus {
 
 	@Event( handlers = Handler1.class )
 	void event1OK();
 
-	@Event( handlers = { Handler1.class, Handler2.class } )
+	@Event( handlers = { Handler1.class, Handler2.class, SubHandler.class } )
 	void event2OK();
 
 	@Event( handlers = { Handler1.class, Handler2.class } )
@@ -53,6 +53,9 @@ public interface TestEventBus extends EventBus {
 
 	@Event( historyConverter = HistoryConverter1.class )
 	void eventHistoryOk();
+	
+	@Event( historyConverter = HistoryConverter1.class )
+	void eventHistoryOkWithParams(String param);
 
 	@Event( historyConverter = HistoryConverter2.class )
 	void eventHistoryOk2();
@@ -62,6 +65,9 @@ public interface TestEventBus extends EventBus {
 
 	@Event( historyConverter = HistoryConverter1.class )
 	void eventHistoryNoConvertMethod();
+	
+	@Event( historyConverter = HistoryConverter1.class )
+	void eventHistoryWrongParams(String test);
 
 	@Event( historyConverter = HistoryConverter3.class )
 	void eventHistoryNoAnnotation();
