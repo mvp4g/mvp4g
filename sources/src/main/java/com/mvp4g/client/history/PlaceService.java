@@ -88,6 +88,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 
 	private String paramSeparator;
 	private boolean alwaysAdded;
+	private boolean enabled = true;
 
 	private NavigationConfirmationInterface navigationConfirmation;
 
@@ -217,6 +218,11 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	public String place( String eventType, String param, boolean onlyToken ) {
 		String historyName = toHistoryNames.get( eventType );
 		String token;
+		
+		if(!enabled && !onlyToken){
+			return null;
+		}
+		
 		if ( ( param == null ) || ( param.length() == 0 ) ) {
 			if ( alwaysAdded ) {
 				token = historyName + paramSeparator;
@@ -289,6 +295,14 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 		} else {
 			navigationConfirmation.confirm( event );
 		}
+	}
+
+	/**
+	 * @param enabled
+	 *            the enabled to set
+	 */
+	public void setEnabled( boolean enabled ) {
+		this.enabled = enabled;
 	}
 
 	/**

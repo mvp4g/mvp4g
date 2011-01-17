@@ -39,6 +39,10 @@ public class BaseEventHandlerTest {
 
 			}
 
+			public void setApplicationHistoryStored( boolean historyStored ) {
+							
+			}
+
 		};
 	}
 

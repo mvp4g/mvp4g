@@ -28,13 +28,22 @@ import com.mvp4g.client.history.NavigationEventCommand;
 public interface EventBus {
 
 	/**
-	 * Set for all events if they should be stored or not in browser history when possible (ie when
+	 * Set for all events of this module if they should be stored or not in browser history when possible (ie when
 	 * associated with an history converter).
 	 * 
 	 * @param historyStored
 	 *            true if events should be stored
 	 */
 	void setHistoryStored( boolean historyStored );
+	
+	/**
+	 * Set for all events of every modules if they should be stored or not in browser history when possible (ie when
+	 * associated with an history converter).
+	 * 
+	 * @param historyStored
+	 *            true if events should be stored
+	 */
+	void setApplicationHistoryStored( boolean historyStored );
 
 	/**
 	 * Set for next event that can be stored in history if it should be stored or not in browser

@@ -715,7 +715,7 @@ public class Mvp4gConfigurationFileWriter {
 				if ( hasLog ) {
 					writeLog( "Asking for user confirmation: ", type, objectClasses );
 				}
-				sourceWriter.println( "itself.confirmEvent(new NavigationEventCommand(this){" );
+				sourceWriter.println( "confirmNavigation(new NavigationEventCommand(this){" );
 				sourceWriter.indent();
 				sourceWriter.println( "public void execute(){" );
 				sourceWriter.indent();
@@ -806,13 +806,31 @@ public class Mvp4gConfigurationFileWriter {
 
 		sourceWriter.println( "public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {" );
 		sourceWriter.indent();
-		sourceWriter.println( "itself.setNavigationConfirmation(navigationConfirmation);" );
+		if ( !configuration.isRootModule() ) {
+			sourceWriter.println( "parentEventBus.setNavigationConfirmation(navigationConfirmation);" );
+		} else {
+			sourceWriter.println( "placeService.setNavigationConfirmation(navigationConfirmation);" );
+		}
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );
 
 		sourceWriter.println( "public void confirmNavigation(NavigationEventCommand event){" );
 		sourceWriter.indent();
-		sourceWriter.println( "itself.confirmEvent(event);" );
+		if ( !configuration.isRootModule() ) {
+			sourceWriter.println( "parentEventBus.confirmNavigation(event);" );
+		} else {
+			sourceWriter.println( "placeService.confirmEvent(event);" );
+		}
+		sourceWriter.outdent();
+		sourceWriter.println( "}" );
+		
+		sourceWriter.println( "public void setApplicationHistoryStored( boolean historyStored ){" );
+		sourceWriter.indent();
+		if ( !configuration.isRootModule() ) {
+			sourceWriter.println( "parentEventBus.setApplicationHistoryStored(historyStored);" );
+		} else {
+			sourceWriter.println( "placeService.setEnabled(historyStored);" );
+		}
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );
 
@@ -1452,26 +1470,7 @@ public class Mvp4gConfigurationFileWriter {
 
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );
-
-		sourceWriter.println( "public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {" );
-		sourceWriter.indent();
-		if ( !configuration.isRootModule() ) {
-			sourceWriter.println( "parentModule.setNavigationConfirmation(navigationConfirmation);" );
-		} else {
-			sourceWriter.println( "placeService.setNavigationConfirmation(navigationConfirmation);" );
-		}
-		sourceWriter.outdent();
-		sourceWriter.println( "}" );
-
-		sourceWriter.println( "public void confirmEvent( NavigationEventCommand event ){" );
-		sourceWriter.indent();
-		if ( !configuration.isRootModule() ) {
-			sourceWriter.println( "parentModule.confirmEvent(event);" );
-		} else {
-			sourceWriter.println( "placeService.confirmEvent(event);" );
-		}
-		sourceWriter.outdent();
-		sourceWriter.println( "}" );
+		
 	}
 
 	private void writeLog( String beforeText, String type, String[] objectClasses ) {

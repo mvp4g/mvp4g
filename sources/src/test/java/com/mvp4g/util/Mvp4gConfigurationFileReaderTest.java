@@ -1506,10 +1506,7 @@ public class Mvp4gConfigurationFileReaderTest {
 				"String moduleHistoryName = eventType.substring(0, index);", "String nextToken = eventType.substring(index + 1);",
 				"Mvp4gEventPasser nextPasser = new Mvp4gEventPasser(nextToken) {", "public void pass(Mvp4gModule module) {",
 				"module.dispatchHistoryEvent((String) eventObjects[0], passer);", "passer.setEventObject(false);", "passer.pass(this);", "}else{",
-				"passer.pass(this);", "public void confirmEvent( NavigationEventCommand event ){",
-				"placeService.setNavigationConfirmation(navigationConfirmation);",
-				"public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {",
-				"placeService.confirmEvent(event);" };
+				"passer.pass(this);" };
 	}
 
 	private String[] getExpectedHistoryXml() {
@@ -1579,8 +1576,10 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	private String[] getExpectedEventsInheritMethods() {
 		return new String[] { "public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {",
-				"itself.setNavigationConfirmation(navigationConfirmation);", "public void confirmNavigation(NavigationEventCommand event){",
-				"itself.confirmEvent(event);", "protected <T extends EventHandlerInterface<?>> T createHandler( Class<T> handlerClass ){" };
+				"placeService.setNavigationConfirmation(navigationConfirmation);", "public void confirmNavigation(NavigationEventCommand event){",
+				"placeService.confirmEvent(event);", "protected <T extends EventHandlerInterface<?>> T createHandler( Class<T> handlerClass ){",
+				"public void setApplicationHistoryStored( boolean historyStored ){",
+				"placeService.setEnabled(historyStored);" };
 	}
 
 	private String[] getExpectedHistoryEvents() {
@@ -1745,7 +1744,8 @@ public class Mvp4gConfigurationFileReaderTest {
 	private String[] getExpectedChildMethod() {
 		return new String[] { "parentModule.addConverter(\"child/\" + eventType, \"child/\" + historyName, hc);",
 				"return parentModule.place(\"child/\" + token, form, onlyToken );", "parentModule.clearHistory();",
-				"parentModule.setNavigationConfirmation(navigationConfirmation);", "parentModule.confirmEvent(event);" };
+				"parentEventBus.setNavigationConfirmation(navigationConfirmation);", "parentEventBus.confirmNavigation(event);",
+				"parentEventBus.setApplicationHistoryStored(historyStored);" };
 	}
 	
 	private String[] getExpectedChildMethodNoHistory() {
@@ -1783,7 +1783,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	public String[] getExpectedNavigationEvents() {
 		return new String[] { "public void event1(final java.lang.String attr0,final java.lang.Object attr1){",
-				"itself.confirmEvent(new NavigationEventCommand(this){", "public void execute(){" };
+				"confirmNavigation(new NavigationEventCommand(this){", "public void execute(){" };
 	}
 
 	public String[] getExpectedEventsWithToken() {

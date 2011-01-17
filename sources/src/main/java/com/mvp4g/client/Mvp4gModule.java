@@ -18,8 +18,6 @@ package com.mvp4g.client;
 import com.mvp4g.client.annotation.XmlFilePath;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.history.HistoryConverter;
-import com.mvp4g.client.history.NavigationConfirmationInterface;
-import com.mvp4g.client.history.NavigationEventCommand;
 
 /**
  * This interface defines a module for Mvp4g. This interface is only used by the framework to
@@ -97,21 +95,5 @@ public interface Mvp4gModule {
 	 *            parent module to set
 	 */
 	void setParentModule( Mvp4gModule parentModule );
-
-	/**
-	 * Set a confirmation that will be called before each navigation event or when history token
-	 * changes.
-	 * 
-	 * @param navigationConfirmation
-	 */
-	void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation );
-
-	/**
-	 * Ask for user's confirmation before firing an event
-	 * 
-	 * @param event
-	 *            event to confirm
-	 */
-	void confirmEvent( NavigationEventCommand event );
 
 }

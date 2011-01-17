@@ -461,5 +461,27 @@ public class PlaceServiceTest {
 		eventBus.assertEvent( eventType, new Object[] { form } );
 
 	}
+	
+	@Test
+	public void testEnabled(){
+		String eventType = "eventType";
+		String form = "form";
+		String historyName = "historyName";
+		placeServiceDefault.addConverter( eventType, historyName, buildHistoryConverter( false ) );
+		
+		placeServiceDefault.setEnabled( false );
+		String token = placeServiceDefault.place( eventType, form, true );
+		assertEquals( historyName + "?" + form, token );
+		assertNull( history.getToken() );
+		
+		token = placeServiceDefault.place( eventType, form, false );
+		assertNull( token );
+		assertNull( history.getToken() );
+		
+		placeServiceDefault.setEnabled( true );
+		token = placeServiceDefault.place( eventType, form, false );
+		assertEquals( historyName + "?" + form, token );
+		assertEquals( historyName + "?" + form, history.getToken() );
+	}
 
 }

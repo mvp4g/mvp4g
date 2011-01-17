@@ -80,4 +80,8 @@ public class EventBusWithLookUpStub extends BaseEventBusWithLookUp {
 		return conf;
 	}
 
+	public void setApplicationHistoryStored( boolean historyStored ) {
+		
+	}
+
 }
