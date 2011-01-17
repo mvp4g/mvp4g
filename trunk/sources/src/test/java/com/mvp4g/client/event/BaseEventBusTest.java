@@ -44,6 +44,10 @@ public class BaseEventBusTest {
 
 			}
 
+			public void setApplicationHistoryStored( boolean historyStored ) {
+							
+			}
+
 		};
 		module = new Mvp4gModuleStub( bus );
 		filter = new EventFilterStub();

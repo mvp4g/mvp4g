@@ -48,6 +48,10 @@ public class PresenterTest {
 			public void confirmNavigation( NavigationEventCommand event ) {
 				
 			}
+
+			public void setApplicationHistoryStored( boolean historyStored ) {
+				
+			}
 			
 		};
 		presenter.setEventBus( bus );
