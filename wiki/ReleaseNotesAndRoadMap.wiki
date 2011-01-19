@@ -1,7 +1,21 @@
 #summary Release Notes and Road Map (Draft for Mvp4g 1.2.0)
 
-=Road Map=
- TDB
+=Road Map 1.3.0=
+ * Navigation event (available in the snapshot, [http://code.google.com/p/mvp4g/wiki/EventBus_130#Navigation_Event see documentation])
+ * Lifecycle presenter (available in the snapshot, [http://code.google.com/p/mvp4g/wiki/PresenterViewService_130#Cycle_Presenter see documentation]) 
+ * Passive event (available in the snapshot, [http://code.google.com/p/mvp4g/wiki/EventBus_130#Passive_Event see documentation])
+ * Support for Reverse MVP (available in the snapshot, [http://code.google.com/p/mvp4g/wiki/PresenterViewService_130#Reverse_View see documentation]) 
+ * Hyperlink token generation (available in the snapshot, [http://code.google.com/p/mvp4g/wiki/PlaceService_130#Hyperlink_Token see documentation])
+ * Broadcast events (available in the snapshot, [http://code.google.com/p/mvp4g/wiki/EventBus_130#Broadcast_Event see documentation])
+ * Annotation Processor Tool (available but for issue 65, also planned for Mvp4g 1.3.0, [APT_130 see documentation])
+
+ * Use historyName instead of the event's method's name for the dispatch method (issue 60).
+ * Custom Place Service (issue 63)
+ * Possibility to turn off history for the whole application, not only for one module (issue 62)
+ * Simplify convertion from event to token (issue 51)
+ * Remove XML support (issue 64)
+
+and obviously the correction of any bug found
 
 = Release Notes =
 
