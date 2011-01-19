@@ -46,30 +46,18 @@ public class HistoryElement extends Mvp4gElement {
 		return HISTORY_ELEMENT_ID;
 	}
 
+	public void setPlaceServiceClass( String placeServiceClass ) throws DuplicatePropertyNameException {
+		setProperty( "placeServiceClass", placeServiceClass );
+	}
+
+	public String getPlaceServiceClass() {
+		return getProperty( "placeServiceClass" );
+	}
+	
 	public void setInitEvent( String initEvent ) throws DuplicatePropertyNameException {
 		setProperty( "initEvent", initEvent );
 	}
-
-	public String getParamSeparator() {
-		return getProperty( "paramSeparator" );
-	}
-
-	public void setParamSeparator( String paramSeparator ) throws DuplicatePropertyNameException {
-		setProperty( "paramSeparator", paramSeparator );
-	}
-
-	public String getParamSeparatorAlwaysAdded() {
-		return getProperty( "paramSeparatorAlwaysAdded" );
-	}
-
-	public boolean isParamSeparatorAlwaysAdded() {
-		return Boolean.TRUE.toString().equalsIgnoreCase( getProperty( "paramSeparatorAlwaysAdded" ) );
-	}
-
-	public void setParamSeparatorAlwaysAdded( String paramSeparatorAlwaysAdded ) throws DuplicatePropertyNameException {
-		setProperty( "paramSeparatorAlwaysAdded", paramSeparatorAlwaysAdded );
-	}
-
+	
 	public String getInitEvent() {
 		return getProperty( "initEvent" );
 	}

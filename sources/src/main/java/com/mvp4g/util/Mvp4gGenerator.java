@@ -31,7 +31,6 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.mvp4g.client.Mvp4gEventPasser;
@@ -119,8 +118,7 @@ public class Mvp4gGenerator extends Generator {
 
 		ClassSourceFileComposerFactory classFactory = new ClassSourceFileComposerFactory( packageName, generatedClassName );
 		classFactory.addImplementedInterface( originalType.getName() );
-		classFactory.addImport( PlaceService.class.getName() );
-		classFactory.addImport( RootPanel.class.getName() );
+		classFactory.addImport( PlaceService.class.getName() );		
 		classFactory.addImport( GWT.class.getName() );
 		classFactory.addImport( com.google.gwt.user.client.History.class.getName() );
 		classFactory.addImport( ServiceDefTarget.class.getName() );

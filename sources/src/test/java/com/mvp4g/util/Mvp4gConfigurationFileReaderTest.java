@@ -19,7 +19,6 @@ import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.history.ClearHistory;
-import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
@@ -38,6 +37,7 @@ import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.config.element.ViewElement;
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
+import com.mvp4g.util.test_tools.CustomPlaceService;
 import com.mvp4g.util.test_tools.Modules;
 import com.mvp4g.util.test_tools.OneGinModule;
 import com.mvp4g.util.test_tools.OneLogger;
@@ -758,8 +758,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, false ) );
 
 		HistoryElement history = new HistoryElement();
-		history.setParamSeparatorAlwaysAdded( "true" );
-		history.setParamSeparator( PlaceService.CRAWLABLE );
+		history.setPlaceServiceClass( CustomPlaceService.class.getCanonicalName() );
 		configuration.setHistory( history );
 
 		assertOutput( getExpectedHistoryWithConfig(), false );
@@ -1492,7 +1491,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedDefaultHistory() {
-		return new String[] { "placeService = new PlaceService(\"?\",false){", "protected void sendInitEvent(){",
+		return new String[] { "placeService = new com.mvp4g.client.history.PlaceService(){", "protected void sendInitEvent(){",
 				"protected void sendNotFoundEvent(){", "placeService.setModule(itself);", };
 
 	}
@@ -1515,7 +1514,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedHistoryWithConfig() {
-		return new String[] { "placeService = new PlaceService(\"!\",true){" };
+		return new String[] { "placeService = new com.mvp4g.util.test_tools.CustomPlaceService(){" };
 
 	}
 

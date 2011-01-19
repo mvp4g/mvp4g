@@ -59,8 +59,6 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 
 	public static final String CRAWLABLE = "!";
 
-	public static final String DEFAULT_SEPARATOR = "?";
-
 	/**
 	 * Interface to define methods needed to manage history<br/>
 	 * <br/>
@@ -86,8 +84,6 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	private Map<String, String> toHistoryNames = new HashMap<String, String>();
 	private Map<String, String> toEventType = new HashMap<String, String>();
 
-	private String paramSeparator;
-	private boolean alwaysAdded;
 	private boolean enabled = true;
 
 	private NavigationConfirmationInterface navigationConfirmation;
@@ -96,7 +92,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 * Build a <code>PlaceService</code>.
 	 * 
 	 */
-	public PlaceService( String paramSeparator, boolean alwaysAdded ) {
+	public PlaceService() {
 		this( new HistoryProxy() {
 
 			public void addValueChangeHandler( ValueChangeHandler<String> handler ) {
@@ -107,7 +103,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 				History.newItem( historyToken, issueEvent );
 			}
 
-		}, paramSeparator, alwaysAdded );
+		} );
 	}
 
 	/**
@@ -121,11 +117,9 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 * @param history
 	 *            history proxy to inject
 	 */
-	protected PlaceService( HistoryProxy history, String paramSeparator, boolean alwaysAdded ) {
+	protected PlaceService( HistoryProxy history ) {
 		this.history = history;
 		history.addValueChangeHandler( this );
-		this.paramSeparator = paramSeparator;
-		this.alwaysAdded = alwaysAdded;
 	}
 
 	/**
@@ -145,48 +139,95 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 		confirmEvent( new NavigationEventCommand( module.getEventBus() ) {
 
 			protected void execute() {
-				String token = event.getValue();
-
-				boolean toContinue = false;
-				if ( token != null ) {
-					if ( token.startsWith( CRAWLABLE ) ) {
-						token = token.substring( 1 );
-					}
-					toContinue = ( token.length() > 0 );
-				}
-
-				if ( toContinue ) {
-
-					int index = token.lastIndexOf( paramSeparator );
-					final String eventType = ( index == -1 ) ? token : token.substring( 0, index );
-					final String param = ( index == -1 ) ? null : token.substring( index + 1 );
-					if ( eventType.contains( MODULE_SEPARATOR ) ) {
-						Mvp4gEventPasser passer = new Mvp4gEventPasser( true ) {
-
-							@Override
-							public void pass( Mvp4gModule module ) {
-								if ( (Boolean)eventObjects[0] ) {
-									dispatchEvent( eventType, param, module );
-								} else {
-									sendNotFoundEvent();
-								}
-							}
-						};
-						module.dispatchHistoryEvent( eventType, passer );
-					} else {
-						dispatchEvent( eventType, param, module );
-					}
-				} else {
-					sendInitEvent();
-				}
+				convertToken( event.getValue() );
 			}
 
 		} );
 
 	}
 
+	/**
+	 * Convert the token to an event
+	 * 
+	 * @param token
+	 *            the token to convert
+	 */
+	protected void convertToken( String token ) {
+		boolean toContinue = false;
+		if ( token != null ) {
+			if ( token.startsWith( CRAWLABLE ) ) {
+				token = token.substring( 1 );
+			}
+			toContinue = ( token.length() > 0 );
+		}
+
+		if ( toContinue ) {
+			String[] result = parseToken( token );
+			if ( !forwardToChildModuleIfNeeded( result[0], result[1] ) ) {
+				dispatchEvent( result[0], result[1], module );
+			}
+		} else {
+			sendInitEvent();
+		}
+	}
+
+	/**
+	 * Parse the token and return a string array. The first element of this array contains the event
+	 * name whereas the second element contains the parameters associated to the event.
+	 * 
+	 * @param token
+	 *            token to parse
+	 * @return array of string
+	 */
+	protected String[] parseToken( String token ) {
+		String[] result = new String[2];
+		int index = token.lastIndexOf( getParamSeparator() );
+		result[0] = ( index == -1 ) ? token : token.substring( 0, index );
+		result[1] = ( index == -1 ) ? null : token.substring( index + 1 );
+		return result;
+	}
+
+	/**
+	 * Check if this event is a child's module event. If it's the case, forward the token to the child module and return true.
+	 *
+	 * @param eventName
+	 * 			name of the event that was stored in the token
+	 * @param param
+	 * 			parameters stored in the token
+	 * @return
+	 * 		true if this child module's event.
+	 */
+	protected boolean forwardToChildModuleIfNeeded( final String eventName, final String param ) {
+		boolean forAChild = eventName.contains( MODULE_SEPARATOR );
+		if ( forAChild ) {
+			Mvp4gEventPasser passer = new Mvp4gEventPasser( true ) {
+
+				@Override
+				public void pass( Mvp4gModule module ) {
+					if ( (Boolean)eventObjects[0] ) {
+						dispatchEvent( eventName, param, module );
+					} else {
+						sendNotFoundEvent();
+					}
+				}
+			};
+			module.dispatchHistoryEvent( eventName, passer );
+		}
+		return forAChild;
+	}
+
+	/**
+	 * Dispatch the event thanks to the history converter.
+	 * 
+	 * @param historyName
+	 * 			name of the event stored in the token
+	 * @param param
+	 * 			parameters stored in the token			
+	 * @param module
+	 * 			module to which belongs the event
+	 */
 	@SuppressWarnings( "unchecked" )
-	private void dispatchEvent( String historyName, String param, Mvp4gModule module ) {
+	protected void dispatchEvent( String historyName, String param, Mvp4gModule module ) {
 		String eventType = toEventType.get( historyName );
 		if ( eventType != null ) {
 			HistoryConverter converter = converters.get( eventType );
@@ -205,8 +246,8 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	/**
 	 * Convert an event and its associated parameters to a token.<br/>
 	 * 
-	 * @param eventType
-	 *            type of the event to store
+	 * @param eventName
+	 *            name of the event to store
 	 * @param param
 	 *            string representation of the objects associated with the event that needs to be
 	 *            stored in the token
@@ -214,30 +255,37 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 *            if true, only the token will be generated and browser history won't change
 	 * @return the generated token
 	 */
-	@SuppressWarnings( "unchecked" )
-	public String place( String eventType, String param, boolean onlyToken ) {
-		String historyName = toHistoryNames.get( eventType );
-		String token;
+	public String place( String eventName, String param, boolean onlyToken ) {
 		
-		if(!enabled && !onlyToken){
+		if ( !enabled && !onlyToken ) {
 			return null;
 		}
+
+		String token = tokenize( eventName, param);
 		
-		if ( ( param == null ) || ( param.length() == 0 ) ) {
-			if ( alwaysAdded ) {
-				token = historyName + paramSeparator;
-			} else {
-				token = historyName;
-			}
-		} else {
-			token = historyName + paramSeparator + param;
-		}
-		HistoryConverter hc = converters.get( eventType );
-		if ( hc.isCrawlable() ) {
+		if ( converters.get( eventName ).isCrawlable() ) {
 			token = CRAWLABLE + token;
 		}
 		if ( !onlyToken ) {
 			history.newItem( token, false );
+		}
+		return token;
+	}
+	
+	/**
+	 * Transform an event and its parameters to a token
+	 * 
+	 * @param eventName
+	 * 			event's name
+	 * @param param
+	 * 			event's parameters
+	 * @return
+	 * 			token to store in the history
+	 */
+	public String tokenize(String eventName, String param){
+		String token = toHistoryNames.get( eventName );
+		if ( ( param != null ) && ( param.length() > 0 ) ) {
+			token = token + getParamSeparator() + param;
 		}
 		return token;
 	}
@@ -306,12 +354,36 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	}
 
 	/**
+	 * @return
+	 * 		separator used to differenciate the event's name and its parameters
+	 */
+	protected String getParamSeparator() {
+		return "?";
+	}
+	
+	/**
+	 * Return the event's name based on its type
+	 * 
+	 * @param eventType
+	 * 			event's type
+	 * @return
+	 * 			event's name
+	 */
+	protected String getHistoryName(String eventType){
+		return toHistoryNames.get( eventType );
+	}
+
+	/**
 	 * Call when token retrieved is null or equals to empty string
+	 * 
+	 * Don't implement this method, the framework will.
 	 */
 	abstract protected void sendInitEvent();
 
 	/**
 	 * Call when token retrieved doesn't correspond to an event
+	 * 
+	 * Don't implement this method, the framework will.
 	 */
 	abstract protected void sendNotFoundEvent();
 

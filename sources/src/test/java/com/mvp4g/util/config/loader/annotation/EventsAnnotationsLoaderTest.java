@@ -24,7 +24,6 @@ import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.DefaultMvp4gLogger;
-import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
@@ -35,6 +34,7 @@ import com.mvp4g.util.config.element.EventFiltersElement;
 import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
+import com.mvp4g.util.test_tools.CustomPlaceService;
 import com.mvp4g.util.test_tools.Modules;
 import com.mvp4g.util.test_tools.TypeOracleStub;
 import com.mvp4g.util.test_tools.annotation.EventFilters;
@@ -910,8 +910,7 @@ public class EventsAnnotationsLoaderTest {
 		loader.load( annotedClasses, configuration );
 
 		HistoryElement historyConfig = configuration.getHistory();
-		assertEquals( PlaceService.CRAWLABLE, historyConfig.getParamSeparator() );
-		assertTrue( historyConfig.isParamSeparatorAlwaysAdded() );
+		assertEquals( CustomPlaceService.class.getCanonicalName(), historyConfig.getPlaceServiceClass() );
 
 	}
 }

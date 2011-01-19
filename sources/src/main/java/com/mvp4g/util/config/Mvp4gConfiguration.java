@@ -140,9 +140,7 @@ public class Mvp4gConfiguration {
 	private static final String HISTORY_ONLY_FOR_ROOT = "Module %s: History configuration (init, not found event and history parameter separator) should be set only for root module (only module with no parent)";
 	private static final String HISTORY_NAME_MISSING = "Module %s: Child module that defines history converter must have a @HistoryName annotation.";
 	private static final String HISTORY_INIT_MISSING = "You must define a History init event if you use history converters.";
-	private static final String WRONG_HISTORY_PARAM_SEPARATOR = "'/' can be used as an history parameter separator only if it is always added.";
-	private static final String EMPTY_PARAM_SEPARATOR = "History parameter separator can't be an empty string.";
-
+	
 	private Set<PresenterElement> presenters = new HashSet<PresenterElement>();
 	private Set<EventHandlerElement> eventHandlers = new HashSet<EventHandlerElement>();
 	private Set<ViewElement> views = new HashSet<ViewElement>();
@@ -1215,8 +1213,7 @@ public class Mvp4gConfiguration {
 		if ( historyConverters.size() > 0 ) {
 			if ( !isRootModule() ) {
 				if ( ( history != null )
-						&& ( ( history.getInitEvent() != null ) || ( history.getNotFoundEvent() != null ) || ( history.getParamSeparator() != null ) || ( history
-								.getParamSeparatorAlwaysAdded() != null ) ) ) {
+						&& ( ( history.getInitEvent() != null ) || ( history.getNotFoundEvent() != null ) || ( history.getPlaceServiceClass() != null ) ) ) {
 					throw new InvalidMvp4gConfigurationException( String.format( HISTORY_ONLY_FOR_ROOT, module.getQualifiedSourceName() ) );
 				}
 				if ( ( historyName == null ) || ( historyName.length() == 0 ) ) {
@@ -1227,17 +1224,6 @@ public class Mvp4gConfiguration {
 			} else {
 				if ( ( history == null ) || ( history.getInitEvent() == null ) || ( history.getInitEvent().length() == 0 ) ) {
 					throw new InvalidMvp4gConfigurationException( HISTORY_INIT_MISSING );
-				}
-				String paramSeparator = history.getParamSeparator();
-				if ( ( paramSeparator != null ) ) {
-
-					if ( paramSeparator.length() == 0 ) {
-						throw new InvalidMvp4gConfigurationException( EMPTY_PARAM_SEPARATOR );
-					}
-
-					if ( !history.isParamSeparatorAlwaysAdded() && ( PlaceService.MODULE_SEPARATOR.equals( paramSeparator ) ) ) {
-						throw new InvalidMvp4gConfigurationException( WRONG_HISTORY_PARAM_SEPARATOR );
-					}
 				}
 			}
 		}
