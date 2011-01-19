@@ -17,6 +17,8 @@
 
 and obviously the correction of any bug found
 
+If you have any comments on this road map, let me know [http://groups.google.com/group/mvp4g/browse_thread/thread/fbfa1ad72bcdf7ad here].
+
 = Release Notes =
 
 ==1.2.0 (09/12/10)==
