@@ -7,7 +7,7 @@
  * Support for Reverse MVP (available in the snapshot, [http://code.google.com/p/mvp4g/wiki/PresenterViewService_130#Reverse_View see documentation]) 
  * Hyperlink token generation (available in the snapshot, [http://code.google.com/p/mvp4g/wiki/PlaceService_130#Hyperlink_Token see documentation])
  * Broadcast events (available in the snapshot, [http://code.google.com/p/mvp4g/wiki/EventBus_130#Broadcast_Event see documentation])
- * Annotation Processor Tool (available but for issue 65, also planned for Mvp4g 1.3.0, [APT_130 see documentation])
+ * Annotation Processor Tool (available but for issue 65, also planned for 1.3.0, [APT_130 see documentation])
 
  * Use historyName instead of the event's method's name for the dispatch method (issue 60).
  * Custom Place Service (issue 63)
