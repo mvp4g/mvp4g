@@ -390,15 +390,13 @@ public class Mvp4gConfigurationFileWriter {
 			HistoryElement history = configuration.getHistory();
 			boolean hasHistoryConfiguration = ( history != null );
 
-			sourceWriter.print( "placeService = new PlaceService(\"" );
-			String paramSeparator = ( hasHistoryConfiguration ) ? history.getParamSeparator() : null;
-			if ( paramSeparator == null ) {
-				paramSeparator = PlaceService.DEFAULT_SEPARATOR;
+			String placeServiceClass = (history == null) ? null : history.getPlaceServiceClass();
+			if(placeServiceClass == null){
+				placeServiceClass = PlaceService.class.getCanonicalName();
 			}
-			sourceWriter.print( paramSeparator );
-			sourceWriter.print( "\"," );
-			sourceWriter.print( Boolean.toString( ( hasHistoryConfiguration ) ? history.isParamSeparatorAlwaysAdded() : false ) );
-			sourceWriter.println( "){" );
+			sourceWriter.print( "placeService = new ");
+			sourceWriter.print( placeServiceClass );
+			sourceWriter.println( "(){" );
 
 			sourceWriter.indent();
 			sourceWriter.println( "protected void sendInitEvent(){" );

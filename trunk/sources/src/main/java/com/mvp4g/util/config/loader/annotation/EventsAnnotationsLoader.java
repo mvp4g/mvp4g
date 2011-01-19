@@ -29,7 +29,7 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Filters;
 import com.mvp4g.client.annotation.Forward;
-import com.mvp4g.client.annotation.HistoryConfiguration;
+import com.mvp4g.client.annotation.PlaceService;
 import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.NotFoundHistory;
 import com.mvp4g.client.annotation.Start;
@@ -630,7 +630,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 
 	private void loadHistoryConfiguration( JClassType c, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
 
-		HistoryConfiguration historyConfig = c.getAnnotation( HistoryConfiguration.class );
+		PlaceService historyConfig = c.getAnnotation( PlaceService.class );
 		if ( historyConfig != null ) {
 			HistoryElement history = configuration.getHistory();
 			if ( history == null ) {
@@ -639,8 +639,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			}
 
 			try {
-				history.setParamSeparator( historyConfig.paramSeparator() );
-				history.setParamSeparatorAlwaysAdded( Boolean.toString( historyConfig.paramSeparatorAlwaysAdded() ) );
+				history.setPlaceServiceClass( historyConfig.value().getCanonicalName() );				
 			} catch ( DuplicatePropertyNameException e ) {
 				//can't occur
 			}

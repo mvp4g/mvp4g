@@ -29,8 +29,8 @@ public class PlaceServiceTest {
 		private boolean initEvent = false;
 		private boolean notFoundEvent = false;
 
-		public MyTestPlaceService( PlaceService.HistoryProxy history, String separator, boolean always ) {
-			super( history, separator, always );
+		public MyTestPlaceService( PlaceService.HistoryProxy history ) {
+			super( history );
 		}
 
 		public boolean isInitEvent() {
@@ -68,8 +68,6 @@ public class PlaceServiceTest {
 	}
 
 	MyTestPlaceService placeServiceDefault = null;
-	MyTestPlaceService placeServiceSeparator = null;
-	MyTestPlaceService placeServiceSeparatorAdd = null;
 	EventBusWithLookUpStub eventBus = null;
 	HistoryProxyStub history;
 	HistoryProxyStub historySeparator;
@@ -85,21 +83,14 @@ public class PlaceServiceTest {
 
 		eventBus = new EventBusWithLookUpStub();
 		module = new Mvp4gModuleStub( eventBus );
-		placeServiceDefault = new MyTestPlaceService( history, PlaceService.DEFAULT_SEPARATOR, false );
+		placeServiceDefault = new MyTestPlaceService( history );
 		placeServiceDefault.setModule( module );
-
-		placeServiceSeparator = new MyTestPlaceService( historySeparator, PlaceService.CRAWLABLE, false );
-		placeServiceSeparator.setModule( module );
-
-		placeServiceSeparatorAdd = new MyTestPlaceService( historySeparatorAdd, PlaceService.CRAWLABLE, true );
-		placeServiceSeparatorAdd.setModule( module );
+		
 	}
 
 	@Test
 	public void testConstructor() {
-		assertEquals( history.getHandler(), placeServiceDefault );
-		assertEquals( historySeparator.getHandler(), placeServiceSeparator );
-		assertEquals( historySeparatorAdd.getHandler(), placeServiceSeparatorAdd );
+		assertEquals( history.getHandler(), placeServiceDefault );		
 	}
 
 	@Test
@@ -111,19 +102,6 @@ public class PlaceServiceTest {
 		assertEquals( historyName, history.getToken() );
 		assertFalse( history.isIssueEvent() );
 		assertEquals( historyName, token );
-
-		placeServiceSeparator.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		token = placeServiceSeparator.place( eventType, null, false );
-		assertEquals( historyName, historySeparator.getToken() );
-		assertEquals( historyName, token );
-		assertFalse( historySeparator.isIssueEvent() );
-
-		placeServiceSeparatorAdd.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		token = placeServiceSeparatorAdd.place( eventType, null, false );
-		assertEquals( historyName + PlaceService.CRAWLABLE, historySeparatorAdd.getToken() );
-		assertEquals( historyName + PlaceService.CRAWLABLE, token );
-		assertFalse( historySeparatorAdd.isIssueEvent() );
-
 	}
 
 	@Test
@@ -136,18 +114,6 @@ public class PlaceServiceTest {
 		assertEquals( historyName + "?" + form, history.getToken() );
 		assertFalse( history.isIssueEvent() );
 		assertEquals( historyName + "?" + form, token );
-
-		placeServiceSeparator.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		token = placeServiceSeparator.place( eventType, form, false );
-		assertEquals( historyName + PlaceService.CRAWLABLE + form, historySeparator.getToken() );
-		assertFalse( historySeparator.isIssueEvent() );
-		assertEquals( historyName + PlaceService.CRAWLABLE + form, token );
-
-		placeServiceSeparatorAdd.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		token = placeServiceSeparatorAdd.place( eventType, form, false );
-		assertEquals( historyName + PlaceService.CRAWLABLE + form, historySeparatorAdd.getToken() );
-		assertFalse( historySeparatorAdd.isIssueEvent() );
-		assertEquals( historyName + PlaceService.CRAWLABLE + form, token );
 	}
 
 	@Test
@@ -166,12 +132,6 @@ public class PlaceServiceTest {
 		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( "" );
 		placeServiceDefault.onValueChange( event );
 		assertTrue( placeServiceDefault.isInitEvent() );
-
-		placeServiceSeparator.onValueChange( event );
-		assertTrue( placeServiceSeparator.isInitEvent() );
-
-		placeServiceSeparatorAdd.onValueChange( event );
-		assertTrue( placeServiceSeparatorAdd.isInitEvent() );
 	}
 
 	@Test
@@ -179,12 +139,6 @@ public class PlaceServiceTest {
 		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( "wrongEventType" );
 		placeServiceDefault.onValueChange( event );
 		assertTrue( placeServiceDefault.isNotFoundEvent() );
-
-		placeServiceSeparator.onValueChange( event );
-		assertTrue( placeServiceSeparator.isNotFoundEvent() );
-
-		placeServiceSeparatorAdd.onValueChange( event );
-		assertTrue( placeServiceSeparatorAdd.isNotFoundEvent() );
 	}
 
 	@Test
@@ -196,14 +150,6 @@ public class PlaceServiceTest {
 		placeServiceDefault.addConverter( eventType, historyName, buildHistoryConverter( false ) );
 		placeServiceDefault.onValueChange( event );
 		eventBus.assertEvent( eventType, new Object[] { null } );
-
-		placeServiceSeparator.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		placeServiceSeparator.onValueChange( event );
-		eventBus.assertEvent( eventType, new Object[] { null } );
-
-		placeServiceSeparatorAdd.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		placeServiceSeparatorAdd.onValueChange( event );
-		eventBus.assertEvent( eventType, new Object[] { null } );
 	}
 
 	@Test
@@ -214,16 +160,6 @@ public class PlaceServiceTest {
 		placeServiceDefault.addConverter( eventType, historyName, buildHistoryConverter( false ) );
 		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( historyName + "?" + form );
 		placeServiceDefault.onValueChange( event );
-		eventBus.assertEvent( eventType, new Object[] { form } );
-
-		placeServiceSeparator.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		event = new ValueChangeEventStub<String>( historyName + PlaceService.CRAWLABLE + form );
-		placeServiceSeparator.onValueChange( event );
-		eventBus.assertEvent( eventType, new Object[] { form } );
-
-		placeServiceSeparatorAdd.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		event = new ValueChangeEventStub<String>( historyName + PlaceService.CRAWLABLE + form );
-		placeServiceSeparatorAdd.onValueChange( event );
 		eventBus.assertEvent( eventType, new Object[] { form } );
 	}
 
@@ -246,32 +182,6 @@ public class PlaceServiceTest {
 		passer.pass( module );
 		eventBus.assertEvent( "eventType", new Object[] { null } );
 
-		placeServiceSeparator.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		placeServiceSeparator.onValueChange( event );
-
-		assertEquals( historyName, module.getEventType() );
-		passer = module.getPasser();
-		passer.setEventObject( false );
-		passer.pass( module );
-		assertTrue( placeServiceSeparator.isNotFoundEvent() );
-
-		passer.setEventObject( true );
-		passer.pass( module );
-		eventBus.assertEvent( "eventType", new Object[] { null } );
-
-		placeServiceSeparatorAdd.addConverter( eventType, historyName, buildHistoryConverter( false ) );
-		placeServiceSeparatorAdd.onValueChange( event );
-
-		assertEquals( historyName, module.getEventType() );
-		passer = module.getPasser();
-		passer.setEventObject( false );
-		passer.pass( module );
-		assertTrue( placeServiceSeparatorAdd.isNotFoundEvent() );
-
-		passer.setEventObject( true );
-		passer.pass( module );
-		eventBus.assertEvent( "eventType", new Object[] { null } );
-
 	}
 
 	@Test
@@ -285,20 +195,6 @@ public class PlaceServiceTest {
 		passer.setEventObject( true );
 		passer.pass( module );
 		assertTrue( placeServiceDefault.isNotFoundEvent() );
-
-		placeServiceSeparator.onValueChange( event );
-		assertEquals( historyName, module.getEventType() );
-		passer = module.getPasser();
-		passer.setEventObject( true );
-		passer.pass( module );
-		assertTrue( placeServiceSeparator.isNotFoundEvent() );
-
-		placeServiceSeparatorAdd.onValueChange( event );
-		assertEquals( historyName, module.getEventType() );
-		passer = module.getPasser();
-		passer.setEventObject( true );
-		passer.pass( module );
-		assertTrue( placeServiceSeparatorAdd.isNotFoundEvent() );
 
 	}
 
@@ -316,26 +212,6 @@ public class PlaceServiceTest {
 		passer.pass( module );
 		eventBus.assertEvent( "eventType", new Object[] { form } );
 
-		placeServiceSeparator.addConverter( eventType, eventType, buildHistoryConverter( false ) );
-		event = new ValueChangeEventStub<String>( eventType + PlaceService.CRAWLABLE + form );
-		placeServiceSeparator.onValueChange( event );
-
-		assertEquals( eventType, module.getEventType() );
-		passer = module.getPasser();
-		passer.setEventObject( true );
-		passer.pass( module );
-		eventBus.assertEvent( "eventType", new Object[] { form } );
-
-		placeServiceSeparatorAdd.addConverter( eventType, eventType, buildHistoryConverter( false ) );
-		event = new ValueChangeEventStub<String>( eventType + PlaceService.CRAWLABLE + form );
-		placeServiceSeparatorAdd.onValueChange( event );
-
-		assertEquals( eventType, module.getEventType() );
-		passer = module.getPasser();
-		passer.setEventObject( true );
-		passer.pass( module );
-		eventBus.assertEvent( "eventType", new Object[] { form } );
-
 	}
 
 	@Test
@@ -347,20 +223,6 @@ public class PlaceServiceTest {
 
 		placeServiceDefault.clearHistory();
 		assertEquals( "", history.getToken() );
-
-		placeServiceSeparator.addConverter( eventType, eventType, new ClearHistory() );
-		placeServiceSeparator.place( eventType, null, false );
-		assertEquals( eventType, historySeparator.getToken() );
-
-		placeServiceSeparator.clearHistory();
-		assertEquals( "", historySeparator.getToken() );
-
-		placeServiceSeparatorAdd.addConverter( eventType, eventType, new ClearHistory() );
-		placeServiceSeparatorAdd.place( eventType, null, false );
-		assertEquals( eventType + PlaceService.CRAWLABLE, historySeparatorAdd.getToken() );
-
-		placeServiceSeparatorAdd.clearHistory();
-		assertEquals( "", historySeparatorAdd.getToken() );
 	}
 
 	@Test( expected = RuntimeException.class )
