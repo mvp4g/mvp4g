@@ -290,7 +290,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		e2.setType( "event2" );
 		e2.setHandlers( new String[] { "handler2" } );
 		e2.setHistory( "history" );
-		e2.setHistoryName( "historyName" );
+		e2.setName( "historyName" );
 		e2.setEventObjectClass( new String[] { "java.lang.String" } );
 
 		EventElement e3 = new EventElement();
@@ -338,6 +338,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		EventElement e3 = new EventElement();
 		e3.setType( "event3" );
+		e3.setName( "name3" );
 		e3.setHandlers( new String[] { "handler3", "handler4" } );
 
 		EventElement e4 = new EventElement();
@@ -1497,8 +1498,8 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedInheritModuleMethods() {
-		return new String[] { "public void addConverter(String eventType, String historyName, HistoryConverter<?> hc){",
-				"placeService.addConverter(eventType, historyName, hc);", "public String place(String token, String form, boolean onlyToken){",
+		return new String[] { "public void addConverter(String historyName, HistoryConverter<?> hc){",
+				"placeService.addConverter(historyName, hc);", "public String place(String token, String form, boolean onlyToken){",
 				"return placeService.place( token, form, onlyToken );",
 				"public void dispatchHistoryEvent(String eventType, final Mvp4gEventPasser passer){",
 				"int index = eventType.indexOf(PlaceService.MODULE_SEPARATOR);", "if(index > -1){",
@@ -1582,10 +1583,10 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedHistoryEvents() {
-		return new String[] { "place( itself, \"event2\",history.onEvent2(attr0),false);", "clearHistory(itself);",
+		return new String[] { "place( itself, \"historyName\",history.onEvent2(attr0),false);", "clearHistory(itself);",
 				"place( itself, \"event1\",history.onEvent1(attr0,attr1),false);", "place( itself, \"event4\",null,false);",
-				"addConverter( \"event4\", \"event4\",history2);", "addConverter( \"event2\", \"historyName\",history);",
-				"addConverter( \"event1\", \"event1\",history);" };
+				"addConverter( \"event4\",history2);", "addConverter( \"historyName\",history);",
+				"addConverter( \"event1\",history);" };
 	}
 
 	private String[] getExpectedEventsWithLookup() {
@@ -1596,7 +1597,7 @@ public class Mvp4gConfigurationFileReaderTest {
 				"event4();",
 				"} else if ( \"event2\".equals( eventType ) ){",
 				"event2((java.lang.String) data[0]);",
-				"} else if ( \"event3\".equals( eventType ) ){",
+				"} else if ( \"name3\".equals( eventType ) ){",
 				"event3();",
 				"if ( \"event1\".equals( eventType ) ){",
 				"event1((java.lang.String) data[0],(java.lang.Object) data[1]);",
@@ -1741,7 +1742,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedChildMethod() {
-		return new String[] { "parentModule.addConverter(\"child/\" + eventType, \"child/\" + historyName, hc);",
+		return new String[] { "parentModule.addConverter(\"child/\" + historyName, hc);",
 				"return parentModule.place(\"child/\" + token, form, onlyToken );", "parentModule.clearHistory();",
 				"parentEventBus.setNavigationConfirmation(navigationConfirmation);", "parentEventBus.confirmNavigation(event);",
 				"parentEventBus.setApplicationHistoryStored(historyStored);" };

@@ -29,7 +29,7 @@ public interface EventFilter<E extends EventBus> {
 	/**
 	 * Filter an event
 	 * 
-	 * @param eventType
+	 * @param eventName
 	 * 			type of the event
 	 * @param params
 	 * 			objects sent with the event
@@ -38,6 +38,6 @@ public interface EventFilter<E extends EventBus> {
 	 * @return
 	 * 		false if event should be stopped, true otherwise
 	 */
-	public boolean filterEvent( String eventType, Object[] params, E eventBus );
+	public boolean filterEvent( String eventName, Object[] params, E eventBus );
 
 }

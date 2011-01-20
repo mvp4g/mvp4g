@@ -31,15 +31,15 @@ public abstract class BaseEventBusWithLookUp extends BaseEventBus implements Eve
 	 * 
 	 * @see com.mvp4g.client.event.EventBusWithLookup#dispatch(java.lang.String, java.lang.Object)
 	 */
-	abstract public void dispatch( String eventType, Object... data );
+	abstract public void dispatch( String eventName, Object... data );
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see com.mvp4g.client.event.EventBusWithLookup#dispatch(java.lang.String)
 	 */
-	public void dispatch( String eventType ) {
-		dispatch( eventType, new Object[0] );
+	public void dispatch( String eventName ) {
+		dispatch( eventName, new Object[0] );
 	}
 
 	/*
@@ -47,8 +47,8 @@ public abstract class BaseEventBusWithLookUp extends BaseEventBus implements Eve
 	 * 
 	 * @see com.mvp4g.client.event.EventBusWithLookup#dispatch(java.lang.Enum, java.lang.Object)
 	 */
-	public <E extends Enum<E>> void dispatch( Enum<E> enumEventType, Object... data ) {
-		this.dispatch( enumEventType.toString(), data );
+	public <E extends Enum<E>> void dispatch( Enum<E> enumEventName, Object... data ) {
+		this.dispatch( enumEventName.toString(), data );
 	}
 
 	/*
@@ -56,8 +56,8 @@ public abstract class BaseEventBusWithLookUp extends BaseEventBus implements Eve
 	 * 
 	 * @see com.mvp4g.client.event.EventBusWithLookup#dispatch(java.lang.Enum)
 	 */
-	public <E extends Enum<E>> void dispatch( Enum<E> enumEventType ) {
-		this.dispatch( enumEventType.toString(), new Object[0] );
+	public <E extends Enum<E>> void dispatch( Enum<E> enumEventName ) {
+		this.dispatch( enumEventName.toString(), new Object[0] );
 	}
 
 	/**
@@ -67,12 +67,12 @@ public abstract class BaseEventBusWithLookUp extends BaseEventBus implements Eve
 	 * 
 	 * @param e
 	 *            ClassCastException thrown
-	 * @param eventType
-	 *            event type dispatch while error is thrown
+	 * @param eventName
+	 *            name of the event dispatched while error is thrown
 	 */
-	protected void handleClassCastException( ClassCastException e, String eventType ) {
+	protected void handleClassCastException( ClassCastException e, String eventName ) {
 		if ( e.getStackTrace()[0].getClassName().equals( this.getClass().getName() ) ) {
-			throw new Mvp4gException( "Class of the object sent with event " + eventType + " is incorrect." );
+			throw new Mvp4gException( "Class of the object sent with event " + eventName + " is incorrect." );
 		}
 		throw e;
 	}

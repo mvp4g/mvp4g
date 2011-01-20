@@ -52,14 +52,12 @@ public interface Mvp4gModule {
 	/**
 	 * Add a converter to the associate token
 	 * 
-	 * @param eventType
-	 *            type of the event
 	 * @param historyName
-	 *            name of the event to store in the token
+	 *            event's name
 	 * @param hc
 	 *            converter to associate with the event
 	 */
-	void addConverter( String eventType, String historyName, HistoryConverter<?> hc );
+	void addConverter( String historyName, HistoryConverter<?> hc );
 
 	/**
 	 * Place an event and its associated object in the browser history
@@ -77,12 +75,12 @@ public interface Mvp4gModule {
 	/**
 	 * Deal the event received from browser history change or pass it to a child module if needed.
 	 * 
-	 * @param eventType
+	 * @param token
 	 *            token stored in the browse history (event type + ascendant modules history name)
 	 * @param passer
 	 *            passer to execute the event.
 	 */
-	void dispatchHistoryEvent( String eventType, Mvp4gEventPasser passer );
+	void dispatchHistoryEvent( String token, Mvp4gEventPasser passer );
 
 	/**
 	 * Clear the history token stored in the browse history url by adding a new empty token

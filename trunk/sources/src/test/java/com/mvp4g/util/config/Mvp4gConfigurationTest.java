@@ -1502,7 +1502,7 @@ public class Mvp4gConfigurationTest {
 		EventElement e = newEvent( "start" );
 		e.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
 		e.setHistory( "history" );
-		e.setHistoryName( "" );
+		e.setName( "" );
 		events.add( e );
 
 		try {
@@ -1518,13 +1518,13 @@ public class Mvp4gConfigurationTest {
 		EventElement e = newEvent( "start" );
 		e.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
 		e.setHistory( "history" );
-		e.setHistoryName( "name" );
+		e.setName( "name" );
 		events.add( e );
 
 		e = newEvent( "start2" );
 		e.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
 		e.setHistory( "history" );
-		e.setHistoryName( "name" );
+		e.setName( "name" );
 		events.add( e );
 
 		try {
@@ -1539,7 +1539,7 @@ public class Mvp4gConfigurationTest {
 	public void testHistoryNameNoConveter() throws DuplicatePropertyNameException {
 		EventElement e = newEvent( "start" );
 		e.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
-		e.setHistoryName( "name" );
+		e.setName( "name" );
 		events.add( e );
 
 		try {

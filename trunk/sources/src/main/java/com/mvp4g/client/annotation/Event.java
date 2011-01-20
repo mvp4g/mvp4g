@@ -102,7 +102,7 @@ public @interface Event {
 
 	String[] deactivateNames() default {};
 
-	String historyName() default DEFAULT_NAME;
+	String name() default DEFAULT_NAME;
 
 	boolean navigationEvent() default false;
 
@@ -116,7 +116,7 @@ public @interface Event {
 			//to prevent this class to be used
 		}
 
-		public void convertFromToken( String eventType, String param, EventBus eventBus ) {
+		public void convertFromToken( String historyName, String param, EventBus eventBus ) {
 		}
 
 		public boolean isCrawlable() {

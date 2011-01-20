@@ -622,12 +622,8 @@ public class Mvp4gConfigurationFileWriter {
 		Set<EventHandlerElement> eventHandlers = new HashSet<EventHandlerElement>( configuration.getPresenters() );
 		eventHandlers.addAll( configuration.getEventHandlers() );
 
-		String type = null;
-		String calledMethod = null;
 		String[] objectClasses = null;
-		String param = null;
-		String parentParam = null;
-		String history;
+		String type, calledMethod, history, parentParam, param;
 		List<String> activate, deactivate, handlers;
 		EventHandlerElement eventHandler;
 		boolean hasLog = ( configuration.getDebug() != null );
@@ -648,7 +644,7 @@ public class Mvp4gConfigurationFileWriter {
 			activate = event.getActivate();
 			deactivate = event.getDeactivate();
 			isWithTokenGeneration = event.isWithTokenGeneration();
-
+			
 			sourceWriter.print( "public " );
 			sourceWriter.print( ( isWithTokenGeneration ) ? "String " : "void " );
 			sourceWriter.print( type );
@@ -835,10 +831,8 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println( "};" );
 
 		for ( EventElement event : eventsWithHistory ) {
-			sourceWriter.print( "addConverter( \"" );
-			sourceWriter.print( event.getType() );
-			sourceWriter.print( "\", \"" );
-			sourceWriter.print( event.getHistoryName() );
+			sourceWriter.print( "addConverter( \"" );			
+			sourceWriter.print( event.getName() );
 			sourceWriter.print( "\"," );
 			sourceWriter.print( event.getHistory() );
 			sourceWriter.print( ");" );
@@ -858,7 +852,7 @@ public class Mvp4gConfigurationFileWriter {
 
 	private void writeEventHistoryConvertion( EventElement event, HistoryConverterElement historyConverterElement, String param, boolean onlyTokens ) {
 		sourceWriter.print( "place( itself, \"" );
-		sourceWriter.print( event.getType() );
+		sourceWriter.print( event.getName() );
 		sourceWriter.print( "\"," );
 		if ( historyConverterElement.isConvertParams() ) {
 			sourceWriter.print( historyConverterElement.getName() );
@@ -947,10 +941,9 @@ public class Mvp4gConfigurationFileWriter {
 
 	private void writeEventFilter( boolean hasFilter, EventElement event, String parentParam ) {
 		if ( hasFilter ) {
-			String type = event.getType();
 			sourceWriter.indent();
 			sourceWriter.print( "if (!filterEvent(\"" );
-			sourceWriter.print( type );
+			sourceWriter.print( event.getName() );
 			sourceWriter.print( "\"" );
 			if ( parentParam != null ) {
 				sourceWriter.print( "," );
@@ -959,7 +952,7 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.println( ")){" );
 
 			sourceWriter.indent();
-			writeEventFiltersLog( type );
+			writeEventFiltersLog( event.getType() );
 			sourceWriter.print( "return" );
 			if ( event.isWithTokenGeneration() && !event.isNavigationEvent() ) {
 				sourceWriter.print( " null" );
@@ -978,12 +971,10 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println( "try{" );
 		sourceWriter.indent();
 
-		String type = null;
 		String[] objectClasses = null;
 		String param = null;
 
 		for ( EventElement event : configuration.getEvents() ) {
-			type = event.getType();
 
 			objectClasses = event.getEventObjectClass();
 
@@ -1012,11 +1003,11 @@ public class Mvp4gConfigurationFileWriter {
 			}
 
 			sourceWriter.print( "if ( \"" );
-			sourceWriter.print( type );
+			sourceWriter.print( event.getName() );
 			sourceWriter.println( "\".equals( eventType ) ){" );
 
 			sourceWriter.indent();
-			sourceWriter.print( type );
+			sourceWriter.print( event.getType() );
 			sourceWriter.println( param );
 			sourceWriter.outdent();
 			sourceWriter.print( "} else " );
@@ -1220,7 +1211,7 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( "parentEventBus." );
 			if ( configuration.isParentEventBusXml() ) {
 				sourceWriter.print( "dispatch(\"" );
-				sourceWriter.print( event.getType() );
+				sourceWriter.print( event.getName() );
 				if ( ( form != null ) && ( form.length() > 0 ) ) {
 					sourceWriter.print( "\", " );
 					sourceWriter.print( form );
@@ -1372,7 +1363,7 @@ public class Mvp4gConfigurationFileWriter {
 	}
 
 	private void writeHistoryConnection() {
-		sourceWriter.println( "public void addConverter(String eventType, String historyName, HistoryConverter<?> hc){" );
+		sourceWriter.println( "public void addConverter(String historyName, HistoryConverter<?> hc){" );
 		sourceWriter.indent();
 		if ( !configuration.isRootModule() ) {
 			String historyName = configuration.getHistoryName();
@@ -1380,13 +1371,10 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.print( "parentModule.addConverter(\"" );
 				sourceWriter.print( historyName );
 				sourceWriter.print( PlaceService.MODULE_SEPARATOR );
-				sourceWriter.print( "\" + eventType, \"" );
-				sourceWriter.print( historyName );
-				sourceWriter.print( PlaceService.MODULE_SEPARATOR );
 				sourceWriter.println( "\" + historyName, hc);" );
 			}
 		} else {
-			sourceWriter.println( "placeService.addConverter(eventType, historyName, hc);" );
+			sourceWriter.println( "placeService.addConverter(historyName, hc);" );
 		}
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );

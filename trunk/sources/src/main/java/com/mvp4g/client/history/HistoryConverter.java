@@ -32,15 +32,15 @@ public interface HistoryConverter<E extends EventBus> {
 	 * <br/>
 	 * Specific information can also be retrieved (from a cookie or server for example).
 	 * 
-	 * @param eventType
-	 *            type of the event that was stored in the token
+	 * @param historyName
+	 *            event's name
 	 * @param param
 	 *            string that was stored in the token, used to retrieve event's object (can be null
 	 *            if no information was stored in the URI)
 	 * @param eventBus
 	 *            event bus of the application
 	 */
-	public void convertFromToken( String eventType, String param, E eventBus );
+	public void convertFromToken( String historyName, String param, E eventBus );
 	
 	/**
 	 * Return true if the token generated should be crawlable

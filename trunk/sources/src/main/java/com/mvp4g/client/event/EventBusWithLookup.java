@@ -32,8 +32,8 @@ public interface EventBusWithLookup extends EventBus {
 	 * The event is stored in GWT History stack if possible (ie if an History Converter is
 	 * associated with the event) and needed (ie isHistoryStored() == true).
 	 * 
-	 * @param eventType
-	 *            type of the event to dispatch
+	 * @param eventName
+	 *            name of the event to dispatch
 	 * @param objects
 	 *            objects to fire with the event
 	 * @throws Mvp4gException
@@ -49,7 +49,7 @@ public interface EventBusWithLookup extends EventBus {
 	 *             there is an error in the application that needs to be fixed (most of the time, an
 	 *             error in the configuration file).
 	 */
-	public void dispatch( String eventType, Object... objects );
+	public void dispatch( String eventName, Object... objects );
 
 	/**
 	 * Call the method associated with the event type in order to trigger the presenters that can
@@ -58,10 +58,10 @@ public interface EventBusWithLookup extends EventBus {
 	 * The event is stored in GWT History stack if possible (ie if an History Converter is
 	 * associated with the event) and needed (ie isHistoryStored() == true).<br/>
 	 * <br/>
-	 * Calling dispatch(eventType) is equivalent to calling dispatch(eventType, null).
+	 * Calling dispatch(eventName) is equivalent to calling dispatch(eventName, null).
 	 * 
-	 * @param eventType
-	 *            type of the event to dispatch
+	 * @param eventName
+	 *            name of the event to dispatch
 	 * @throws Mvp4gException
 	 *             exception thrown in case an error occurs while the event is dispatched.<br/>
 	 *             The most common cases that this error could be thrown is in case:
@@ -75,7 +75,7 @@ public interface EventBusWithLookup extends EventBus {
 	 *             there is an error in the application that needs to be fixed (most of the time, an
 	 *             error in the configuration file).
 	 */
-	public void dispatch( String eventType );
+	public void dispatch( String eventName );
 
 	/**
 	 * Call the method associated with the event type in order to trigger the presenters that can
@@ -86,13 +86,13 @@ public interface EventBusWithLookup extends EventBus {
 	 * The event is stored in GWT History stack if possible (ie if an History Converter is
 	 * associated with the event) and needed (ie isHistoryStored() == true).<br/>
 	 * <br/>
-	 * Calling dispatch(enumEventType, form) is equivalent to calling
-	 * dispatch(enumEventType.toString(), form).
+	 * Calling dispatch(enumEventName, form) is equivalent to calling
+	 * dispatch(enumEventName.toString(), form).
 	 * 
 	 * 
 	 * 
-	 * @param enumEventType
-	 *            type of the event to dispatch
+	 * @param enumEventName
+	 *            name of the event to dispatch
 	 * @param objects
 	 *            objects to fire with the event
 	 * @throws Mvp4gException
@@ -108,7 +108,7 @@ public interface EventBusWithLookup extends EventBus {
 	 *             there is an error in the application that needs to be fixed (most of the time, an
 	 *             error in the configuration file).
 	 */
-	public <E extends Enum<E>> void dispatch( Enum<E> enumEventType, Object... objects );
+	public <E extends Enum<E>> void dispatch( Enum<E> enumEventName, Object... objects );
 
 	/**
 	 * Call the method associated with the event type in order to trigger the presenters that can
@@ -120,11 +120,11 @@ public interface EventBusWithLookup extends EventBus {
 	 * The event is stored in GWT History stack if possible (ie if an History Converter is
 	 * associated with the event) and needed (ie isHistoryStored() == true).<br/>
 	 * <br/>
-	 * Calling dispatch(enumEventType) is equivalent to calling dispatch(enumEventType.toString(),
+	 * Calling dispatch(enumEventName) is equivalent to calling dispatch(enumEventName.toString(),
 	 * null).
 	 * 
-	 * @param enumEventType
-	 *            type of the event to dispatch
+	 * @param enumEventName
+	 *            name of the event to dispatch
 	 * @throws Mvp4gException
 	 *             exception thrown in case an error occurs while the event is dispatched.<br/>
 	 *             The most common cases that this error could be thrown is in case:
@@ -138,6 +138,6 @@ public interface EventBusWithLookup extends EventBus {
 	 *             there is an error in the application that needs to be fixed (most of the time, an
 	 *             error in the configuration file).
 	 */
-	public <E extends Enum<E>> void dispatch( Enum<E> enumEventType );
+	public <E extends Enum<E>> void dispatch( Enum<E> enumEventName );
 
 }

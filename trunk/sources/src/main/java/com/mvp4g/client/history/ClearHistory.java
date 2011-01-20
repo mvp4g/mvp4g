@@ -28,7 +28,7 @@ import com.mvp4g.client.event.EventBus;
 @History
 public class ClearHistory implements HistoryConverter<EventBus> {
 
-	public void convertFromToken( String eventType, String param, EventBus eventBus ) {
+	public void convertFromToken( String historyName, String param, EventBus eventBus ) {
 		throw new RuntimeException( "ClearHistory: convertFromToken should never be called" );
 	}
 

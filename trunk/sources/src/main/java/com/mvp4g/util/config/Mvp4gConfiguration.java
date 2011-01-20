@@ -645,13 +645,13 @@ public class Mvp4gConfiguration {
 					historyConverterMap.put( hcName, eventList );
 				}
 				eventList.add( event );
-				historyName = event.getHistoryName();
+				historyName = event.getName();
 				if ( isRootModule() && ( historyName.length() == 0 ) ) {
 					throw new InvalidMvp4gConfigurationException( String.format( EMPTY_HISTORY_NAME_ROOT, event.getType() ) );
 				}
 				validateHistoryName( historyName, event );
 				if ( historyNames.contains( historyName ) ) {
-					throw new InvalidMvp4gConfigurationException( String.format( SAME_HISTORY_NAME, event.getType(), event.getHistoryName(),
+					throw new InvalidMvp4gConfigurationException( String.format( SAME_HISTORY_NAME, event.getType(), event.getName(),
 							historyName ) );
 				}
 				historyNames.add( historyName );
@@ -665,7 +665,7 @@ public class Mvp4gConfiguration {
 						//nothing to do
 					}
 				}
-			} else if ( event.getHistoryName() != event.getType() ) {
+			} else if ( event.getName() != event.getType() ) {
 				throw new InvalidMvp4gConfigurationException( String.format( NAME_WITH_NO_CONVERTER, event.getType() ) );
 			}
 		}

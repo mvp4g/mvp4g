@@ -870,10 +870,10 @@ public class EventsAnnotationsLoaderTest {
 		while ( it.hasNext() ) {
 			event = it.next();
 			if ( "event1".equals( event.getType() ) ) {
-				assertEquals( "event1", event.getHistoryName() );
+				assertEquals( "event1", event.getName() );
 				found++;
 			} else if ( "event2".equals( event.getType() ) ) {
-				assertEquals( "historyName", event.getHistoryName() );
+				assertEquals( "historyName", event.getName() );
 				found++;
 			}
 		}
