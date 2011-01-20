@@ -155,15 +155,15 @@ public abstract class BaseEventBus implements EventBus {
 	/**
 	 * If filtering is enabled, executes event filters associated with this event bus.
 	 * 
-	 * @param eventType
-	 *            name of the event to filter
+	 * @param eventName
+	 *            event's name
 	 * @param params
 	 *            event parameters for this event
 	 */
-	protected boolean filterEvent( String eventType, Object... params ) {
+	protected boolean filterEvent( String eventName, Object... params ) {
 		boolean ret = true;
 		if ( filteringEnabled ) {
-			ret = doFilterEvent( eventType, params );
+			ret = doFilterEvent( eventName, params );
 		}
 		if ( changeFilteringEnabledForNextOne ) {
 			filteringEnabled = !filteringEnabled;
@@ -194,18 +194,18 @@ public abstract class BaseEventBus implements EventBus {
 	 * Performs the actual filtering by calling each associated event filter in turn. If any event
 	 * filter returns false, then the event will be canceled.
 	 * 
-	 * @param eventType
-	 *            name of the event to filter
+	 * @param eventName
+	 *            event's name
 	 * @param params
 	 *            event parameters for this event
 	 */
 	@SuppressWarnings( "unchecked" )
-	private boolean doFilterEvent( String eventType, Object[] params ) {
+	private boolean doFilterEvent( String eventName, Object[] params ) {
 		int filterCount = filters.size();
 		EventFilter filter;
 		for ( int i = 0; i < filterCount; i++ ) {
 			filter = filters.get( i );
-			if ( !filter.filterEvent( eventType, params, this ) ) {
+			if ( !filter.filterEvent( eventName, params, this ) ) {
 				return false;
 			}
 		}

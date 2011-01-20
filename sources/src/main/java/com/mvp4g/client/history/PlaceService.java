@@ -41,7 +41,7 @@ import com.mvp4g.client.Mvp4gModule;
  * In case an event of a child module is stored, its history name and history names of all its
  * ascendant except the Root Module will be stored in the token:<br/>
  * <br/>
- * <b>myurl#childModule/subChildModule/eventType?params</b><br/>
+ * <b>myurl#childModule/subChildModule/eventName?params</b><br/>
  * <br/>
  * By default "?" is used to seperate the event name from the parameters. You can change it thanks
  * to <code>@HistoryConfiguration</code>.<br/>
@@ -81,9 +81,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 
 	@SuppressWarnings( "unchecked" )
 	private Map<String, HistoryConverter> converters = new HashMap<String, HistoryConverter>();
-	private Map<String, String> toHistoryNames = new HashMap<String, String>();
-	private Map<String, String> toEventType = new HashMap<String, String>();
-
+	
 	private boolean enabled = true;
 
 	private NavigationConfirmationInterface navigationConfirmation;
@@ -228,15 +226,14 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 */
 	@SuppressWarnings( "unchecked" )
 	protected void dispatchEvent( String historyName, String param, Mvp4gModule module ) {
-		String eventType = toEventType.get( historyName );
-		if ( eventType != null ) {
-			HistoryConverter converter = converters.get( eventType );
+		if ( historyName != null ) {
+			HistoryConverter converter = converters.get( historyName );
 			if ( converter == null ) {
 				sendNotFoundEvent();
 			} else {
-				String[] tab = eventType.split( MODULE_SEPARATOR );
-				String finalEventType = tab[tab.length - 1];
-				converter.convertFromToken( finalEventType, param, module.getEventBus() );
+				String[] tab = historyName.split( MODULE_SEPARATOR );
+				String finalEventName = tab[tab.length - 1];
+				converter.convertFromToken( finalEventName, param, module.getEventBus() );
 			}
 		} else {
 			sendNotFoundEvent();
@@ -283,7 +280,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 * 			token to store in the history
 	 */
 	public String tokenize(String eventName, String param){
-		String token = toHistoryNames.get( eventName );
+		String token = eventName;
 		if ( ( param != null ) && ( param.length() > 0 ) ) {
 			token = token + getParamSeparator() + param;
 		}
@@ -300,18 +297,14 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	/**
 	 * Add a converter for an event.
 	 * 
-	 * @param eventType
-	 *            type of the event
 	 * @param historyName
 	 *            name of the event to store in the token
 	 * @param converter
 	 *            converter associated with this event
 	 */
 	@SuppressWarnings( "unchecked" )
-	public void addConverter( String eventType, String historyName, HistoryConverter converter ) {
-		converters.put( eventType, converter );
-		toHistoryNames.put( eventType, historyName );
-		toEventType.put( historyName, eventType );
+	public void addConverter( String historyName, HistoryConverter converter ) {
+		converters.put( historyName, converter );
 	}
 
 	/**
@@ -359,18 +352,6 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 */
 	protected String getParamSeparator() {
 		return "?";
-	}
-	
-	/**
-	 * Return the event's name based on its type
-	 * 
-	 * @param eventType
-	 * 			event's type
-	 * @return
-	 * 			event's name
-	 */
-	protected String getHistoryName(String eventType){
-		return toHistoryNames.get( eventType );
 	}
 
 	/**

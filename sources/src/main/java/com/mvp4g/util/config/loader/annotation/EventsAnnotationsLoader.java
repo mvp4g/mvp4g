@@ -334,7 +334,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				paramClasses = null;
 			}
 
-			historyName = event.historyName();
+			historyName = event.name();
 
 			element = new EventElement();
 			try {
@@ -356,7 +356,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 					element.setEventObjectClass( paramClasses );
 				}
 				if ( !Event.DEFAULT_NAME.equals( historyName ) ) {
-					element.setHistoryName( historyName );
+					element.setName( historyName );
 				}
 			} catch ( DuplicatePropertyNameException e ) {
 				// setters are only called once, so this error can't occur.

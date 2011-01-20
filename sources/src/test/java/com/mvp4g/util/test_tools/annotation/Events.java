@@ -327,7 +327,7 @@ public class Events {
 		@Event
 		public void event1( String obj );
 
-		@Event( historyName = "historyName" )
+		@Event( name = "historyName" )
 		public void event2();
 	}
 
