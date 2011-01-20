@@ -14,6 +14,7 @@
  * Possibility to turn off history for the whole application, not only for one module (issue 62)
  * Simplify convertion from event to token (issue 51)
  * Remove XML support (issue 64)
+ * Add the possibility to set no start view for non-autodisplay child module (issue 67)
 
 and obviously the correction of any bug found
 
