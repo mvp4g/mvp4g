@@ -10,7 +10,6 @@ import com.mvp4g.client.presenter.PresenterInterface;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
-import com.mvp4g.util.exception.loader.Mvp4gXmlException;
 
 public class TestExceptions {
 
@@ -96,27 +95,6 @@ public class TestExceptions {
 
 		e = new Mvp4gAnnotationException( "testClass", "testMethod", "test" );
 		assertEquals( "testClass: Method testMethod: test", e.getMessage() );
-	}
-
-	@Test
-	public void testMvp4gXmlException() throws DuplicatePropertyNameException {
-		Mvp4gXmlException e = new Mvp4gXmlException( null, "test" );
-		assertEquals( "test", e.getMessage() );
-
-		PresenterElement p = new PresenterElement();
-		p.setName( "name" );
-		p.setClassName( "com.test.Presenter" );
-
-		e = new Mvp4gXmlException( p, "test" );
-		assertEquals( "presenter name: test", e.getMessage() );
-
-		e = new Mvp4gXmlException( null, "test" );
-		e.setXmlFilePath( "test.xml" );
-		assertEquals( "test.xml: test", e.getMessage() );
-
-		e = new Mvp4gXmlException( p, "test" );
-		e.setXmlFilePath( "test.xml" );
-		assertEquals( "test.xml: presenter name: test", e.getMessage() );
 	}
 
 }

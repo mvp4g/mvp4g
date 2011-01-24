@@ -562,29 +562,6 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteXmlStart() throws DuplicatePropertyNameException {
-
-		String eventBusInterface = EventBusWithLookup.class.getName();
-		String eventBusClass = BaseEventBusWithLookUp.class.getName();
-		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, false ) );
-
-		StartElement start = new StartElement();
-		start.setView( "startView" );
-		start.setEventType( "start" );
-		start.setHistory( "true" );
-		configuration.setStart( start );
-
-		assertOutput( getExpectedStartXmlEvent(), false );
-		assertOutput( getExpectedStartPresenterView(), false );
-		assertOutput( getExpectedStartPresenterViewMultiple(), false );
-		writer.writeConf();
-		assertOutput( getExpectedStartXmlEvent(), true );
-		assertOutput( getExpectedStartPresenterView(), true );
-		assertOutput( getExpectedStartPresenterViewMultiple(), false );
-
-	}
-
-	@Test
 	public void testWriteStart() throws DuplicatePropertyNameException {
 
 		StartElement start = configuration.getStart();
@@ -732,27 +709,6 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteXmlHistoryStart() throws DuplicatePropertyNameException {
-		String eventBusInterface = EventBusWithLookup.class.getName();
-		String eventBusClass = BaseEventBusWithLookUp.class.getName();
-		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, false ) );
-
-		HistoryElement history = new HistoryElement();
-		history.setInitEvent( "init" );
-		history.setNotFoundEvent( "notFound" );
-		configuration.setHistory( history );
-
-		assertOutput( getExpectedDefaultHistory(), false );
-		assertOutput( getExpectedHistoryXml(), false );
-		assertOutput( getExpectedInheritModuleMethods(), false );
-		writer.writeConf();
-		assertOutput( getExpectedDefaultHistory(), true );
-		assertOutput( getExpectedHistoryXml(), true );
-		assertOutput( getExpectedInheritModuleMethods(), true );
-
-	}
-
-	@Test
 	public void testWriteHistoryWithConfig() throws DuplicatePropertyNameException {
 		String eventBusInterface = EventBusWithLookup.class.getName();
 		String eventBusClass = BaseEventBusWithLookUp.class.getName();
@@ -780,14 +736,6 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedDefaultHistory(), true );
 		assertOutput( getExpectedWithHistory(), false );
 		assertOutput( getExpectedInheritModuleMethods(), true );
-
-		String eventBusInterface = EventBusWithLookup.class.getName();
-		String eventBusClass = BaseEventBusWithLookUp.class.getName();
-		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, false ) );
-
-		assertOutput( getExpectedHistoryXml(), false );
-		writer.writeConf();
-		assertOutput( getExpectedHistoryXml(), false );
 
 	}
 
@@ -969,30 +917,6 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteChildEventXML() throws DuplicatePropertyNameException {
-
-		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
-
-		ChildModuleElement childModule = new ChildModuleElement();
-		childModule.setClassName( moduleType.getQualifiedSourceName() );
-		childModule.setName( "child" );
-		childModule.setAutoDisplay( "false" );
-		childModule.setAsync( "false" );
-		configuration.getChildModules().add( childModule );
-
-		EventElement event = new EventElement();
-		event.setType( "test" );
-		event.setModulesToLoad( new String[] { "child" } );
-		event.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
-		configuration.getEvents().add( event );
-
-		assertOutput( getExpectedEventChildModuleLoadXML(), false );
-		writer.writeConf();
-		assertOutput( getExpectedEventChildModuleLoadXML(), true );
-	}
-
-	@Test
 	public void testWriteChildEvent() throws DuplicatePropertyNameException {
 
 		configuration.setLoadChildConfig( new ChildModulesElement() );
@@ -1082,39 +1006,6 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteForwardParentXML() throws DuplicatePropertyNameException {
-
-		EventElement event = new EventElement();
-		event.setType( "test" );
-		event.setForwardToParent( "true" );
-		configuration.getEvents().add( event );
-
-		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		configuration.setParentEventBus( oracle.addClass( EventBusWithLookup.class ) );
-
-		assertOutput( getExpectedForwardParentXML(), false );
-		writer.writeConf();
-		assertOutput( getExpectedForwardParentXML(), true );
-	}
-
-	@Test
-	public void testWriteForwardParentXMLWithForm() throws DuplicatePropertyNameException {
-
-		EventElement event = new EventElement();
-		event.setType( "test" );
-		event.setForwardToParent( "true" );
-		event.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
-		configuration.getEvents().add( event );
-
-		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		configuration.setParentEventBus( oracle.addClass( EventBusWithLookup.class ) );
-
-		assertOutput( getExpectedForwardParentXMLWithForm(), false );
-		writer.writeConf();
-		assertOutput( getExpectedForwardParentXMLWithForm(), true );
-	}
-
-	@Test
 	public void testWriteDebug() throws DuplicatePropertyNameException {
 
 		EventElement event = new EventElement();
@@ -1174,12 +1065,12 @@ public class Mvp4gConfigurationFileReaderTest {
 		writer.writeConf();
 		assertOutput( getExpectedChildMethod(), true );
 	}
-	
+
 	@Test
 	public void testWriteChildModuleMethodsNoHistory() {
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
 		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
-		configuration.setParentEventBus( oracle.addClass( EventBusWithLookup.class ) );		
+		configuration.setParentEventBus( oracle.addClass( EventBusWithLookup.class ) );
 
 		assertOutput( getExpectedChildMethodNoHistory(), false );
 		writer.writeConf();
@@ -1455,6 +1346,9 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		configuration.getEvents().add( e1 );
 
+		configuration.getOthersEventBusClassMap().put( moduleType.getQualifiedSourceName(),
+				oracle.addClass( com.mvp4g.util.test_tools.annotation.Events.EventBusOk.class ) );
+
 		writer.writeConf();
 
 		assertOutput( getExpectedPrimitives(), true );
@@ -1498,20 +1392,14 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedInheritModuleMethods() {
-		return new String[] { "public void addConverter(String historyName, HistoryConverter<?> hc){",
-				"placeService.addConverter(historyName, hc);", "public String place(String token, String form, boolean onlyToken){",
-				"return placeService.place( token, form, onlyToken );",
+		return new String[] { "public void addConverter(String historyName, HistoryConverter<?> hc){", "placeService.addConverter(historyName, hc);",
+				"public String place(String token, String form, boolean onlyToken){", "return placeService.place( token, form, onlyToken );",
 				"public void dispatchHistoryEvent(String eventType, final Mvp4gEventPasser passer){",
 				"int index = eventType.indexOf(PlaceService.MODULE_SEPARATOR);", "if(index > -1){",
 				"String moduleHistoryName = eventType.substring(0, index);", "String nextToken = eventType.substring(index + 1);",
 				"Mvp4gEventPasser nextPasser = new Mvp4gEventPasser(nextToken) {", "public void pass(Mvp4gModule module) {",
 				"module.dispatchHistoryEvent((String) eventObjects[0], passer);", "passer.setEventObject(false);", "passer.pass(this);", "}else{",
 				"passer.pass(this);" };
-	}
-
-	private String[] getExpectedHistoryXml() {
-		return new String[] { "eventBus.dispatch(\"init\");", "eventBus.dispatch(\"notFound\")" };
-
 	}
 
 	private String[] getExpectedHistoryWithConfig() {
@@ -1578,15 +1466,13 @@ public class Mvp4gConfigurationFileReaderTest {
 		return new String[] { "public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {",
 				"placeService.setNavigationConfirmation(navigationConfirmation);", "public void confirmNavigation(NavigationEventCommand event){",
 				"placeService.confirmEvent(event);", "protected <T extends EventHandlerInterface<?>> T createHandler( Class<T> handlerClass ){",
-				"public void setApplicationHistoryStored( boolean historyStored ){",
-				"placeService.setEnabled(historyStored);" };
+				"public void setApplicationHistoryStored( boolean historyStored ){", "placeService.setEnabled(historyStored);" };
 	}
 
 	private String[] getExpectedHistoryEvents() {
 		return new String[] { "place( itself, \"historyName\",history.onEvent2(attr0),false);", "clearHistory(itself);",
 				"place( itself, \"event1\",history.onEvent1(attr0,attr1),false);", "place( itself, \"event4\",null,false);",
-				"addConverter( \"event4\",history2);", "addConverter( \"historyName\",history);",
-				"addConverter( \"event1\",history);" };
+				"addConverter( \"event4\",history2);", "addConverter( \"historyName\",history);", "addConverter( \"event1\",history);" };
 	}
 
 	private String[] getExpectedEventsWithLookup() {
@@ -1604,10 +1490,6 @@ public class Mvp4gConfigurationFileReaderTest {
 				"} else {",
 				"throw new Mvp4gException( \"Event \" + eventType + \" doesn't exist. Have you forgotten to add it to your Mvp4g configuration file?\" );",
 				"} catch ( ClassCastException e ) {", "handleClassCastException( e, eventType );" };
-	}
-
-	private String[] getExpectedStartXmlEvent() {
-		return new String[] { "eventBus.dispatch(\"start\");", "startPresenter.setActivated(true);", "History.fireCurrentHistoryState();" };
 	}
 
 	private String[] getExpectedStartPresenterView() {
@@ -1678,12 +1560,6 @@ public class Mvp4gConfigurationFileReaderTest {
 		return new String[] { "eventBus.changeBody((com.google.gwt.user.client.ui.Widget) newModule.getStartView());" };
 	}
 
-	private String[] getExpectedEventChildModuleLoadXML() {
-		return new String[] { "loadchild(new Mvp4gEventPasser(attr0){", "public void pass(Mvp4gModule module){",
-				"com.mvp4g.client.event.EventBusWithLookup eventBus = (com.mvp4g.client.event.EventBusWithLookup) module.getEventBus();",
-				"eventBus.dispatch(\"test\", (java.lang.Object) eventObjects[0]);" };
-	}
-
 	private String[] getExpectedEventChildModuleLoad() {
 		return new String[] {
 				"loadchild(new Mvp4gEventPasser(attr0){",
@@ -1716,14 +1592,6 @@ public class Mvp4gConfigurationFileReaderTest {
 		return new String[] { "parentEventBus.test(attr0);" };
 	}
 
-	private String[] getExpectedForwardParentXML() {
-		return new String[] { "parentEventBus.dispatch(\"test\");" };
-	}
-
-	private String[] getExpectedForwardParentXMLWithForm() {
-		return new String[] { "parentEventBus.dispatch(\"test\", attr0);" };
-	}
-
 	private String[] getExpectedDebug() {
 		return new String[] { "final com.mvp4g.client.event.DefaultMvp4gLogger logger = new com.mvp4g.client.event.DefaultMvp4gLogger();",
 				"int startLogDepth = BaseEventBus.logDepth;", "++BaseEventBus.logDepth;", "++BaseEventBus.logDepth;",
@@ -1747,7 +1615,7 @@ public class Mvp4gConfigurationFileReaderTest {
 				"parentEventBus.setNavigationConfirmation(navigationConfirmation);", "parentEventBus.confirmNavigation(event);",
 				"parentEventBus.setApplicationHistoryStored(historyStored);" };
 	}
-	
+
 	private String[] getExpectedChildMethodNoHistory() {
 		return new String[] { "throw new Mvp4gException(\"This method shouldn't be called. There is no history support for this module.\");" };
 	}
@@ -1819,7 +1687,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedPrimitives() {
-		return new String[] { "eventBus.dispatch(\"event1\", (Boolean) eventObjects[0],(Byte) eventObjects[1],(Character) eventObjects[2],(Double) eventObjects[3],(Float) eventObjects[4],(Integer) eventObjects[5],(Long) eventObjects[6],(Short) eventObjects[7]);" };
+		return new String[] { "eventBus.event1((Boolean) eventObjects[0],(Byte) eventObjects[1],(Character) eventObjects[2],(Double) eventObjects[3],(Float) eventObjects[4],(Integer) eventObjects[5],(Long) eventObjects[6],(Short) eventObjects[7]);" };
 	}
 
 	private String[] getExpectedEventFiltersLog() {

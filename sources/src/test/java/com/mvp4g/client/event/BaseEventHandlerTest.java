@@ -1,12 +1,9 @@
 package com.mvp4g.client.event;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-
-import java.lang.reflect.ParameterizedType;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +37,7 @@ public class BaseEventHandlerTest {
 			}
 
 			public void setApplicationHistoryStored( boolean historyStored ) {
-							
+
 			}
 
 		};
@@ -77,7 +74,7 @@ public class BaseEventHandlerTest {
 		assertFalse( handler.isActivated( false ) );
 		assertTrue( bindCallCount == 1 );
 	}
-	
+
 	@Test
 	public void testPassiveEvent() {
 		BaseEventHandler<EventBus> handler = new BaseEventHandler<EventBus>() {
@@ -95,14 +92,6 @@ public class BaseEventHandlerTest {
 
 		assertTrue( handler.isActivated( true ) );
 		assertTrue( bindCallCount == 1 );
-	}
-
-	@Test
-	public void testXmlEventHandler() {
-		XmlEventHandler handler = new XmlEventHandler();
-		assertEquals( EventBusWithLookup.class,
-				(Class<?>)( (ParameterizedType)handler.getClass().getGenericSuperclass() ).getActualTypeArguments()[0] );
-
 	}
 
 	@Test
