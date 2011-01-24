@@ -73,12 +73,6 @@ public abstract class Mvp4gElement {
 		}
 	}
 
-	/**
-	 * Returns the name of the XML tag used to represent this element in the Mvp4g configuration
-	 * file.
-	 * 
-	 * @return name of the Mvp4gElement tag.
-	 */
 	public String getTagName() {
 		return tagName;
 	}

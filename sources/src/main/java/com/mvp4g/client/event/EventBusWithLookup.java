@@ -18,7 +18,7 @@ package com.mvp4g.client.event;
 import com.mvp4g.client.Mvp4gException;
 
 /**
- * Event bus where events can be fired thanks to their type.
+ * Event bus where events can be fired thanks to their name.
  * 
  * @author plcoirier
  * 
@@ -26,7 +26,7 @@ import com.mvp4g.client.Mvp4gException;
 public interface EventBusWithLookup extends EventBus {
 
 	/**
-	 * Call the method associated with the event type in order to trigger the presenters that can
+	 * Call the method associated with the event name in order to trigger the presenters that can
 	 * handle the event. Forward to the handler the object associated with the event.<br/>
 	 * <br/>
 	 * The event is stored in GWT History stack if possible (ie if an History Converter is
@@ -40,7 +40,7 @@ public interface EventBusWithLookup extends EventBus {
 	 *             exception thrown in case an error occurs while the event is dispatched.<br/>
 	 *             The most common cases that this error could be thrown is in case:
 	 *             <ul>
-	 *             <li>the type of the event can't be handled by the event bus because no command is
+	 *             <li>the name of the event can't be handled by the event bus because no command is
 	 *             associated to it.</li>
 	 *             <li>the class type of the object to be used by the handler methods is different
 	 *             from the class type of the handlers method.</li>
@@ -52,7 +52,7 @@ public interface EventBusWithLookup extends EventBus {
 	public void dispatch( String eventName, Object... objects );
 
 	/**
-	 * Call the method associated with the event type in order to trigger the presenters that can
+	 * Call the method associated with the event name in order to trigger the presenters that can
 	 * handle the event. In this case no object is forwarded to the handler(s).<br/>
 	 * <br/>
 	 * The event is stored in GWT History stack if possible (ie if an History Converter is
@@ -66,7 +66,7 @@ public interface EventBusWithLookup extends EventBus {
 	 *             exception thrown in case an error occurs while the event is dispatched.<br/>
 	 *             The most common cases that this error could be thrown is in case:
 	 *             <ul>
-	 *             <li>the type of the event can't be handled by the event bus because no command is
+	 *             <li>the name of the event can't be handled by the event bus because no command is
 	 *             associated to it.</li>
 	 *             <li>the class type of the object to be used by the handler methods is different
 	 *             from the class type of the handlers method.</li>
@@ -78,10 +78,10 @@ public interface EventBusWithLookup extends EventBus {
 	public void dispatch( String eventName );
 
 	/**
-	 * Call the method associated with the event type in order to trigger the presenters that can
+	 * Call the method associated with the event name in order to trigger the presenters that can
 	 * handle the event. Forward to the handler the object associated with the event. <br/>
-	 * In this function, the type is given as a enumeration. The toString method of this enumeration
-	 * must return the type of the event defined the configuration file.<br/>
+	 * In this function, the name is given as a enumeration. The toString method of this enumeration
+	 * must return the name of the event as defined in the configuration.<br/>
 	 * <br/>
 	 * The event is stored in GWT History stack if possible (ie if an History Converter is
 	 * associated with the event) and needed (ie isHistoryStored() == true).<br/>
@@ -99,7 +99,7 @@ public interface EventBusWithLookup extends EventBus {
 	 *             exception thrown in case an error occurs while the event is dispatched.<br/>
 	 *             The most common cases that this error could be thrown is in case:
 	 *             <ul>
-	 *             <li>the type of the event can't be handled by the event bus because no command is
+	 *             <li>the name of the event can't be handled by the event bus because no command is
 	 *             associated to it.</li>
 	 *             <li>the class type of the object to be used by the handler methods is different
 	 *             from the class type of the handlers method.</li>
@@ -111,11 +111,11 @@ public interface EventBusWithLookup extends EventBus {
 	public <E extends Enum<E>> void dispatch( Enum<E> enumEventName, Object... objects );
 
 	/**
-	 * Call the method associated with the event type in order to trigger the presenters that can
+	 * Call the method associated with the event name in order to trigger the presenters that can
 	 * handle the event. In this case no object is forwarded to the handler(s).<br/>
 	 * <br/>
-	 * In this function, the type is given as a enumeration. The toString method of this enumeration
-	 * must return the type of the event defined the configuration file.<br/>
+	 * In this function, the name is given as a enumeration. The toString method of this enumeration
+	 * must return the name of the event as defined in the configuration.<br/>
 	 * <br/>
 	 * The event is stored in GWT History stack if possible (ie if an History Converter is
 	 * associated with the event) and needed (ie isHistoryStored() == true).<br/>
@@ -129,7 +129,7 @@ public interface EventBusWithLookup extends EventBus {
 	 *             exception thrown in case an error occurs while the event is dispatched.<br/>
 	 *             The most common cases that this error could be thrown is in case:
 	 *             <ul>
-	 *             <li>the type of the event can't be handled by the event bus because no command is
+	 *             <li>the name of the event can't be handled by the event bus because no command is
 	 *             associated to it.</li>
 	 *             <li>the class type of the object to be used by the handler methods is different
 	 *             from the class type of the handlers method.</li>

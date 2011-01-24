@@ -16,7 +16,7 @@
 package com.mvp4g.util.exception;
 
 /**
- * Signals an anomaly associated with the mvp4g-conf.xml file.
+ * Signals an anomaly in the Mvp4g configuration.
  * 
  * @author javier
  * 
