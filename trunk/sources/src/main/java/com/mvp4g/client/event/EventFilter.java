@@ -30,7 +30,7 @@ public interface EventFilter<E extends EventBus> {
 	 * Filter an event
 	 * 
 	 * @param eventName
-	 * 			type of the event
+	 * 			name of the event to filter
 	 * @param params
 	 * 			objects sent with the event
 	 * @param eventBus

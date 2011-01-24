@@ -15,7 +15,6 @@
  */
 package com.mvp4g.client;
 
-import com.mvp4g.client.annotation.XmlFilePath;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.history.HistoryConverter;
 
@@ -26,7 +25,6 @@ import com.mvp4g.client.history.HistoryConverter;
  * @author plcoirier
  * 
  */
-@XmlFilePath( "mvp4g-conf.xml" )
 public interface Mvp4gModule {
 
 	/**

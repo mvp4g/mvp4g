@@ -15,7 +15,6 @@
  */
 package com.mvp4g.util.config.element;
 
-import com.mvp4g.client.event.EventBusWithLookup;
 
 public class EventBusElement {
 
@@ -48,10 +47,6 @@ public class EventBusElement {
 	 */
 	public boolean isWithLookUp() {
 		return withLookUp;
-	}
-
-	public boolean isXml() {
-		return EventBusWithLookup.class.getCanonicalName().equals( interfaceClassName );
 	}
 
 }
