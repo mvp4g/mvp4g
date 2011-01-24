@@ -131,8 +131,7 @@ public class EventsAnnotationsLoaderTest {
 		EventBusElement eventBus = configuration.getEventBus();
 		assertEquals( BaseEventBus.class.getName(), eventBus.getAbstractClassName() );
 		assertEquals( type.getQualifiedSourceName(), eventBus.getInterfaceClassName() );
-		assertFalse( eventBus.isWithLookUp() );
-		assertFalse( eventBus.isXml() );
+		assertFalse( eventBus.isWithLookUp() );		
 	}
 
 	@Test
@@ -148,8 +147,7 @@ public class EventsAnnotationsLoaderTest {
 		EventBusElement eventBus = configuration.getEventBus();
 		assertEquals( BaseEventBusWithLookUp.class.getName(), eventBus.getAbstractClassName() );
 		assertEquals( type.getQualifiedSourceName(), eventBus.getInterfaceClassName() );
-		assertTrue( eventBus.isWithLookUp() );
-		assertFalse( eventBus.isXml() );
+		assertTrue( eventBus.isWithLookUp() );		
 	}
 
 	@Test

@@ -1,10 +1,9 @@
 package com.mvp4g.util.config.element;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 
 import org.junit.Test;
-
-import com.mvp4g.client.event.EventBusWithLookup;
 
 public class EventBusElementTest {
 
@@ -16,13 +15,6 @@ public class EventBusElementTest {
 		assertEquals( interfaceName, e.getInterfaceClassName() );
 		assertEquals( abstractClassName, e.getAbstractClassName() );
 		assertFalse( e.isWithLookUp() );
-		assertFalse( e.isXml() );
-	}
-
-	@Test
-	public void testIsXml() {
-		EventBusElement e = new EventBusElement( EventBusWithLookup.class.getName(), "name", false );
-		assertTrue( e.isXml() );
 	}
 
 }
