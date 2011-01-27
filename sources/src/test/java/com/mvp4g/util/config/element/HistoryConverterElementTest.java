@@ -4,21 +4,28 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 public class HistoryConverterElementTest extends Mvp4gWithServicesElementTest {
 	
-	private static final String[] properties = { "convertParams" };
+	private static final String[] properties = { "type" };
 
 	@Test
 	public void testDefaultConvertParams() throws DuplicatePropertyNameException{
 		HistoryConverterElement element = new HistoryConverterElement();
-		assertTrue( element.isConvertParams() );
+		assertEquals( element.getType(), HistoryConverterType.DEFAULT.name() );
 		
-		element.setConvertParams( Boolean.FALSE.toString() );
-		assertEquals( element.getConvertParams(), Boolean.FALSE.toString() );
-		assertFalse( element.isConvertParams() );
+		element.setType( HistoryConverterType.DEFAULT.name() );
+		assertEquals( element.getType(), HistoryConverterType.DEFAULT.name() );
 		
+		element = new HistoryConverterElement();
+		element.setType( HistoryConverterType.AUTO.name() );
+		assertEquals( element.getType(), HistoryConverterType.AUTO.name() );
+		
+		element = new HistoryConverterElement();
+		element.setType( HistoryConverterType.NONE.name() );
+		assertEquals( element.getType(), HistoryConverterType.NONE.name() );		
 	}
 	
 	@Override
