@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.DefaultMvp4gGinModule;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Debug.LogLevel;
+import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBus;
@@ -274,9 +275,14 @@ public class Mvp4gConfigurationFileReaderTest {
 		HistoryConverterElement c2 = new HistoryConverterElement();
 		c2.setClassName( SimpleHistoryConverter.class.getCanonicalName() );
 		c2.setName( "history2" );
-		c2.setConvertParams( Boolean.FALSE.toString() );
+		c2.setType( HistoryConverterType.NONE.name() );
+		HistoryConverterElement c3 = new HistoryConverterElement();
+		c3.setClassName( SimpleHistoryConverter.class.getCanonicalName() );
+		c3.setName( "history3" );
+		c3.setType( HistoryConverterType.AUTO.name() );
 		configuration.getHistoryConverters().add( c1 );
 		configuration.getHistoryConverters().add( c2 );
+		configuration.getHistoryConverters().add( c3 );
 
 		Set<EventElement> events = configuration.getEvents();
 
@@ -302,11 +308,18 @@ public class Mvp4gConfigurationFileReaderTest {
 		e4.setType( "event4" );
 		e4.setHandlers( new String[] { "handler3" } );
 		e4.setHistory( "history2" );
+		
+		EventElement e5 = new EventElement();
+		e5.setType( "event5" );
+		e5.setHandlers( new String[] { "handler3" } );
+		e5.setHistory( "history3" );
+		e5.setEventObjectClass( new String[] { "java.lang.String", "java.lang.Object" } );
 
 		events.add( e1 );
 		events.add( e2 );
 		events.add( e3 );
 		events.add( e4 );
+		events.add( e5 );
 
 		writer.writeConf();
 
@@ -1471,8 +1484,8 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	private String[] getExpectedHistoryEvents() {
 		return new String[] { "place( itself, \"historyName\",history.onEvent2(attr0),false);", "clearHistory(itself);",
-				"place( itself, \"event1\",history.onEvent1(attr0,attr1),false);", "place( itself, \"event4\",null,false);",
-				"addConverter( \"event4\",history2);", "addConverter( \"historyName\",history);", "addConverter( \"event1\",history);" };
+				"place( itself, \"event1\",history.onEvent1(attr0,attr1),false);", "place( itself, \"event4\",null,false);","place( itself, \"event5\",history3.convertToToken(\"event5\",attr0,attr1),false);",
+				"addConverter( \"event4\",history2);", "addConverter( \"historyName\",history);", "addConverter( \"event1\",history);","addConverter( \"event5\",history3);" };
 	}
 
 	private String[] getExpectedEventsWithLookup() {

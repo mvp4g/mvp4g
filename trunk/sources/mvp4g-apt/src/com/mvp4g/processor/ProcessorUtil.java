@@ -8,7 +8,6 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
 
 public class ProcessorUtil {
 
@@ -19,8 +18,12 @@ public class ProcessorUtil {
 	public static String PRESENTER = "com.mvp4g.client.annotation.Presenter";
 	public static String EVENT_HANDLER = "com.mvp4g.client.annotation.EventHandler";
 	public static String HISTORY = "com.mvp4g.client.annotation.History";
+	
+	public static String HISTORY_CONVERTER_TYPE_NONE = "NONE";
+	public static String HISTORY_CONVERTER_TYPE_AUTO = "AUTO";
+	public static String HISTORY_CONVERTER_TYPE_DEFAULT = "DEFAULT";
 
-	public static boolean sameParameters( List<? extends VariableElement> expected, List<? extends VariableElement> given, Element e ) {
+	public static boolean sameParameters( List<? extends Element> expected, List<? extends Element> given, Element e ) {
 		boolean same = ( expected.size() == given.size() );
 		if ( same ) {
 			for ( int i = 0; ( i < expected.size() ) && same; i++ ) {
@@ -30,7 +33,7 @@ public class ProcessorUtil {
 		return same;
 	}
 
-	public static String getMethodName( String methodName, List<? extends VariableElement> parameters ) {
+	public static String getMethodName( String methodName, List<? extends Element> parameters ) {
 		int parameterSize = parameters.size();
 		StringBuilder builder = new StringBuilder( parameterSize * 20 + 50 );
 		builder.append( methodName );

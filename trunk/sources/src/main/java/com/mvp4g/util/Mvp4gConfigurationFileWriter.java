@@ -25,6 +25,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Debug.LogLevel;
+import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.client.history.PlaceService;
@@ -675,7 +676,7 @@ public class Mvp4gConfigurationFileWriter {
 					writeParentEvent( event, parentParam );
 				} else {
 					sourceWriter.print( "return " );
-					writeEventHistoryConvertion( event, getElement( history, configuration.getHistoryConverters() ), param, true );
+					writeEventHistoryConvertion( event, getElement( history, configuration.getHistoryConverters() ), parentParam, true );
 				}
 				sourceWriter.outdent();
 				sourceWriter.println( "} else {" );
@@ -711,7 +712,7 @@ public class Mvp4gConfigurationFileWriter {
 				if ( ClearHistory.class.getCanonicalName().equals( historyConverterElement.getClassName() ) ) {
 					sourceWriter.println( "clearHistory(itself);" );
 				} else {
-					writeEventHistoryConvertion( event, historyConverterElement, param, false );
+					writeEventHistoryConvertion( event, historyConverterElement, parentParam, false );
 					eventsWithHistory.add( event );
 				}
 			}
@@ -831,13 +832,27 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.print( "place( itself, \"" );
 		sourceWriter.print( event.getName() );
 		sourceWriter.print( "\"," );
-		if ( historyConverterElement.isConvertParams() ) {
+		HistoryConverterType type = com.mvp4g.client.annotation.History.HistoryConverterType.valueOf( historyConverterElement.getType() );
+		switch ( type ) {
+		case DEFAULT:
 			sourceWriter.print( historyConverterElement.getName() );
 			sourceWriter.print( "." );
 			sourceWriter.print( event.getCalledMethod() );
+			sourceWriter.print( "(" );
 			sourceWriter.print( param );
-		} else {
+			sourceWriter.print( ")" );
+			break;
+		case AUTO:
+			sourceWriter.print( historyConverterElement.getName() );
+			sourceWriter.print( ".convertToToken(\"" );
+			sourceWriter.print( event.getName() );
+			sourceWriter.print( "\"," );
+			sourceWriter.print( param );
+			sourceWriter.print( ")" );
+			break;
+		default:
 			sourceWriter.print( "null" );
+			break;
 		}
 		sourceWriter.print( "," );
 		sourceWriter.print( Boolean.toString( onlyTokens ) );

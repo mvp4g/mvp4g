@@ -37,9 +37,13 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention( RetentionPolicy.RUNTIME )
 public @interface History {
+	
+	public enum HistoryConverterType {		
+		DEFAULT, AUTO, NONE		
+	}
 
 	String name() default "";
 
-	boolean convertParams() default true;
+	HistoryConverterType type() default HistoryConverterType.DEFAULT;
 
 }
