@@ -58,9 +58,8 @@ public interface MainEventBus extends EventBusWithLookup {
 @Event annotation has the following attributes:
  * handlers and handlerNames (see next paragraph)
  * calledMethod (see next paragraph)
- * name: Some Mvp4g methods let you manipulate an event thanks to its name. By default the event's name is the event's method's name but you can override it to ease refractoring
-  ([http://code.google.com/p/mvp4g/wiki/PlaceService#Place_Service see convertFromToken method], [http://code.google.com/p/mvp4g/wiki/EventBus#Event_Filtering see filterEvent method], [http://code.google.com/p/mvp4g/wiki/EventBus#with_lookup see dispatch method]).
- * historyConverter, historyConverterName & historyName: used only for history management([http://code.google.com/p/mvp4g/wiki/PlaceService see Mvp4g & Browse history])
+ * name: Some Mvp4g methods let you manipulate an event thanks to its name. By default the event's name is the event's method's name but you can override it to ease refractoring ([http://code.google.com/p/mvp4g/wiki/PlaceService#Place_Service see convertFromToken method], [http://code.google.com/p/mvp4g/wiki/EventBus#Event_Filtering see filterEvent method], [http://code.google.com/p/mvp4g/wiki/EventBus#with_lookup see dispatch method]).
+ * historyConverter & historyConverterName: used only for history management([http://code.google.com/p/mvp4g/wiki/PlaceService see Mvp4g & Browse history])
  * modulesToLoad and forwardToParent ([http://code.google.com/p/mvp4g/wiki/MultiModules see Multi-modules feature])
  * activate, activateNames, deactivate, deactivateNames (see [http://code.google.com/p/mvp4g/wiki/EventBus?ts=1284236703&updated=EventBus#Activating/Deactivating_presenters see Activating/Deactivating presenters])
  * navigationEvent (see [http://code.google.com/p/mvp4g/wiki/EventBus_130#Navigation_Event Navigation Event])
