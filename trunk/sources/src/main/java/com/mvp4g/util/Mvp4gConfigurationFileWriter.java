@@ -154,14 +154,18 @@ public class Mvp4gConfigurationFileWriter {
 	private void writeGetters() {
 		sourceWriter.println( "public Object getStartView(){" );
 		sourceWriter.indent();
-		sourceWriter.println( "if (startPresenter != null) {" );
-		sourceWriter.indent();
-		sourceWriter.println( "startPresenter.setActivated(true);" );
-		sourceWriter.println( "startPresenter.isActivated(false);" );
-		sourceWriter.outdent();
-		sourceWriter.print( "}" );
 
-		sourceWriter.println( "return startView;" );
+		if ( configuration.getStart().hasView() ) {
+			sourceWriter.println( "if (startPresenter != null) {" );
+			sourceWriter.indent();
+			sourceWriter.println( "startPresenter.setActivated(true);" );
+			sourceWriter.println( "startPresenter.isActivated(false);" );
+			sourceWriter.outdent();
+			sourceWriter.print( "}" );
+			sourceWriter.println( "return startView;" );
+		} else {
+			sourceWriter.println( "throw new Mvp4gException(\"getStartView shouldn't be called since this module has no start view.\");" );
+		}
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );
 		sourceWriter.println();
@@ -1038,20 +1042,22 @@ public class Mvp4gConfigurationFileWriter {
 		StartElement start = configuration.getStart();
 
 		// Start view
-		String startPresenter = findStartPresenter();
-		PresenterElement presenter = getElement( startPresenter, configuration.getPresenters() );
-		if ( presenter.isMultiple() ) {
-			sourceWriter.print( "this.startPresenter = eventBus.addHandler(" );
-			sourceWriter.print( presenter.getClassName() );
-			sourceWriter.println( ".class);" );
-			sourceWriter.println( "this.startView = startPresenter.getView();" );
-		} else {
-			sourceWriter.print( "this.startPresenter = " );
-			sourceWriter.print( startPresenter );
-			sourceWriter.println( ";" );
-			sourceWriter.print( "this.startView = " );
-			sourceWriter.print( start.getView() );
-			sourceWriter.println( ";" );
+		if ( start.hasView() ) {
+			String startPresenter = findStartPresenter();
+			PresenterElement presenter = getElement( startPresenter, configuration.getPresenters() );
+			if ( presenter.isMultiple() ) {
+				sourceWriter.print( "this.startPresenter = eventBus.addHandler(" );
+				sourceWriter.print( presenter.getClassName() );
+				sourceWriter.println( ".class);" );
+				sourceWriter.println( "this.startView = startPresenter.getView();" );
+			} else {
+				sourceWriter.print( "this.startPresenter = " );
+				sourceWriter.print( startPresenter );
+				sourceWriter.println( ";" );
+				sourceWriter.print( "this.startView = " );
+				sourceWriter.print( start.getView() );
+				sourceWriter.println( ";" );
+			}
 		}
 
 		if ( start.hasEventType() ) {

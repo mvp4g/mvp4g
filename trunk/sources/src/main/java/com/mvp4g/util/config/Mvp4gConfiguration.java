@@ -107,7 +107,7 @@ public class Mvp4gConfiguration {
 	private static final String WRONG_HISTORY_NAME = "%s %s: history name can't start with '" + PlaceService.CRAWLABLE + "' or contain '"
 			+ PlaceService.MODULE_SEPARATOR + "'.";
 	private static final String WRONG_FORWARD_EVENT = "You can't define a forward event for RootModule since no event from parent can be forwarded to it.";
-	private static final String NO_START_VIEW = "You must define a view to load when the application starts that is associated to a presenter.";
+	private static final String NO_START_VIEW = "Module %s: You must define a start view since this module has a parent module that uses the auto-displayed feature for this module.";
 	private static final String NO_GIN_MODULE = "You need to define at least one GIN module. If you don't want to specify a GIN module, don't override the GIN modules option to use the default Mvp4g GIN module.";
 	private static final String ROOT_MODULE_NO_HISTORY_NAME = "Module %s can't have an history name since it's a root module.";
 
@@ -129,7 +129,7 @@ public class Mvp4gConfiguration {
 	private JClassType module = null;
 	private ChildModulesElement loadChildConfig = null;
 	private Map<String, JClassType> othersEventBusClassMap = new HashMap<String, JClassType>();
-	private Map<String, JClassType> moduleParentEventBusClassMap = new HashMap<String, JClassType>();
+	private Map<String, ChildModuleElement> moduleParentEventBusClassMap = new HashMap<String, ChildModuleElement>();
 	private JClassType parentEventBus = null;
 	private String historyName = null;
 	private DebugElement debug = null;
@@ -369,7 +369,7 @@ public class Mvp4gConfiguration {
 	/**
 	 * @return the moduleParentEventBusClassMap
 	 */
-	public Map<String, JClassType> getModuleParentEventBusClassMap() {
+	public Map<String, ChildModuleElement> getModuleParentEventBusClassMap() {
 		return moduleParentEventBusClassMap;
 	}
 
@@ -720,6 +720,7 @@ public class Mvp4gConfiguration {
 			}
 		}
 
+		boolean hasStartView = start.hasView();
 		String startView = start.getView();
 		JGenericType presenterGenType = getType( null, PresenterInterface.class.getCanonicalName() ).isGenericType();
 		JGenericType eventHandlerGenType = getType( null, EventHandlerInterface.class.getCanonicalName() ).isGenericType();
@@ -745,7 +746,7 @@ public class Mvp4gConfiguration {
 			eventActivateList = activateMap.remove( name );
 			viewName = presenter.getView();
 
-			toKeep = ( eventList != null ) || viewName.equals( startView );
+			toKeep = ( eventList != null ) || ( hasStartView && viewName.equals( startView ) );
 			notDirectHandler = !toKeep && ( presenter.isMultiple() || hasPossibleBroadcast );
 			if ( toKeep || notDirectHandler ) {
 				toKeep = controlEventBus( presenter, eventHandlerGenType, eventBusType, toKeep );
@@ -1170,9 +1171,15 @@ public class Mvp4gConfiguration {
 	 *             thrown if no view to load at start has been defined.
 	 */
 	void validateStart() throws InvalidMvp4gConfigurationException {
-		if ( ( start == null ) || ( start.getView() == null ) || ( start.getView().length() == 0 ) ) {
-			throw new InvalidMvp4gConfigurationException( NO_START_VIEW );
+		if ( !start.hasView() ) {
+			ChildModuleElement child = moduleParentEventBusClassMap.get( module.getQualifiedSourceName() );
+			if ( child != null ) {
+				if ( child.isAutoDisplay() ) {
+					throw new InvalidMvp4gConfigurationException( String.format( NO_START_VIEW, module.getQualifiedSourceName() ) );	
+				}
+			}
 		}
+
 		String startEvent = start.getEventType();
 		if ( ( startEvent != null ) && ( startEvent.length() > 0 ) ) {
 			EventElement eventElt = getElement( startEvent, events, start );
@@ -1385,7 +1392,8 @@ public class Mvp4gConfiguration {
 	}
 
 	private JClassType findParentEventBus( String moduleClassName ) {
-		return moduleParentEventBusClassMap.get( moduleClassName );
+		ChildModuleElement child = moduleParentEventBusClassMap.get( moduleClassName );
+		return ( child == null ) ? null : child.getParentEventBus();
 	}
 
 	void findChildModuleHistoryName() throws InvalidMvp4gConfigurationException {

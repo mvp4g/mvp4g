@@ -15,9 +15,12 @@
  */
 package com.mvp4g.util.config.element;
 
+import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 public class ChildModuleElement extends SimpleMvp4gElement {
+
+	JClassType parentEventBus;
 
 	public ChildModuleElement() {
 		super( "childModule" );
@@ -67,4 +70,12 @@ public class ChildModuleElement extends SimpleMvp4gElement {
 		setProperty( "historyName", historyName );
 	}
 
+	public JClassType getParentEventBus() {
+		return parentEventBus;
+	}
+
+	public void setParentEventBus( JClassType parentEventBus ) {
+		this.parentEventBus = parentEventBus;
+	}
+	
 }

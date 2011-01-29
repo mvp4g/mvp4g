@@ -55,6 +55,14 @@ public class StartElementTest extends AbstractMvp4gElementTest<StartElement> {
 		assertEquals( test, element.getForwardEventType() );
 		assertTrue( element.hasForwardEventType() );
 	}
+	
+	@Test
+	public void testHasStartView() throws DuplicatePropertyNameException {
+		assertFalse( element.hasView() );
+		
+		element.setView( "view" );
+		assertTrue( element.hasView() );
+	}
 
 	@Override
 	protected String[] getProperties() {
