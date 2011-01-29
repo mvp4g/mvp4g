@@ -12,7 +12,7 @@
 Mvp4g instantiates a Place Service to easily manage history based on History converter.
 
 History converters have two goals: 
- * convert event parameters to a string (to add it to the token) and/or store them (in cookie for example) when an event is stored in browser history. In order to do this convertion, the history converter must implement the handling method of the event except that it must return a string. This string will then be stored in the token ([http://code.google.com/p/mvp4g/wiki/PlaceService#Associate_an_History_Converter_to_an_event see Associate an History Converter to an event]).
+ * convert event parameters to a string (to add it to the token) and/or store them (in cookie for example) when an event is stored in browser history. In order to do this conversion, the history converter must implement the handling method of the event except that it must return a string. This string will then be stored in the token ([http://code.google.com/p/mvp4g/wiki/PlaceService#Associate_an_History_Converter_to_an_event see Associate an History Converter to an event]).
  * convert, when history changes, a token to an event, retrieve information to build its parameters (thanks to the token, database, cookie...) and then fires the converted event to event bus. This conversion is done by convertFromToken method.
 
 This is how Mvp4g stores an event to the browser history:
@@ -60,9 +60,9 @@ Mvp4g generates instances of history converter as singleton so for one class, it
 
 Instead of the class, you can also specify the name of the history converter thanks of the attribute historyConverterName of @Event annotation. In this case, you need to make sure that an history converter with this name exits.
 
-When an history converter is associated to an event, it needs to implement the convertion method of this event. The method to define will depend on the history converter type:
+When an history converter is associated to an event, it needs to implement the conversion method of this event. The method to define will depend on the history converter type:
  * NONE: parameters won't be converted, only the event's name will store in browser's history.
- * DEFAULT: the history converter needs to define the handling method of the event but this method must return a String. The returned String will added to the token and stored in browser's history.
+ * DEFAULT: the history converter needs to define the handling method of the event but this method must return a String. The returned String will be added to the token and stored in browser's history.
 For example for the previous event, you need to define the following method in your history converter:
 {{{
 public String goToCompany(long id);
@@ -70,11 +70,34 @@ public String goToCompany(long id);
  * AUTO: the history converter needs to define one convertToToken method for each event that has a different parameters signature. This convertToToken method must return String and must have the same parameters as the event to convert plus a first String parameter. The returned String will added to the token and stored in browser's history.
 For example, if you have the following event bus:
 {{{
-public String goToCompany(long id);
+public interface OneEventBus ... { 
+    
+    @Event(..., historyConverter=OneHistoryConverter.class) 
+    void event1(int i); 
+
+    @Event(..., historyConverter=OneHistoryConverter.class) 
+    void event2(int i); 
+
+    @Event(..., historyConverter=OneHistoryConverter.class) 
+    void event3(int i, String s); 
+
+} 
 }}}
 you would need to define this history converter with 2 convertToToken methods:
 {{{
+public class OneHistoryConverter... { 
 
+    public String convertToToken(String eventType, int i){ 
+        //called by event1 and event2 
+        ... 
+    }
+ 
+    public String convertToToken(String eventType, int i, String s){ 
+        //called by event 3 
+        ... 
+    } 
+
+} 
 }}}
 
 You can define the history converter type thanks to the "type" attribute of the @History annotation:
@@ -137,9 +160,9 @@ public interface MainEventBus extends EventBusWithLookup {...}
 ==Temporary disable history==
 
 In some cases, you may need to temporary stop storing events in browser history. In order to do so, Mvp4g provides three methods using the event bus:
- * setApplicationHistoryStored: this method enables/disables convertion (and storage to browser's history) of any events of any Mvp4g event bus. 
- * setHistoryStored: this method enables/disables convertion (and storage to browser's history) of any events fired on this event bus only.
- * setHistoryStoredForNextOne: this method enables/disables convertion (and storage to browser's history) of the next event fired on this event bus, associated with an history converter (other events fired while handling this event won't be affected by the call of this method).
+ * setApplicationHistoryStored: this method enables/disables conversion (and storage to browser's history) of any events of any Mvp4g event bus. 
+ * setHistoryStored: this method enables/disables conversion (and storage to browser's history) of any events fired on this event bus only.
+ * setHistoryStoredForNextOne: this method enables/disables conversion (and storage to browser's history) of the next event fired on this event bus, associated with an history converter (other events fired while handling this event won't be affected by the call of this method).
 
 In this example, none of the events fired on any event bus will be stored in browser history:
 {{{
@@ -188,11 +211,11 @@ www.mysite.com/#!displayCompany?id=1234.
 www.mysite.com/#displayCompany?id=1234.
 
 ==Setting a Custom Place Service==
-You can easily set your own place to override the behavior of the Mvp4g default place service.
+You can easily set your own place service to override the behavior of the Mvp4g default place service.
 
 To set your own service, you need to:
  # Create an abstract class that overrides PlaceService. This class shouldn't implement sendInitEvent and sendNotFoundEvent methods, these methods will be implemented by Mvp4g.
- # Set this custom place service by annotating the Root Mvp4g module (ie Mvp4g module with no parent) with to @PlaceService.
+ # Set this custom place service by annotating the Root Mvp4g module (ie Mvp4g module with no parent) with @PlaceService.
 
 {{{
 @PlaceService( CustomPlaceService.class )
@@ -201,8 +224,7 @@ public interface MainEventBus extends EventBusWithLookup {...}
 }}}
 
 [http://www.qondio.com/graphics/attention.png] parameters stored in the token shouldn't contain the character used to separate the event name from its parameters.
-[http://www.qondio.com/graphics/attention.png] if you use "/" to separate the event name from its parameters, you need to have "/" always added to the token name even if there is no parameters. By default, "/" is also used to separate child module history name (see below) and when parsing the url, 
-Mvp4g needs to be sure that the last "/" is used to seperate the event name from its parameters.
+[http://www.qondio.com/graphics/attention.png] if you use "/" to separate the event name from its parameters, you need to have "/" always added to the token name even if there is no parameters. By default, "/" is also used to separate child module history name (see below) and when parsing the url, Mvp4g needs to be sure that the last "/" is used to seperate the event name from its parameters.
 
 =History Management and Multi-Modules feature=
 
