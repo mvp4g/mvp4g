@@ -18,19 +18,7 @@ package com.mvp4g.util.config.element;
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 /**
- * An Mvp4g Start configuration element.</p>
- * 
- * A <i>start</i> element is composed of two attributes:
- * <ol>
- * <li/><i>view</i>: a required attribute specifying which view to render upon application startup;
- * <li/><i>eventType</i>: an optional attribute specifying the event to be broadcasted upon
- * application startup.
- * </ol>
- * 
- * Because every GWT application always needs to render a view at startup, this element is required.
- * 
  * @author javier
- * 
  */
 public class StartElement extends Mvp4gElement {
 
@@ -81,13 +69,17 @@ public class StartElement extends Mvp4gElement {
 	public void setForwardEventType( String forwardEventType ) throws DuplicatePropertyNameException {
 		setProperty( "forwardEventType", forwardEventType );
 	}
-
+	
 	public String getForwardEventType() {
 		return getProperty( "forwardEventType" );
 	}
 	
 	public boolean hasForwardEventType() {
 		return getForwardEventType() != null;
+	}
+	
+	public boolean hasView(){
+		return (getView() != null);
 	}
 
 }

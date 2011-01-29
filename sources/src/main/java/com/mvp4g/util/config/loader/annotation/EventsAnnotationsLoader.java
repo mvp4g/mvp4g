@@ -46,6 +46,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.EventFilter;
 import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.event.Mvp4gLogger;
+import com.mvp4g.client.view.NoStartView;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
@@ -84,13 +85,8 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		if ( annotation.module().getCanonicalName().equals( configuration.getModule().getQualifiedSourceName() ) ) {
 
 			if ( configuration.getEventBus() != null ) {
-				String err = "You can either define your events thanks to the configuration file or a single EventBus interface. Do you already have another EventBus interface or use a configuration file for the module "
-						+ annotation.module().getCanonicalName() + "?.";
-				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
-			}
-
-			if ( configuration.getStart() != null ) {
-				String err = "You can't use start tag in your configuration file when you define your events in an EventBus interface.";
+				String err = "You can define only one event bus by Mvp4g module. Do you already have another EventBus interface for the module "
+						+ annotation.module().getCanonicalName() + "?";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 			}
 
@@ -120,9 +116,24 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			configuration.getOthersEventBusClassMap().put( annotation.module().getCanonicalName(), c );
 			ChildModules children = c.getAnnotation( ChildModules.class );
 			if ( children != null ) {
-				Map<String, JClassType> moduleParentEventBus = configuration.getModuleParentEventBusClassMap();
+				Map<String, ChildModuleElement> moduleParentEventBus = configuration.getModuleParentEventBusClassMap();
+				ChildModuleElement childElement;
+				String childClass;
 				for ( ChildModule child : children.value() ) {
-					moduleParentEventBus.put( child.moduleClass().getCanonicalName(), c );
+					childClass = child.moduleClass().getCanonicalName();
+					if ( moduleParentEventBus.containsKey( childClass ) ) {
+						String err = "Module " + childClass + "can only have 1 parent.";
+						throw new Mvp4gAnnotationException( childClass, null, err );
+					} else {
+						childElement = new ChildModuleElement();
+						childElement.setParentEventBus( c );
+						try {
+							childElement.setAutoDisplay( Boolean.toString( child.autoDisplay() ) );
+						} catch ( DuplicatePropertyNameException e ) {
+							//this error is never thrown
+						}
+						moduleParentEventBus.put( childClass, childElement );
+					}
 				}
 			}
 		}
@@ -248,34 +259,39 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		Set<ViewElement> views = configuration.getViews();
 		String viewName = annotation.startViewName();
 		Class<?> viewClass = annotation.startView();
-		if ( ( viewName != null ) && ( viewName.length() > 0 ) ) {
-			boolean found = false;
-			for ( ViewElement view : views ) {
-				if ( viewName.equals( view.getName() ) ) {
-					if ( !viewClass.getCanonicalName().equals( view.getClassName() ) ) {
-						String err = "There is no instance of " + viewClass.getCanonicalName() + " with name " + viewName;
-						throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
+		boolean hasView = !NoStartView.class.equals( viewClass );
+		if ( hasView ) {
+			if ( ( viewName != null ) && ( viewName.length() > 0 ) ) {
+				boolean found = false;
+				for ( ViewElement view : views ) {
+					if ( viewName.equals( view.getName() ) ) {
+						if ( !viewClass.getCanonicalName().equals( view.getClassName() ) ) {
+							String err = "There is no instance of " + viewClass.getCanonicalName() + " with name " + viewName;
+							throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
+						}
+						found = true;
+						break;
 					}
-					found = true;
-					break;
 				}
-			}
-			if ( !found ) {
-				String err = "There is no view named " + viewName;
-				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
-			}
+				if ( !found ) {
+					String err = "There is no view named " + viewName;
+					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
+				}
 
-		} else {
-			viewName = getElementName( views, viewClass.getCanonicalName() );
-			if ( viewName == null ) {
-				String err = "There is no instance of " + viewClass.getCanonicalName() + ". Have you forgotten to inject it to a presenter?";
-				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
+			} else {
+				viewName = getElementName( views, viewClass.getCanonicalName() );
+				if ( viewName == null ) {
+					String err = "There is no instance of " + viewClass.getCanonicalName() + ". Have you forgotten to inject it to a presenter?";
+					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
+				}
 			}
 		}
 
 		try {
 			StartElement element = new StartElement();
-			element.setView( viewName );
+			if ( hasView ) {
+				element.setView( viewName );
+			}
 			element.setHistory( Boolean.toString( annotation.historyOnStart() ) );
 			configuration.setStart( element );
 		} catch ( DuplicatePropertyNameException e ) {
@@ -639,7 +655,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			}
 
 			try {
-				history.setPlaceServiceClass( historyConfig.value().getCanonicalName() );				
+				history.setPlaceServiceClass( historyConfig.value().getCanonicalName() );
 			} catch ( DuplicatePropertyNameException e ) {
 				//can't occur
 			}

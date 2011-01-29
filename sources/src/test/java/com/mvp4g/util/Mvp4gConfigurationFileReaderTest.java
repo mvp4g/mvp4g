@@ -614,6 +614,16 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedStartPresenterViewMultiple(), false );
 
 	}
+	
+	@Test
+	public void testWriteNoStartView() throws DuplicatePropertyNameException {
+		StartElement start = new StartElement();
+		configuration.setStart( start );		
+		
+		assertOutput( getNoStartView(), false );
+		writer.writeConf();
+		assertOutput( getNoStartView(), true );		
+	}
 
 	@Test
 	public void testWriteStartMultiple() throws DuplicatePropertyNameException {
@@ -1539,6 +1549,10 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	private String[] getExpectedGetters() {
 		return new String[] { "public Object getStartView(){", "return startView;", "public EventBus getEventBus(){", "return eventBus;" };
+	}
+	
+	private String[] getNoStartView() {
+		return new String[] { "throw new Mvp4gException(\"getStartView shouldn't be called since this module has no start view.\");" };
 	}
 
 	private String[] getExpectedSetNoParent() {

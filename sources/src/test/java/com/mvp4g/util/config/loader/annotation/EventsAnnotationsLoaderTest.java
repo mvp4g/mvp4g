@@ -60,36 +60,19 @@ public class EventsAnnotationsLoaderTest {
 		loader = new EventsAnnotationsLoader();
 	}
 
-	@Test( expected = Mvp4gAnnotationException.class )
-	public void testOtherEventBus() throws Mvp4gAnnotationException {
+	@Test
+	public void testOtherEventBus() {
 		try {
 			configuration.setEventBus( new EventBusElement( Object.class.getName(), BaseEventBus.class.getName(), false ) );
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
 			JClassType type = oracle.addClass( Events.SimpleEventBus.class );
 			annotedClasses.add( type );
 			loader.load( annotedClasses, configuration );
+			fail();
 		} catch ( Mvp4gAnnotationException e ) {
-			assertTrue( e
-					.getMessage()
-					.contains(
-							"You can either define your events thanks to the configuration file or a single EventBus interface. Do you already have another EventBus interface or use a configuration file for the module "
-									+ Mvp4gModule.class.getCanonicalName() + "?." ) );
-			throw e;
-		}
-	}
-
-	@Test( expected = Mvp4gAnnotationException.class )
-	public void testWithStart() throws Mvp4gAnnotationException {
-		try {
-			configuration.setStart( new StartElement() );
-			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			JClassType type = oracle.addClass( Events.SimpleEventBus.class );
-			annotedClasses.add( type );
-			loader.load( annotedClasses, configuration );
-		} catch ( Mvp4gAnnotationException e ) {
-			assertTrue( e.getMessage().contains(
-					"You can't use start tag in your configuration file when you define your events in an EventBus interface." ) );
-			throw e;
+			assertEquals( e.getMessage(), Events.SimpleEventBus.class.getCanonicalName()
+					+ ": You can define only one event bus by Mvp4g module. Do you already have another EventBus interface for the module "
+					+ Mvp4gModule.class.getCanonicalName() + "?" );
 		}
 	}
 
@@ -131,7 +114,7 @@ public class EventsAnnotationsLoaderTest {
 		EventBusElement eventBus = configuration.getEventBus();
 		assertEquals( BaseEventBus.class.getName(), eventBus.getAbstractClassName() );
 		assertEquals( type.getQualifiedSourceName(), eventBus.getInterfaceClassName() );
-		assertFalse( eventBus.isWithLookUp() );		
+		assertFalse( eventBus.isWithLookUp() );
 	}
 
 	@Test
@@ -147,7 +130,7 @@ public class EventsAnnotationsLoaderTest {
 		EventBusElement eventBus = configuration.getEventBus();
 		assertEquals( BaseEventBusWithLookUp.class.getName(), eventBus.getAbstractClassName() );
 		assertEquals( type.getQualifiedSourceName(), eventBus.getInterfaceClassName() );
-		assertTrue( eventBus.isWithLookUp() );		
+		assertTrue( eventBus.isWithLookUp() );
 	}
 
 	@Test
@@ -163,6 +146,7 @@ public class EventsAnnotationsLoaderTest {
 		StartElement start = configuration.getStart();
 		assertEquals( configuration.getPresenters().iterator().next().getView(), start.getView() );
 		assertFalse( start.hasHistory() );
+		assertTrue( configuration.getStart().hasView() );
 	}
 
 	@Test( expected = Mvp4gAnnotationException.class )
@@ -191,6 +175,7 @@ public class EventsAnnotationsLoaderTest {
 		StartElement start = configuration.getStart();
 		assertEquals( configuration.getPresenters().iterator().next().getView(), start.getView() );
 		assertFalse( start.hasHistory() );
+		assertTrue( configuration.getStart().hasView() );
 	}
 
 	@Test( expected = Mvp4gAnnotationException.class )
@@ -410,7 +395,7 @@ public class EventsAnnotationsLoaderTest {
 				fail( "Unknown event name" );
 			}
 
-			assertEquals( "name", e.getHandlers().get( 0 ));
+			assertEquals( "name", e.getHandlers().get( 0 ) );
 			assertEquals( "history", e.getHistory() );
 		}
 
@@ -501,13 +486,13 @@ public class EventsAnnotationsLoaderTest {
 			} else if ( "event2".equals( e.getType() ) ) {
 				modules = e.getModulesToLoad();
 				assertEquals( 1, modules.size() );
-				assertEquals( Modules.Module1.class.getCanonicalName().replace( ".", "_" ), modules.get(0) );
+				assertEquals( Modules.Module1.class.getCanonicalName().replace( ".", "_" ), modules.get( 0 ) );
 				assertFalse( e.hasForwardToParent() );
 			} else if ( "event3".equals( e.getType() ) ) {
 				modules = e.getModulesToLoad();
 				assertEquals( 2, modules.size() );
-				assertEquals( Modules.ModuleWithParent.class.getCanonicalName().replace( ".", "_" ), modules.get(0) );
-				assertEquals( Modules.Module1.class.getCanonicalName().replace( ".", "_" ), modules.get(1) );
+				assertEquals( Modules.ModuleWithParent.class.getCanonicalName().replace( ".", "_" ), modules.get( 0 ) );
+				assertEquals( Modules.Module1.class.getCanonicalName().replace( ".", "_" ), modules.get( 1 ) );
 				assertFalse( e.hasForwardToParent() );
 			} else if ( "event4".equals( e.getType() ) ) {
 				assertTrue( e.hasForwardToParent() );
@@ -664,9 +649,9 @@ public class EventsAnnotationsLoaderTest {
 		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
 		loader.load( annotedClasses, configuration );
 
-		Map<String, JClassType> othersParentEventBusClassMap = configuration.getModuleParentEventBusClassMap();
+		Map<String, ChildModuleElement> othersParentEventBusClassMap = configuration.getModuleParentEventBusClassMap();
 		assertEquals( 2, othersParentEventBusClassMap.size() );
-		assertEquals( otherEventBus, othersParentEventBusClassMap.get( Modules.Module1.class.getCanonicalName() ) );
+		assertEquals( otherEventBus, othersParentEventBusClassMap.get( Modules.Module1.class.getCanonicalName() ).getParentEventBus() );
 	}
 
 	@Test( expected = Mvp4gAnnotationException.class )
@@ -909,6 +894,18 @@ public class EventsAnnotationsLoaderTest {
 
 		HistoryElement historyConfig = configuration.getHistory();
 		assertEquals( CustomPlaceService.class.getCanonicalName(), historyConfig.getPlaceServiceClass() );
+
+	}
+	
+	@Test
+	public void testNoStartView() throws Mvp4gAnnotationException {
+
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();		
+		annotedClasses.add( oracle.addClass( Events.EventBusWithNoStartView.class ) );
+		loader.load( annotedClasses, configuration );
+
+		assertNull( configuration.getStart().getView() );
+		assertFalse( configuration.getStart().hasView() );
 
 	}
 }

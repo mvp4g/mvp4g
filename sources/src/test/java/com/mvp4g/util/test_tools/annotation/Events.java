@@ -21,6 +21,7 @@ import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.Mvp4gLogger;
+import com.mvp4g.client.view.NoStartView;
 import com.mvp4g.util.test_tools.CustomPlaceService;
 import com.mvp4g.util.test_tools.Modules;
 
@@ -335,5 +336,10 @@ public class Events {
 	@PlaceService( CustomPlaceService.class )
 	public static interface EventBusWithHistoryConfig extends EventBus {
 
+	}
+	
+	@com.mvp4g.client.annotation.Events( startView = NoStartView.class )
+	public static interface EventBusWithNoStartView extends EventBus {
+		
 	}
 }

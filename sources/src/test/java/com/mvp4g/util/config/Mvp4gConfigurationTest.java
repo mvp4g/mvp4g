@@ -571,35 +571,29 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testStartMissing() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+		StartElement start = new StartElement();		
+
 		try {
-			configuration.setStart( null );
+			JClassType moduleClass = oracle.addClass( Modules.Module1.class );
+			ChildModuleElement elt = new ChildModuleElement();
+			configuration.getModuleParentEventBusClassMap().put( moduleClass.getQualifiedSourceName(), elt );
+			configuration.setModule( moduleClass );
+
+			configuration.setStart( start );
 			configuration.validateStart();
 			fail();
 		} catch ( InvalidMvp4gConfigurationException e ) {
-
+			assertEquals(
+					"Module com.mvp4g.util.test_tools.Modules.Module1: You must define a start view since this module has a parent module that uses the auto-displayed feature for this module.",
+					e.getMessage() );
 		}
 
-		try {
-			configuration.setStart( new StartElement() );
-			configuration.validateStart();
-			fail();
-		} catch ( InvalidMvp4gConfigurationException e ) {
+		configuration.getModuleParentEventBusClassMap().clear();
+		configuration.validateStart();
 
-		}
-
-		try {
-			StartElement startElement = new StartElement();
-			startElement.setView( "" );
-			configuration.setStart( startElement );
-			configuration.validateStart();
-			fail();
-		} catch ( InvalidMvp4gConfigurationException e ) {
-
-		}
-
-		StartElement startElement = new StartElement();
-		startElement.setView( "view" );
-		configuration.setStart( startElement );
+		start = new StartElement();
+		start.setView( "one_view" );
+		configuration.setStart( start );
 		configuration.validateStart();
 
 	}
@@ -1055,8 +1049,8 @@ public class Mvp4gConfigurationTest {
 		}
 
 		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
-		JClassType parentEventBus = oracle.addClass( Events.EventBusOk.class );
-		configuration.getModuleParentEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(), parentEventBus );
+
+		setParentEventBus( Modules.ModuleWithParent.class, Events.EventBusOk.class );
 		configuration.loadParentModule();
 		configuration.validateEvents();
 	}
@@ -1144,8 +1138,7 @@ public class Mvp4gConfigurationTest {
 		historyConverters.add( new HistoryConverterElement() );
 
 		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
-		JClassType parentEventBus = oracle.addClass( Events.EventBusOk.class );
-		configuration.getModuleParentEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(), parentEventBus );
+		setParentEventBus( Modules.ModuleWithParent.class, Events.EventBusOk.class );
 		configuration.loadParentModule();
 
 		configuration.getHistory().setInitEvent( "event" );
@@ -1183,8 +1176,8 @@ public class Mvp4gConfigurationTest {
 		historyConverters.add( new HistoryConverterElement() );
 
 		configuration.setModule( oracle.addClass( Modules.ModuleWithParentNoName.class ) );
-		JClassType parentEventBus = oracle.addClass( Events.EventBusOk.class );
-		configuration.getModuleParentEventBusClassMap().put( Modules.ModuleWithParentNoName.class.getCanonicalName(), parentEventBus );
+		setParentEventBus( Modules.ModuleWithParentNoName.class, Events.EventBusOk.class );
+
 		configuration.loadParentModule();
 
 		assertNull( configuration.getHistoryName() );
@@ -1197,7 +1190,7 @@ public class Mvp4gConfigurationTest {
 		}
 
 		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
-		configuration.getModuleParentEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(), parentEventBus );
+		setParentEventBus( Modules.ModuleWithParent.class, Events.EventBusOk.class );
 		configuration.loadParentModule();
 		assertEquals( "moduleWithParent", configuration.getHistoryName() );
 
@@ -1842,10 +1835,10 @@ public class Mvp4gConfigurationTest {
 		assertTrue( configuration.isRootModule() );
 
 		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
+		setParentEventBus( Modules.Module1.class, EventBus.class );
 		JClassType c = oracle.addClass( EventBus.class );
-		configuration.getModuleParentEventBusClassMap().put( Modules.Module1.class.getCanonicalName(), c );
 		configuration.loadParentModule();
-		assertEquals( c, configuration.getParentEventBus() );
+		assertEquals( c.getQualifiedSourceName(), configuration.getParentEventBus().getQualifiedSourceName() );
 		assertFalse( configuration.isRootModule() );
 	}
 
@@ -2034,6 +2027,12 @@ public class Mvp4gConfigurationTest {
 	private void setEventBus() {
 		EventBusElement eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBus.class.getName(), false );
 		configuration.setEventBus( eventBus );
+	}
+
+	private void setParentEventBus( Class<?> moduleClass, Class<?> parentEventBusClass ) {
+		ChildModuleElement elt = new ChildModuleElement();
+		elt.setParentEventBus( oracle.addClass( parentEventBusClass ) );
+		configuration.getModuleParentEventBusClassMap().put( moduleClass.getCanonicalName(), elt );
 	}
 
 }
