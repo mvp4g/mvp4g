@@ -60,20 +60,30 @@ Mvp4g generates instances of history converter as singleton so for one class, it
 
 Instead of the class, you can also specify the name of the history converter thanks of the attribute historyConverterName of @Event annotation. In this case, you need to make sure that an history converter with this name exits.
 
-When an history converter is associated to an event, it needs to implement the handling method of this event except that the return type must be a String.
-For the above event, CompanyHistoryConverter needs to implement:
+When an history converter is associated to an event, it needs to implement the convertion method of this event. The method to define will depend on the history converter type:
+ * NONE: parameters won't be converted, only the event's name will store in browser's history.
+ * DEFAULT: the history converter needs to define the handling method of the event but this method must return a String. The returned String will added to the token and stored in browser's history.
+For example for the previous event, you need to define the following method in your history converter:
 {{{
 public String goToCompany(long id);
 }}}
-
-NB: CompanyHistoryConverter doesn't need to implement this method in case the convertParams attribute of the @History that annotates the class is set to false.
-
-By default, Mvp4g stores the name of the event's method. You can change this name by setting the attribute historyName of the @Event that annotates your event method.
-
+ * AUTO: the history converter needs to define one convertToToken method for each event that has a different parameters signature. This convertToToken method must return String and must have the same parameters as the event to convert plus a first String parameter. The returned String will added to the token and stored in browser's history.
+For example, if you have the following event bus:
 {{{
-@Event(..., historyConverter = CompanyHistoryConverter.class, historyName="company")
-public void goToCompany(long id);
+public String goToCompany(long id);
 }}}
+you would need to define this history converter with 2 convertToToken methods:
+{{{
+
+}}}
+
+You can define the history converter type thanks to the "type" attribute of the @History annotation:
+{{{
+@History(type = HistoryConverterType.AUTO)
+public class OneHistoryConverter implements HistoryConverter { ... }
+}}}
+
+By default, the type attribute is equals to DEFAULT.
 
 ==Inject services to history converters==
 
@@ -126,9 +136,18 @@ public interface MainEventBus extends EventBusWithLookup {...}
 
 ==Temporary disable history==
 
-In some cases, you may need to temporary stop storing events in browser history. In order to do so, Mvp4g provides two methods using the event bus, setHistoryStored and setHistoryStoredForNextOne. The first method allows you to enable/disable storage of all events associated with an history converter in browser history. The second one allows you enable/disable storage of the next fired event (other events fired while handling this event won't be affected by the call of this method).
+In some cases, you may need to temporary stop storing events in browser history. In order to do so, Mvp4g provides three methods using the event bus:
+ * setApplicationHistoryStored: this method enables/disables convertion (and storage to browser's history) of any events of any Mvp4g event bus. 
+ * setHistoryStored: this method enables/disables convertion (and storage to browser's history) of any events fired on this event bus only.
+ * setHistoryStoredForNextOne: this method enables/disables convertion (and storage to browser's history) of the next event fired on this event bus, associated with an history converter (other events fired while handling this event won't be affected by the call of this method).
 
-In this example, none of the events fired will be stored in browser history:
+In this example, none of the events fired on any event bus will be stored in browser history:
+{{{
+	eventBus.setApplicationHistoryStored(false);
+	eventBus.selectCompanyMenu();
+}}} 
+ 
+In this example, none of the events fired on this event will be stored in browser history:
 {{{
 	eventBus.setHistoryStored(false);
 	eventBus.selectCompanyMenu();
@@ -142,9 +161,9 @@ In this example, only the selectCompanyMenu event won't be stored in browser his
 
 In this example, selectCompany event and all the events fired by handlers of selectCompany event won't be stored in browser history:
 {{{
-	eventBus.setHistoryStored(false);
+	eventBus.setApplicationHistoryStored(false);
 	eventBus.selectCompanyMenu();
-	eventBus.setHistoryStored(true);
+	eventBus.setApplicationHistoryStored(true);
 }}}
 
 ==Crawlable Event==
@@ -168,20 +187,21 @@ Mvp4g will react the same way to crawlable and not crawable urls. It means that 
 www.mysite.com/#!displayCompany?id=1234.
 www.mysite.com/#displayCompany?id=1234.
 
-==History Configuration==
-By default, Mvp4g uses a "?" to separate the event name from its parameters. You can change this character thanks to @HistoryConfiguration annotation:
+==Setting a Custom Place Service==
+You can easily set your own place to override the behavior of the Mvp4g default place service.
+
+To set your own service, you need to:
+ # Create an abstract class that overrides PlaceService. This class shouldn't implement sendInitEvent and sendNotFoundEvent methods, these methods will be implemented by Mvp4g.
+ # Set this custom place service by annotating the Root Mvp4g module (ie Mvp4g module with no parent) with to @PlaceService.
+
 {{{
-@HistoryConfiguration(paramSeparator="|")
-@Events(...historyOnStart = true)
+@PlaceService( CustomPlaceService.class )
+@Events(...)
 public interface MainEventBus extends EventBusWithLookup {...}
 }}}
 
-@Event annotation has the following attributes:
-*paramSeparator: character to use to separate the event name from its parameters.
-*paramSeparatorAlwaysAdded: if true, the charater used to separate the event name from its parameters will always be added at the end of the token even if there is no parameter.
-
 [http://www.qondio.com/graphics/attention.png] parameters stored in the token shouldn't contain the character used to separate the event name from its parameters.
-[http://www.qondio.com/graphics/attention.png] if you use "/" to separate the event name from its parameters, you need to have the paramSeparatorAlwaysAdded set to true. "/" is also used to separate child module history name (see below) and when parsing the url, 
+[http://www.qondio.com/graphics/attention.png] if you use "/" to separate the event name from its parameters, you need to have "/" always added to the token name even if there is no parameters. By default, "/" is also used to separate child module history name (see below) and when parsing the url, 
 Mvp4g needs to be sure that the last "/" is used to seperate the event name from its parameters.
 
 =History Management and Multi-Modules feature=
