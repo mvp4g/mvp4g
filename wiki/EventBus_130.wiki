@@ -58,6 +58,8 @@ public interface MainEventBus extends EventBusWithLookup {
 @Event annotation has the following attributes:
  * handlers and handlerNames (see next paragraph)
  * calledMethod (see next paragraph)
+ * name: Some Mvp4g methods let you manipulate an event thanks to its name. By default the event's name is the event's method's name but you can override it to ease refractoring
+  ([http://code.google.com/p/mvp4g/wiki/PlaceService#Place_Service see convertFromToken method], [http://code.google.com/p/mvp4g/wiki/EventBus#Event_Filtering see filterEvent method], [http://code.google.com/p/mvp4g/wiki/EventBus#with_lookup see dispatch method]).
  * historyConverter, historyConverterName & historyName: used only for history management([http://code.google.com/p/mvp4g/wiki/PlaceService see Mvp4g & Browse history])
  * modulesToLoad and forwardToParent ([http://code.google.com/p/mvp4g/wiki/MultiModules see Multi-modules feature])
  * activate, activateNames, deactivate, deactivateNames (see [http://code.google.com/p/mvp4g/wiki/EventBus?ts=1284236703&updated=EventBus#Activating/Deactivating_presenters see Activating/Deactivating presenters])
@@ -242,8 +244,8 @@ Mvp4g will automaticaly find the right method to call on your event bus.
 To create an event bus with lookup, all you have to do is implementing EventBusWithLookup interface instead of EventBus interface.
 
 However this functionality should be used only when needed and with caution for two reasons:
- * Mvp4g can't verify at compile time if the event with the given name exists. You will see the error only when you execute your code.
- * It is not type safe. If you decide to an event with object(s) not managed by the event, Mvp4g won't detect it at compile time and an error will occur when you execute your code.
+ * Mvp4g can't verify at compile time if an event with the given name exists. You will see the error only when you execute your code.
+ * It is not type safe. If you decide to fire an event with object(s) not managed by the event, Mvp4g won't detect it at compile time and an error will occur when you execute your code.
 
 {{{
 //let's say this call is correct
