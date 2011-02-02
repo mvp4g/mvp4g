@@ -1,10 +1,11 @@
 package com.mvp4g.example.client.history;
 
 import com.mvp4g.client.annotation.History;
+import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.history.HistoryConverter;
 
-@History( convertParams = false )
+@History( type = HistoryConverterType.NONE )
 public class HistoryConverter2 implements HistoryConverter<EventBus> {
 
 	@Override
