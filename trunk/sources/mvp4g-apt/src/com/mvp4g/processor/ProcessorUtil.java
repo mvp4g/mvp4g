@@ -11,17 +11,27 @@ import javax.lang.model.element.TypeElement;
 
 public class ProcessorUtil {
 
-	public static String CLEAR_HISTORY = "com.mvp4g.client.history.ClearHistory";
-	public static String STRING = String.class.getCanonicalName();
-	public static String EVENT = "com.mvp4g.client.annotation.Event";
-	public static String EVENTS = "com.mvp4g.client.annotation.Events";
-	public static String PRESENTER = "com.mvp4g.client.annotation.Presenter";
-	public static String EVENT_HANDLER = "com.mvp4g.client.annotation.EventHandler";
-	public static String HISTORY = "com.mvp4g.client.annotation.History";
-	
-	public static String HISTORY_CONVERTER_TYPE_NONE = "NONE";
-	public static String HISTORY_CONVERTER_TYPE_AUTO = "AUTO";
-	public static String HISTORY_CONVERTER_TYPE_DEFAULT = "DEFAULT";
+	final public static String CLEAR_HISTORY = "com.mvp4g.client.history.ClearHistory";
+	final public static String STRING = String.class.getCanonicalName();
+	final public static String EVENT = "com.mvp4g.client.annotation.Event";
+	final public static String EVENTS = "com.mvp4g.client.annotation.Events";
+	final public static String PRESENTER = "com.mvp4g.client.annotation.Presenter";
+	final public static String EVENT_HANDLER = "com.mvp4g.client.annotation.EventHandler";
+	final public static String HISTORY = "com.mvp4g.client.annotation.History";
+	final public static String CHILD_MODULES = "com.mvp4g.client.annotation.module.ChildModules";
+
+	final public static String HISTORY_CONVERTER_TYPE_NONE = "NONE";
+	final public static String HISTORY_CONVERTER_TYPE_AUTO = "AUTO";
+	final public static String HISTORY_CONVERTER_TYPE_DEFAULT = "DEFAULT";
+
+	final public static String ATTRIBUTE_MODULE = "module";
+	final public static String ATTRIBUTE_MODULE_CLASS = "moduleClass";
+	final public static String ATTRIBUTE_HANDLERS = "handlers";
+	final public static String ATTRIBUTE_CALLED_METHOD = "calledMethod";
+	final public static String ATTRIBUTE_HISTORY_CONVERTER = "historyConverter";
+	final public static String ATTRIBUTE_MODULES_TO_LOAD = "modulesToLoad";
+	final public static String ATTRIBUTE_FORWARD_TO_PARENT = "forwardToParent";
+	final public static String ATTRIBUTE_VALUE = "value";
 
 	public static boolean sameParameters( List<? extends Element> expected, List<? extends Element> given, Element e ) {
 		boolean same = ( expected.size() == given.size() );
