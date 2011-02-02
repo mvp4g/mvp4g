@@ -10,6 +10,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
+import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic.Kind;
 
@@ -33,11 +34,12 @@ public class HandlerControl {
 
 			String mName;
 			Types types = processingEnv.getTypeUtils();
+			Elements elements = processingEnv.getElementUtils();
 			for ( AnnotationValue value : handlers ) {
 				TypeElement type = (TypeElement)( (DeclaredType)value.getValue() ).asElement();
 
 				boolean found = false;
-				for ( ExecutableElement method : ElementFilter.methodsIn( processingEnv.getElementUtils().getAllMembers( type ) ) ) {
+				for ( ExecutableElement method : ElementFilter.methodsIn( elements.getAllMembers( type ) ) ) {
 					mName = method.getSimpleName().toString();
 					if ( !found && mName.toString().equals( methodName ) ) {
 						if ( method.getModifiers().contains( Modifier.PUBLIC ) ) {
