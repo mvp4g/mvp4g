@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -13,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mvp4g.client.Mvp4gException;
+import com.mvp4g.client.history.DefaultHistoryProxy;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.test_tools.EventFilterStub;
@@ -45,7 +47,7 @@ public class BaseEventBusTest {
 			}
 
 			public void setApplicationHistoryStored( boolean historyStored ) {
-							
+
 			}
 
 		};
@@ -233,13 +235,11 @@ public class BaseEventBusTest {
 		bus.removeHandler( p );
 		list = bus.getHandlers( SimplePresenter.class );
 		assertTrue( list.size() == 0 );
-		
+
 		List<SimplePresenter> list2 = bus.getHandlers( SimplePresenter.class );
 		assertNotSame( list, list2 );
 		assertEquals( list, list2 );
 	}
-	
-	
 
 	@Test
 	public void testDefaultAddHandler() {
@@ -277,5 +277,10 @@ public class BaseEventBusTest {
 							+ " couldn't be created by the Mvp4g. Have you forgotten to set multiple attribute to true for this handler or are you trying to create an handler that belongs to another module (another type of event bus injected in this handler)?",
 					e.getMessage() );
 		}
+	}
+
+	@Test
+	public void testHistoryProxy() {
+		assertSame( DefaultHistoryProxy.INSTANCE, bus.getHistory() );
 	}
 }

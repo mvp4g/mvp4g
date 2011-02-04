@@ -22,6 +22,8 @@ import java.util.Map;
 
 import com.mvp4g.client.Mvp4gException;
 import com.mvp4g.client.Mvp4gModule;
+import com.mvp4g.client.history.DefaultHistoryProxy;
+import com.mvp4g.client.history.HistoryProxy;
 
 /**
  * Base implementation of the event bus. It should only be used by the framework.
@@ -261,6 +263,15 @@ public abstract class BaseEventBus implements EventBus {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.mvp4g.client.event.EventBus#getHistory()
+	 */
+	public HistoryProxy getHistory() {
+		return DefaultHistoryProxy.INSTANCE;
+	}
+
 	/**
 	 * Returns the list of handlers with the given class
 	 * 
@@ -272,8 +283,8 @@ public abstract class BaseEventBus implements EventBus {
 	 */
 	@SuppressWarnings( "unchecked" )
 	protected <T extends EventHandlerInterface<?>> List<T> getHandlers( Class<T> handlerClass ) {
-		List<T> list = (List<T>)handlersMap.get( handlerClass ); 
-		return (list == null) ? null : new ArrayList<T>( list );
+		List<T> list = (List<T>)handlersMap.get( handlerClass );
+		return ( list == null ) ? null : new ArrayList<T>( list );
 	}
 
 	/**

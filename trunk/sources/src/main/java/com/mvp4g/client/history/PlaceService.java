@@ -20,7 +20,6 @@ import java.util.Map;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.History;
 import com.mvp4g.client.Mvp4gEventPasser;
 import com.mvp4g.client.Mvp4gModule;
 
@@ -59,23 +58,6 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 
 	public static final String CRAWLABLE = "!";
 
-	/**
-	 * Interface to define methods needed to manage history<br/>
-	 * <br/>
-	 * This interface is needed in order to test the PlaceService without using GWT History class.<br/>
-	 * GWT History class can't be used with JUnit test.
-	 * 
-	 * @author plcoirier
-	 * 
-	 */
-	public interface HistoryProxy {
-
-		public void addValueChangeHandler( ValueChangeHandler<String> handler );
-
-		public void newItem( String historyToken, boolean issueEvent );
-
-	}
-
 	private HistoryProxy history = null;
 	private Mvp4gModule module = null;
 
@@ -91,17 +73,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 * 
 	 */
 	public PlaceService() {
-		this( new HistoryProxy() {
-
-			public void addValueChangeHandler( ValueChangeHandler<String> handler ) {
-				History.addValueChangeHandler( handler );
-			}
-
-			public void newItem( String historyToken, boolean issueEvent ) {
-				History.newItem( historyToken, issueEvent );
-			}
-
-		} );
+		this( DefaultHistoryProxy.INSTANCE );
 	}
 
 	/**

@@ -147,9 +147,6 @@ public class EventAnnotationProcessor extends AbstractProcessor {
 			throw new RuntimeException( e.getMessage() );
 		}
 
-		processingEnv.getMessager().printMessage( Kind.ERROR, "found = " + eventBus + "compiled=" + roundEnv.getElementsAnnotatedWith( element ),
-				eventBus.get( 0 ) );
-
 		return eventBus;
 	}
 

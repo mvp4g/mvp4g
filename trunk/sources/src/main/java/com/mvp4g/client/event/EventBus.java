@@ -16,6 +16,7 @@
 package com.mvp4g.client.event;
 
 import com.mvp4g.client.Mvp4gException;
+import com.mvp4g.client.history.HistoryProxy;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
 
@@ -28,17 +29,17 @@ import com.mvp4g.client.history.NavigationEventCommand;
 public interface EventBus {
 
 	/**
-	 * Set for all events of this module if they should be stored or not in browser history when possible (ie when
-	 * associated with an history converter).
+	 * Set for all events of this module if they should be stored or not in browser history when
+	 * possible (ie when associated with an history converter).
 	 * 
 	 * @param historyStored
 	 *            true if events should be stored
 	 */
 	void setHistoryStored( boolean historyStored );
-	
+
 	/**
-	 * Set for all events of every modules if they should be stored or not in browser history when possible (ie when
-	 * associated with an history converter).
+	 * Set for all events of every modules if they should be stored or not in browser history when
+	 * possible (ie when associated with an history converter).
 	 * 
 	 * @param historyStored
 	 *            true if events should be stored
@@ -169,5 +170,13 @@ public interface EventBus {
 	 * @param event
 	 */
 	void confirmNavigation( NavigationEventCommand event );
+
+	/**
+	 * History should be managed via the place service but if you need to access methods like
+	 * back/forward, you can access GWT History thanks to this method.
+	 * 
+	 * @return a proxy class to manipulate history.
+	 */
+	HistoryProxy getHistory();
 
 }

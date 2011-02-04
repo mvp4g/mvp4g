@@ -279,7 +279,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		HistoryConverterElement c3 = new HistoryConverterElement();
 		c3.setClassName( SimpleHistoryConverter.class.getCanonicalName() );
 		c3.setName( "history3" );
-		c3.setType( HistoryConverterType.AUTO.name() );
+		c3.setType( HistoryConverterType.SIMPLE.name() );
 		configuration.getHistoryConverters().add( c1 );
 		configuration.getHistoryConverters().add( c2 );
 		configuration.getHistoryConverters().add( c3 );
