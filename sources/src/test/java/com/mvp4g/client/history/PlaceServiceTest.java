@@ -29,7 +29,7 @@ public class PlaceServiceTest {
 		private boolean initEvent = false;
 		private boolean notFoundEvent = false;
 
-		public MyTestPlaceService( PlaceService.HistoryProxy history ) {
+		public MyTestPlaceService( HistoryProxy history ) {
 			super( history );
 		}
 

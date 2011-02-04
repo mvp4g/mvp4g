@@ -27,8 +27,9 @@ import java.lang.annotation.RetentionPolicy;
  * It is recommended to affect a name only if needed.<br/>
  * <br/>
  * This annotation also has a convertParams attribute. By default, an history converter must define
- * an handling method for each event it converts. If you set this attribute to false, you won't have
- * to define these methods.<br/>
+ * an handling method for each event it converts. If you set this attribute to SIMPLE, you will have
+ * to define one convertToToken method for each different parameter signature. If you set this
+ * attribute to NONE, you won't have to define any conversion method.<br/>
  * <br/>
  * This annotation can be used only on classes that implements <code>HistoryConverter</code>.
  * 
@@ -37,9 +38,9 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention( RetentionPolicy.RUNTIME )
 public @interface History {
-	
-	public enum HistoryConverterType {		
-		DEFAULT, AUTO, NONE		
+
+	public enum HistoryConverterType {
+		DEFAULT, SIMPLE, NONE
 	}
 
 	String name() default "";

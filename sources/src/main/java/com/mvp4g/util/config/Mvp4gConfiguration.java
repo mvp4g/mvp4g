@@ -580,7 +580,7 @@ public class Mvp4gConfiguration {
 				}
 				historyNames.add( historyName );
 			} else if ( event.isWithTokenGeneration() ) {
-				if ( !( event.hasForwardToParent() && checkIfParentEventReturnsString( event ) ) ) {
+				if ( isRootModule() || !checkIfParentEventReturnsString( event ) ) {
 					throw new InvalidMvp4gConfigurationException( String.format( TOKEN_WITH_NO_CONVERTER, event.getType() ) );
 				} else {
 					try {
@@ -1175,7 +1175,7 @@ public class Mvp4gConfiguration {
 			ChildModuleElement child = moduleParentEventBusClassMap.get( module.getQualifiedSourceName() );
 			if ( child != null ) {
 				if ( child.isAutoDisplay() ) {
-					throw new InvalidMvp4gConfigurationException( String.format( NO_START_VIEW, module.getQualifiedSourceName() ) );	
+					throw new InvalidMvp4gConfigurationException( String.format( NO_START_VIEW, module.getQualifiedSourceName() ) );
 				}
 			}
 		}

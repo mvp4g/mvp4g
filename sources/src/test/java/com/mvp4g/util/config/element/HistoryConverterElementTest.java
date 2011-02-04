@@ -20,8 +20,8 @@ public class HistoryConverterElementTest extends Mvp4gWithServicesElementTest {
 		assertEquals( element.getType(), HistoryConverterType.DEFAULT.name() );
 		
 		element = new HistoryConverterElement();
-		element.setType( HistoryConverterType.AUTO.name() );
-		assertEquals( element.getType(), HistoryConverterType.AUTO.name() );
+		element.setType( HistoryConverterType.SIMPLE.name() );
+		assertEquals( element.getType(), HistoryConverterType.SIMPLE.name() );
 		
 		element = new HistoryConverterElement();
 		element.setType( HistoryConverterType.NONE.name() );

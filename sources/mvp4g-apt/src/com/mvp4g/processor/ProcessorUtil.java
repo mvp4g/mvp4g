@@ -21,7 +21,7 @@ public class ProcessorUtil {
 	final public static String CHILD_MODULES = "com.mvp4g.client.annotation.module.ChildModules";
 
 	final public static String HISTORY_CONVERTER_TYPE_NONE = "NONE";
-	final public static String HISTORY_CONVERTER_TYPE_AUTO = "AUTO";
+	final public static String HISTORY_CONVERTER_TYPE_SIMPLE = "SIMPLE";
 	final public static String HISTORY_CONVERTER_TYPE_DEFAULT = "DEFAULT";
 
 	final public static String ATTRIBUTE_MODULE = "module";

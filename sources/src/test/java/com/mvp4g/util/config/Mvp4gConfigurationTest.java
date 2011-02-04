@@ -571,7 +571,7 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testStartMissing() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
-		StartElement start = new StartElement();		
+		StartElement start = new StartElement();
 
 		try {
 			JClassType moduleClass = oracle.addClass( Modules.Module1.class );
@@ -1919,8 +1919,8 @@ public class Mvp4gConfigurationTest {
 			assertEquals( "Event event1: you can't generate a token for this event if it has no history converter.", e.getMessage() );
 		}
 
-		event.setForwardToParent( "true" );
-
+		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
+		
 		try {
 			configuration.validateHistoryConverters();
 			fail();
@@ -1955,6 +1955,7 @@ public class Mvp4gConfigurationTest {
 		HistoryConverterElement hc1 = newHistoryConverter( "history" );
 		historyConverters.add( hc1 );
 
+		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
 		setEventBus();
 		configuration.setParentEventBus( oracle.addClass( Events.EventBusOk.class ) );
 		configuration.validateHistoryConverters();

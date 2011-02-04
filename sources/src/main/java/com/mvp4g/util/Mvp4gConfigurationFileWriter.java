@@ -846,7 +846,7 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( param );
 			sourceWriter.print( ")" );
 			break;
-		case AUTO:
+		case SIMPLE:
 			sourceWriter.print( historyConverterElement.getName() );
 			sourceWriter.print( ".convertToToken(\"" );
 			sourceWriter.print( event.getName() );

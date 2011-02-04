@@ -43,7 +43,7 @@ public class HistoryConverterControl {
 					List<Element> parameters = new ArrayList<Element>();
 					if ( ProcessorUtil.HISTORY_CONVERTER_TYPE_NONE.equals( valueStr ) ) {
 						found = true;
-					} else if ( ProcessorUtil.HISTORY_CONVERTER_TYPE_AUTO.equals( valueStr ) ) {
+					} else if ( ProcessorUtil.HISTORY_CONVERTER_TYPE_SIMPLE.equals( valueStr ) ) {
 						convertMetodName = "convertToToken";
 						Element v = processingEnv.getElementUtils().getTypeElement( ProcessorUtil.STRING );
 						parameters.add( v );
