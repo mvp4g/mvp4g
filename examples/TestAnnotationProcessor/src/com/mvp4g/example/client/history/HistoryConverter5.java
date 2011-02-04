@@ -5,7 +5,7 @@ import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.history.HistoryConverter;
 
-@History( type = HistoryConverterType.AUTO )
+@History( type = HistoryConverterType.SIMPLE )
 public class HistoryConverter5 implements HistoryConverter<EventBus> {
 	
 	String convertToToken( String eventName, String s ) {
