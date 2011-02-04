@@ -4,15 +4,15 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.view.NoStartView;
 import com.mvp4g.example.client.product.bean.ProductBean;
 import com.mvp4g.example.client.product.presenter.ProductCreationPresenter;
 import com.mvp4g.example.client.product.presenter.ProductDisplayPresenter;
 import com.mvp4g.example.client.product.presenter.ProductEditPresenter;
 import com.mvp4g.example.client.product.presenter.ProductListPresenter;
-import com.mvp4g.example.client.product.view.ProductListView;
 import com.mvp4g.example.client.util.HasBeenThereHandler;
 
-@Events( startView = ProductListView.class, module = ProductModule.class )
+@Events( startView = NoStartView.class, module = ProductModule.class )
 public interface ProductEventBus extends EventBus {
 
 	/* Navigation events */

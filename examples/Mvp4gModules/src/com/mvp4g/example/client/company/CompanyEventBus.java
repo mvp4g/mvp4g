@@ -38,12 +38,12 @@ public interface CompanyEventBus extends EventBus {
 	void backToList();
 
 	@Event( handlers = CompanyCreationPresenter.class, activate = CompanyCreationPresenter.class, deactivate = { CompanyEditPresenter.class,
-			CompanyDisplayPresenter.class }, historyConverter = CompanyCreationHistoryConverter.class, historyName = "create", navigationEvent = true )
+			CompanyDisplayPresenter.class }, historyConverter = CompanyCreationHistoryConverter.class, name = "create", navigationEvent = true )
 	String goToCreation();
 
 	//I have ProductCreationPresenter.class here just to test if Mvp4g ignores useless presenter for deactivate
 	@Event( handlers = CompanyDisplayPresenter.class, historyConverter = CompanyHistoryConverter.class, activate = CompanyDisplayPresenter.class, deactivate = {
-			CompanyCreationPresenter.class, CompanyEditPresenter.class, ProductCreationPresenter.class, CompanyRowPresenter.class }, historyName = "", navigationEvent = true )
+			CompanyCreationPresenter.class, CompanyEditPresenter.class, ProductCreationPresenter.class, CompanyRowPresenter.class }, name = "", navigationEvent = true )
 	void goToDisplay( CompanyBean company );
 
 	//I have ProductCreationPresenter.class here just to test if Mvp4g ignores useless presenter for activate

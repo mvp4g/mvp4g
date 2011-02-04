@@ -32,6 +32,10 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 		void clearTable();
 
 		HasValue<Boolean> isFiltered();
+		
+		HasValue<Boolean> isDisabledModuleHistory();
+		
+		HasValue<Boolean> isDisabledApplicationHistory();
 
 		void alert( String msg );
 	}
@@ -55,6 +59,22 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 			}
 
 		} );
+		view.isDisabledApplicationHistory().addValueChangeHandler( new ValueChangeHandler<Boolean>() {
+
+			@Override
+			public void onValueChange( ValueChangeEvent<Boolean> event ) {
+				eventBus.setApplicationHistoryStored( !event.getValue().booleanValue() );
+			}
+			
+		});
+		view.isDisabledModuleHistory().addValueChangeHandler( new ValueChangeHandler<Boolean>() {
+
+			@Override
+			public void onValueChange( ValueChangeEvent<Boolean> event ) {
+				eventBus.setHistoryStored( !event.getValue().booleanValue() );
+			}
+			
+		});
 	}
 
 	public void onGoToCompany( int start, int end ) {

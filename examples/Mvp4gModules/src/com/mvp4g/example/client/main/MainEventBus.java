@@ -5,8 +5,8 @@ import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Filters;
-import com.mvp4g.client.annotation.HistoryConfiguration;
 import com.mvp4g.client.annotation.InitHistory;
+import com.mvp4g.client.annotation.PlaceService;
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.module.AfterLoadChildModule;
 import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
@@ -27,11 +27,11 @@ import com.mvp4g.example.client.util.HasBeenThereHandler;
 @ChildModules( { @ChildModule( moduleClass = CompanyModule.class ),
 		@ChildModule( moduleClass = ProductModule.class, async = false, autoDisplay = false ) } )
 @Filters( filterClasses = {}, forceFilters = true )
-@HistoryConfiguration( paramSeparator = "/", paramSeparatorAlwaysAdded = true )
+@PlaceService( CustomPlaceService.class )
 public interface MainEventBus extends EventBusWithLookup {
 
 	/* Navigation events */
-	@Event( modulesToLoad = CompanyModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, historyName = "companies", navigationEvent = true )
+	@Event( modulesToLoad = CompanyModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, name = "companies", navigationEvent = true )
 	void goToCompany( int start, int end );
 
 	//use Integer instead of int here just to test passing object, in real project, you should have int
