@@ -15,7 +15,7 @@ public class CompanyListView extends Composite implements CompanyListViewInterfa
 
 	private Hyperlink createButton, goToProduct;
 	private VerticalPanel table;
-	private CheckBox filter;
+	private CheckBox filter, moduleHistory, applicationHistory;
 
 	public HasClickHandlers getCreateButton() {
 		return createButton;
@@ -34,12 +34,17 @@ public class CompanyListView extends Composite implements CompanyListViewInterfa
 		createButton = new Hyperlink( "Create Company", "" );
 		goToProduct = new Hyperlink( "Go To Products", "" );
 		filter = new CheckBox( "Filter Company EventBus events" );
+		moduleHistory = new CheckBox("Disable Company Module History");
+		applicationHistory = new CheckBox("Disable Application History");
 
 		VerticalPanel mainPanel = new VerticalPanel();
 		mainPanel.add( table );
 		mainPanel.setHorizontalAlignment( HasHorizontalAlignment.ALIGN_RIGHT );
 		mainPanel.add( createButton );
 		mainPanel.add( goToProduct );
+		mainPanel.setHorizontalAlignment( HasHorizontalAlignment.ALIGN_LEFT );
+		mainPanel.add( moduleHistory );
+		mainPanel.add( applicationHistory );
 		mainPanel.add( filter );
 
 		initWidget( mainPanel );
@@ -67,6 +72,16 @@ public class CompanyListView extends Composite implements CompanyListViewInterfa
 
 	public void setGoToProductsToken( String token ) {
 		goToProduct.setTargetHistoryToken( token );
+	}
+
+	@Override
+	public HasValue<Boolean> isDisabledApplicationHistory() {
+		return applicationHistory;
+	}
+
+	@Override
+	public HasValue<Boolean> isDisabledModuleHistory() {
+		return moduleHistory;
 	}
 
 }
