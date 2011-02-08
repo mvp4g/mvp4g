@@ -67,7 +67,7 @@ For example for the previous event, you need to define the following method in y
 {{{
 public String goToCompany(long id);
 }}}
- * AUTO: the history converter needs to define one convertToToken method for each event that has a different parameters signature. This convertToToken method must return String and must have the same parameters as the event to convert plus a first String parameter. The returned String will added to the token and stored in browser's history.
+ * SIMPLE: the history converter needs to define one convertToToken method for each event that has a different parameters signature. This convertToToken method must return String and must have the same parameters as the event to convert plus a first String parameter. The returned String will added to the token and stored in browser's history.
 For example, if you have the following event bus:
 {{{
 public interface OneEventBus ... { 
@@ -102,7 +102,7 @@ public class OneHistoryConverter... {
 
 You can define the history converter type thanks to the "type" attribute of the @History annotation:
 {{{
-@History(type = HistoryConverterType.AUTO)
+@History(type = HistoryConverterType.SIMPLE)
 public class OneHistoryConverter implements HistoryConverter { ... }
 }}}
 
