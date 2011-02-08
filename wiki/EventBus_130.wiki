@@ -151,6 +151,8 @@ To define a start view, you need to specify the class of the start view thanks t
 
 In addition to set the class, you can also specify its name thanks to the attribute 'startViewName' of the @Events annotation.
 
+In case of a child module that is not displayed thanks to the auto-display feature, you may not need a start view. You can then tell the framework that there is no start view by setting the 'startView' attribute of @Events to 'NoStartView' (a root module has to have a start view).
+
 ===Start Event===
 
 When your application starts, you may want to automatically fire an event so that actions needed at first can occur. To define a start event, you need to annotate it with @Start. You can have only one start event by module and no object can be fired with the start.
