@@ -66,8 +66,8 @@ public interface EventHandlerInterface<E extends EventBus> {
 	 * If the event is passive and the presenter hasn't been built, the presenter will be consider
 	 * as inactive (ie isActivated will return false).
 	 * 
-	 * @param active
-	 *            indicate if it's an active event or not
+	 * @param passive
+	 *            indicate if it's a passive event or not
 	 * 
 	 * @return true if the presenter is activated, false otherwise
 	 */

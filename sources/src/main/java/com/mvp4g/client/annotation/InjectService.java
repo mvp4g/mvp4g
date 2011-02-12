@@ -33,9 +33,12 @@ import java.lang.annotation.Target;
  * You can also specify to inject a particular instance of a service thanks to its name with the
  * attribute <i>serviceName</i>.<br/>
  * 
+ * @deprecated As of release 1.2.0, shoud use GIN injection
+ * 
  * @author plcoirier
  * 
  */
+@Deprecated
 @Retention( RetentionPolicy.RUNTIME )
 @Target( ElementType.METHOD )
 public @interface InjectService {

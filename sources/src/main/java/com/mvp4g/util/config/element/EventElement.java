@@ -182,57 +182,30 @@ public class EventElement extends Mvp4gElement {
 		return Boolean.TRUE.toString().equalsIgnoreCase( getWithTokenGeneration() );
 	}
 
-	/**
-	 * @param withTokenGeneration
-	 *            the withTokenGeneration to set
-	 * @throws DuplicatePropertyNameException
-	 */
 	public void setWithTokenGeneration( String withTokenGeneration ) throws DuplicatePropertyNameException {
 		setProperty( "withTokenGeneration", withTokenGeneration );
 	}
 
-	/**
-	 * @return the tokenGenerationFromParent
-	 */
 	public String getTokenGenerationFromParent() {
 		return getProperty( "tokenGenerationFromParent" );
 	}
 
-	/**
-	 * @return the tokenGenerationFromParent
-	 */
 	public boolean isTokenGenerationFromParent() {
 		return Boolean.TRUE.toString().equalsIgnoreCase( getTokenGenerationFromParent() );
 	}
 
-	/**
-	 * @param tokenGenerationFromParent
-	 *            the tokenGenerationFromParent to set
-	 * @throws DuplicatePropertyNameException
-	 */
 	public void setTokenGenerationFromParent( String tokenGenerationFromParent ) throws DuplicatePropertyNameException {
 		setProperty( "tokenGenerationFromParent", tokenGenerationFromParent );
 	}
 
-	/**
-	 * @return the tokenGenerationFromParent
-	 */
 	public String getPassive() {
 		return getProperty( "passive" );
 	}
 
-	/**
-	 * @return the tokenGenerationFromParent
-	 */
 	public boolean isPassive() {
 		return Boolean.TRUE.toString().equalsIgnoreCase( getPassive() );
 	}
 
-	/**
-	 * @param tokenGenerationFromParent
-	 *            the tokenGenerationFromParent to set
-	 * @throws DuplicatePropertyNameException
-	 */
 	public void setPassive( String passive ) throws DuplicatePropertyNameException {
 		setProperty( "passive", passive );
 	}
