@@ -35,6 +35,7 @@ import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
  * @author plcoirier
  * 
  */
+@SuppressWarnings( "deprecation" )
 public abstract class Mvp4gAnnotationsWithServiceLoader<T extends Annotation> extends Mvp4gAnnotationsLoader<T> {
 
 	/*

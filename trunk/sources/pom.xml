@@ -5,7 +5,7 @@
 
 	<groupId>com.googlecode.mvp4g</groupId>
 	<artifactId>mvp4g</artifactId>
-	<version>1.3.0-SNAPSHOT</version>
+	<version>1.3.0</version>
 	<packaging>jar</packaging>
 	<name>Mvp4g</name>
 
@@ -21,9 +21,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:svn:http://mvp4g.googlecode.com/svn/tags/mvp4g-1.2.0</connection>
-		<developerConnection>scm:svn:https://mvp4g.googlecode.com/svn/tags/mvp4g-1.2.0</developerConnection>
-		<url>http://mvp4g.googlecode.com/svn/tags/mvp4g-1.2.0</url>
+		<connection>scm:svn:http://mvp4g.googlecode.com/svn/tags/mvp4g-1.3.0</connection>
+		<developerConnection>scm:svn:https://mvp4g.googlecode.com/svn/tags/mvp4g-1.3.0</developerConnection>
+		<url>http://mvp4g.googlecode.com/svn/tags/mvp4g-1.3.0</url>
 	</scm>
 
 	<properties>
@@ -40,6 +40,18 @@
 	<contributors>
 		<contributor>
 			<name>Javier Sandino</name>
+		</contributor>
+		<contributor>
+			<name>Izzet Mustafayev</name>
+		</contributor>
+		<contributor>
+			<name>Nick Hebner</name>
+		</contributor>
+		<contributor>
+			<name>Harald Schilly</name>
+		</contributor>
+		<contributor>
+			<name>Lukasz Dywicky</name>
 		</contributor>
 	</contributors>
 
