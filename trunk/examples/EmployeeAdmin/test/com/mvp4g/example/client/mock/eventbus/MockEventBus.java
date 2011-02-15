@@ -6,6 +6,8 @@ import static junit.framework.Assert.assertTrue;
 
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventHandlerInterface;
+import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.example.client.EmployeeAdminEventBus;
 import com.mvp4g.example.client.bean.UserBean;
 import com.mvp4g.example.client.widget.interfaces.IWidget;
@@ -161,8 +163,20 @@ public class MockEventBus extends BaseEventBusWithLookUp implements EmployeeAdmi
 
 	@Override
 	protected <T extends EventHandlerInterface<?>> T createHandler( Class<T> handlerClass ) {
-		// TODO Auto-generated method stub
+		//never called
 		return null;
+	}
+
+	public void confirmNavigation( NavigationEventCommand event ) {
+		//never called		
+	}
+
+	public void setApplicationHistoryStored( boolean historyStored ) {
+		//never called		
+	}
+
+	public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {
+		//never called		
 	}
 
 }

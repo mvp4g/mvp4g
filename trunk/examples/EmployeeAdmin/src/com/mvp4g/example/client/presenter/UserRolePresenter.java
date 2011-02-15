@@ -8,7 +8,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.annotation.InjectService;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.Constants;
@@ -39,11 +39,12 @@ public class UserRolePresenter extends BasePresenter<UserRolePresenter.IUserRole
 
 	}
 
-	private UserBean user = null;
+	private UserBean user;
 
 	private boolean enabled = false;
 
-	private UserServiceAsync service = null;
+	@Inject
+	private UserServiceAsync service;
 
 	@Override
 	public void bind() {
@@ -142,7 +143,6 @@ public class UserRolePresenter extends BasePresenter<UserRolePresenter.IUserRole
 		disable();
 	}
 
-	@InjectService
 	public void setUserService( UserServiceAsync service ) {
 		this.service = service;
 	}

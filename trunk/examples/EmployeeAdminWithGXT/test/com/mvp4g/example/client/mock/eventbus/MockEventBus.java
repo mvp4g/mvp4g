@@ -177,4 +177,10 @@ public class MockEventBus extends BaseEventBusWithLookUp implements EmployeeAdmi
 		
 	}
 
+	@Override
+	public void setApplicationHistoryStored( boolean historyStored ) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

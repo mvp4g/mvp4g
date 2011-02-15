@@ -7,7 +7,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.annotation.InjectService;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.EmployeeAdminWithGXTEventBus;
@@ -70,6 +70,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfilePresenter.IUs
 	private UserBean user = null;
 	private UserBean userCopy = new UserBean();
 
+	@Inject
 	private UserServiceAsync service = null;
 
 	@Override
@@ -166,7 +167,6 @@ public class UserProfilePresenter extends BasePresenter<UserProfilePresenter.IUs
 
 	}
 
-	@InjectService
 	public void setUserService( UserServiceAsync service ) {
 		this.service = service;
 	}
