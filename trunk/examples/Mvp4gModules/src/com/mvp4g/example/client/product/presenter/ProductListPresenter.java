@@ -7,7 +7,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.client.annotation.InjectService;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -19,7 +19,9 @@ import com.mvp4g.example.client.product.view.ProductListView;
 @Presenter( view = ProductListView.class )
 public class ProductListPresenter extends LazyPresenter<ProductListPresenter.ProductListViewInterface, ProductEventBus> {
 
+	@Inject
 	private ProductServiceAsync service = null;
+	
 	private List<ProductBean> products = null;
 
 	public interface ProductListViewInterface extends LazyView {
@@ -77,11 +79,6 @@ public class ProductListPresenter extends LazyPresenter<ProductListPresenter.Pro
 		int row = products.size();
 		products.add( product );
 		view.addProduct( product.getName(), row );
-	}
-
-	@InjectService
-	public void setService( ProductServiceAsync service ) {
-		this.service = service;
 	}
 
 	private void addProduct( final ProductBean product, int row ) {

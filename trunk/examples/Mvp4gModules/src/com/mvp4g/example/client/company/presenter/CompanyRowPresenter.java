@@ -5,7 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.client.annotation.InjectService;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.company.CompanyEventBus;
@@ -35,7 +35,10 @@ public class CompanyRowPresenter extends BasePresenter<CompanyRowPresenter.IComp
 	}
 
 	private CompanyBean company;
+	
+	@Inject
 	private CompanyServiceAsync service;
+	
 	private boolean calledQuickEdit = false;
 
 	@Override
@@ -100,11 +103,6 @@ public class CompanyRowPresenter extends BasePresenter<CompanyRowPresenter.IComp
 			view.alert( "Name changed with quick edit." );
 			calledQuickEdit = false;
 		}
-	}
-
-	@InjectService
-	public void setService( CompanyServiceAsync service ) {
-		this.service = service;
 	}
 
 }
