@@ -3,7 +3,7 @@ package com.mvp4g.example.client.presenter;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.annotation.InjectService;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.TestEventBus;
@@ -15,6 +15,7 @@ import com.mvp4g.example.client.view.UserCreateView;
 @Presenter( view = UserCreateView.class )
 public class UserCreatePresenter extends BasePresenter<IUserViewInterface, TestEventBus> {
 
+	@Inject
 	private UserServiceAsync userService = null;
 
 	@Override
@@ -49,11 +50,6 @@ public class UserCreatePresenter extends BasePresenter<IUserViewInterface, TestE
 		view.getLastName().setText( "" );
 		view.getFirstName().setText( "" );
 		eventBus.changeBody( view.getViewWidget() );
-	}
-
-	@InjectService
-	public void setUserService( UserServiceAsync userService ) {
-		this.userService = userService;
 	}
 
 }
