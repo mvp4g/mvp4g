@@ -5,7 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.client.annotation.InjectService;
+import com.google.inject.Inject;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import com.mvp4g.example.client.product.ProductEventBus;
@@ -17,6 +17,7 @@ public abstract class AbstractProductPresenter extends LazyPresenter<AbstractPro
 
 	protected ProductBean product = null;
 
+	@Inject
 	protected ProductServiceAsync service = null;
 
 	public interface ProductViewInterface extends LazyView {
@@ -50,11 +51,6 @@ public abstract class AbstractProductPresenter extends LazyPresenter<AbstractPro
 
 	public void onHasBeenThere() {
 		view.alert( "Has been on " + getPageName() );
-	}
-
-	@InjectService
-	public void setService( ProductServiceAsync service ) {
-		this.service = service;
 	}
 
 	protected void fillView() {

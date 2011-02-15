@@ -3,8 +3,8 @@ package com.mvp4g.example.client.company.handler;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
-import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.event.BaseEventHandler;
 import com.mvp4g.example.client.company.CompanyEventBus;
 import com.mvp4g.example.client.company.CompanyServiceAsync;
@@ -14,6 +14,7 @@ import com.mvp4g.example.client.company.bean.CompanyBean;
 @EventHandler
 public class CompanyListHandler extends BaseEventHandler<CompanyEventBus> {
 
+	@Inject
 	private CompanyServiceAsync service = null;
 
 	private int start = 0;
@@ -45,9 +46,5 @@ public class CompanyListHandler extends BaseEventHandler<CompanyEventBus> {
 		int endIndex = end - this.start + 1;
 		return companies.subList( startIndex, endIndex );
 	}
-
-	@InjectService
-	public void setService( CompanyServiceAsync service ) {
-		this.service = service;
-	}
+	
 }
