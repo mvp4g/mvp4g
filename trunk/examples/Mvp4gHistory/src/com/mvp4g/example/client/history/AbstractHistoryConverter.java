@@ -1,7 +1,7 @@
 package com.mvp4g.example.client.history;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.annotation.InjectService;
+import com.google.inject.Inject;
 import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.example.client.MyEventBus;
 import com.mvp4g.example.client.ServiceAsync;
@@ -9,6 +9,7 @@ import com.mvp4g.example.client.bean.BasicBean;
 
 public abstract class AbstractHistoryConverter<T extends BasicBean> implements HistoryConverter<MyEventBus> {
 
+	@Inject
 	protected ServiceAsync service = null;
 
 	public void convertFromToken( final String eventType, String param, final MyEventBus eventBus ) {
@@ -32,11 +33,6 @@ public abstract class AbstractHistoryConverter<T extends BasicBean> implements H
 		}
 	}
 
-	
-	@InjectService
-	public void setService( ServiceAsync service ) {
-		this.service = service;
-	}
 	
 	public boolean isCrawlable() {
 		return false;
