@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.annotation.InjectService;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.EmployeeAdminWithGXTEventBus;
@@ -45,6 +45,7 @@ public class UserRolePresenter extends BasePresenter<IUserRoleView, EmployeeAdmi
 
 	boolean enabled = false;
 
+	@Inject
 	private UserServiceAsync service = null;
 
 	@Override
@@ -114,7 +115,6 @@ public class UserRolePresenter extends BasePresenter<IUserRoleView, EmployeeAdmi
 		enableRemoveButton();
 	}
 
-	@InjectService
 	public void setUserService( UserServiceAsync service ) {
 		this.service = service;
 	}

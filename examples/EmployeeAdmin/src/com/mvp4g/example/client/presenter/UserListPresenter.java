@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.annotation.InjectService;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.EmployeeAdminEventBus;
@@ -38,10 +38,11 @@ public class UserListPresenter extends BasePresenter<UserListPresenter.IUserList
 
 	}
 
-	protected int indexSelected = 0;
-	protected List<UserBean> users = null;
+	protected int indexSelected;
+	protected List<UserBean> users;
 
-	private UserServiceAsync service = null;
+	@Inject
+	private UserServiceAsync service;
 
 	@Override
 	public void bind() {
@@ -93,7 +94,6 @@ public class UserListPresenter extends BasePresenter<UserListPresenter.IUserList
 		indexSelected = 0;
 	}
 
-	@InjectService
 	public void setUserService( UserServiceAsync service ) {
 		this.service = service;
 	}

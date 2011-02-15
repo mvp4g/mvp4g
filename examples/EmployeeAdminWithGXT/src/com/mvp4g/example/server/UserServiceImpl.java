@@ -28,6 +28,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements UserService
 
 	static private int NB_USERS = 4;
 
+	@SuppressWarnings( "unchecked" )
 	public PagingLoadResult<UserBean> getUsers( PagingLoadConfig config ) {
 		HttpSession session = getThreadLocalRequest().getSession();
 		List<UserBean> users = (List)session.getAttribute( "users" );

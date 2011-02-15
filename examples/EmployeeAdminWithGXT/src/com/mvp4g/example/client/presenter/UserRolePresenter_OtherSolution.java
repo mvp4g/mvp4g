@@ -12,7 +12,7 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.ListField;
 import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.annotation.InjectService;
+import com.google.inject.Inject;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.Constants;
 import com.mvp4g.example.client.EmployeeAdminWithGXTEventBus;
@@ -61,6 +61,7 @@ public class UserRolePresenter_OtherSolution extends BasePresenter<UserRolePrese
 
 	private boolean enabled = false;
 
+	@Inject
 	private UserServiceAsync service = null;
 
 	@Override
@@ -155,7 +156,6 @@ public class UserRolePresenter_OtherSolution extends BasePresenter<UserRolePrese
 		disable();
 	}
 
-	@InjectService
 	public void setUserService( UserServiceAsync service ) {
 		this.service = service;
 	}

@@ -16,7 +16,7 @@ import com.extjs.gxt.ui.client.event.GridEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.annotation.InjectService;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.EmployeeAdminWithGXTEventBus;
@@ -76,6 +76,7 @@ public class UserListPresenter extends BasePresenter<UserListPresenter.IUserList
 
 	protected int indexSelected = -1;
 
+	@Inject
 	private UserServiceAsync service = null;
 
 	private PagingLoader<PagingLoadResult<ModelData>> loader = null;
@@ -164,7 +165,6 @@ public class UserListPresenter extends BasePresenter<UserListPresenter.IUserList
 		indexSelected = -1;
 	}
 
-	@InjectService
 	public void setUserService( UserServiceAsync service ) {
 		this.service = service;
 	}
