@@ -9,7 +9,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasValue;
-import com.mvp4g.client.annotation.InjectService;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -46,6 +46,7 @@ public class TopBarPresenter extends LazyPresenter<TopBarPresenter.TopBarViewInt
 
 	}
 
+	@Inject
 	private ServiceAsync service = null;
 
 	private List<BasicBean> products;
@@ -143,11 +144,6 @@ public class TopBarPresenter extends LazyPresenter<TopBarPresenter.TopBarViewInt
 			}
 
 		} );
-	}
-
-	@InjectService
-	public void setService( ServiceAsync service ) {
-		this.service = service;
 	}
 
 	public void onDisplayDeal( DealBean bean ) {

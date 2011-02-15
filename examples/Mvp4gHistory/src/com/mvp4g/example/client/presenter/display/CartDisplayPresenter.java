@@ -3,7 +3,7 @@ package com.mvp4g.example.client.presenter.display;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.mvp4g.client.annotation.InjectService;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -24,6 +24,7 @@ public class CartDisplayPresenter extends LazyPresenter<CartDisplayPresenter.Car
 
 	}
 
+	@Inject
 	private ServiceAsync service = null;
 
 	public void onDisplayCart( String username ) {
@@ -47,11 +48,6 @@ public class CartDisplayPresenter extends LazyPresenter<CartDisplayPresenter.Car
 			} );
 		}
 
-	}
-
-	@InjectService
-	public void setService( ServiceAsync service ) {
-		this.service = service;
-	}
+	}	
 
 }
