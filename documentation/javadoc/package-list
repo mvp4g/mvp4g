@@ -1,0 +1,15 @@
+com.mvp4g.client
+com.mvp4g.client.annotation
+com.mvp4g.client.annotation.module
+com.mvp4g.client.event
+com.mvp4g.client.gwt_event
+com.mvp4g.client.history
+com.mvp4g.client.presenter
+com.mvp4g.client.view
+com.mvp4g.util
+com.mvp4g.util.config
+com.mvp4g.util.config.element
+com.mvp4g.util.config.loader.annotation
+com.mvp4g.util.exception
+com.mvp4g.util.exception.element
+com.mvp4g.util.exception.loader
