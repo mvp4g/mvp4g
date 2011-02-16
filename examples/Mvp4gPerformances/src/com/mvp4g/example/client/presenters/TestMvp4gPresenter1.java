@@ -1,8 +1,11 @@
 package com.mvp4g.example.client.presenters;
 
-import com.mvp4g.client.presenter.XmlPresenter;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.example.client.TestEventBus;
 
-public class TestMvp4gPresenter extends XmlPresenter<TestMvp4gPresenter.TestMvp4gViewInterface> {
+@Presenter( view = TestMvp4gView.class )
+public class TestMvp4gPresenter1 extends BasePresenter<TestMvp4gPresenter1.TestMvp4gViewInterface, TestEventBus> {
 
 	public interface TestMvp4gViewInterface {
 
