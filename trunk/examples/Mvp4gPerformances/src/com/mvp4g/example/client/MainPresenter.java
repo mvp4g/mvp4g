@@ -10,7 +10,8 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.mvp4g.client.presenter.XmlPresenter;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.events.Event1;
 import com.mvp4g.example.client.events.Event10;
 import com.mvp4g.example.client.events.Event2;
@@ -22,8 +23,10 @@ import com.mvp4g.example.client.events.Event7;
 import com.mvp4g.example.client.events.Event8;
 import com.mvp4g.example.client.events.Event9;
 import com.mvp4g.example.client.presenters.TestHandler;
+import com.mvp4g.example.client.presenters.TestMvp4gPresenter1;
 
-public class MainPresenter extends XmlPresenter<MainPresenter.MainViewInterface> {
+@Presenter( view = MainView.class )
+public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface, TestEventBus> {
 
 	private HandlerManager handlerManager = new HandlerManager( null );
 
@@ -50,6 +53,7 @@ public class MainPresenter extends XmlPresenter<MainPresenter.MainViewInterface>
 
 		TestHandler handler = null;
 		for ( int i = 0; i < 10; i++ ) {
+			//GWT handler
 			handler = new TestHandler();
 			handlerManager.addHandler( Event1.TYPE, handler );
 			handlerManager.addHandler( Event2.TYPE, handler );
@@ -79,16 +83,16 @@ public class MainPresenter extends XmlPresenter<MainPresenter.MainViewInterface>
 						//Test Mvp4g Event bus						
 						Date start = new Date();
 						for ( int i = 0; i < nbTimes; i++ ) {
-							eventBus.dispatch( "event1", param );
-							eventBus.dispatch( "event2", param );
-							eventBus.dispatch( "event3", param );
-							eventBus.dispatch( "event4", param );
-							eventBus.dispatch( "event5", param );
-							eventBus.dispatch( "event6", param );
-							eventBus.dispatch( "event7", param );
-							eventBus.dispatch( "event8", param );
-							eventBus.dispatch( "event9", param );
-							eventBus.dispatch( "event10", param );
+							eventBus.event1( param );
+							eventBus.event2( param );
+							eventBus.event3( param );
+							eventBus.event4( param );
+							eventBus.event5( param );
+							eventBus.event6( param );
+							eventBus.event7( param );
+							eventBus.event8( param );
+							eventBus.event9( param );
+							eventBus.event10( param );
 						}
 						Date end = new Date();
 						view.getMvp4gResult().setText( Long.toString( end.getTime() - start.getTime() ) );
@@ -149,6 +153,8 @@ public class MainPresenter extends XmlPresenter<MainPresenter.MainViewInterface>
 	}
 
 	public void onStart() {
+		for ( int i = 0; i < 10; i++ ) {
 
+		}
 	}
 }
