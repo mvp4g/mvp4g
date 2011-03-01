@@ -843,15 +843,20 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( "." );
 			sourceWriter.print( event.getCalledMethod() );
 			sourceWriter.print( "(" );
-			sourceWriter.print( param );
+			if ( param != null ) {
+				sourceWriter.print( param );
+			}
 			sourceWriter.print( ")" );
 			break;
 		case SIMPLE:
 			sourceWriter.print( historyConverterElement.getName() );
 			sourceWriter.print( ".convertToToken(\"" );
 			sourceWriter.print( event.getName() );
-			sourceWriter.print( "\"," );
-			sourceWriter.print( param );
+			sourceWriter.print( "\"" );
+			if ( param != null ) {
+				sourceWriter.print( "," );
+				sourceWriter.print( param );
+			}
 			sourceWriter.print( ")" );
 			break;
 		default:

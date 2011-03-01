@@ -264,8 +264,19 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	@Test
 	public void testWriteEventsWithHistory() throws DuplicatePropertyNameException {
+		testWriteEventsWithHistory( false );
+	}
 
+	@Test
+	public void testWriteEventsWithHistoryAndToken() throws DuplicatePropertyNameException {
+		testWriteEventsWithHistory( true );
+	}
+
+	private void testWriteEventsWithHistory( boolean withToken ) throws DuplicatePropertyNameException {
+
+		assertOutput( getExpectedHistoryEvents( false ), false );
 		assertOutput( getExpectedHistoryEvents(), false );
+		assertOutput( getExpectedHistoryEvents( true ), false );
 
 		createHandlers();
 
@@ -291,6 +302,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		e1.setHandlers( new String[] { "handler1" } );
 		e1.setHistory( "history" );
 		e1.setEventObjectClass( new String[] { "java.lang.String", "java.lang.Object" } );
+		e1.setWithTokenGeneration( Boolean.toString( withToken ) );
 
 		EventElement e2 = new EventElement();
 		e2.setType( "event2" );
@@ -298,32 +310,50 @@ public class Mvp4gConfigurationFileReaderTest {
 		e2.setHistory( "history" );
 		e2.setName( "historyName" );
 		e2.setEventObjectClass( new String[] { "java.lang.String" } );
+		e2.setWithTokenGeneration( Boolean.toString( withToken ) );
 
 		EventElement e3 = new EventElement();
 		e3.setType( "event3" );
 		e3.setHandlers( new String[] { "handler3" } );
 		e3.setHistory( "clear" );
+		e3.setWithTokenGeneration( Boolean.toString( withToken ) );
 
 		EventElement e4 = new EventElement();
 		e4.setType( "event4" );
 		e4.setHandlers( new String[] { "handler3" } );
 		e4.setHistory( "history2" );
-		
+		e4.setWithTokenGeneration( Boolean.toString( withToken ) );
+
 		EventElement e5 = new EventElement();
 		e5.setType( "event5" );
 		e5.setHandlers( new String[] { "handler3" } );
 		e5.setHistory( "history3" );
 		e5.setEventObjectClass( new String[] { "java.lang.String", "java.lang.Object" } );
+		e5.setWithTokenGeneration( Boolean.toString( withToken ) );
+
+		EventElement e6 = new EventElement();
+		e6.setType( "event6" );
+		e6.setHistory( "history3" );
+		e6.setWithTokenGeneration( Boolean.toString( withToken ) );
+
+		EventElement e7 = new EventElement();
+		e7.setType( "event7" );
+		e7.setHistory( "history" );
+		e7.setWithTokenGeneration( Boolean.toString( withToken ) );
 
 		events.add( e1 );
 		events.add( e2 );
 		events.add( e3 );
 		events.add( e4 );
 		events.add( e5 );
+		events.add( e6 );
+		events.add( e7 );
 
 		writer.writeConf();
 
+		assertOutput( getExpectedHistoryEvents( false ), true );
 		assertOutput( getExpectedHistoryEvents(), true );
+		assertOutput( getExpectedHistoryEvents( true ), withToken );
 	}
 
 	@Test
@@ -614,15 +644,15 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedStartPresenterViewMultiple(), false );
 
 	}
-	
+
 	@Test
 	public void testWriteNoStartView() throws DuplicatePropertyNameException {
 		StartElement start = new StartElement();
-		configuration.setStart( start );		
-		
+		configuration.setStart( start );
+
 		assertOutput( getNoStartView(), false );
 		writer.writeConf();
-		assertOutput( getNoStartView(), true );		
+		assertOutput( getNoStartView(), true );
 	}
 
 	@Test
@@ -1492,10 +1522,18 @@ public class Mvp4gConfigurationFileReaderTest {
 				"public void setApplicationHistoryStored( boolean historyStored ){", "placeService.setEnabled(historyStored);" };
 	}
 
+	private String[] getExpectedHistoryEvents( boolean withToken ) {
+		return new String[] { "place( itself, \"historyName\",history.onEvent2(attr0)," + withToken + ");",
+				"place( itself, \"event1\",history.onEvent1(attr0,attr1)," + withToken + ");", "place( itself, \"event4\",null," + withToken + ");",
+				"place( itself, \"event5\",history3.convertToToken(\"event5\",attr0,attr1)," + withToken + ");",
+				"place( itself, \"event6\",history3.convertToToken(\"event6\")," + withToken + ");",
+				"place( itself, \"event7\",history.onEvent7()," + withToken + ");" };
+	}
+
 	private String[] getExpectedHistoryEvents() {
-		return new String[] { "place( itself, \"historyName\",history.onEvent2(attr0),false);", "clearHistory(itself);",
-				"place( itself, \"event1\",history.onEvent1(attr0,attr1),false);", "place( itself, \"event4\",null,false);","place( itself, \"event5\",history3.convertToToken(\"event5\",attr0,attr1),false);",
-				"addConverter( \"event4\",history2);", "addConverter( \"historyName\",history);", "addConverter( \"event1\",history);","addConverter( \"event5\",history3);" };
+		return new String[] { "clearHistory(itself);", "addConverter( \"event4\",history2);", "addConverter( \"historyName\",history);",
+				"addConverter( \"event1\",history);", "addConverter( \"event5\",history3);", "addConverter( \"event6\",history3);",
+				"addConverter( \"event7\",history);" };
 	}
 
 	private String[] getExpectedEventsWithLookup() {
@@ -1550,7 +1588,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	private String[] getExpectedGetters() {
 		return new String[] { "public Object getStartView(){", "return startView;", "public EventBus getEventBus(){", "return eventBus;" };
 	}
-	
+
 	private String[] getNoStartView() {
 		return new String[] { "throw new Mvp4gException(\"getStartView shouldn't be called since this module has no start view.\");" };
 	}
