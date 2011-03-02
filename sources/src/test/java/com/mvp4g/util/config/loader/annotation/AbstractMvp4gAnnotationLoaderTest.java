@@ -13,10 +13,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.dev.javac.typemodel.TypeOracleStub;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.SimpleMvp4gElement;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
-import com.mvp4g.util.test_tools.TypeOracleStub;
 
 public abstract class AbstractMvp4gAnnotationLoaderTest<A extends Annotation, L extends Mvp4gAnnotationsLoader<A>> {
 

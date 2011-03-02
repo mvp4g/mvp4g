@@ -1,6 +1,8 @@
 package com.mvp4g.util.config.loader.annotation;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertSame;
+import static junit.framework.Assert.assertTrue;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ import com.mvp4g.util.config.element.InjectedElement;
 import com.mvp4g.util.config.element.Mvp4gWithServicesElement;
 import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
-import com.mvp4g.util.test_tools.annotation.Services;
+import com.mvp4g.util.test_tools.annotation.services.SimpleService;
 
 public abstract class AbstractMvp4gAnnotationsWithServiceLoaderTest<A extends Annotation, L extends Mvp4gAnnotationsWithServiceLoader<A>> extends AbstractMvp4gAnnotationLoaderTest<A, L> {
 
@@ -80,7 +82,7 @@ public abstract class AbstractMvp4gAnnotationsWithServiceLoaderTest<A extends An
 		loader.load( annotedClasses, configuration );
 		Set<Mvp4gWithServicesElement> elements = getSet();
 
-		String serviceClass = Services.SimpleService.class.getCanonicalName();
+		String serviceClass = SimpleService.class.getCanonicalName();
 		String serviceName = serviceClass.replace( '.', '_' );
 
 		List<InjectedElement> injectedServices = elements.iterator().next().getInjectedServices();

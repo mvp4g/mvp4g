@@ -62,4 +62,19 @@ public class SourceWriterTestStub implements SourceWriter {
 	public boolean dataContains( String s ) {
 		return getData().contains( s );
 	}
+
+	public void indentln(String s, Object... args) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void print(String s, Object... args) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void println(String s, Object... args) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.dev.javac.typemodel.TypeOracleStub;
 import com.google.gwt.dev.util.UnitTestTreeLogger;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.DefaultMvp4gGinModule;
@@ -43,14 +44,14 @@ import com.mvp4g.util.test_tools.Modules;
 import com.mvp4g.util.test_tools.OneGinModule;
 import com.mvp4g.util.test_tools.OneLogger;
 import com.mvp4g.util.test_tools.SourceWriterTestStub;
-import com.mvp4g.util.test_tools.TypeOracleStub;
-import com.mvp4g.util.test_tools.annotation.EventHandlers;
-import com.mvp4g.util.test_tools.annotation.HistoryConverters;
-import com.mvp4g.util.test_tools.annotation.Presenters;
 import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter1;
 import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter2;
-import com.mvp4g.util.test_tools.annotation.HistoryConverters.SimpleHistoryConverter;
-import com.mvp4g.util.test_tools.annotation.Presenters.SimplePresenter;
+import com.mvp4g.util.test_tools.annotation.Presenters;
+import com.mvp4g.util.test_tools.annotation.events.EventBusOk;
+import com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent;
+import com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler;
+import com.mvp4g.util.test_tools.annotation.history_converters.SimpleHistoryConverter;
+import com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter;
 
 public class Mvp4gConfigurationFileReaderTest {
 
@@ -264,8 +265,19 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	@Test
 	public void testWriteEventsWithHistory() throws DuplicatePropertyNameException {
+		testWriteEventsWithHistory( false );
+	}
 
+	@Test
+	public void testWriteEventsWithHistoryAndToken() throws DuplicatePropertyNameException {
+		testWriteEventsWithHistory( true );
+	}
+
+	private void testWriteEventsWithHistory( boolean withToken ) throws DuplicatePropertyNameException {
+
+		assertOutput( getExpectedHistoryEvents( false ), false );
 		assertOutput( getExpectedHistoryEvents(), false );
+		assertOutput( getExpectedHistoryEvents( true ), false );
 
 		createHandlers();
 
@@ -291,6 +303,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		e1.setHandlers( new String[] { "handler1" } );
 		e1.setHistory( "history" );
 		e1.setEventObjectClass( new String[] { "java.lang.String", "java.lang.Object" } );
+		e1.setWithTokenGeneration( Boolean.toString( withToken ) );
 
 		EventElement e2 = new EventElement();
 		e2.setType( "event2" );
@@ -298,32 +311,50 @@ public class Mvp4gConfigurationFileReaderTest {
 		e2.setHistory( "history" );
 		e2.setName( "historyName" );
 		e2.setEventObjectClass( new String[] { "java.lang.String" } );
+		e2.setWithTokenGeneration( Boolean.toString( withToken ) );
 
 		EventElement e3 = new EventElement();
 		e3.setType( "event3" );
 		e3.setHandlers( new String[] { "handler3" } );
 		e3.setHistory( "clear" );
+		e3.setWithTokenGeneration( Boolean.toString( withToken ) );
 
 		EventElement e4 = new EventElement();
 		e4.setType( "event4" );
 		e4.setHandlers( new String[] { "handler3" } );
 		e4.setHistory( "history2" );
-		
+		e4.setWithTokenGeneration( Boolean.toString( withToken ) );
+
 		EventElement e5 = new EventElement();
 		e5.setType( "event5" );
 		e5.setHandlers( new String[] { "handler3" } );
 		e5.setHistory( "history3" );
 		e5.setEventObjectClass( new String[] { "java.lang.String", "java.lang.Object" } );
+		e5.setWithTokenGeneration( Boolean.toString( withToken ) );
+
+		EventElement e6 = new EventElement();
+		e6.setType( "event6" );
+		e6.setHistory( "history3" );
+		e6.setWithTokenGeneration( Boolean.toString( withToken ) );
+
+		EventElement e7 = new EventElement();
+		e7.setType( "event7" );
+		e7.setHistory( "history" );
+		e7.setWithTokenGeneration( Boolean.toString( withToken ) );
 
 		events.add( e1 );
 		events.add( e2 );
 		events.add( e3 );
 		events.add( e4 );
 		events.add( e5 );
+		events.add( e6 );
+		events.add( e7 );
 
 		writer.writeConf();
 
+		assertOutput( getExpectedHistoryEvents( false ), true );
 		assertOutput( getExpectedHistoryEvents(), true );
+		assertOutput( getExpectedHistoryEvents( true ), withToken );
 	}
 
 	@Test
@@ -968,7 +999,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.getEvents().add( event2 );
 		configuration.getEvents().add( event3 );
 		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(),
-				oracle.addClass( com.mvp4g.util.test_tools.annotation.Events.EventBusOk.class ) );
+				oracle.addClass( EventBusOk.class ) );
 
 		assertOutput( getExpectedEventChildModuleLoad(), false );
 		writer.writeConf();
@@ -1007,7 +1038,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.getEvents().add( event2 );
 		configuration.getEvents().add( event3 );
 		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(),
-				oracle.addClass( com.mvp4g.util.test_tools.annotation.Events.EventBusOk.class ) );
+				oracle.addClass( EventBusOk.class ) );
 
 		assertOutput( getExpectedPassiveEventChildModuleLoad(), false );
 		writer.writeConf();
@@ -1119,7 +1150,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		event.setModulesToLoad( new String[] { "child" } );
 		configuration.getEvents().add( event );
 		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(),
-				oracle.addClass( com.mvp4g.util.test_tools.annotation.Events.EventBusOk.class ) );
+				oracle.addClass( EventBusOk.class ) );
 
 		assertOutput( getExpectedHistoryParent(), false );
 		writer.writeConf();
@@ -1370,7 +1401,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.getEvents().add( e1 );
 
 		configuration.getOthersEventBusClassMap().put( moduleType.getQualifiedSourceName(),
-				oracle.addClass( com.mvp4g.util.test_tools.annotation.Events.EventBusOk.class ) );
+				oracle.addClass( EventBusOk.class ) );
 
 		writer.writeConf();
 
@@ -1462,9 +1493,9 @@ public class Mvp4gConfigurationFileReaderTest {
 	private String[] getExpectedEvents() {
 		return new String[] {
 				"public void event4(){",
-				"List<com.mvp4g.util.test_tools.annotation.EventHandlers.EventHandlerWithEvent> handlershandler4 = getHandlers(com.mvp4g.util.test_tools.annotation.EventHandlers.EventHandlerWithEvent.class);",
+				"List<com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent> handlershandler4 = getHandlers(com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent.class);",
 				"if(handlershandler4!= null){",
-				"com.mvp4g.util.test_tools.annotation.EventHandlers.EventHandlerWithEvent handler;",
+				"com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent handler;",
 				"int handlerCount = handlershandler4.size();",
 				"for(int i=0; i<handlerCount; i++){",
 				"handler = handlershandler4.get(i);",
@@ -1492,10 +1523,18 @@ public class Mvp4gConfigurationFileReaderTest {
 				"public void setApplicationHistoryStored( boolean historyStored ){", "placeService.setEnabled(historyStored);" };
 	}
 
+	private String[] getExpectedHistoryEvents( boolean withToken ) {
+		return new String[] { "place( itself, \"historyName\",history.onEvent2(attr0)," + withToken + ");",
+				"place( itself, \"event1\",history.onEvent1(attr0,attr1)," + withToken + ");", "place( itself, \"event4\",null," + withToken + ");",
+				"place( itself, \"event5\",history3.convertToToken(\"event5\",attr0,attr1)," + withToken + ");",
+				"place( itself, \"event6\",history3.convertToToken(\"event6\")," + withToken + ");",
+				"place( itself, \"event7\",history.onEvent7()," + withToken + ");" };
+	}
+
 	private String[] getExpectedHistoryEvents() {
-		return new String[] { "place( itself, \"historyName\",history.onEvent2(attr0),false);", "clearHistory(itself);",
-				"place( itself, \"event1\",history.onEvent1(attr0,attr1),false);", "place( itself, \"event4\",null,false);","place( itself, \"event5\",history3.convertToToken(\"event5\",attr0,attr1),false);",
-				"addConverter( \"event4\",history2);", "addConverter( \"historyName\",history);", "addConverter( \"event1\",history);","addConverter( \"event5\",history3);" };
+		return new String[] { "clearHistory(itself);", "addConverter( \"event4\",history2);", "addConverter( \"historyName\",history);",
+				"addConverter( \"event1\",history);", "addConverter( \"event5\",history3);", "addConverter( \"event6\",history3);",
+				"addConverter( \"event7\",history);" };
 	}
 
 	private String[] getExpectedEventsWithLookup() {
@@ -1520,7 +1559,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedStartPresenterViewMultiple() {
-		return new String[] { "this.startPresenter = eventBus.addHandler(com.mvp4g.util.test_tools.annotation.Presenters.SimplePresenter.class);",
+		return new String[] { "this.startPresenter = eventBus.addHandler(com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter.class);",
 				"this.startView = startPresenter.getView();" };
 	}
 
@@ -1591,14 +1630,14 @@ public class Mvp4gConfigurationFileReaderTest {
 		return new String[] {
 				"loadchild(new Mvp4gEventPasser(attr0){",
 				"public void pass(Mvp4gModule module){",
-				"com.mvp4g.util.test_tools.annotation.Events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.Events.EventBusOk) module.getEventBus();",
+				"com.mvp4g.util.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event2((java.lang.String) eventObjects[0]);",
 				"loadchild(new Mvp4gEventPasser(attr0,attr1){",
-				"com.mvp4g.util.test_tools.annotation.Events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.Events.EventBusOk) module.getEventBus();",
+				"com.mvp4g.util.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event3((java.lang.String) eventObjects[0],(java.lang.Object) eventObjects[1]);",
 				"loadchild(new Mvp4gEventPasser(){",
 				"public void pass(Mvp4gModule module){",
-				"com.mvp4g.util.test_tools.annotation.Events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.Events.EventBusOk) module.getEventBus();",
+				"com.mvp4g.util.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event1();" };
 	}
 
@@ -1607,11 +1646,11 @@ public class Mvp4gConfigurationFileReaderTest {
 				"Mvp4gModule module;",
 				"module = modules.get(com.mvp4g.util.test_tools.Modules.ModuleWithParent.class);",
 				"if(module != null){",
-				"com.mvp4g.util.test_tools.annotation.Events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.Events.EventBusOk) module.getEventBus();",
+				"com.mvp4g.util.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event2(attr0);",
-				"com.mvp4g.util.test_tools.annotation.Events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.Events.EventBusOk) module.getEventBus();",
+				"com.mvp4g.util.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event3(attr0,attr1);",
-				"com.mvp4g.util.test_tools.annotation.Events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.Events.EventBusOk) module.getEventBus();",
+				"com.mvp4g.util.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event1();" };
 	}
 
@@ -1670,8 +1709,8 @@ public class Mvp4gConfigurationFileReaderTest {
 				"handler = handlershandler2de.get(i);",
 				"handler.setActivated(false);",
 				"handler3.setActivated(true);",
-				"List<com.mvp4g.util.test_tools.annotation.EventHandlers.EventHandlerWithEvent> handlershandler4act = getHandlers(com.mvp4g.util.test_tools.annotation.EventHandlers.EventHandlerWithEvent.class);",
-				"if(handlershandler4act!= null){", "com.mvp4g.util.test_tools.annotation.EventHandlers.EventHandlerWithEvent handler;",
+				"List<com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent> handlershandler4act = getHandlers(com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent.class);",
+				"if(handlershandler4act!= null){", "com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent handler;",
 				"int handlerCount = handlershandler4act.size();", "for(int i=0; i<handlerCount; i++){", "handler = handlershandler4act.get(i);",
 				"handler.setActivated(true);" };
 	}
@@ -1693,10 +1732,10 @@ public class Mvp4gConfigurationFileReaderTest {
 	private String[] getExpectedGinInjector() {
 		return new String[] { "public interface com_mvp4g_client_Mvp4gModuleGinjector extends Ginjector {",
 				"com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter gethandler2();",
-				"com.mvp4g.util.test_tools.annotation.Presenters.SimplePresenter gethandler1();",
-				"com.mvp4g.util.test_tools.annotation.EventHandlers.SimpleEventHandler gethandler3();",
-				"com.mvp4g.util.test_tools.annotation.EventHandlers.EventHandlerWithEvent gethandler4();", "java.lang.String getview();",
-				"com.mvp4g.util.test_tools.annotation.HistoryConverters.SimpleHistoryConverter gethistory();" };
+				"com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter gethandler1();",
+				"com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler gethandler3();",
+				"com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent gethandler4();", "java.lang.String getview();",
+				"com.mvp4g.util.test_tools.annotation.history_converters.SimpleHistoryConverter gethistory();" };
 	}
 
 	private String[] getExpectedEventFiltersInstantiation() {
@@ -1738,13 +1777,13 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		HistoryConverterElement history = new HistoryConverterElement();
 		history.setName( "history" );
-		history.setClassName( HistoryConverters.SimpleHistoryConverter.class.getCanonicalName() );
+		history.setClassName( SimpleHistoryConverter.class.getCanonicalName() );
 		configuration.getHistoryConverters().add( history );
 
 		PresenterElement p1 = new PresenterElement();
 		p1.setName( "handler1" );
 		p1.setMultiple( Boolean.FALSE.toString() );
-		p1.setClassName( Presenters.SimplePresenter.class.getCanonicalName() );
+		p1.setClassName( SimplePresenter.class.getCanonicalName() );
 		p1.setView( "view" );
 		PresenterElement p2 = new PresenterElement();
 		p2.setName( "handler2" );
@@ -1757,11 +1796,11 @@ public class Mvp4gConfigurationFileReaderTest {
 		EventHandlerElement eh1 = new EventHandlerElement();
 		eh1.setName( "handler3" );
 		eh1.setMultiple( Boolean.FALSE.toString() );
-		eh1.setClassName( EventHandlers.SimpleEventHandler.class.getCanonicalName() );
+		eh1.setClassName( SimpleEventHandler.class.getCanonicalName() );
 		EventHandlerElement eh2 = new EventHandlerElement();
 		eh2.setName( "handler4" );
 		eh2.setMultiple( Boolean.TRUE.toString() );
-		eh2.setClassName( EventHandlers.EventHandlerWithEvent.class.getCanonicalName() );
+		eh2.setClassName( EventHandlerWithEvent.class.getCanonicalName() );
 		eventHandlers.add( eh1 );
 		eventHandlers.add( eh2 );
 	}

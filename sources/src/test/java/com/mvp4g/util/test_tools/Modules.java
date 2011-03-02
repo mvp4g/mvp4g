@@ -2,7 +2,7 @@ package com.mvp4g.util.test_tools;
 
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.module.HistoryName;
-import com.mvp4g.util.test_tools.annotation.Presenters.TestBroadcast;
+import com.mvp4g.util.test_tools.annotation.TestBroadcast;
 
 public class Modules {
 

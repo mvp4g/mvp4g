@@ -4,6 +4,7 @@ import com.google.gwt.inject.client.GinModule;
 import com.google.gwt.inject.client.binder.GinBinder;
 import com.mvp4g.client.DefaultMvp4gGinModule;
 import com.mvp4g.client.annotation.Debug;
+import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Filters;
 import com.mvp4g.client.annotation.Forward;
@@ -11,7 +12,6 @@ import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.NotFoundHistory;
 import com.mvp4g.client.annotation.PlaceService;
 import com.mvp4g.client.annotation.Start;
-import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.module.AfterLoadChildModule;
 import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
 import com.mvp4g.client.annotation.module.ChildModule;
@@ -24,6 +24,8 @@ import com.mvp4g.client.event.Mvp4gLogger;
 import com.mvp4g.client.view.NoStartView;
 import com.mvp4g.util.test_tools.CustomPlaceService;
 import com.mvp4g.util.test_tools.Modules;
+import com.mvp4g.util.test_tools.annotation.history_converters.HistoryConverterForEvent;
+import com.mvp4g.util.test_tools.annotation.presenters.PresenterWithName;
 
 public class Events {
 
@@ -68,20 +70,6 @@ public class Events {
 	}
 
 	@com.mvp4g.client.annotation.Events( startView = Object.class )
-	public static interface EventBusOk extends EventBus {
-
-		@NotFoundHistory
-		@Event( handlerNames = "name", calledMethod = "treatEvent1", historyConverterName = "history" )
-		public void event1( String obj );
-
-		@Start
-		@InitHistory
-		@Forward
-		@Event( handlers = Presenters.PresenterWithName.class, historyConverter = HistoryConverters.HistoryConverterForEvent.class, navigationEvent = true, passive = true )
-		public String event2();
-	}
-
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
 	public static interface EventBusDoubleStart extends EventBus {
 
 		@Start
@@ -89,7 +77,7 @@ public class Events {
 		public void event1( String obj );
 
 		@Start
-		@Event( handlers = Presenters.PresenterWithName.class )
+		@Event( handlers = PresenterWithName.class )
 		public void event2();
 	}
 
@@ -101,7 +89,7 @@ public class Events {
 		public void event1( String obj );
 
 		@Forward
-		@Event( handlers = Presenters.PresenterWithName.class )
+		@Event( handlers = PresenterWithName.class )
 		public void event2();
 	}
 
@@ -113,7 +101,7 @@ public class Events {
 		public void event1( String obj );
 
 		@InitHistory
-		@Event( handlers = Presenters.PresenterWithName.class )
+		@Event( handlers = PresenterWithName.class )
 		public void event2();
 	}
 
@@ -125,7 +113,7 @@ public class Events {
 		public void event1( String obj );
 
 		@NotFoundHistory
-		@Event( handlers = Presenters.PresenterWithName.class )
+		@Event( handlers = PresenterWithName.class )
 		public void event2();
 	}
 
@@ -155,13 +143,13 @@ public class Events {
 		@Event( )
 		public void event1( String obj );
 
-		@Event( handlers = Presenters.PresenterWithName.class, modulesToLoad = Modules.Module1.class )
+		@Event( handlers = PresenterWithName.class, modulesToLoad = Modules.Module1.class )
 		public void event2();
 
-		@Event( handlers = Presenters.PresenterWithName.class, modulesToLoad = { Modules.ModuleWithParent.class, Modules.Module1.class } )
+		@Event( handlers = PresenterWithName.class, modulesToLoad = { Modules.ModuleWithParent.class, Modules.Module1.class } )
 		public void event3();
 
-		@Event( handlers = Presenters.PresenterWithName.class, forwardToParent = true )
+		@Event( handlers = PresenterWithName.class, forwardToParent = true )
 		public void event4();
 	}
 
@@ -225,7 +213,7 @@ public class Events {
 	@com.mvp4g.client.annotation.Events( startView = Object.class )
 	public static interface EventBusUnknownModuleForEvent extends EventBus {
 
-		@Event( handlers = Presenters.PresenterWithName.class, modulesToLoad = Modules.ModuleWithParent.class )
+		@Event( handlers = PresenterWithName.class, modulesToLoad = Modules.ModuleWithParent.class )
 		public void event2();
 
 	}
@@ -235,7 +223,7 @@ public class Events {
 	public static interface EventBusUnknownModuleForLoadModuleViewEvent extends EventBus {
 
 		@DisplayChildModuleView( Modules.ModuleWithParent.class )
-		@Event( handlers = Presenters.PresenterWithName.class )
+		@Event( handlers = PresenterWithName.class )
 		public void event2();
 
 	}
@@ -245,11 +233,11 @@ public class Events {
 	public static interface EventBusSameModuleForLoadModuleViewEvent extends EventBus {
 
 		@DisplayChildModuleView( Modules.Module1.class )
-		@Event( handlers = Presenters.PresenterWithName.class )
+		@Event( handlers = PresenterWithName.class )
 		public void event1();
 
 		@DisplayChildModuleView( Modules.Module1.class )
-		@Event( handlers = Presenters.PresenterWithName.class )
+		@Event( handlers = PresenterWithName.class )
 		public void event2();
 
 	}
@@ -337,9 +325,9 @@ public class Events {
 	public static interface EventBusWithHistoryConfig extends EventBus {
 
 	}
-	
+
 	@com.mvp4g.client.annotation.Events( startView = NoStartView.class )
 	public static interface EventBusWithNoStartView extends EventBus {
-		
+
 	}
 }

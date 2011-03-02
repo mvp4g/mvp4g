@@ -5,6 +5,7 @@ import java.util.Set;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.test_tools.annotation.HistoryConverters;
+import com.mvp4g.util.test_tools.annotation.history_converters.SimpleHistoryConverter;
 
 public class HistoryAnnotationsLoaderTest extends AbstractMvp4gAnnotationsWithServiceLoaderTest<History, HistoryAnnotationsLoader> {
 
@@ -21,7 +22,7 @@ public class HistoryAnnotationsLoaderTest extends AbstractMvp4gAnnotationsWithSe
 
 	@Override
 	protected Class<?> getSimpleClass() {
-		return HistoryConverters.SimpleHistoryConverter.class;
+		return SimpleHistoryConverter.class;
 	}
 
 	@Override

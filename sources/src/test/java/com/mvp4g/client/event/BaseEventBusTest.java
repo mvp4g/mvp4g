@@ -20,7 +20,7 @@ import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.test_tools.EventFilterStub;
 import com.mvp4g.client.test_tools.Mvp4gModuleStub;
 import com.mvp4g.util.test_tools.annotation.Presenters;
-import com.mvp4g.util.test_tools.annotation.Presenters.SimplePresenter;
+import com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter;
 
 public class BaseEventBusTest {
 
@@ -35,7 +35,7 @@ public class BaseEventBusTest {
 			@SuppressWarnings( "unchecked" )
 			@Override
 			protected <T extends EventHandlerInterface<?>> T createHandler( Class<T> handlerClass ) {
-				return (T)( ( Presenters.SimplePresenter.class.equals( handlerClass ) ) ? new Presenters.SimplePresenter() : null );
+				return (T)( ( SimplePresenter.class.equals( handlerClass ) ) ? new SimplePresenter() : null );
 			}
 
 			public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {

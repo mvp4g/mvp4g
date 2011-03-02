@@ -61,7 +61,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	private HistoryProxy history = null;
 	private Mvp4gModule module = null;
 
-	@SuppressWarnings( "unchecked" )
+	@SuppressWarnings( "rawtypes" )
 	private Map<String, HistoryConverter> converters = new HashMap<String, HistoryConverter>();
 	
 	private boolean enabled = true;
@@ -199,6 +199,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	@SuppressWarnings( "unchecked" )
 	protected void dispatchEvent( String historyName, String param, Mvp4gModule module ) {
 		if ( historyName != null ) {
+			@SuppressWarnings( "rawtypes" )
 			HistoryConverter converter = converters.get( historyName );
 			if ( converter == null ) {
 				sendNotFoundEvent();
@@ -274,7 +275,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 * @param converter
 	 *            converter associated with this event
 	 */
-	@SuppressWarnings( "unchecked" )
+	@SuppressWarnings( "rawtypes" )
 	public void addConverter( String historyName, HistoryConverter converter ) {
 		converters.put( historyName, converter );
 	}
