@@ -4,33 +4,14 @@ import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.util.test_tools.annotation.services.SimpleService;
+import com.mvp4g.util.test_tools.annotation.services.SimpleServiceAsync;
 
+@SuppressWarnings( "deprecation" )
 public class Presenters {
-
-	public interface TestBroadcast {
-	}
-
-	@Presenter( view = Object.class )
-	public static class SimplePresenter extends BasePresenter<Object, EventBus> {
-
-		private boolean bindCalled = false;
-
-		public void bind() {
-			this.bindCalled = true;
-		}
-
-		public boolean isBindCalled() {
-			return bindCalled;
-		}
-
-	}
 
 	@Presenter( view = Object.class, multiple = true )
 	public static class MultiplePresenter extends BasePresenter<Object, EventBus> {
-	}
-
-	@Presenter( view = Object.class, name = "name" )
-	public static class PresenterWithName extends BasePresenter<Object, EventBus> {
 	}
 
 	@Presenter( view = Object.class, viewName = "name" )
@@ -41,7 +22,7 @@ public class Presenters {
 	public static class PresenterNotPublic extends BasePresenter<Object, EventBus> {
 
 		@InjectService
-		void setSthg( Services.SimpleServiceAsync service ) {
+		void setSthg( SimpleServiceAsync service ) {
 		}
 
 	}
@@ -59,7 +40,7 @@ public class Presenters {
 	public static class PresenterWithMoreThanOneParameter extends BasePresenter<Object, EventBus> {
 
 		@InjectService
-		public void setSthg( Services.SimpleServiceAsync service, Boolean test ) {
+		public void setSthg( SimpleServiceAsync service, Boolean test ) {
 		}
 
 	}
@@ -68,7 +49,7 @@ public class Presenters {
 	public static class PresenterNotAsync extends BasePresenter<Object, EventBus> {
 
 		@InjectService
-		public void setSthg( Services.SimpleService service ) {
+		public void setSthg( SimpleService service ) {
 		}
 
 	}
@@ -77,7 +58,7 @@ public class Presenters {
 	public static class PresenterWithService extends BasePresenter<Object, EventBus> {
 
 		@InjectService
-		public void setSthg( Services.SimpleServiceAsync service ) {
+		public void setSthg( SimpleServiceAsync service ) {
 		}
 
 	}
@@ -86,7 +67,7 @@ public class Presenters {
 	public static class PresenterWithSameService extends BasePresenter<Object, EventBus> {
 
 		@InjectService
-		public void setSthg( Services.SimpleServiceAsync service ) {
+		public void setSthg( SimpleServiceAsync service ) {
 		}
 
 	}
@@ -95,7 +76,7 @@ public class Presenters {
 	public static class PresenterWithServiceAndName extends BasePresenter<Object, EventBus> {
 
 		@InjectService( serviceName = "name" )
-		public void setSthg( Services.SimpleServiceAsync service ) {
+		public void setSthg( SimpleServiceAsync service ) {
 		}
 
 	}

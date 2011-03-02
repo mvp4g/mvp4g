@@ -1,4 +1,4 @@
-package com.mvp4g.util.test_tools;
+package com.google.gwt.dev.javac.typemodel;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -8,23 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JGenericType;
-import com.google.gwt.core.ext.typeinfo.JMethod;
-import com.google.gwt.core.ext.typeinfo.JPackage;
-import com.google.gwt.core.ext.typeinfo.JParameter;
-import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 import com.google.gwt.core.ext.typeinfo.JType;
-import com.google.gwt.core.ext.typeinfo.JTypeParameter;
-import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.EventFilter;
-import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.history.HistoryConverter;
-import com.mvp4g.client.presenter.PresenterInterface;
-import com.mvp4g.client.view.ReverseViewInterface;
-import com.mvp4g.util.test_tools.annotation.Presenters.SimplePresenter;
-import com.mvp4g.util.test_tools.annotation.Views.SimpleView;
+import com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter;
+import com.mvp4g.util.test_tools.annotation.views.SimpleView;
 
 public class TypeOracleStub extends TypeOracle {
 
@@ -61,12 +50,10 @@ public class TypeOracleStub extends TypeOracle {
 			JClassType enclosingType = null;
 			if ( enclosingClass != null ) {
 				enclosingType = findType( enclosingClass.getName() );
-				if ( enclosingType == null ) {
-					addClass( enclosingClass );
-				}
 			}
 
-			type = new JGenericType( this, p, enclosingType, c.isLocalClass(), c.getSimpleName(), c.isInterface(), new JTypeParameter[0] );
+			type = new MyGenericType( this, p, ( enclosingType == null ) ? null : enclosingType.getSimpleSourceName(), c.getSimpleName(),
+					c.isInterface(), new JTypeParameter[0] );
 
 			Class<?> superClass = c.getSuperclass();
 			if ( superClass != null ) {
@@ -85,7 +72,7 @@ public class TypeOracleStub extends TypeOracle {
 			}
 			type.addAnnotations( annotations );
 
-			if ( c.getPackage().getName().contains( getClass().getPackage().getName() ) ) {
+			if ( c.getPackage().getName().contains( "com.mvp4g.util.test_tools.annotation" ) ) {
 				JMethod method = null;
 				String returnType;
 				for ( Method m : c.getDeclaredMethods() ) {
@@ -96,8 +83,8 @@ public class TypeOracleStub extends TypeOracle {
 
 					method = new JMethod( type, m.getName(), annotations, null );
 					returnType = m.getReturnType().getCanonicalName();
-					//if return type not an object, just return object
-					if(!returnType.contains( "." )){
+					// if return type not an object, just return object
+					if ( !returnType.contains( "." ) ) {
 						returnType = Object.class.getName();
 					}
 					method.setReturnType( findType( returnType ) );
@@ -107,8 +94,9 @@ public class TypeOracleStub extends TypeOracle {
 						method.addModifierBits( 0x00000010 );
 					}
 
+					Map<Class<? extends Annotation>, Annotation> declaredAnnotations = new HashMap<Class<? extends Annotation>, Annotation>();
 					for ( Class<?> param : m.getParameterTypes() ) {
-						new JParameter( method, findType( param.getName() ), param.getSimpleName() );
+						new JParameter( method, findType( param.getName() ), param.getSimpleName(), declaredAnnotations );
 					}
 
 				}
@@ -134,6 +122,20 @@ public class TypeOracleStub extends TypeOracle {
 		return interfaces;
 	}
 
+	private class MyGenericType extends JGenericType {
+
+		MyGenericType( TypeOracle arg0, JPackage arg1, String arg2, String arg3, boolean arg4, JTypeParameter[] arg5 ) {
+			super( arg0, arg1, arg2, arg3, arg4, arg5 );
+		}
+
+		@Override
+		public JParameterizedType asParameterizationOf( com.google.gwt.core.ext.typeinfo.JGenericType type ) {
+			JParameterizedType superType = super.asParameterizationOf( type );
+			return ( superType == null ) ? null : new MyParameterizedType( this, null, new JClassType[0] );
+		}
+
+	}
+
 	private class MyParameterizedType extends JParameterizedType {
 
 		public MyParameterizedType( JGenericType baseType, JClassType enclosingType, JClassType[] typeArgs ) {
@@ -142,19 +144,19 @@ public class TypeOracleStub extends TypeOracle {
 
 		@Override
 		public JMethod findMethod( String name, JType[] paramTypes ) {
-			JMethod method = super.findMethod( name, paramTypes );
+			JMethod method;
 
-			if ( method == null ) {
-				if ( getQualifiedSourceName().equals( EventHandlerInterface.class.getName() ) ) {
-					method = new JMethod( this.getBaseType(), name );
-					method.setReturnType( findType( EventBusWithLookup.class.getName() ) );
-				} else if ( getQualifiedSourceName().equals( PresenterInterface.class.getName() ) ) {
-					method = new JMethod( this.getBaseType(), name );
-					method.setReturnType( findType( SimpleView.class.getCanonicalName() ) );
-				} else if (getQualifiedSourceName().equals( ReverseViewInterface.class.getName() )){
-					method = new JMethod( this.getBaseType(), name );
-					method.setReturnType( findType( SimplePresenter.class.getCanonicalName() ) );
-				}
+			if ( "getEventBus".equals( name ) ) {
+				method = new JMethod( this.getBaseType(), name, new HashMap<Class<? extends Annotation>, Annotation>(), null );
+				method.setReturnType( findType( EventBusWithLookup.class.getName() ) );
+			} else if ( "getView".equals( name ) ) {
+				method = new JMethod( this.getBaseType(), name, new HashMap<Class<? extends Annotation>, Annotation>(), null );
+				method.setReturnType( findType( SimpleView.class.getCanonicalName() ) );
+			} else if ( "getPresenter".equals( name ) ) {
+				method = new JMethod( this.getBaseType(), name, new HashMap<Class<? extends Annotation>, Annotation>(), null );
+				method.setReturnType( findType( SimplePresenter.class.getCanonicalName() ) );
+			} else {
+				method = super.findMethod( name, paramTypes );
 			}
 
 			return method;
@@ -163,17 +165,18 @@ public class TypeOracleStub extends TypeOracle {
 		@Override
 		public JMethod[] getMethods() {
 			JMethod[] methods = null;
-			if ( getQualifiedSourceName().equals( HistoryConverter.class.getName() ) ) {
-				JMethod method = new JMethod( this.getBaseType(), "convertFromToken" );
-				new JParameter( method, findType( String.class.getName() ), "eventType" );
-				new JParameter( method, findType( String.class.getName() ), "form" );
-				new JParameter( method, findType( EventBusWithLookup.class.getName() ), "eventBus" );
+			Map<Class<? extends Annotation>, Annotation> declaredAnnotations = new HashMap<Class<? extends Annotation>, Annotation>();
+			if ( isAssignableTo( findType( HistoryConverter.class.getName() ) ) ) {
+				JMethod method = new JMethod( this.getBaseType(), "convertFromToken", declaredAnnotations, null );
+				new JParameter( method, findType( String.class.getName() ), "eventType", declaredAnnotations );
+				new JParameter( method, findType( String.class.getName() ), "form", declaredAnnotations );
+				new JParameter( method, findType( EventBusWithLookup.class.getName() ), "eventBus", declaredAnnotations );
 				methods = new JMethod[] { method, method };
-			}else if ( getQualifiedSourceName().equals( EventFilter.class.getName() ) ) {
-				JMethod method = new JMethod( this.getBaseType(), "filterEvent" );
-				new JParameter( method, findType( String.class.getName() ), "eventType" );
-				new JParameter( method, findType( String.class.getName() ), "form" );
-				new JParameter( method, findType( EventBusWithLookup.class.getName() ), "eventBus" );
+			} else if ( isAssignableTo( findType( EventFilter.class.getName() ) ) ) {
+				JMethod method = new JMethod( this.getBaseType(), "filterEvent", declaredAnnotations, null );
+				new JParameter( method, findType( String.class.getName() ), "eventType", declaredAnnotations );
+				new JParameter( method, findType( String.class.getName() ), "form", declaredAnnotations );
+				new JParameter( method, findType( EventBusWithLookup.class.getName() ), "eventBus", declaredAnnotations );
 				methods = new JMethod[] { method, method };
 			} else {
 				methods = super.getMethods();

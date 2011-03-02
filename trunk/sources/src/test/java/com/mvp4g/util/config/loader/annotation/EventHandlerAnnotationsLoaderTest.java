@@ -14,6 +14,7 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.util.config.element.EventHandlerElement;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 import com.mvp4g.util.test_tools.annotation.EventHandlers;
+import com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler;
 
 public class EventHandlerAnnotationsLoaderTest extends AbstractMvp4gAnnotationsWithServiceLoaderTest<EventHandler, EventHandlerAnnotationsLoader> {
 
@@ -85,7 +86,7 @@ public class EventHandlerAnnotationsLoaderTest extends AbstractMvp4gAnnotationsW
 
 	@Override
 	protected Class<?> getSimpleClass() {
-		return EventHandlers.SimpleEventHandler.class;
+		return SimpleEventHandler.class;
 	}
 
 	@Override

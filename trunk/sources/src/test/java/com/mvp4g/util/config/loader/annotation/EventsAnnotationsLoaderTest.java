@@ -16,10 +16,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.dev.javac.typemodel.TypeOracleStub;
 import com.mvp4g.client.DefaultMvp4gGinModule;
 import com.mvp4g.client.Mvp4gModule;
-import com.mvp4g.client.annotation.Filters;
 import com.mvp4g.client.annotation.Debug.LogLevel;
+import com.mvp4g.client.annotation.Filters;
 import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
@@ -36,15 +37,17 @@ import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 import com.mvp4g.util.test_tools.CustomPlaceService;
 import com.mvp4g.util.test_tools.Modules;
-import com.mvp4g.util.test_tools.TypeOracleStub;
 import com.mvp4g.util.test_tools.annotation.EventFilters;
-import com.mvp4g.util.test_tools.annotation.Events;
-import com.mvp4g.util.test_tools.annotation.HistoryConverters;
-import com.mvp4g.util.test_tools.annotation.Presenters;
 import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter1;
 import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter2;
+import com.mvp4g.util.test_tools.annotation.Events;
 import com.mvp4g.util.test_tools.annotation.Events.TestGinModule;
 import com.mvp4g.util.test_tools.annotation.Events.TestLogger;
+import com.mvp4g.util.test_tools.annotation.Presenters;
+import com.mvp4g.util.test_tools.annotation.events.EventBusOk;
+import com.mvp4g.util.test_tools.annotation.history_converters.HistoryConverterForEvent;
+import com.mvp4g.util.test_tools.annotation.presenters.PresenterWithName;
+import com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter;
 
 public class EventsAnnotationsLoaderTest {
 
@@ -104,7 +107,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testEventBus() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.SimplePresenter.class ) );
+		annotedClasses.add( oracle.addClass( SimplePresenter.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -120,7 +123,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testEventBusWithLookup() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.SimplePresenter.class ) );
+		annotedClasses.add( oracle.addClass( SimplePresenter.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -136,7 +139,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testStart() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.SimplePresenter.class ) );
+		annotedClasses.add( oracle.addClass( SimplePresenter.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -214,7 +217,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testEventNoAnnotation() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.SimplePresenter.class ) );
+			annotedClasses.add( oracle.addClass( SimplePresenter.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
@@ -232,7 +235,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testSameEvent() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
@@ -250,7 +253,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testDoubleStart() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
@@ -268,7 +271,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testDoubleForward() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
@@ -286,7 +289,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testDoubleInitHistory() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
@@ -305,7 +308,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testDoubleNotFoundHistory() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
@@ -324,13 +327,13 @@ public class EventsAnnotationsLoaderTest {
 	public void testNoInstanceOfHander() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.SimplePresenter.class ) );
+			annotedClasses.add( oracle.addClass( SimplePresenter.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
 
 			annotedClasses = new ArrayList<JClassType>();
-			JClassType type = oracle.addClass( Events.EventBusOk.class );
+			JClassType type = oracle.addClass( EventBusOk.class );
 			annotedClasses.add( type );
 			loader.load( annotedClasses, configuration );
 		} catch ( Mvp4gAnnotationException e ) {
@@ -343,13 +346,13 @@ public class EventsAnnotationsLoaderTest {
 	public void testNoInstanceOfHistory() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
 
 			annotedClasses = new ArrayList<JClassType>();
-			JClassType type = oracle.addClass( Events.EventBusOk.class );
+			JClassType type = oracle.addClass( EventBusOk.class );
 			annotedClasses.add( type );
 			loader.load( annotedClasses, configuration );
 		} catch ( Mvp4gAnnotationException e ) {
@@ -361,17 +364,17 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testEventOk() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
 
-		annotedClasses.add( oracle.addClass( HistoryConverters.HistoryConverterForEvent.class ) );
+		annotedClasses.add( oracle.addClass( HistoryConverterForEvent.class ) );
 		new HistoryAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
 
-		JClassType type = oracle.addClass( Events.EventBusOk.class );
+		JClassType type = oracle.addClass( EventBusOk.class );
 		annotedClasses.add( type );
 		loader.load( annotedClasses, configuration );
 
@@ -451,7 +454,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testEventBusWithChildrenOk() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -507,7 +510,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testDoubleBeforeLoadChild() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
@@ -526,7 +529,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testDoubleAfterLoadChild() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
@@ -545,7 +548,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testDoubleErrorLoadChild() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
@@ -564,7 +567,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testLoadChildConfigOk() throws Mvp4gAnnotationException {
 
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -583,7 +586,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testUnknownModuleForEvent() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
@@ -601,7 +604,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testUnknownModuleForLoadModuleViewEvent() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
@@ -619,7 +622,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testSameModuleForLoadModuleViewEvent() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
@@ -637,7 +640,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testParentEventBusOtherModule() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -674,7 +677,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testEventNoFilterWithForceBus() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses = new ArrayList<JClassType>();
@@ -685,7 +688,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testEventBusFilters() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -714,7 +717,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testEventBusFiltersWithParam() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -743,7 +746,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testEventBusSameFilter() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -759,7 +762,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testDefaultGin() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -772,7 +775,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testGin() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -785,7 +788,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testGins() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -799,7 +802,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testNoLogger() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -812,7 +815,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testDefaultLogger() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -826,7 +829,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testCustomLogger() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -840,7 +843,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testHistoryName() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -869,7 +872,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testNoHistoryConfiguration() throws Mvp4gAnnotationException {
 
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.SimplePresenter.class ) );
+		annotedClasses.add( oracle.addClass( SimplePresenter.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses = new ArrayList<JClassType>();
@@ -885,7 +888,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testHistoryConfiguration() throws Mvp4gAnnotationException {
 
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.SimplePresenter.class ) );
+		annotedClasses.add( oracle.addClass( SimplePresenter.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();

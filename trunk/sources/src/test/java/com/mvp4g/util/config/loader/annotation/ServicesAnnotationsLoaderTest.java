@@ -13,6 +13,8 @@ import com.mvp4g.client.annotation.Service;
 import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 import com.mvp4g.util.test_tools.annotation.Services;
+import com.mvp4g.util.test_tools.annotation.services.ServiceWithName;
+import com.mvp4g.util.test_tools.annotation.services.SimpleService;
 
 public class ServicesAnnotationsLoaderTest extends AbstractMvp4gAnnotationLoaderTest<Service, ServiceAnnotationsLoader> {
 
@@ -55,12 +57,12 @@ public class ServicesAnnotationsLoaderTest extends AbstractMvp4gAnnotationLoader
 
 	@Override
 	protected Class<?> getSimpleClass() {
-		return Services.SimpleService.class;
+		return SimpleService.class;
 	}
 
 	@Override
 	protected Class<?> getWithNameClass() {
-		return Services.ServiceWithName.class;
+		return ServiceWithName.class;
 	}
 
 	@Override

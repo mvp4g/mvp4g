@@ -2,26 +2,14 @@ package com.mvp4g.util.test_tools.annotation;
 
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.InjectService;
-import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.history.HistoryConverter;
+import com.mvp4g.util.test_tools.annotation.history_converters.BaseHistoryConverter;
+import com.mvp4g.util.test_tools.annotation.services.SimpleService;
+import com.mvp4g.util.test_tools.annotation.services.SimpleServiceAsync;
 
+@SuppressWarnings( "deprecation" )
 public class HistoryConverters {
-
-	private static class BaseHistoryConverter implements HistoryConverter<EventBus> {
-
-		public void convertFromToken( String eventType, String param, EventBus eventBus ) {
-		}
-
-		public boolean isCrawlable() {
-			return false;
-		}
-
-	}
-
-	@History
-	public static class SimpleHistoryConverter extends BaseHistoryConverter {
-
-	}
 
 	@History( name = "name" )
 	public static class HistoryConverterWithName extends BaseHistoryConverter {
@@ -32,13 +20,8 @@ public class HistoryConverters {
 	public static class HistoryConverterNotPublic extends BaseHistoryConverter {
 
 		@InjectService
-		void setSthg( Services.SimpleServiceAsync service ) {
+		void setSthg( SimpleServiceAsync service ) {
 		}
-
-	}
-
-	@History( name = "history" )
-	public static class HistoryConverterForEvent extends BaseHistoryConverter {
 
 	}
 
@@ -55,7 +38,7 @@ public class HistoryConverters {
 	public static class HistoryConverterWithMoreThanOneParameter extends BaseHistoryConverter {
 
 		@InjectService
-		public void setSthg( Services.SimpleServiceAsync service, Boolean test ) {
+		public void setSthg( SimpleServiceAsync service, Boolean test ) {
 		}
 
 	}
@@ -64,7 +47,7 @@ public class HistoryConverters {
 	public static class HistoryConverterNotAsync extends BaseHistoryConverter {
 
 		@InjectService
-		public void setSthg( Services.SimpleService service ) {
+		public void setSthg( SimpleService service ) {
 		}
 
 	}
@@ -73,7 +56,7 @@ public class HistoryConverters {
 	public static class HistoryConverterWithService extends BaseHistoryConverter {
 
 		@InjectService
-		public void setSthg( Services.SimpleServiceAsync service ) {
+		public void setSthg( SimpleServiceAsync service ) {
 		}
 
 	}
@@ -82,7 +65,7 @@ public class HistoryConverters {
 	public static class HistoryConverterWithSameService extends BaseHistoryConverter {
 
 		@InjectService
-		public void setSthg( Services.SimpleServiceAsync service ) {
+		public void setSthg( SimpleServiceAsync service ) {
 		}
 
 	}
@@ -91,7 +74,19 @@ public class HistoryConverters {
 	public static class HistoryConverterWithServiceAndName extends BaseHistoryConverter {
 
 		@InjectService( serviceName = "name" )
-		public void setSthg( Services.SimpleServiceAsync service ) {
+		public void setSthg( SimpleServiceAsync service ) {
+		}
+
+	}
+
+	@History
+	public static class HistoryConverterWithLookup implements HistoryConverter<EventBusWithLookup> {
+
+		public void convertFromToken( String eventType, String param, EventBusWithLookup eventBus ) {
+		}
+
+		public boolean isCrawlable() {
+			return false;
 		}
 
 	}

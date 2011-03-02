@@ -16,6 +16,8 @@ import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ViewElement;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 import com.mvp4g.util.test_tools.annotation.Presenters;
+import com.mvp4g.util.test_tools.annotation.presenters.PresenterWithName;
+import com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter;
 
 public class PresenterAnnotationsLoaderTest extends AbstractMvp4gAnnotationsWithServiceLoaderTest<Presenter, PresenterAnnotationsLoader> {
 
@@ -113,12 +115,12 @@ public class PresenterAnnotationsLoaderTest extends AbstractMvp4gAnnotationsWith
 
 	@Override
 	protected Class<?> getSimpleClass() {
-		return Presenters.SimplePresenter.class;
+		return SimplePresenter.class;
 	}
 
 	@Override
 	protected Class<?> getWithNameClass() {
-		return Presenters.PresenterWithName.class;
+		return PresenterWithName.class;
 	}
 
 	@Override

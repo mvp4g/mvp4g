@@ -204,6 +204,7 @@ public abstract class BaseEventBus implements EventBus {
 	@SuppressWarnings( "unchecked" )
 	private boolean doFilterEvent( String eventName, Object[] params ) {
 		int filterCount = filters.size();
+		@SuppressWarnings( "rawtypes" )
 		EventFilter filter;
 		for ( int i = 0; i < filterCount; i++ ) {
 			filter = filters.get( i );

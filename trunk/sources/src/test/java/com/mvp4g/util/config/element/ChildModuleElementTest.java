@@ -1,13 +1,16 @@
 package com.mvp4g.util.config.element;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.dev.javac.typemodel.TypeOracleStub;
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
-import com.mvp4g.util.test_tools.TypeOracleStub;
-import com.mvp4g.util.test_tools.annotation.Events;
+import com.mvp4g.util.test_tools.annotation.events.EventBusOk;
 
 public class ChildModuleElementTest extends SimpleMvp4gElementTest {
 
@@ -51,7 +54,7 @@ public class ChildModuleElementTest extends SimpleMvp4gElementTest {
 		ChildModuleElement childModuleElement = new ChildModuleElement();
 		assertNull( childModuleElement.getParentEventBus() );
 		
-		JClassType parentEventBus = new TypeOracleStub().addClass( Events.EventBusOk.class );
+		JClassType parentEventBus = new TypeOracleStub().addClass( EventBusOk.class );
 		childModuleElement.setParentEventBus( parentEventBus );
 
 		assertSame( parentEventBus, childModuleElement.getParentEventBus() );

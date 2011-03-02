@@ -4,12 +4,11 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.event.BaseEventHandler;
 import com.mvp4g.client.event.EventBus;
+import com.mvp4g.util.test_tools.annotation.services.SimpleService;
+import com.mvp4g.util.test_tools.annotation.services.SimpleServiceAsync;
 
+@SuppressWarnings( "deprecation" )
 public class EventHandlers {
-
-	@EventHandler
-	public static class SimpleEventHandler extends BaseEventHandler<EventBus> {
-	}
 
 	@EventHandler( multiple = true )
 	public static class MultipleEventHandler extends BaseEventHandler<EventBus> {
@@ -23,7 +22,7 @@ public class EventHandlers {
 	public static class EventHandlerNotPublic extends BaseEventHandler<EventBus> {
 
 		@InjectService
-		void setSthg( Services.SimpleServiceAsync service ) {
+		void setSthg( SimpleServiceAsync service ) {
 		}
 
 	}
@@ -41,7 +40,7 @@ public class EventHandlers {
 	public static class EventHandlerWithMoreThanOneParameter extends BaseEventHandler<EventBus> {
 
 		@InjectService
-		public void setSthg( Services.SimpleServiceAsync service, Boolean test ) {
+		public void setSthg( SimpleServiceAsync service, Boolean test ) {
 		}
 
 	}
@@ -50,7 +49,7 @@ public class EventHandlers {
 	public static class EventHandlerNotAsync extends BaseEventHandler<EventBus> {
 
 		@InjectService
-		public void setSthg( Services.SimpleService service ) {
+		public void setSthg( SimpleService service ) {
 		}
 
 	}
@@ -59,7 +58,7 @@ public class EventHandlers {
 	public static class EventHandlerWithService extends BaseEventHandler<EventBus> {
 
 		@InjectService
-		public void setSthg( Services.SimpleServiceAsync service ) {
+		public void setSthg( SimpleServiceAsync service ) {
 		}
 
 	}
@@ -68,7 +67,7 @@ public class EventHandlers {
 	public static class EventHandlerWithSameService extends BaseEventHandler<EventBus> {
 
 		@InjectService
-		public void setSthg( Services.SimpleServiceAsync service ) {
+		public void setSthg( SimpleServiceAsync service ) {
 		}
 
 	}
@@ -77,18 +76,7 @@ public class EventHandlers {
 	public static class EventHandlerWithServiceAndName extends BaseEventHandler<EventBus> {
 
 		@InjectService( serviceName = "name" )
-		public void setSthg( Services.SimpleServiceAsync service ) {
-		}
-
-	}
-
-	@EventHandler
-	public static class EventHandlerWithEvent extends BaseEventHandler<EventBus> {
-
-		public void onEvent1( String form ) {
-		}
-
-		public void onEvent2() {
+		public void setSthg( SimpleServiceAsync service ) {
 		}
 
 	}
