@@ -1,2 +1,0 @@
-# Module mailwithmvp4g
-# RPC service class, partial path of RPC policy file

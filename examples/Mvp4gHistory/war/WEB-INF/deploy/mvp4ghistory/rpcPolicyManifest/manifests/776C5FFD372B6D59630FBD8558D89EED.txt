@@ -1,2 +1,0 @@
-serviceClass: com.mvp4g.example.client.Service
-path: 621F295997575228C13B42DEA69E164E.gwt.rpc
