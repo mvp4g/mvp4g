@@ -1,4 +1,4 @@
-#summary How to integrate Mvp4g to your project (Draft for Mvp4g 1.2.0)
+#summary How to integrate Mvp4g to your project (Draft for Mvp4g 1.3.0)
 #labels Featured
 
 == Introduction ==
@@ -7,29 +7,29 @@ To integrate Mvp4g into your project, the following steps need to be done
   # Modify your GWT configuration file (`*`.gwt.xml)
   # Set your entry point
   # Create your event bus, presenters, views...
+  # Set up Mvp4g APT (optional)
 
 == Library ==
 
 Add the following libraries to your project:
-  * Commons Lang ([http://commons.apache.org/downloads/download_lang.cgi Download here])
-  * Commons Configuration ([http://commons.apache.org/downloads/download_configuration.cgi Download here])
-  * GIN libraries (gin-1.0.jar, guice-2.0.jar, aopalliance.jar [http://code.google.com/p/google-gin/downloads/list Download here])
+  * GIN libraries ([http://code.google.com/p/google-gin/downloads/list Download here])
   * Mvp4g ([http://code.google.com/p/mvp4g/downloads/list Download here])  
 
 __You can also download the Mvp4g examples and copy the libraries inside the lib directory___
   
 == Maven Dependency == 
 
-Mvp4g 1.2.0 is available on Maven Central.
-
 Add the maven dependency:
 {{{
 <dependency>
 	<groupId>com.googlecode.mvp4g</groupId>
 	<artifactId>mvp4g</artifactId>
-	<version>1.2.0</version>
+	<version>1.3.1</version>
 </dependency>
 }}}
+
+_Mvp4g will soon be available on Maven central, it means you can use Mvp4g Maven repository: http://mvp4g.googlecode.com/svn/maven2/releases_
+
 == GWT configuration file ==
 
 Insert Mvp4g module into your project:
@@ -67,3 +67,6 @@ RootLayoutPanel.get().add( (Widget)module.getStartView() );
 
 == Event bus,  presenters, views...==
 Now that you have configured your project to use Mvp4g, you can look at the rest of the documentation to create the different elements you need.
+
+== Mvp4g APT ==
+By default, all the errors due to wrong Mvp4g configuration are detected when you start the GWT compilation or the GWT dev mode. Thanks to the APT, you can detect most of these errors directly in the IDE. You can check [APT Mvp4g APT] for more information.
