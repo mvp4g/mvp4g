@@ -1,4 +1,4 @@
-#summary GIN integration (Draft for Mvp4g 1.2.0)
+#summary GIN integration (Draft for Mvp4g 1.3.0)
 
 <wiki:toc max_depth="3" />
 
