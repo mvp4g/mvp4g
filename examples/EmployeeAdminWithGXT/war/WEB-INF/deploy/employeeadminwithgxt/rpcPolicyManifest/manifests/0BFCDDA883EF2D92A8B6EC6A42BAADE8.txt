@@ -1,0 +1,2 @@
+serviceClass: com.mvp4g.example.client.UserService
+path: 3FDE18020DE2638D671A5D8B3A3236C7.gwt.rpc
