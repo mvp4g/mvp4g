@@ -15,7 +15,7 @@ Add the following libraries to your project:
   * GIN libraries ([http://code.google.com/p/google-gin/downloads/list Download here])
   * Mvp4g ([http://code.google.com/p/mvp4g/downloads/list Download here])  
 
-__You can also download the Mvp4g examples and copy the libraries inside the lib directory___
+_You can also download the Mvp4g examples and copy the libraries inside the lib directory
   
 == Maven Dependency == 
 
@@ -28,7 +28,7 @@ Add the maven dependency:
 </dependency>
 }}}
 
-_Mvp4g will soon be available on Maven central, it means you can use Mvp4g Maven repository: http://mvp4g.googlecode.com/svn/maven2/releases_
+_Mvp4g will soon be available on Maven central, im the meantime you can use Mvp4g Maven repository: http://mvp4g.googlecode.com/svn/maven2/releases
 
 == GWT configuration file ==
 
