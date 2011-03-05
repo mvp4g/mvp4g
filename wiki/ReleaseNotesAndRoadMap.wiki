@@ -1,26 +1,29 @@
 #summary Release Notes and Road Map (Draft for Mvp4g 1.2.0)
 
-=Road Map 1.3.0=
- * Navigation event (available in the snapshot, [http://code.google.com/p/mvp4g/wiki/EventBus_130#Navigation_Event see documentation])
- * Lifecycle presenter (available in the snapshot, [http://code.google.com/p/mvp4g/wiki/PresenterViewService_130#Cycle_Presenter see documentation]) 
- * Passive event (available in the snapshot, [http://code.google.com/p/mvp4g/wiki/EventBus_130#Passive_Event see documentation])
- * Support for Reverse MVP (available in the snapshot, [http://code.google.com/p/mvp4g/wiki/PresenterViewService_130#Reverse_View see documentation]) 
- * Hyperlink token generation (available in the snapshot, [http://code.google.com/p/mvp4g/wiki/PlaceService_130#Hyperlink_Token see documentation])
- * Broadcast events (available in the snapshot, [http://code.google.com/p/mvp4g/wiki/EventBus_130#Broadcast_Event see documentation])
- * Annotation Processor Tool to detect errors directly in Eclipse (available but for issue 65, also planned for 1.3.0, [APT_130 see documentation])
+=Road Map 1.4.0=
 
- * Use historyName instead of the event's method's name for the dispatch method (issue 60).
- * Custom Place Service (issue 63)
- * Possibility to turn off history for the whole application, not only for one module (issue 62)
- * Simplify convertion from event to token (issue 51)
- * Remove XML support (issue 64)
- * Add the possibility to set no start view for non-autodisplay child module (issue 67)
 
 and obviously the correction of any bug found
 
-If you have any comments on this road map, let me know [http://groups.google.com/group/mvp4g/browse_thread/thread/fbfa1ad72bcdf7ad here].
+
 
 = Release Notes =
+
+==1.3.0/1.3.1 (03/05/11)==
+Mvp4g 1.3.0 and Mvp4g 1.3.1 contains the same feature except that 1.3.0 is for GWT 2.1.1 (and previous version) whereas 1.3.1 is for GWT 2.2.0
+
+ * Navigation event
+ * Lifecycle presenter
+ * Passive event
+ * Support for Reverse MVP
+ * Hyperlink token generation
+ * Broadcast events
+ * Annotation Processor Tool to detect errors directly in Eclipse 
+ * Use historyName instead of the event's method's name for the dispatch method
+ * Custom Place Service
+ * Possibility to turn off history for the whole application, not only for one module
+ * Simplify convertion from event to token
+ * Add the possibility to set no start view for non-autodisplay child module
 
 ==1.2.0 (09/12/10)==
  * Integration of GIN
