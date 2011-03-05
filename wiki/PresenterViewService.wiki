@@ -1,4 +1,4 @@
-#summary Creating presenters, views & services (Draft for 1.2.0)
+#summary Creating presenters, views & services
 
 <wiki:toc max_depth="3" />
 
@@ -22,7 +22,7 @@ By extending BasePresenter, you will have access to the following protected attr
  * V view: instance of the view injected to the presenter
  * E eventBus: instance of the event bus injected to the presenter
 
-You also have the oppurtinity to override the method bind() to bind your view to your presenter.
+You should also override the bind method to bind your view to your presenter.
 
 Instead of extending BasePresenter, you can also implement PresenterInterface<V,E>.
 
@@ -35,8 +35,6 @@ Mvp4g will automaticaly create an instance for each class annoted with @Presente
 You can also decide to create a Lazy Presenter ([http://code.google.com/p/mvp4g/wiki/Mvp4gOptimization#Lazy_Loading see Mvp4g Lazy Loading for more information]).
 
 ==Injecting services==
-
-===With GIN===
 
 With GIN, you can easily inject your service into your presenter thanks to @Inject:
 {{{
@@ -51,22 +49,8 @@ public class OnePresenter extends BasePresenter<IOneView, OneEventBus>{
 
 GIN will automatically create your service by calling GWT.create(Service.class).
 
-===Mvp4g @InjectServices (Deprecated)===
-__it is recommanded to use the GIN injection__
-You can easily inject services to a presenter by: 
- * creating a setter method for your service 
- * annotating this method with @InjectService
-
-{{{
-@InjectService 
-public void setService( ServiceAsync service ) { 
-        this.service = service; 
-}
-}}}
-
-
 ==Multiple presenter==
-By default, a presenter will be created as a singleton, which means that you will have one instance of the presenter when the application starts. A multiple feature is available in order to allow developers to have several instances of the same presenter. When the multiple feature is activated for a presenter, all the instances of this presenter will have to be created manualy by the developer (which means that no instance is created when the application starts).
+By default, a presenter will be created as a singleton, which means that you will have one instance of the presenter when the application starts. A multiple feature is available in order to allow developers to have several instances of the same presenter. When the multiple feature is activated for a presenter, all the instances of this presenter will have to be created manually by the developer (which means that no instance is created when the application starts).
 
 To activate the multiple feature, you need to set the multiple attribute of the @Presenter to "true":
 {{{
@@ -79,12 +63,27 @@ When you have activated the multiple feature for a presenter, you can create a n
 OnePresenter presenter = eventBus.addHandler( OnePresenter.class );
 }}}
 
-You can also delete an instance of the presenter set as multiple by calling the removeHandler of the event bus with the instance to remove:
+You can also delete an instance of the presenter set as multiple by calling the removeHandler method of the event bus with the instance to remove:
 {{{
 eventBus.removeHandler( handler );
 }}}
 
 [http://www.qondio.com/graphics/attention.png] Only presenters set as multiple can be added/removed. If you try to add/remove a presenter not set as multiple, an error will occur at runtime.
+
+==On Before Event==
+Presenters provides a method that will be called right before each event that it needs to handle: onBeforeEvent. You can override this method if you need to execute any action before each event.
+
+==Cycle Presenter==
+A cycle presenter is a presenter that will detect when its view is attached to/detached from the DOM. The onLoad() method will be called when the view is attached to the DOM and the onUnload() will be called when the view is detached from the DOM. You can override these methods if you need to execute any action when the view is attached/detached.
+
+A cycle presenter needs to be associated to a special type of a view: CycleView. A cycle view is a view that should fire GWT events:
+ * a LoadEvent when it wants to tell the presenter it is loaded
+ * a UnloadEvent when it wants to tell the presenter it is unloaded
+
+The cycle presenter will handle these events and call the onLoad/onUnload.
+
+Mvp4g provides a base implementation of a cycle view, BaseCycleView, that extends Composite. You can also easily create your own implementation by firing the load/unload event when you need the presenter to know that the view is loaded/unloaded. For example, if the view is a popup, you can fire the LoadEvent when the popup is shown and the UnloadEvent when the popup is hidden.
+
 
 =Event Handlers=
 
@@ -110,37 +109,30 @@ To create a view, all you need is to create a class with a constructor with no p
 
 You can also decide to create a Lazy View ([http://code.google.com/p/mvp4g/wiki/Mvp4gOptimization#Lazy_Loading see Mvp4g Lazy Loading for more information]).
 
-=Service=
+==Reverse View==
 
-==GIN==
-When you use GIN feature to inject a service to a presenter, it automatically detects that a call to GWT.create is needed.
+The GWT team describred another strategy in their second article about MVP to implement this pattern: [http://code.google.com/webtoolkit/articles/mvp-architecture-2.html Reverse MVP]. 
 
-This is also true for any object that are created with GWT.create
+With this approach, you will need to inject the presenter to the view, that's why Mvp4g introduces a new feature, Reverse View.
 
-==Mvp4g @Service (deprecated)==
-This annotation will be used only if services are injected with Mvp4g @InjectService. It is recommanded to use the GIN injection that offers the same feature.
+This feature allows you to tell the framework to automatically inject the presenter to the view. All you have to do is having your view implement the ReverseViewInterface.
 
-===@Service Annotation===
-This annotation is used to define options for your service and it is not mandatory to create a service injected thanks to Mvp4g @Service.
-
-This annotation has the following attributes:
- * name: to specify the name of the service in case you want to inject the service thanks to its name.
- * path: to define the service entry point. Similar to: 
 {{{
-service.setServiceEntryPoint("/myapp/myservice"); 
-}}}
- * generatedClass: class that GWT.create should generate when creating the service (by default service class name + "Async", useful only to define non-rpc service, see ... for more information)
+public OneView extends Composite implements ReverseViewInterface<IOnePresenter>{
+	
+	private IOnePresenter presenter;
 
-===Using a non-rpc service===
-You can use a non-rpc service as long as your service generation uses the same process as GWT rpc service, which means that you create your service the following way:
-{{{
-MyNonRpcService service = GWT.create(MyNonRpcService.class)
+	void setPresenter(IOnePresenter presenter){
+		this.presenter = presenter;
+	}
+	
+	IOnePresenter getPresenter(){
+		return presenter;
+	}
+	
+	...
+
+}
 }}}
 
-In this case, you need to annotate your service interface with @Service and the set the attribute 'generatedClass'.
-
-The following example uses Edgebox library (http://code.google.com/p/edgebox/) to create a Rest service:
-{{{
-@Service(generatedClass=PingService.class)
-public interface PingService extends RestRemote {...}
-}}}
+The presenter injected to your view will be the presenter where your view is injected.
