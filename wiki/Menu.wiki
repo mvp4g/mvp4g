@@ -5,5 +5,6 @@
   * [PlaceService Mvp4g & Browser History]
   * [Mvp4gOptimization Mvp4g Optimization]
   * [GinIntegration GIN integration]
+  * [APT APT]
   * [FAQ FAQ]
   * [ReleaseNotesAndRoadMap Release Notes and Road Map]
