@@ -1,6 +1,8 @@
 #summary How to integrate Mvp4g to your project (Draft for Mvp4g 1.3.0)
 #labels Featured
 
+<wiki:toc max_depth="3" />
+
 == Introduction ==
 To integrate Mvp4g into your project, the following steps need to be done
   # Add needed library to your project or add a Maven dependency
