@@ -1,7 +1,5 @@
 #summary Defining an event bus (Draft for Mvp4g 1.3.0)
 
-=Draft for 1.3.0=
-
 <wiki:toc max_depth="3" />
 
 =Event Bus=
