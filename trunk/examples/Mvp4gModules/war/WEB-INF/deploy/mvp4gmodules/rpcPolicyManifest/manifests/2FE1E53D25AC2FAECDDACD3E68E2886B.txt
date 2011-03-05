@@ -1,2 +1,0 @@
-serviceClass: com.mvp4g.example.client.product.ProductService
-path: CACC187AD5A519924B95DC5C986169E6.gwt.rpc

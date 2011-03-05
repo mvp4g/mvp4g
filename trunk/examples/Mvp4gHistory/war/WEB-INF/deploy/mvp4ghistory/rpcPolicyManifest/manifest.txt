@@ -1,2 +1,0 @@
-# Module mvp4ghistory
-# RPC service class, partial path of RPC policy file
