@@ -62,7 +62,7 @@ When an history converter is associated to an event, it needs to implement the c
  * DEFAULT: the history converter needs to define the handling method of the event but this method must return a String. The returned String will be added to the token and stored in browser's history.
 For example for the previous event, you need to define the following method in your history converter:
 {{{
-public String goToCompany(long id);
+public String onGoToCompany(long id);
 }}}
  * SIMPLE: the history converter needs to define one convertToToken method for each event that has a different parameters signature. This convertToToken method must return String and must have the same parameters as the event to convert plus a first String parameter. Mvp4g will use this first String parameter to pass the event's name. The returned String will added to the token and stored in browser's history.
 For example, if you have the following event bus:
