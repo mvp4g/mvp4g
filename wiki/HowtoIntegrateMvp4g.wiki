@@ -30,7 +30,7 @@ Add the maven dependency:
 </dependency>
 }}}
 
-_Mvp4g will soon be available on Maven central, im the meantime you can use Mvp4g Maven repository: http://mvp4g.googlecode.com/svn/maven2/releases
+_Mvp4g is available on Maven central.
 
 == GWT configuration file ==
 
