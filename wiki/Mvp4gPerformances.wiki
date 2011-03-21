@@ -2,15 +2,15 @@
 
 == Introduction ==
 
-The goal of this test is to compare Mvp4g event bus and GWT HandlerManager performances in order to verify applications built with Mvp4g framework aren't slower than applications built with GWT HandlerManager.
+The goal of this test is to compare Mvp4g event bus and [http://google-web-toolkit.googlecode.com/svn/javadoc/latest/com/google/gwt/event/shared/HandlerManager.html GWT HandlerManager] performances in order to verify applications built with Mvp4g framework aren't slower than applications built with GWT !HandlerManager.
 
 == Test Description ==
 
 10 events handled by 10 presenters (each presenter handles the 10 events) are sent N times.
 
-Presenters' handle methods do nothing in order to measure only GWT HandlerManager/Mvp4g EventBus process time.
+Presenters' handle methods do nothing in order to measure only GWT !HandlerManager/Mvp4g !EventBus process time.
 
-Events instances needed to send events to GWT HandlerManager are created before test starts and the same instances of events are sent for each step of the test.
+Events instances needed to send events to GWT !HandlerManager are created before test starts and the same instances of events are sent for each step of the test.
 
 You can find the test project [http://code.google.com/p/mvp4g/source/browse/#svn/tags/mvp4g-1.0.0/examples/Mvp4gPerformances here] and try it [http://mvp4gperformances.appspot.com here].
 
@@ -35,6 +35,6 @@ You can find the test project [http://code.google.com/p/mvp4g/source/browse/#svn
 
 == Conclusion ==
 
-Mvp4g event bus processes events faster than GWT HandlerManager. However time to process a few events is the same and in most cases applications won't send more than 1 or 2 events at a time.
+Mvp4g event bus processes events faster than GWT !HandlerManager. However time to process a few events is the same and in most cases applications won't send more than 1 or 2 events at a time.
 
-To sum up, I would just say that application developped with Mvp4g framework aren't slower than an application developped with GWT HandlerManager.
+To sum up, I would just say that application developped with Mvp4g framework aren't slower than an application developped with GWT !HandlerManager.
