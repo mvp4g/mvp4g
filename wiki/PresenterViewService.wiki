@@ -14,7 +14,7 @@ This page will help you to understand how to build these different types of elem
 ==Creating a presenter==
 
 To create a presenter, you need to:
- 1. extend BasePresenter<V,E>:
+ 1. extend {{{BasePresenter<V,E>}}}:
    * V: type of the view that will be injected in the presenter
    * E: type of your event bus interface. 
 
@@ -24,13 +24,13 @@ By extending BasePresenter, you will have access to the following protected attr
 
 You should also override the bind method to bind your view to your presenter.
 
-Instead of extending BasePresenter, you can also implement PresenterInterface<V,E>.
+Instead of extending BasePresenter, you can also implement {{{PresenterInterface<V,E>}}}.
 
- 2. have a constructor with no parameter or compatible with GIN (ie annotated with @Inject, see [http://code.google.com/p/google-gin/ see GIN website for more information]).
+ 2. have a constructor with no parameter or compatible with GIN (ie annotated with {{{@Inject}}}, see [http://code.google.com/p/google-gin/ see GIN website for more information]).
 
- 3. annotate it with @Presenter and set the attribute 'view'. This attribute must define the class of the view that implements the presenter's view interface.
+ 3. annotate it with {{{@Presenter}}} and set the attribute 'view'. This attribute must define the class of the view that implements the presenter's view interface.
 
-Mvp4g will automaticaly create an instance for each class annoted with @Presenter. Mvp4g will also create one instance of the view for each presenter. If two presenters are injected with views with the same class, two instances of this view will be created.
+Mvp4g will automaticaly create an instance for each class annoted with {{{@Presenter}}}. Mvp4g will also create one instance of the view for each presenter. If two presenters are injected with views with the same class, two instances of this view will be created.
 
 You can also decide to create a Lazy Presenter ([http://code.google.com/p/mvp4g/wiki/Mvp4gOptimization#Lazy_Loading see Mvp4g Lazy Loading for more information]).
 
@@ -47,7 +47,7 @@ public class OnePresenter extends BasePresenter<IOneView, OneEventBus>{
 }
 }}}
 
-GIN will automatically create your service by calling GWT.create(Service.class).
+GIN will automatically create your service by calling {{{GWT.create(Service.class)}}}.
 
 ==Multiple presenter==
 By default, a presenter will be created as a singleton, which means that you will have one instance of the presenter when the application starts. A multiple feature is available in order to allow developers to have several instances of the same presenter. When the multiple feature is activated for a presenter, all the instances of this presenter will have to be created manually by the developer (which means that no instance is created when the application starts).
@@ -76,13 +76,13 @@ Presenters provides a method that will be called right before each event that it
 ==Cycle Presenter==
 A cycle presenter is a presenter that will detect when its view is attached to/detached from the DOM. The onLoad() method will be called when the view is attached to the DOM and the onUnload() will be called when the view is detached from the DOM. You can override these methods if you need to execute any action when the view is attached/detached.
 
-A cycle presenter needs to be associated to a special type of a view: CycleView. A cycle view is a view that should fire GWT events:
- * a LoadEvent when it wants to tell the presenter it is loaded
- * a UnloadEvent when it wants to tell the presenter it is unloaded
+A cycle presenter needs to be associated to a special type of a view: !CycleView. A cycle view is a view that should fire GWT events:
+ * a !LoadEvent when it wants to tell the presenter it is loaded
+ * a !UnloadEvent when it wants to tell the presenter it is unloaded
 
 The cycle presenter will handle these events and call the onLoad/onUnload.
 
-Mvp4g provides a base implementation of a cycle view, BaseCycleView, that extends Composite. You can also easily create your own implementation by firing the load/unload event when you need the presenter to know that the view is loaded/unloaded. For example, if the view is a popup, you can fire the LoadEvent when the popup is shown and the UnloadEvent when the popup is hidden.
+Mvp4g provides a base implementation of a cycle view, !BaseCycleView, that extends Composite. You can also easily create your own implementation by firing the load/unload event when you need the presenter to know that the view is loaded/unloaded. For example, if the view is a popup, you can fire the !LoadEvent when the popup is shown and the UnloadEvent when the popup is hidden.
 
 
 =Event Handlers=
@@ -90,13 +90,13 @@ Mvp4g provides a base implementation of a cycle view, BaseCycleView, that extend
 An event handler is a presenter with no view. It can be used the same way as a presenter and has the same properties (except for the view).
 
 To create an event handler, you need to:
- 1. extend BaseEventHandler<E>:
+ 1. {{{extend BaseEventHandler<E>:}}}
    * E: type of your event bus interface. 
 
 By extending BaseEventHandler, you will have access to the following protected attributes:
  * E eventBus: instance of the event bus injected to the presenter
 
-Instead of extending BaseEventHandler, you can also implement EventHandlerInterface<E>.
+Instead of extending BaseEventHandler, you can also implement {{{EventHandlerInterface<E>}}}.
 
  2. have a constructor with no parameter or compatible with GIN (ie annotated with @Inject, see [http://code.google.com/p/google-gin/ see GIN website for more information]).
 
