@@ -51,6 +51,8 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
 		HasClickHandlers getHasBeenThere();
 
+		HasClickHandlers getBroadcastInfo();
+
 	}
 
 	@Inject
@@ -92,6 +94,14 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
 			public void onClick( ClickEvent event ) {
 				eventBus.hasBeenThere();
+			}
+
+		} );
+		view.getBroadcastInfo().addClickHandler( new ClickHandler() {
+
+			@Override
+			public void onClick( ClickEvent event ) {
+				eventBus.broadcastInfo( new String[] { "Info1", "Info2" } );
 			}
 
 		} );

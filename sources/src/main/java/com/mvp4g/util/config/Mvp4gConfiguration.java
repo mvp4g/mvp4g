@@ -627,8 +627,8 @@ public class Mvp4gConfiguration {
 					// Control if history converter event bus is compatible with
 					// module event bus
 					if ( !eventBusType.isAssignableTo( eventBusParam ) ) {
-						throw new InvalidTypeException( history, "Event Bus", eventBusParam.getQualifiedSourceName(), eventBus
-								.getInterfaceClassName() );
+						throw new InvalidTypeException( history, "Event Bus", eventBusParam.getQualifiedSourceName(),
+								eventBus.getInterfaceClassName() );
 					}
 				}
 			} else {
@@ -668,12 +668,13 @@ public class Mvp4gConfiguration {
 		Map<String, List<EventElement>> presenterAndEventHandlerMap = new HashMap<String, List<EventElement>>();
 		Map<String, List<EventElement>> activateMap = new HashMap<String, List<EventElement>>();
 		Map<String, List<EventElement>> deactivateMap = new HashMap<String, List<EventElement>>();
-		Map<JClassType, EventElement> broadcastMap = new HashMap<JClassType, EventElement>();
+		Map<JClassType, List<EventElement>> broadcastMap = new HashMap<JClassType, List<EventElement>>();
 
 		// Add presenter that handles event
-		List<EventElement> eventList, eventActivateList, eventDeactivateList;
+		List<EventElement> eventList;
 		List<String> activates, deactivates, handlers;
 		String broadcast;
+		JClassType type;
 		for ( EventElement event : events ) {
 			handlers = event.getHandlers();
 			activates = event.getActivate();
@@ -692,31 +693,37 @@ public class Mvp4gConfiguration {
 			if ( activates != null ) {
 
 				for ( String activate : activates ) {
-					eventActivateList = presenterAndEventHandlerMap.get( activate );
+					eventList = presenterAndEventHandlerMap.get( activate );
 					if ( ( deactivates != null ) && ( deactivates.contains( activate ) ) ) {
 						throw new InvalidMvp4gConfigurationException( String.format( ACTIVATE_DEACTIVATE_SAME_TIME, event, activate ) );
 					}
 
-					if ( eventActivateList == null ) {
-						eventActivateList = new ArrayList<EventElement>();
-						activateMap.put( activate, eventActivateList );
+					if ( eventList == null ) {
+						eventList = new ArrayList<EventElement>();
+						activateMap.put( activate, eventList );
 					}
-					eventActivateList.add( event );
+					eventList.add( event );
 				}
 			}
 			if ( deactivates != null ) {
 
 				for ( String deactivate : deactivates ) {
-					eventDeactivateList = presenterAndEventHandlerMap.get( deactivate );
-					if ( eventDeactivateList == null ) {
-						eventDeactivateList = new ArrayList<EventElement>();
-						deactivateMap.put( deactivate, eventDeactivateList );
+					eventList = presenterAndEventHandlerMap.get( deactivate );
+					if ( eventList == null ) {
+						eventList = new ArrayList<EventElement>();
+						deactivateMap.put( deactivate, eventList );
 					}
-					eventDeactivateList.add( event );
+					eventList.add( event );
 				}
 			}
 			if ( broadcast != null ) {
-				broadcastMap.put( getType( event, broadcast ), event );
+				type = getType( event, broadcast );
+				eventList = broadcastMap.get( type );
+				if ( eventList == null ) {
+					eventList = new ArrayList<EventElement>();
+					broadcastMap.put( type, eventList );
+				}
+				eventList.add( event );
 			}
 		}
 
@@ -727,18 +734,14 @@ public class Mvp4gConfiguration {
 		JGenericType reverseViewGenType = getType( null, ReverseViewInterface.class.getCanonicalName() ).isGenericType();
 		JClassType eventBusType = getType( null, eventBus.getInterfaceClassName() );
 		JType[] noParam = new JType[0];
-		JClassType presenterType = null;
-		JClassType viewParam = null;
-		JClassType presenterParam = null;
-		JClassType viewType = null;
-		String viewName = null;
+		JClassType presenterType, viewParam, presenterParam, viewType;
 		ViewElement view = null;
-		JParameterizedType genPresenter = null;
-		JParameterizedType genView = null;
+		JParameterizedType genPresenter, genView;
 		boolean hasPossibleBroadcast = ( broadcastMap.size() > 0 );
 		Set<PresenterElement> toRemove = new HashSet<PresenterElement>();
-		String name;
+		String viewName, name;
 		boolean toKeep, notDirectHandler;
+		List<EventElement> eventDeactivateList, eventActivateList;
 		for ( PresenterElement presenter : presenters ) {
 			name = presenter.getName();
 			eventList = presenterAndEventHandlerMap.remove( name );
@@ -843,7 +846,7 @@ public class Mvp4gConfiguration {
 		removeUselessElements( eventHandlers, toRemoveEventHandlers );
 	}
 
-	boolean findPossibleBroadcast( Map<JClassType, EventElement> broadcastMap, EventHandlerElement eventHandler, JClassType handler )
+	boolean findPossibleBroadcast( Map<JClassType, List<EventElement>> broadcastMap, EventHandlerElement eventHandler, JClassType handler )
 			throws InvalidClassException, InvalidTypeException, NotFoundClassException {
 
 		boolean keep = false;
@@ -853,7 +856,9 @@ public class Mvp4gConfiguration {
 		while ( it.hasNext() ) {
 			type = it.next();
 			if ( handler.isAssignableTo( type ) ) {
-				broadcastMap.get( type ).getHandlers().add( eventHandler.getName() );
+				for ( EventElement event : broadcastMap.get( type ) ) {
+					event.getHandlers().add( eventHandler.getName() );
+				}
 				keep = true;
 			}
 		}
@@ -953,12 +958,13 @@ public class Mvp4gConfiguration {
 	void validateChildModules() throws InvalidMvp4gConfigurationException {
 
 		Map<String, List<EventElement>> childModuleMap = new HashMap<String, List<EventElement>>();
-		Map<JClassType, EventElement> broadcastMap = new HashMap<JClassType, EventElement>();
+		Map<JClassType, List<EventElement>> broadcastMap = new HashMap<JClassType, List<EventElement>>();
 
 		// Add presenter that handles event
 		List<EventElement> eventList = null;
 		List<String> modulesToLoad;
 		String broadcast;
+		JClassType type;
 		for ( EventElement event : events ) {
 			modulesToLoad = event.getModulesToLoad();
 			broadcast = event.getBroadcastTo();
@@ -973,7 +979,13 @@ public class Mvp4gConfiguration {
 				}
 			}
 			if ( broadcast != null ) {
-				broadcastMap.put( getType( event, broadcast ), event );
+				type = getType( event, broadcast );
+				eventList = broadcastMap.get( type );
+				if ( eventList == null ) {
+					eventList = new ArrayList<EventElement>();
+					broadcastMap.put( type, eventList );
+				}
+				eventList.add( event );
 			}
 		}
 
@@ -1012,8 +1024,8 @@ public class Mvp4gConfiguration {
 					}
 					startViewClass = childEventBus.getAnnotation( Events.class ).startView().getCanonicalName();
 					if ( !getType( childModule, startViewClass ).isAssignableTo( getType( eventElt, eventObjClasses[0] ) ) ) {
-						throw new InvalidMvp4gConfigurationException( String.format( WRONG_CHILD_LOAD_EVENT_OBJ, childModule.getClassName(), eventElt
-								.getType(), startViewClass, eventObjClasses[0] ) );
+						throw new InvalidMvp4gConfigurationException( String.format( WRONG_CHILD_LOAD_EVENT_OBJ, childModule.getClassName(),
+								eventElt.getType(), startViewClass, eventObjClasses[0] ) );
 					}
 				}
 			} else {
@@ -1032,7 +1044,7 @@ public class Mvp4gConfiguration {
 
 	}
 
-	boolean findPossibleModuleBroadcast( Map<JClassType, EventElement> broadcastMap, ChildModuleElement childModuleElement, JClassType childModule ) {
+	boolean findPossibleModuleBroadcast( Map<JClassType, List<EventElement>> broadcastMap, ChildModuleElement childModuleElement, JClassType childModule ) {
 		boolean keep = false;
 		Iterator<JClassType> it = broadcastMap.keySet().iterator();
 		JClassType type;
@@ -1040,7 +1052,9 @@ public class Mvp4gConfiguration {
 		while ( it.hasNext() ) {
 			type = it.next();
 			if ( childModule.isAssignableTo( type ) ) {
-				broadcastMap.get( type ).getModulesToLoad().add( childModuleElement.getName() );
+				for ( EventElement event : broadcastMap.get( type ) ) {
+					event.getModulesToLoad().add( childModuleElement.getName() );
+				}
 				keep = true;
 			}
 		}
@@ -1090,8 +1104,8 @@ public class Mvp4gConfiguration {
 				objClasses = eventElt.getEventObjectClass();
 				if ( ( objClasses != null )
 						&& ( ( objClasses.length > 1 ) || ( ( objClasses.length == 1 ) && ( !Throwable.class.getName().equals( objClasses[0] ) ) ) ) ) {
-					throw new InvalidMvp4gConfigurationException( String.format( WRONG_EVENT_OBJ, loadChildConfig.getTagName(), "Error", eventElt
-							.getType(), Throwable.class.getName() ) );
+					throw new InvalidMvp4gConfigurationException( String.format( WRONG_EVENT_OBJ, loadChildConfig.getTagName(), "Error",
+							eventElt.getType(), Throwable.class.getName() ) );
 				}
 			}
 
@@ -1100,8 +1114,8 @@ public class Mvp4gConfiguration {
 				eventElt = getElement( eventName, events, loadChildConfig );
 				objClasses = eventElt.getEventObjectClass();
 				if ( ( objClasses != null ) && ( objClasses.length > 0 ) ) {
-					throw new InvalidMvp4gConfigurationException( String.format( NOT_EMPTY_EVENT_OBJ, loadChildConfig.getTagName(), "After", eventElt
-							.getType() ) );
+					throw new InvalidMvp4gConfigurationException( String.format( NOT_EMPTY_EVENT_OBJ, loadChildConfig.getTagName(), "After",
+							eventElt.getType() ) );
 				}
 			}
 

@@ -3,6 +3,7 @@ package com.mvp4g.util.test_tools;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.module.HistoryName;
 import com.mvp4g.util.test_tools.annotation.TestBroadcast;
+import com.mvp4g.util.test_tools.annotation.TestBroadcast2;
 
 public class Modules {
 
@@ -22,6 +23,10 @@ public class Modules {
 	}
 	
 	public static interface BroadcastModule extends Mvp4gModule, TestBroadcast {
+
+	}
+	
+	public static interface BroadcastModule2 extends Mvp4gModule, TestBroadcast, TestBroadcast2 {
 
 	}
 

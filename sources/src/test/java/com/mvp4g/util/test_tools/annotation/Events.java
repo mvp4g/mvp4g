@@ -24,7 +24,6 @@ import com.mvp4g.client.event.Mvp4gLogger;
 import com.mvp4g.client.view.NoStartView;
 import com.mvp4g.util.test_tools.CustomPlaceService;
 import com.mvp4g.util.test_tools.Modules;
-import com.mvp4g.util.test_tools.annotation.history_converters.HistoryConverterForEvent;
 import com.mvp4g.util.test_tools.annotation.presenters.PresenterWithName;
 
 public class Events {

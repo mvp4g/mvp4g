@@ -2,12 +2,12 @@ package com.mvp4g.example.client.main;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
+import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Filters;
 import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.PlaceService;
-import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.module.AfterLoadChildModule;
 import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
 import com.mvp4g.client.annotation.module.ChildModule;
@@ -36,7 +36,7 @@ public interface MainEventBus extends EventBusWithLookup {
 
 	//use Integer instead of int here just to test passing object, in real project, you should have int
 	@Event( modulesToLoad = ProductModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, navigationEvent = true )
-	String goToProduct( Integer start, Integer end );
+	String goToProduct( Integer start, Integer end );	
 
 	/* Business events */
 	@DisplayChildModuleView( CompanyModule.class )
@@ -73,5 +73,9 @@ public interface MainEventBus extends EventBusWithLookup {
 
 	@Event( broadcastTo = HasBeenThereHandler.class, passive = true )
 	void hasBeenThere();
+
+	//this event is just here to validate array
+	@Event( broadcastTo = HasBeenThereHandler.class, passive = true )
+	void broadcastInfo(String[] info);
 
 }

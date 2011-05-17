@@ -33,6 +33,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 	private ListBox lastIndex = new ListBox();
 
 	private Anchor hasBeenThere = new Anchor( "Has been there!" );
+	private Anchor broadcastInfo = new Anchor( "Broadcast Info" );
 
 	@Inject
 	public MainView( IndexDisplayer indexDisplayer ) {
@@ -79,6 +80,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 		mainPanel.add( bodyContainer );
 		mainPanel.add( filter );
 		mainPanel.add( hasBeenThere );
+		mainPanel.add( broadcastInfo );
 		wait.add( new Label( "Wait" ) );
 
 		initWidget( mainPanel );
@@ -150,6 +152,11 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 
 	public HasClickHandlers getHasBeenThere() {
 		return hasBeenThere;
+	}
+
+	@Override
+	public HasClickHandlers getBroadcastInfo() {
+		return broadcastInfo;
 	}
 
 }
