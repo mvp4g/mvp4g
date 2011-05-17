@@ -57,6 +57,7 @@ import com.mvp4g.util.test_tools.annotation.Events.TestGinModule;
 import com.mvp4g.util.test_tools.annotation.HistoryConverters;
 import com.mvp4g.util.test_tools.annotation.Presenters;
 import com.mvp4g.util.test_tools.annotation.TestBroadcast;
+import com.mvp4g.util.test_tools.annotation.TestBroadcast2;
 import com.mvp4g.util.test_tools.annotation.events.EventBusOk;
 import com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent;
 import com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler;
@@ -547,17 +548,35 @@ public class Mvp4gConfigurationTest {
 		oracle.addClass( c );
 		presenter.setView( "view" );
 		presenters.add( presenter );
+		
+		PresenterElement presenter2 = new PresenterElement();
+		presenter2.setName( "presenter2" );
+		c = Presenters.BroadcastPresenter2.class;
+		presenter2.setClassName( c.getCanonicalName() );
+		oracle.addClass( c );
+		presenter2.setView( "view" );
+		presenters.add( presenter2 );
 
 		EventElement event = newEvent( "event" );
 		event.setBroadcastTo( TestBroadcast.class.getCanonicalName() );
 		event.setHandlers( new String[0] );
 		events.add( event );
+		
+		EventElement event2 = newEvent( "event2" );
+		event2.setBroadcastTo( TestBroadcast2.class.getCanonicalName() );
+		event2.setHandlers( new String[0] );
+		events.add( event2 );
 
 		setEventBus();
 		configuration.validateEventHandlers();
 		List<String> handlers = event.getHandlers();
+		assertEquals( 2, handlers.size() );
+		assertEquals( "presenter", handlers.get( 1 ) );
+		assertEquals( "presenter2", handlers.get( 0 ) );
+		
+		handlers = event2.getHandlers();
 		assertEquals( 1, handlers.size() );
-		assertEquals( "presenter", handlers.get( 0 ) );
+		assertEquals( "presenter2", handlers.get( 0 ) );
 
 	}
 
@@ -894,19 +913,37 @@ public class Mvp4gConfigurationTest {
 		childModule.setClassName( c.getCanonicalName() );
 		childModule.setAutoDisplay( "false" );
 		childModules.add( childModule );
+		
+		ChildModuleElement childModule2 = new ChildModuleElement();
+		childModule2.setName( "child2" );
+		c = Modules.BroadcastModule2.class;
+		oracle.addClass( c );
+		childModule2.setClassName( c.getCanonicalName() );
+		childModule2.setAutoDisplay( "false" );
+		childModules.add( childModule2 );
 
 		EventElement event = newEvent( "testEvent" );
 		event.setBroadcastTo( TestBroadcast.class.getCanonicalName() );
 		event.setModulesToLoad( new String[0] );
 		events.add( event );
+		
+		EventElement event2 = newEvent( "testEvent2" );
+		event2.setBroadcastTo( TestBroadcast2.class.getCanonicalName() );
+		event2.setModulesToLoad( new String[0] );
+		events.add( event2 );
 
 		setEventBus();
 
 		configuration.validateChildModules();
 
 		List<String> modules = event.getModulesToLoad();
-		assertEquals( 1, modules.size() );
+		assertEquals( 2, modules.size() );
 		assertEquals( "child", modules.get( 0 ) );
+		assertEquals( "child2", modules.get( 1 ) );
+		
+		modules = event2.getModulesToLoad();
+		assertEquals( 1, modules.size() );
+		assertEquals( "child2", modules.get( 0 ) );
 
 	}
 

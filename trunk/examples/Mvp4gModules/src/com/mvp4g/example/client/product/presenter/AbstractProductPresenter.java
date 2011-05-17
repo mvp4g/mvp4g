@@ -52,6 +52,21 @@ public abstract class AbstractProductPresenter extends LazyPresenter<AbstractPro
 	public void onHasBeenThere() {
 		view.alert( "Has been on " + getPageName() );
 	}
+	
+	public void onBroadcastInfo( String[] info ) {
+		int size = info.length;
+		StringBuilder builder = new StringBuilder( 20 + size * 30 );
+		builder.append( getPageName() );
+		builder.append( " received this information: " );
+		if ( size > 0 ) {
+			builder.append( info[0] );
+			for ( int i = 1; i < size; i++ ) {
+				builder.append( ", " );
+				builder.append( info[i] );
+			}
+		}
+		view.alert( builder.toString() );
+	}
 
 	protected void fillView() {
 		view.getName().setValue( product.getName() );

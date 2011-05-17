@@ -1628,11 +1628,11 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	private String[] getExpectedEventChildModuleLoad() {
 		return new String[] {
-				"loadchild(new Mvp4gEventPasser(attr0){",
+				"loadchild(new Mvp4gEventPasser(new Object[]{attr0}){",
 				"public void pass(Mvp4gModule module){",
 				"com.mvp4g.util.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event2((java.lang.String) eventObjects[0]);",
-				"loadchild(new Mvp4gEventPasser(attr0,attr1){",
+				"loadchild(new Mvp4gEventPasser(new Object[]{attr0,attr1}){",
 				"com.mvp4g.util.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event3((java.lang.String) eventObjects[0],(java.lang.Object) eventObjects[1]);",
 				"loadchild(new Mvp4gEventPasser(){",
@@ -1748,7 +1748,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedEventFilters() {
-		return new String[] { "if (!filterEvent(\"event2\",attr0)){", "if (!filterEvent(\"event3\")){", "if (!filterEvent(\"event1\",attr0,attr1)){",
+		return new String[] { "if (!filterEvent(\"event2\", new Object[]{attr0})){", "if (!filterEvent(\"event3\")){", "if (!filterEvent(\"event1\", new Object[]{attr0,attr1})){",
 				"return;", };
 	}
 

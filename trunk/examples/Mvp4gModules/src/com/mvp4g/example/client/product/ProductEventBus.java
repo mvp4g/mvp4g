@@ -50,4 +50,10 @@ public interface ProductEventBus extends EventBus {
 	@Event( broadcastTo = HasBeenThereHandler.class, passive = true )
 	void hasBeenThere();
 
+	@Event( handlers = ProductListPresenter.class )
+	void goToProduct2( String[] indexes );
+	
+	@Event( broadcastTo = HasBeenThereHandler.class, passive = true )
+	void broadcastInfo(String[] info);
+
 }

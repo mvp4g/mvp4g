@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
+import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Filters;
 import com.mvp4g.client.annotation.Forward;
-import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.example.client.company.bean.CompanyBean;
 import com.mvp4g.example.client.company.handler.CompanyListHandler;
@@ -90,6 +90,9 @@ public interface CompanyEventBus extends EventBus {
 
 	@Event( handlers = CompanyListPresenter.class, passive = true )
 	void hasBeenThere();
+	
+	@Event( handlers = CompanyListPresenter.class, passive = true )
+	void broadcastInfo(String[] info);
 
 	@Event( forwardToParent = true )
 	String goToProduct( Integer start, Integer end );

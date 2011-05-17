@@ -947,8 +947,9 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( event.getName() );
 			sourceWriter.print( "\"" );
 			if ( parentParam != null ) {
-				sourceWriter.print( "," );
+				sourceWriter.print( ", new Object[]{" );
 				sourceWriter.print( parentParam );
+				sourceWriter.print( "}" );
 			}
 			sourceWriter.println( ")){" );
 
@@ -1273,7 +1274,9 @@ public class Mvp4gConfigurationFileWriter {
 					sourceWriter.print( module.getName() );
 					sourceWriter.print( "(new Mvp4gEventPasser(" );
 					if ( param != null ) {
+						sourceWriter.print( "new Object[]{" );
 						sourceWriter.print( param );
+						sourceWriter.print( "}" );
 					}
 					sourceWriter.println( "){" );
 					sourceWriter.indent();

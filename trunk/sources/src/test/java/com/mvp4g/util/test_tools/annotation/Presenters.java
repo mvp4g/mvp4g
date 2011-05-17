@@ -96,5 +96,10 @@ public class Presenters {
 	public static class BroadcastPresenter extends BasePresenter<Object, EventBus> implements TestBroadcast {
 
 	}
+	
+	@Presenter( view = Object.class )
+	public static class BroadcastPresenter2 extends BasePresenter<Object, EventBus> implements TestBroadcast, TestBroadcast2 {
+
+	}
 
 }

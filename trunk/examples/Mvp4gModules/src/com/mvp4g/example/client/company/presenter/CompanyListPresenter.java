@@ -19,9 +19,9 @@ import com.mvp4g.example.client.company.view.CompanyListView;
 public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.CompanyListViewInterface, CompanyEventBus> {
 
 	public interface CompanyListViewInterface extends LazyView {
-		void setGoToCreationToken(String token);
-		
-		void setGoToProductsToken(String token);
+		void setGoToCreationToken( String token );
+
+		void setGoToProductsToken( String token );
 
 		void addCompany( Widget w );
 
@@ -32,9 +32,9 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 		void clearTable();
 
 		HasValue<Boolean> isFiltered();
-		
+
 		HasValue<Boolean> isDisabledModuleHistory();
-		
+
 		HasValue<Boolean> isDisabledApplicationHistory();
 
 		void alert( String msg );
@@ -65,16 +65,16 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 			public void onValueChange( ValueChangeEvent<Boolean> event ) {
 				eventBus.setApplicationHistoryStored( !event.getValue().booleanValue() );
 			}
-			
-		});
+
+		} );
 		view.isDisabledModuleHistory().addValueChangeHandler( new ValueChangeHandler<Boolean>() {
 
 			@Override
 			public void onValueChange( ValueChangeEvent<Boolean> event ) {
-				eventBus.setHistoryStored( !event.getValue().booleanValue() );
+				eventBus.setHistoryStored( !event.getValue().booleanValue() );				
 			}
-			
-		});
+
+		} );
 	}
 
 	public void onGoToCompany( int start, int end ) {
@@ -112,6 +112,20 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 
 	public void onHasBeenThere() {
 		view.alert( "Has been on Company list page" );
+	}
+
+	public void onBroadcastInfo( String[] info ) {
+		int size = info.length;
+		StringBuilder builder = new StringBuilder( 20 + size * 30 );
+		builder.append( "Company received this information: " );
+		if ( size > 0 ) {
+			builder.append( info[0] );
+			for ( int i = 1; i < size; i++ ) {
+				builder.append( ", " );
+				builder.append( info[i] );
+			}
+		}
+		view.alert( builder.toString() );
 	}
 
 	private void addCompany( CompanyBean company ) {
