@@ -71,7 +71,7 @@ public class BaseEventHandler<E extends EventBus> implements EventHandlerInterfa
 	 * 
 	 * @see com.mvp4g.client.event.EventHandlerInterface#isActivated()
 	 */
-	public boolean isActivated( boolean passive ) {
+	public boolean isActivated( boolean passive, String eventName, Object... parameters ) {
 		if ( activated ) {
 			if ( passive ) {
 				return binded;

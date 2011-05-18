@@ -108,11 +108,11 @@ public class CyclePresenterTest {
 	@Test
 	public void testBeforeEvent() {
 		presenter.setActivated( false );
-		presenter.isActivated( false );
+		presenter.isActivated( false, null );
 		assertFalse( presenter.isOnBeforeEvent() );
 
 		presenter.setActivated( true );
-		presenter.isActivated( false );
+		presenter.isActivated( false, null );
 		assertTrue( presenter.isOnBeforeEvent() );
 	}
 

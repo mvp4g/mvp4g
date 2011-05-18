@@ -71,7 +71,7 @@ public interface EventHandlerInterface<E extends EventBus> {
 	 * 
 	 * @return true if the presenter is activated, false otherwise
 	 */
-	boolean isActivated( boolean passive );
+	boolean isActivated( boolean passive, String eventName, Object... parameters );
 
 	/**
 	 * Set if the event handler is activated or not. By default, an event handler should be

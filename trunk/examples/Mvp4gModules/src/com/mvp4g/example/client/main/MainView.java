@@ -28,6 +28,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 	private HorizontalPanel bar = new HorizontalPanel();
 	private Label clearHistory = new Label( "Clear History" );
 	private CheckBox filter = new CheckBox( "Filter Main EventBus events" );
+	private CheckBox filterActivate = new CheckBox( "Filter WIth Activate" );
 
 	private ListBox startIndex = new ListBox();
 	private ListBox lastIndex = new ListBox();
@@ -79,6 +80,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 		mainPanel.add( message );
 		mainPanel.add( bodyContainer );
 		mainPanel.add( filter );
+		mainPanel.add( filterActivate );
 		mainPanel.add( hasBeenThere );
 		mainPanel.add( broadcastInfo );
 		wait.add( new Label( "Wait" ) );
@@ -157,6 +159,11 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 	@Override
 	public HasClickHandlers getBroadcastInfo() {
 		return broadcastInfo;
+	}
+
+	@Override
+	public HasValue<Boolean> getFilterByActivate() {
+		return filterActivate;
 	}
 
 }
