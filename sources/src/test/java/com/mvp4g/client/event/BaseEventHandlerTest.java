@@ -63,15 +63,15 @@ public class BaseEventHandlerTest {
 			}
 		};
 
-		assertTrue( handler.isActivated( false ) );
+		assertTrue( handler.isActivated( false, null ) );
 		assertTrue( bindCallCount == 1 );
 
-		assertTrue( handler.isActivated( false ) );
+		assertTrue( handler.isActivated( false, null ) );
 		assertTrue( bindCallCount == 1 );
 
 		handler.setActivated( false );
 
-		assertFalse( handler.isActivated( false ) );
+		assertFalse( handler.isActivated( false, null ) );
 		assertTrue( bindCallCount == 1 );
 	}
 
@@ -84,13 +84,13 @@ public class BaseEventHandlerTest {
 			}
 		};
 
-		assertFalse( handler.isActivated( true ) );
+		assertFalse( handler.isActivated( true, null ) );
 		assertTrue( bindCallCount == 0 );
 
-		assertTrue( handler.isActivated( false ) );
+		assertTrue( handler.isActivated( false, null ) );
 		assertTrue( bindCallCount == 1 );
 
-		assertTrue( handler.isActivated( true ) );
+		assertTrue( handler.isActivated( true, null ) );
 		assertTrue( bindCallCount == 1 );
 	}
 

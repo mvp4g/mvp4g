@@ -112,9 +112,12 @@ public interface EventBus {
 
 	/**
 	 * Create a new instance of the handler, bind it only if this option is set to true and add it
-	 * to event bus. If you decide not to set the handler at creation, you will have either make
+	 * to event bus. If you decide not to bind the handler at creation, you will have either make
 	 * sure the handler is displayed only after it handles its first method (otherwise the view is
-	 * not binded so it seems inactive) or call manualy the bind method.
+	 * not binded so it seems inactive) or call manualy the bind method.<br/>
+	 * <br/>
+	 * When binding the handler, you have to call the isActivated method. This method will be called
+	 * with eventName and parameters set to null.
 	 * 
 	 * @param <T>
 	 *            type of the handler created

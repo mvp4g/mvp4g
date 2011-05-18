@@ -132,6 +132,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		EventElement e3 = new EventElement();
 		e3.setType( "event3" );
+		e3.setName( "name3" );
 		e3.setHandlers( new String[] { "handler3", "handler4" } );
 
 		EventElement e4 = new EventElement();
@@ -1499,16 +1500,16 @@ public class Mvp4gConfigurationFileReaderTest {
 				"int handlerCount = handlershandler4.size();",
 				"for(int i=0; i<handlerCount; i++){",
 				"handler = handlershandler4.get(i);",
-				"if (handler.isActivated(false)){",
-				"if (handler.isActivated(true)){",
+				"if (handler.isActivated(false, \"name3\")){",
+				"if (handler.isActivated(true, \"event4\")){",
 				"handler.onEvent4();",
 				"handler.onEvent3();",
 				"public void event2(java.lang.String attr0){",
 				"List<com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter> handlershandler2 = getHandlers(com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter.class);",
 				"if(handlershandler2!= null){", "com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter handler;",
 				"int handlerCount = handlershandler2.size();", "for(int i=0; i<handlerCount; i++){", "handler = handlershandler2.get(i);",
-				"if (handler.isActivated(false)){", "handler.onEvent2(attr0);", "public void event3(){", "if (handler3.isActivated(false)){",
-				"if (handler3.isActivated(true)){", "handler3.onEvent4();", "handler3.onEvent3();", "if (handler1.isActivated(false)){",
+				"if (handler.isActivated(false, \"event2\", new Object[]{attr0})){", "handler.onEvent2(attr0);", "public void event3(){", "if (handler3.isActivated(false, \"name3\")){",
+				"if (handler3.isActivated(true, \"event4\")){", "handler3.onEvent4();", "handler3.onEvent3();", "if (handler1.isActivated(false, \"event1\", new Object[]{attr0,attr1})){",
 				"handler1.onEvent1(attr0,attr1);" };
 	}
 

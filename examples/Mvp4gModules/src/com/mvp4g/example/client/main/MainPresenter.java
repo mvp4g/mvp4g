@@ -49,6 +49,8 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
 		HasValue<Boolean> getFilter();
 
+		HasValue<Boolean> getFilterByActivate();
+
 		HasClickHandlers getHasBeenThere();
 
 		HasClickHandlers getBroadcastInfo();
@@ -146,6 +148,15 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
 	public void onClearHistory() {
 		view.displayAlertMessage( "History has been cleared" );
+	}
+
+	public boolean isActivated( boolean passive, String eventName, Object... parameters ) {
+		if ( view.getFilterByActivate().getValue() ) {
+			view.displayText( "Filtered by Activate: " + eventName );
+			return false;
+		} else {
+			return super.isActivated( passive, eventName, parameters );
+		}
 	}
 
 }

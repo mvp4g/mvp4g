@@ -159,7 +159,7 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.println( "if (startPresenter != null) {" );
 			sourceWriter.indent();
 			sourceWriter.println( "startPresenter.setActivated(true);" );
-			sourceWriter.println( "startPresenter.isActivated(false);" );
+			sourceWriter.println( "startPresenter.isActivated(false, null);" );
 			sourceWriter.outdent();
 			sourceWriter.print( "}" );
 			sourceWriter.println( "return startView;" );
@@ -605,7 +605,7 @@ public class Mvp4gConfigurationFileWriter {
 		eventHandlers.addAll( configuration.getEventHandlers() );
 
 		String[] objectClasses = null;
-		String type, calledMethod, history, parentParam, param;
+		String type, calledMethod, history, param, name;
 		List<String> activate, deactivate, handlers;
 		EventHandlerElement eventHandler;
 		boolean hasLog = ( configuration.getDebug() != null );
@@ -618,6 +618,7 @@ public class Mvp4gConfigurationFileWriter {
 			type = event.getType();
 			calledMethod = event.getCalledMethod();
 			objectClasses = event.getEventObjectClass();
+			name = event.getName();
 
 			isNavigationEvent = event.isNavigationEvent();
 
@@ -632,8 +633,7 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( type );
 			sourceWriter.print( "(" );
 			if ( ( objectClasses == null ) || ( objectClasses.length == 0 ) ) {
-				param = "()";
-				parentParam = null;
+				param = null;
 			} else {
 				int nbParams = objectClasses.length;
 				StringBuilder paramBuilder = new StringBuilder( 50 * nbParams );
@@ -662,8 +662,7 @@ public class Mvp4gConfigurationFileWriter {
 				paramBuilder.append( "attr" );
 				paramBuilder.append( i );
 
-				parentParam = paramBuilder.toString();
-				param = "(" + paramBuilder.toString() + ")";
+				param = paramBuilder.toString();
 
 			}
 			sourceWriter.println( "){" );
@@ -677,10 +676,10 @@ public class Mvp4gConfigurationFileWriter {
 					sourceWriter.print( BaseEventBus.class.getName() );
 					sourceWriter.println( ") parentEventBus).tokenMode = true;" );
 					sourceWriter.print( "return " );
-					writeParentEvent( event, parentParam );
+					writeParentEvent( event, param );
 				} else {
 					sourceWriter.print( "return " );
-					writeEventHistoryConvertion( event, getElement( history, configuration.getHistoryConverters() ), parentParam, true );
+					writeEventHistoryConvertion( event, getElement( history, configuration.getHistoryConverters() ), param, true );
 				}
 				sourceWriter.outdent();
 				sourceWriter.println( "} else {" );
@@ -707,7 +706,7 @@ public class Mvp4gConfigurationFileWriter {
 			}
 
 			if ( !filterAfterHistory ) {
-				writeEventFilter( hasFilter, event, parentParam );
+				writeEventFilter( hasFilter, event, param );
 			}
 
 			if ( history != null ) {
@@ -716,13 +715,13 @@ public class Mvp4gConfigurationFileWriter {
 				if ( ClearHistory.class.getCanonicalName().equals( historyConverterElement.getClassName() ) ) {
 					sourceWriter.println( "clearHistory(itself);" );
 				} else {
-					writeEventHistoryConvertion( event, historyConverterElement, parentParam, false );
+					writeEventHistoryConvertion( event, historyConverterElement, param, false );
 					eventsWithHistory.add( event );
 				}
 			}
 
 			if ( filterAfterHistory ) {
-				writeEventFilter( hasFilter, event, parentParam );
+				writeEventFilter( hasFilter, event, param );
 			}
 
 			if ( ( activate != null ) && ( activate.size() > 0 ) ) {
@@ -732,18 +731,18 @@ public class Mvp4gConfigurationFileWriter {
 				writeActivation( deactivate, eventHandlers, false );
 			}
 
-			writeLoadChildModule( event, parentParam );
-			writeParentEvent( event, parentParam );
+			writeLoadChildModule( event, param );
+			writeParentEvent( event, param );
 
 			if ( handlers != null ) {
 
 				for ( String handler : handlers ) {
 					eventHandler = getElement( handler, eventHandlers );
 					if ( !eventHandler.isMultiple() ) {
-						writeEventHandling( handler, type, calledMethod, param, event.isPassive() );
+						writeEventHandling( handler, type, name, calledMethod, param, event.isPassive() );
 					} else {
 						writeMultipleActionBegin( eventHandler, "" );
-						writeEventHandling( "handler", type, calledMethod, param, event.isPassive() );
+						writeEventHandling( "handler", type, name, calledMethod, param, event.isPassive() );
 						writeMultipleActionEnd();
 					}
 				}
@@ -920,11 +919,19 @@ public class Mvp4gConfigurationFileWriter {
 		}
 	}
 
-	private void writeEventHandling( String handler, String type, String calledMethod, String param, boolean passive ) {
+	private void writeEventHandling( String handler, String type, String name, String calledMethod, String param, boolean passive ) {
 		sourceWriter.print( "if (" );
 		sourceWriter.print( handler );
 		sourceWriter.print( ".isActivated(" );
 		sourceWriter.print( Boolean.toString( passive ) );
+		sourceWriter.print( ", \"" );
+		sourceWriter.print( name );
+		sourceWriter.print( "\"" );
+		if ( param != null ) {
+			sourceWriter.print( ", new Object[]{" );
+			sourceWriter.print( param );
+			sourceWriter.print( "}" );
+		}
 		sourceWriter.println( ")){" );
 		sourceWriter.indent();
 
@@ -933,8 +940,11 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.print( handler );
 		sourceWriter.print( "." );
 		sourceWriter.print( calledMethod );
-		sourceWriter.print( param );
-		sourceWriter.println( ";" );
+		sourceWriter.print( "(" );
+		if ( param != null ) {
+			sourceWriter.print( param );
+		}
+		sourceWriter.println( ");" );
 
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );
