@@ -115,6 +115,8 @@ public class Mvp4gConfiguration {
 	private static final String HISTORY_NAME_MISSING = "Module %s: Child module that defines history converter must have a @HistoryName annotation.";
 	private static final String HISTORY_INIT_MISSING = "You must define a History init event if you use history converters.";
 
+	private static final String GENERATE_NOT_MULTIPLE = "Event %s: you can generate only multiple handlers. Did you forget to set the attribute multiple to true for %s?";
+
 	private Set<PresenterElement> presenters = new HashSet<PresenterElement>();
 	private Set<EventHandlerElement> eventHandlers = new HashSet<EventHandlerElement>();
 	private Set<ViewElement> views = new HashSet<ViewElement>();
@@ -668,11 +670,13 @@ public class Mvp4gConfiguration {
 		Map<String, List<EventElement>> presenterAndEventHandlerMap = new HashMap<String, List<EventElement>>();
 		Map<String, List<EventElement>> activateMap = new HashMap<String, List<EventElement>>();
 		Map<String, List<EventElement>> deactivateMap = new HashMap<String, List<EventElement>>();
+		Map<String, List<EventElement>> generateMap = new HashMap<String, List<EventElement>>();
 		Map<JClassType, List<EventElement>> broadcastMap = new HashMap<JClassType, List<EventElement>>();
 
 		// Add presenter that handles event
 		List<EventElement> eventList;
 		List<String> activates, deactivates, handlers;
+		String[] generates;
 		String broadcast;
 		JClassType type;
 		for ( EventElement event : events ) {
@@ -680,6 +684,7 @@ public class Mvp4gConfiguration {
 			activates = event.getActivate();
 			deactivates = event.getDeactivate();
 			broadcast = event.getBroadcastTo();
+			generates = event.getGenerate();
 			if ( handlers != null ) {
 				for ( String handler : handlers ) {
 					eventList = presenterAndEventHandlerMap.get( handler );
@@ -706,7 +711,6 @@ public class Mvp4gConfiguration {
 				}
 			}
 			if ( deactivates != null ) {
-
 				for ( String deactivate : deactivates ) {
 					eventList = presenterAndEventHandlerMap.get( deactivate );
 					if ( eventList == null ) {
@@ -725,6 +729,28 @@ public class Mvp4gConfiguration {
 				}
 				eventList.add( event );
 			}
+			if ( generates != null ) {
+				if ( handlers == null ) {
+					try {
+						event.setHandlers( new String[0] );
+						handlers = event.getHandlers();
+					} catch ( DuplicatePropertyNameException e ) {
+						//should never occur
+					}
+				}
+
+				for ( String generate : generates ) {
+					eventList = generateMap.get( generate );
+					if ( eventList == null ) {
+						eventList = new ArrayList<EventElement>();
+						generateMap.put( generate, eventList );
+					}
+					eventList.add( event );
+					if ( !handlers.contains( generate ) ) {
+						handlers.add( generate );
+					}
+				}
+			}
 		}
 
 		boolean hasStartView = start.hasView();
@@ -741,12 +767,13 @@ public class Mvp4gConfiguration {
 		Set<PresenterElement> toRemove = new HashSet<PresenterElement>();
 		String viewName, name;
 		boolean toKeep, notDirectHandler;
-		List<EventElement> eventDeactivateList, eventActivateList;
+		List<EventElement> eventDeactivateList, eventActivateList, eventGenerateList;
 		for ( PresenterElement presenter : presenters ) {
 			name = presenter.getName();
 			eventList = presenterAndEventHandlerMap.remove( name );
 			eventDeactivateList = deactivateMap.remove( name );
 			eventActivateList = activateMap.remove( name );
+			eventGenerateList = generateMap.remove( name );
 			viewName = presenter.getView();
 
 			toKeep = ( eventList != null ) || ( hasStartView && viewName.equals( startView ) );
@@ -801,6 +828,11 @@ public class Mvp4gConfiguration {
 				// this object is not used, you can remove it
 				toRemove.add( presenter );
 			}
+
+			if ( ( eventGenerateList != null ) && ( !presenter.isMultiple() ) ) {
+				throw new InvalidMvp4gConfigurationException( String.format( GENERATE_NOT_MULTIPLE, eventGenerateList.get( 0 ).getType(),
+						presenter.getName() ) );
+			}
 		}
 
 		Set<EventHandlerElement> toRemoveEventHandlers = new HashSet<EventHandlerElement>();
@@ -809,6 +841,7 @@ public class Mvp4gConfiguration {
 			eventList = presenterAndEventHandlerMap.remove( name );
 			eventDeactivateList = deactivateMap.remove( name );
 			eventActivateList = activateMap.remove( name );
+			eventGenerateList = generateMap.remove( name );
 
 			toKeep = ( eventList != null );
 			notDirectHandler = !toKeep && ( eventHandler.isMultiple() || hasPossibleBroadcast );
@@ -824,6 +857,11 @@ public class Mvp4gConfiguration {
 				removeFromActivateDeactivate( eventActivateList, eventDeactivateList, eventHandler );
 				// this object is not used, you can remove it
 				toRemoveEventHandlers.add( eventHandler );
+			}
+
+			if ( ( eventGenerateList != null ) && ( !eventHandler.isMultiple() ) ) {
+				throw new InvalidMvp4gConfigurationException( String.format( GENERATE_NOT_MULTIPLE, eventGenerateList.get( 0 ).getType(),
+						eventHandler.getName() ) );
 			}
 		}
 
@@ -841,6 +879,10 @@ public class Mvp4gConfiguration {
 			String it = deactivateMap.keySet().iterator().next();
 			throw new UnknownConfigurationElementException( deactivateMap.get( it ).get( 0 ), it );
 		}
+		if ( !generateMap.isEmpty() ) {
+			String it = generateMap.keySet().iterator().next();
+			throw new UnknownConfigurationElementException( generateMap.get( it ).get( 0 ), it );
+		}
 
 		removeUselessElements( presenters, toRemove );
 		removeUselessElements( eventHandlers, toRemoveEventHandlers );
@@ -853,11 +895,17 @@ public class Mvp4gConfiguration {
 		Iterator<JClassType> it = broadcastMap.keySet().iterator();
 		JClassType type;
 
+		String handlerName = eventHandler.getName();
+
 		while ( it.hasNext() ) {
 			type = it.next();
 			if ( handler.isAssignableTo( type ) ) {
+				List<String> handlers;
 				for ( EventElement event : broadcastMap.get( type ) ) {
-					event.getHandlers().add( eventHandler.getName() );
+					handlers = event.getHandlers();
+					if ( !handlers.contains( handlerName ) ) {
+						handlers.add( handlerName );
+					}
 				}
 				keep = true;
 			}
@@ -1044,16 +1092,23 @@ public class Mvp4gConfiguration {
 
 	}
 
-	boolean findPossibleModuleBroadcast( Map<JClassType, List<EventElement>> broadcastMap, ChildModuleElement childModuleElement, JClassType childModule ) {
+	boolean findPossibleModuleBroadcast( Map<JClassType, List<EventElement>> broadcastMap, ChildModuleElement childModuleElement,
+			JClassType childModule ) {
 		boolean keep = false;
 		Iterator<JClassType> it = broadcastMap.keySet().iterator();
 		JClassType type;
 
+		String moduleName = childModuleElement.getName();
+
 		while ( it.hasNext() ) {
 			type = it.next();
 			if ( childModule.isAssignableTo( type ) ) {
+				List<String> modules;
 				for ( EventElement event : broadcastMap.get( type ) ) {
-					event.getModulesToLoad().add( childModuleElement.getName() );
+					modules = event.getModulesToLoad();
+					if ( !modules.contains( moduleName ) ) {
+						modules.add( moduleName );
+					}
 				}
 				keep = true;
 			}

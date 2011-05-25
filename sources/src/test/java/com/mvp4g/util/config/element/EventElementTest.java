@@ -16,7 +16,7 @@ import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 
 	private static final String[] properties = { "calledMethod", "type", "history", "forwardToParent", "name" };
-	private static final String[] values = { "eventObjectClass" };
+	private static final String[] values = { "eventObjectClass", "generate" };
 
 	@Test
 	public void testGetCalledMethod() throws DuplicatePropertyNameException {

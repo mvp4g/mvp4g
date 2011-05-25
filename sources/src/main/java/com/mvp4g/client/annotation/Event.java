@@ -109,6 +109,10 @@ public @interface Event {
 	boolean passive() default false;
 	
 	Class<?> broadcastTo() default NoBroadcast.class;
+	
+	Class<? extends EventHandlerInterface<? extends EventBus>>[] generate() default {};
+	
+	String[] generateNames() default {};
 
 	class NoHistoryConverter implements HistoryConverter<EventBus> {
 

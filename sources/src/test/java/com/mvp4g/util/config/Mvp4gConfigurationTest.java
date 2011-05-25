@@ -548,7 +548,7 @@ public class Mvp4gConfigurationTest {
 		oracle.addClass( c );
 		presenter.setView( "view" );
 		presenters.add( presenter );
-		
+
 		PresenterElement presenter2 = new PresenterElement();
 		presenter2.setName( "presenter2" );
 		c = Presenters.BroadcastPresenter2.class;
@@ -557,26 +557,35 @@ public class Mvp4gConfigurationTest {
 		presenter2.setView( "view" );
 		presenters.add( presenter2 );
 
+		PresenterElement presenter3 = new PresenterElement();
+		presenter3.setName( "presenter3" );
+		c = Presenters.BroadcastPresenter2.class;
+		presenter3.setClassName( c.getCanonicalName() );
+		presenter3.setView( "view" );
+		presenters.add( presenter3 );
+
 		EventElement event = newEvent( "event" );
 		event.setBroadcastTo( TestBroadcast.class.getCanonicalName() );
 		event.setHandlers( new String[0] );
 		events.add( event );
-		
+
 		EventElement event2 = newEvent( "event2" );
 		event2.setBroadcastTo( TestBroadcast2.class.getCanonicalName() );
-		event2.setHandlers( new String[0] );
+		event2.setHandlers( new String[] { "presenter3" } );
 		events.add( event2 );
 
 		setEventBus();
 		configuration.validateEventHandlers();
 		List<String> handlers = event.getHandlers();
-		assertEquals( 2, handlers.size() );
-		assertEquals( "presenter", handlers.get( 1 ) );
-		assertEquals( "presenter2", handlers.get( 0 ) );
-		
+		assertEquals( 3, handlers.size() );
+		assertEquals( "presenter3", handlers.get( 0 ) );
+		assertEquals( "presenter2", handlers.get( 1 ) );
+		assertEquals( "presenter", handlers.get( 2 ) );
+
 		handlers = event2.getHandlers();
-		assertEquals( 1, handlers.size() );
-		assertEquals( "presenter2", handlers.get( 0 ) );
+		assertEquals( 2, handlers.size() );
+		assertEquals( "presenter3", handlers.get( 0 ) );
+		assertEquals( "presenter2", handlers.get( 1 ) );
 
 	}
 
@@ -787,7 +796,7 @@ public class Mvp4gConfigurationTest {
 			Class<?> c = HistoryConverters.HistoryConverterWithLookup.class;
 			oracle.addClass( c );
 			hc.setClassName( c.getCanonicalName() );
-			
+
 			historyConverters.add( hc );
 
 			EventElement event = newEvent( "testEvent" );
@@ -913,7 +922,7 @@ public class Mvp4gConfigurationTest {
 		childModule.setClassName( c.getCanonicalName() );
 		childModule.setAutoDisplay( "false" );
 		childModules.add( childModule );
-		
+
 		ChildModuleElement childModule2 = new ChildModuleElement();
 		childModule2.setName( "child2" );
 		c = Modules.BroadcastModule2.class;
@@ -922,14 +931,21 @@ public class Mvp4gConfigurationTest {
 		childModule2.setAutoDisplay( "false" );
 		childModules.add( childModule2 );
 
+		ChildModuleElement childModule3 = new ChildModuleElement();
+		childModule3.setName( "child3" );
+		c = Modules.BroadcastModule2.class;
+		childModule3.setClassName( c.getCanonicalName() );
+		childModule3.setAutoDisplay( "false" );
+		childModules.add( childModule3 );
+
 		EventElement event = newEvent( "testEvent" );
 		event.setBroadcastTo( TestBroadcast.class.getCanonicalName() );
 		event.setModulesToLoad( new String[0] );
 		events.add( event );
-		
+
 		EventElement event2 = newEvent( "testEvent2" );
 		event2.setBroadcastTo( TestBroadcast2.class.getCanonicalName() );
-		event2.setModulesToLoad( new String[0] );
+		event2.setModulesToLoad( new String[] { "child3" } );
 		events.add( event2 );
 
 		setEventBus();
@@ -937,13 +953,15 @@ public class Mvp4gConfigurationTest {
 		configuration.validateChildModules();
 
 		List<String> modules = event.getModulesToLoad();
-		assertEquals( 2, modules.size() );
+		assertEquals( 3, modules.size() );
 		assertEquals( "child", modules.get( 0 ) );
 		assertEquals( "child2", modules.get( 1 ) );
-		
+		assertEquals( "child3", modules.get( 2 ) );
+
 		modules = event2.getModulesToLoad();
-		assertEquals( 1, modules.size() );
+		assertEquals( 2, modules.size() );
 		assertEquals( "child2", modules.get( 0 ) );
+		assertEquals( "child3", modules.get( 1 ) );
 
 	}
 
@@ -984,8 +1002,10 @@ public class Mvp4gConfigurationTest {
 			configuration.validateChildModules();
 			fail();
 		} catch ( InvalidMvp4gConfigurationException e ) {
-			assertEquals( e.getMessage(), String.format( "%s: child module %s doesn't define any event to load its view.",
-					Modules.ModuleWithParent.class.getCanonicalName(), childModule1.getClassName() ) );
+			assertEquals(
+					e.getMessage(),
+					String.format( "%s: child module %s doesn't define any event to load its view.",
+							Modules.ModuleWithParent.class.getCanonicalName(), childModule1.getClassName() ) );
 		}
 
 		childModule1.setAutoDisplay( "false" );
@@ -1054,9 +1074,10 @@ public class Mvp4gConfigurationTest {
 			configuration.validateChildModules();
 			fail();
 		} catch ( InvalidMvp4gConfigurationException e ) {
-			assertEquals( e.getMessage(), String.format(
-					"Child Module %s: event %s can not load child module's start view. Can not convert %s to %s.", childModule.getClassName(),
-					"testEvent", Object.class.getCanonicalName(), String.class.getCanonicalName() ) );
+			assertEquals(
+					e.getMessage(),
+					String.format( "Child Module %s: event %s can not load child module's start view. Can not convert %s to %s.",
+							childModule.getClassName(), "testEvent", Object.class.getCanonicalName(), String.class.getCanonicalName() ) );
 		}
 
 		event = newEvent( "testEvent" );
@@ -1172,8 +1193,8 @@ public class Mvp4gConfigurationTest {
 			configuration.validateEvents();
 			fail();
 		} catch ( InvalidMvp4gConfigurationException ex ) {
-			assertEquals( "childModules: Error event event can only be associated with one and only one object with type java.lang.Throwable", ex
-					.getMessage() );
+			assertEquals( "childModules: Error event event can only be associated with one and only one object with type java.lang.Throwable",
+					ex.getMessage() );
 		}
 
 	}
@@ -1637,6 +1658,70 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
+	public void testGenerate() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+		EventBusElement eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBus.class.getName(), false );
+		configuration.setEventBus( eventBus );
+
+		EventElement event1 = newEvent( "event1" );
+		event1.setHandlers( new String[] { "generate2" } );
+		event1.setGenerate( new String[] { "generate1", "generate2" } );
+		events.add( event1 );
+
+		PresenterElement generate1 = newPresenter( "generate1" );
+		EventHandlerElement generate2 = newEventHandler( "generate2" );
+
+		eventHandlers.add( generate1 );
+		eventHandlers.add( generate2 );
+
+		generate1.setMultiple( Boolean.TRUE.toString() );
+		generate2.setMultiple( Boolean.TRUE.toString() );
+
+		configuration.validateEventHandlers();
+
+		String[] generate = event1.getGenerate();
+		assertTrue( generate.length == 2 );
+		assertEquals( generate[0], generate1.getName() );
+		assertEquals( generate[1], generate2.getName() );
+
+	}
+
+	@Test
+	public void testGenerateNotMultiple() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+		EventBusElement eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBus.class.getName(), false );
+		configuration.setEventBus( eventBus );
+
+		EventElement event1 = newEvent( "event1" );
+		event1.setHandlers( new String[] { "generate2" } );
+		event1.setGenerate( new String[] { "generate1", "generate2" } );
+		events.add( event1 );
+
+		PresenterElement generate1 = newPresenter( "generate1" );
+		EventHandlerElement generate2 = newEventHandler( "generate2" );
+
+		eventHandlers.add( generate1 );
+
+		try {
+			configuration.validateEventHandlers();
+			fail();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertTrue( e.getMessage().contains(
+					"Event event1: you can generate only multiple handlers. Did you forget to set the attribute multiple to true for generate1?" ) );
+		}
+
+		eventHandlers.clear();
+		eventHandlers.add( generate2 );
+
+		try {
+			configuration.validateEventHandlers();
+			fail();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertTrue( e.getMessage().contains(
+					"Event event1: you can generate only multiple handlers. Did you forget to set the attribute multiple to true for generate2?" ) );
+		}
+
+	}
+
+	@Test
 	public void testUnknownActivateDeactivate() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
 		EventBusElement eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBus.class.getName(), false );
 		configuration.setEventBus( eventBus );
@@ -1864,8 +1949,8 @@ public class Mvp4gConfigurationTest {
 			configuration.loadParentModule();
 			fail();
 		} catch ( InvalidMvp4gConfigurationException e ) {
-			assertEquals( "Module " + Modules.ModuleWithParent.class.getCanonicalName() + " can't have an history name since it's a root module.", e
-					.getMessage() );
+			assertEquals( "Module " + Modules.ModuleWithParent.class.getCanonicalName() + " can't have an history name since it's a root module.",
+					e.getMessage() );
 		}
 
 	}
@@ -1966,7 +2051,7 @@ public class Mvp4gConfigurationTest {
 		}
 
 		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
-		
+
 		try {
 			configuration.validateHistoryConverters();
 			fail();
