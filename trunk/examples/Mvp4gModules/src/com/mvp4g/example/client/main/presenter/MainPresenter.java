@@ -1,4 +1,4 @@
-package com.mvp4g.example.client.main;
+package com.mvp4g.example.client.main.presenter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +14,9 @@ import com.google.inject.Inject;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.example.client.main.MainEventBus;
+import com.mvp4g.example.client.main.MainEventFilter;
+import com.mvp4g.example.client.main.view.MainView;
 import com.mvp4g.example.client.util.index.IndexGenerator;
 
 @Presenter( view = MainView.class, multiple = true )

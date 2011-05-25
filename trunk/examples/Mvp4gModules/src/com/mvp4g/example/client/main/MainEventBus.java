@@ -19,6 +19,9 @@ import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.example.client.Mvp4gGinModule;
 import com.mvp4g.example.client.company.CompanyModule;
 import com.mvp4g.example.client.main.historyConverter.MenuHistoryConverter;
+import com.mvp4g.example.client.main.presenter.InfoReceiverPresenter;
+import com.mvp4g.example.client.main.presenter.MainPresenter;
+import com.mvp4g.example.client.main.view.MainView;
 import com.mvp4g.example.client.product.ProductModule;
 import com.mvp4g.example.client.util.HasBeenThereHandler;
 
@@ -36,7 +39,7 @@ public interface MainEventBus extends EventBusWithLookup {
 
 	//use Integer instead of int here just to test passing object, in real project, you should have int
 	@Event( modulesToLoad = ProductModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, navigationEvent = true )
-	String goToProduct( Integer start, Integer end );	
+	String goToProduct( Integer start, Integer end );
 
 	/* Business events */
 	@DisplayChildModuleView( CompanyModule.class )
@@ -75,7 +78,7 @@ public interface MainEventBus extends EventBusWithLookup {
 	void hasBeenThere();
 
 	//this event is just here to validate array
-	@Event( broadcastTo = HasBeenThereHandler.class, passive = true )
-	void broadcastInfo(String[] info);
+	@Event( broadcastTo = HasBeenThereHandler.class, passive = true, generate = InfoReceiverPresenter.class )
+	void broadcastInfo( String[] info );
 
 }

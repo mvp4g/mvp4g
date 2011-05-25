@@ -1,4 +1,4 @@
-package com.mvp4g.example.client.main;
+package com.mvp4g.example.client.main.view;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Window;
@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.mvp4g.example.client.main.presenter.MainPresenter;
 import com.mvp4g.example.client.util.display.IndexDisplayer;
 
 public class MainView extends Composite implements MainPresenter.MainViewInterface {
@@ -29,7 +30,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 	private Label clearHistory = new Label( "Clear History" );
 	private CheckBox filter = new CheckBox( "Filter Main EventBus events" );
 	private CheckBox filterActivate = new CheckBox( "Filter WIth Activate" );
-
+	
 	private ListBox startIndex = new ListBox();
 	private ListBox lastIndex = new ListBox();
 

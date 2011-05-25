@@ -361,6 +361,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				element.setForwardToParent( Boolean.toString( event.forwardToParent() ) );
 				element.setActivate( buildPresentersAndEventHandlers( c, method, event.activate(), event.activateNames(), configuration ) );
 				element.setDeactivate( buildPresentersAndEventHandlers( c, method, event.deactivate(), event.deactivateNames(), configuration ) );
+				element.setGenerate( buildPresentersAndEventHandlers( c, method, event.generate(), event.generateNames(), configuration ) );
 				element.setNavigationEvent( Boolean.toString( event.navigationEvent() ) );
 				element.setWithTokenGeneration( Boolean.toString( method.getReturnType().getQualifiedSourceName().equals( String.class.getName() ) ) );
 				element.setPassive( Boolean.toString( event.passive() ) );

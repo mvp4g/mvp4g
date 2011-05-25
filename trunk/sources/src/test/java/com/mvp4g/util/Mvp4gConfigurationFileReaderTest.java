@@ -47,6 +47,7 @@ import com.mvp4g.util.test_tools.SourceWriterTestStub;
 import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter1;
 import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter2;
 import com.mvp4g.util.test_tools.annotation.Presenters;
+import com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter;
 import com.mvp4g.util.test_tools.annotation.events.EventBusOk;
 import com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent;
 import com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler;
@@ -115,6 +116,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedEventsInheritMethods(), false );
 		assertOutput( getExpectedEventsWithLookup(), false );
 		assertOutput( getExpectedNavigationEvents(), false );
+		assertOutput( getExpectedGenerateEvents(), false );
 
 		createHandlers();
 
@@ -152,6 +154,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedEventsInheritMethods(), true );
 		assertOutput( getExpectedEventsWithLookup(), false );
 		assertOutput( getExpectedNavigationEvents(), false );
+		assertOutput( getExpectedGenerateEvents(), false );
 
 	}
 
@@ -368,6 +371,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedEvents(), false );
 		assertOutput( getExpectedEventsInheritMethods(), false );
 		assertOutput( getExpectedEventsWithLookup(), false );
+		assertOutput( getExpectedGenerateEvents(), false );
 
 		createHandlers();
 
@@ -402,6 +406,58 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedEvents(), true );
 		assertOutput( getExpectedEventsWithLookup(), true );
 		assertOutput( getExpectedEventsInheritMethods(), true );
+		assertOutput( getExpectedGenerateEvents(), false );
+
+	}
+
+	@Test
+	public void testWriteEventsWithGenerate() throws DuplicatePropertyNameException {
+
+		assertOutput( getExpectedEvents(), false );
+		assertOutput( getExpectedNotNavigationEvents(), false );
+		assertOutput( getExpectedEventsInheritMethods(), false );
+		assertOutput( getExpectedEventsWithLookup(), false );
+		assertOutput( getExpectedNavigationEvents(), false );
+		assertOutput( getExpectedGenerateEvents(), false );
+
+		createHandlers();
+
+		Set<EventElement> events = configuration.getEvents();
+
+		EventElement e1 = new EventElement();
+		e1.setType( "event1" );
+		e1.setHandlers( new String[] { "handler1" } );
+		e1.setEventObjectClass( new String[] { "java.lang.String", "java.lang.Object" } );
+
+		EventElement e2 = new EventElement();
+		e2.setType( "event2" );
+		e2.setHandlers( new String[] { "handler2" } );
+		e2.setEventObjectClass( new String[] { "java.lang.String" } );
+
+		EventElement e3 = new EventElement();
+		e3.setType( "event3" );
+		e3.setName( "name3" );
+		e3.setHandlers( new String[] { "handler3", "handler4" } );
+
+		EventElement e4 = new EventElement();
+		e4.setType( "event4" );
+		e4.setHandlers( new String[] { "handler3", "handler4" } );
+		e4.setPassive( "true" );
+		e4.setGenerate( new String[] { "handler2", "handler4" } );
+
+		events.add( e1 );
+		events.add( e2 );
+		events.add( e3 );
+		events.add( e4 );
+
+		writer.writeConf();
+
+		assertOutput( getExpectedEvents(), true );
+		assertOutput( getExpectedNotNavigationEvents(), true );
+		assertOutput( getExpectedEventsInheritMethods(), true );
+		assertOutput( getExpectedEventsWithLookup(), false );
+		assertOutput( getExpectedNavigationEvents(), false );
+		assertOutput( getExpectedGenerateEvents(), true );
 
 	}
 
@@ -646,15 +702,15 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedStartPresenterViewMultiple(), false );
 
 	}
-	
+
 	@Test
 	public void testWriteNoStartView() throws DuplicatePropertyNameException {
 		StartElement start = new StartElement();
-		configuration.setStart( start );		
-		
+		configuration.setStart( start );
+
 		assertOutput( getNoStartView(), false );
 		writer.writeConf();
-		assertOutput( getNoStartView(), true );		
+		assertOutput( getNoStartView(), true );
 	}
 
 	@Test
@@ -999,8 +1055,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.getEvents().add( event1 );
 		configuration.getEvents().add( event2 );
 		configuration.getEvents().add( event3 );
-		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(),
-				oracle.addClass( EventBusOk.class ) );
+		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
 
 		assertOutput( getExpectedEventChildModuleLoad(), false );
 		writer.writeConf();
@@ -1038,8 +1093,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.getEvents().add( event1 );
 		configuration.getEvents().add( event2 );
 		configuration.getEvents().add( event3 );
-		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(),
-				oracle.addClass( EventBusOk.class ) );
+		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
 
 		assertOutput( getExpectedPassiveEventChildModuleLoad(), false );
 		writer.writeConf();
@@ -1150,8 +1204,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		event.setType( "test" );
 		event.setModulesToLoad( new String[] { "child" } );
 		configuration.getEvents().add( event );
-		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(),
-				oracle.addClass( EventBusOk.class ) );
+		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
 
 		assertOutput( getExpectedHistoryParent(), false );
 		writer.writeConf();
@@ -1401,8 +1454,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		configuration.getEvents().add( e1 );
 
-		configuration.getOthersEventBusClassMap().put( moduleType.getQualifiedSourceName(),
-				oracle.addClass( EventBusOk.class ) );
+		configuration.getOthersEventBusClassMap().put( moduleType.getQualifiedSourceName(), oracle.addClass( EventBusOk.class ) );
 
 		writer.writeConf();
 
@@ -1508,9 +1560,9 @@ public class Mvp4gConfigurationFileReaderTest {
 				"List<com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter> handlershandler2 = getHandlers(com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter.class);",
 				"if(handlershandler2!= null){", "com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter handler;",
 				"int handlerCount = handlershandler2.size();", "for(int i=0; i<handlerCount; i++){", "handler = handlershandler2.get(i);",
-				"if (handler.isActivated(false, \"event2\", new Object[]{attr0})){", "handler.onEvent2(attr0);", "public void event3(){", "if (handler3.isActivated(false, \"name3\")){",
-				"if (handler3.isActivated(true, \"event4\")){", "handler3.onEvent4();", "handler3.onEvent3();", "if (handler1.isActivated(false, \"event1\", new Object[]{attr0,attr1})){",
-				"handler1.onEvent1(attr0,attr1);" };
+				"if (handler.isActivated(false, \"event2\", new Object[]{attr0})){", "handler.onEvent2(attr0);", "public void event3(){",
+				"if (handler3.isActivated(false, \"name3\")){", "if (handler3.isActivated(true, \"event4\")){", "handler3.onEvent4();",
+				"handler3.onEvent3();", "if (handler1.isActivated(false, \"event1\", new Object[]{attr0,attr1})){", "handler1.onEvent1(attr0,attr1);" };
 	}
 
 	private String[] getExpectedNotNavigationEvents() {
@@ -1590,7 +1642,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	private String[] getExpectedGetters() {
 		return new String[] { "public Object getStartView(){", "return startView;", "public EventBus getEventBus(){", "return eventBus;" };
 	}
-	
+
 	private String[] getNoStartView() {
 		return new String[] { "throw new Mvp4gException(\"getStartView shouldn't be called since this module has no start view.\");" };
 	}
@@ -1721,6 +1773,11 @@ public class Mvp4gConfigurationFileReaderTest {
 				"confirmNavigation(new NavigationEventCommand(this){", "public void execute(){" };
 	}
 
+	public String[] getExpectedGenerateEvents() {
+		return new String[] { "addHandler(" + MultiplePresenter.class.getCanonicalName() + ".class);",
+				"addHandler(" + EventHandlerWithEvent.class.getCanonicalName() + ".class);" };
+	}
+
 	public String[] getExpectedEventsWithToken() {
 		return new String[] { "public String event2(java.lang.String attr0,java.lang.Object attr1){", "if(tokenMode){", "tokenMode=false;",
 				"((com.mvp4g.client.event.BaseEventBus) parentEventBus).tokenMode = true;", "return parentEventBus.event2(attr0,attr1);", "} else {",
@@ -1749,8 +1806,8 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedEventFilters() {
-		return new String[] { "if (!filterEvent(\"event2\", new Object[]{attr0})){", "if (!filterEvent(\"event3\")){", "if (!filterEvent(\"event1\", new Object[]{attr0,attr1})){",
-				"return;", };
+		return new String[] { "if (!filterEvent(\"event2\", new Object[]{attr0})){", "if (!filterEvent(\"event3\")){",
+				"if (!filterEvent(\"event1\", new Object[]{attr0,attr1})){", "return;", };
 	}
 
 	private String[] getExpectedPrimitives() {

@@ -365,12 +365,82 @@ public class EventsAnnotationsLoaderTest {
 	public void testEventOk() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
 		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( SimplePresenter.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
 
 		annotedClasses.add( oracle.addClass( HistoryConverterForEvent.class ) );
 		new HistoryAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses.clear();
+
+		JClassType type = oracle.addClass( EventBusOk.class );
+		annotedClasses.add( type );
+		loader.load( annotedClasses, configuration );
+
+		Set<EventElement> events = configuration.getEvents();
+		assertEquals( 4, events.size() );
+		List<String> activates, deactivates;
+		String[] generates;
+		for ( EventElement e : events ) {
+			if ( "event1".equals( e.getType() ) ) {
+				assertEquals( String.class.getName(), e.getEventObjectClass()[0] );
+				assertEquals( "treatEvent1", e.getCalledMethod() );
+				assertFalse( e.isNavigationEvent() );
+				assertFalse( e.isWithTokenGeneration() );
+				assertFalse( e.isPassive() );
+				assertEquals( "name", e.getHandlers().get( 0 ) );
+				assertEquals( "history", e.getHistory() );
+			} else if ( "event2".equals( e.getType() ) ) {
+				assertNull( e.getEventObjectClass() );
+				assertEquals( "onEvent2", e.getCalledMethod() );
+				assertTrue( e.isNavigationEvent() );
+				assertTrue( e.isWithTokenGeneration() );
+				assertTrue( e.isPassive() );
+				assertEquals( "name", e.getHandlers().get( 0 ) );
+				assertEquals( "history", e.getHistory() );
+			} else if ( "event3".equals( e.getType() ) ) {
+				activates = e.getActivate();
+				deactivates = e.getDeactivate();
+				generates = e.getGenerate();
+				assertEquals( 2, activates.size() );
+				assertEquals( 2, deactivates.size() );
+				assertEquals( 2, generates.length );
+				assertEquals( "name", activates.get( 1 ) );
+				assertEquals( "name", deactivates.get( 1 ) );
+				assertEquals( "name", generates[1]);
+			} else if ( "event4".equals( e.getType() ) ) {
+				activates = e.getActivate();
+				deactivates = e.getDeactivate();
+				generates = e.getGenerate();
+				assertEquals( 4, activates.size() );
+				assertEquals( 4, deactivates.size() );
+				assertEquals( 4, generates.length );
+				assertEquals( "name", activates.get( 2 ) );
+				assertEquals( "name", deactivates.get( 2 ) );
+				assertEquals( "name", generates[2]);
+				assertEquals( "name1", activates.get( 3 ) );
+				assertEquals( "name1", deactivates.get( 3 ) );
+				assertEquals( "name1", generates[3]);
+			} else {
+				fail( "Unknown event name" );
+			}
+		}
+
+		assertEquals( "event2", configuration.getStart().getEventType() );
+		assertEquals( "event2", configuration.getHistory().getInitEvent() );
+		assertEquals( "event1", configuration.getHistory().getNotFoundEvent() );
+		assertEquals( "event2", configuration.getStart().getForwardEventType() );
+
+	}
+	
+	@Test
+	public void testListOk() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( SimplePresenter.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
 
@@ -406,7 +476,6 @@ public class EventsAnnotationsLoaderTest {
 		assertEquals( "event2", configuration.getHistory().getInitEvent() );
 		assertEquals( "event1", configuration.getHistory().getNotFoundEvent() );
 		assertEquals( "event2", configuration.getStart().getForwardEventType() );
-
 	}
 
 	@Test
