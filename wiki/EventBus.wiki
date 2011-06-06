@@ -266,13 +266,13 @@ Mvp4g allows you to filter events in order to stop an event before it is forward
 ===Creating Filters===
  
 To create a filter, you need to:
- 1. implement EventFilter<E>
+ 1. {{{implement EventFilter<E>}}}
    -E: type of your event bus interface. 
  2. override filterEvent method: this method will allow to stop an event or not. If filterEvent method returns false, then the event is stopped, otherwise, it is forwarded to the handlers.
   
 ===Adding Filters===
  
-Once you have created a filter, you need to tell Mvp4g to use it. This will be done thanks to the @Filters that annotates your event bus interface.
+Once you have created a filter, you need to tell Mvp4g to use it. This will be done thanks to the {{{@Filters}}} that annotates your event bus interface.
  {{{
 	@Events( ... )
 	@Filters( filterClasses = OneEventFilter.class )
@@ -329,10 +329,10 @@ void goToPage1();
 
 ===Creating a control object for navigation events===
 To create a control object, you need to:
- * implement NavigationConfirmationInterface
- * define the confirm method.
+ * implement {{{NavigationConfirmationInterface}}}
+ * define the {{{confirm}}} method.
 
-When an event needs to be control, the confirm method is called with one parameter, a NavigationEventCommand that represents the event to control. To confirm an event, you just have to call the NavigationEventCommand's method fireEvent. To stop an event, just don't call this method.
+When an event needs to be control, the confirm method is called with one parameter, a NavigationEventCommand that represents the event to control. To confirm an event, you just have to call the {{{NavigationEventCommand}}}'s method {{{fireEvent}}}. To stop an event, just don't call this method.
 
 {{{
 public class Presenter extends ... implements NavigationConfirmationInterface {
