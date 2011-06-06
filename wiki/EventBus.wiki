@@ -60,7 +60,7 @@ public interface MainEventBus extends EventBusWithLookup {
  * activate, activateNames, deactivate, deactivateNames (see [http://code.google.com/p/mvp4g/wiki/EventBus?ts=1284236703&updated=EventBus#Activating/Deactivating_presenters see Activating/Deactivating presenters])
  * navigationEvent (see [http://code.google.com/p/mvp4g/wiki/EventBus_130#Navigation_Event Navigation Event])
  * passive (see [http://code.google.com/p/mvp4g/wiki/EventBus_130#Passive_Event Passive Event])
- * broadcastTo (see [http://code.google.com/p/mvp4g/w/edit.do#Broadcast_Event Broadcast Event])
+ * broadcastTo (see [http://code.google.com/p/mvp4g/wiki/EventBus_130#Broadcast_Event Broadcast Event])
 
 ==Adding an handler to an event==
 
