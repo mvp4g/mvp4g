@@ -104,6 +104,26 @@ The cycle presenter will handle these events and call the onLoad/onUnload.
 
 Mvp4g provides a base implementation of a cycle view, !BaseCycleView, that extends Composite. You can also easily create your own implementation by firing the load/unload event when you need the presenter to know that the view is loaded/unloaded. For example, if the view is a popup, you can fire the !LoadEvent when the popup is shown and the UnloadEvent when the popup is hidden.
 
+==Blocking Presenters==
+In some cases, you may want to prevent a presenter to handle events (for example, you don't want a presenter to handle events as long as the user is connected). This can easily be done by overriding the isActivated method of the presenter. This method is called right before a presenter has to handle an event. If the method returns false, the presenter is considered as deactivated and won't handle the event. This method receives as parameters the event name and the event parameters so that you can block a presenter only for some events.
+
+The following example shows how a presenter is blocked if the user is not logged in:
+{{{
+public class OnePresenter extends BasePresenter<IOneView, OneEventBus>{
+
+	public boolean isActivated( boolean passive, String eventName, Object... parameters ) {
+		if(!isUserLoggedIn()){
+			return false;
+		} else {
+			//when you override this method, you should 
+			//never return true, but instead you should
+			//call the super method
+			return super.isActivated(passive, eventName, parameters);
+		}
+	}
+}
+}}}
+
 
 =Event Handlers=
 
