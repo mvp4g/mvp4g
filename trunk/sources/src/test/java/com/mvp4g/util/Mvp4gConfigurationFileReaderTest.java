@@ -40,6 +40,7 @@ import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.config.element.ViewElement;
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 import com.mvp4g.util.test_tools.CustomPlaceService;
+import com.mvp4g.util.test_tools.GeneratorContextStub;
 import com.mvp4g.util.test_tools.Modules;
 import com.mvp4g.util.test_tools.OneGinModule;
 import com.mvp4g.util.test_tools.OneLogger;
@@ -64,7 +65,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	public void setUp() throws DuplicatePropertyNameException {
 		sourceWriter = new SourceWriterTestStub();
 		TreeLogger tl = new UnitTestTreeLogger.Builder().createLogger();
-		configuration = new Mvp4gConfiguration( tl, new TypeOracleStub() );
+		configuration = new Mvp4gConfiguration( tl, new GeneratorContextStub() );
 		writer = new Mvp4gConfigurationFileWriter( sourceWriter, configuration );
 
 		String eventBusInterface = EventBus.class.getName();

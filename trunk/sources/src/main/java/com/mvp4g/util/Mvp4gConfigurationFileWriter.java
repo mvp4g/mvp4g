@@ -324,13 +324,13 @@ public class Mvp4gConfigurationFileWriter {
 
 	private void writeGinInjector() {
 		sourceWriter.print( "@GinModules({" );
-		String[] modules = configuration.getGinModule().getModules();
-		int modulesCount = modules.length - 1;
+		List<String> modules = configuration.getGinModule().getModules();
+		int modulesCount = modules.size() - 1;
 		for ( int i = 0; i < modulesCount; i++ ) {
-			sourceWriter.print( modules[i] );
+			sourceWriter.print( modules.get(i) );
 			sourceWriter.print( ".class," );
 		}
-		sourceWriter.print( modules[modulesCount] );
+		sourceWriter.print( modules.get(modulesCount) );
 		sourceWriter.println( ".class})" );
 
 		String moduleName = configuration.getModule().getQualifiedSourceName().replace( ".", "_" );

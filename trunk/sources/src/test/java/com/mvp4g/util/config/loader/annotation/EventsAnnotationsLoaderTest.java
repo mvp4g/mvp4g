@@ -36,15 +36,16 @@ import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 import com.mvp4g.util.test_tools.CustomPlaceService;
+import com.mvp4g.util.test_tools.GeneratorContextStub;
 import com.mvp4g.util.test_tools.Modules;
 import com.mvp4g.util.test_tools.annotation.EventFilters;
 import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter1;
 import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter2;
 import com.mvp4g.util.test_tools.annotation.Events;
-import com.mvp4g.util.test_tools.annotation.Events.TestGinModule;
 import com.mvp4g.util.test_tools.annotation.Events.TestLogger;
 import com.mvp4g.util.test_tools.annotation.Presenters;
 import com.mvp4g.util.test_tools.annotation.events.EventBusOk;
+import com.mvp4g.util.test_tools.annotation.gin.TestGinModule;
 import com.mvp4g.util.test_tools.annotation.history_converters.HistoryConverterForEvent;
 import com.mvp4g.util.test_tools.annotation.presenters.PresenterWithName;
 import com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter;
@@ -57,8 +58,9 @@ public class EventsAnnotationsLoaderTest {
 
 	@Before
 	public void setUp() {
-		oracle = new TypeOracleStub();
-		configuration = new Mvp4gConfiguration( null, oracle );
+		GeneratorContextStub context = new GeneratorContextStub();
+		oracle = context.getTypeOracleStub();
+		configuration = new Mvp4gConfiguration( null, context );
 		configuration.setModule( oracle.addClass( Mvp4gModule.class ) );
 		loader = new EventsAnnotationsLoader();
 	}
@@ -443,13 +445,18 @@ public class EventsAnnotationsLoaderTest {
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
+		
+		annotedClasses.add( oracle.addClass( HistoryConverterForEvent.class ) );
+		new HistoryAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses.clear();
 
 		JClassType type = oracle.addClass( EventBusOk.class );
 		annotedClasses.add( type );
 		loader.load( annotedClasses, configuration );
 
 		Set<EventElement> events = configuration.getEvents();
-		assertEquals( 2, events.size() );
+		assertEquals( 4, events.size() );
 
 		for ( EventElement e : events ) {
 			if ( "event1".equals( e.getType() ) ) {
@@ -458,18 +465,30 @@ public class EventsAnnotationsLoaderTest {
 				assertFalse( e.isNavigationEvent() );
 				assertFalse( e.isWithTokenGeneration() );
 				assertFalse( e.isPassive() );
+				assertEquals( "name", e.getHandlers().get( 0 ) );
+				assertEquals( "history", e.getHistory() );
 			} else if ( "event2".equals( e.getType() ) ) {
 				assertNull( e.getEventObjectClass() );
 				assertEquals( "onEvent2", e.getCalledMethod() );
 				assertTrue( e.isNavigationEvent() );
 				assertTrue( e.isWithTokenGeneration() );
 				assertTrue( e.isPassive() );
-			} else {
+			} else if ( "event3".equals( e.getType() ) ) {
+				assertNull( e.getEventObjectClass() );
+				assertEquals( "onEvent3", e.getCalledMethod() );
+				assertFalse( e.isNavigationEvent() );
+				assertFalse( e.isWithTokenGeneration() );
+				assertFalse( e.isPassive() );
+			} else if ( "event4".equals( e.getType() ) ) {
+				assertNull( e.getEventObjectClass() );
+				assertEquals( "onEvent4", e.getCalledMethod() );
+				assertFalse( e.isNavigationEvent() );
+				assertFalse( e.isWithTokenGeneration() );
+				assertFalse( e.isPassive() );
+			}			
+			else {
 				fail( "Unknown event name" );
 			}
-
-			assertEquals( "name", e.getHandlers().get( 0 ) );
-			assertEquals( "history", e.getHistory() );
 		}
 
 		assertEquals( "event2", configuration.getStart().getEventType() );
@@ -837,7 +856,9 @@ public class EventsAnnotationsLoaderTest {
 		annotedClasses.clear();
 		annotedClasses.add( oracle.addClass( Events.SimpleEventBus.class ) );
 		loader.load( annotedClasses, configuration );
-		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), configuration.getGinModule().getModules()[0] );
+		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get(0) );
+		
+		assertTrue(configuration.getGinModule().getModuleProperties().length == 0);
 
 	}
 
@@ -850,7 +871,8 @@ public class EventsAnnotationsLoaderTest {
 		annotedClasses.clear();
 		annotedClasses.add( oracle.addClass( Events.EventBusWithGin.class ) );
 		loader.load( annotedClasses, configuration );
-		assertEquals( TestGinModule.class.getCanonicalName(), configuration.getGinModule().getModules()[0] );
+		assertEquals( TestGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get(0) );
+		assertEquals( "property1", configuration.getGinModule().getModuleProperties()[0]);
 
 	}
 
@@ -863,9 +885,10 @@ public class EventsAnnotationsLoaderTest {
 		annotedClasses.clear();
 		annotedClasses.add( oracle.addClass( Events.EventBusWithGins.class ) );
 		loader.load( annotedClasses, configuration );
-		assertEquals( TestGinModule.class.getCanonicalName(), configuration.getGinModule().getModules()[0] );
-		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), configuration.getGinModule().getModules()[1] );
-
+		assertEquals( TestGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get(0) );
+		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get(1) );
+		assertEquals( "property1", configuration.getGinModule().getModuleProperties()[0]);
+		assertEquals( "property2", configuration.getGinModule().getModuleProperties()[1]);
 	}
 
 	@Test

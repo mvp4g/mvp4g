@@ -1,11 +1,12 @@
 package com.mvp4g.util.config.element;
 
-
 public class GinModuleElementTest extends AbstractMvp4gElementTest<GinModuleElement> {
 
 	protected static final String[] properties = {};
-	
-	protected static final String[] values = { "modules" };
+
+	protected static final String[] values = { "moduleProperties" };
+
+	protected static final String[] flexibleValues = { "modules" };
 
 	@Override
 	protected String getTag() {
@@ -26,7 +27,12 @@ public class GinModuleElementTest extends AbstractMvp4gElementTest<GinModuleElem
 	protected String[] getProperties() {
 		return properties;
 	}
-	
+
+	@Override
+	protected String[] getFlexibleValues() {
+		return flexibleValues;
+	}
+
 	@Override
 	protected String[] getValues() {
 		return values;

@@ -61,5 +61,7 @@ public @interface Events {
 	boolean historyOnStart() default false;
 
 	Class<? extends GinModule>[] ginModules() default DefaultMvp4gGinModule.class;
+	
+	String[] ginModuleProperties() default {};
 
 }

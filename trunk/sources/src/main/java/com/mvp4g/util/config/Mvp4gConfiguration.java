@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.gwt.core.ext.BadPropertyValueException;
+import com.google.gwt.core.ext.GeneratorContext;
+import com.google.gwt.core.ext.PropertyOracle;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JGenericType;
@@ -109,6 +112,7 @@ public class Mvp4gConfiguration {
 	private static final String WRONG_FORWARD_EVENT = "You can't define a forward event for RootModule since no event from parent can be forwarded to it.";
 	private static final String NO_START_VIEW = "Module %s: You must define a start view since this module has a parent module that uses the auto-displayed feature for this module.";
 	private static final String NO_GIN_MODULE = "You need to define at least one GIN module. If you don't want to specify a GIN module, don't override the GIN modules option to use the default Mvp4g GIN module.";
+	private static final String GIN_MODULE_UNKNOWN_PROPERTY = "Module %s: couldn't find a value for the GIN module property %s, %s.";
 	private static final String ROOT_MODULE_NO_HISTORY_NAME = "Module %s can't have an history name since it's a root module.";
 
 	private static final String HISTORY_ONLY_FOR_ROOT = "Module %s: History configuration (init, not found event and history parameter separator) should be set only for root module (only module with no parent)";
@@ -140,6 +144,7 @@ public class Mvp4gConfiguration {
 
 	private TreeLogger logger = null;
 	private TypeOracle oracle = null;
+	private PropertyOracle propertyOracle;
 
 	/**
 	 * Contruct a Mvp4gConfiguration object
@@ -149,9 +154,10 @@ public class Mvp4gConfiguration {
 	 * @param oracle
 	 *            oracle of the GWT compiler
 	 */
-	public Mvp4gConfiguration( TreeLogger logger, TypeOracle oracle ) {
+	public Mvp4gConfiguration( TreeLogger logger, GeneratorContext context ) {
 		this.logger = logger;
-		this.oracle = oracle;
+		this.oracle = context.getTypeOracle();
+		this.propertyOracle = context.getPropertyOracle();
 	}
 
 	/**
@@ -1271,16 +1277,45 @@ public class Mvp4gConfiguration {
 	}
 
 	void validateGinModule() throws InvalidMvp4gConfigurationException {
-		String[] modulesClassName = ginModule.getModules();
-		if ( ( modulesClassName == null ) || ( modulesClassName.length == 0 ) ) {
+		getGinModulesByProperties();
+
+		List<String> modulesClassName = ginModule.getModules();
+		if ( ( modulesClassName == null ) || ( modulesClassName.size() == 0 ) ) {
 			throw new InvalidMvp4gConfigurationException( NO_GIN_MODULE );
 		}
 
 		JClassType ginType;
+		JClassType ginModuleClass = getType( ginModule, GinModule.class.getName() );
 		for ( String module : modulesClassName ) {
 			ginType = getType( ginModule, module );
-			if ( !ginType.isAssignableTo( oracle.findType( GinModule.class.getCanonicalName() ) ) ) {
+			if ( !ginType.isAssignableTo( ginModuleClass ) ) {
 				throw new InvalidTypeException( ginModule, "Logger", module, GinModule.class.getCanonicalName() );
+			}
+		}
+	}
+
+	private void getGinModulesByProperties() throws InvalidMvp4gConfigurationException {
+		String[] properties = ginModule.getModuleProperties();
+		if ( properties != null ) {
+			String moduleClassName;
+			List<String> modules = ginModule.getModules();
+			if(modules == null){
+				try {
+					ginModule.setModules( new String[0] );
+					modules = ginModule.getModules();
+				} catch ( DuplicatePropertyNameException e ) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			for ( String property : properties ) {
+				try {
+					moduleClassName = propertyOracle.getSelectionProperty( logger, property ).getCurrentValue().replace( "$", "." );
+				} catch ( BadPropertyValueException e ) {
+					throw new InvalidMvp4gConfigurationException( String.format( GIN_MODULE_UNKNOWN_PROPERTY, module.getSimpleSourceName(), property,
+							e.getMessage() ) );
+				}
+				modules.add( moduleClassName );
 			}
 		}
 	}

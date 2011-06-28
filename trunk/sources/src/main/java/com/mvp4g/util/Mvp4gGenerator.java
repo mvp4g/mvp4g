@@ -71,7 +71,7 @@ public class Mvp4gGenerator extends Generator {
 	 */
 	@Override
 	public String generate( TreeLogger logger, GeneratorContext context, String typeName ) throws UnableToCompleteException {
-
+		
 		Date start = new Date();
 
 		String generatedClassQualifiedName = createClass( logger, context, typeName );
@@ -154,7 +154,7 @@ public class Mvp4gGenerator extends Generator {
 			Map<Class<? extends Annotation>, List<JClassType>> scanResult = AnnotationScanner.scan( logger, oracle, new Class[] { Presenter.class,
 					History.class, Events.class, Service.class, EventHandler.class } );
 
-			Mvp4gConfiguration configuration = new Mvp4gConfiguration( logger, oracle );
+			Mvp4gConfiguration configuration = new Mvp4gConfiguration( logger, context );
 			configuration.load( module, scanResult );
 
 			Mvp4gConfigurationFileWriter writer = new Mvp4gConfigurationFileWriter( sourceWriter, configuration );

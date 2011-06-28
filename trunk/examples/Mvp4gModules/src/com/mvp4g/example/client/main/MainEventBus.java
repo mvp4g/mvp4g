@@ -25,7 +25,7 @@ import com.mvp4g.example.client.main.view.MainView;
 import com.mvp4g.example.client.product.ProductModule;
 import com.mvp4g.example.client.util.HasBeenThereHandler;
 
-@Events( startView = MainView.class, historyOnStart = true, ginModules = Mvp4gGinModule.class )
+@Events( startView = MainView.class, historyOnStart = true, ginModules = Mvp4gGinModule.class, ginModuleProperties = "ginModule" )
 @Debug( logLevel = LogLevel.DETAILED, logger = CustomLogger.class )
 @ChildModules( { @ChildModule( moduleClass = CompanyModule.class ),
 		@ChildModule( moduleClass = ProductModule.class, async = false, autoDisplay = false ) } )

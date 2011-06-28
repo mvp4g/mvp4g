@@ -20,6 +20,8 @@ import com.mvp4g.example.client.main.presenter.MainPresenter;
 import com.mvp4g.example.client.util.display.IndexDisplayer;
 
 public class MainView extends Composite implements MainPresenter.MainViewInterface {
+	
+	protected VerticalPanel mainPanel;
 
 	private Label c = new Label( "Company" );
 	private Label p = new Label( "Product" );
@@ -70,7 +72,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 		bar.add( p );
 		bar.setStyleName( "tabs" );
 
-		VerticalPanel mainPanel = new VerticalPanel();
+		mainPanel = new VerticalPanel();
 		mainPanel.setHorizontalAlignment( HasHorizontalAlignment.ALIGN_RIGHT );
 		clearHistory.setStyleName( "link" );
 		mainPanel.add( clearHistory );
