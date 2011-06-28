@@ -25,11 +25,11 @@ public interface EventBusOk extends EventBus {
 	String event2();
 
 	@Event( activate = PresenterWithName.class, deactivate = PresenterWithName.class, generate = PresenterWithName.class, activateNames = "name", deactivateNames = "name", generateNames = "name" )
-	String event3();
+	void event3();
 
 	@Event( activate = { PresenterWithName.class, SimplePresenter.class }, deactivate = { PresenterWithName.class, SimplePresenter.class }, generate = {
 			PresenterWithName.class, SimplePresenter.class }, activateNames = { "name", "name1" }, deactivateNames = { "name", "name1" }, generateNames = {
 			"name", "name1" } )
-	String event4();
+	void event4();
 
 }

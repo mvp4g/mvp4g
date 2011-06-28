@@ -639,9 +639,11 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		}
 		try {
 			ginModule.setModules( modulesClassNames );
+			ginModule.setModuleProperties( annotation.ginModuleProperties() );
 		} catch ( DuplicatePropertyNameException e ) {
 			// setter is only called once, so this error can't occur.
 		}
+		
 		configuration.setGinModule( ginModule );
 	}
 

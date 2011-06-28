@@ -18,5 +18,13 @@
 
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
+  
+  <define-property name="ginModule" values="com$mvp4g$client$DefaultMvp4gGinModule,com$mvp4g$example$client$FirefoxGinModule" />
+  
+  <!-- Provide a default -->
+  <set-property name="ginModule" value="com$mvp4g$client$DefaultMvp4gGinModule" />
+  <set-property name="ginModule" value="com$mvp4g$example$client$FirefoxGinModule">  
+  	<when-property-is name="user.agent" value="gecko1_8" />  
+  </set-property>
 
 </module>

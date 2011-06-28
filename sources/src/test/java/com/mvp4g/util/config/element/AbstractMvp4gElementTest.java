@@ -6,6 +6,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -172,6 +174,46 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 		}
 	}
 
+	/**
+	 * For each element, test each value getter and setter specific to this loader.<br/>
+	 * <br/>
+	 * For example, verify that getHandlers() == getProperty("handlers")<br/>
+	 * and setHandlers(handlers) == setProperty("handlers", handlers)
+	 * 
+	 * @throws Exception
+	 */
+	@SuppressWarnings( "unchecked" )
+	@Test
+	public void testFlexibleValuesSetterAndGetter() throws Exception {
+
+		String[] val = { "val" };
+
+		List<String> valList = Arrays.asList( val );
+
+		String[] flexibleValues = getFlexibleValues();
+
+		String setMethodName = null;
+		String getMethodName = null;
+		Method getter = null;
+		Method setter = null;
+
+		Object[] noArg = new Object[0];
+		Class<?>[] noParam = new Class[0];
+
+		for ( String value : flexibleValues ) {
+			setMethodName = "set" + value.substring( 0, 1 ).toUpperCase() + value.substring( 1 );
+			getMethodName = "get" + value.substring( 0, 1 ).toUpperCase() + value.substring( 1 );
+
+			getter = element.getClass().getMethod( getMethodName, noParam );
+			setter = element.getClass().getMethod( setMethodName, String[].class );
+
+			setter.invoke( element, (Object)val );
+			assertListEquals( valList, (List<String>)getter.invoke( element, noArg ) );
+			assertListEquals( valList, element.getFlexibleValues( value ) );
+
+		}
+	}
+
 	private void assertPropertiesSize( int expectedSize ) {
 		assertEquals( expectedSize, element.totalProperties() );
 	}
@@ -192,12 +234,30 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 		assertArrayEquals( values, element.getValues( name ) );
 	}
 
+	private <Y> void assertListEquals( List<Y> expected, List<Y> actual ) {
+		int size = expected.size();
+		assertEquals( size, actual.size() );
+
+		for ( int i = 0; i < size; i++ ) {
+			assertEquals( expected.get( i ), actual.get( i ) );
+		}
+	}
+
 	/**
 	 * By default return an empty tab.
 	 * 
 	 * @return List of values to test for a specific loader
 	 */
 	protected String[] getValues() {
+		return new String[0];
+	}
+
+	/**
+	 * By default return an empty tab.
+	 * 
+	 * @return List of flexible values to test for a specific loader
+	 */
+	protected String[] getFlexibleValues() {
 		return new String[0];
 	}
 

@@ -1,7 +1,5 @@
 package com.mvp4g.util.test_tools.annotation;
 
-import com.google.gwt.inject.client.GinModule;
-import com.google.gwt.inject.client.binder.GinBinder;
 import com.mvp4g.client.DefaultMvp4gGinModule;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
@@ -24,6 +22,7 @@ import com.mvp4g.client.event.Mvp4gLogger;
 import com.mvp4g.client.view.NoStartView;
 import com.mvp4g.util.test_tools.CustomPlaceService;
 import com.mvp4g.util.test_tools.Modules;
+import com.mvp4g.util.test_tools.annotation.gin.TestGinModule;
 import com.mvp4g.util.test_tools.annotation.presenters.PresenterWithName;
 
 public class Events {
@@ -271,20 +270,13 @@ public class Events {
 
 	}
 
-	public class TestGinModule implements GinModule {
-
-		public void configure( GinBinder binder ) {
-
-		}
-
-	}
-
-	@com.mvp4g.client.annotation.Events( startView = Object.class, ginModules = TestGinModule.class )
+	@com.mvp4g.client.annotation.Events( startView = Object.class, ginModules = TestGinModule.class, ginModuleProperties = "property1" )
 	public static interface EventBusWithGin extends EventBus {
 
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class, ginModules = { TestGinModule.class, DefaultMvp4gGinModule.class } )
+	@com.mvp4g.client.annotation.Events( startView = Object.class, ginModules = { TestGinModule.class, DefaultMvp4gGinModule.class }, ginModuleProperties = {
+			"property1", "property2" } )
 	public static interface EventBusWithGins extends EventBus {
 
 	}

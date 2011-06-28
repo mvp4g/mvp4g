@@ -15,7 +15,9 @@
  */
 package com.mvp4g.util.config.element;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -34,7 +36,11 @@ public abstract class Mvp4gElement {
 
 	private String tagName;
 	private Properties properties = new Properties();
+	
+	//TODO: remove multiValueProperties and only use flexibleMultiValueProperties
 	private Map<String, String[]> multiValueProperties = new HashMap<String, String[]>();
+	
+	private Map<String, List<String>> flexibleMultiValueProperties = new HashMap<String, List<String>>();
 
 	public Mvp4gElement( String tagName ) {
 		this.tagName = tagName;
@@ -80,6 +86,10 @@ public abstract class Mvp4gElement {
 	public String[] getValues( String name ) {
 		return multiValueProperties.get( name );
 	}
+	
+	public List<String> getFlexibleValues(String name){
+		return flexibleMultiValueProperties.get( name );
+	}
 
 	public void setValues( String name, String[] values ) throws DuplicatePropertyNameException {
 
@@ -94,6 +104,19 @@ public abstract class Mvp4gElement {
 			multiValueProperties.put( name, values );
 		}
 	}
+	
+	public void setFlexibleValues( String name, String[] values ) throws DuplicatePropertyNameException {
+		if ( name != null && values != null ) {
+			failIfFlexibleMultiValuePropertyPresent( name );
+			
+			List<String> valuesList = new ArrayList<String>();
+			for(String value: values){
+				valuesList.add( value );
+			}
+
+			flexibleMultiValueProperties.put( name, valuesList );
+		}
+	}
 
 	private void failIfPropertyPresent( String name ) throws DuplicatePropertyNameException {
 		if ( properties.containsKey( name ) ) {
@@ -103,6 +126,12 @@ public abstract class Mvp4gElement {
 
 	private void failIfMultiValuePropertyPresent( String name ) throws DuplicatePropertyNameException {
 		if ( multiValueProperties.containsKey( name ) ) {
+			throw new DuplicatePropertyNameException( name );
+		}
+	}
+	
+	private void failIfFlexibleMultiValuePropertyPresent( String name ) throws DuplicatePropertyNameException {
+		if ( flexibleMultiValueProperties.containsKey( name ) ) {
 			throw new DuplicatePropertyNameException( name );
 		}
 	}

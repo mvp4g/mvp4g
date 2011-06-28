@@ -51,14 +51,16 @@ import com.mvp4g.util.exception.NonUniqueIdentifierException;
 import com.mvp4g.util.exception.NotFoundClassException;
 import com.mvp4g.util.exception.UnknownConfigurationElementException;
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
+import com.mvp4g.util.test_tools.GeneratorContextStub;
 import com.mvp4g.util.test_tools.Modules;
+import com.mvp4g.util.test_tools.PropertyOracleStub;
 import com.mvp4g.util.test_tools.annotation.EventFilters;
-import com.mvp4g.util.test_tools.annotation.Events.TestGinModule;
 import com.mvp4g.util.test_tools.annotation.HistoryConverters;
 import com.mvp4g.util.test_tools.annotation.Presenters;
 import com.mvp4g.util.test_tools.annotation.TestBroadcast;
 import com.mvp4g.util.test_tools.annotation.TestBroadcast2;
 import com.mvp4g.util.test_tools.annotation.events.EventBusOk;
+import com.mvp4g.util.test_tools.annotation.gin.TestGinModule;
 import com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent;
 import com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler;
 import com.mvp4g.util.test_tools.annotation.history_converters.HistoryConverterForEvent;
@@ -85,10 +87,12 @@ public class Mvp4gConfigurationTest {
 
 	@Before
 	public void setUp() {
-		oracle = new TypeOracleStub();
+		GeneratorContextStub context = new GeneratorContextStub();
+
+		oracle = context.getTypeOracleStub();
 		oracle.addClass( SimpleView.class );
 
-		configuration = new Mvp4gConfiguration( new UnitTestTreeLogger.Builder().createLogger(), oracle );
+		configuration = new Mvp4gConfiguration( new UnitTestTreeLogger.Builder().createLogger(), context );
 		presenters = configuration.getPresenters();
 		views = configuration.getViews();
 		events = configuration.getEvents();
@@ -955,13 +959,13 @@ public class Mvp4gConfigurationTest {
 		List<String> modules = event.getModulesToLoad();
 		assertEquals( 3, modules.size() );
 		assertEquals( "child", modules.get( 0 ) );
-		assertEquals( "child2", modules.get( 1 ) );
-		assertEquals( "child3", modules.get( 2 ) );
+		assertEquals( "child3", modules.get( 1 ) );
+		assertEquals( "child2", modules.get( 2 ) );
 
 		modules = event2.getModulesToLoad();
 		assertEquals( 2, modules.size() );
-		assertEquals( "child2", modules.get( 0 ) );
-		assertEquals( "child3", modules.get( 1 ) );
+		assertEquals( "child3", modules.get( 0 ) );
+		assertEquals( "child2", modules.get( 1 ) );
 
 	}
 
@@ -1368,7 +1372,7 @@ public class Mvp4gConfigurationTest {
 		configuration.setStart( null );
 		configuration.setHistory( null );
 		configuration.loadEvents( aEvents );
-		assertEquals( 2, events.size() );
+		assertEquals( 4, events.size() );
 
 		List<JClassType> aService = new ArrayList<JClassType>();
 		aService.add( oracle.findType( SimpleService.class.getName() ) );
@@ -2025,7 +2029,7 @@ public class Mvp4gConfigurationTest {
 		gin.setModules( new String[] { DefaultMvp4gGinModule.class.getCanonicalName() } );
 		configuration.setGinModule( gin );
 		configuration.validateGinModule();
-		assertEquals( gin.getModules().length, 1 );
+		assertEquals( gin.getModules().size(), 1 );
 
 		gin = new GinModuleElement();
 		oracle.addClass( DefaultMvp4gGinModule.class );
@@ -2033,7 +2037,52 @@ public class Mvp4gConfigurationTest {
 		gin.setModules( new String[] { DefaultMvp4gGinModule.class.getCanonicalName(), TestGinModule.class.getCanonicalName() } );
 		configuration.setGinModule( gin );
 		configuration.validateGinModule();
-		assertEquals( gin.getModules().length, 2 );
+		assertEquals( gin.getModules().size(), 2 );
+	}
+
+	@Test
+	public void testGinWithProperties() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+		GinModuleElement gin = new GinModuleElement();
+		oracle.addClass( DefaultMvp4gGinModule.class );
+		gin.setModules( new String[] { DefaultMvp4gGinModule.class.getCanonicalName() } );
+		gin.setModuleProperties( new String[] { PropertyOracleStub.PROPERTY_OK } );
+		configuration.setGinModule( gin );
+		configuration.validateGinModule();
+		assertEquals( gin.getModules().size(), 2 );
+		assertEquals( gin.getModules().get( 0 ), DefaultMvp4gGinModule.class.getCanonicalName() );
+		assertEquals( gin.getModules().get( 1 ), DefaultMvp4gGinModule.class.getCanonicalName() );
+
+		gin = new GinModuleElement();
+		oracle.addClass( TestGinModule.class );
+		gin.setModules( new String[] { DefaultMvp4gGinModule.class.getCanonicalName() } );
+		gin.setModuleProperties( new String[] { PropertyOracleStub.PROPERTY_OK, PropertyOracleStub.PROPERTY_OK2 } );
+		configuration.setGinModule( gin );
+		configuration.validateGinModule();
+		assertEquals( gin.getModules().size(), 3 );
+		assertEquals( gin.getModules().get( 0 ), DefaultMvp4gGinModule.class.getCanonicalName() );
+		assertEquals( gin.getModules().get( 1 ), DefaultMvp4gGinModule.class.getCanonicalName() );
+		assertEquals( gin.getModules().get( 2 ), TestGinModule.class.getCanonicalName() );
+		
+		gin = new GinModuleElement();
+		gin.setModuleProperties( new String[] { "unknown" } );
+		configuration.setGinModule( gin );
+		try {
+			configuration.validateGinModule();
+			fail();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertTrue( e.getMessage().contains( "couldn't find a value for the GIN module property unknown" ) );
+		}
+
+		gin = new GinModuleElement();
+		oracle.addClass( String.class );
+		gin.setModuleProperties( new String[] { PropertyOracleStub.PROPERTY_NOT_GIN_MODULE } );
+		configuration.setGinModule( gin );
+		try {
+			configuration.validateGinModule();
+			fail();
+		} catch ( InvalidTypeException e ) {
+			assertTrue( e.getMessage().contains( GinModule.class.getCanonicalName() ) );
+		}
 	}
 
 	@Test

@@ -17,6 +17,7 @@ import com.google.gwt.dev.javac.typemodel.TypeOracleStub;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.SimpleMvp4gElement;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
+import com.mvp4g.util.test_tools.GeneratorContextStub;
 
 public abstract class AbstractMvp4gAnnotationLoaderTest<A extends Annotation, L extends Mvp4gAnnotationsLoader<A>> {
 
@@ -26,8 +27,9 @@ public abstract class AbstractMvp4gAnnotationLoaderTest<A extends Annotation, L 
 
 	@Before
 	public void setUp() {
-		oracle = new TypeOracleStub();
-		configuration = new Mvp4gConfiguration( null, oracle );
+		GeneratorContextStub context = new GeneratorContextStub();
+		oracle = context.getTypeOracleStub();
+		configuration = new Mvp4gConfiguration( null, context );
 		loader = createLoader();
 	}
 
