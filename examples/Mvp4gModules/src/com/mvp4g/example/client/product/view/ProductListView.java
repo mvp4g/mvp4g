@@ -54,10 +54,6 @@ public class ProductListView extends SimplePanel implements ProductListViewInter
 		setWidget( mainPanel );
 	}
 
-	public Widget getViewWidget() {
-		return this;
-	}
-	
 	public void clearTable(){
 		table.removeAllRows();
 	}

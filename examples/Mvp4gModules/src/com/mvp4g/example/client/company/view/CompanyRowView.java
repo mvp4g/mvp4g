@@ -28,7 +28,7 @@ public class CompanyRowView extends Composite implements ICompanyRowView {
 		delete = new Image( "images/delete.png" );
 
 		HorizontalPanel hp = new HorizontalPanel();
-		hp.setSpacing( 2 );		
+		hp.setSpacing( 2 );
 		hp.add( name );
 		hp.add( display );
 		hp.add( quickEdit );
@@ -51,16 +51,12 @@ public class CompanyRowView extends Composite implements ICompanyRowView {
 		return edit;
 	}
 
-	public Widget getViewWidget() {
-		return this;
-	}
-
 	public void setName( String name ) {
 		this.name.setText( name );
 	}
 
 	public void alert( String message ) {
-		Window.alert( message );		
+		Window.alert( message );
 	}
 
 	public HasClickHandlers getQuickEdit() {

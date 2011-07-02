@@ -27,10 +27,6 @@ public abstract class AbstractCompanyView extends BaseCycleView implements Compa
 		return selectButton;
 	}
 
-	public Widget getViewWidget() {
-		return this;
-	}
-	
 	public void alert(String message){
 		Window.alert( message );
 	}

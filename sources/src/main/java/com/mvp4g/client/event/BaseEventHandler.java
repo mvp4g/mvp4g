@@ -102,8 +102,15 @@ public class BaseEventHandler<E extends EventBus> implements EventHandlerInterfa
 
 	}
 
+	/**
+	 * Set the event bus in token generation mode and return it. When the event bus is in token
+	 * generation mode, for the next call to an event method, it won't fire the event and forward it
+	 * to handlers but instead, it will generate the event token.
+	 * 
+	 * @return the event bus in token generation mode.
+	 */
 	public E getTokenGenerator() {
-		( (BaseEventBus)eventBus ).tokenMode = true;
+		eventBus.setTokenGenerationModeForNextEvent();
 		return eventBus;
 	}
 }

@@ -272,6 +272,14 @@ public abstract class BaseEventBus implements EventBus {
 	public HistoryProxy getHistory() {
 		return DefaultHistoryProxy.INSTANCE;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.mvp4g.client.event.EventBus#setTokenGenerationModeForNextEvent()
+	 */
+	public void setTokenGenerationModeForNextEvent(){
+		tokenMode = true;
+	}
 
 	/**
 	 * Returns the list of handlers with the given class

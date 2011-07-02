@@ -2,7 +2,7 @@ package com.mvp4g.example.client.company;
 
 import java.util.List;
 
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
@@ -20,10 +20,9 @@ import com.mvp4g.example.client.company.presenter.CompanyEditPresenter;
 import com.mvp4g.example.client.company.presenter.CompanyListPresenter;
 import com.mvp4g.example.client.company.presenter.CompanyNameSelectorPresenter;
 import com.mvp4g.example.client.company.presenter.CompanyRowPresenter;
-import com.mvp4g.example.client.company.view.CompanyListView;
 import com.mvp4g.example.client.product.presenter.ProductCreationPresenter;
 
-@Events( startView = CompanyListView.class, module = CompanyModule.class )
+@Events( startPresenter = CompanyListPresenter.class, module = CompanyModule.class )
 @Debug( logLevel = LogLevel.DETAILED )
 @Filters( filterClasses = CompanyEventFilter.class, filterForward = false )
 public interface CompanyEventBus extends EventBus {
@@ -83,7 +82,7 @@ public interface CompanyEventBus extends EventBus {
 	void displayMessage( String message );
 
 	@Event( forwardToParent = true )
-	void changeBody( Widget body );
+	void changeBody( IsWidget body );
 
 	@Event( forwardToParent = true )
 	void selectCompanyMenu();

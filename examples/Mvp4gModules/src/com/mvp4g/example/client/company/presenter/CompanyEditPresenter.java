@@ -14,7 +14,7 @@ public class CompanyEditPresenter extends AbstractCompanyPresenter implements Na
 	public void onGoToEdit( CompanyBean company ) {
 		this.company = company;
 		fillView();
-		eventBus.changeBody( view.getViewWidget() );
+		eventBus.changeBody( view );
 	}
 
 	public void onNameSelected( String name ) {

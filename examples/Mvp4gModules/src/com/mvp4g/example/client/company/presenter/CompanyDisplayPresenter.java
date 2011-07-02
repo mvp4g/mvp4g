@@ -45,7 +45,7 @@ public class CompanyDisplayPresenter extends AbstractCompanyPresenter {
 	private void displayCompany( CompanyBean company ) {
 		this.company = company;
 		fillView();
-		eventBus.changeBody( view.getViewWidget() );
+		eventBus.changeBody( view );
 	}
 
 }

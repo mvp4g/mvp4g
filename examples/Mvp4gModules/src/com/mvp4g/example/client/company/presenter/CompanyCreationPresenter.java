@@ -13,7 +13,7 @@ public class CompanyCreationPresenter extends AbstractCompanyPresenter implement
 
 	public void onGoToCreation() {
 		view.getName().setValue( "" );
-		eventBus.changeBody( view.getViewWidget() );		
+		eventBus.changeBody( view );		
 	}
 
 	public void onNameSelected( String name ) {

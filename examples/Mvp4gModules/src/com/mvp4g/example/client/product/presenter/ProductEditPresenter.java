@@ -12,7 +12,7 @@ public class ProductEditPresenter extends AbstractProductPresenter {
 	public void onGoToEdit( ProductBean product ) {
 		this.product = product;
 		fillView();
-		eventBus.changeBody( view.getViewWidget() );
+		eventBus.changeBody( view );
 	}
 
 	@Override

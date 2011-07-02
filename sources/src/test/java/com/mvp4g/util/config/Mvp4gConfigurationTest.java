@@ -55,6 +55,7 @@ import com.mvp4g.util.test_tools.GeneratorContextStub;
 import com.mvp4g.util.test_tools.Modules;
 import com.mvp4g.util.test_tools.PropertyOracleStub;
 import com.mvp4g.util.test_tools.annotation.EventFilters;
+import com.mvp4g.util.test_tools.annotation.Events.EventBusWithNoStartPresenter;
 import com.mvp4g.util.test_tools.annotation.HistoryConverters;
 import com.mvp4g.util.test_tools.annotation.Presenters;
 import com.mvp4g.util.test_tools.annotation.TestBroadcast;
@@ -593,48 +594,6 @@ public class Mvp4gConfigurationTest {
 
 	}
 
-	@Test( expected = UnknownConfigurationElementException.class )
-	public void testStartViewValidationFails() throws UnknownConfigurationElementException, InvalidTypeException, InvalidClassException,
-			NotFoundClassException, DuplicatePropertyNameException {
-		events.add( newEvent( "badView" ) );
-		services.add( newService( "badView" ) );
-		presenters.add( newPresenter( "badView" ) );
-		historyConverters.add( newHistoryConverter( "badView" ) );
-
-		configuration.getStart().setView( "badView" );
-
-		configuration.validateViews();
-	}
-
-	@Test
-	public void testStartMissing() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
-		StartElement start = new StartElement();
-
-		try {
-			JClassType moduleClass = oracle.addClass( Modules.Module1.class );
-			ChildModuleElement elt = new ChildModuleElement();
-			configuration.getModuleParentEventBusClassMap().put( moduleClass.getQualifiedSourceName(), elt );
-			configuration.setModule( moduleClass );
-
-			configuration.setStart( start );
-			configuration.validateStart();
-			fail();
-		} catch ( InvalidMvp4gConfigurationException e ) {
-			assertEquals(
-					"Module com.mvp4g.util.test_tools.Modules.Module1: You must define a start view since this module has a parent module that uses the auto-displayed feature for this module.",
-					e.getMessage() );
-		}
-
-		configuration.getModuleParentEventBusClassMap().clear();
-		configuration.validateStart();
-
-		start = new StartElement();
-		start.setView( "one_view" );
-		configuration.setStart( start );
-		configuration.validateStart();
-
-	}
-
 	@Test
 	public void testViewValidationSucceeds() throws UnknownConfigurationElementException, InvalidTypeException, InvalidClassException,
 			NotFoundClassException, DuplicatePropertyNameException {
@@ -643,8 +602,6 @@ public class Mvp4gConfigurationTest {
 		PresenterElement presenter = newPresenter( "testPresenter" );
 		presenter.setView( "testView" );
 		presenters.add( presenter );
-
-		configuration.getStart().setView( "testView" );
 
 		configuration.validateViews();
 	}
@@ -662,8 +619,6 @@ public class Mvp4gConfigurationTest {
 		PresenterElement presenter = newPresenter( "testPresenter" );
 		presenter.setView( "view1" );
 		presenters.add( presenter );
-
-		configuration.getStart().setView( "view2" );
 
 		assertEquals( views.size(), 3 );
 		assertTrue( views.contains( view1 ) );
@@ -914,6 +869,29 @@ public class Mvp4gConfigurationTest {
 
 	}
 
+	@Test( expected = InvalidMvp4gConfigurationException.class )
+	public void testChildModulesNoStart() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+
+		ChildModuleElement childModule1 = newChildModule( "child1" );
+		childModule1.setEventToDisplayView( "testEvent" );
+		childModules.add( childModule1 );
+		configuration.getOthersEventBusClassMap()
+				.put( Modules.Module1.class.getCanonicalName(), oracle.addClass( EventBusWithNoStartPresenter.class ) );
+
+		EventElement event = newEvent( "testEvent" );
+		event.setModulesToLoad( new String[] { "child1" } );
+		event.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
+		events.add( event );
+		try {
+			configuration.validateChildModules();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertEquals(
+					"Module com.mvp4g.util.test_tools.Modules.Module1: You must define a start presenter since this module has a parent module that uses the auto-displayed feature for this module.",
+					e.getMessage() );
+			throw e;
+		}
+	}
+
 	@Test
 	public void testChildModulesBroadcast() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
 
@@ -1081,7 +1059,7 @@ public class Mvp4gConfigurationTest {
 			assertEquals(
 					e.getMessage(),
 					String.format( "Child Module %s: event %s can not load child module's start view. Can not convert %s to %s.",
-							childModule.getClassName(), "testEvent", Object.class.getCanonicalName(), String.class.getCanonicalName() ) );
+							childModule.getClassName(), "testEvent", SimpleView.class.getCanonicalName(), String.class.getCanonicalName() ) );
 		}
 
 		event = newEvent( "testEvent" );
@@ -1402,7 +1380,7 @@ public class Mvp4gConfigurationTest {
 		events.add( e );
 
 		StartElement start = configuration.getStart();
-		start.setView( "startView" );
+		start.setPresenter( "startPresenter" );
 		start.setEventType( "start" );
 
 		try {
@@ -1671,10 +1649,15 @@ public class Mvp4gConfigurationTest {
 		event1.setGenerate( new String[] { "generate1", "generate2" } );
 		events.add( event1 );
 
+		ViewElement view = newView( "view" );
+		view.setClassName( SimpleView.class.getCanonicalName() );
+		views.add( view );
+		
 		PresenterElement generate1 = newPresenter( "generate1" );
+		generate1.setView( "view" );
 		EventHandlerElement generate2 = newEventHandler( "generate2" );
 
-		eventHandlers.add( generate1 );
+		presenters.add( generate1 );
 		eventHandlers.add( generate2 );
 
 		generate1.setMultiple( Boolean.TRUE.toString() );
@@ -1698,11 +1681,16 @@ public class Mvp4gConfigurationTest {
 		event1.setHandlers( new String[] { "generate2" } );
 		event1.setGenerate( new String[] { "generate1", "generate2" } );
 		events.add( event1 );
+		
+		ViewElement view = newView( "view" );
+		view.setClassName( SimpleView.class.getCanonicalName() );
+		views.add( view );
 
 		PresenterElement generate1 = newPresenter( "generate1" );
+		generate1.setView( "view" );
 		EventHandlerElement generate2 = newEventHandler( "generate2" );
 
-		eventHandlers.add( generate1 );
+		presenters.add( generate1 );
 
 		try {
 			configuration.validateEventHandlers();
@@ -1712,6 +1700,8 @@ public class Mvp4gConfigurationTest {
 					"Event event1: you can generate only multiple handlers. Did you forget to set the attribute multiple to true for generate1?" ) );
 		}
 
+		presenters.clear();
+		
 		eventHandlers.clear();
 		eventHandlers.add( generate2 );
 
@@ -2062,7 +2052,7 @@ public class Mvp4gConfigurationTest {
 		assertEquals( gin.getModules().get( 0 ), DefaultMvp4gGinModule.class.getCanonicalName() );
 		assertEquals( gin.getModules().get( 1 ), DefaultMvp4gGinModule.class.getCanonicalName() );
 		assertEquals( gin.getModules().get( 2 ), TestGinModule.class.getCanonicalName() );
-		
+
 		gin = new GinModuleElement();
 		gin.setModuleProperties( new String[] { "unknown" } );
 		configuration.setGinModule( gin );

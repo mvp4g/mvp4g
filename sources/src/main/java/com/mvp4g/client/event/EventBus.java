@@ -182,4 +182,10 @@ public interface EventBus {
 	 */
 	HistoryProxy getHistory();
 
+	/**
+	 * Set the event bus to a token generation mode. For the next call to an event method, instead
+	 * of firing the event and forward it to the handlers, it will generate the event token.
+	 */
+	void setTokenGenerationModeForNextEvent();
+
 }

@@ -11,7 +11,7 @@ public class ProductCreationPresenter extends AbstractProductPresenter {
 
 	public void onGoToCreation() {
 		view.getName().setValue( "" );
-		eventBus.changeBody( view.getViewWidget() );
+		eventBus.changeBody( view );
 	}
 
 	@Override

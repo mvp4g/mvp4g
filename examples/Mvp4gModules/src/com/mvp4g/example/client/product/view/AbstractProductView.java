@@ -22,10 +22,6 @@ public abstract class AbstractProductView extends SimplePanel implements Product
 		return rightButton;
 	}
 
-	public Widget getViewWidget() {
-		return this;
-	}
-
 	public void createView() {
 		leftButton = new Button( getLeftButtonName() );
 		rightButton = new Button( getRightButtonName() );

@@ -4,7 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.mvp4g.client.presenter.CyclePresenter;
 import com.mvp4g.client.view.CycleView;
@@ -19,7 +19,7 @@ public abstract class AbstractCompanyPresenter extends CyclePresenter<AbstractCo
 	@Inject
 	protected CompanyServiceAsync service = null;
 
-	public interface CompanyViewInterface extends CycleView {
+	public interface CompanyViewInterface extends CycleView, IsWidget {
 		HasValue<String> getName();
 
 		HasClickHandlers getLeftButton();
@@ -28,8 +28,6 @@ public abstract class AbstractCompanyPresenter extends CyclePresenter<AbstractCo
 		
 		HasClickHandlers getSelectNameButton();
 
-		Widget getViewWidget();
-		
 		void alert(String message);
 		
 		boolean confirm(String message);		

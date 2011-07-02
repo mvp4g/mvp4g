@@ -4,7 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
@@ -16,9 +16,7 @@ import com.mvp4g.example.client.company.view.CompanyRowView;
 @Presenter( view = CompanyRowView.class, multiple = true )
 public class CompanyRowPresenter extends BasePresenter<CompanyRowPresenter.ICompanyRowView, CompanyEventBus> {
 
-	public interface ICompanyRowView {
-
-		Widget getViewWidget();
+	public interface ICompanyRowView extends IsWidget {
 
 		HasClickHandlers getDisplay();
 

@@ -4,7 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -20,14 +20,12 @@ public abstract class AbstractProductPresenter extends LazyPresenter<AbstractPro
 	@Inject
 	protected ProductServiceAsync service = null;
 
-	public interface ProductViewInterface extends LazyView {
+	public interface ProductViewInterface extends LazyView, IsWidget {
 		HasValue<String> getName();
 
 		HasClickHandlers getLeftButton();
 
 		HasClickHandlers getRightButton();
-
-		Widget getViewWidget();
 
 		void alert( String message );
 	}

@@ -1,5 +1,6 @@
 package com.mvp4g.example.client.main;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
@@ -21,11 +22,10 @@ import com.mvp4g.example.client.company.CompanyModule;
 import com.mvp4g.example.client.main.historyConverter.MenuHistoryConverter;
 import com.mvp4g.example.client.main.presenter.InfoReceiverPresenter;
 import com.mvp4g.example.client.main.presenter.MainPresenter;
-import com.mvp4g.example.client.main.view.MainView;
 import com.mvp4g.example.client.product.ProductModule;
 import com.mvp4g.example.client.util.HasBeenThereHandler;
 
-@Events( startView = MainView.class, historyOnStart = true, ginModules = Mvp4gGinModule.class, ginModuleProperties = "ginModule" )
+@Events( startPresenter = MainPresenter.class, historyOnStart = true, ginModules = Mvp4gGinModule.class, ginModuleProperties = "ginModule" )
 @Debug( logLevel = LogLevel.DETAILED, logger = CustomLogger.class )
 @ChildModules( { @ChildModule( moduleClass = CompanyModule.class ),
 		@ChildModule( moduleClass = ProductModule.class, async = false, autoDisplay = false ) } )
@@ -44,7 +44,7 @@ public interface MainEventBus extends EventBusWithLookup {
 	/* Business events */
 	@DisplayChildModuleView( CompanyModule.class )
 	@Event( handlers = MainPresenter.class )
-	void changeBody( Widget newBody );
+	void changeBody( IsWidget newBody );
 
 	@LoadChildModuleError
 	@Event( handlers = MainPresenter.class )
