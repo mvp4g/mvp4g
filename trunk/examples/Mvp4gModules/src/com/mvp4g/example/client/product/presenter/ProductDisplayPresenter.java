@@ -38,7 +38,7 @@ public class ProductDisplayPresenter extends AbstractProductPresenter {
 	private void displayProduct( ProductBean product ) {
 		this.product = product;
 		fillView();
-		eventBus.changeBody( view.getViewWidget() );
+		eventBus.changeBody( view );
 	}
 	
 	@Override

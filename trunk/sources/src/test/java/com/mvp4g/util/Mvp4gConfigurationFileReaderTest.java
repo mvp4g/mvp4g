@@ -84,7 +84,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.getPresenters().add( presenter );
 
 		StartElement start = new StartElement();
-		start.setView( "startView" );
+		start.setPresenter( "startPresenter" );
 		configuration.setStart( start );
 
 		GinModuleElement ginModule = new GinModuleElement();
@@ -672,11 +672,13 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		assertOutput( getExpectedStartEvent(), false );
 		assertOutput( getExpectedNoFiltering(), false );
+		assertOutput( getExpectedStartPresenterViewCommon(), false );
 		assertOutput( getExpectedStartPresenterView(), false );
 		assertOutput( getExpectedStartPresenterViewMultiple(), false );
 		writer.writeConf();
 		assertOutput( getExpectedStartEvent(), true );
 		assertOutput( getExpectedNoFiltering(), false );
+		assertOutput( getExpectedStartPresenterViewCommon(), true );
 		assertOutput( getExpectedStartPresenterView(), true );
 		assertOutput( getExpectedStartPresenterViewMultiple(), false );
 	}
@@ -694,11 +696,13 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		assertOutput( getExpectedStartEvent(), false );
 		assertOutput( getExpectedNoFiltering(), false );
+		assertOutput( getExpectedStartPresenterViewCommon(), false );
 		assertOutput( getExpectedStartPresenterView(), false );
 		assertOutput( getExpectedStartPresenterViewMultiple(), false );
 		writer.writeConf();
 		assertOutput( getExpectedStartEvent(), true );
 		assertOutput( getExpectedNoFiltering(), true );
+		assertOutput( getExpectedStartPresenterViewCommon(), true );
 		assertOutput( getExpectedStartPresenterView(), true );
 		assertOutput( getExpectedStartPresenterViewMultiple(), false );
 
@@ -725,11 +729,13 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		assertOutput( getExpectedStartEvent(), false );
 		assertOutput( getExpectedNoFiltering(), false );
+		assertOutput( getExpectedStartPresenterViewCommon(), false );
 		assertOutput( getExpectedStartPresenterView(), false );
 		assertOutput( getExpectedStartPresenterViewMultiple(), false );
 		writer.writeConf();
 		assertOutput( getExpectedStartEvent(), true );
 		assertOutput( getExpectedNoFiltering(), false );
+		assertOutput( getExpectedStartPresenterViewCommon(), true );
 		assertOutput( getExpectedStartPresenterView(), false );
 		assertOutput( getExpectedStartPresenterViewMultiple(), true );
 
@@ -1608,13 +1614,16 @@ public class Mvp4gConfigurationFileReaderTest {
 				"} catch ( ClassCastException e ) {", "handleClassCastException( e, eventType );" };
 	}
 
+	private String[] getExpectedStartPresenterViewCommon() {
+		return new String[] { "this.startView = startPresenter.getView();" };
+	}
+	
 	private String[] getExpectedStartPresenterView() {
-		return new String[] { "this.startPresenter = startPresenter;", "this.startView = startView;" };
+		return new String[] { "this.startPresenter = startPresenter;" };
 	}
 
 	private String[] getExpectedStartPresenterViewMultiple() {
-		return new String[] { "this.startPresenter = eventBus.addHandler(com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter.class);",
-				"this.startView = startPresenter.getView();" };
+		return new String[] { "this.startPresenter = eventBus.addHandler(com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter.class);" };
 	}
 
 	private String[] getExpectedStartEvent() {

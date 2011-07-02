@@ -10,7 +10,7 @@ import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 public class StartElementTest extends AbstractMvp4gElementTest<StartElement> {
 
-	protected static final String[] properties = { "eventType", "view", "history", "forwardEventType" };
+	protected static final String[] properties = { "eventType", "presenter", "history", "forwardEventType" };
 
 	@Test
 	public void testHasEventType() throws DuplicatePropertyNameException {
@@ -58,10 +58,10 @@ public class StartElementTest extends AbstractMvp4gElementTest<StartElement> {
 	
 	@Test
 	public void testHasStartView() throws DuplicatePropertyNameException {
-		assertFalse( element.hasView() );
+		assertFalse( element.hasPresenter() );
 		
-		element.setView( "view" );
-		assertTrue( element.hasView() );
+		element.setPresenter( "presenter" );
+		assertTrue( element.hasPresenter() );
 	}
 
 	@Override

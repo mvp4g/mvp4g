@@ -19,45 +19,46 @@ import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.Mvp4gLogger;
-import com.mvp4g.client.view.NoStartView;
+import com.mvp4g.client.presenter.NoStartPresenter;
 import com.mvp4g.util.test_tools.CustomPlaceService;
 import com.mvp4g.util.test_tools.Modules;
 import com.mvp4g.util.test_tools.annotation.gin.TestGinModule;
 import com.mvp4g.util.test_tools.annotation.presenters.PresenterWithName;
+import com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter;
 
 public class Events {
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
 	public static class NotInterfaceEventBus {
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
 	public static interface NotEventBus {
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
 	public static interface SimpleEventBus extends EventBus {
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
 	public static interface EventBusWithLookUp extends EventBusWithLookup {
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class, startViewName = "name" )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class, startPresenterName = "name" )
 	public static interface EventBusWithStartName extends EventBus {
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = String.class, startViewName = "name" )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class, startPresenterName = "name" )
 	public static interface EventBusWithStartNameAndWrongClass extends EventBus {
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
 	public static interface EventBusWithMethodAndNoAnnotation extends EventBus {
 
 		public void event( String obj );
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
 	public static interface EventBusWithSameMethod extends EventBus {
 
 		@Event
@@ -67,7 +68,7 @@ public class Events {
 		public void event();
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusDoubleStart extends EventBus {
 
 		@Start
@@ -79,7 +80,7 @@ public class Events {
 		public void event2();
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusDoubleForward extends EventBus {
 
 		@Forward
@@ -91,7 +92,7 @@ public class Events {
 		public void event2();
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusDoubleInitHistory extends EventBus {
 
 		@InitHistory
@@ -103,7 +104,7 @@ public class Events {
 		public void event2();
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusDoubleNotFoundHistory extends EventBus {
 
 		@NotFoundHistory
@@ -116,25 +117,25 @@ public class Events {
 	}
 
 	@ChildModules( {} )
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
 	public static interface EventBusUselessChildModules extends EventBus {
 
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class, module = Modules.Module1.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class, module = Modules.Module1.class )
 	public static interface EventBusForOtherModule extends EventBus {
 
 	}
 
 	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ), @ChildModule( moduleClass = Modules.Module1.class ) } )
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
 	public static interface EventBusWithSameChild extends EventBus {
 
 	}
 
 	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ),
 			@ChildModule( moduleClass = Modules.ModuleWithParent.class, async = false, autoDisplay = false ) } )
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusWithChildren extends EventBus {
 
 		@DisplayChildModuleView( Modules.Module1.class )
@@ -151,7 +152,7 @@ public class Events {
 		public void event4();
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusDoubleBefore extends EventBus {
 
 		@BeforeLoadChildModule
@@ -164,7 +165,7 @@ public class Events {
 
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusDoubleAfter extends EventBus {
 
 		@AfterLoadChildModule
@@ -177,7 +178,7 @@ public class Events {
 
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusDoubleError extends EventBus {
 
 		@LoadChildModuleError
@@ -190,7 +191,7 @@ public class Events {
 
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusLoadChildConfig extends EventBus {
 
 		@BeforeLoadChildModule
@@ -208,7 +209,7 @@ public class Events {
 	}
 
 	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ) } )
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusUnknownModuleForEvent extends EventBus {
 
 		@Event( handlers = PresenterWithName.class, modulesToLoad = Modules.ModuleWithParent.class )
@@ -217,7 +218,7 @@ public class Events {
 	}
 
 	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ) } )
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusUnknownModuleForLoadModuleViewEvent extends EventBus {
 
 		@DisplayChildModuleView( Modules.ModuleWithParent.class )
@@ -227,7 +228,7 @@ public class Events {
 	}
 
 	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ) } )
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusSameModuleForLoadModuleViewEvent extends EventBus {
 
 		@DisplayChildModuleView( Modules.Module1.class )
@@ -241,47 +242,47 @@ public class Events {
 	}
 
 	@Filters( filterClasses = {} )
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusUselessFilter extends EventBus {
 
 	}
 
 	@Filters( filterClasses = {}, forceFilters = true )
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusNoFilterWithForce extends EventBus {
 
 	}
 
 	@Filters( filterClasses = { EventFilters.EventFilter1.class, EventFilters.EventFilter2.class } )
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusWithFilters extends EventBus {
 
 	}
 
 	@Filters( filterClasses = { EventFilters.EventFilter1.class, EventFilters.EventFilter2.class }, afterHistory = true, filterForward = false, filterStart = false, forceFilters = true )
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusWithFiltersWithParam extends EventBus {
 
 	}
 
 	@Filters( filterClasses = { EventFilters.EventFilter1.class, EventFilters.EventFilter1.class } )
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusWithSameFilter extends EventBus {
 
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class, ginModules = TestGinModule.class, ginModuleProperties = "property1" )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class, ginModules = TestGinModule.class, ginModuleProperties = "property1" )
 	public static interface EventBusWithGin extends EventBus {
 
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class, ginModules = { TestGinModule.class, DefaultMvp4gGinModule.class }, ginModuleProperties = {
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class, ginModules = { TestGinModule.class, DefaultMvp4gGinModule.class }, ginModuleProperties = {
 			"property1", "property2" } )
 	public static interface EventBusWithGins extends EventBus {
 
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	@Debug
 	public static interface EventBusWithDefaultLogger extends EventBus {
 
@@ -295,13 +296,13 @@ public class Events {
 
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	@Debug( logger = TestLogger.class, logLevel = LogLevel.DETAILED )
 	public static interface EventBusWithCustomLogger extends EventBus {
 
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusWithHistoryName extends EventBus {
 
 		@Event
@@ -311,14 +312,14 @@ public class Events {
 		public void event2();
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = Object.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	@PlaceService( CustomPlaceService.class )
 	public static interface EventBusWithHistoryConfig extends EventBus {
 
 	}
 
-	@com.mvp4g.client.annotation.Events( startView = NoStartView.class )
-	public static interface EventBusWithNoStartView extends EventBus {
+	@com.mvp4g.client.annotation.Events( startPresenter = NoStartPresenter.class )
+	public static interface EventBusWithNoStartPresenter extends EventBus {
 
 	}
 }

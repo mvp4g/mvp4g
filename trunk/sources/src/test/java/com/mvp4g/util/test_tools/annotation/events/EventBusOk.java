@@ -11,7 +11,7 @@ import com.mvp4g.util.test_tools.annotation.history_converters.HistoryConverterF
 import com.mvp4g.util.test_tools.annotation.presenters.PresenterWithName;
 import com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter;
 
-@Events( startView = Object.class )
+@Events( startPresenter = PresenterWithName.class )
 public interface EventBusOk extends EventBus {
 
 	@NotFoundHistory

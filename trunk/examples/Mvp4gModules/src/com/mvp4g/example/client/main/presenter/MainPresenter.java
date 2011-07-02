@@ -9,7 +9,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Presenter;
@@ -30,7 +30,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
 		HasClickHandlers getProductMenu();
 
-		void setBody( Widget newBody );
+		void setBody( IsWidget newBody );
 
 		void displayErrorMessage( String error );
 
@@ -112,7 +112,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 		} );
 	}
 
-	public void onChangeBody( Widget w ) {
+	public void onChangeBody( IsWidget w ) {
 		view.setBody( w );
 		onDisplayMessage( "" );
 	}

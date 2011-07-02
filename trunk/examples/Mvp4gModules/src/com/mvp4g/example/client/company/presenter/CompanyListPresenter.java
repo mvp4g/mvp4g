@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -18,16 +18,14 @@ import com.mvp4g.example.client.company.view.CompanyListView;
 @Presenter( view = CompanyListView.class )
 public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.CompanyListViewInterface, CompanyEventBus> {
 
-	public interface CompanyListViewInterface extends LazyView {
+	public interface CompanyListViewInterface extends LazyView, IsWidget {
 		void setGoToCreationToken( String token );
 
 		void setGoToProductsToken( String token );
 
-		void addCompany( Widget w );
+		void addCompany( IsWidget w );
 
 		void removeCompany( int row );
-
-		Widget getViewWidget();
 
 		void clearTable();
 
@@ -71,7 +69,7 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 
 			@Override
 			public void onValueChange( ValueChangeEvent<Boolean> event ) {
-				eventBus.setHistoryStored( !event.getValue().booleanValue() );				
+				eventBus.setHistoryStored( !event.getValue().booleanValue() );
 			}
 
 		} );
@@ -94,7 +92,7 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 	}
 
 	public void onBackToList() {
-		eventBus.changeBody( view.getViewWidget() );
+		eventBus.changeBody( view );
 	}
 
 	public void onCompanyDeleted( CompanyBean company ) {
@@ -131,7 +129,7 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 	private void addCompany( CompanyBean company ) {
 		CompanyRowPresenter presenter = eventBus.addHandler( CompanyRowPresenter.class );
 		presenter.setCompany( company );
-		view.addCompany( presenter.getView().getViewWidget() );
+		view.addCompany( presenter.getView() );
 		rows.add( presenter );
 	}
 

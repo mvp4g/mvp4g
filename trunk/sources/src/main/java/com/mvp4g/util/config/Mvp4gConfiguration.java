@@ -49,6 +49,7 @@ import com.mvp4g.client.event.Mvp4gLogger;
 import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.client.history.PlaceService;
+import com.mvp4g.client.presenter.NoStartPresenter;
 import com.mvp4g.client.presenter.PresenterInterface;
 import com.mvp4g.client.view.ReverseViewInterface;
 import com.mvp4g.util.config.element.ChildModuleElement;
@@ -110,7 +111,7 @@ public class Mvp4gConfiguration {
 	private static final String WRONG_HISTORY_NAME = "%s %s: history name can't start with '" + PlaceService.CRAWLABLE + "' or contain '"
 			+ PlaceService.MODULE_SEPARATOR + "'.";
 	private static final String WRONG_FORWARD_EVENT = "You can't define a forward event for RootModule since no event from parent can be forwarded to it.";
-	private static final String NO_START_VIEW = "Module %s: You must define a start view since this module has a parent module that uses the auto-displayed feature for this module.";
+	private static final String NO_START_PRESENTER = "Module %s: You must define a start presenter since this module has a parent module that uses the auto-displayed feature for this module.";
 	private static final String NO_GIN_MODULE = "You need to define at least one GIN module. If you don't want to specify a GIN module, don't override the GIN modules option to use the default Mvp4g GIN module.";
 	private static final String GIN_MODULE_UNKNOWN_PROPERTY = "Module %s: couldn't find a value for the GIN module property %s, %s.";
 	private static final String ROOT_MODULE_NO_HISTORY_NAME = "Module %s can't have an history name since it's a root module.";
@@ -759,8 +760,8 @@ public class Mvp4gConfiguration {
 			}
 		}
 
-		boolean hasStartView = start.hasView();
-		String startView = start.getView();
+		boolean hasStartView = start.hasPresenter();
+		String startPresenter = start.getPresenter();
 		JGenericType presenterGenType = getType( null, PresenterInterface.class.getCanonicalName() ).isGenericType();
 		JGenericType eventHandlerGenType = getType( null, EventHandlerInterface.class.getCanonicalName() ).isGenericType();
 		JGenericType reverseViewGenType = getType( null, ReverseViewInterface.class.getCanonicalName() ).isGenericType();
@@ -782,7 +783,7 @@ public class Mvp4gConfiguration {
 			eventGenerateList = generateMap.remove( name );
 			viewName = presenter.getView();
 
-			toKeep = ( eventList != null ) || ( hasStartView && viewName.equals( startView ) );
+			toKeep = ( eventList != null ) || ( hasStartView && name.equals( startPresenter ) );
 			notDirectHandler = !toKeep && ( presenter.isMultiple() || hasPossibleBroadcast );
 			if ( toKeep || notDirectHandler ) {
 				toKeep = controlEventBus( presenter, eventHandlerGenType, eventBusType, toKeep );
@@ -1052,7 +1053,11 @@ public class Mvp4gConfiguration {
 		String[] eventObjClasses = null;
 		String childModuleClass = null;
 		JClassType childEventBus = null;
-		String startViewClass = null;
+		JClassType startPresenterType = null;
+		JClassType startViewType = null;
+		String startPresenterClass = null;
+		JGenericType presenterGenType = getType( null, PresenterInterface.class.getCanonicalName() ).isGenericType();
+		JType[] noParam = new JType[0];
 		for ( ChildModuleElement childModule : childModules ) {
 			eventList = childModuleMap.remove( childModule.getName() );
 			childModuleClass = childModule.getClassName();
@@ -1076,10 +1081,18 @@ public class Mvp4gConfiguration {
 					if ( ( eventObjClasses == null ) || ( eventObjClasses.length != 1 ) ) {
 						throw new InvalidMvp4gConfigurationException( String.format( WRONG_NUMBER_ATT, eventElt.getType() ) );
 					}
-					startViewClass = childEventBus.getAnnotation( Events.class ).startView().getCanonicalName();
-					if ( !getType( childModule, startViewClass ).isAssignableTo( getType( eventElt, eventObjClasses[0] ) ) ) {
+
+					startPresenterClass = childEventBus.getAnnotation( Events.class ).startPresenter().getCanonicalName();
+
+					if ( startPresenterClass.equals( NoStartPresenter.class.getCanonicalName() ) ) {
+						throw new InvalidMvp4gConfigurationException( String.format( NO_START_PRESENTER, childModule.getClassName() ) );
+					}
+
+					startPresenterType = oracle.findType( startPresenterClass ).asParameterizationOf( presenterGenType );
+					startViewType = (JClassType)startPresenterType.findMethod( "getView", noParam ).getReturnType();
+					if ( !startViewType.isAssignableTo( getType( eventElt, eventObjClasses[0] ) ) ) {
 						throw new InvalidMvp4gConfigurationException( String.format( WRONG_CHILD_LOAD_EVENT_OBJ, childModule.getClassName(),
-								eventElt.getType(), startViewClass, eventObjClasses[0] ) );
+								eventElt.getType(), startViewType.getQualifiedSourceName(), eventObjClasses[0] ) );
 					}
 				}
 			} else {
@@ -1246,15 +1259,6 @@ public class Mvp4gConfiguration {
 	 *             thrown if no view to load at start has been defined.
 	 */
 	void validateStart() throws InvalidMvp4gConfigurationException {
-		if ( !start.hasView() ) {
-			ChildModuleElement child = moduleParentEventBusClassMap.get( module.getQualifiedSourceName() );
-			if ( child != null ) {
-				if ( child.isAutoDisplay() ) {
-					throw new InvalidMvp4gConfigurationException( String.format( NO_START_VIEW, module.getQualifiedSourceName() ) );
-				}
-			}
-		}
-
 		String startEvent = start.getEventType();
 		if ( ( startEvent != null ) && ( startEvent.length() > 0 ) ) {
 			EventElement eventElt = getElement( startEvent, events, start );
@@ -1299,7 +1303,7 @@ public class Mvp4gConfiguration {
 		if ( properties != null ) {
 			String moduleClassName;
 			List<String> modules = ginModule.getModules();
-			if(modules == null){
+			if ( modules == null ) {
 				try {
 					ginModule.setModules( new String[0] );
 					modules = ginModule.getModules();

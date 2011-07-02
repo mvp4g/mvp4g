@@ -34,12 +34,12 @@ public class StartElement extends Mvp4gElement {
 		return START_ELEMENT_ID;
 	}
 
-	public void setView( String view ) throws DuplicatePropertyNameException {
-		setProperty( "view", view );
+	public void setPresenter( String presenter ) throws DuplicatePropertyNameException {
+		setProperty( "presenter", presenter );
 	}
 
-	public String getView() {
-		return getProperty( "view" );
+	public String getPresenter() {
+		return getProperty( "presenter" );
 	}
 
 	public void setEventType( String eventType ) throws DuplicatePropertyNameException {
@@ -78,8 +78,8 @@ public class StartElement extends Mvp4gElement {
 		return getForwardEventType() != null;
 	}
 	
-	public boolean hasView(){
-		return (getView() != null);
+	public boolean hasPresenter(){
+		return (getPresenter() != null);
 	}
 
 }

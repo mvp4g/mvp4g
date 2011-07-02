@@ -29,9 +29,9 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Filters;
 import com.mvp4g.client.annotation.Forward;
-import com.mvp4g.client.annotation.PlaceService;
 import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.NotFoundHistory;
+import com.mvp4g.client.annotation.PlaceService;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.annotation.module.AfterLoadChildModule;
 import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
@@ -46,7 +46,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.EventFilter;
 import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.event.Mvp4gLogger;
-import com.mvp4g.client.view.NoStartView;
+import com.mvp4g.client.presenter.NoStartPresenter;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
@@ -59,8 +59,8 @@ import com.mvp4g.util.config.element.EventHandlerElement;
 import com.mvp4g.util.config.element.GinModuleElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
+import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.StartElement;
-import com.mvp4g.util.config.element.ViewElement;
 import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 
@@ -256,17 +256,20 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 	 */
 	private void loadStartView( JClassType c, Events annotation, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
 
-		Set<ViewElement> views = configuration.getViews();
-		String viewName = annotation.startViewName();
-		Class<?> viewClass = annotation.startView();
-		boolean hasView = !NoStartView.class.equals( viewClass );
+		Set<PresenterElement> presenters = configuration.getPresenters();
+		String presenterName = annotation.startPresenterName();
+		Class<?> presenterClass = annotation.startPresenter();
+		boolean hasView = !NoStartPresenter.class.equals( presenterClass );
 		if ( hasView ) {
-			if ( ( viewName != null ) && ( viewName.length() > 0 ) ) {
+			if ( ( presenterName != null ) && ( presenterName.length() > 0 ) ) {
 				boolean found = false;
-				for ( ViewElement view : views ) {
-					if ( viewName.equals( view.getName() ) ) {
-						if ( !viewClass.getCanonicalName().equals( view.getClassName() ) ) {
-							String err = "There is no instance of " + viewClass.getCanonicalName() + " with name " + viewName;
+				for ( PresenterElement presenter : presenters ) {
+					if ( presenterName.equals( presenter.getName() ) ) {
+						TypeOracle oracle = configuration.getOracle();
+						JClassType presenterType = oracle.findType( presenter.getClassName() );
+						JClassType startType = oracle.findType( presenterClass.getCanonicalName() );
+						if(!presenterType.isAssignableTo( startType )){
+							String err = "There is no instance with name " + presenterName + " that extends " + presenterType ;
 							throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 						}
 						found = true;
@@ -274,14 +277,14 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 					}
 				}
 				if ( !found ) {
-					String err = "There is no view named " + viewName;
+					String err = "There is no presenter named " + presenterName;
 					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 				}
 
 			} else {
-				viewName = getElementName( views, viewClass.getCanonicalName() );
-				if ( viewName == null ) {
-					String err = "There is no instance of " + viewClass.getCanonicalName() + ". Have you forgotten to inject it to a presenter?";
+				presenterName = getElementName( presenters, presenterClass.getCanonicalName() );
+				if ( presenterName == null ) {
+					String err = "There is no instance of " + presenterClass.getCanonicalName() + ". Have you forgotten to annotate it with @Presenter or @EventHander?";
 					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 				}
 			}
@@ -290,7 +293,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		try {
 			StartElement element = new StartElement();
 			if ( hasView ) {
-				element.setView( viewName );
+				element.setPresenter( presenterName );
 			}
 			element.setHistory( Boolean.toString( annotation.historyOnStart() ) );
 			configuration.setStart( element );

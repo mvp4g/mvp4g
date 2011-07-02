@@ -7,8 +7,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.company.presenter.CompanyListPresenter.CompanyListViewInterface;
 
 public class CompanyListView extends Composite implements CompanyListViewInterface {
@@ -34,8 +34,8 @@ public class CompanyListView extends Composite implements CompanyListViewInterfa
 		createButton = new Hyperlink( "Create Company", "" );
 		goToProduct = new Hyperlink( "Go To Products", "" );
 		filter = new CheckBox( "Filter Company EventBus events" );
-		moduleHistory = new CheckBox("Disable Company Module History");
-		applicationHistory = new CheckBox("Disable Application History");
+		moduleHistory = new CheckBox( "Disable Company Module History" );
+		applicationHistory = new CheckBox( "Disable Application History" );
 
 		VerticalPanel mainPanel = new VerticalPanel();
 		mainPanel.add( table );
@@ -50,11 +50,7 @@ public class CompanyListView extends Composite implements CompanyListViewInterfa
 		initWidget( mainPanel );
 	}
 
-	public Widget getViewWidget() {
-		return this;
-	}
-
-	public void addCompany( Widget w ) {
+	public void addCompany( IsWidget w ) {
 		table.add( w );
 	}
 

@@ -7,7 +7,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -25,7 +25,7 @@ public class ProductListPresenter extends LazyPresenter<ProductListPresenter.Pro
 
 	private List<ProductBean> products = null;
 
-	public interface ProductListViewInterface extends LazyView {
+	public interface ProductListViewInterface extends LazyView, IsWidget {
 		HasClickHandlers getCreateButton();
 
 		HasClickHandlers[] addProduct( String product, int row );
@@ -33,8 +33,6 @@ public class ProductListPresenter extends LazyPresenter<ProductListPresenter.Pro
 		void removeProduct( int row );
 
 		void updateProduct( String product, int row );
-
-		Widget getViewWidget();
 
 		void clearTable();
 	}
@@ -58,7 +56,7 @@ public class ProductListPresenter extends LazyPresenter<ProductListPresenter.Pro
 				for ( int i = 0; i < result.size(); i++ ) {
 					addProduct( result.get( i ), i );
 				}
-				eventBus.changeBody( view.getViewWidget() );
+				eventBus.changeBody( view );
 			}
 
 			public void onFailure( Throwable caught ) {
@@ -69,7 +67,7 @@ public class ProductListPresenter extends LazyPresenter<ProductListPresenter.Pro
 	}
 
 	public void onBackToList() {
-		eventBus.changeBody( view.getViewWidget() );
+		eventBus.changeBody( view );
 	}
 
 	public void onProductDeleted( ProductBean product ) {

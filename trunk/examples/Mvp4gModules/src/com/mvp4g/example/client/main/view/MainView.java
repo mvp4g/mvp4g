@@ -9,12 +9,12 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.mvp4g.example.client.main.presenter.MainPresenter;
 import com.mvp4g.example.client.util.display.IndexDisplayer;
@@ -102,7 +102,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 		return p;
 	}
 
-	public void setBody( Widget newBody ) {
+	public void setBody( IsWidget newBody ) {
 		bodyContainer.setWidget( newBody );
 	}
 

@@ -43,7 +43,6 @@ import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter1;
 import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter2;
 import com.mvp4g.util.test_tools.annotation.Events;
 import com.mvp4g.util.test_tools.annotation.Events.TestLogger;
-import com.mvp4g.util.test_tools.annotation.Presenters;
 import com.mvp4g.util.test_tools.annotation.events.EventBusOk;
 import com.mvp4g.util.test_tools.annotation.gin.TestGinModule;
 import com.mvp4g.util.test_tools.annotation.history_converters.HistoryConverterForEvent;
@@ -149,9 +148,9 @@ public class EventsAnnotationsLoaderTest {
 		annotedClasses.add( type );
 		loader.load( annotedClasses, configuration );
 		StartElement start = configuration.getStart();
-		assertEquals( configuration.getPresenters().iterator().next().getView(), start.getView() );
+		assertEquals( configuration.getPresenters().iterator().next().getName(), start.getPresenter() );
 		assertFalse( start.hasHistory() );
-		assertTrue( configuration.getStart().hasView() );
+		assertTrue( configuration.getStart().hasPresenter() );
 	}
 
 	@Test( expected = Mvp4gAnnotationException.class )
@@ -170,7 +169,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testStartWithName() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( Presenters.PresenterWithViewName.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -178,9 +177,9 @@ public class EventsAnnotationsLoaderTest {
 		annotedClasses.add( type );
 		loader.load( annotedClasses, configuration );
 		StartElement start = configuration.getStart();
-		assertEquals( configuration.getPresenters().iterator().next().getView(), start.getView() );
+		assertEquals( configuration.getPresenters().iterator().next().getName(), start.getPresenter() );
 		assertFalse( start.hasHistory() );
-		assertTrue( configuration.getStart().hasView() );
+		assertTrue( configuration.getStart().hasPresenter() );
 	}
 
 	@Test( expected = Mvp4gAnnotationException.class )
@@ -191,7 +190,7 @@ public class EventsAnnotationsLoaderTest {
 			annotedClasses.add( type );
 			loader.load( annotedClasses, configuration );
 		} catch ( Mvp4gAnnotationException e ) {
-			assertTrue( e.getMessage().contains( "There is no view named" ) );
+			assertTrue( e.getMessage().contains( "There is no presenter named" ) );
 			throw e;
 		}
 	}
@@ -200,7 +199,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testStartWrongViewClass() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( Presenters.PresenterWithViewName.class ) );
+			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
@@ -209,8 +208,8 @@ public class EventsAnnotationsLoaderTest {
 			annotedClasses.add( type );
 			loader.load( annotedClasses, configuration );
 		} catch ( Mvp4gAnnotationException e ) {
-			assertTrue( e.getMessage().contains( "There is no instance of" ) );
-			assertTrue( e.getMessage().contains( "with name" ) );
+			assertTrue( e.getMessage().contains( "There is no instance with name" ) );
+			assertTrue( e.getMessage().contains( "that extends" ) );
 			throw e;
 		}
 	}
@@ -237,7 +236,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testSameEvent() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
+			annotedClasses.add( oracle.addClass( SimplePresenter.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
@@ -329,7 +328,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testNoInstanceOfHander() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( SimplePresenter.class ) );
+			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 			annotedClasses.clear();
@@ -850,7 +849,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testDefaultGin() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( SimplePresenter.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -894,7 +893,7 @@ public class EventsAnnotationsLoaderTest {
 	@Test
 	public void testNoLogger() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
+		annotedClasses.add( oracle.addClass( SimplePresenter.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -980,7 +979,7 @@ public class EventsAnnotationsLoaderTest {
 	public void testHistoryConfiguration() throws Mvp4gAnnotationException {
 
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		annotedClasses.add( oracle.addClass( SimplePresenter.class ) );
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
@@ -996,11 +995,11 @@ public class EventsAnnotationsLoaderTest {
 	public void testNoStartView() throws Mvp4gAnnotationException {
 
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();		
-		annotedClasses.add( oracle.addClass( Events.EventBusWithNoStartView.class ) );
+		annotedClasses.add( oracle.addClass( Events.EventBusWithNoStartPresenter.class ) );
 		loader.load( annotedClasses, configuration );
 
-		assertNull( configuration.getStart().getView() );
-		assertFalse( configuration.getStart().hasView() );
+		assertNull( configuration.getStart().getPresenter() );
+		assertFalse( configuration.getStart().hasPresenter() );
 
 	}
 }

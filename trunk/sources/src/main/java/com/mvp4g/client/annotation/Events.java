@@ -22,6 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import com.google.gwt.inject.client.GinModule;
 import com.mvp4g.client.DefaultMvp4gGinModule;
 import com.mvp4g.client.Mvp4gModule;
+import com.mvp4g.client.presenter.PresenterInterface;
 
 /**
  * This annotation indicates that the annotated interface should be used to define the event bus of
@@ -30,11 +31,8 @@ import com.mvp4g.client.Mvp4gModule;
  * <br/>
  * The annotation has the following attributes:
  * <ul>
- * <li>startView: class of the view that should be loaded when the module starts. This view must be
- * one of the view injected to a presenter.</li>
- * <li>startViewName: you can also specify the name of the start view (in case you have several
- * views with the same class, in this case you would need to name your views). In any case, you
- * still need to specify the class of the view.</li>
+ * <li>startPresenter: class of the presenter which view should be loaded when the module starts.</li>
+ * <li>startPresenterName: you can also specify the name of the start presenter.</li>
  * <li>module: class of the module for which the annotated interface should be used to generate the
  * event bus. If no module is specified, it means that the interface should be used to generate the
  * Root Module (first module to be loaded and only module without parent).</li>
@@ -42,6 +40,8 @@ import com.mvp4g.client.Mvp4gModule;
  * </li>
  * <li>ginModules: classes of the GIN modules the framework should use when generating presenters,
  * event handlers, history converters & views. You can specify zero to severals GIN modules.</li>
+ * <li>ginModuleProperties: deferred property names used to retrieve the class of the GIN modules.
+ * You can use ginModuleProperties and/or ginModules.</li>
  * </ul>
  * 
  * 
@@ -52,16 +52,16 @@ import com.mvp4g.client.Mvp4gModule;
 @Retention( RetentionPolicy.RUNTIME )
 public @interface Events {
 
-	String startViewName() default "";
+	String startPresenterName() default "";
 
-	Class<?> startView();
+	Class<? extends PresenterInterface<?, ?>> startPresenter();
 
 	Class<? extends Mvp4gModule> module() default Mvp4gModule.class;
 
 	boolean historyOnStart() default false;
 
 	Class<? extends GinModule>[] ginModules() default DefaultMvp4gGinModule.class;
-	
+
 	String[] ginModuleProperties() default {};
 
 }
