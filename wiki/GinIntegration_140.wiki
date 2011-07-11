@@ -152,7 +152,7 @@ The first step is then to define a deferred property inside our GWT xml file:
 </module>		
 }}}
 
-[http://www.qondio.com/graphics/attention.png] '.' is not a valid value for a deferred property so you will have to replace it by "$". Thus com.mvp4g.client.DefaultMvp4gGinModule becomes com$mvp4g$client$DefaultMvp4gGinModule
+[http://www.qondio.com/graphics/attention.png] '.' is not a valid value for a deferred property so you will have to replace it by '$'. Thus `com.mvp4g.client.DefaultMvp4gGinModule` becomes `com$mvp4g$client$DefaultMvp4gGinModule`
 
 Now that you have defined this property, you can just tell Mvp4g to use it:
 {{{
