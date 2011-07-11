@@ -61,7 +61,7 @@ import com.mvp4g.util.test_tools.annotation.Presenters;
 import com.mvp4g.util.test_tools.annotation.TestBroadcast;
 import com.mvp4g.util.test_tools.annotation.TestBroadcast2;
 import com.mvp4g.util.test_tools.annotation.events.EventBusOk;
-import com.mvp4g.util.test_tools.annotation.gin.TestGinModule;
+import com.mvp4g.util.test_tools.annotation.gin.OneGinModule;
 import com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent;
 import com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler;
 import com.mvp4g.util.test_tools.annotation.history_converters.HistoryConverterForEvent;
@@ -1652,7 +1652,7 @@ public class Mvp4gConfigurationTest {
 		ViewElement view = newView( "view" );
 		view.setClassName( SimpleView.class.getCanonicalName() );
 		views.add( view );
-		
+
 		PresenterElement generate1 = newPresenter( "generate1" );
 		generate1.setView( "view" );
 		EventHandlerElement generate2 = newEventHandler( "generate2" );
@@ -1681,7 +1681,7 @@ public class Mvp4gConfigurationTest {
 		event1.setHandlers( new String[] { "generate2" } );
 		event1.setGenerate( new String[] { "generate1", "generate2" } );
 		events.add( event1 );
-		
+
 		ViewElement view = newView( "view" );
 		view.setClassName( SimpleView.class.getCanonicalName() );
 		views.add( view );
@@ -1701,7 +1701,7 @@ public class Mvp4gConfigurationTest {
 		}
 
 		presenters.clear();
-		
+
 		eventHandlers.clear();
 		eventHandlers.add( generate2 );
 
@@ -2014,44 +2014,54 @@ public class Mvp4gConfigurationTest {
 			assertTrue( e.getMessage().contains( GinModule.class.getCanonicalName() ) );
 		}
 
+		String[] propertiesValues;
 		gin = new GinModuleElement();
 		oracle.addClass( DefaultMvp4gGinModule.class );
 		gin.setModules( new String[] { DefaultMvp4gGinModule.class.getCanonicalName() } );
 		configuration.setGinModule( gin );
-		configuration.validateGinModule();
+		propertiesValues = configuration.validateGinModule();
+		assertNull( propertiesValues );
 		assertEquals( gin.getModules().size(), 1 );
 
 		gin = new GinModuleElement();
 		oracle.addClass( DefaultMvp4gGinModule.class );
-		oracle.addClass( TestGinModule.class );
-		gin.setModules( new String[] { DefaultMvp4gGinModule.class.getCanonicalName(), TestGinModule.class.getCanonicalName() } );
+		oracle.addClass( OneGinModule.class );
+		gin.setModules( new String[] { DefaultMvp4gGinModule.class.getCanonicalName(), OneGinModule.class.getCanonicalName() } );
 		configuration.setGinModule( gin );
-		configuration.validateGinModule();
+		propertiesValues = configuration.validateGinModule();
+		assertNull( propertiesValues );
 		assertEquals( gin.getModules().size(), 2 );
 	}
 
 	@Test
 	public void testGinWithProperties() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+		String[] propertiesValues;
+
 		GinModuleElement gin = new GinModuleElement();
 		oracle.addClass( DefaultMvp4gGinModule.class );
 		gin.setModules( new String[] { DefaultMvp4gGinModule.class.getCanonicalName() } );
 		gin.setModuleProperties( new String[] { PropertyOracleStub.PROPERTY_OK } );
 		configuration.setGinModule( gin );
-		configuration.validateGinModule();
+		propertiesValues = configuration.validateGinModule();
 		assertEquals( gin.getModules().size(), 2 );
 		assertEquals( gin.getModules().get( 0 ), DefaultMvp4gGinModule.class.getCanonicalName() );
 		assertEquals( gin.getModules().get( 1 ), DefaultMvp4gGinModule.class.getCanonicalName() );
+		assertEquals( 1, propertiesValues.length );
+		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), propertiesValues[0] );
 
 		gin = new GinModuleElement();
-		oracle.addClass( TestGinModule.class );
+		oracle.addClass( OneGinModule.class );
 		gin.setModules( new String[] { DefaultMvp4gGinModule.class.getCanonicalName() } );
 		gin.setModuleProperties( new String[] { PropertyOracleStub.PROPERTY_OK, PropertyOracleStub.PROPERTY_OK2 } );
 		configuration.setGinModule( gin );
-		configuration.validateGinModule();
+		propertiesValues = configuration.validateGinModule();
 		assertEquals( gin.getModules().size(), 3 );
 		assertEquals( gin.getModules().get( 0 ), DefaultMvp4gGinModule.class.getCanonicalName() );
 		assertEquals( gin.getModules().get( 1 ), DefaultMvp4gGinModule.class.getCanonicalName() );
-		assertEquals( gin.getModules().get( 2 ), TestGinModule.class.getCanonicalName() );
+		assertEquals( gin.getModules().get( 2 ), OneGinModule.class.getCanonicalName() );
+		assertEquals( 2, propertiesValues.length );
+		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), propertiesValues[0] );
+		assertEquals( OneGinModule.class.getCanonicalName(), propertiesValues[1] );
 
 		gin = new GinModuleElement();
 		gin.setModuleProperties( new String[] { "unknown" } );

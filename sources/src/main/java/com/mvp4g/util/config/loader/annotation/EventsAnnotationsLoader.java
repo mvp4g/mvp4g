@@ -259,8 +259,8 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		Set<PresenterElement> presenters = configuration.getPresenters();
 		String presenterName = annotation.startPresenterName();
 		Class<?> presenterClass = annotation.startPresenter();
-		boolean hasView = !NoStartPresenter.class.equals( presenterClass );
-		if ( hasView ) {
+		boolean hasStartPresenter = !NoStartPresenter.class.equals( presenterClass );
+		if ( hasStartPresenter ) {
 			if ( ( presenterName != null ) && ( presenterName.length() > 0 ) ) {
 				boolean found = false;
 				for ( PresenterElement presenter : presenters ) {
@@ -292,7 +292,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 
 		try {
 			StartElement element = new StartElement();
-			if ( hasView ) {
+			if ( hasStartPresenter ) {
 				element.setPresenter( presenterName );
 			}
 			element.setHistory( Boolean.toString( annotation.historyOnStart() ) );
