@@ -44,7 +44,7 @@ import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter2;
 import com.mvp4g.util.test_tools.annotation.Events;
 import com.mvp4g.util.test_tools.annotation.Events.TestLogger;
 import com.mvp4g.util.test_tools.annotation.events.EventBusOk;
-import com.mvp4g.util.test_tools.annotation.gin.TestGinModule;
+import com.mvp4g.util.test_tools.annotation.gin.OneGinModule;
 import com.mvp4g.util.test_tools.annotation.history_converters.HistoryConverterForEvent;
 import com.mvp4g.util.test_tools.annotation.presenters.PresenterWithName;
 import com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter;
@@ -870,7 +870,7 @@ public class EventsAnnotationsLoaderTest {
 		annotedClasses.clear();
 		annotedClasses.add( oracle.addClass( Events.EventBusWithGin.class ) );
 		loader.load( annotedClasses, configuration );
-		assertEquals( TestGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get(0) );
+		assertEquals( OneGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get(0) );
 		assertEquals( "property1", configuration.getGinModule().getModuleProperties()[0]);
 
 	}
@@ -884,7 +884,7 @@ public class EventsAnnotationsLoaderTest {
 		annotedClasses.clear();
 		annotedClasses.add( oracle.addClass( Events.EventBusWithGins.class ) );
 		loader.load( annotedClasses, configuration );
-		assertEquals( TestGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get(0) );
+		assertEquals( OneGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get(0) );
 		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get(1) );
 		assertEquals( "property1", configuration.getGinModule().getModuleProperties()[0]);
 		assertEquals( "property2", configuration.getGinModule().getModuleProperties()[1]);

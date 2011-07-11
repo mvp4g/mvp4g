@@ -22,7 +22,7 @@ import com.mvp4g.client.event.Mvp4gLogger;
 import com.mvp4g.client.presenter.NoStartPresenter;
 import com.mvp4g.util.test_tools.CustomPlaceService;
 import com.mvp4g.util.test_tools.Modules;
-import com.mvp4g.util.test_tools.annotation.gin.TestGinModule;
+import com.mvp4g.util.test_tools.annotation.gin.OneGinModule;
 import com.mvp4g.util.test_tools.annotation.presenters.PresenterWithName;
 import com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter;
 
@@ -271,12 +271,12 @@ public class Events {
 
 	}
 
-	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class, ginModules = TestGinModule.class, ginModuleProperties = "property1" )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class, ginModules = OneGinModule.class, ginModuleProperties = "property1" )
 	public static interface EventBusWithGin extends EventBus {
 
 	}
 
-	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class, ginModules = { TestGinModule.class, DefaultMvp4gGinModule.class }, ginModuleProperties = {
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class, ginModules = { OneGinModule.class, DefaultMvp4gGinModule.class }, ginModuleProperties = {
 			"property1", "property2" } )
 	public static interface EventBusWithGins extends EventBus {
 

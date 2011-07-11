@@ -9,7 +9,7 @@ import com.google.gwt.core.ext.PropertyOracle;
 import com.google.gwt.core.ext.SelectionProperty;
 import com.google.gwt.core.ext.TreeLogger;
 import com.mvp4g.client.DefaultMvp4gGinModule;
-import com.mvp4g.util.test_tools.annotation.gin.TestGinModule;
+import com.mvp4g.util.test_tools.annotation.gin.OneGinModule;
 
 public class PropertyOracleStub implements PropertyOracle {
 
@@ -21,7 +21,7 @@ public class PropertyOracleStub implements PropertyOracle {
 
 	public PropertyOracleStub() {
 		properties.put( PROPERTY_OK, new SelectionPropertyStub( PROPERTY_OK, DefaultMvp4gGinModule.class.getCanonicalName().replace( ".", "$" ) ) );
-		properties.put( PROPERTY_OK2, new SelectionPropertyStub( PROPERTY_OK2, TestGinModule.class.getCanonicalName().replace( ".", "$" ) ) );
+		properties.put( PROPERTY_OK2, new SelectionPropertyStub( PROPERTY_OK2, OneGinModule.class.getCanonicalName().replace( ".", "$" ) ) );
 		properties.put( PROPERTY_NOT_GIN_MODULE, new SelectionPropertyStub( PROPERTY_NOT_GIN_MODULE, String.class.getCanonicalName().replace( ".", "$" ) ) );
 	}
 

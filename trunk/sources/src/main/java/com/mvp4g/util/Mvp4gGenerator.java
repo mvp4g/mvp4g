@@ -61,8 +61,6 @@ import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
  */
 public class Mvp4gGenerator extends Generator {
 
-	private SourceWriter sourceWriter;
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -71,12 +69,42 @@ public class Mvp4gGenerator extends Generator {
 	 */
 	@Override
 	public String generate( TreeLogger logger, GeneratorContext context, String typeName ) throws UnableToCompleteException {
-		
+
 		Date start = new Date();
 
-		String generatedClassQualifiedName = createClass( logger, context, typeName );
+		String generatedClassQualifiedName;
 
-		if ( generatedClassQualifiedName == null ) {
+		try {
+			TypeOracle typeOracle = context.getTypeOracle();
+
+			JClassType module = typeOracle.findType( typeName );
+			if ( module == null ) {
+				logger.log( TreeLogger.ERROR, "Unable to find metadata for type '" + typeName + "'", null );
+				throw new UnableToCompleteException();
+			}
+
+			@SuppressWarnings( "unchecked" )
+			Map<Class<? extends Annotation>, List<JClassType>> scanResult = AnnotationScanner.scan( logger, typeOracle, new Class[] {
+					Presenter.class, History.class, Events.class, Service.class, EventHandler.class } );
+
+			Mvp4gConfiguration configuration = new Mvp4gConfiguration( logger, context );
+			String[] propertiesValues = configuration.load( module, scanResult );
+
+			String suffix = getSuffix( propertiesValues );
+
+			SourceWriter sourceWriter = getSourceWriter( logger, context, module, suffix );
+
+			generatedClassQualifiedName = module.getParameterizedQualifiedSourceName() + suffix;
+
+			if ( sourceWriter != null ) {
+				logger.log( TreeLogger.INFO, "Generating source for " + generatedClassQualifiedName + " ", null );
+				Mvp4gConfigurationFileWriter writer = new Mvp4gConfigurationFileWriter( sourceWriter, configuration );
+				writer.writeConf();
+				sourceWriter.commit( logger );
+			}
+
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			logger.log( TreeLogger.ERROR, e.getMessage(), e );
 			throw new UnableToCompleteException();
 		}
 
@@ -87,40 +115,39 @@ public class Mvp4gGenerator extends Generator {
 		return generatedClassQualifiedName;
 	}
 
-	private String createClass( TreeLogger logger, GeneratorContext context, String typeName ) throws UnableToCompleteException {
-		sourceWriter = getSourceWriter( logger, context, typeName );
-		TypeOracle typeOracle = context.getTypeOracle();
-		JClassType originalType = typeOracle.findType( typeName );
+	private String getSuffix( String[] propertiesValues ) {
+		if ( ( propertiesValues == null ) || ( propertiesValues.length == 0 ) ) {
+			return "Impl";
+		} else {
+			StringBuilder builder = new StringBuilder( propertiesValues.length * 200 );
+			for ( String propertyValue : propertiesValues ) {
+				builder.append( propertyValue );
+			}
 
-		if ( sourceWriter != null ) {
-			writeClass( originalType, logger, context );
-			sourceWriter.commit( logger );
+			//'-' is not a valid character for java class name
+			return ( "Impl_" + builder.toString().hashCode() ).replace( "-", "A" );
 		}
-
-		return originalType.getParameterizedQualifiedSourceName() + "Impl";
 	}
 
-	private SourceWriter getSourceWriter( TreeLogger logger, GeneratorContext context, String typeName ) throws UnableToCompleteException {
-		logger.log( TreeLogger.INFO, "Generating source for " + typeName, null );
-
-		TypeOracle typeOracle = context.getTypeOracle();
-		JClassType originalType = typeOracle.findType( typeName );
-		if ( originalType == null ) {
-			logger.log( TreeLogger.ERROR, "Unable to find metadata for type '" + typeName + "'", null );
-			throw new UnableToCompleteException();
-		}
-
-		logger.log( TreeLogger.INFO, "Generating source for " + originalType.getQualifiedSourceName(), null );
+	private SourceWriter getSourceWriter( TreeLogger logger, GeneratorContext context, JClassType originalType, String suffix )
+			throws UnableToCompleteException {
 
 		String packageName = originalType.getPackage().getName();
 		String originalClassName = originalType.getSimpleSourceName();
-		String generatedClassName = originalClassName + "Impl";
+		String generatedClassName = originalClassName + suffix;
+
+		logger.log( TreeLogger.INFO, "Generating writer for " + packageName + "." + generatedClassName, null );
+
+		PrintWriter printWriter = context.tryCreate( logger, packageName, generatedClassName );
+		if ( printWriter == null ) {
+			return null;
+		}
 
 		ClassSourceFileComposerFactory classFactory = new ClassSourceFileComposerFactory( packageName, generatedClassName );
 		classFactory.addImplementedInterface( originalType.getName() );
-		classFactory.addImport( PlaceService.class.getName() );		
+		classFactory.addImport( PlaceService.class.getName() );
 		classFactory.addImport( GWT.class.getName() );
-		classFactory.addImport( com.google.gwt.user.client.History.class.getName() );
+		classFactory.addImport( History.class.getName() );
 		classFactory.addImport( ServiceDefTarget.class.getName() );
 		classFactory.addImport( PresenterInterface.class.getName() );
 		classFactory.addImport( EventBus.class.getName() );
@@ -131,38 +158,13 @@ public class Mvp4gGenerator extends Generator {
 		classFactory.addImport( GinModules.class.getName() );
 		classFactory.addImport( Ginjector.class.getName() );
 		classFactory.addImport( BaseEventBus.class.getName() );
-		classFactory.addImport( EventFilter.class.getName() );		
+		classFactory.addImport( EventFilter.class.getName() );
 		classFactory.addImport( EventHandlerInterface.class.getName() );
 		classFactory.addImport( List.class.getName() );
 		classFactory.addImport( NavigationEventCommand.class.getName() );
 		classFactory.addImport( NavigationConfirmationInterface.class.getName() );
 
-		PrintWriter printWriter = context.tryCreate( logger, packageName, generatedClassName );
-		if ( printWriter == null ) {
-			return null;
-		}
-
 		return classFactory.createSourceWriter( context, printWriter );
 	}
 
-	@SuppressWarnings( "unchecked" )
-	private void writeClass( JClassType module, TreeLogger logger, GeneratorContext context ) throws UnableToCompleteException {
-
-		try {
-			TypeOracle oracle = context.getTypeOracle();
-
-			Map<Class<? extends Annotation>, List<JClassType>> scanResult = AnnotationScanner.scan( logger, oracle, new Class[] { Presenter.class,
-					History.class, Events.class, Service.class, EventHandler.class } );
-
-			Mvp4gConfiguration configuration = new Mvp4gConfiguration( logger, context );
-			configuration.load( module, scanResult );
-
-			Mvp4gConfigurationFileWriter writer = new Mvp4gConfigurationFileWriter( sourceWriter, configuration );
-			writer.writeConf();
-		} catch ( InvalidMvp4gConfigurationException e ) {
-			logger.log( TreeLogger.ERROR, e.getMessage(), e );
-			throw new UnableToCompleteException();
-		}
-
-	}
 }

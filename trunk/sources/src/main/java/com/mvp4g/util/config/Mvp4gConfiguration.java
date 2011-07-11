@@ -184,7 +184,7 @@ public class Mvp4gConfiguration {
 	 *             this exception is thrown where a configuration error occurs.
 	 * 
 	 */
-	public void load( JClassType module, Map<Class<? extends Annotation>, List<JClassType>> scanResult ) throws InvalidMvp4gConfigurationException {
+	public String[] load( JClassType module, Map<Class<? extends Annotation>, List<JClassType>> scanResult ) throws InvalidMvp4gConfigurationException {
 
 		this.module = module;
 
@@ -212,8 +212,10 @@ public class Mvp4gConfiguration {
 		validateHistory();
 		validateChildModules();
 		validateDebug();
-		validateGinModule();
+		String[] propertiesValues = validateGinModule();
 		validateStart();
+		
+		return propertiesValues;
 	}
 
 	public boolean isAsyncEnabled() {
@@ -1280,8 +1282,8 @@ public class Mvp4gConfiguration {
 		}
 	}
 
-	void validateGinModule() throws InvalidMvp4gConfigurationException {
-		getGinModulesByProperties();
+	String[] validateGinModule() throws InvalidMvp4gConfigurationException {
+		String[] propertiesValues = getGinModulesByProperties();
 
 		List<String> modulesClassName = ginModule.getModules();
 		if ( ( modulesClassName == null ) || ( modulesClassName.size() == 0 ) ) {
@@ -1296,11 +1298,16 @@ public class Mvp4gConfiguration {
 				throw new InvalidTypeException( ginModule, "Logger", module, GinModule.class.getCanonicalName() );
 			}
 		}
+		
+		return propertiesValues;
 	}
 
-	private void getGinModulesByProperties() throws InvalidMvp4gConfigurationException {
+	private String[] getGinModulesByProperties() throws InvalidMvp4gConfigurationException {
 		String[] properties = ginModule.getModuleProperties();
+		String[] propertiesValue;
 		if ( properties != null ) {
+			int size = properties.length;
+			propertiesValue = new String[size];			
 			String moduleClassName;
 			List<String> modules = ginModule.getModules();
 			if ( modules == null ) {
@@ -1312,7 +1319,9 @@ public class Mvp4gConfiguration {
 					e.printStackTrace();
 				}
 			}
-			for ( String property : properties ) {
+			String property;			
+			for(int i=0; i<size; i++){
+				property = properties[i];
 				try {
 					moduleClassName = propertyOracle.getSelectionProperty( logger, property ).getCurrentValue().replace( "$", "." );
 				} catch ( BadPropertyValueException e ) {
@@ -1320,8 +1329,13 @@ public class Mvp4gConfiguration {
 							e.getMessage() ) );
 				}
 				modules.add( moduleClassName );
+				propertiesValue[i] = moduleClassName;
 			}
 		}
+		else{
+			propertiesValue = null;
+		}
+		return propertiesValue;
 	}
 
 	/*
