@@ -147,7 +147,7 @@ public class Mvp4gGenerator extends Generator {
 		classFactory.addImplementedInterface( originalType.getName() );
 		classFactory.addImport( PlaceService.class.getName() );
 		classFactory.addImport( GWT.class.getName() );
-		classFactory.addImport( History.class.getName() );
+		classFactory.addImport( com.google.gwt.user.client.History.class.getName() );
 		classFactory.addImport( ServiceDefTarget.class.getName() );
 		classFactory.addImport( PresenterInterface.class.getName() );
 		classFactory.addImport( EventBus.class.getName() );
