@@ -144,27 +144,22 @@ public class Mvp4gGenerator extends Generator {
 		}
 
 		ClassSourceFileComposerFactory classFactory = new ClassSourceFileComposerFactory( packageName, generatedClassName );
+		
 		classFactory.addImplementedInterface( originalType.getName() );
-		classFactory.addImport( PlaceService.class.getName() );
-		classFactory.addImport( GWT.class.getName() );
-		classFactory.addImport( com.google.gwt.user.client.History.class.getName() );
-		classFactory.addImport( ServiceDefTarget.class.getName() );
-		classFactory.addImport( PresenterInterface.class.getName() );
-		classFactory.addImport( EventBus.class.getName() );
-		classFactory.addImport( Mvp4gException.class.getName() );
-		classFactory.addImport( HistoryConverter.class.getName() );
-		classFactory.addImport( Mvp4gEventPasser.class.getName() );
-		classFactory.addImport( Mvp4gModule.class.getName() );
-		classFactory.addImport( GinModules.class.getName() );
-		classFactory.addImport( Ginjector.class.getName() );
-		classFactory.addImport( BaseEventBus.class.getName() );
-		classFactory.addImport( EventFilter.class.getName() );
-		classFactory.addImport( EventHandlerInterface.class.getName() );
-		classFactory.addImport( List.class.getName() );
-		classFactory.addImport( NavigationEventCommand.class.getName() );
-		classFactory.addImport( NavigationConfirmationInterface.class.getName() );
+		String[] classesToImport = getClassesToImport();
+		for(String classToImport:classesToImport){
+			classFactory.addImport( classToImport );	
+		}
 
 		return classFactory.createSourceWriter( context, printWriter );
+	}
+
+	String[] getClassesToImport() {
+		return new String[] { PlaceService.class.getName(), GWT.class.getName(), com.google.gwt.user.client.History.class.getName(),
+				ServiceDefTarget.class.getName(), PresenterInterface.class.getName(), EventBus.class.getName(), Mvp4gException.class.getName(),
+				HistoryConverter.class.getName(), Mvp4gEventPasser.class.getName(), Mvp4gModule.class.getName(), GinModules.class.getName(),
+				Ginjector.class.getName(), BaseEventBus.class.getName(), EventFilter.class.getName(), EventHandlerInterface.class.getName(),
+				List.class.getName(), NavigationEventCommand.class.getName(), NavigationConfirmationInterface.class.getName() };
 	}
 
 }
