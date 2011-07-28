@@ -61,7 +61,6 @@ import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.StartElement;
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 
 /**
@@ -126,12 +125,10 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 						throw new Mvp4gAnnotationException( childClass, null, err );
 					} else {
 						childElement = new ChildModuleElement();
+						childElement.setClassName( childClass );
 						childElement.setParentEventBus( c );
-						try {
-							childElement.setAutoDisplay( Boolean.toString( child.autoDisplay() ) );
-						} catch ( DuplicatePropertyNameException e ) {
-							//this error is never thrown
-						}
+						childElement.setParentModuleClass( annotation.module().getCanonicalName() );
+						childElement.setAutoDisplay( Boolean.toString( child.autoDisplay() ) );
 						moduleParentEventBus.put( childClass, childElement );
 					}
 				}
@@ -185,24 +182,16 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 				}
 				filterElement = new EventFilterElement();
-				try {
-					filterElement.setName( buildElementName( filterClassName, "" ) );
-					filterElement.setClassName( filterClassName );
-				} catch ( DuplicatePropertyNameException e ) {
-					// setters are only called once, so this error can't occur.
-				}
+				filterElement.setName( buildElementName( filterClassName, "" ) );
+				filterElement.setClassName( filterClassName );
 				addElement( filterElements, filterElement, c, null );
 			}
 
 			EventFiltersElement filtersElement = new EventFiltersElement();
-			try {
-				filtersElement.setAfterHistory( Boolean.toString( filters.afterHistory() ) );
-				filtersElement.setFilterForward( Boolean.toString( filters.filterForward() ) );
-				filtersElement.setFilterStart( Boolean.toString( filters.filterStart() ) );
-				filtersElement.setForceFilters( Boolean.toString( filters.forceFilters() ) );
-			} catch ( DuplicatePropertyNameException e ) {
-				// setters are only called once, so this error can't occur.
-			}
+			filtersElement.setAfterHistory( Boolean.toString( filters.afterHistory() ) );
+			filtersElement.setFilterForward( Boolean.toString( filters.filterForward() ) );
+			filtersElement.setFilterStart( Boolean.toString( filters.filterStart() ) );
+			filtersElement.setForceFilters( Boolean.toString( filters.forceFilters() ) );
 			configuration.setEventFilterConfiguration( filtersElement );
 		}
 	}
@@ -227,14 +216,11 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 				}
 				module = new ChildModuleElement();
-				try {
-					module.setName( buildElementName( moduleClass, "" ) );
-					module.setClassName( moduleClass );
-					module.setAsync( Boolean.toString( child.async() ) );
-					module.setAutoDisplay( Boolean.toString( child.autoDisplay() ) );
-				} catch ( DuplicatePropertyNameException e ) {
-					// setters are only called once, so this error can't occur.
-				}
+				module.setName( buildElementName( moduleClass, "" ) );
+				module.setClassName( moduleClass );
+				module.setAsync( Boolean.toString( child.async() ) );
+				module.setAutoDisplay( Boolean.toString( child.autoDisplay() ) );
+
 				addElement( modules, module, c, null );
 
 			}
@@ -268,8 +254,8 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 						TypeOracle oracle = configuration.getOracle();
 						JClassType presenterType = oracle.findType( presenter.getClassName() );
 						JClassType startType = oracle.findType( presenterClass.getCanonicalName() );
-						if(!presenterType.isAssignableTo( startType )){
-							String err = "There is no instance with name " + presenterName + " that extends " + presenterType ;
+						if ( !presenterType.isAssignableTo( startType ) ) {
+							String err = "There is no instance with name " + presenterName + " that extends " + presenterType;
 							throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 						}
 						found = true;
@@ -284,22 +270,19 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			} else {
 				presenterName = getElementName( presenters, presenterClass.getCanonicalName() );
 				if ( presenterName == null ) {
-					String err = "There is no instance of " + presenterClass.getCanonicalName() + ". Have you forgotten to annotate it with @Presenter or @EventHander?";
+					String err = "There is no instance of " + presenterClass.getCanonicalName()
+							+ ". Have you forgotten to annotate it with @Presenter or @EventHander?";
 					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 				}
 			}
 		}
 
-		try {
-			StartElement element = new StartElement();
-			if ( hasStartPresenter ) {
-				element.setPresenter( presenterName );
-			}
-			element.setHistory( Boolean.toString( annotation.historyOnStart() ) );
-			configuration.setStart( element );
-		} catch ( DuplicatePropertyNameException e ) {
-			// setters are only called once, so this error can't occur.
+		StartElement element = new StartElement();
+		if ( hasStartPresenter ) {
+			element.setPresenter( presenterName );
 		}
+		element.setHistory( Boolean.toString( annotation.historyOnStart() ) );
+		configuration.setStart( element );
 
 	}
 
@@ -356,46 +339,42 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			historyName = event.name();
 
 			element = new EventElement();
-			try {
-				element.setType( method.getName() );
-				element.setHandlers( buildPresentersAndEventHandlers( c, method, event.handlers(), event.handlerNames(), configuration ) );
-				element.setCalledMethod( event.calledMethod() );
-				element.setModulesToLoad( buildChildModules( c, method, event, configuration ) );
-				element.setForwardToParent( Boolean.toString( event.forwardToParent() ) );
-				element.setActivate( buildPresentersAndEventHandlers( c, method, event.activate(), event.activateNames(), configuration ) );
-				element.setDeactivate( buildPresentersAndEventHandlers( c, method, event.deactivate(), event.deactivateNames(), configuration ) );
-				element.setGenerate( buildPresentersAndEventHandlers( c, method, event.generate(), event.generateNames(), configuration ) );
-				element.setNavigationEvent( Boolean.toString( event.navigationEvent() ) );
-				element.setWithTokenGeneration( Boolean.toString( method.getReturnType().getQualifiedSourceName().equals( String.class.getName() ) ) );
-				element.setPassive( Boolean.toString( event.passive() ) );
-				broadcast = event.broadcastTo();
-				if ( !Event.NoBroadcast.class.equals( broadcast ) ) {
-					element.setBroadcastTo( broadcast.getCanonicalName() );
-				}
-				if ( paramClasses != null ) {
-					element.setEventObjectClass( paramClasses );
-				}
-				if ( !Event.DEFAULT_NAME.equals( historyName ) ) {
-					element.setName( historyName );
-				}
-			} catch ( DuplicatePropertyNameException e ) {
-				// setters are only called once, so this error can't occur.
+			element.setType( method.getName() );
+			element.setHandlers( buildPresentersAndEventHandlers( c, method, event.handlers(), event.handlerNames(), configuration ) );
+			element.setCalledMethod( event.calledMethod() );
+			element.setForwardToModules( buildChildModules( c, method, event, configuration ) );
+			element.setForwardToParent( Boolean.toString( event.forwardToParent() ) );
+			element.setActivate( buildPresentersAndEventHandlers( c, method, event.activate(), event.activateNames(), configuration ) );
+			element.setDeactivate( buildPresentersAndEventHandlers( c, method, event.deactivate(), event.deactivateNames(), configuration ) );
+			element.setGenerate( buildPresentersAndEventHandlers( c, method, event.generate(), event.generateNames(), configuration ) );
+			element.setNavigationEvent( Boolean.toString( event.navigationEvent() ) );
+			element.setWithTokenGeneration( Boolean.toString( method.getReturnType().getQualifiedSourceName().equals( String.class.getName() ) ) );
+			element.setPassive( Boolean.toString( event.passive() ) );
+			broadcast = event.broadcastTo();
+			if ( !Event.NoBroadcast.class.equals( broadcast ) ) {
+				element.setBroadcastTo( broadcast.getCanonicalName() );
+			}
+			if ( paramClasses != null ) {
+				element.setEventObjectClass( paramClasses );
+			}
+			if ( !Event.DEFAULT_NAME.equals( historyName ) ) {
+				element.setName( historyName );
 			}
 
 			addElement( events, element, c, method );
 
 			if ( method.getAnnotation( Start.class ) != null ) {
-				try {
+				if ( configuration.getStart().getEventType() == null ) {
 					configuration.getStart().setEventType( method.getName() );
-				} catch ( DuplicatePropertyNameException e ) {
+				} else {
 					String err = "Duplicate value for Start event. It is already defined by another method.";
 					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 				}
 			}
 			if ( method.getAnnotation( Forward.class ) != null ) {
-				try {
+				if ( configuration.getStart().getForwardEventType() == null ) {
 					configuration.getStart().setForwardEventType( method.getName() );
-				} catch ( DuplicatePropertyNameException e ) {
+				} else {
 					String err = "Duplicate value for Forward event. It is already defined by another method.";
 					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 				}
@@ -458,17 +437,16 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 	private String[] buildChildModules( JClassType c, JMethod method, Event event, Mvp4gConfiguration configuration ) throws Mvp4gAnnotationException {
 		Set<ChildModuleElement> loadedChildModules = configuration.getChildModules();
 
-		Class<?>[] childModuleClasses = event.modulesToLoad();
+		Class<?>[] childModuleClasses = event.forwardToModules();
 		String[] childModules = new String[childModuleClasses.length];
 
 		String moduleName = null;
 		int index = 0;
 		for ( Class<?> moduleClass : childModuleClasses ) {
 			moduleName = getElementName( loadedChildModules, moduleClass.getCanonicalName() );
+			//it's not a child module, could be a siblings, in this case name == class name
 			if ( moduleName == null ) {
-				String err = "No instance of " + moduleClass.getCanonicalName()
-						+ " is defined. Have you forgotten to add it to @ChildModules of your event bus interface?";
-				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
+				moduleName = moduleClass.getCanonicalName();
 			}
 			childModules[index] = moduleName;
 			index++;
@@ -498,11 +476,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		String hcName = annotation.historyConverterName();
 		Class<?> hcClass = annotation.historyConverter();
 		if ( ( hcName != null ) && ( hcName.length() > 0 ) ) {
-			try {
-				element.setHistory( hcName );
-			} catch ( DuplicatePropertyNameException e ) {
-				// setter is only called once, so this error can't occur.
-			}
+			element.setHistory( hcName );
 		} else if ( !Event.NoHistoryConverter.class.equals( hcClass ) ) {
 			String hcClassName = hcClass.getCanonicalName();
 			Set<HistoryConverterElement> historyConverters = configuration.getHistoryConverters();
@@ -511,11 +485,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				String err = "No instance of " + hcClassName + " is defined. Have you forgotten to annotate your history converter with @History?";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 			}
-			try {
-				element.setHistory( hcName );
-			} catch ( DuplicatePropertyNameException e ) {
-				// setters are only called once, so this error can't occur.
-			}
+			element.setHistory( hcName );
 		}
 	}
 
@@ -527,9 +497,9 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				configuration.setHistory( history );
 			}
 
-			try {
+			if ( history.getInitEvent() == null ) {
 				history.setInitEvent( method.getName() );
-			} catch ( DuplicatePropertyNameException e ) {
+			} else {
 				String err = "Duplicate value for Init History event. It is already defined by another method or in your configuration file.";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 			}
@@ -541,9 +511,9 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				configuration.setHistory( history );
 			}
 
-			try {
+			if ( history.getNotFoundEvent() == null ) {
 				history.setNotFoundEvent( method.getName() );
-			} catch ( DuplicatePropertyNameException e ) {
+			} else {
 				String err = "Duplicate value for Not Found History event. It is already defined by another method or in your configuration file.";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 			}
@@ -562,9 +532,9 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 							+ " is defined.  Have you forgotten to add it to @ChildModules of your event bus interface?";
 					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 				}
-				try {
+				if ( module.getEventToDisplayView() == null ) {
 					module.setEventToDisplayView( method.getName() );
-				} catch ( DuplicatePropertyNameException e ) {
+				} else {
 					String err = "Module " + module.getClassName() + ": you can't have two events to load this module view.";
 					throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 				}
@@ -580,9 +550,9 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				childConfig = new ChildModulesElement();
 				configuration.setLoadChildConfig( childConfig );
 			}
-			try {
+			if ( childConfig.getBeforeEvent() == null ) {
 				childConfig.setBeforeEvent( method.getName() );
-			} catch ( DuplicatePropertyNameException e ) {
+			} else {
 				String err = "Duplicate value for Before Load Child event. It is already defined by another method or in your configuration file.";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 			}
@@ -593,9 +563,9 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				childConfig = new ChildModulesElement();
 				configuration.setLoadChildConfig( childConfig );
 			}
-			try {
+			if ( childConfig.getAfterEvent() == null ) {
 				childConfig.setAfterEvent( method.getName() );
-			} catch ( DuplicatePropertyNameException e ) {
+			} else {
 				String err = "Duplicate value for After Load Child event. It is already defined by another method or in your configuration file.";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 			}
@@ -606,9 +576,9 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				childConfig = new ChildModulesElement();
 				configuration.setLoadChildConfig( childConfig );
 			}
-			try {
+			if ( childConfig.getErrorEvent() == null ) {
 				childConfig.setErrorEvent( method.getName() );
-			} catch ( DuplicatePropertyNameException e ) {
+			} else {
 				String err = "Duplicate value for Error Load Child event. It is already defined by another method or in your configuration file.";
 				throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), method.getName(), err );
 			}
@@ -622,12 +592,9 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		if ( debug != null ) {
 			Class<? extends Mvp4gLogger> loggerClass = debug.logger();
 			DebugElement debugElem = new DebugElement();
-			try {
-				debugElem.setLogger( loggerClass.getCanonicalName() );
-				debugElem.setLogLevel( debug.logLevel().name() );
-			} catch ( DuplicatePropertyNameException e ) {
-				// setter is only called once, so this error can't occur.
-			}
+			debugElem.setLogger( loggerClass.getCanonicalName() );
+			debugElem.setLogLevel( debug.logLevel().name() );
+
 			configuration.setDebug( debugElem );
 		}
 	}
@@ -640,13 +607,9 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 		for ( int i = 0; i < modulesCount; i++ ) {
 			modulesClassNames[i] = modules[i].getCanonicalName();
 		}
-		try {
-			ginModule.setModules( modulesClassNames );
-			ginModule.setModuleProperties( annotation.ginModuleProperties() );
-		} catch ( DuplicatePropertyNameException e ) {
-			// setter is only called once, so this error can't occur.
-		}
-		
+		ginModule.setModules( modulesClassNames );
+		ginModule.setModuleProperties( annotation.ginModuleProperties() );
+
 		configuration.setGinModule( ginModule );
 	}
 
@@ -660,11 +623,7 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 				configuration.setHistory( history );
 			}
 
-			try {
-				history.setPlaceServiceClass( historyConfig.value().getCanonicalName() );
-			} catch ( DuplicatePropertyNameException e ) {
-				//can't occur
-			}
+			history.setPlaceServiceClass( historyConfig.value().getCanonicalName() );
 		}
 	}
 

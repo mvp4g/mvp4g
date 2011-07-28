@@ -142,14 +142,24 @@ public class Events {
 		@Event( )
 		public void event1( String obj );
 
-		@Event( handlers = PresenterWithName.class, modulesToLoad = Modules.Module1.class )
+		@Event( handlers = PresenterWithName.class, forwardToModules = Modules.Module1.class )
 		public void event2();
 
-		@Event( handlers = PresenterWithName.class, modulesToLoad = { Modules.ModuleWithParent.class, Modules.Module1.class } )
+		@Event( handlers = PresenterWithName.class, forwardToModules = { Modules.ModuleWithParent.class, Modules.Module1.class } )
 		public void event3();
 
 		@Event( handlers = PresenterWithName.class, forwardToParent = true )
 		public void event4();
+	}
+
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
+	public static interface EventBusWithSiblings extends EventBus {
+
+		@Event( handlers = PresenterWithName.class, forwardToModules = Modules.Module1.class )
+		public void event1();
+
+		@Event( handlers = PresenterWithName.class, forwardToModules = { Modules.ModuleWithParent.class, Modules.Module1.class } )
+		public void event2();
 	}
 
 	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
@@ -212,7 +222,7 @@ public class Events {
 	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusUnknownModuleForEvent extends EventBus {
 
-		@Event( handlers = PresenterWithName.class, modulesToLoad = Modules.ModuleWithParent.class )
+		@Event( handlers = PresenterWithName.class, forwardToModules = Modules.ModuleWithParent.class )
 		public void event2();
 
 	}

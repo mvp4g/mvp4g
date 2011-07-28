@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
-
 /**
  * A representation of an Mvp4g configuration element.
  * <p/>
@@ -71,10 +69,8 @@ public abstract class Mvp4gElement {
 		return properties.getProperty( name );
 	}
 
-	public void setProperty( String name, String value ) throws DuplicatePropertyNameException {
-
+	public void setProperty( String name, String value )  {
 		if ( name != null && value != null ) {
-			failIfPropertyPresent( name );
 			properties.setProperty( name, value );
 		}
 	}
@@ -88,14 +84,17 @@ public abstract class Mvp4gElement {
 	}
 	
 	public List<String> getFlexibleValues(String name){
-		return flexibleMultiValueProperties.get( name );
+		List<String> values = flexibleMultiValueProperties.get( name );
+		if(values == null){
+			setFlexibleValues( name, new String[0] );
+			values = flexibleMultiValueProperties.get( name );
+		}		
+		return values;
 	}
 
-	public void setValues( String name, String[] values ) throws DuplicatePropertyNameException {
+	public void setValues( String name, String[] values )  {
 
 		if ( name != null && values != null ) {
-			failIfMultiValuePropertyPresent( name );
-
 			//if values is an array containing only ""
 			if ( values.length == 1 && ( ( values[0] == null ) || ( values[0].length() == 0 ) ) ) {
 				values = new String[] {};
@@ -105,10 +104,8 @@ public abstract class Mvp4gElement {
 		}
 	}
 	
-	public void setFlexibleValues( String name, String[] values ) throws DuplicatePropertyNameException {
+	public void setFlexibleValues( String name, String[] values )  {
 		if ( name != null && values != null ) {
-			failIfFlexibleMultiValuePropertyPresent( name );
-			
 			List<String> valuesList = new ArrayList<String>();
 			for(String value: values){
 				valuesList.add( value );
@@ -118,23 +115,7 @@ public abstract class Mvp4gElement {
 		}
 	}
 
-	private void failIfPropertyPresent( String name ) throws DuplicatePropertyNameException {
-		if ( properties.containsKey( name ) ) {
-			throw new DuplicatePropertyNameException( name );
-		}
-	}
-
-	private void failIfMultiValuePropertyPresent( String name ) throws DuplicatePropertyNameException {
-		if ( multiValueProperties.containsKey( name ) ) {
-			throw new DuplicatePropertyNameException( name );
-		}
-	}
 	
-	private void failIfFlexibleMultiValuePropertyPresent( String name ) throws DuplicatePropertyNameException {
-		if ( flexibleMultiValueProperties.containsKey( name ) ) {
-			throw new DuplicatePropertyNameException( name );
-		}
-	}
 
 	public int totalProperties() {
 		return properties.size();

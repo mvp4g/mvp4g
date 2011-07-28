@@ -15,7 +15,6 @@
  */
 package com.mvp4g.util.config.element;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 /**
  * An Mvp4g Service configuration element.</p>
@@ -28,7 +27,7 @@ public class ServiceElement extends SimpleMvp4gElement {
 		super( "service" );
 	}
 
-	public void setPath( String path ) throws DuplicatePropertyNameException {
+	public void setPath( String path ) {
 		setProperty( "path", path );
 	}
 
@@ -40,7 +39,7 @@ public class ServiceElement extends SimpleMvp4gElement {
 		return getPath() != null;
 	}
 
-	public void setGeneratedClassName( String generatedClassName ) throws DuplicatePropertyNameException {
+	public void setGeneratedClassName( String generatedClassName ) {
 		setProperty( "generatedClassName", generatedClassName );
 	}
 

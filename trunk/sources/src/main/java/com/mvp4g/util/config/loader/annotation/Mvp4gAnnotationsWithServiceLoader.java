@@ -25,7 +25,6 @@ import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.InjectedElement;
 import com.mvp4g.util.config.element.Mvp4gWithServicesElement;
 import com.mvp4g.util.config.element.ServiceElement;
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 
 /**
@@ -103,13 +102,9 @@ public abstract class Mvp4gAnnotationsWithServiceLoader<T extends Annotation> ex
 		if ( serviceName == null ) {
 			serviceName = generatedClassName.replace( '.', '_' );
 			ServiceElement service = new ServiceElement();
-			try {
+			service.setClassName( generatedClassName.substring( 0, generatedClassName.indexOf( "Async" ) ) );
+			service.setName( serviceName );
 
-				service.setClassName( generatedClassName.substring( 0, generatedClassName.indexOf( "Async" ) ) );
-				service.setName( serviceName );
-			} catch ( DuplicatePropertyNameException e ) {
-				// setters are only called once, so this error can't occur.
-			}
 			configuration.getServices().add( service );
 		}
 		return serviceName;

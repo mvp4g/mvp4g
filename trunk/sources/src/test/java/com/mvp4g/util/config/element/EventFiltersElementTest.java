@@ -5,14 +5,12 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
-
 public class EventFiltersElementTest extends AbstractMvp4gElementTest<EventFiltersElement> {
 
 	protected static final String[] properties = { "afterHistory", "filterForward", "filterStart", "forceFilters" };
 
 	@Test
-	public void testAfterHistory() throws DuplicatePropertyNameException {
+	public void testAfterHistory() {
 		EventFiltersElement element = newElement();
 		assertFalse( element.isAfterHistory() );
 		element.setAfterHistory( "true" );
@@ -24,7 +22,7 @@ public class EventFiltersElementTest extends AbstractMvp4gElementTest<EventFilte
 	}
 
 	@Test
-	public void testFilterStart() throws DuplicatePropertyNameException {
+	public void testFilterStart() {
 		EventFiltersElement element = newElement();
 		assertTrue( element.isFilterStart() );
 		element.setFilterStart( "false" );
@@ -36,7 +34,7 @@ public class EventFiltersElementTest extends AbstractMvp4gElementTest<EventFilte
 	}
 
 	@Test
-	public void testFilterFoward() throws DuplicatePropertyNameException {
+	public void testFilterFoward() {
 		EventFiltersElement element = newElement();
 		assertTrue( element.isFilterForward() );
 		element.setFilterForward( "false" );
@@ -46,9 +44,9 @@ public class EventFiltersElementTest extends AbstractMvp4gElementTest<EventFilte
 		element.setFilterForward( "true" );
 		assertTrue( element.isFilterForward() );
 	}
-	
+
 	@Test
-	public void testForceFilters() throws DuplicatePropertyNameException {
+	public void testForceFilters() {
 		EventFiltersElement element = newElement();
 		assertFalse( element.isForceFilters() );
 		element.setForceFilters( "true" );

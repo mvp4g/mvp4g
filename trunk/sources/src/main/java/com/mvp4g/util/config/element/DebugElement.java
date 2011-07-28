@@ -17,7 +17,6 @@ package com.mvp4g.util.config.element;
 
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.event.DefaultMvp4gLogger;
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 public class DebugElement extends Mvp4gElement {
 
@@ -32,7 +31,7 @@ public class DebugElement extends Mvp4gElement {
 		return DEBUG_ELEMENT_ID;
 	}
 
-	public void setLogLevel( String logLevel ) throws DuplicatePropertyNameException {
+	public void setLogLevel( String logLevel ) {
 		setProperty( "logLevel", logLevel );
 	}
 
@@ -41,7 +40,7 @@ public class DebugElement extends Mvp4gElement {
 	    return ( logLevel == null ) ? LogLevel.SIMPLE.name() : logLevel;
 	}
 
-    public void setLogger( String logger ) throws DuplicatePropertyNameException {
+    public void setLogger( String logger ) {
         setProperty( "logger", logger );
     }
 

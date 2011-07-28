@@ -85,9 +85,7 @@ public class Mvp4gConfigurationFileWriter {
 
 		writeParentEventBus();
 
-		if ( configuration.getChildModules().size() > 0 ) {
-			writeChildModules();
-		}
+		writeChildModules();
 
 		writeHistoryConnection();
 
@@ -207,108 +205,151 @@ public class Mvp4gConfigurationFileWriter {
 
 	private void writeChildModules() {
 
-		sourceWriter
-				.println( "public java.util.Map<Class<? extends Mvp4gModule>, Mvp4gModule> modules = new java.util.HashMap<Class<? extends Mvp4gModule>, Mvp4gModule>();" );
-		sourceWriter.println();
+		Set<ChildModuleElement> children = configuration.getChildModules();
 
-		String moduleClassName = null;
-		EventElement event = null;
-		Set<EventElement> events = configuration.getEvents();
+		boolean hasChildren = ( children.size() > 0 );
+		if ( hasChildren ) {
 
-		ChildModulesElement loadConfig = configuration.getLoadChildConfig();
-		String errorEvent, beforeEvent, afterEvent;
-		boolean isError, isBefore, isAfter;
+			sourceWriter
+					.println( "public java.util.Map<String, Mvp4gModule> modules = new java.util.HashMap<String, Mvp4gModule>();" );
+			sourceWriter.println();
 
-		if ( loadConfig == null ) {
-			errorEvent = null;
-			beforeEvent = null;
-			afterEvent = null;
-			isError = false;
-			isBefore = false;
-			isAfter = false;
-		} else {
-			errorEvent = loadConfig.getErrorEvent();
-			beforeEvent = loadConfig.getBeforeEvent();
-			afterEvent = loadConfig.getAfterEvent();
-			isError = ( errorEvent != null ) && ( errorEvent.length() > 0 );
-			isBefore = ( beforeEvent != null ) && ( beforeEvent.length() > 0 );
-			isAfter = ( afterEvent != null ) && ( afterEvent.length() > 0 );
-		}
+			String moduleClassName = null;
+			EventElement event = null;
+			Set<EventElement> events = configuration.getEvents();
 
-		String formError = null;
-		if ( isError ) {
-			String[] params = getElement( errorEvent, configuration.getEvents() ).getEventObjectClass();
-			if ( ( params != null ) && ( params.length > 0 ) ) {
-				formError = "reason";
+			ChildModulesElement loadConfig = configuration.getLoadChildConfig();
+			String errorEvent, beforeEvent, afterEvent;
+			boolean isError, isBefore, isAfter;
+
+			if ( loadConfig == null ) {
+				errorEvent = null;
+				beforeEvent = null;
+				afterEvent = null;
+				isError = false;
+				isBefore = false;
+				isAfter = false;
+			} else {
+				errorEvent = loadConfig.getErrorEvent();
+				beforeEvent = loadConfig.getBeforeEvent();
+				afterEvent = loadConfig.getAfterEvent();
+				isError = ( errorEvent != null ) && ( errorEvent.length() > 0 );
+				isBefore = ( beforeEvent != null ) && ( beforeEvent.length() > 0 );
+				isAfter = ( afterEvent != null ) && ( afterEvent.length() > 0 );
 			}
-		}
-		boolean isAsync = true;
-		boolean isAsyncEnabled = configuration.isAsyncEnabled();
-		for ( ChildModuleElement module : configuration.getChildModules() ) {
-			moduleClassName = module.getClassName();
-			isAsync = module.isAsync() && isAsyncEnabled;
-			sourceWriter.print( "private void load" );
-			sourceWriter.print( module.getName() );
-			sourceWriter.println( "(final Mvp4gEventPasser passer){" );
-			sourceWriter.indent();
-			if ( isAsync ) {
-				if ( isBefore ) {
-					writeDispatchEvent( beforeEvent, null );
+
+			String formError = null;
+			if ( isError ) {
+				String[] params = getElement( errorEvent, configuration.getEvents() ).getEventObjectClass();
+				if ( ( params != null ) && ( params.length > 0 ) ) {
+					formError = "reason";
 				}
-				sourceWriter.println( "GWT.runAsync(new com.google.gwt.core.client.RunAsyncCallback() {" );
+			}
+			boolean isAsync = true;
+			boolean isAsyncEnabled = configuration.isAsyncEnabled();
+			for ( ChildModuleElement module : children ) {
+				moduleClassName = module.getClassName();
+				isAsync = module.isAsync() && isAsyncEnabled;
+				sourceWriter.print( "private void load" );
+				sourceWriter.print( module.getName() );
+				sourceWriter.println( "(final Mvp4gEventPasser passer){" );
 				sourceWriter.indent();
-				sourceWriter.println( "public void onSuccess() {" );
-				sourceWriter.indent();
-				if ( isAfter ) {
-					writeDispatchEvent( afterEvent, null );
-				}
-			}
-			sourceWriter.print( moduleClassName );
-			sourceWriter.print( " newModule = (" );
-			sourceWriter.print( moduleClassName );
-			sourceWriter.print( ") modules.get(" );
-			sourceWriter.print( moduleClassName );
-			sourceWriter.println( ".class);" );
-			sourceWriter.println( "if(newModule == null){" );
-			sourceWriter.indent();
-			sourceWriter.print( "newModule = GWT.create(" );
-			sourceWriter.print( moduleClassName );
-			sourceWriter.println( ".class);" );
-			sourceWriter.print( "modules.put(" );
-			sourceWriter.print( moduleClassName );
-			sourceWriter.println( ".class, newModule);" );
-			sourceWriter.println( "newModule.setParentModule(itself);" );
-			sourceWriter.println( "newModule.createAndStartModule();" );
-			sourceWriter.outdent();
-			sourceWriter.println( "}" );
-
-			sourceWriter.println( "newModule.onForward();" );
-
-			if ( module.isAutoDisplay() ) {
-				event = getElement( module.getEventToDisplayView(), events );
-				writeDispatchEvent( event.getType(), "(" + event.getEventObjectClass()[0] + ") newModule.getStartView()" );
-			}
-
-			sourceWriter.println( "if(passer != null) passer.pass(newModule);" );
-			if ( isAsync ) {
-				sourceWriter.outdent();
-				sourceWriter.println( "}" );
-				sourceWriter.println( "public void onFailure(Throwable reason) {" );
-				if ( isAfter ) {
-					writeDispatchEvent( afterEvent, null );
-				}
-				if ( isError ) {
+				if ( isAsync ) {
+					if ( isBefore ) {
+						writeDispatchEvent( beforeEvent, null );
+					}
+					sourceWriter.println( "GWT.runAsync(new com.google.gwt.core.client.RunAsyncCallback() {" );
 					sourceWriter.indent();
-					writeDispatchEvent( errorEvent, formError );
-					sourceWriter.outdent();
+					sourceWriter.println( "public void onSuccess() {" );
+					sourceWriter.indent();
+					if ( isAfter ) {
+						writeDispatchEvent( afterEvent, null );
+					}
 				}
-				sourceWriter.println( "}" );
+				sourceWriter.print( moduleClassName );
+				sourceWriter.print( " newModule = (" );
+				sourceWriter.print( moduleClassName );
+				sourceWriter.print( ") modules.get(\"" );
+				sourceWriter.print( moduleClassName );
+				sourceWriter.println( "\");" );
+				sourceWriter.println( "if(newModule == null){" );
+				sourceWriter.indent();
+				sourceWriter.print( "newModule = GWT.create(" );
+				sourceWriter.print( moduleClassName );
+				sourceWriter.println( ".class);" );
+				sourceWriter.print( "modules.put(\"" );
+				sourceWriter.print( moduleClassName );
+				sourceWriter.println( "\", newModule);" );
+				sourceWriter.println( "newModule.setParentModule(itself);" );
+				sourceWriter.println( "newModule.createAndStartModule();" );
 				sourceWriter.outdent();
-				sourceWriter.println( "});" );
+				sourceWriter.println( "}" );
+
+				sourceWriter.println( "newModule.onForward();" );
+
+				if ( module.isAutoDisplay() ) {
+					event = getElement( module.getEventToDisplayView(), events );
+					writeDispatchEvent( event.getType(), "(" + event.getEventObjectClass()[0] + ") newModule.getStartView()" );
+				}
+
+				sourceWriter.println( "if(passer != null) passer.pass(newModule);" );
+				if ( isAsync ) {
+					sourceWriter.outdent();
+					sourceWriter.println( "}" );
+					sourceWriter.println( "public void onFailure(Throwable reason) {" );
+					if ( isAfter ) {
+						writeDispatchEvent( afterEvent, null );
+					}
+					if ( isError ) {
+						sourceWriter.indent();
+						writeDispatchEvent( errorEvent, formError );
+						sourceWriter.outdent();
+					}
+					sourceWriter.println( "}" );
+					sourceWriter.outdent();
+					sourceWriter.println( "});" );
+				}
+				sourceWriter.outdent();
+				sourceWriter.println( "}" );
 			}
+		}
+		sourceWriter.println( "public void loadChildModule(String childModuleClassName, boolean passive, Mvp4gEventPasser passer){" );
+		sourceWriter.indent();
+		if ( hasChildren ) {
+			sourceWriter.println( "if (passive){" );
+			sourceWriter.indent();
+			sourceWriter.println( "Mvp4gModule childModule = modules.get(childModuleClassName);" );
+			sourceWriter.println( "if((childModule != null) && (passer != null)){" );
+			sourceWriter.indent();
+			sourceWriter.println( "passer.pass(childModule);" );
+			sourceWriter.outdent();
+			sourceWriter.println( "}" );
+			sourceWriter.outdent();
+			sourceWriter.println( "}" );
+
+			String childModuleClassName, childModuleName;
+			for ( ChildModuleElement childModule : configuration.getChildModules() ) {
+				childModuleName = childModule.getName();
+				childModuleClassName = childModule.getClassName();
+				sourceWriter.print( "else if(\"" );
+				sourceWriter.print( childModuleClassName );
+				sourceWriter.println( "\".equals(childModuleClassName)){" );
+				sourceWriter.indent();
+				sourceWriter.print( "load" );
+				sourceWriter.print( childModuleName );
+				sourceWriter.println( "(passer);" );
+				sourceWriter.outdent();
+				sourceWriter.println( "}" );
+			}
+			sourceWriter.println( "else {" );
+			sourceWriter.indent();
+			sourceWriter
+					.println( "throw new Mvp4gException( \"ChildModule \" + childModuleClassName + \" doesn't exist. Is this module a sibling module?\" );" );
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
 		}
+		sourceWriter.outdent();
+		sourceWriter.println( "}" );
 	}
 
 	private void writeEventBusClass() {
@@ -327,10 +368,10 @@ public class Mvp4gConfigurationFileWriter {
 		List<String> modules = configuration.getGinModule().getModules();
 		int modulesCount = modules.size() - 1;
 		for ( int i = 0; i < modulesCount; i++ ) {
-			sourceWriter.print( modules.get(i) );
+			sourceWriter.print( modules.get( i ) );
 			sourceWriter.print( ".class," );
 		}
-		sourceWriter.print( modules.get(modulesCount) );
+		sourceWriter.print( modules.get( modulesCount ) );
 		sourceWriter.println( ".class})" );
 
 		String moduleName = configuration.getModule().getQualifiedSourceName().replace( ".", "_" );
@@ -743,6 +784,7 @@ public class Mvp4gConfigurationFileWriter {
 			}
 
 			writeLoadChildModule( event, param );
+			writeLoadSiblingModule( event, param );
 			writeParentEvent( event, param );
 
 			if ( handlers != null ) {
@@ -1077,11 +1119,11 @@ public class Mvp4gConfigurationFileWriter {
 			if ( presenter.isMultiple() ) {
 				sourceWriter.print( "this.startPresenter = eventBus.addHandler(" );
 				sourceWriter.print( presenter.getClassName() );
-				sourceWriter.println( ".class);" );				
+				sourceWriter.println( ".class);" );
 			} else {
 				sourceWriter.print( "this.startPresenter = " );
 				sourceWriter.print( startPresenter );
-				sourceWriter.println( ";" );				
+				sourceWriter.println( ";" );
 			}
 			sourceWriter.println( "this.startView = startPresenter.getView();" );
 		}
@@ -1238,7 +1280,7 @@ public class Mvp4gConfigurationFileWriter {
 		Set<ChildModuleElement> modules = configuration.getChildModules();
 		String[] eventObjectClasses = null;
 		String eventObject = null;
-		List<String> modulesToLoad = event.getModulesToLoad();
+		List<String> modulesToLoad = event.getForwardToModules();
 		if ( modulesToLoad != null ) {
 			if ( passive ) {
 				sourceWriter.println( "Mvp4gModule module;" );
@@ -1252,9 +1294,9 @@ public class Mvp4gConfigurationFileWriter {
 
 				if ( passive ) {
 					eventObject = param;
-					sourceWriter.print( "module = modules.get(" );
+					sourceWriter.print( "module = modules.get(\"" );
 					sourceWriter.print( module.getClassName() );
-					sourceWriter.println( ".class);" );
+					sourceWriter.println( "\");" );
 					sourceWriter.println( "if(module != null){" );
 				} else {
 					if ( ( eventObjectClasses == null ) || ( eventObjectClasses.length == 0 ) ) {
@@ -1305,6 +1347,71 @@ public class Mvp4gConfigurationFileWriter {
 					sourceWriter.println( "});" );
 				}
 
+			}
+		}
+
+	}
+
+	private void writeLoadSiblingModule( EventElement event, String param ) {
+
+		String passive = Boolean.toString(event.isPassive());
+
+		List<String> siblingsToLoad = event.getSiblingsToLoad();
+		if ( ( siblingsToLoad != null ) && ( siblingsToLoad.size() > 0 ) ) {
+
+			String[] eventObjectClasses = event.getEventObjectClass();
+			String eventObject;
+			if ( ( eventObjectClasses == null ) || ( eventObjectClasses.length == 0 ) ) {
+				eventObject = null;
+			} else {
+				int nbParam = eventObjectClasses.length;
+				StringBuilder eventObjectBuilder = new StringBuilder( nbParam * 70 );
+
+				int i;
+				for ( i = 0; i < ( nbParam - 1 ); i++ ) {
+					eventObjectBuilder.append( "(" );
+					eventObjectBuilder.append( getAssociatedClass( eventObjectClasses[i] ) );
+					eventObjectBuilder.append( ") eventObjects[" );
+					eventObjectBuilder.append( i );
+					eventObjectBuilder.append( "]," );
+				}
+				eventObjectBuilder.append( "(" );
+				eventObjectBuilder.append( getAssociatedClass( eventObjectClasses[i] ) );
+				eventObjectBuilder.append( ") eventObjects[" );
+				eventObjectBuilder.append( i );
+				eventObjectBuilder.append( "]" );
+				eventObject = eventObjectBuilder.toString();
+			}
+			String eventBusClass;
+			for ( String moduleClassName : siblingsToLoad ) {
+				eventObjectClasses = event.getEventObjectClass();
+
+				eventBusClass = configuration.getOthersEventBusClassMap().get( moduleClassName ).getQualifiedSourceName();
+
+				sourceWriter.print( "parentModule.loadChildModule(\"" );
+				sourceWriter.print( moduleClassName );
+				sourceWriter.print( "\", " );
+				sourceWriter.print( passive );
+				sourceWriter.print( ", new Mvp4gEventPasser(" );
+				if ( param != null ) {
+					sourceWriter.print( "new Object[]{" );
+					sourceWriter.print( param );
+					sourceWriter.print( "}" );
+				}
+				sourceWriter.println( "){" );
+				sourceWriter.indent();
+				sourceWriter.println( "public void pass(Mvp4gModule module){" );
+
+				sourceWriter.indent();
+				sourceWriter.print( eventBusClass );
+				sourceWriter.print( " eventBus = (" );
+				sourceWriter.print( eventBusClass );
+				sourceWriter.print( ") module.getEventBus();" );
+				writeDispatchEvent( event.getType(), eventObject );
+				sourceWriter.outdent();
+				sourceWriter.println( "}" );
+				sourceWriter.outdent();
+				sourceWriter.println( "});" );
 			}
 		}
 

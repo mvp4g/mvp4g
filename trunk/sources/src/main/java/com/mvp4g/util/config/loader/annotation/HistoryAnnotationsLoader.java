@@ -21,7 +21,6 @@ import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.Mvp4gWithServicesElement;
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 
 /**
@@ -49,13 +48,9 @@ public class HistoryAnnotationsLoader extends Mvp4gAnnotationsWithServiceLoader<
 		String type = annotation.type().name();
 
 		HistoryConverterElement historyConverter = new HistoryConverterElement();
-		try {
-			historyConverter.setName( historyName );
-			historyConverter.setClassName( className );
-			historyConverter.setType( type );
-		} catch ( DuplicatePropertyNameException e ) {
-			//setters are only called once, so this error can't occur.
-		}
+		historyConverter.setName( historyName );
+		historyConverter.setClassName( className );
+		historyConverter.setType( type );
 
 		addElement( configuration.getHistoryConverters(), historyConverter, c, null );
 

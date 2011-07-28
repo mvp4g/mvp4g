@@ -17,8 +17,6 @@ package com.mvp4g.util.config.element;
 
 import java.util.List;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
-
 public class GinModuleElement extends Mvp4gElement {
 
 	public GinModuleElement() {
@@ -32,7 +30,7 @@ public class GinModuleElement extends Mvp4gElement {
 		return GIN_ELEMENT_ID;
 	}
 
-	public void setModules( String[] modules ) throws DuplicatePropertyNameException {
+	public void setModules( String[] modules ) {
 		setFlexibleValues( "modules", modules );
 	}
 
@@ -40,7 +38,7 @@ public class GinModuleElement extends Mvp4gElement {
 		return getFlexibleValues( "modules" );
 	}
 
-	public void setModuleProperties( String[] modules ) throws DuplicatePropertyNameException {
+	public void setModuleProperties( String[] modules ) {
 		setValues( "moduleProperties", modules );
 	}
 

@@ -6,8 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
-
 public class PresenterElementTest extends Mvp4gWithServicesElementTest {
 
 	private static final String[] properties = SimpleMvp4gElementTest.addProperties( new String[] { "view", "multiple" } );
@@ -28,7 +26,7 @@ public class PresenterElementTest extends Mvp4gWithServicesElementTest {
 	}
 
 	@Test
-	public void testInverseViewTrue() throws DuplicatePropertyNameException {
+	public void testInverseViewTrue() {
 		String test = "true";
 		PresenterElement presenterElement = (PresenterElement)element;
 		presenterElement.setInverseView( test );
@@ -37,7 +35,7 @@ public class PresenterElementTest extends Mvp4gWithServicesElementTest {
 	}
 
 	@Test
-	public void testInverseViewFalse() throws DuplicatePropertyNameException {
+	public void testInverseViewFalse() {
 		String test = "false";
 		PresenterElement presenterElement = (PresenterElement)element;
 		presenterElement.setInverseView( test );

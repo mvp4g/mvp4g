@@ -15,7 +15,6 @@
  */
 package com.mvp4g.util.config.element;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 /**
  * An Mvp4g History configuration element.</p>
@@ -46,7 +45,7 @@ public class HistoryElement extends Mvp4gElement {
 		return HISTORY_ELEMENT_ID;
 	}
 
-	public void setPlaceServiceClass( String placeServiceClass ) throws DuplicatePropertyNameException {
+	public void setPlaceServiceClass( String placeServiceClass ) {
 		setProperty( "placeServiceClass", placeServiceClass );
 	}
 
@@ -54,7 +53,7 @@ public class HistoryElement extends Mvp4gElement {
 		return getProperty( "placeServiceClass" );
 	}
 	
-	public void setInitEvent( String initEvent ) throws DuplicatePropertyNameException {
+	public void setInitEvent( String initEvent ) {
 		setProperty( "initEvent", initEvent );
 	}
 	
@@ -62,7 +61,7 @@ public class HistoryElement extends Mvp4gElement {
 		return getProperty( "initEvent" );
 	}
 
-	public void setNotFoundEvent( String notFoundEvent ) throws DuplicatePropertyNameException {
+	public void setNotFoundEvent( String notFoundEvent ) {
 		setProperty( "notFoundEvent", notFoundEvent );
 	}
 

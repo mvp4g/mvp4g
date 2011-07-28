@@ -135,7 +135,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 		p.addStyleName( "selected" );
 	}
 
-	public void displayAlertMessage( String message ) {
+	public void alert( String message ) {
 		Window.alert( message );
 	}
 

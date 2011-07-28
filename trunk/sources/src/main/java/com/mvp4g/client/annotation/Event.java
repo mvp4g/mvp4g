@@ -84,7 +84,7 @@ public @interface Event {
 
 	String[] handlerNames() default {};
 
-	Class<? extends Mvp4gModule>[] modulesToLoad() default {};
+	Class<? extends Mvp4gModule>[] forwardToModules() default {};
 
 	boolean forwardToParent() default false;
 

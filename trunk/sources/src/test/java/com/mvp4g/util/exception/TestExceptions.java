@@ -8,13 +8,12 @@ import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.presenter.PresenterInterface;
 import com.mvp4g.util.config.element.PresenterElement;
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 
 public class TestExceptions {
 
 	@Test
-	public void testInvalidClassException() throws DuplicatePropertyNameException {
+	public void testInvalidClassException() {
 
 		PresenterElement p = new PresenterElement();
 		p.setName( "name" );
@@ -32,7 +31,7 @@ public class TestExceptions {
 	}
 
 	@Test
-	public void testInvalidTypeException() throws DuplicatePropertyNameException {
+	public void testInvalidTypeException() {
 
 		PresenterElement p = new PresenterElement();
 		p.setName( "name" );
@@ -52,7 +51,7 @@ public class TestExceptions {
 	}
 
 	@Test
-	public void testNotFoundClassException() throws DuplicatePropertyNameException {
+	public void testNotFoundClassException() {
 
 		PresenterElement p = new PresenterElement();
 		p.setName( "name" );
@@ -66,7 +65,7 @@ public class TestExceptions {
 	}
 
 	@Test
-	public void testUnknownConfigurationElementException() throws DuplicatePropertyNameException {
+	public void testUnknownConfigurationElementException() {
 
 		PresenterElement p = new PresenterElement();
 		p.setName( "name" );
@@ -74,12 +73,6 @@ public class TestExceptions {
 
 		UnknownConfigurationElementException e = new UnknownConfigurationElementException( p, "test" );
 		assertEquals( "presenter name: Encountered a reference to unknown element 'test'", e.getMessage() );
-	}
-
-	@Test
-	public void testDuplicatePropertyNameException() {
-		DuplicatePropertyNameException e = new DuplicatePropertyNameException( "test" );
-		assertEquals( "Duplicate attributes 'test'", e.getMessage() );
 	}
 
 	@Test

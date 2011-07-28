@@ -5,21 +5,19 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.List;
 
 import org.junit.Test;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
-
 public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 
 	private static final String[] properties = { "calledMethod", "type", "history", "forwardToParent", "name" };
 	private static final String[] values = { "eventObjectClass", "generate" };
+	private static final String[] flexibleValues = { "siblingsToLoad" }; 
 
 	@Test
-	public void testGetCalledMethod() throws DuplicatePropertyNameException {
+	public void testGetCalledMethod() {
 		element.setType( "display" );
 		assertEquals( "onDisplay", element.getCalledMethod() );
 		element.setCalledMethod( "onDisplayCalled" );
@@ -27,26 +25,26 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 	}
 
 	@Test
-	public void testGetCalledMethodOneCharacter() throws DuplicatePropertyNameException {
+	public void testGetCalledMethodOneCharacter() {
 		element.setType( "o" );
 		assertEquals( "onO", element.getCalledMethod() );
 	}
 
 	@Test
-	public void testHasHistory() throws DuplicatePropertyNameException {
+	public void testHasHistory() {
 		assertFalse( element.hasHistory() );
 		element.setHistory( "converter" );
 		assertTrue( element.hasHistory() );
 	}
 
 	@Test
-	public void testToString() throws DuplicatePropertyNameException {
+	public void testToString() {
 		element.setType( "type" );
 		assertEquals( "[type]", element.toString() );
 	}
 
 	@Test
-	public void testIsAsyncPath() throws DuplicatePropertyNameException {
+	public void testIsAsyncPath() {
 		EventElement childModuleElement = new EventElement();
 		assertFalse( childModuleElement.hasForwardToParent() );
 		childModuleElement.setForwardToParent( "true" );
@@ -62,7 +60,7 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 	}
 
 	@Test
-	public void testActivateSetterGetter() throws DuplicatePropertyNameException {
+	public void testActivateSetterGetter() {
 		EventElement element = newElement();
 		assertNull( element.getActivate() );
 		assertNull( element.getValues( "activate" ) );
@@ -84,23 +82,10 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 		}
 		assertNull( element.getValues( "activate" ) );
 
-		try {
-			element.setActivate( test );
-			fail();
-		} catch ( DuplicatePropertyNameException e ) {
-
-		}
-
-		try {
-			element.setValues( "activate", test );
-			fail();
-		} catch ( DuplicatePropertyNameException e ) {
-
-		}
 	}
 
 	@Test
-	public void testDeactivateSetterGetter() throws DuplicatePropertyNameException {
+	public void testDeactivateSetterGetter() {
 		assertNull( element.getDeactivate() );
 		assertNull( element.getValues( "deactivate" ) );
 		String[] test = { "test1", "test2" };
@@ -120,24 +105,10 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 			assertSame( test[i], deactivate.get( i ) );
 		}
 		assertNull( element.getValues( "deactivate" ) );
-
-		try {
-			element.setDeactivate( test );
-			fail();
-		} catch ( DuplicatePropertyNameException e ) {
-
-		}
-
-		try {
-			element.setValues( "deactivate", test );
-			fail();
-		} catch ( DuplicatePropertyNameException e ) {
-
-		}
 	}
-	
+
 	@Test
-	public void testHandlersGetter() throws DuplicatePropertyNameException {
+	public void testHandlersGetter() {
 		assertNull( element.getHandlers() );
 		assertNull( element.getValues( "handlers" ) );
 		String[] test = { "test1", "test2" };
@@ -157,68 +128,40 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 			assertSame( test[i], handlers.get( i ) );
 		}
 		assertNull( element.getValues( "handlers" ) );
-
-		try {
-			element.setHandlers( test );
-			fail();
-		} catch ( DuplicatePropertyNameException e ) {
-
-		}
-
-		try {
-			element.setValues( "handlers", test );
-			fail();
-		} catch ( DuplicatePropertyNameException e ) {
-
-		}
 	}
-	
+
 	@Test
-	public void testModulesToLoadGetter() throws DuplicatePropertyNameException {
-		assertNull( element.getModulesToLoad() );
-		assertNull( element.getValues( "modulesToLoad" ) );
+	public void testModulesToLoadGetter() {
+		assertNull( element.getForwardToModules() );
+		assertNull( element.getValues( "forwardToModules" ) );
 		String[] test = { "test1", "test2" };
-		element.setModulesToLoad( test );
-		List<String> modulesToLoad = element.getModulesToLoad();
+		element.setForwardToModules( test );
+		List<String> modulesToLoad = element.getForwardToModules();
 		assertTrue( test.length == modulesToLoad.size() );
 		for ( int i = 0; i < test.length; i++ ) {
 			assertSame( test[i], modulesToLoad.get( i ) );
 		}
-		assertNull( element.getValues( "modulesToLoad" ) );
+		assertNull( element.getValues( "forwardToModules" ) );
 
 		element = newElement();
-		element.setValues( "modulesToLoad", test );
-		modulesToLoad = element.getModulesToLoad();
+		element.setValues( "forwardToModules", test );
+		modulesToLoad = element.getForwardToModules();
 		assertTrue( test.length == modulesToLoad.size() );
 		for ( int i = 0; i < test.length; i++ ) {
 			assertSame( test[i], modulesToLoad.get( i ) );
 		}
-		assertNull( element.getValues( "modulesToLoad" ) );
-
-		try {
-			element.setModulesToLoad( test );
-			fail();
-		} catch ( DuplicatePropertyNameException e ) {
-
-		}
-
-		try {
-			element.setValues( "modulesToLoad", test );
-			fail();
-		} catch ( DuplicatePropertyNameException e ) {
-
-		}
-	}	
+		assertNull( element.getValues( "forwardToModules" ) );
+	}
 
 	@Test
-	public void testDefaultHistoryName() throws DuplicatePropertyNameException {
+	public void testDefaultHistoryName() {
 		String test = "test";
 		element.setType( test );
 		assertEquals( test, element.getName() );
 	}
 
 	@Test
-	public void testNavigationEventTrue() throws DuplicatePropertyNameException {
+	public void testNavigationEventTrue() {
 		String test = "true";
 		element.setNavigationEvent( test );
 		assertEquals( test, element.getNavigationEvent() );
@@ -226,7 +169,7 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 	}
 
 	@Test
-	public void testNavigationEventFalse() throws DuplicatePropertyNameException {
+	public void testNavigationEventFalse() {
 		String test = "false";
 		element.setNavigationEvent( test );
 		assertEquals( test, element.getNavigationEvent() );
@@ -234,7 +177,7 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 	}
 
 	@Test
-	public void testWithTokenGenerationTrue() throws DuplicatePropertyNameException {
+	public void testWithTokenGenerationTrue() {
 		String test = "true";
 		element.setWithTokenGeneration( test );
 		assertEquals( test, element.getWithTokenGeneration() );
@@ -242,7 +185,7 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 	}
 
 	@Test
-	public void testWithTokenGenerationFalse() throws DuplicatePropertyNameException {
+	public void testWithTokenGenerationFalse() {
 		String test = "false";
 		element.setWithTokenGeneration( test );
 		assertEquals( test, element.getWithTokenGeneration() );
@@ -250,7 +193,7 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 	}
 
 	@Test
-	public void testTokenGenerationFromParentTrue() throws DuplicatePropertyNameException {
+	public void testTokenGenerationFromParentTrue() {
 		String test = "true";
 		element.setTokenGenerationFromParent( test );
 		assertEquals( test, element.getTokenGenerationFromParent() );
@@ -258,7 +201,7 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 	}
 
 	@Test
-	public void testTokenGenerationFromParentFalse() throws DuplicatePropertyNameException {
+	public void testTokenGenerationFromParentFalse() {
 		String test = "false";
 		element.setTokenGenerationFromParent( test );
 		assertEquals( test, element.getTokenGenerationFromParent() );
@@ -266,7 +209,7 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 	}
 
 	@Test
-	public void testPassiveTrue() throws DuplicatePropertyNameException {
+	public void testPassiveTrue() {
 		String test = "true";
 		element.setPassive( test );
 		assertEquals( test, element.getPassive() );
@@ -274,7 +217,7 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 	}
 
 	@Test
-	public void testPassiveFalse() throws DuplicatePropertyNameException {
+	public void testPassiveFalse() {
 		String test = "false";
 		element.setPassive( test );
 		assertEquals( test, element.getPassive() );
@@ -294,6 +237,11 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 	@Override
 	protected String[] getValues() {
 		return values;
+	}
+	
+	@Override
+	protected String[] getFlexibleValues() {
+		return flexibleValues;
 	}
 
 	@Override

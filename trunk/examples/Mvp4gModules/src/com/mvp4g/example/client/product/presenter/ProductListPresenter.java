@@ -28,6 +28,12 @@ public class ProductListPresenter extends LazyPresenter<ProductListPresenter.Pro
 	public interface ProductListViewInterface extends LazyView, IsWidget {
 		HasClickHandlers getCreateButton();
 
+		HasClickHandlers getCompanyButton();
+
+		HasClickHandlers getInfoButton();
+
+		HasClickHandlers getPassiveInfoButton();
+
 		HasClickHandlers[] addProduct( String product, int row );
 
 		void removeProduct( int row );
@@ -43,6 +49,30 @@ public class ProductListPresenter extends LazyPresenter<ProductListPresenter.Pro
 
 			public void onClick( ClickEvent event ) {
 				eventBus.goToCreation();
+			}
+
+		} );
+		view.getCompanyButton().addClickHandler( new ClickHandler() {
+
+			@Override
+			public void onClick( ClickEvent event ) {
+				eventBus.goToCompanyFromProduct( "Coming from Product" );
+			}
+
+		} );
+		view.getInfoButton().addClickHandler( new ClickHandler() {
+
+			@Override
+			public void onClick( ClickEvent event ) {
+				eventBus.broadcastInfoFromProduct( "Coming from Product" );
+			}
+
+		} );
+		view.getPassiveInfoButton().addClickHandler( new ClickHandler() {
+
+			@Override
+			public void onClick( ClickEvent event ) {
+				eventBus.broadcastInfoFromProductPassive("Coming from Product" );
 			}
 
 		} );

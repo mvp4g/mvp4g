@@ -4,14 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
-
 public class SimpleMvp4gElementTest extends AbstractMvp4gElementTest<SimpleMvp4gElement> {
 
 	protected static final String[] properties = { "name" };
 
 	@Test
-	public void testSetClassName() throws DuplicatePropertyNameException {
+	public void testSetClassName() {
 
 		String className = "Test";
 
@@ -20,7 +18,7 @@ public class SimpleMvp4gElementTest extends AbstractMvp4gElementTest<SimpleMvp4g
 	}
 
 	@Test
-	public void testGetClassName() throws DuplicatePropertyNameException {
+	public void testGetClassName() {
 
 		String packageName = "com.test";
 		String className = "Test";
@@ -31,7 +29,7 @@ public class SimpleMvp4gElementTest extends AbstractMvp4gElementTest<SimpleMvp4g
 	}
 
 	@Test
-	public void testToString() throws DuplicatePropertyNameException {
+	public void testToString() {
 		String name = "test";
 		String className = "com.test.Test";
 

@@ -16,7 +16,6 @@
 package com.mvp4g.util.config.element;
 
 import com.mvp4g.client.annotation.History.HistoryConverterType;
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 /**
  * An Mvp4g History converter configuration element.</p>
@@ -29,7 +28,7 @@ public class HistoryConverterElement extends Mvp4gWithServicesElement {
 		super( "historyConverter" );
 	}
 
-	public void setType( String type ) throws DuplicatePropertyNameException {
+	public void setType( String type ) {
 		setProperty( "type", type );
 	}
 

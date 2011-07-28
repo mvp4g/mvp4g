@@ -107,4 +107,8 @@ public class Mvp4gModuleStub implements Mvp4gModule {
 		
 	}
 
+	public void loadChildModule( String childModuleName, boolean passive, Mvp4gEventPasser passer ) {
+		// TODO Auto-generated method stub		
+	}
+
 }

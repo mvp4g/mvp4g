@@ -15,7 +15,6 @@
  */
 package com.mvp4g.util.config.element;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 /**
  * @author javier
@@ -34,7 +33,7 @@ public class StartElement extends Mvp4gElement {
 		return START_ELEMENT_ID;
 	}
 
-	public void setPresenter( String presenter ) throws DuplicatePropertyNameException {
+	public void setPresenter( String presenter ) {
 		setProperty( "presenter", presenter );
 	}
 
@@ -42,7 +41,7 @@ public class StartElement extends Mvp4gElement {
 		return getProperty( "presenter" );
 	}
 
-	public void setEventType( String eventType ) throws DuplicatePropertyNameException {
+	public void setEventType( String eventType ) {
 		setProperty( "eventType", eventType );
 	}
 
@@ -54,7 +53,7 @@ public class StartElement extends Mvp4gElement {
 		return getEventType() != null;
 	}
 
-	public void setHistory( String history ) throws DuplicatePropertyNameException {
+	public void setHistory( String history ) {
 		setProperty( "history", history );
 	}
 
@@ -66,7 +65,7 @@ public class StartElement extends Mvp4gElement {
 		return Boolean.TRUE.toString().equalsIgnoreCase( getHistory() );
 	}
 	
-	public void setForwardEventType( String forwardEventType ) throws DuplicatePropertyNameException {
+	public void setForwardEventType( String forwardEventType ) {
 		setProperty( "forwardEventType", forwardEventType );
 	}
 	

@@ -44,7 +44,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
 		HasClickHandlers getClearHistoryButton();
 
-		void displayAlertMessage( String message );
+		void alert( String message );
 
 		int getStartIndex();
 
@@ -150,7 +150,15 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 	}
 
 	public void onClearHistory() {
-		view.displayAlertMessage( "History has been cleared" );
+		view.alert( "History has been cleared" );
+	}
+	
+	public void onBroadcastInfoFromProduct(String info){
+		view.alert( "Main Info from product: " + info );
+	}
+	
+	public void onBroadcastInfoFromProductPassive(String info){
+		view.alert( "Main Info from passive product: " + info );
 	}
 
 	public boolean isActivated( boolean passive, String eventName, Object... parameters ) {
