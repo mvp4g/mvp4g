@@ -2,6 +2,7 @@ package com.mvp4g.example.client.main;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
@@ -34,11 +35,11 @@ import com.mvp4g.example.client.util.HasBeenThereHandler;
 public interface MainEventBus extends EventBusWithLookup {
 
 	/* Navigation events */
-	@Event( modulesToLoad = CompanyModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, name = "companies", navigationEvent = true )
+	@Event( forwardToModules = CompanyModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, name = "companies", navigationEvent = true )
 	void goToCompany( int start, int end );
 
 	//use Integer instead of int here just to test passing object, in real project, you should have int
-	@Event( modulesToLoad = ProductModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, navigationEvent = true )
+	@Event( forwardToModules = ProductModule.class, historyConverter = MenuHistoryConverter.class, handlers = MainPresenter.class, navigationEvent = true )
 	String goToProduct( Integer start, Integer end );
 
 	/* Business events */
@@ -80,5 +81,11 @@ public interface MainEventBus extends EventBusWithLookup {
 	//this event is just here to validate array
 	@Event( broadcastTo = HasBeenThereHandler.class, passive = true, generate = InfoReceiverPresenter.class )
 	void broadcastInfo( String[] info );
+	
+	@Event( handlers = MainPresenter.class )
+	void broadcastInfoFromProduct(String info);
+	
+	@Event( handlers = MainPresenter.class )
+	void broadcastInfoFromProductPassive(String info);
 
 }

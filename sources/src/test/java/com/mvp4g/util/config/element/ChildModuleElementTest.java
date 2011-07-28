@@ -9,16 +9,15 @@ import org.junit.Test;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.dev.javac.typemodel.TypeOracleStub;
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 import com.mvp4g.util.test_tools.annotation.events.EventBusOk;
 
 public class ChildModuleElementTest extends SimpleMvp4gElementTest {
 
 	private static final String[] properties = SimpleMvp4gElementTest.addProperties( new String[] { "eventToDisplayView", "async", "autoDisplay",
-			"historyName" } );
+			"historyName", "parentModuleClass" } );
 
 	@Test
-	public void testIsAsyncPath() throws DuplicatePropertyNameException {
+	public void testIsAsyncPath() {
 		ChildModuleElement childModuleElement = new ChildModuleElement();
 		assertTrue( childModuleElement.isAsync() );
 		childModuleElement.setAsync( "true" );
@@ -34,7 +33,7 @@ public class ChildModuleElementTest extends SimpleMvp4gElementTest {
 	}
 
 	@Test
-	public void testIsAutoLoadPath() throws DuplicatePropertyNameException {
+	public void testIsAutoLoadPath() {
 		ChildModuleElement childModuleElement = new ChildModuleElement();
 		assertTrue( childModuleElement.isAutoDisplay() );
 		childModuleElement.setAutoDisplay( "true" );
@@ -48,12 +47,12 @@ public class ChildModuleElementTest extends SimpleMvp4gElementTest {
 		childModuleElement.setAutoDisplay( "123" );
 		assertFalse( childModuleElement.isAutoDisplay() );
 	}
-	
+
 	@Test
-	public void testParentEventBus() throws DuplicatePropertyNameException {
+	public void testParentEventBus() {
 		ChildModuleElement childModuleElement = new ChildModuleElement();
 		assertNull( childModuleElement.getParentEventBus() );
-		
+
 		JClassType parentEventBus = new TypeOracleStub().addClass( EventBusOk.class );
 		childModuleElement.setParentEventBus( parentEventBus );
 

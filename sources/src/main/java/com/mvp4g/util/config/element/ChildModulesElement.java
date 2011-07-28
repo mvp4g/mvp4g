@@ -15,7 +15,6 @@
  */
 package com.mvp4g.util.config.element;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 public class ChildModulesElement extends Mvp4gElement {
 
@@ -30,7 +29,7 @@ public class ChildModulesElement extends Mvp4gElement {
 		return LOAD_MODULE_ELEMENT_ID;
 	}
 
-	public void setErrorEvent( String errorEvent ) throws DuplicatePropertyNameException {
+	public void setErrorEvent( String errorEvent ) {
 		setProperty( "errorEvent", errorEvent );
 	}
 
@@ -38,7 +37,7 @@ public class ChildModulesElement extends Mvp4gElement {
 		return getProperty( "errorEvent" );
 	}
 
-	public void setBeforeEvent( String beforeEvent ) throws DuplicatePropertyNameException {
+	public void setBeforeEvent( String beforeEvent ) {
 		setProperty( "beforeEvent", beforeEvent );
 	}
 
@@ -46,7 +45,7 @@ public class ChildModulesElement extends Mvp4gElement {
 		return getProperty( "beforeEvent" );
 	}
 
-	public void setAfterEvent( String afterEvent ) throws DuplicatePropertyNameException {
+	public void setAfterEvent( String afterEvent ) {
 		setProperty( "afterEvent", afterEvent );
 	}
 

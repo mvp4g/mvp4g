@@ -28,6 +28,7 @@ import com.google.gwt.core.ext.BadPropertyValueException;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.PropertyOracle;
 import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JGenericType;
 import com.google.gwt.core.ext.typeinfo.JMethod;
@@ -81,7 +82,6 @@ import com.mvp4g.util.exception.InvalidTypeException;
 import com.mvp4g.util.exception.NonUniqueIdentifierException;
 import com.mvp4g.util.exception.NotFoundClassException;
 import com.mvp4g.util.exception.UnknownConfigurationElementException;
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 
 /**
@@ -122,6 +122,9 @@ public class Mvp4gConfiguration {
 
 	private static final String GENERATE_NOT_MULTIPLE = "Event %s: you can generate only multiple handlers. Did you forget to set the attribute multiple to true for %s?";
 
+	private static final String CHILD_MODULE_NOT_USED = "Module %s: the child module %s is not loaded by any of the event of this module. You should remove it if it is not used by another child module (ie used for sibling communication).";
+	private static final String UNKNOWN_MODULE = "Event %s: No instance of %s has been found. Is this module a child module, a parent module or a silbling module? If it's supposed to be a child module, have you forgotten to add it to @ChildModules of your event bus interface?";
+
 	private Set<PresenterElement> presenters = new HashSet<PresenterElement>();
 	private Set<EventHandlerElement> eventHandlers = new HashSet<EventHandlerElement>();
 	private Set<ViewElement> views = new HashSet<ViewElement>();
@@ -135,7 +138,9 @@ public class Mvp4gConfiguration {
 	private EventBusElement eventBus = null;
 	private JClassType module = null;
 	private ChildModulesElement loadChildConfig = null;
+	//associate a module class name with its event bus type
 	private Map<String, JClassType> othersEventBusClassMap = new HashMap<String, JClassType>();
+	//associate a module class name with its parent
 	private Map<String, ChildModuleElement> moduleParentEventBusClassMap = new HashMap<String, ChildModuleElement>();
 	private JClassType parentEventBus = null;
 	private String historyName = null;
@@ -162,6 +167,16 @@ public class Mvp4gConfiguration {
 	}
 
 	/**
+	 * For test purpose only
+	 * 
+	 * @param logger
+	 *            logger to set
+	 */
+	void setLogger( TreeLogger logger ) {
+		this.logger = logger;
+	}
+
+	/**
 	 * Loads all Mvp4g elements from an in-memory representation of the annotations.</p>
 	 * 
 	 * Configuration loading comprises up to three phases:
@@ -184,7 +199,8 @@ public class Mvp4gConfiguration {
 	 *             this exception is thrown where a configuration error occurs.
 	 * 
 	 */
-	public String[] load( JClassType module, Map<Class<? extends Annotation>, List<JClassType>> scanResult ) throws InvalidMvp4gConfigurationException {
+	public String[] load( JClassType module, Map<Class<? extends Annotation>, List<JClassType>> scanResult )
+			throws InvalidMvp4gConfigurationException {
 
 		this.module = module;
 
@@ -208,13 +224,13 @@ public class Mvp4gConfiguration {
 		validateHistoryConverters();
 		validateViews();
 		validateServices();
-		validateEvents();
 		validateHistory();
 		validateChildModules();
+		validateEvents();
 		validateDebug();
 		String[] propertiesValues = validateGinModule();
 		validateStart();
-		
+
 		return propertiesValues;
 	}
 
@@ -594,11 +610,7 @@ public class Mvp4gConfiguration {
 				if ( isRootModule() || !checkIfParentEventReturnsString( event ) ) {
 					throw new InvalidMvp4gConfigurationException( String.format( TOKEN_WITH_NO_CONVERTER, event.getType() ) );
 				} else {
-					try {
-						event.setTokenGenerationFromParent( Boolean.toString( Boolean.TRUE ) );
-					} catch ( DuplicatePropertyNameException e ) {
-						//nothing to do
-					}
+					event.setTokenGenerationFromParent( Boolean.toString( Boolean.TRUE ) );
 				}
 			} else if ( event.getName() != event.getType() ) {
 				throw new InvalidMvp4gConfigurationException( String.format( NAME_WITH_NO_CONVERTER, event.getType() ) );
@@ -740,12 +752,8 @@ public class Mvp4gConfiguration {
 			}
 			if ( generates != null ) {
 				if ( handlers == null ) {
-					try {
-						event.setHandlers( new String[0] );
-						handlers = event.getHandlers();
-					} catch ( DuplicatePropertyNameException e ) {
-						//should never occur
-					}
+					event.setHandlers( new String[0] );
+					handlers = event.getHandlers();
 				}
 
 				for ( String generate : generates ) {
@@ -817,11 +825,8 @@ public class Mvp4gConfiguration {
 							if ( !presenterType.isAssignableTo( presenterParam ) ) {
 								throw new InvalidTypeException( view, "Presenter", presenter.getClassName(), presenterParam.getQualifiedSourceName() );
 							}
-							try {
-								presenter.setInverseView( Boolean.TRUE.toString() );
-							} catch ( DuplicatePropertyNameException e ) {
-								//called only once
-							}
+							presenter.setInverseView( Boolean.TRUE.toString() );
+
 						}
 
 						if ( !presenter.isMultiple() ) {
@@ -1023,7 +1028,7 @@ public class Mvp4gConfiguration {
 		String broadcast;
 		JClassType type;
 		for ( EventElement event : events ) {
-			modulesToLoad = event.getModulesToLoad();
+			modulesToLoad = event.getForwardToModules();
 			broadcast = event.getBroadcastTo();
 			if ( modulesToLoad != null ) {
 				for ( String childModule : modulesToLoad ) {
@@ -1049,7 +1054,6 @@ public class Mvp4gConfiguration {
 		JClassType moduleSuperClass = getType( null, Mvp4gModule.class.getCanonicalName() );
 		JClassType moduleType = null;
 
-		Set<ChildModuleElement> toRemove = new HashSet<ChildModuleElement>();
 		String eventName = null;
 		EventElement eventElt = null;
 		String[] eventObjClasses = null;
@@ -1098,19 +1102,72 @@ public class Mvp4gConfiguration {
 					}
 				}
 			} else {
-				// this object is not used, you can remove it
-				toRemove.add( childModule );
+				// this object is not used, could be used by one of the child module so display a warning
+				logger.log( Type.WARN, String.format( CHILD_MODULE_NOT_USED, module.getName(), childModule.getName() ) );
+			}
+		}
+
+		List<ChildModuleElement> siblings = getSiblings();
+		List<String> siblingsToLoad;
+		String siblingClassName;
+		for ( ChildModuleElement sibling : siblings ) {
+			siblingClassName = sibling.getClassName();
+			eventList = childModuleMap.remove( siblingClassName );
+			findPossibleSiblingBroadcast( broadcastMap, sibling );
+			if ( eventList != null ) {
+				for ( EventElement event : eventList ) {
+					siblingsToLoad = event.getSiblingsToLoad();
+					modulesToLoad = event.getForwardToModules();
+					if ( !siblingsToLoad.contains( siblingClassName ) ) {
+						siblingsToLoad.add( siblingClassName );
+					}
+					modulesToLoad.remove( siblingClassName );
+				}
+			}
+		}
+
+		ChildModuleElement currentModule = moduleParentEventBusClassMap.get( module.getQualifiedSourceName() );
+		if ( currentModule != null ) {
+			String parentModuleClassName = currentModule.getParentModuleClass();
+			findPossibleParentBroadcast(broadcastMap, currentModule, parentModuleClassName);
+			Iterator<String> it = childModuleMap.keySet().iterator();
+			String trueStr = Boolean.TRUE.toString();
+			if ( it.hasNext() ) {
+				String moduleName = it.next();
+				if ( parentModuleClassName.equals( moduleName ) ) {
+					eventList = childModuleMap.remove( moduleName );
+					for ( EventElement event : eventList ) {
+						event.getForwardToModules().remove( parentModuleClassName );
+						event.setForwardToParent( trueStr );
+					}
+				}
 			}
 		}
 
 		// Missing child modules
 		if ( !childModuleMap.isEmpty() ) {
-			String it = childModuleMap.keySet().iterator().next();
-			throw new UnknownConfigurationElementException( childModuleMap.get( it ).get( 0 ), it );
+			String next = childModuleMap.keySet().iterator().next();
+			throw new InvalidMvp4gConfigurationException( String.format( UNKNOWN_MODULE, childModuleMap.get( next ).get( 0 ).getName(), next ) );
 		}
 
-		removeUselessElements( childModules, toRemove );
+	}
 
+	List<ChildModuleElement> getSiblings() {
+		List<ChildModuleElement> siblings = new ArrayList<ChildModuleElement>();
+
+		JClassType parentEventBus = findParentEventBus( module.getQualifiedSourceName() );
+		if ( parentEventBus != null ) {
+			Iterator<String> it = moduleParentEventBusClassMap.keySet().iterator();
+			String currentModule = module.getQualifiedSourceName();
+			ChildModuleElement childModule;
+			while ( it.hasNext() ) {
+				childModule = moduleParentEventBusClassMap.get( it.next() );
+				if ( parentEventBus.equals( childModule.getParentEventBus() ) && !currentModule.equals( childModule.getClassName() ) ) {
+					siblings.add( childModule );
+				}
+			}
+		}
+		return siblings;
 	}
 
 	boolean findPossibleModuleBroadcast( Map<JClassType, List<EventElement>> broadcastMap, ChildModuleElement childModuleElement,
@@ -1126,10 +1183,54 @@ public class Mvp4gConfiguration {
 			if ( childModule.isAssignableTo( type ) ) {
 				List<String> modules;
 				for ( EventElement event : broadcastMap.get( type ) ) {
-					modules = event.getModulesToLoad();
+					modules = event.getForwardToModules();
 					if ( !modules.contains( moduleName ) ) {
 						modules.add( moduleName );
 					}
+				}
+				keep = true;
+			}
+		}
+		return keep;
+	}
+
+	boolean findPossibleSiblingBroadcast( Map<JClassType, List<EventElement>> broadcastMap, ChildModuleElement siblingElement )
+			throws NotFoundClassException {
+		boolean keep = false;
+		Iterator<JClassType> it = broadcastMap.keySet().iterator();
+		JClassType type;
+
+		String siblingClass = siblingElement.getClassName();
+		JClassType siblingType = getType( siblingElement, siblingClass );
+		List<String> siblings;
+		while ( it.hasNext() ) {
+			type = it.next();
+			if ( siblingType.isAssignableTo( type ) ) {
+				for ( EventElement event : broadcastMap.get( type ) ) {
+					siblings = event.getSiblingsToLoad();
+					if ( !siblings.contains( siblingClass ) ) {
+						siblings.add( siblingClass );
+					}
+				}
+				keep = true;
+			}
+		}
+		return keep;
+	}
+
+	boolean findPossibleParentBroadcast( Map<JClassType, List<EventElement>> broadcastMap, ChildModuleElement currentElement, String parentClass )
+			throws NotFoundClassException {
+		boolean keep = false;
+		Iterator<JClassType> it = broadcastMap.keySet().iterator();
+		JClassType type;
+
+		JClassType siblingType = getType( currentElement, parentClass );
+		String trueStr = Boolean.TRUE.toString();
+		while ( it.hasNext() ) {
+			type = it.next();
+			if ( siblingType.isAssignableTo( type ) ) {
+				for ( EventElement event : broadcastMap.get( type ) ) {
+					event.setForwardToParent( trueStr );
 				}
 				keep = true;
 			}
@@ -1298,7 +1399,7 @@ public class Mvp4gConfiguration {
 				throw new InvalidTypeException( ginModule, "Logger", module, GinModule.class.getCanonicalName() );
 			}
 		}
-		
+
 		return propertiesValues;
 	}
 
@@ -1307,20 +1408,15 @@ public class Mvp4gConfiguration {
 		String[] propertiesValue;
 		if ( properties != null ) {
 			int size = properties.length;
-			propertiesValue = new String[size];			
+			propertiesValue = new String[size];
 			String moduleClassName;
 			List<String> modules = ginModule.getModules();
 			if ( modules == null ) {
-				try {
-					ginModule.setModules( new String[0] );
-					modules = ginModule.getModules();
-				} catch ( DuplicatePropertyNameException e ) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				ginModule.setModules( new String[0] );
+				modules = ginModule.getModules();
 			}
-			String property;			
-			for(int i=0; i<size; i++){
+			String property;
+			for ( int i = 0; i < size; i++ ) {
 				property = properties[i];
 				try {
 					moduleClassName = propertyOracle.getSelectionProperty( logger, property ).getCurrentValue().replace( "$", "." );
@@ -1331,8 +1427,7 @@ public class Mvp4gConfiguration {
 				modules.add( moduleClassName );
 				propertiesValue[i] = moduleClassName;
 			}
-		}
-		else{
+		} else {
 			propertiesValue = null;
 		}
 		return propertiesValue;
@@ -1534,11 +1629,7 @@ public class Mvp4gConfiguration {
 				}
 				historyNames.add( hNameStr );
 
-				try {
-					childModule.setHistoryName( hNameStr );
-				} catch ( DuplicatePropertyNameException e ) {
-					// exception can't occur, only time you set this value
-				}
+				childModule.setHistoryName( hNameStr );
 			}
 		}
 	}

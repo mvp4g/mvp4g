@@ -9,6 +9,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
@@ -50,7 +51,6 @@ import com.mvp4g.util.exception.InvalidTypeException;
 import com.mvp4g.util.exception.NonUniqueIdentifierException;
 import com.mvp4g.util.exception.NotFoundClassException;
 import com.mvp4g.util.exception.UnknownConfigurationElementException;
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 import com.mvp4g.util.test_tools.GeneratorContextStub;
 import com.mvp4g.util.test_tools.Modules;
 import com.mvp4g.util.test_tools.PropertyOracleStub;
@@ -85,15 +85,20 @@ public class Mvp4gConfigurationTest {
 	private Set<ChildModuleElement> childModules;
 	private Set<EventFilterElement> eventFilters;
 	private TypeOracleStub oracle = null;
+	private UnitTestTreeLogger.Builder builder;
+	private UnitTestTreeLogger logger;
 
 	@Before
 	public void setUp() {
 		GeneratorContextStub context = new GeneratorContextStub();
 
+		builder = new UnitTestTreeLogger.Builder();
+		logger = builder.createLogger();
+
 		oracle = context.getTypeOracleStub();
 		oracle.addClass( SimpleView.class );
 
-		configuration = new Mvp4gConfiguration( new UnitTestTreeLogger.Builder().createLogger(), context );
+		configuration = new Mvp4gConfiguration( logger, context );
 		presenters = configuration.getPresenters();
 		views = configuration.getViews();
 		events = configuration.getEvents();
@@ -125,7 +130,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = NonUniqueIdentifierException.class )
-	public void testUniquenessFailureOnPresenterAndViewConflict() throws NonUniqueIdentifierException, DuplicatePropertyNameException {
+	public void testUniquenessFailureOnPresenterAndViewConflict() throws NonUniqueIdentifierException {
 		presenters.add( newPresenter( "one" ) );
 		views.add( newView( "one" ) );
 
@@ -133,7 +138,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = NonUniqueIdentifierException.class )
-	public void testUniquenessFailureOnPresenterAndEventConflict() throws NonUniqueIdentifierException, DuplicatePropertyNameException {
+	public void testUniquenessFailureOnPresenterAndEventConflict() throws NonUniqueIdentifierException {
 		presenters.add( newPresenter( "one" ) );
 		events.add( newEvent( "one" ) );
 
@@ -141,7 +146,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = NonUniqueIdentifierException.class )
-	public void testUniquenessFailureOnPresenterAndServiceConflict() throws NonUniqueIdentifierException, DuplicatePropertyNameException {
+	public void testUniquenessFailureOnPresenterAndServiceConflict() throws NonUniqueIdentifierException {
 		presenters.add( newPresenter( "one" ) );
 		services.add( newService( "one" ) );
 
@@ -149,7 +154,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = NonUniqueIdentifierException.class )
-	public void testUniquenessFailureOnPresenterAndHistoryConverterConflict() throws NonUniqueIdentifierException, DuplicatePropertyNameException {
+	public void testUniquenessFailureOnPresenterAndHistoryConverterConflict() throws NonUniqueIdentifierException {
 		presenters.add( newPresenter( "one" ) );
 		historyConverters.add( newHistoryConverter( "one" ) );
 
@@ -157,7 +162,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = NonUniqueIdentifierException.class )
-	public void testUniquenessFailureOnViewAndEventConflict() throws NonUniqueIdentifierException, DuplicatePropertyNameException {
+	public void testUniquenessFailureOnViewAndEventConflict() throws NonUniqueIdentifierException {
 		views.add( newView( "two" ) );
 		events.add( newEvent( "two" ) );
 
@@ -165,7 +170,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = NonUniqueIdentifierException.class )
-	public void testUniquenessFailureOnViewAndServiceConflict() throws NonUniqueIdentifierException, DuplicatePropertyNameException {
+	public void testUniquenessFailureOnViewAndServiceConflict() throws NonUniqueIdentifierException {
 		views.add( newView( "two" ) );
 		services.add( newService( "two" ) );
 
@@ -173,7 +178,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = NonUniqueIdentifierException.class )
-	public void testUniquenessFailureOnViewAndHistoryConverterConflict() throws NonUniqueIdentifierException, DuplicatePropertyNameException {
+	public void testUniquenessFailureOnViewAndHistoryConverterConflict() throws NonUniqueIdentifierException {
 		views.add( newView( "one" ) );
 		historyConverters.add( newHistoryConverter( "one" ) );
 
@@ -181,7 +186,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = NonUniqueIdentifierException.class )
-	public void testUniquenessFailureOnEventAndServiceConflict() throws NonUniqueIdentifierException, DuplicatePropertyNameException {
+	public void testUniquenessFailureOnEventAndServiceConflict() throws NonUniqueIdentifierException {
 		services.add( newService( "three" ) );
 		events.add( newEvent( "three" ) );
 
@@ -189,7 +194,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = NonUniqueIdentifierException.class )
-	public void testUniquenessFailureOnEventAndHistoryConverterConflict() throws NonUniqueIdentifierException, DuplicatePropertyNameException {
+	public void testUniquenessFailureOnEventAndHistoryConverterConflict() throws NonUniqueIdentifierException {
 		events.add( newEvent( "one" ) );
 		historyConverters.add( newHistoryConverter( "one" ) );
 
@@ -197,7 +202,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = NonUniqueIdentifierException.class )
-	public void testUniquenessFailureOnServiceAndHistoryConverterConflict() throws NonUniqueIdentifierException, DuplicatePropertyNameException {
+	public void testUniquenessFailureOnServiceAndHistoryConverterConflict() throws NonUniqueIdentifierException {
 		services.add( newService( "one" ) );
 		historyConverters.add( newHistoryConverter( "one" ) );
 
@@ -205,7 +210,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testUniquenessCheckPasses() throws NonUniqueIdentifierException, DuplicatePropertyNameException {
+	public void testUniquenessCheckPasses() throws NonUniqueIdentifierException {
 		presenters.add( newPresenter( "one" ) );
 		views.add( newView( "two" ) );
 		events.add( newEvent( "three" ) );
@@ -222,14 +227,14 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testHistoryOk() throws InvalidMvp4gConfigurationException, DuplicatePropertyNameException {
+	public void testHistoryOk() throws InvalidMvp4gConfigurationException {
 		configuration.getHistory().setInitEvent( "init" );
 		historyConverters.add( new HistoryConverterElement() );
 		configuration.validateHistory();
 	}
 
 	@Test( expected = UnknownConfigurationElementException.class )
-	public void testEventHandlerValidationFails() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventHandlerValidationFails() throws InvalidMvp4gConfigurationException {
 		views.add( newView( "badHandler" ) );
 		services.add( newService( "badHandler" ) );
 		events.add( newEvent( "badHanlder" ) );
@@ -243,7 +248,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = InvalidClassException.class )
-	public void testEventHandlerWrongInterface() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventHandlerWrongInterface() throws InvalidMvp4gConfigurationException {
 
 		ViewElement view = newView( "view" );
 		view.setClassName( String.class.getName() );
@@ -264,7 +269,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testEventHandlerValidationInvalidEventBus() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventHandlerValidationInvalidEventBus() throws InvalidMvp4gConfigurationException {
 
 		ViewElement view = newView( "view" );
 		view.setClassName( String.class.getName() );
@@ -328,7 +333,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testEventHandlerValidationInvalidView() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventHandlerValidationInvalidView() throws InvalidMvp4gConfigurationException {
 
 		ViewElement view = newView( "view" );
 		view.setClassName( Integer.class.getName() );
@@ -362,7 +367,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = UnknownConfigurationElementException.class )
-	public void testEventHandlerViewMissing() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventHandlerViewMissing() throws InvalidMvp4gConfigurationException {
 
 		PresenterElement presenter = newPresenter( "testHandler" );
 		presenter.setView( "view" );
@@ -377,7 +382,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testEventHandlerValidationSucceedsNoInjectedView() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventHandlerValidationSucceedsNoInjectedView() throws InvalidMvp4gConfigurationException {
 
 		ViewElement view = newView( "view" );
 		view.setClassName( SimpleView.class.getCanonicalName() );
@@ -397,7 +402,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testEventHandlerValidationSucceedsWithInjectedView() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventHandlerValidationSucceedsWithInjectedView() throws InvalidMvp4gConfigurationException {
 
 		ViewElement view = newView( "view" );
 		Class<?> c = SimpleInjectedView.class;
@@ -424,7 +429,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testEventHandlerWrongInjectedView() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventHandlerWrongInjectedView() throws InvalidMvp4gConfigurationException {
 
 		ViewElement view = newView( "view" );
 		Class<?> c = SimpleInjectedView.class;
@@ -457,7 +462,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testEventHandlerRemove() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventHandlerRemove() throws InvalidMvp4gConfigurationException {
 
 		ViewElement view = newView( "view" );
 		Class<?> c = SimpleView.class;
@@ -522,7 +527,7 @@ public class Mvp4gConfigurationTest {
 
 	@Test( expected = UnknownConfigurationElementException.class )
 	public void testPresenterViewValidationFails() throws UnknownConfigurationElementException, InvalidTypeException, InvalidClassException,
-			NotFoundClassException, DuplicatePropertyNameException {
+			NotFoundClassException {
 		events.add( newEvent( "badView" ) );
 		services.add( newService( "badView" ) );
 		presenters.add( newPresenter( "badView" ) );
@@ -536,7 +541,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testBroadcastHandlers() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testBroadcastHandlers() throws InvalidMvp4gConfigurationException {
 
 		oracle.addClass( TestBroadcast.class );
 
@@ -596,7 +601,7 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testViewValidationSucceeds() throws UnknownConfigurationElementException, InvalidTypeException, InvalidClassException,
-			NotFoundClassException, DuplicatePropertyNameException {
+			NotFoundClassException {
 		views.add( newView( "testView" ) );
 
 		PresenterElement presenter = newPresenter( "testPresenter" );
@@ -607,8 +612,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testViewRemove() throws UnknownConfigurationElementException, InvalidTypeException, InvalidClassException, NotFoundClassException,
-			DuplicatePropertyNameException {
+	public void testViewRemove() throws UnknownConfigurationElementException, InvalidTypeException, InvalidClassException, NotFoundClassException {
 		ViewElement view1 = newView( "view1" );
 		ViewElement view2 = newView( "view2" );
 		ViewElement view3 = newView( "view3" );
@@ -633,7 +637,7 @@ public class Mvp4gConfigurationTest {
 
 	@Test( expected = UnknownConfigurationElementException.class )
 	public void testInjectedServiceValidationFailsForPresenter() throws UnknownConfigurationElementException, InvalidTypeException,
-			InvalidClassException, NotFoundClassException, DuplicatePropertyNameException {
+			InvalidClassException, NotFoundClassException {
 		events.add( newEvent( "badService" ) );
 		views.add( newView( "badService" ) );
 		presenters.add( newPresenter( "badService" ) );
@@ -648,7 +652,7 @@ public class Mvp4gConfigurationTest {
 
 	@Test( expected = UnknownConfigurationElementException.class )
 	public void testInjectedServiceValidationFailsForHistoryConverter() throws UnknownConfigurationElementException, InvalidTypeException,
-			InvalidClassException, NotFoundClassException, DuplicatePropertyNameException {
+			InvalidClassException, NotFoundClassException {
 		events.add( newEvent( "badService" ) );
 		views.add( newView( "badService" ) );
 		presenters.add( newPresenter( "badService" ) );
@@ -662,7 +666,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testInjectedServiceValidationSucceeds() throws UnknownConfigurationElementException, DuplicatePropertyNameException {
+	public void testInjectedServiceValidationSucceeds() throws UnknownConfigurationElementException {
 		services.add( newService( "testService" ) );
 
 		PresenterElement presenter = newPresenter( "testPresenter" );
@@ -677,7 +681,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testInjectedServiceRemove() throws UnknownConfigurationElementException, DuplicatePropertyNameException {
+	public void testInjectedServiceRemove() throws UnknownConfigurationElementException {
 		ServiceElement service1 = newService( "service1" );
 		ServiceElement service2 = newService( "service2" );
 		ServiceElement service3 = newService( "service3" );
@@ -714,7 +718,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = UnknownConfigurationElementException.class )
-	public void testEventHistoryConverterFails() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventHistoryConverterFails() throws InvalidMvp4gConfigurationException {
 
 		events.add( newEvent( "badHistoryConverter" ) );
 		services.add( newService( "badHistoryConverter" ) );
@@ -730,7 +734,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = InvalidClassException.class )
-	public void testEventHistoryConverterWrongInterface() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventHistoryConverterWrongInterface() throws InvalidMvp4gConfigurationException {
 
 		HistoryConverterElement hc = new HistoryConverterElement();
 		hc.setName( "testHistoryConverter" );
@@ -747,7 +751,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = InvalidTypeException.class )
-	public void testEventHistoryConverterWrongEventBus() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventHistoryConverterWrongEventBus() throws InvalidMvp4gConfigurationException {
 
 		try {
 			HistoryConverterElement hc = new HistoryConverterElement();
@@ -773,7 +777,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testEventHistoryConverterRemove() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventHistoryConverterRemove() throws InvalidMvp4gConfigurationException {
 		HistoryConverterElement hc1 = newHistoryConverter( "hc1" );
 		HistoryConverterElement hc2 = newHistoryConverter( "hc2" );
 		historyConverters.add( hc1 );
@@ -796,7 +800,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testEventHistoryConverterSucceeds() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventHistoryConverterSucceeds() throws InvalidMvp4gConfigurationException {
 		historyConverters.add( newHistoryConverter( "testHistoryConverter" ) );
 
 		EventElement event = newEvent( "testEvent" );
@@ -808,7 +812,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = UnknownConfigurationElementException.class )
-	public void testStartEventFails() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testStartEventFails() throws InvalidMvp4gConfigurationException {
 		services.add( newService( "badEvent" ) );
 		presenters.add( newPresenter( "badEvent" ) );
 		views.add( newView( "badEvent" ) );
@@ -821,7 +825,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = UnknownConfigurationElementException.class )
-	public void testHistoryInitEventFails() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testHistoryInitEventFails() throws InvalidMvp4gConfigurationException {
 		services.add( newService( "badEvent" ) );
 		presenters.add( newPresenter( "badEvent" ) );
 		views.add( newView( "badEvent" ) );
@@ -834,7 +838,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testStartSucceeds() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testStartSucceeds() throws InvalidMvp4gConfigurationException {
 		events.add( newEvent( "testEvent" ) );
 		configuration.getStart().setEventType( "testEvent" );
 		configuration.getHistory().setInitEvent( "testEvent" );
@@ -842,7 +846,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testChildModulesRemove() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testChildModulesRemove() throws InvalidMvp4gConfigurationException {
 
 		ChildModuleElement childModule1 = newChildModule( "child1" );
 		childModule1.setEventToDisplayView( "testEvent" );
@@ -853,9 +857,15 @@ public class Mvp4gConfigurationTest {
 		childModules.add( childModule2 );
 
 		EventElement event = newEvent( "testEvent" );
-		event.setModulesToLoad( new String[] { "child1" } );
+		event.setForwardToModules( new String[] { "child1" } );
 		event.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
 		events.add( event );
+
+		builder.expectWarn(
+				"Module Mvp4gModule: the child module child2 is not loaded by any of the event of this module. You should remove it if it is not used by another child module (ie used for sibling communication).",
+				null );
+		logger = builder.createLogger();
+		configuration.setLogger( logger );
 
 		setEventBus();
 
@@ -863,14 +873,16 @@ public class Mvp4gConfigurationTest {
 		assertTrue( childModules.contains( childModule1 ) );
 		assertTrue( childModules.contains( childModule2 ) );
 		configuration.validateChildModules();
-		assertEquals( 1, childModules.size() );
+		assertEquals( 2, childModules.size() );
 		assertTrue( childModules.contains( childModule1 ) );
-		assertFalse( childModules.contains( childModule2 ) );
+		assertTrue( childModules.contains( childModule2 ) );
+
+		logger.assertCorrectLogEntries();
 
 	}
 
 	@Test( expected = InvalidMvp4gConfigurationException.class )
-	public void testChildModulesNoStart() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testChildModulesNoStart() throws InvalidMvp4gConfigurationException {
 
 		ChildModuleElement childModule1 = newChildModule( "child1" );
 		childModule1.setEventToDisplayView( "testEvent" );
@@ -879,7 +891,7 @@ public class Mvp4gConfigurationTest {
 				.put( Modules.Module1.class.getCanonicalName(), oracle.addClass( EventBusWithNoStartPresenter.class ) );
 
 		EventElement event = newEvent( "testEvent" );
-		event.setModulesToLoad( new String[] { "child1" } );
+		event.setForwardToModules( new String[] { "child1" } );
 		event.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
 		events.add( event );
 		try {
@@ -893,7 +905,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testChildModulesBroadcast() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testChildModulesBroadcast() throws InvalidMvp4gConfigurationException {
 
 		oracle.addClass( TestBroadcast.class );
 
@@ -922,25 +934,25 @@ public class Mvp4gConfigurationTest {
 
 		EventElement event = newEvent( "testEvent" );
 		event.setBroadcastTo( TestBroadcast.class.getCanonicalName() );
-		event.setModulesToLoad( new String[0] );
+		event.setForwardToModules( new String[0] );
 		events.add( event );
 
 		EventElement event2 = newEvent( "testEvent2" );
 		event2.setBroadcastTo( TestBroadcast2.class.getCanonicalName() );
-		event2.setModulesToLoad( new String[] { "child3" } );
+		event2.setForwardToModules( new String[] { "child3" } );
 		events.add( event2 );
 
 		setEventBus();
 
 		configuration.validateChildModules();
 
-		List<String> modules = event.getModulesToLoad();
+		List<String> modules = event.getForwardToModules();
 		assertEquals( 3, modules.size() );
 		assertEquals( "child", modules.get( 0 ) );
 		assertEquals( "child3", modules.get( 1 ) );
 		assertEquals( "child2", modules.get( 2 ) );
 
-		modules = event2.getModulesToLoad();
+		modules = event2.getForwardToModules();
 		assertEquals( 2, modules.size() );
 		assertEquals( "child3", modules.get( 0 ) );
 		assertEquals( "child2", modules.get( 1 ) );
@@ -948,7 +960,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = InvalidClassException.class )
-	public void testInvalidChildModule() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testInvalidChildModule() throws InvalidMvp4gConfigurationException {
 
 		ChildModuleElement childModule1 = new ChildModuleElement();
 		childModule1.setName( "child1" );
@@ -956,7 +968,7 @@ public class Mvp4gConfigurationTest {
 		childModules.add( childModule1 );
 
 		EventElement event = newEvent( "testEvent" );
-		event.setModulesToLoad( new String[] { "child1" } );
+		event.setForwardToModules( new String[] { "child1" } );
 		event.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
 		events.add( event );
 
@@ -966,14 +978,14 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testAutoDisplay() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testAutoDisplay() throws InvalidMvp4gConfigurationException {
 
 		ChildModuleElement childModule1 = newChildModule( "child1" );
 		childModules.add( childModule1 );
 		assertTrue( childModule1.isAutoDisplay() );
 
 		EventElement event = newEvent( "testEvent" );
-		event.setModulesToLoad( new String[] { "child1" } );
+		event.setForwardToModules( new String[] { "child1" } );
 		event.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
 		events.add( event );
 
@@ -995,14 +1007,14 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = UnknownConfigurationElementException.class )
-	public void testUnknownEventForAutoDisplay() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testUnknownEventForAutoDisplay() throws InvalidMvp4gConfigurationException {
 
 		ChildModuleElement childModule1 = newChildModule( "child1" );
 		childModule1.setEventToDisplayView( "unknown" );
 		childModules.add( childModule1 );
 
 		EventElement event = newEvent( "testEvent" );
-		event.setModulesToLoad( new String[] { "child1" } );
+		event.setForwardToModules( new String[] { "child1" } );
 		event.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
 		events.add( event );
 
@@ -1013,14 +1025,14 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = InvalidMvp4gConfigurationException.class )
-	public void testEventWithNoObjectForAutoDisplay() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventWithNoObjectForAutoDisplay() throws InvalidMvp4gConfigurationException {
 
 		ChildModuleElement childModule1 = newChildModule( "child1" );
 		childModule1.setEventToDisplayView( "testEvent" );
 		childModules.add( childModule1 );
 
 		EventElement event = newEvent( "testEvent" );
-		event.setModulesToLoad( new String[] { "child1" } );
+		event.setForwardToModules( new String[] { "child1" } );
 		events.add( event );
 
 		setEventBus();
@@ -1036,7 +1048,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testChildViewLoadEvent() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testChildViewLoadEvent() throws InvalidMvp4gConfigurationException {
 
 		ChildModuleElement childModule = newChildModule( "child" );
 		childModule.setEventToDisplayView( "testEvent" );
@@ -1046,7 +1058,7 @@ public class Mvp4gConfigurationTest {
 		childModules.add( childModule );
 
 		EventElement event = newEvent( "testEvent" );
-		event.setModulesToLoad( new String[] { "child" } );
+		event.setForwardToModules( new String[] { "child" } );
 		event.setEventObjectClass( new String[] { String.class.getCanonicalName() } );
 		events.add( event );
 
@@ -1063,7 +1075,7 @@ public class Mvp4gConfigurationTest {
 		}
 
 		event = newEvent( "testEvent" );
-		event.setModulesToLoad( new String[] { "child" } );
+		event.setForwardToModules( new String[] { "child" } );
 		event.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
 		events.clear();
 		events.add( event );
@@ -1072,20 +1084,231 @@ public class Mvp4gConfigurationTest {
 
 	}
 
-	@Test( expected = UnknownConfigurationElementException.class )
-	public void testMissingChildModule() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	@Test
+	public void testMissingChildModule() throws InvalidMvp4gConfigurationException {
 		EventElement event = newEvent( "testEvent" );
-		event.setModulesToLoad( new String[] { "child" } );
+		event.setForwardToModules( new String[] { "child" } );
 		event.setEventObjectClass( new String[] { String.class.getCanonicalName() } );
 		events.add( event );
 
 		setEventBus();
 		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
-		configuration.validateChildModules();
+		try {
+			configuration.validateChildModules();
+			fail();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertEquals(
+					"Event testEvent: No instance of child has been found. Is this module a child module, a parent module or a silbling module? If it's supposed to be a child module, have you forgotten to add it to @ChildModules of your event bus interface?",
+					e.getMessage() );
+		}
 	}
 
 	@Test
-	public void testEventWithParent() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testForwardSiblingModule() throws InvalidMvp4gConfigurationException {
+		String siblingModule = oracle.addClass( Modules.Module1.class ).getQualifiedSourceName();
+
+		EventElement event = newEvent( "testEvent" );
+		event.setForwardToModules( new String[] { siblingModule } );
+		event.setEventObjectClass( new String[] { String.class.getCanonicalName() } );
+		events.add( event );
+
+		String currentParentModule = oracle.addClass( Modules.ModuleWithParentNoName.class ).getQualifiedSourceName();
+
+		Map<String, ChildModuleElement> childModuleMap = configuration.getModuleParentEventBusClassMap();
+		JClassType parentEventBus = oracle.addClass( EventBusOk.class );
+
+		ChildModuleElement sibling = new ChildModuleElement();
+		sibling.setParentEventBus( parentEventBus );
+		sibling.setParentModuleClass( currentParentModule );
+		sibling.setClassName( siblingModule );
+
+		configuration.setParentEventBus( parentEventBus );
+
+		String currentModule = oracle.addClass( Modules.ModuleWithParent.class ).getQualifiedSourceName();
+
+		childModuleMap.put( "sibling", sibling );
+
+		ChildModuleElement module = new ChildModuleElement();
+		module.setParentEventBus( parentEventBus );
+		module.setParentModuleClass( currentParentModule );
+		module.setClassName( currentModule );
+		childModuleMap.put( currentModule, module );
+
+		setEventBus();
+		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
+
+		List<ChildModuleElement> siblings = configuration.getSiblings();
+		assertEquals( 1, siblings.size() );
+		assertSame( sibling, siblings.get( 0 ) );
+
+		assertEquals( 1, event.getForwardToModules().size() );
+		assertEquals( 0, event.getSiblingsToLoad().size() );
+
+		configuration.validateChildModules();
+
+		assertEquals( 0, event.getForwardToModules().size() );
+		assertEquals( 1, event.getSiblingsToLoad().size() );
+
+	}
+
+	@Test
+	public void testSiblingBroadcast() throws InvalidMvp4gConfigurationException {
+
+		String siblingModule1 = oracle.addClass( Modules.BroadcastModule.class ).getQualifiedSourceName();
+		String siblingModule2 = oracle.addClass( Modules.BroadcastModule2.class ).getQualifiedSourceName();
+		String siblingModule3 = oracle.addClass( Modules.Module1.class ).getQualifiedSourceName();
+
+		EventElement event = newEvent( "testEvent" );
+		event.setBroadcastTo( TestBroadcast.class.getCanonicalName() );
+		event.setEventObjectClass( new String[] { String.class.getCanonicalName() } );
+		events.add( event );
+
+		EventElement event2 = newEvent( "testEvent2" );
+		event2.setBroadcastTo( TestBroadcast2.class.getCanonicalName() );
+		event2.setForwardToModules( new String[] { siblingModule3 } );
+		events.add( event2 );
+
+		String currentParentModule = oracle.addClass( Modules.ModuleWithParentNoName.class ).getQualifiedSourceName();
+
+		Map<String, ChildModuleElement> childModuleMap = configuration.getModuleParentEventBusClassMap();
+		JClassType parentEventBus = oracle.addClass( EventBusOk.class );
+
+		ChildModuleElement sibling1 = new ChildModuleElement();
+		sibling1.setParentEventBus( parentEventBus );
+		sibling1.setParentModuleClass( currentParentModule );
+		sibling1.setClassName( siblingModule1 );
+
+		ChildModuleElement sibling2 = new ChildModuleElement();
+		sibling2.setParentEventBus( parentEventBus );
+		sibling2.setParentModuleClass( currentParentModule );
+		sibling2.setClassName( siblingModule2 );
+
+		ChildModuleElement sibling3 = new ChildModuleElement();
+		sibling3.setParentEventBus( parentEventBus );
+		sibling3.setParentModuleClass( currentParentModule );
+		sibling3.setClassName( siblingModule3 );
+
+		childModuleMap.put( "sibling1", sibling1 );
+		childModuleMap.put( "sibling2", sibling2 );
+		childModuleMap.put( "sibling3", sibling3 );
+
+		configuration.setParentEventBus( parentEventBus );
+
+		String currentModule = oracle.addClass( Modules.ModuleWithParent.class ).getQualifiedSourceName();
+
+		ChildModuleElement module = new ChildModuleElement();
+		module.setParentEventBus( parentEventBus );
+		module.setParentModuleClass( currentParentModule );
+		module.setClassName( currentModule );
+		childModuleMap.put( currentModule, module );
+
+		setEventBus();
+		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
+
+		List<ChildModuleElement> siblings = configuration.getSiblings();
+		assertEquals( 3, siblings.size() );
+		assertSame( sibling1, siblings.get( 0 ) );
+		assertSame( sibling3, siblings.get( 1 ) );
+		assertSame( sibling2, siblings.get( 2 ) );
+
+		assertEquals( 0, event.getSiblingsToLoad().size() );
+		assertEquals( 1, event2.getForwardToModules().size() );
+
+		configuration.validateChildModules();
+
+		List<String> siblingsToLoad = event.getSiblingsToLoad();
+		assertEquals( 2, siblingsToLoad.size() );
+		assertEquals( sibling1.getClassName(), siblingsToLoad.get( 0 ) );
+		assertEquals( sibling2.getClassName(), siblingsToLoad.get( 1 ) );
+
+		siblingsToLoad = event2.getSiblingsToLoad();
+		assertEquals( 2, siblingsToLoad.size() );
+		assertEquals( sibling3.getClassName(), siblingsToLoad.get( 0 ) );
+		assertEquals( sibling2.getClassName(), siblingsToLoad.get( 1 ) );
+
+	}
+
+	@Test
+	public void testForwardParentModule() throws InvalidMvp4gConfigurationException {
+		String parentModule = oracle.addClass( Modules.Module1.class ).getQualifiedSourceName();
+
+		EventElement event = newEvent( "testEvent" );
+		event.setForwardToModules( new String[] { parentModule } );
+		event.setEventObjectClass( new String[] { String.class.getCanonicalName() } );
+		events.add( event );
+
+		Map<String, ChildModuleElement> childModuleMap = configuration.getModuleParentEventBusClassMap();
+		JClassType parentEventBus = oracle.addClass( EventBusOk.class );
+
+		configuration.setParentEventBus( parentEventBus );
+
+		String currentModule = oracle.addClass( Modules.ModuleWithParent.class ).getQualifiedSourceName();
+
+		ChildModuleElement module = new ChildModuleElement();
+		module.setParentEventBus( parentEventBus );
+		module.setParentModuleClass( parentModule );
+		module.setClassName( currentModule );
+		childModuleMap.put( currentModule, module );
+
+		setEventBus();
+		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
+
+		List<ChildModuleElement> siblings = configuration.getSiblings();
+		assertEquals( 0, siblings.size() );
+
+		assertFalse( event.hasForwardToParent() );
+
+		configuration.validateChildModules();
+
+		assertTrue( event.hasForwardToParent() );
+
+	}
+	
+	@Test
+	public void testParentBroadcast() throws InvalidMvp4gConfigurationException {
+
+		String parentModule = oracle.addClass( Modules.BroadcastModule2.class ).getQualifiedSourceName();		
+
+		EventElement event = newEvent( "testEvent" );
+		event.setBroadcastTo( TestBroadcast.class.getCanonicalName() );
+		event.setEventObjectClass( new String[] { String.class.getCanonicalName() } );
+		events.add( event );
+
+		EventElement event2 = newEvent( "testEvent2" );
+		event2.setBroadcastTo( TestBroadcast2.class.getCanonicalName() );
+		events.add( event2 );
+
+		Map<String, ChildModuleElement> childModuleMap = configuration.getModuleParentEventBusClassMap();
+		JClassType parentEventBus = oracle.addClass( EventBusOk.class );
+
+		configuration.setParentEventBus( parentEventBus );
+
+		String currentModule = oracle.addClass( Modules.ModuleWithParent.class ).getQualifiedSourceName();
+
+		ChildModuleElement module = new ChildModuleElement();
+		module.setParentEventBus( parentEventBus );
+		module.setParentModuleClass( parentModule );
+		module.setClassName( currentModule );
+		childModuleMap.put( currentModule, module );
+
+		setEventBus();
+		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
+
+		List<ChildModuleElement> siblings = configuration.getSiblings();
+		assertEquals( 0, siblings.size() );
+
+		assertFalse( event.hasForwardToParent() );
+		assertFalse( event2.hasForwardToParent() );
+
+		configuration.validateChildModules();
+
+		assertTrue( event.hasForwardToParent() );
+		assertTrue( event2.hasForwardToParent() );
+
+	}
+
+	@Test
+	public void testEventWithParent() throws InvalidMvp4gConfigurationException {
 		EventElement e = newEvent( "event" );
 		e.setForwardToParent( "true" );
 		events.add( e );
@@ -1105,7 +1328,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testUnknownLoadConfigEvent() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testUnknownLoadConfigEvent() throws InvalidMvp4gConfigurationException {
 		ChildModulesElement childModules = new ChildModulesElement();
 		configuration.setHistory( null );
 
@@ -1138,7 +1361,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testWrongEventLoadConfigEvent() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testWrongEventLoadConfigEvent() throws InvalidMvp4gConfigurationException {
 
 		configuration.setHistory( null );
 
@@ -1182,7 +1405,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testHistoryWhenParent() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testHistoryWhenParent() throws InvalidMvp4gConfigurationException {
 
 		historyConverters.add( new HistoryConverterElement() );
 
@@ -1220,7 +1443,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testHistoryName() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testHistoryName() throws InvalidMvp4gConfigurationException {
 
 		historyConverters.add( new HistoryConverterElement() );
 
@@ -1247,7 +1470,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testFindChildModuleHistory() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testFindChildModuleHistory() throws InvalidMvp4gConfigurationException {
 
 		oracle.addClass( Modules.ModuleWithParent.class );
 		oracle.addClass( Modules.ModuleWithParentNoName.class );
@@ -1276,7 +1499,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test( expected = InvalidMvp4gConfigurationException.class )
-	public void testFindChildModuleSameHistory() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testFindChildModuleSameHistory() throws InvalidMvp4gConfigurationException {
 
 		oracle.addClass( Modules.ModuleWithParent.class );
 
@@ -1304,7 +1527,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testEventLoadConfigEventOk() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testEventLoadConfigEventOk() throws InvalidMvp4gConfigurationException {
 
 		configuration.setHistory( null );
 
@@ -1374,7 +1597,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testStartEventWithParameter() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testStartEventWithParameter() throws InvalidMvp4gConfigurationException {
 		EventElement e = newEvent( "start" );
 		e.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
 		events.add( e );
@@ -1397,7 +1620,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testEmptyHistoryNameForRoot() throws DuplicatePropertyNameException {
+	public void testEmptyHistoryNameForRoot() {
 		EventElement e = newEvent( "start" );
 		e.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
 		e.setHistory( "history" );
@@ -1413,7 +1636,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testSameHistoryName() throws DuplicatePropertyNameException {
+	public void testSameHistoryName() {
 		EventElement e = newEvent( "start" );
 		e.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
 		e.setHistory( "history" );
@@ -1435,7 +1658,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testHistoryNameNoConveter() throws DuplicatePropertyNameException {
+	public void testHistoryNameNoConveter() {
 		EventElement e = newEvent( "start" );
 		e.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
 		e.setName( "name" );
@@ -1450,7 +1673,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testRemoveClearHistory() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testRemoveClearHistory() throws InvalidMvp4gConfigurationException {
 		HistoryConverterElement e = new HistoryConverterElement();
 		e.setClassName( ClearHistory.class.getCanonicalName() );
 		historyConverters.add( e );
@@ -1460,7 +1683,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testWrongEventHandlerClass() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testWrongEventHandlerClass() throws InvalidMvp4gConfigurationException {
 		EventBusElement eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBus.class.getName(), false );
 		configuration.setEventBus( eventBus );
 
@@ -1515,7 +1738,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testActivateDeActivateOk() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testActivateDeActivateOk() throws InvalidMvp4gConfigurationException {
 		EventBusElement eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBus.class.getName(), false );
 		configuration.setEventBus( eventBus );
 
@@ -1553,7 +1776,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testActivateDeActivateUseless() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testActivateDeActivateUseless() throws InvalidMvp4gConfigurationException {
 		EventBusElement eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBus.class.getName(), false );
 		configuration.setEventBus( eventBus );
 
@@ -1583,7 +1806,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testActivateDeActivateMultiple() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testActivateDeActivateMultiple() throws InvalidMvp4gConfigurationException {
 		EventBusElement eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBus.class.getName(), false );
 		configuration.setEventBus( eventBus );
 
@@ -1622,7 +1845,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testSameActivateDeactivate() throws DuplicatePropertyNameException {
+	public void testSameActivateDeactivate() {
 		EventBusElement eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBus.class.getName(), false );
 		configuration.setEventBus( eventBus );
 
@@ -1640,7 +1863,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testGenerate() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testGenerate() throws InvalidMvp4gConfigurationException {
 		EventBusElement eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBus.class.getName(), false );
 		configuration.setEventBus( eventBus );
 
@@ -1673,7 +1896,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testGenerateNotMultiple() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testGenerateNotMultiple() throws InvalidMvp4gConfigurationException {
 		EventBusElement eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBus.class.getName(), false );
 		configuration.setEventBus( eventBus );
 
@@ -1716,7 +1939,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testUnknownActivateDeactivate() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testUnknownActivateDeactivate() throws InvalidMvp4gConfigurationException {
 		EventBusElement eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBus.class.getName(), false );
 		configuration.setEventBus( eventBus );
 
@@ -1745,7 +1968,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testEventFiltersOk() throws InvalidMvp4gConfigurationException, DuplicatePropertyNameException {
+	public void testEventFiltersOk() throws InvalidMvp4gConfigurationException {
 		EventBusElement eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBus.class.getName(), false );
 		configuration.setEventBus( eventBus );
 
@@ -1758,7 +1981,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testEventFiltersWrongClass() throws InvalidMvp4gConfigurationException, DuplicatePropertyNameException {
+	public void testEventFiltersWrongClass() throws InvalidMvp4gConfigurationException {
 		EventBusElement eventBus = new EventBusElement( EventBusWithLookup.class.getName(), BaseEventBus.class.getName(), false );
 		configuration.setEventBus( eventBus );
 
@@ -1777,7 +2000,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testEventFiltersWrongEventBus() throws InvalidMvp4gConfigurationException, DuplicatePropertyNameException {
+	public void testEventFiltersWrongEventBus() throws InvalidMvp4gConfigurationException {
 		EventBusElement eventBus = new EventBusElement( EventBus.class.getName(), BaseEventBus.class.getName(), false );
 		configuration.setEventBus( eventBus );
 
@@ -1796,7 +2019,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testForwardEventWithParameter() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testForwardEventWithParameter() throws InvalidMvp4gConfigurationException {
 		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
 		EventElement e = newEvent( "forward" );
 		e.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
@@ -1817,7 +2040,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testForwardEventRootModule() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testForwardEventRootModule() throws InvalidMvp4gConfigurationException {
 		StartElement start = configuration.getStart();
 		start.setForwardEventType( "forward" );
 
@@ -1830,7 +2053,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testForwardOk() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testForwardOk() throws InvalidMvp4gConfigurationException {
 		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
 		EventElement e = newEvent( "forward" );
 		events.add( e );
@@ -1888,7 +2111,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void validateHistoryName() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void validateHistoryName() throws InvalidMvp4gConfigurationException {
 		EventElement element = newEvent( "forward" );
 		try {
 			configuration.validateHistoryName( "!test", element );
@@ -1968,7 +2191,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testDebug() throws DuplicatePropertyNameException, NotFoundClassException, InvalidTypeException {
+	public void testDebug() throws NotFoundClassException, InvalidTypeException {
 		DebugElement debug = new DebugElement();
 		oracle.addClass( Object.class );
 		debug.setLogger( Object.class.getCanonicalName() );
@@ -1991,7 +2214,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testGin() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testGin() throws InvalidMvp4gConfigurationException {
 		GinModuleElement gin = new GinModuleElement();
 		configuration.setGinModule( gin );
 		try {
@@ -2034,7 +2257,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testGinWithProperties() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testGinWithProperties() throws InvalidMvp4gConfigurationException {
 		String[] propertiesValues;
 
 		GinModuleElement gin = new GinModuleElement();
@@ -2086,7 +2309,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testTokenGenerationNotOk() throws DuplicatePropertyNameException {
+	public void testTokenGenerationNotOk() {
 		EventElement event = new EventElement();
 		event.setWithTokenGeneration( "true" );
 		event.setType( "event1" );
@@ -2119,7 +2342,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testTokenGenerationOk() throws DuplicatePropertyNameException, InvalidMvp4gConfigurationException {
+	public void testTokenGenerationOk() throws InvalidMvp4gConfigurationException {
 		EventElement event = new EventElement();
 		event.setWithTokenGeneration( "true" );
 		event.setType( "event1" );
@@ -2142,7 +2365,7 @@ public class Mvp4gConfigurationTest {
 
 	}
 
-	private PresenterElement newPresenter( String name ) throws DuplicatePropertyNameException {
+	private PresenterElement newPresenter( String name ) {
 		PresenterElement presenter = new PresenterElement();
 		presenter.setName( name );
 		Class<?> c = SimplePresenter.class;
@@ -2151,7 +2374,7 @@ public class Mvp4gConfigurationTest {
 		return presenter;
 	}
 
-	private EventHandlerElement newEventHandler( String name ) throws DuplicatePropertyNameException {
+	private EventHandlerElement newEventHandler( String name ) {
 		EventHandlerElement eventHandler = new EventHandlerElement();
 		eventHandler.setName( name );
 		Class<?> c = SimpleEventHandler.class;
@@ -2160,7 +2383,7 @@ public class Mvp4gConfigurationTest {
 		return eventHandler;
 	}
 
-	private ChildModuleElement newChildModule( String name ) throws DuplicatePropertyNameException {
+	private ChildModuleElement newChildModule( String name ) {
 		ChildModuleElement childModule = new ChildModuleElement();
 		childModule.setName( name );
 		Class<?> c = Modules.Module1.class;
@@ -2169,25 +2392,25 @@ public class Mvp4gConfigurationTest {
 		return childModule;
 	}
 
-	private ViewElement newView( String name ) throws DuplicatePropertyNameException {
+	private ViewElement newView( String name ) {
 		ViewElement view = new ViewElement();
 		view.setName( name );
 		return view;
 	}
 
-	private EventElement newEvent( String type ) throws DuplicatePropertyNameException {
+	private EventElement newEvent( String type ) {
 		EventElement event = new EventElement();
 		event.setType( type );
 		return event;
 	}
 
-	private ServiceElement newService( String name ) throws DuplicatePropertyNameException {
+	private ServiceElement newService( String name ) {
 		ServiceElement service = new ServiceElement();
 		service.setName( name );
 		return service;
 	}
 
-	private HistoryConverterElement newHistoryConverter( String name ) throws DuplicatePropertyNameException {
+	private HistoryConverterElement newHistoryConverter( String name ) {
 		HistoryConverterElement historyConverter = new HistoryConverterElement();
 		historyConverter.setName( name );
 		Class<?> c = SimpleHistoryConverter.class;
@@ -2196,7 +2419,7 @@ public class Mvp4gConfigurationTest {
 		return historyConverter;
 	}
 
-	private EventFilterElement newEventFilter( String name ) throws DuplicatePropertyNameException {
+	private EventFilterElement newEventFilter( String name ) {
 		EventFilterElement eventFilter = new EventFilterElement();
 		eventFilter.setName( name );
 		Class<?> c = EventFilters.EventFilter1.class;

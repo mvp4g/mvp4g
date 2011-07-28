@@ -89,11 +89,20 @@ public interface CompanyEventBus extends EventBus {
 
 	@Event( handlers = CompanyListPresenter.class, passive = true )
 	void hasBeenThere();
-	
+
 	@Event( handlers = CompanyListPresenter.class, passive = true )
-	void broadcastInfo(String[] info);
+	void broadcastInfo( String[] info );
 
 	@Event( forwardToParent = true )
 	String goToProduct( Integer start, Integer end );
+
+	@Event( handlers = CompanyListPresenter.class )
+	void goToCompanyFromProduct( String info );
+
+	@Event( handlers = CompanyListPresenter.class )
+	void broadcastInfoFromProduct( String info );
+
+	@Event( handlers = CompanyListPresenter.class )
+	void broadcastInfoFromProductPassive( String info );
 
 }

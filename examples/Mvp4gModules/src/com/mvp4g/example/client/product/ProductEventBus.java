@@ -2,10 +2,12 @@ package com.mvp4g.example.client.product;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.presenter.NoStartPresenter;
+import com.mvp4g.example.client.company.CompanyModule;
 import com.mvp4g.example.client.product.bean.ProductBean;
 import com.mvp4g.example.client.product.presenter.ProductCreationPresenter;
 import com.mvp4g.example.client.product.presenter.ProductDisplayPresenter;
@@ -56,5 +58,14 @@ public interface ProductEventBus extends EventBus {
 	
 	@Event( broadcastTo = HasBeenThereHandler.class, passive = true )
 	void broadcastInfo(String[] info);
+	
+	@Event(forwardToModules = CompanyModule.class)
+	void goToCompanyFromProduct(String info);
+	
+	@Event( broadcastTo = Mvp4gModule.class )
+	void broadcastInfoFromProduct(String info);
+	
+	@Event( broadcastTo = Mvp4gModule.class, passive = true )
+	void broadcastInfoFromProductPassive(String info);
 
 }

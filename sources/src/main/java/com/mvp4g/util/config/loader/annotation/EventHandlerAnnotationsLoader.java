@@ -22,7 +22,6 @@ import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.EventHandlerElement;
 import com.mvp4g.util.config.element.Mvp4gWithServicesElement;
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 
 /**
@@ -54,13 +53,9 @@ public class EventHandlerAnnotationsLoader extends Mvp4gAnnotationsWithServiceLo
 		String eventHandlerName = buildElementNameIfNeeded( annotation.name(), className, "" );
 
 		EventHandlerElement eventHandler = new EventHandlerElement();
-		try {
-			eventHandler.setName( eventHandlerName );
-			eventHandler.setClassName( className );
-			eventHandler.setMultiple( Boolean.toString( annotation.multiple() ) );
-		} catch ( DuplicatePropertyNameException e ) {
-			// setters are only called once, so this error can't occur.
-		}
+		eventHandler.setName( eventHandlerName );
+		eventHandler.setClassName( className );
+		eventHandler.setMultiple( Boolean.toString( annotation.multiple() ) );
 
 		addElement( configuration.getEventHandlers(), eventHandler, c, null );
 

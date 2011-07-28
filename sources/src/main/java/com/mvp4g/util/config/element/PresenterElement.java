@@ -15,7 +15,6 @@
  */
 package com.mvp4g.util.config.element;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 /**
  * An Mvp4g Presenter configuration element.</p>
@@ -28,7 +27,7 @@ public class PresenterElement extends EventHandlerElement {
 		super( "presenter" );
 	}
 
-	public void setView( String view ) throws DuplicatePropertyNameException {
+	public void setView( String view ) {
 		setProperty( "view", view );
 	}
 
@@ -44,7 +43,7 @@ public class PresenterElement extends EventHandlerElement {
 		return Boolean.TRUE.toString().equalsIgnoreCase( getInverseView() );
 	}
 
-	public void setInverseView( String inverseView ) throws DuplicatePropertyNameException {
+	public void setInverseView( String inverseView ) {
 		setProperty( "inverseView", inverseView );
 	}
 

@@ -15,7 +15,6 @@
  */
 package com.mvp4g.util.config.element;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 /**
  * An Mvp4g EventHandler configuration element.</p>
@@ -32,7 +31,7 @@ public class EventHandlerElement extends Mvp4gWithServicesElement {
         super(tagName);
     }
     
-	public void setMultiple(String multiple) throws DuplicatePropertyNameException{
+	public void setMultiple(String multiple){
 		setProperty( "multiple", multiple );
 	}
 	

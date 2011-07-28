@@ -126,6 +126,19 @@ public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.Com
 		view.alert( builder.toString() );
 	}
 
+	public void onGoToCompanyFromProduct( String info ) {
+		eventBus.goToCompany( 0, 5 );
+		view.alert( "Going to company from product: " + info );
+	}
+
+	public void onBroadcastInfoFromProduct( String info ) {
+		view.alert( "Company Info from product: " + info );
+	}
+
+	public void onBroadcastInfoFromProductPassive( String info ) {
+		view.alert( "Company Info from passive product: " + info );
+	}
+
 	private void addCompany( CompanyBean company ) {
 		CompanyRowPresenter presenter = eventBus.addHandler( CompanyRowPresenter.class );
 		presenter.setCompany( company );

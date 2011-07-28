@@ -22,7 +22,6 @@ import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.Mvp4gWithServicesElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ViewElement;
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 
 /**
@@ -50,24 +49,16 @@ public class PresenterAnnotationsLoader extends Mvp4gAnnotationsWithServiceLoade
 		String presenterName = buildElementNameIfNeeded( annotation.name(), className, "" );
 
 		PresenterElement presenter = new PresenterElement();
-		try {
-			presenter.setName( presenterName );
-			presenter.setClassName( className );
-			presenter.setView( viewName );
-			presenter.setMultiple( Boolean.toString( annotation.multiple() ) );
-		} catch ( DuplicatePropertyNameException e ) {
-			//setters are only called once, so this error can't occur.
-		}
+		presenter.setName( presenterName );
+		presenter.setClassName( className );
+		presenter.setView( viewName );
+		presenter.setMultiple( Boolean.toString( annotation.multiple() ) );
 
 		addElement( configuration.getPresenters(), presenter, c, null );
 
 		ViewElement view = new ViewElement();
-		try {
-			view.setClassName( annotation.view().getCanonicalName() );
-			view.setName( viewName );
-		} catch ( DuplicatePropertyNameException e ) {
-			//setters are only called once, so this error can't occur.
-		}
+		view.setClassName( annotation.view().getCanonicalName() );
+		view.setName( viewName );
 
 		addElement( configuration.getViews(), view, c, null );
 

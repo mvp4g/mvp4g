@@ -38,7 +38,6 @@ import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.config.element.ViewElement;
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 import com.mvp4g.util.test_tools.CustomPlaceService;
 import com.mvp4g.util.test_tools.GeneratorContextStub;
 import com.mvp4g.util.test_tools.Modules;
@@ -62,7 +61,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	private Mvp4gConfiguration configuration;
 
 	@Before
-	public void setUp() throws DuplicatePropertyNameException {
+	public void setUp() {
 		sourceWriter = new SourceWriterTestStub();
 		TreeLogger tl = new UnitTestTreeLogger.Builder().createLogger();
 		configuration = new Mvp4gConfiguration( tl, new GeneratorContextStub() );
@@ -110,7 +109,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteEvents() throws DuplicatePropertyNameException {
+	public void testWriteEvents() {
 
 		assertOutput( getExpectedEvents(), false );
 		assertOutput( getExpectedNotNavigationEvents(), false );
@@ -160,7 +159,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteActivateDeactivate() throws DuplicatePropertyNameException {
+	public void testWriteActivateDeactivate() {
 
 		assertOutput( getExpectedActivateDeactivate(), false );
 
@@ -202,7 +201,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteNavigationEvents() throws DuplicatePropertyNameException {
+	public void testWriteNavigationEvents() {
 
 		assertOutput( getExpectedNotNavigationEvents(), false );
 		assertOutput( getExpectedNavigationEvents(), false );
@@ -224,7 +223,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteEventsWithToken() throws DuplicatePropertyNameException {
+	public void testWriteEventsWithToken() {
 
 		assertOutput( getExpectedEventsWithToken(), false );
 
@@ -269,16 +268,16 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteEventsWithHistory() throws DuplicatePropertyNameException {
+	public void testWriteEventsWithHistory() {
 		testWriteEventsWithHistory( false );
 	}
 
 	@Test
-	public void testWriteEventsWithHistoryAndToken() throws DuplicatePropertyNameException {
+	public void testWriteEventsWithHistoryAndToken() {
 		testWriteEventsWithHistory( true );
 	}
 
-	private void testWriteEventsWithHistory( boolean withToken ) throws DuplicatePropertyNameException {
+	private void testWriteEventsWithHistory( boolean withToken ) {
 
 		assertOutput( getExpectedHistoryEvents( false ), false );
 		assertOutput( getExpectedHistoryEvents(), false );
@@ -363,7 +362,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteEventsWithLookup() throws DuplicatePropertyNameException {
+	public void testWriteEventsWithLookup() {
 
 		String eventBusInterface = EventBusWithLookup.class.getName();
 		String eventBusClass = BaseEventBusWithLookUp.class.getName();
@@ -412,7 +411,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteEventsWithGenerate() throws DuplicatePropertyNameException {
+	public void testWriteEventsWithGenerate() {
 
 		assertOutput( getExpectedEvents(), false );
 		assertOutput( getExpectedNotNavigationEvents(), false );
@@ -463,7 +462,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteViews() throws DuplicatePropertyNameException {
+	public void testWriteViews() {
 
 		ViewElement view1 = new ViewElement();
 		view1.setName( "rootView" );
@@ -494,7 +493,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteViewsNotAtStart() throws DuplicatePropertyNameException {
+	public void testWriteViewsNotAtStart() {
 
 		ViewElement view1 = new ViewElement();
 		view1.setName( "rootView" );
@@ -525,7 +524,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWritePresenters() throws DuplicatePropertyNameException {
+	public void testWritePresenters() {
 
 		PresenterElement p1 = new PresenterElement();
 		p1.setName( "rootPresenter" );
@@ -556,7 +555,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWritePresentersWithReverseView() throws DuplicatePropertyNameException {
+	public void testWritePresentersWithReverseView() {
 
 		PresenterElement p1 = new PresenterElement();
 		p1.setName( "rootPresenter" );
@@ -588,7 +587,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteMultiplePresenters() throws DuplicatePropertyNameException {
+	public void testWriteMultiplePresenters() {
 
 		PresenterElement p1 = new PresenterElement();
 		p1.setName( "rootPresenter" );
@@ -612,7 +611,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteMultiplePresentersWithInverseView() throws DuplicatePropertyNameException {
+	public void testWriteMultiplePresentersWithInverseView() {
 
 		PresenterElement p1 = new PresenterElement();
 		p1.setName( "rootPresenter" );
@@ -637,7 +636,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteServices() throws DuplicatePropertyNameException {
+	public void testWriteServices() {
 
 		ServiceElement s1 = new ServiceElement();
 		s1.setName( "userRpcService" );
@@ -664,7 +663,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteStart() throws DuplicatePropertyNameException {
+	public void testWriteStart() {
 
 		StartElement start = configuration.getStart();
 		start.setEventType( "start" );
@@ -684,7 +683,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteStartNoFilter() throws DuplicatePropertyNameException {
+	public void testWriteStartNoFilter() {
 
 		StartElement start = configuration.getStart();
 		start.setEventType( "start" );
@@ -709,7 +708,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteNoStartView() throws DuplicatePropertyNameException {
+	public void testWriteNoStartView() {
 		StartElement start = new StartElement();
 		configuration.setStart( start );
 
@@ -719,7 +718,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteStartMultiple() throws DuplicatePropertyNameException {
+	public void testWriteStartMultiple() {
 
 		StartElement start = configuration.getStart();
 		start.setEventType( "start" );
@@ -742,7 +741,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteNoForward() throws DuplicatePropertyNameException {
+	public void testWriteNoForward() {
 
 		assertOutput( getExpectedNoForwardEvent(), false );
 		assertOutput( getExpectedForwardEvent(), false );
@@ -755,7 +754,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteForward() throws DuplicatePropertyNameException {
+	public void testWriteForward() {
 
 		StartElement start = configuration.getStart();
 		start.setForwardEventType( "forward" );
@@ -771,7 +770,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteForwardNoFilter() throws DuplicatePropertyNameException {
+	public void testWriteForwardNoFilter() {
 
 		StartElement start = configuration.getStart();
 		start.setForwardEventType( "forward" );
@@ -791,7 +790,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testHistory() throws DuplicatePropertyNameException {
+	public void testHistory() {
 
 		HistoryConverterElement hc1 = new HistoryConverterElement();
 		hc1.setName( "userConverter" );
@@ -827,7 +826,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteHistoryWithConfig() throws DuplicatePropertyNameException {
+	public void testWriteHistoryWithConfig() {
 		String eventBusInterface = EventBusWithLookup.class.getName();
 		String eventBusClass = BaseEventBusWithLookUp.class.getName();
 		configuration.setEventBus( new EventBusElement( eventBusInterface, eventBusClass, false ) );
@@ -843,7 +842,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteNoHistoryStart() throws DuplicatePropertyNameException {
+	public void testWriteNoHistoryStart() {
 
 		configuration.setHistory( null );
 
@@ -858,7 +857,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteGetters() throws DuplicatePropertyNameException {
+	public void testWriteGetters() {
 
 		assertOutput( getExpectedGetters(), false );
 		writer.writeConf();
@@ -887,7 +886,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteChildNoAsyncNoAutoLoad() throws DuplicatePropertyNameException {
+	public void testWriteChildNoAsyncNoAutoLoad() {
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
 		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
 		ChildModuleElement childModule = new ChildModuleElement();
@@ -908,7 +907,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteChildWithParentAsyncNoAutoLoadNotGwt2() throws DuplicatePropertyNameException {
+	public void testWriteChildWithParentAsyncNoAutoLoadNotGwt2() {
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
 		JClassType moduleType = oracle.addClass( Modules.Module1.class );
 		oracle.setGWT2( false );
@@ -939,7 +938,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteChildWithParentAsyncNoAutoLoadErrorEmpty() throws DuplicatePropertyNameException {
+	public void testWriteChildWithParentAsyncNoAutoLoadErrorEmpty() {
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
 		JClassType moduleType = oracle.addClass( Modules.Module1.class );
 		ChildModuleElement childModule = new ChildModuleElement();
@@ -968,7 +967,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteChildWithParentAsyncNoAutoLoad() throws DuplicatePropertyNameException {
+	public void testWriteChildWithParentAsyncNoAutoLoad() {
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
 		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
 
@@ -999,7 +998,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteChildWithParentAsyncoAutoLoad() throws DuplicatePropertyNameException {
+	public void testWriteChildWithParentAsyncoAutoLoad() {
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
 		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
 
@@ -1035,7 +1034,33 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteChildEvent() throws DuplicatePropertyNameException {
+	public void testWriteLoadChildModule() {
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+
+		Set<ChildModuleElement> children = configuration.getChildModules();
+
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+		ChildModuleElement childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "childModule1" );
+		childModule.setAutoDisplay( "false" );
+		children.add( childModule );
+
+		moduleType = oracle.addClass( Modules.Module1.class );
+		childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "childModule2" );
+		childModule.setAutoDisplay( "false" );
+		children.add( childModule );
+
+		assertOutput( getExpectedLoadChildModule(), false );
+		writer.writeConf();
+		assertOutput( getExpectedLoadChildModule(), true );
+
+	}
+
+	@Test
+	public void testWriteChildEvent() {
 
 		configuration.setLoadChildConfig( new ChildModulesElement() );
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
@@ -1050,15 +1075,15 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		EventElement event1 = new EventElement();
 		event1.setType( "event1" );
-		event1.setModulesToLoad( new String[] { "child" } );
+		event1.setForwardToModules( new String[] { "child" } );
 		EventElement event2 = new EventElement();
 		event2.setType( "event2" );
 		event2.setEventObjectClass( new String[] { "java.lang.String" } );
-		event2.setModulesToLoad( new String[] { "child" } );
+		event2.setForwardToModules( new String[] { "child" } );
 		EventElement event3 = new EventElement();
 		event3.setType( "event3" );
 		event3.setEventObjectClass( new String[] { "java.lang.String", "java.lang.Object" } );
-		event3.setModulesToLoad( new String[] { "child" } );
+		event3.setForwardToModules( new String[] { "child" } );
 		configuration.getEvents().add( event1 );
 		configuration.getEvents().add( event2 );
 		configuration.getEvents().add( event3 );
@@ -1070,7 +1095,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteChildPassiveEvent() throws DuplicatePropertyNameException {
+	public void testWriteChildPassiveEvent() {
 
 		configuration.setLoadChildConfig( new ChildModulesElement() );
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
@@ -1085,17 +1110,17 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		EventElement event1 = new EventElement();
 		event1.setType( "event1" );
-		event1.setModulesToLoad( new String[] { "child" } );
+		event1.setForwardToModules( new String[] { "child" } );
 		event1.setPassive( "true" );
 		EventElement event2 = new EventElement();
 		event2.setType( "event2" );
 		event2.setEventObjectClass( new String[] { "java.lang.String" } );
-		event2.setModulesToLoad( new String[] { "child" } );
+		event2.setForwardToModules( new String[] { "child" } );
 		event2.setPassive( "true" );
 		EventElement event3 = new EventElement();
 		event3.setType( "event3" );
 		event3.setEventObjectClass( new String[] { "java.lang.String", "java.lang.Object" } );
-		event3.setModulesToLoad( new String[] { "child" } );
+		event3.setForwardToModules( new String[] { "child" } );
 		event3.setPassive( "true" );
 		configuration.getEvents().add( event1 );
 		configuration.getEvents().add( event2 );
@@ -1108,7 +1133,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteForwardParent() throws DuplicatePropertyNameException {
+	public void testWriteForwardParent() {
 
 		EventElement event = new EventElement();
 		event.setType( "test" );
@@ -1121,8 +1146,50 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedForwardParent(), true );
 	}
 
+	private void testWriteSiblingEvent( boolean passive ) {
+
+		String passiveStr = Boolean.toString( passive );
+
+		configuration.setLoadChildConfig( new ChildModulesElement() );
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		String moduleType = oracle.addClass( Modules.ModuleWithParent.class ).getQualifiedSourceName();
+
+		EventElement event1 = new EventElement();
+		event1.setType( "event1" );
+		event1.setPassive( passiveStr );
+		event1.setSiblingsToLoad( new String[] { moduleType } );
+		EventElement event2 = new EventElement();
+		event2.setType( "event2" );
+		event2.setEventObjectClass( new String[] { "java.lang.String" } );
+		event2.setSiblingsToLoad( new String[] { moduleType } );
+		event2.setPassive( passiveStr );
+		EventElement event3 = new EventElement();
+		event3.setType( "event3" );
+		event3.setEventObjectClass( new String[] { "java.lang.String", "java.lang.Object" } );
+		event3.setSiblingsToLoad( new String[] { moduleType } );
+		event3.setPassive( passiveStr );
+		configuration.getEvents().add( event1 );
+		configuration.getEvents().add( event2 );
+		configuration.getEvents().add( event3 );
+		configuration.getOthersEventBusClassMap().put( moduleType, oracle.addClass( EventBusOk.class ) );
+
+		assertOutput( getExpectedEventSiblingLoad( passive ), false );
+		writer.writeConf();
+		assertOutput( getExpectedEventSiblingLoad( passive ), true );
+	}
+
 	@Test
-	public void testWriteDebug() throws DuplicatePropertyNameException {
+	public void testWriteSiblingEvent() {
+		testWriteSiblingEvent( false );
+	}
+
+	@Test
+	public void testWriteSiblingEventPassive() {
+		testWriteSiblingEvent( true );
+	}
+
+	@Test
+	public void testWriteDebug() {
 
 		EventElement event = new EventElement();
 		event.setType( "test" );
@@ -1146,7 +1213,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteComplexDebug() throws DuplicatePropertyNameException {
+	public void testWriteComplexDebug() {
 
 		createHandlers();
 
@@ -1194,7 +1261,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteParentHistory() throws DuplicatePropertyNameException {
+	public void testWriteParentHistory() {
 
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
 		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
@@ -1209,7 +1276,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		EventElement event = new EventElement();
 		event.setType( "test" );
-		event.setModulesToLoad( new String[] { "child" } );
+		event.setForwardToModules( new String[] { "child" } );
 		configuration.getEvents().add( event );
 		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
 
@@ -1220,7 +1287,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteGinInjector() throws DuplicatePropertyNameException {
+	public void testWriteGinInjector() {
 
 		assertOutput( getExpectedGinInjector(), false );
 		assertOutput( getExpectedDefaultGinModule(), false );
@@ -1236,7 +1303,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteCustomGinInjector() throws DuplicatePropertyNameException {
+	public void testWriteCustomGinInjector() {
 
 		assertOutput( getExpectedGinInjector(), false );
 		assertOutput( getExpectedDefaultGinModule(), false );
@@ -1255,7 +1322,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteEventFilters() throws DuplicatePropertyNameException {
+	public void testWriteEventFilters() {
 
 		assertOutput( getExpectedEventFiltersInstantiation(), false );
 		assertOutput( getExpectedEventFilters(), false );
@@ -1293,7 +1360,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteNoEventFilters() throws DuplicatePropertyNameException {
+	public void testWriteNoEventFilters() {
 
 		assertOutput( getExpectedEventFilters(), false );
 		assertOutput( getExpectedEventFiltersInstantiation(), false );
@@ -1321,7 +1388,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteForceEventFilters() throws DuplicatePropertyNameException {
+	public void testWriteForceEventFilters() {
 
 		assertOutput( getExpectedEventFilters(), false );
 		assertOutput( getExpectedEventFiltersInstantiation(), false );
@@ -1353,7 +1420,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteEventFiltersWithLog() throws DuplicatePropertyNameException {
+	public void testWriteEventFiltersWithLog() {
 
 		assertOutput( getExpectedEventFilters(), false );
 		assertOutput( getExpectedEventFiltersLog(), false );
@@ -1397,7 +1464,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteAfterEventFilters() throws DuplicatePropertyNameException {
+	public void testWriteAfterEventFilters() {
 
 		assertOutput( getExpectedEventFilters(), false );
 		assertOutput( getExpectedEventFiltersInstantiation(), false );
@@ -1439,7 +1506,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
-	public void testWriteEventWithPrimitives() throws DuplicatePropertyNameException {
+	public void testWriteEventWithPrimitives() {
 
 		assertOutput( getExpectedPrimitives(), false );
 
@@ -1456,7 +1523,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		EventElement e1 = new EventElement();
 		e1.setType( "event1" );
-		e1.setModulesToLoad( new String[] { "child" } );
+		e1.setForwardToModules( new String[] { "child" } );
 		e1.setEventObjectClass( new String[] { "boolean", "byte", "char", "double", "float", "int", "long", "short" } );
 
 		configuration.getEvents().add( e1 );
@@ -1513,7 +1580,7 @@ public class Mvp4gConfigurationFileReaderTest {
 				"String moduleHistoryName = eventType.substring(0, index);", "String nextToken = eventType.substring(index + 1);",
 				"Mvp4gEventPasser nextPasser = new Mvp4gEventPasser(nextToken) {", "public void pass(Mvp4gModule module) {",
 				"module.dispatchHistoryEvent((String) eventObjects[0], passer);", "passer.setEventObject(false);", "passer.pass(this);", "}else{",
-				"passer.pass(this);" };
+				"passer.pass(this);", "public void loadChildModule(String childModuleClassName, boolean passive, Mvp4gEventPasser passer){" };
 	}
 
 	private String[] getExpectedHistoryWithConfig() {
@@ -1617,7 +1684,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	private String[] getExpectedStartPresenterViewCommon() {
 		return new String[] { "this.startView = startPresenter.getView();" };
 	}
-	
+
 	private String[] getExpectedStartPresenterView() {
 		return new String[] { "this.startPresenter = startPresenter;" };
 	}
@@ -1668,9 +1735,18 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	private String[] getExpectedChildModule( String moduleClassName ) {
 		return new String[] { "private void loadchildModule(final Mvp4gEventPasser passer){",
-				moduleClassName + " newModule = (" + moduleClassName + ") modules.get(" + moduleClassName + ".class);", "if(newModule == null){",
-				"newModule = GWT.create(" + moduleClassName + ".class);", "modules.put(" + moduleClassName + ".class, newModule);",
+				moduleClassName + " newModule = (" + moduleClassName + ") modules.get(\"" + moduleClassName + "\");", "if(newModule == null){",
+				"newModule = GWT.create(" + moduleClassName + ".class);", "modules.put(\"" + moduleClassName + "\", newModule);",
 				"newModule.createAndStartModule();", "if(passer != null) passer.pass(newModule);", "newModule.setParentModule(itself);" };
+	}
+
+	private String[] getExpectedLoadChildModule() {
+		return new String[] { "public void loadChildModule(String childModuleClassName, boolean passive, Mvp4gEventPasser passer){", "if (passive){",
+				"Mvp4gModule childModule = modules.get(childModuleClassName);", "if((childModule != null) && (passer != null)){",
+				"passer.pass(childModule);", "else if(\"com.mvp4g.util.test_tools.Modules.ModuleWithParent\".equals(childModuleClassName)){",
+				"loadchildModule2(passer);", "else if(\"com.mvp4g.util.test_tools.Modules.Module1\".equals(childModuleClassName)){",
+				"loadchildModule1(passer);",
+				"throw new Mvp4gException( \"ChildModule \" + childModuleClassName + \" doesn't exist. Is this module a sibling module?\" );" };
 	}
 
 	private String[] getExpectedAsyncChildModule() {
@@ -1704,10 +1780,23 @@ public class Mvp4gConfigurationFileReaderTest {
 				"eventBus.event1();" };
 	}
 
+	private String[] getExpectedEventSiblingLoad( boolean passive ) {
+		return new String[] {
+				"parentModule.loadChildModule(\"com.mvp4g.util.test_tools.Modules.ModuleWithParent\", " + passive + ", new Mvp4gEventPasser(){",
+				"public void pass(Mvp4gModule module){",
+				"com.mvp4g.util.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.events.EventBusOk) module.getEventBus();",
+				"eventBus.event1();",
+				"parentModule.loadChildModule(\"com.mvp4g.util.test_tools.Modules.ModuleWithParent\", " + passive + ", new Mvp4gEventPasser(new Object[]{attr0}){",
+				"eventBus.event2((java.lang.String) eventObjects[0]);",
+				"parentModule.loadChildModule(\"com.mvp4g.util.test_tools.Modules.ModuleWithParent\", " + passive
+						+ ", new Mvp4gEventPasser(new Object[]{attr0,attr1}){",
+				"eventBus.event3((java.lang.String) eventObjects[0],(java.lang.Object) eventObjects[1]);" };
+	}
+
 	private String[] getExpectedPassiveEventChildModuleLoad() {
 		return new String[] {
 				"Mvp4gModule module;",
-				"module = modules.get(com.mvp4g.util.test_tools.Modules.ModuleWithParent.class);",
+				"module = modules.get(\"com.mvp4g.util.test_tools.Modules.ModuleWithParent\");",
 				"if(module != null){",
 				"com.mvp4g.util.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event2(attr0);",
@@ -1834,7 +1923,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		return new String[] { "eventBus.setFilteringEnabledForNextOne(false);" };
 	}
 
-	private void createHandlers() throws DuplicatePropertyNameException {
+	private void createHandlers() {
 		Set<PresenterElement> presenters = configuration.getPresenters();
 		Set<EventHandlerElement> eventHandlers = configuration.getEventHandlers();
 

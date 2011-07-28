@@ -16,7 +16,6 @@
 package com.mvp4g.util.config.element;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 public class ChildModuleElement extends SimpleMvp4gElement {
 
@@ -26,7 +25,7 @@ public class ChildModuleElement extends SimpleMvp4gElement {
 		super( "childModule" );
 	}
 
-	public void setEventToDisplayView( String eventToDisplayView ) throws DuplicatePropertyNameException {
+	public void setEventToDisplayView( String eventToDisplayView ) {
 		setProperty( "eventToDisplayView", eventToDisplayView );
 	}
 
@@ -34,7 +33,7 @@ public class ChildModuleElement extends SimpleMvp4gElement {
 		return getProperty( "eventToDisplayView" );
 	}
 
-	public void setAsync( String async ) throws DuplicatePropertyNameException {
+	public void setAsync( String async ) {
 		setProperty( "async", async );
 	}
 
@@ -48,7 +47,7 @@ public class ChildModuleElement extends SimpleMvp4gElement {
 		return Boolean.TRUE.toString().equalsIgnoreCase( getAsync() );
 	}
 
-	public void setAutoDisplay( String autoDisplay ) throws DuplicatePropertyNameException {
+	public void setAutoDisplay( String autoDisplay ) {
 		setProperty( "autoDisplay", autoDisplay );
 	}
 
@@ -66,7 +65,7 @@ public class ChildModuleElement extends SimpleMvp4gElement {
 		return getProperty( "historyName" );
 	}
 
-	public void setHistoryName( String historyName ) throws DuplicatePropertyNameException {
+	public void setHistoryName( String historyName ) {
 		setProperty( "historyName", historyName );
 	}
 
@@ -77,5 +76,13 @@ public class ChildModuleElement extends SimpleMvp4gElement {
 	public void setParentEventBus( JClassType parentEventBus ) {
 		this.parentEventBus = parentEventBus;
 	}
-	
+
+	public void setParentModuleClass( String parentModuleClass ) {
+		setProperty( "parentModuleClass", parentModuleClass );
+	}
+
+	public String getParentModuleClass() {
+		return getProperty( "parentModuleClass" );
+	}
+
 }

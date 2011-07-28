@@ -12,8 +12,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
-
 public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 
 	protected T element;
@@ -34,7 +32,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 	}
 
 	@Test
-	public void testEquals() throws DuplicatePropertyNameException {
+	public void testEquals() {
 		T same = newElement();
 		T different = newElement();
 		element.setProperty( element.getUniqueIdentifierName(), "id1" );
@@ -46,14 +44,8 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 
 	}
 
-	@Test( expected = DuplicatePropertyNameException.class )
-	public void testDuplicatePropertiesGenerateFailure() throws DuplicatePropertyNameException {
-		element.setProperty( "first", "some value" );
-		element.setProperty( "first", "some other value" );
-	}
-
 	@Test
-	public void testSetAndGetProperties() throws DuplicatePropertyNameException {
+	public void testSetAndGetProperties() {
 		assertPropertiesSize( 0 );
 		assertSetProperty( "first", "first value" );
 		assertSetProperty( "second", "second value" );
@@ -61,7 +53,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 	}
 
 	@Test
-	public void testSetAndGetValues() throws DuplicatePropertyNameException {
+	public void testSetAndGetValues() {
 		String[] english = { "one", "two", "three" };
 		String[] french = { "un", "deux", "trois" };
 		assertMultiValuesSize( 0 );
@@ -76,22 +68,14 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 	}
 
 	@Test
-	public void testSetValuesWithEmptyArray() throws DuplicatePropertyNameException {
+	public void testSetValuesWithEmptyArray() {
 		String[] emptyArray = { "" };
 		element.setValues( "test", emptyArray );
 		assertArrayEquals( new String[] {}, element.getValues( "test" ) );
 	}
 
-	@Test( expected = DuplicatePropertyNameException.class )
-	public void testDuplicateValues() throws DuplicatePropertyNameException {
-		String[] values = { "one", "two", "three" };
-		String[] values2 = { "un", "deux", "trois" };
-		element.setValues( "values", values );
-		element.setValues( "values", values2 );
-	}
-
 	@Test
-	public void testHashCode() throws DuplicatePropertyNameException {
+	public void testHashCode() {
 		element.setProperty( getUniqueIdentifierName(), "test" );
 		assertEquals( element.hashCode(), element.getUniqueIdentifier().hashCode() );
 	}
@@ -218,7 +202,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 		assertEquals( expectedSize, element.totalProperties() );
 	}
 
-	private void assertSetProperty( String name, String value ) throws DuplicatePropertyNameException {
+	private void assertSetProperty( String name, String value ) {
 		assertNull( element.getProperty( name ) );
 		element.setProperty( name, value );
 		assertEquals( value, element.getProperty( name ) );
@@ -228,7 +212,7 @@ public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 		assertEquals( expectedSize, element.totalMultiValues() );
 	}
 
-	private void assertSetMultiValues( String name, String[] values ) throws DuplicatePropertyNameException {
+	private void assertSetMultiValues( String name, String[] values ) {
 		assertNull( element.getProperty( name ) );
 		element.setValues( name, values );
 		assertArrayEquals( values, element.getValues( name ) );

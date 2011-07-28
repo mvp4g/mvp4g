@@ -6,60 +6,58 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
-
 public class StartElementTest extends AbstractMvp4gElementTest<StartElement> {
 
 	protected static final String[] properties = { "eventType", "presenter", "history", "forwardEventType" };
 
 	@Test
-	public void testHasEventType() throws DuplicatePropertyNameException {
+	public void testHasEventType() {
 		assertFalse( element.hasEventType() );
 		element.setEventType( "test" );
 		assertTrue( element.hasEventType() );
 	}
 
 	@Test
-	public void testHasHistory() throws DuplicatePropertyNameException {
+	public void testHasHistory() {
 		assertFalse( element.hasHistory() );
 		element.setHistory( "true" );
 		assertTrue( element.hasHistory() );
 	}
 
 	@Test
-	public void testHasHistoryUpper() throws DuplicatePropertyNameException {
+	public void testHasHistoryUpper() {
 		assertFalse( element.hasHistory() );
 		element.setHistory( "TRUE" );
 		assertTrue( element.hasHistory() );
 	}
 
 	@Test
-	public void testHasHistoryFalse() throws DuplicatePropertyNameException {
+	public void testHasHistoryFalse() {
 		assertFalse( element.hasHistory() );
 		element.setHistory( "false" );
 		assertFalse( element.hasHistory() );
 	}
 
 	@Test
-	public void testHasHistoryAny() throws DuplicatePropertyNameException {
+	public void testHasHistoryAny() {
 		assertFalse( element.hasHistory() );
 		element.setHistory( "laksjd123" );
 		assertFalse( element.hasHistory() );
 	}
-	
+
 	@Test
-	public void testHasForward() throws DuplicatePropertyNameException{
+	public void testHasForward() {
 		assertFalse( element.hasForwardEventType() );
 		String test = "test";
 		element.setForwardEventType( test );
 		assertEquals( test, element.getForwardEventType() );
 		assertTrue( element.hasForwardEventType() );
 	}
-	
+
 	@Test
-	public void testHasStartView() throws DuplicatePropertyNameException {
+	public void testHasStartView() {
 		assertFalse( element.hasPresenter() );
-		
+
 		element.setPresenter( "presenter" );
 		assertTrue( element.hasPresenter() );
 	}

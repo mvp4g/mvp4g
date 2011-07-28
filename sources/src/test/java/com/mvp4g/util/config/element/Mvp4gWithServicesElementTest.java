@@ -1,17 +1,15 @@
 package com.mvp4g.util.config.element;
 
+import static junit.framework.Assert.assertEquals;
+
 import java.util.List;
 
-import static junit.framework.Assert.*;
-
 import org.junit.Test;
-
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 public class Mvp4gWithServicesElementTest extends SimpleMvp4gElementTest {
 
 	@Test
-	public void testSetServices() throws DuplicatePropertyNameException {
+	public void testSetServices() {
 		Mvp4gWithServicesElement e = (Mvp4gWithServicesElement)element;
 		List<InjectedElement> services = e.getInjectedServices();
 		assertEquals( 0, services.size() );
@@ -22,7 +20,7 @@ public class Mvp4gWithServicesElementTest extends SimpleMvp4gElementTest {
 	}
 
 	@Test
-	public void testSetValues() throws DuplicatePropertyNameException {
+	public void testSetValues() {
 		Mvp4gWithServicesElement e = (Mvp4gWithServicesElement)element;
 		List<InjectedElement> services = e.getInjectedServices();
 		String[] tab = new String[] { "service" };

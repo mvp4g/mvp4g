@@ -5,8 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
-
 public class EventHandlerElementTest extends Mvp4gWithServicesElementTest {
 
 	private static final String[] properties = SimpleMvp4gElementTest.addProperties( new String[] { "multiple" } );
@@ -27,7 +25,7 @@ public class EventHandlerElementTest extends Mvp4gWithServicesElementTest {
 	}
 
 	@Test
-	public void testMultiple() throws DuplicatePropertyNameException {
+	public void testMultiple() {
 		EventHandlerElement element = new EventHandlerElement();
 		assertFalse( element.isMultiple() );
 		element.setMultiple( "true" );

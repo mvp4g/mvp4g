@@ -15,7 +15,6 @@
  */
 package com.mvp4g.util.config.element;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
 
 /**
  * 
@@ -36,7 +35,7 @@ public class EventFiltersElement extends Mvp4gElement {
 		return EVENT_FILTERS_ELEMENT_ID;
 	}
 
-	public void setAfterHistory( String afterHistory ) throws DuplicatePropertyNameException {
+	public void setAfterHistory( String afterHistory ) {
 		setProperty( "afterHistory", afterHistory );
 	}
 
@@ -48,7 +47,7 @@ public class EventFiltersElement extends Mvp4gElement {
 		return Boolean.TRUE.toString().equalsIgnoreCase( getAfterHistory() );
 	}
 	
-	public void setFilterForward( String filterForward ) throws DuplicatePropertyNameException {
+	public void setFilterForward( String filterForward ) {
 		setProperty( "filterForward", filterForward );
 	}
 
@@ -60,7 +59,7 @@ public class EventFiltersElement extends Mvp4gElement {
 		return !Boolean.FALSE.toString().equalsIgnoreCase( getFilterForward() );
 	}
 	
-	public void setFilterStart( String filterStart ) throws DuplicatePropertyNameException {
+	public void setFilterStart( String filterStart ) {
 		setProperty( "filterStart", filterStart );
 	}
 
@@ -72,7 +71,7 @@ public class EventFiltersElement extends Mvp4gElement {
 		return !Boolean.FALSE.toString().equalsIgnoreCase( getFilterStart() );
 	}	
 	
-	public void setForceFilters( String forceFilters ) throws DuplicatePropertyNameException {
+	public void setForceFilters( String forceFilters ) {
 		setProperty( "forceFilters", forceFilters );
 	}
 

@@ -18,8 +18,6 @@ package com.mvp4g.util.config.element;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
-
 /**
  * An Mvp4g Event configuration element.</p>
  * 
@@ -27,28 +25,28 @@ import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
  */
 public class EventElement extends Mvp4gElement {
 
-	private List<String> activate, deactivate, handlers, modulesToLoad;
+	private List<String> activate, deactivate, handlers, forwardToModules;
 
 	public EventElement() {
 		super( "event" );
 	}
 
 	@Override
-	public void setValues( String name, String[] values ) throws DuplicatePropertyNameException {
+	public void setValues( String name, String[] values ) {
 		if ( "activate".equals( name ) ) {
-			activate = fillList( activate, values, "activate" );
+			activate = fillList( values, "activate" );
 		} else if ( "deactivate".equals( name ) ) {
-			deactivate = fillList( deactivate, values, "deactivate" );
+			deactivate = fillList( values, "deactivate" );
 		} else if ( "handlers".equals( name ) ) {
-			handlers = fillList( handlers, values, "handlers" );
-		} else if ( "modulesToLoad".equals( name ) ) {
-			modulesToLoad = fillList( modulesToLoad, values, "modulesToLoad" );
+			handlers = fillList( values, "handlers" );
+		} else if ( "forwardToModules".equals( name ) ) {
+			forwardToModules = fillList( values, "forwardToModules" );
 		} else {
 			super.setValues( name, values );
 		}
 	}
 
-	public void setType( String type ) throws DuplicatePropertyNameException {
+	public void setType( String type ) {
 		setProperty( "type", type );
 	}
 
@@ -56,7 +54,7 @@ public class EventElement extends Mvp4gElement {
 		return getProperty( "type" );
 	}
 
-	public void setCalledMethod( String calledMethod ) throws DuplicatePropertyNameException {
+	public void setCalledMethod( String calledMethod ) {
 		setProperty( "calledMethod", calledMethod );
 	}
 
@@ -76,7 +74,7 @@ public class EventElement extends Mvp4gElement {
 		return calledMethod;
 	}
 
-	public void setEventObjectClass( String[] eventObjectClasses ) throws DuplicatePropertyNameException {
+	public void setEventObjectClass( String[] eventObjectClasses ) {
 		setValues( "eventObjectClass", eventObjectClasses );
 	}
 
@@ -84,7 +82,7 @@ public class EventElement extends Mvp4gElement {
 		return getValues( "eventObjectClass" );
 	}
 
-	public void setHandlers( String[] handlers ) throws DuplicatePropertyNameException {
+	public void setHandlers( String[] handlers ) {
 		setValues( "handlers", handlers );
 	}
 
@@ -92,15 +90,23 @@ public class EventElement extends Mvp4gElement {
 		return handlers;
 	}
 
-	public void setModulesToLoad( String[] modules ) throws DuplicatePropertyNameException {
-		setValues( "modulesToLoad", modules );
+	public void setForwardToModules( String[] modules ) {
+		setValues( "forwardToModules", modules );
 	}
 
-	public List<String> getModulesToLoad() {
-		return modulesToLoad;
+	public List<String> getForwardToModules() {
+		return forwardToModules;
 	}
 
-	public void setHistory( String history ) throws DuplicatePropertyNameException {
+	public List<String> getSiblingsToLoad() {
+		return getFlexibleValues( "siblingsToLoad" );
+	}
+
+	public void setSiblingsToLoad( String[] siblingsToLoad ) {
+		setFlexibleValues( "siblingsToLoad", siblingsToLoad );
+	}
+
+	public void setHistory( String history ) {
 		setProperty( "history", history );
 	}
 
@@ -116,7 +122,7 @@ public class EventElement extends Mvp4gElement {
 		return getProperty( "forwardToParent" );
 	}
 
-	public void setForwardToParent( String forwardToParent ) throws DuplicatePropertyNameException {
+	public void setForwardToParent( String forwardToParent ) {
 		setProperty( "forwardToParent", forwardToParent );
 	}
 
@@ -138,7 +144,7 @@ public class EventElement extends Mvp4gElement {
 		return activate;
 	}
 
-	public void setActivate( String[] presenters ) throws DuplicatePropertyNameException {
+	public void setActivate( String[] presenters ) {
 		setValues( "activate", presenters );
 	}
 
@@ -146,15 +152,15 @@ public class EventElement extends Mvp4gElement {
 		return deactivate;
 	}
 
-	public void setDeactivate( String[] presenters ) throws DuplicatePropertyNameException {
+	public void setDeactivate( String[] presenters ) {
 		setValues( "deactivate", presenters );
 	}
-	
-	public void setGenerate( String[] presenters ) throws DuplicatePropertyNameException {
+
+	public void setGenerate( String[] presenters ) {
 		setValues( "generate", presenters );
 	}
-	
-	public String[] getGenerate(){
+
+	public String[] getGenerate() {
 		return getValues( "generate" );
 	}
 
@@ -166,7 +172,7 @@ public class EventElement extends Mvp4gElement {
 		return name;
 	}
 
-	public void setName( String name ) throws DuplicatePropertyNameException {
+	public void setName( String name ) {
 		setProperty( "name", name );
 	}
 
@@ -178,7 +184,7 @@ public class EventElement extends Mvp4gElement {
 		return Boolean.TRUE.toString().equalsIgnoreCase( getNavigationEvent() );
 	}
 
-	public void setNavigationEvent( String navigationEvent ) throws DuplicatePropertyNameException {
+	public void setNavigationEvent( String navigationEvent ) {
 		setProperty( "navigationEvent", navigationEvent );
 	}
 
@@ -190,7 +196,7 @@ public class EventElement extends Mvp4gElement {
 		return Boolean.TRUE.toString().equalsIgnoreCase( getWithTokenGeneration() );
 	}
 
-	public void setWithTokenGeneration( String withTokenGeneration ) throws DuplicatePropertyNameException {
+	public void setWithTokenGeneration( String withTokenGeneration ) {
 		setProperty( "withTokenGeneration", withTokenGeneration );
 	}
 
@@ -202,7 +208,7 @@ public class EventElement extends Mvp4gElement {
 		return Boolean.TRUE.toString().equalsIgnoreCase( getTokenGenerationFromParent() );
 	}
 
-	public void setTokenGenerationFromParent( String tokenGenerationFromParent ) throws DuplicatePropertyNameException {
+	public void setTokenGenerationFromParent( String tokenGenerationFromParent ) {
 		setProperty( "tokenGenerationFromParent", tokenGenerationFromParent );
 	}
 
@@ -214,11 +220,11 @@ public class EventElement extends Mvp4gElement {
 		return Boolean.TRUE.toString().equalsIgnoreCase( getPassive() );
 	}
 
-	public void setPassive( String passive ) throws DuplicatePropertyNameException {
+	public void setPassive( String passive ) {
 		setProperty( "passive", passive );
 	}
 
-	public void setBroadcastTo( String broadcastTo ) throws DuplicatePropertyNameException {
+	public void setBroadcastTo( String broadcastTo ) {
 		setProperty( "broadcastTo", broadcastTo );
 	}
 
@@ -226,10 +232,7 @@ public class EventElement extends Mvp4gElement {
 		return getProperty( "broadcastTo" );
 	}
 
-	private List<String> fillList( List<String> previousList, String[] values, String propertyName ) throws DuplicatePropertyNameException {
-		if ( previousList != null ) {
-			throw new DuplicatePropertyNameException( propertyName );
-		}
+	private List<String> fillList( String[] values, String propertyName ) {
 		List<String> newList = new ArrayList<String>();
 		for ( String value : values ) {
 			newList.add( value );

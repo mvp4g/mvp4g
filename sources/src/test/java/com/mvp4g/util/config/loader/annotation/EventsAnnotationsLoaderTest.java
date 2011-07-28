@@ -410,7 +410,7 @@ public class EventsAnnotationsLoaderTest {
 				assertEquals( 2, generates.length );
 				assertEquals( "name", activates.get( 1 ) );
 				assertEquals( "name", deactivates.get( 1 ) );
-				assertEquals( "name", generates[1]);
+				assertEquals( "name", generates[1] );
 			} else if ( "event4".equals( e.getType() ) ) {
 				activates = e.getActivate();
 				deactivates = e.getDeactivate();
@@ -420,10 +420,10 @@ public class EventsAnnotationsLoaderTest {
 				assertEquals( 4, generates.length );
 				assertEquals( "name", activates.get( 2 ) );
 				assertEquals( "name", deactivates.get( 2 ) );
-				assertEquals( "name", generates[2]);
+				assertEquals( "name", generates[2] );
 				assertEquals( "name1", activates.get( 3 ) );
 				assertEquals( "name1", deactivates.get( 3 ) );
-				assertEquals( "name1", generates[3]);
+				assertEquals( "name1", generates[3] );
 			} else {
 				fail( "Unknown event name" );
 			}
@@ -435,7 +435,7 @@ public class EventsAnnotationsLoaderTest {
 		assertEquals( "event2", configuration.getStart().getForwardEventType() );
 
 	}
-	
+
 	@Test
 	public void testListOk() throws Mvp4gAnnotationException {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
@@ -444,7 +444,7 @@ public class EventsAnnotationsLoaderTest {
 		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
 
 		annotedClasses.clear();
-		
+
 		annotedClasses.add( oracle.addClass( HistoryConverterForEvent.class ) );
 		new HistoryAnnotationsLoader().load( annotedClasses, configuration );
 
@@ -484,8 +484,7 @@ public class EventsAnnotationsLoaderTest {
 				assertFalse( e.isNavigationEvent() );
 				assertFalse( e.isWithTokenGeneration() );
 				assertFalse( e.isPassive() );
-			}			
-			else {
+			} else {
 				fail( "Unknown event name" );
 			}
 		}
@@ -574,18 +573,54 @@ public class EventsAnnotationsLoaderTest {
 			if ( "event1".equals( e.getType() ) ) {
 
 			} else if ( "event2".equals( e.getType() ) ) {
-				modules = e.getModulesToLoad();
+				modules = e.getForwardToModules();
 				assertEquals( 1, modules.size() );
 				assertEquals( Modules.Module1.class.getCanonicalName().replace( ".", "_" ), modules.get( 0 ) );
 				assertFalse( e.hasForwardToParent() );
 			} else if ( "event3".equals( e.getType() ) ) {
-				modules = e.getModulesToLoad();
+				modules = e.getForwardToModules();
 				assertEquals( 2, modules.size() );
 				assertEquals( Modules.ModuleWithParent.class.getCanonicalName().replace( ".", "_" ), modules.get( 0 ) );
 				assertEquals( Modules.Module1.class.getCanonicalName().replace( ".", "_" ), modules.get( 1 ) );
 				assertFalse( e.hasForwardToParent() );
 			} else if ( "event4".equals( e.getType() ) ) {
 				assertTrue( e.hasForwardToParent() );
+			} else {
+				fail( "Unknown event name" );
+			}
+		}
+
+	}
+
+	@Test
+	public void testEventBusWithSiblingOk() throws Mvp4gAnnotationException {
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
+		annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
+		new PresenterAnnotationsLoader().load( annotedClasses, configuration );
+
+		annotedClasses.clear();
+
+		JClassType type = oracle.addClass( Events.EventBusWithSiblings.class );
+		annotedClasses.add( type );
+		loader.load( annotedClasses, configuration );
+
+		Set<ChildModuleElement> childModules = configuration.getChildModules();
+		assertEquals( 0, childModules.size() );
+
+		Set<EventElement> events = configuration.getEvents();
+		assertEquals( 2, events.size() );
+
+		List<String> modules;
+		for ( EventElement e : events ) {
+			modules = e.getForwardToModules();
+			if ( "event1".equals( e.getType() ) ) {
+				assertEquals( 1, modules.size() );
+				assertEquals( Modules.Module1.class.getCanonicalName(), modules.get( 0 ) );
+				assertFalse( e.hasForwardToParent() );
+			} else if ( "event2".equals( e.getType() ) ) {
+				assertEquals( 2, modules.size() );
+				assertEquals( Modules.ModuleWithParent.class.getCanonicalName(), modules.get( 0 ) );
+				assertEquals( Modules.Module1.class.getCanonicalName(), modules.get( 1 ) );				
 			} else {
 				fail( "Unknown event name" );
 			}
@@ -670,24 +705,6 @@ public class EventsAnnotationsLoaderTest {
 	}
 
 	@Test( expected = Mvp4gAnnotationException.class )
-	public void testUnknownModuleForEvent() throws Mvp4gAnnotationException {
-		try {
-			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			annotedClasses.add( oracle.addClass( PresenterWithName.class ) );
-			new PresenterAnnotationsLoader().load( annotedClasses, configuration );
-
-			annotedClasses.clear();
-
-			JClassType type = oracle.addClass( Events.EventBusUnknownModuleForEvent.class );
-			annotedClasses.add( type );
-			loader.load( annotedClasses, configuration );
-		} catch ( Mvp4gAnnotationException e ) {
-			assertTrue( e.getMessage().contains( "No instance of " + Modules.ModuleWithParent.class.getCanonicalName() + " is defined." ) );
-			throw e;
-		}
-	}
-
-	@Test( expected = Mvp4gAnnotationException.class )
 	public void testUnknownModuleForLoadModuleViewEvent() throws Mvp4gAnnotationException {
 		try {
 			List<JClassType> annotedClasses = new ArrayList<JClassType>();
@@ -732,16 +749,22 @@ public class EventsAnnotationsLoaderTest {
 
 		annotedClasses.clear();
 
-		JClassType otherEventBus = oracle.addClass( Events.EventBusWithChildren.class );
+		JClassType parentEventBus = oracle.addClass( Events.EventBusWithChildren.class );
 		annotedClasses.add( oracle.addClass( Events.EventBusForOtherModule.class ) );
-		annotedClasses.add( otherEventBus );
+		annotedClasses.add( parentEventBus );
 
-		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
+		JClassType otherModule = oracle.addClass( Modules.Module1.class );
+		String otherModuleClassName = otherModule.getQualifiedSourceName();
+		configuration.setModule( otherModule );
 		loader.load( annotedClasses, configuration );
 
 		Map<String, ChildModuleElement> othersParentEventBusClassMap = configuration.getModuleParentEventBusClassMap();
 		assertEquals( 2, othersParentEventBusClassMap.size() );
-		assertEquals( otherEventBus, othersParentEventBusClassMap.get( Modules.Module1.class.getCanonicalName() ).getParentEventBus() );
+		ChildModuleElement element = othersParentEventBusClassMap.get( otherModuleClassName );
+		assertEquals( parentEventBus, element.getParentEventBus() );
+		assertEquals( otherModuleClassName, element.getClassName() );
+		assertEquals( Mvp4gModule.class.getCanonicalName(), element.getParentModuleClass() );
+		assertTrue( element.isAutoDisplay() );
 	}
 
 	@Test( expected = Mvp4gAnnotationException.class )
@@ -855,9 +878,9 @@ public class EventsAnnotationsLoaderTest {
 		annotedClasses.clear();
 		annotedClasses.add( oracle.addClass( Events.SimpleEventBus.class ) );
 		loader.load( annotedClasses, configuration );
-		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get(0) );
-		
-		assertTrue(configuration.getGinModule().getModuleProperties().length == 0);
+		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get( 0 ) );
+
+		assertTrue( configuration.getGinModule().getModuleProperties().length == 0 );
 
 	}
 
@@ -870,8 +893,8 @@ public class EventsAnnotationsLoaderTest {
 		annotedClasses.clear();
 		annotedClasses.add( oracle.addClass( Events.EventBusWithGin.class ) );
 		loader.load( annotedClasses, configuration );
-		assertEquals( OneGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get(0) );
-		assertEquals( "property1", configuration.getGinModule().getModuleProperties()[0]);
+		assertEquals( OneGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get( 0 ) );
+		assertEquals( "property1", configuration.getGinModule().getModuleProperties()[0] );
 
 	}
 
@@ -884,10 +907,10 @@ public class EventsAnnotationsLoaderTest {
 		annotedClasses.clear();
 		annotedClasses.add( oracle.addClass( Events.EventBusWithGins.class ) );
 		loader.load( annotedClasses, configuration );
-		assertEquals( OneGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get(0) );
-		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get(1) );
-		assertEquals( "property1", configuration.getGinModule().getModuleProperties()[0]);
-		assertEquals( "property2", configuration.getGinModule().getModuleProperties()[1]);
+		assertEquals( OneGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get( 0 ) );
+		assertEquals( DefaultMvp4gGinModule.class.getCanonicalName(), configuration.getGinModule().getModules().get( 1 ) );
+		assertEquals( "property1", configuration.getGinModule().getModuleProperties()[0] );
+		assertEquals( "property2", configuration.getGinModule().getModuleProperties()[1] );
 	}
 
 	@Test
@@ -990,11 +1013,11 @@ public class EventsAnnotationsLoaderTest {
 		assertEquals( CustomPlaceService.class.getCanonicalName(), historyConfig.getPlaceServiceClass() );
 
 	}
-	
+
 	@Test
 	public void testNoStartView() throws Mvp4gAnnotationException {
 
-		List<JClassType> annotedClasses = new ArrayList<JClassType>();		
+		List<JClassType> annotedClasses = new ArrayList<JClassType>();
 		annotedClasses.add( oracle.addClass( Events.EventBusWithNoStartPresenter.class ) );
 		loader.load( annotedClasses, configuration );
 

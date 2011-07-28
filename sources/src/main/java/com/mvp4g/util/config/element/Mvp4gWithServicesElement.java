@@ -18,8 +18,6 @@ package com.mvp4g.util.config.element;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mvp4g.util.exception.element.DuplicatePropertyNameException;
-
 /**
  * A simple Mvp4g configuration element with services.</p>
  * 
@@ -44,7 +42,7 @@ public class Mvp4gWithServicesElement extends SimpleMvp4gElement {
 	}
 
 	@Override
-	public void setValues( String name, String[] values ) throws DuplicatePropertyNameException {
+	public void setValues( String name, String[] values ) {
 		if ( "services".equals( name ) ) {
 			setServices( values );
 		}
@@ -68,7 +66,7 @@ public class Mvp4gWithServicesElement extends SimpleMvp4gElement {
 		return name.substring( 0, 1 ).toUpperCase() + name.substring( 1 );
 	}
 
-	private void setServices( String[] services ) throws DuplicatePropertyNameException {
+	private void setServices( String[] services ) {
 
 		for ( String service : services ) {
 			if ( ( service != null ) && ( service.length() > 0 ) ) {
