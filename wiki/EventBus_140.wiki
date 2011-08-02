@@ -57,12 +57,12 @@ public interface MainEventBus extends EventBusWithLookup {
  * calledMethod (see next paragraph)
  * name: Some Mvp4g methods let you manipulate an event thanks to its name. By default the event's name is the event's method's name but you can override it to ease refractoring ([http://code.google.com/p/mvp4g/wiki/PlaceService#Place_Service see convertFromToken method], [http://code.google.com/p/mvp4g/wiki/EventBus#Event_Filtering see filterEvent method], [http://code.google.com/p/mvp4g/wiki/EventBus#with_lookup see dispatch method]).
  * historyConverter & historyConverterName: used only for history management([http://code.google.com/p/mvp4g/wiki/PlaceService see Mvp4g & Browse history])
- * modulesToLoad and forwardToParent ([http://code.google.com/p/mvp4g/wiki/MultiModules see Multi-modules feature])
+ * forwardToModules and forwardToParent ([http://code.google.com/p/mvp4g/wiki/MultiModules see Multi-modules feature])
  * activate, activateNames, deactivate, deactivateNames (see [http://code.google.com/p/mvp4g/wiki/EventBus#Activating/Deactivating_presenters see Activating/Deactivating presenters])
  * navigationEvent (see [http://code.google.com/p/mvp4g/wiki/EventBus#Navigation_Event Navigation Event])
  * passive (see [http://code.google.com/p/mvp4g/wiki/EventBus#Passive_Event Passive Event])
  * broadcastTo (see [http://code.google.com/p/mvp4g/w/EventBusBroadcast_Event Broadcast Event])
- * generate ([http://code.google.com/p/mvp4g/wiki/PresenterViewService# see Mvp4g & Browse history])
+ * generate ([http://code.google.com/p/mvp4g/wiki/PresenterViewService_140#Event_Generation see Event Generation])
 
 ==Adding an handler to an event==
 
@@ -407,9 +407,9 @@ void sessionExpired();
 
 ==Broadcast Event==
 
-You can easily forward an event to a lot of handlers or child modules thanks to the broadcast feature. You can specify a broadcast interface for an event and any handler or child module that implements this interface will receive it if:
+You can easily forward an event to a lot of handlers or modules thanks to the broadcast feature. You can specify a broadcast interface for an event and any handler or module that implements this interface will receive it if:
  * the handler is compatibable with the Mvp4g module defining the event (ie if the Mvp4g module's event bus can be injected into the handler). Otherwise the handler will be ignored.
- * the child module is a child module of the Mvp4g module defining the event.
+ * the module is a child module, a sibling module or a parent module of the Mvp4g module defining the event.
 
 This interface should be as simple as possible and doesn't need any method.
 
