@@ -7,11 +7,11 @@
 
 Thanks to Mvp4g, developers can easily split their application into modules. Each module will have its own event bus and own presenters/views/services.
 
-A module will be able to communicate with its parent and its childmodule(s) by forwarding them events. When an event is forwarding to a parent and/or a child:
- * the parent and/or child module(s) must be able to handle this event. If object(s) are fired with the event, the object(s) will also be forwarded.
- * the parent and/or child module(s) will handle this event as if it was thrown by one of its own presenters.
+A module will be able to communicate with its parent, its childmodule(s) and its direct sibling{s} by forwarding them events. When an event is forwarding to other module(s):
+ * the other module(s) must be able to handle this event. If object(s) are fired with the event, the object(s) will also be forwarded.
+ * the other module(s) will handle this event the same as if it was thrown by one of its own presenters.
 
-An event can be handled by zero to many presenters and/or forwarded to zero to many child modules and/or forwarded to one parent module.
+An event can be handled by zero to many presenters and/or forwarded to zero to many other modules.
 
 Thanks to Mvp4g and GWT Code splitting feature, you can either load the code of your module at start or only when it needs to handle its first event.
 
@@ -29,11 +29,41 @@ public interface CompanyEventBus extends EventBus {...}
 
 ==Root Module==
 
-The root module is the top module of your application. It's the one that is automaticaly created by Mvp4g whenever you create an event bus without specifiying the module attribute of the @Events annotations.
+The root module is the top module of your application, the only module without parent. This module is the only module created manually by developers when calling:
+{{{
+ Mvp4gModule module = GWT.create(Mvp4gModule.class); 
+}}}
+This code is usually in your entry point. By default the top module class is Mvp4gModule, but you can use any Mvp4gModule you created.
 
-Wherever you use multi-modules feature or not, you need to have a Root Module (ie you need to define an event bus without specifiying the module). This module is the first module loaded by the application and all other modules have amongs their parent(s) the Root Module.
+==Event forwarding from child to parent module==
 
-==Event forwarding from parent to child module==
+To forward an event to a parent module, you need to set the attribute forwardToParent to "true" thanks to @Event annotation.
+
+{{{
+@Event(forwardToParent=true)
+public void changeBody(Widget body);
+}}}
+
+[http://mvp4g.googlecode.com/svn/tags/mvp4g-1.2.0/documentation/uml/forward_parent.png]
+
+1: these methods are called when the child module is loaded and allow to retrieve the parent event bus.
+
+==Event forwarding to other module(s)==
+
+You can easily forward an event to other module(s) by setting the attribute forwardToModules of the @Event annotation of your event. This attribute contains an array of other module(s) classname to which the event need to be forwarded.
+{{{
+@Event(forwardToModules = CompanyModule.class)
+public void goToCompany();
+}}}
+
+You can forward an event only to:
+ * the parent module
+ * the child module(s) ([ see setting child modules)
+ * the sibling module(s) (ie the child modules of the parent module).
+ 
+When forwarding an event to a sibling module, this sibling module will be loaded the same way as if its parent forwarded it an event.
+
+==Setting child modules==
 
 You can define child modules of a module thanks to ChildModule<b>s</b> annotation. This annotation contains a list of ChildModule annotation. Each annotation of this list define a child module. 
 
@@ -41,13 +71,6 @@ A ChildModule annotation has three attributes:
  * moduleClass: class of the child module. It must be one of the class you created at step 1.
  * async (default:true): if set to true, then the code containing the child module is loaded when handling its first event otherwise it is loaded when application starts. In the first case, Mvp4g uses GWT Code Splitting feature to load the child module. 
  * autoDisplay (default:true): if set to true, the start view of the child module will be displayed when the child module is done loaded. When this option is set to true, the parent module's event, needed to display the child module's start view must be defined (see [http://code.google.com/p/mvp4g/wiki/MultiModules#Child_module AutoDisplay]).
-
-To forward an event to a child module, you need to specify the attribute modulesToLoad of the @Event annotation of your event's method (defined inside your event bus interface). This attribute contains an array of child module(s) classname to which events need to be forwarded.
-
-{{{
-@Event(modulesToLoad = CompanyModule.class)
-public void goToCompany();
-}}}
 
 A child module will be started (ie its presenters/views/services will be instantiated and its start event will be fired) only the first time an event is forwarded to it. 
 
@@ -127,23 +150,10 @@ public interface CompanyEventBus extends EventBus {
  # called only if you have configured a forward event
  # you can set any event for the start, forward or display child view events
 
-===Understanding events fired when an event is forwarded to a child module===
+===Understanding events fired when an event is forwarded to a child/sibling module===
 
-When a child module is done loaded the following events will be fired:
+When a child/sibling module is done loaded the following events will be fired:
  # child module start event, on child event bus, only the first time an event is forwarded to the child module.
  # child module forward event, on child event bus, every time an event is forwarded to a child module.
- # event to display child module start view, on parent event bus, only if AutoDisplay option is activated, every time an event is forwarded to a child module.
+ # event to display child module start presenter's view, on parent event bus, only if AutoDisplay option is activated, every time an event is forwarded to a child module.
  # event forwarded to child module, on child event bus, every time an event is forwarded to a child module.
-
-==Event forwarding from child to parent module==
-
-To forward an event to a parent module, you need to set the attribute forwardToParent to "true" thanks to @Event annotation.
-
-{{{
-@Event(forwardToParent=true)
-public void changeBody(Widget body);
-}}}
-
-[http://mvp4g.googlecode.com/svn/tags/mvp4g-1.2.0/documentation/uml/forward_parent.png]
-
-1: these methods are called when the child module is loaded and allow to retrieve the parent event bus.
