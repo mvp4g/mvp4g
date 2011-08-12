@@ -7,10 +7,9 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.main.MainEventBus;
 import com.mvp4g.example.client.main.view.InfoReceiverView;
-import com.mvp4g.example.client.util.HasBeenThereHandler;
 
 @Presenter( view = InfoReceiverView.class, multiple = true )
-public class InfoReceiverPresenter extends BasePresenter<InfoReceiverPresenter.IInfoReceiverView, MainEventBus> implements HasBeenThereHandler {
+public class InfoReceiverPresenter extends BasePresenter<InfoReceiverPresenter.IInfoReceiverView, MainEventBus> {
 
 	public interface IInfoReceiverView {
 
@@ -40,10 +39,6 @@ public class InfoReceiverPresenter extends BasePresenter<InfoReceiverPresenter.I
 	public void onBroadcastInfo( String[] info ) {
 		view.setInfo( info );
 		view.show();
-	}
-
-	public void onHasBeenThere() {
-		view.setInfo( new String[] { "Has Been There" } );
 	}
 
 }

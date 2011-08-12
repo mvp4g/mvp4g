@@ -751,21 +751,13 @@ public class Mvp4gConfiguration {
 				eventList.add( event );
 			}
 			if ( generates != null ) {
-				if ( handlers == null ) {
-					event.setHandlers( new String[0] );
-					handlers = event.getHandlers();
-				}
-
 				for ( String generate : generates ) {
 					eventList = generateMap.get( generate );
 					if ( eventList == null ) {
 						eventList = new ArrayList<EventElement>();
 						generateMap.put( generate, eventList );
 					}
-					eventList.add( event );
-					if ( !handlers.contains( generate ) ) {
-						handlers.add( generate );
-					}
+					eventList.add( event );					
 				}
 			}
 		}
@@ -793,7 +785,7 @@ public class Mvp4gConfiguration {
 			eventGenerateList = generateMap.remove( name );
 			viewName = presenter.getView();
 
-			toKeep = ( eventList != null ) || ( hasStartView && name.equals( startPresenter ) );
+			toKeep = ( eventList != null ) || ( hasStartView && name.equals( startPresenter ) ) || ( eventGenerateList != null );
 			notDirectHandler = !toKeep && ( presenter.isMultiple() || hasPossibleBroadcast );
 			if ( toKeep || notDirectHandler ) {
 				toKeep = controlEventBus( presenter, eventHandlerGenType, eventBusType, toKeep );
@@ -857,7 +849,7 @@ public class Mvp4gConfiguration {
 			eventActivateList = activateMap.remove( name );
 			eventGenerateList = generateMap.remove( name );
 
-			toKeep = ( eventList != null );
+			toKeep = ( eventList != null ) || (eventGenerateList != null);
 			notDirectHandler = !toKeep && ( eventHandler.isMultiple() || hasPossibleBroadcast );
 			if ( toKeep || notDirectHandler ) {
 				toKeep = controlEventBus( eventHandler, eventHandlerGenType, eventBusType, toKeep );

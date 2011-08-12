@@ -65,6 +65,8 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
 	//have this filter to test force filter option & add/remove event filter
 	private MainEventFilter filter = new MainEventFilter();
+	
+	private int infoCount = 0;
 
 	public void bind() {
 		view.getCompanyMenu().addClickHandler( new ClickHandler() {
@@ -106,7 +108,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
 			@Override
 			public void onClick( ClickEvent event ) {
-				eventBus.broadcastInfo( new String[] { "Info1", "Info2" } );
+				eventBus.broadcastInfo( new String[] { "Info" + infoCount++, "Info" + infoCount++ } );
 			}
 
 		} );

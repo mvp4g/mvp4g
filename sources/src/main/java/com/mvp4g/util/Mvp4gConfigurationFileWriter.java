@@ -646,16 +646,16 @@ public class Mvp4gConfigurationFileWriter {
 		eventHandlers.addAll( configuration.getEventHandlers() );
 
 		String[] objectClasses = null;
-		String type, calledMethod, history, param, name;
+		String type, calledMethod, history, param, name, className;
 		List<String> activate, deactivate, handlers;
-		String[] generate;
+		String[] generates;
 		EventHandlerElement eventHandler;
 		boolean hasLog = ( configuration.getDebug() != null );
 		Set<EventFilterElement> filters = configuration.getEventFilters();
 		EventFiltersElement filtersElement = configuration.getEventFilterConfiguration();
 		boolean filterAfterHistory = ( filtersElement == null ) ? false : filtersElement.isAfterHistory();
 		boolean hasFilter = ( filters != null ) && ( filters.size() > 0 ) || ( ( filtersElement != null ) && ( filtersElement.isForceFilters() ) );
-		boolean isNavigationEvent, isWithTokenGeneration;
+		boolean isNavigationEvent, isWithTokenGeneration, isPassive;
 		for ( EventElement event : configuration.getEvents() ) {
 			type = event.getType();
 			calledMethod = event.getCalledMethod();
@@ -668,8 +668,9 @@ public class Mvp4gConfigurationFileWriter {
 			history = event.getHistory();
 			activate = event.getActivate();
 			deactivate = event.getDeactivate();
-			generate = event.getGenerate();
+			generates = event.getGenerate();
 			isWithTokenGeneration = event.isWithTokenGeneration();
+			isPassive = event.isPassive();
 
 			sourceWriter.print( "public " );
 			sourceWriter.print( ( isWithTokenGeneration ) ? "String " : "void " );
@@ -767,15 +768,6 @@ public class Mvp4gConfigurationFileWriter {
 				writeEventFilter( hasFilter, event, param );
 			}
 
-			if ( generate != null ) {
-				for ( String handler : generate ) {
-					eventHandler = getElement( handler, eventHandlers );
-					sourceWriter.print( "addHandler(" );
-					sourceWriter.print( eventHandler.getClassName() );
-					sourceWriter.println( ".class);" );
-				}
-			}
-
 			if ( ( activate != null ) && ( activate.size() > 0 ) ) {
 				writeActivation( activate, eventHandlers, true );
 			}
@@ -792,14 +784,28 @@ public class Mvp4gConfigurationFileWriter {
 				for ( String handler : handlers ) {
 					eventHandler = getElement( handler, eventHandlers );
 					if ( !eventHandler.isMultiple() ) {
-						writeEventHandling( handler, type, name, calledMethod, param, event.isPassive() );
+						writeEventHandling( handler, type, name, calledMethod, param, isPassive );
 					} else {
 						writeMultipleActionBegin( eventHandler, "" );
-						writeEventHandling( "handler", type, name, calledMethod, param, event.isPassive() );
+						writeEventHandling( "handler", type, name, calledMethod, param, isPassive );
 						writeMultipleActionEnd();
 					}
 				}
 
+			}
+			
+			if ( generates != null ) {
+				for ( String generate : generates ) {
+					eventHandler = getElement( generate, eventHandlers );
+					className = eventHandler.getClassName();
+					sourceWriter.print( className );
+					sourceWriter.print( " " );
+					sourceWriter.print( generate );
+					sourceWriter.print( " = addHandler(" );
+					sourceWriter.print( className );
+					sourceWriter.println( ".class);" );
+					writeEventHandling( generate, type, name, calledMethod, param, isPassive );
+				}
 			}
 
 			if ( hasLog ) {

@@ -1786,7 +1786,8 @@ public class Mvp4gConfigurationFileReaderTest {
 				"public void pass(Mvp4gModule module){",
 				"com.mvp4g.util.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event1();",
-				"parentModule.loadChildModule(\"com.mvp4g.util.test_tools.Modules.ModuleWithParent\", " + passive + ", new Mvp4gEventPasser(new Object[]{attr0}){",
+				"parentModule.loadChildModule(\"com.mvp4g.util.test_tools.Modules.ModuleWithParent\", " + passive
+						+ ", new Mvp4gEventPasser(new Object[]{attr0}){",
 				"eventBus.event2((java.lang.String) eventObjects[0]);",
 				"parentModule.loadChildModule(\"com.mvp4g.util.test_tools.Modules.ModuleWithParent\", " + passive
 						+ ", new Mvp4gEventPasser(new Object[]{attr0,attr1}){",
@@ -1873,8 +1874,10 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	public String[] getExpectedGenerateEvents() {
-		return new String[] { "addHandler(" + MultiplePresenter.class.getCanonicalName() + ".class);",
-				"addHandler(" + EventHandlerWithEvent.class.getCanonicalName() + ".class);" };
+		return new String[] {
+				MultiplePresenter.class.getCanonicalName() + " handler2 = addHandler(" + MultiplePresenter.class.getCanonicalName() + ".class);",
+				EventHandlerWithEvent.class.getCanonicalName() + " handler4 = addHandler(" + EventHandlerWithEvent.class.getCanonicalName()
+						+ ".class);", "if (handler2.isActivated(true, \"event4\")){", "handler2.onEvent4();", "if (handler4.isActivated(true, \"event4\")){", "handler4.onEvent4();" };
 	}
 
 	public String[] getExpectedEventsWithToken() {
