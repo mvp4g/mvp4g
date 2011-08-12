@@ -71,8 +71,8 @@ public class BaseEventHandler<E extends EventBus> implements EventHandlerInterfa
 	 * 
 	 * @see com.mvp4g.client.event.EventHandlerInterface#isActivated()
 	 */
-	public boolean isActivated( boolean passive, String eventName, Object... parameters ) {
-		if ( activated ) {
+	public final boolean isActivated( boolean passive, String eventName, Object... parameters ) {
+		if ( activated && pass( eventName, parameters ) ) {
 			if ( passive ) {
 				return binded;
 			} else {
@@ -84,6 +84,19 @@ public class BaseEventHandler<E extends EventBus> implements EventHandlerInterfa
 			}
 		}
 		return activated;
+	}
+
+	/**
+	 * This method allows to prevent handler to handle a specific event.
+	 * 
+	 * @param eventName
+	 *            name of the event to filter
+	 * @param parameters
+	 *            parameters associated to the event to filter
+	 * @return true if the handler can handle this event, false otherwise
+	 */
+	protected boolean pass( String eventName, Object... parameters ) {
+		return true;
 	}
 
 	/*

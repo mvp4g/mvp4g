@@ -478,29 +478,39 @@ public class Mvp4gConfigurationTest {
 		presenter2.setView( "view" );
 		presenters.add( presenter2 );
 
+		PresenterElement presenter3 = newPresenter( "presenter3" );
+		presenter3.setView( "view" );
+		presenter3.setMultiple( "true" );
+		presenters.add( presenter3 );
+
 		EventHandlerElement handler1 = newEventHandler( "handler1" );
 		eventHandlers.add( handler1 );
 
 		EventHandlerElement handler2 = newEventHandler( "handler2" );
 		eventHandlers.add( handler2 );
 
+		EventHandlerElement handler3 = newEventHandler( "handler3" );
+		handler3.setMultiple( "true" );
+		eventHandlers.add( handler3 );
+
 		EventElement event = newEvent( "testEvent" );
 		event.setHandlers( new String[] { "presenter1", "handler1" } );
+		event.setGenerate( new String[] { "presenter3", "handler3" } );
 		events.add( event );
 
 		setEventBus();
 
-		assertEquals( 2, presenters.size() );
+		assertEquals( 3, presenters.size() );
 		assertTrue( presenters.contains( presenter1 ) );
 		assertTrue( presenters.contains( presenter2 ) );
-		assertEquals( 2, eventHandlers.size() );
+		assertEquals( 3, eventHandlers.size() );
 		assertTrue( eventHandlers.contains( handler1 ) );
 		assertTrue( eventHandlers.contains( handler2 ) );
 		configuration.validateEventHandlers();
-		assertEquals( 1, presenters.size() );
+		assertEquals( 2, presenters.size() );
 		assertTrue( presenters.contains( presenter1 ) );
 		assertFalse( presenters.contains( presenter2 ) );
-		assertEquals( 1, eventHandlers.size() );
+		assertEquals( 2, eventHandlers.size() );
 		assertTrue( eventHandlers.contains( handler1 ) );
 		assertFalse( eventHandlers.contains( handler2 ) );
 
@@ -509,17 +519,17 @@ public class Mvp4gConfigurationTest {
 		handler2.setMultiple( Boolean.TRUE.toString() );
 		eventHandlers.add( handler2 );
 
-		assertEquals( 2, presenters.size() );
+		assertEquals( 3, presenters.size() );
 		assertTrue( presenters.contains( presenter1 ) );
 		assertTrue( presenters.contains( presenter2 ) );
-		assertEquals( 2, eventHandlers.size() );
+		assertEquals( 3, eventHandlers.size() );
 		assertTrue( eventHandlers.contains( handler1 ) );
 		assertTrue( eventHandlers.contains( handler2 ) );
 		configuration.validateEventHandlers();
-		assertEquals( 2, presenters.size() );
+		assertEquals( 3, presenters.size() );
 		assertTrue( presenters.contains( presenter1 ) );
 		assertTrue( presenters.contains( presenter2 ) );
-		assertEquals( 2, eventHandlers.size() );
+		assertEquals( 3, eventHandlers.size() );
 		assertTrue( eventHandlers.contains( handler1 ) );
 		assertTrue( eventHandlers.contains( handler2 ) );
 
@@ -1263,11 +1273,11 @@ public class Mvp4gConfigurationTest {
 		assertTrue( event.hasForwardToParent() );
 
 	}
-	
+
 	@Test
 	public void testParentBroadcast() throws InvalidMvp4gConfigurationException {
 
-		String parentModule = oracle.addClass( Modules.BroadcastModule2.class ).getQualifiedSourceName();		
+		String parentModule = oracle.addClass( Modules.BroadcastModule2.class ).getQualifiedSourceName();
 
 		EventElement event = newEvent( "testEvent" );
 		event.setBroadcastTo( TestBroadcast.class.getCanonicalName() );
@@ -1889,10 +1899,13 @@ public class Mvp4gConfigurationTest {
 		configuration.validateEventHandlers();
 
 		String[] generate = event1.getGenerate();
-		assertTrue( generate.length == 2 );
+		assertEquals( 2, generate.length );
 		assertEquals( generate[0], generate1.getName() );
 		assertEquals( generate[1], generate2.getName() );
-
+		
+		List<String> handlers = event1.getHandlers();
+		assertEquals( 1, handlers.size() );
+		assertEquals( generate2.getName(), handlers.get(0) );
 	}
 
 	@Test
