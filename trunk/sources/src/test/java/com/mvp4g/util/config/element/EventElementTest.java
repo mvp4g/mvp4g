@@ -131,6 +131,29 @@ public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 	}
 
 	@Test
+	public void testBindsGetter() {
+		assertNull( element.getBinds() );
+		assertNull( element.getValues( "bind" ) );
+		String[] test = { "test1", "test2" };
+		element.setBinds( test );
+		List<String> binds = element.getBinds();
+		assertTrue( test.length == binds.size() );
+		for ( int i = 0; i < test.length; i++ ) {
+			assertSame( test[i], binds.get( i ) );
+		}
+		assertNull( element.getValues( "bind" ) );
+
+		element = newElement();
+		element.setValues( "bind", test );
+		binds = element.getBinds();
+		assertTrue( test.length == binds.size() );
+		for ( int i = 0; i < test.length; i++ ) {
+			assertSame( test[i], binds.get( i ) );
+		}
+		assertNull( element.getValues( "bind" ) );
+	}
+	
+	
 	public void testModulesToLoadGetter() {
 		assertNull( element.getForwardToModules() );
 		assertNull( element.getValues( "forwardToModules" ) );

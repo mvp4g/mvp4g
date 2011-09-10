@@ -36,6 +36,9 @@ import com.mvp4g.client.history.HistoryConverter;
  *<li>handlerNames: instead of using their classes, you can define handlers thanks to their name
  * (in case you have given names to your handlers). Not recommended because this method tends to
  * create typo errors.</li>
+ * <li> bind: classes that need to be binded when this event occurs. You can have zero to several classes
+ * for an event. </li>
+ * <li> bindNames: instead of using their classes, you can define binds thanks to their name. Not recommended.
  * <li>modulesToLoad: child modules that should be loaded if necessary and to which the event should
  * be forwarded. Child modules to which the event is forwarded must be one of the child modules of
  * the <code>EventBus</code> interface's module (ie one of the modules defined inside
@@ -83,6 +86,10 @@ public @interface Event {
 	Class<? extends EventHandlerInterface<? extends EventBus>>[] handlers() default {};
 
 	String[] handlerNames() default {};
+	
+	Class<? extends EventHandlerInterface<? extends EventBus>>[] bind() default {};
+	
+	String[] bindNames() default {};
 
 	Class<? extends Mvp4gModule>[] forwardToModules() default {};
 

@@ -114,7 +114,7 @@ public class BaseEventHandler<E extends EventBus> implements EventHandlerInterfa
 	public void onBeforeEvent() {
 
 	}
-
+	
 	/**
 	 * Set the event bus in token generation mode and return it. When the event bus is in token
 	 * generation mode, for the next call to an event method, it won't fire the event and forward it

@@ -381,8 +381,8 @@ public class EventsAnnotationsLoaderTest {
 		loader.load( annotedClasses, configuration );
 
 		Set<EventElement> events = configuration.getEvents();
-		assertEquals( 4, events.size() );
-		List<String> activates, deactivates;
+		assertEquals( 5, events.size() );
+		List<String> activates, deactivates, binds;
 		String[] generates;
 		for ( EventElement e : events ) {
 			if ( "event1".equals( e.getType() ) ) {
@@ -424,6 +424,12 @@ public class EventsAnnotationsLoaderTest {
 				assertEquals( "name1", activates.get( 3 ) );
 				assertEquals( "name1", deactivates.get( 3 ) );
 				assertEquals( "name1", generates[3] );
+			} else if ( "event5".equals( e.getType() ) ) {
+				binds = e.getBinds();
+				assertEquals( 3, binds.size());
+				assertEquals( "name", binds.get( 0 ));
+				assertEquals( "name", binds.get( 1 ));
+				assertEquals( "name1", binds.get( 2 ));
 			} else {
 				fail( "Unknown event name" );
 			}
@@ -455,7 +461,7 @@ public class EventsAnnotationsLoaderTest {
 		loader.load( annotedClasses, configuration );
 
 		Set<EventElement> events = configuration.getEvents();
-		assertEquals( 4, events.size() );
+		assertEquals( 5, events.size() );
 
 		for ( EventElement e : events ) {
 			if ( "event1".equals( e.getType() ) ) {
@@ -484,6 +490,10 @@ public class EventsAnnotationsLoaderTest {
 				assertFalse( e.isNavigationEvent() );
 				assertFalse( e.isWithTokenGeneration() );
 				assertFalse( e.isPassive() );
+			} else if ( "event5".equals( e.getType() ) ) {
+				assertFalse( e.isNavigationEvent() );
+				assertFalse( e.isPassive() );
+				assertFalse( e.isWithTokenGeneration() );
 			} else {
 				fail( "Unknown event name" );
 			}
