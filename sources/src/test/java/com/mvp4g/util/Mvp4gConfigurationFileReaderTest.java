@@ -117,6 +117,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedEventsWithLookup(), false );
 		assertOutput( getExpectedNavigationEvents(), false );
 		assertOutput( getExpectedGenerateEvents(), false );
+		assertOutput( getExpectedBindedEvents(), false );
 
 		createHandlers();
 
@@ -126,6 +127,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		e1.setType( "event1" );
 		e1.setHandlers( new String[] { "handler1" } );
 		e1.setEventObjectClass( new String[] { "java.lang.String", "java.lang.Object" } );
+		e1.setBinds( new String[] { "handler3" } );
 
 		EventElement e2 = new EventElement();
 		e2.setType( "event2" );
@@ -136,12 +138,13 @@ public class Mvp4gConfigurationFileReaderTest {
 		e3.setType( "event3" );
 		e3.setName( "name3" );
 		e3.setHandlers( new String[] { "handler3", "handler4" } );
+		e3.setBinds( new String[] { "handler2" } );
 
 		EventElement e4 = new EventElement();
 		e4.setType( "event4" );
 		e4.setHandlers( new String[] { "handler3", "handler4" } );
 		e4.setPassive( "true" );
-
+		
 		events.add( e1 );
 		events.add( e2 );
 		events.add( e3 );
@@ -152,6 +155,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedEvents(), true );
 		assertOutput( getExpectedNotNavigationEvents(), true );
 		assertOutput( getExpectedEventsInheritMethods(), true );
+		assertOutput( getExpectedBindedEvents(), true );
 		assertOutput( getExpectedEventsWithLookup(), false );
 		assertOutput( getExpectedNavigationEvents(), false );
 		assertOutput( getExpectedGenerateEvents(), false );
@@ -1642,6 +1646,19 @@ public class Mvp4gConfigurationFileReaderTest {
 	private String[] getExpectedNotNavigationEvents() {
 		return new String[] { "public void event1(java.lang.String attr0,java.lang.Object attr1){" };
 	};
+	
+	private String[] getExpectedBindedEvents() {
+		return new String[] {
+				"handler3.isActivated(false, \"event1\", new Object[]{attr0,attr1});",
+				"List<com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter> handlershandler2 = getHandlers(com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter.class);",
+				"if(handlershandler2!= null){",
+				"com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter handler;",
+				"int handlerCount = handlershandler2.size();",
+				"for(int i=0; i<handlerCount; i++){",
+				"handler = handlershandler2.get(i);",
+				"handler.isActivated(false, \"name3\");"
+		};
+	}
 
 	private String[] getExpectedEventsInheritMethods() {
 		return new String[] { "public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {",

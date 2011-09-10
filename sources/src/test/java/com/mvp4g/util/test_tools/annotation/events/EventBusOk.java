@@ -31,5 +31,8 @@ public interface EventBusOk extends EventBus {
 			PresenterWithName.class, SimplePresenter.class }, activateNames = { "name", "name1" }, deactivateNames = { "name", "name1" }, generateNames = {
 			"name", "name1" } )
 	void event4();
+	
+	@Event( bind = PresenterWithName.class, bindNames = { "name" , "name1" } )
+	void event5();
 
 }

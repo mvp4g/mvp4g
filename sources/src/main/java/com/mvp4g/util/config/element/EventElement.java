@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class EventElement extends Mvp4gElement {
 
-	private List<String> activate, deactivate, handlers, forwardToModules;
+	private List<String> activate, deactivate, handlers, binds, forwardToModules;
 
 	public EventElement() {
 		super( "event" );
@@ -41,6 +41,8 @@ public class EventElement extends Mvp4gElement {
 			handlers = fillList( values, "handlers" );
 		} else if ( "forwardToModules".equals( name ) ) {
 			forwardToModules = fillList( values, "forwardToModules" );
+		} else if ( "bind".equals( name ) ) {
+			binds = fillList( values, "bind" );
 		} else {
 			super.setValues( name, values );
 		}
@@ -162,6 +164,14 @@ public class EventElement extends Mvp4gElement {
 
 	public String[] getGenerate() {
 		return getValues( "generate" );
+	}
+	
+	public void setBinds( String[] binds ) {
+		setValues( "bind", binds );
+	}
+	
+	public List<String> getBinds() {
+		return binds;
 	}
 
 	public String getName() {

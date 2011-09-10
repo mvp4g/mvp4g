@@ -225,6 +225,37 @@ public class Mvp4gConfigurationTest {
 		historyConverters.add( new HistoryConverterElement() );
 		configuration.validateHistory();
 	}
+	
+	@Test
+	public void testEventBindsAnnotationRestriction() throws InvalidMvp4gConfigurationException {
+		// checking situation when handlers has the same attributes as binds
+		EventElement event = newEvent( "testEvent1" );
+		event.setHandlers( new String[] { "handler1", "handler2" } );
+		event.setBinds( new String[] { "hander3", "handler1" } );
+		events.add( event );
+		setEventBus();
+		try {
+			configuration.validateEventHandlers();
+			fail();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertTrue( e.getMessage().contains( "Event testEvent1: the same handler handler1 is used in the binds and handlers properties. If you need handler1 to handle this event, you should remove it from the bind properties." ));
+		} finally {
+			events.remove( event );
+		}
+		// checking situation when passive event has some binds
+		EventElement event2 = newEvent( "testEvent2");
+		event2.setBinds( new String[] { "someHandler" } );
+		event2.setPassive( "true" );
+		events.add( event2 );
+		try {
+			configuration.validateEventHandlers();
+			fail();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertTrue( e.getMessage().contains( "Passive event can't have any binds elements. Remove bind annotation from the testEvent2 event in order to keep it passive" ));
+		} finally {
+			events.remove( event2 );
+		}
+	}
 
 	@Test
 	public void testHistoryOk() throws InvalidMvp4gConfigurationException {
@@ -246,6 +277,8 @@ public class Mvp4gConfigurationTest {
 		setEventBus();
 		configuration.validateEventHandlers();
 	}
+	
+	
 
 	@Test( expected = InvalidClassException.class )
 	public void testEventHandlerWrongInterface() throws InvalidMvp4gConfigurationException {
@@ -482,6 +515,10 @@ public class Mvp4gConfigurationTest {
 		presenter3.setView( "view" );
 		presenter3.setMultiple( "true" );
 		presenters.add( presenter3 );
+		
+		PresenterElement presenter4 = newPresenter( "presenter4" );
+		presenter4.setView( "view" );
+		presenters.add( presenter4 );
 
 		EventHandlerElement handler1 = newEventHandler( "handler1" );
 		eventHandlers.add( handler1 );
@@ -492,25 +529,29 @@ public class Mvp4gConfigurationTest {
 		EventHandlerElement handler3 = newEventHandler( "handler3" );
 		handler3.setMultiple( "true" );
 		eventHandlers.add( handler3 );
+		
+		EventHandlerElement handler4 = newEventHandler( "handler4" );
+		eventHandlers.add( handler4 );
 
 		EventElement event = newEvent( "testEvent" );
 		event.setHandlers( new String[] { "presenter1", "handler1" } );
 		event.setGenerate( new String[] { "presenter3", "handler3" } );
+		event.setBinds( new String[] { "presenter4", "handler4" } );
 		events.add( event );
 
 		setEventBus();
 
-		assertEquals( 3, presenters.size() );
+		assertEquals( 4, presenters.size() );
 		assertTrue( presenters.contains( presenter1 ) );
 		assertTrue( presenters.contains( presenter2 ) );
-		assertEquals( 3, eventHandlers.size() );
+		assertEquals( 4, eventHandlers.size() );
 		assertTrue( eventHandlers.contains( handler1 ) );
 		assertTrue( eventHandlers.contains( handler2 ) );
 		configuration.validateEventHandlers();
-		assertEquals( 2, presenters.size() );
+		assertEquals( 3, presenters.size() );
 		assertTrue( presenters.contains( presenter1 ) );
 		assertFalse( presenters.contains( presenter2 ) );
-		assertEquals( 2, eventHandlers.size() );
+		assertEquals( 3, eventHandlers.size() );
 		assertTrue( eventHandlers.contains( handler1 ) );
 		assertFalse( eventHandlers.contains( handler2 ) );
 
@@ -519,17 +560,17 @@ public class Mvp4gConfigurationTest {
 		handler2.setMultiple( Boolean.TRUE.toString() );
 		eventHandlers.add( handler2 );
 
-		assertEquals( 3, presenters.size() );
+		assertEquals( 4, presenters.size() );
 		assertTrue( presenters.contains( presenter1 ) );
 		assertTrue( presenters.contains( presenter2 ) );
-		assertEquals( 3, eventHandlers.size() );
+		assertEquals( 4, eventHandlers.size() );
 		assertTrue( eventHandlers.contains( handler1 ) );
 		assertTrue( eventHandlers.contains( handler2 ) );
 		configuration.validateEventHandlers();
-		assertEquals( 3, presenters.size() );
+		assertEquals( 4, presenters.size() );
 		assertTrue( presenters.contains( presenter1 ) );
 		assertTrue( presenters.contains( presenter2 ) );
-		assertEquals( 3, eventHandlers.size() );
+		assertEquals( 4, eventHandlers.size() );
 		assertTrue( eventHandlers.contains( handler1 ) );
 		assertTrue( eventHandlers.contains( handler2 ) );
 
@@ -1583,7 +1624,7 @@ public class Mvp4gConfigurationTest {
 		configuration.setStart( null );
 		configuration.setHistory( null );
 		configuration.loadEvents( aEvents );
-		assertEquals( 4, events.size() );
+		assertEquals( 5, events.size() );
 
 		List<JClassType> aService = new ArrayList<JClassType>();
 		aService.add( oracle.findType( SimpleService.class.getName() ) );
@@ -2416,7 +2457,7 @@ public class Mvp4gConfigurationTest {
 		event.setType( type );
 		return event;
 	}
-
+	
 	private ServiceElement newService( String name ) {
 		ServiceElement service = new ServiceElement();
 		service.setName( name );

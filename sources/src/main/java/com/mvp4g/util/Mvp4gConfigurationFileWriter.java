@@ -647,7 +647,7 @@ public class Mvp4gConfigurationFileWriter {
 
 		String[] objectClasses = null;
 		String type, calledMethod, history, param, name, className;
-		List<String> activate, deactivate, handlers;
+		List<String> activate, deactivate, handlers, binds;
 		String[] generates;
 		EventHandlerElement eventHandler;
 		boolean hasLog = ( configuration.getDebug() != null );
@@ -665,6 +665,7 @@ public class Mvp4gConfigurationFileWriter {
 			isNavigationEvent = event.isNavigationEvent();
 
 			handlers = event.getHandlers();
+			binds = event.getBinds();
 			history = event.getHistory();
 			activate = event.getActivate();
 			deactivate = event.getDeactivate();
@@ -793,6 +794,24 @@ public class Mvp4gConfigurationFileWriter {
 				}
 
 			}
+			
+			// write bind annotations
+			if ( binds != null ) {
+				
+				for ( String bind : binds ) {
+					eventHandler = getElement( bind, eventHandlers ); // get handler from set of all handlers by its name
+					
+					if ( !eventHandler.isMultiple() ) {
+						// passive events not allowed for binds
+						writeBindHandling( bind, type, name, param );
+					} else {
+						writeMultipleActionBegin( eventHandler, "" );
+						writeBindHandling( "handler" , type, name, param ); // handler contains bind for cycle
+						writeMultipleActionEnd();
+					}
+				}
+			}
+			
 			
 			if ( generates != null ) {
 				for ( String generate : generates ) {
@@ -996,7 +1015,7 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println( ")){" );
 		sourceWriter.indent();
 
-		writeDetailedLog( handler, type );
+		writeDetailedLog( handler, type, false );
 
 		sourceWriter.print( handler );
 		sourceWriter.print( "." );
@@ -1009,6 +1028,30 @@ public class Mvp4gConfigurationFileWriter {
 
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );
+	}
+	
+	/**
+	 * Only bind type needed to make it binded.
+	 * @param bind
+	 * @param type
+	 */
+	private void writeBindHandling( String bind, String type, String name, String param ) {
+		sourceWriter.indent();
+		sourceWriter.print( bind );
+		sourceWriter.print( ".isActivated(" );
+		sourceWriter.print( "false" ); // passive events not allowed for binds
+		sourceWriter.print( ", \"" );
+		sourceWriter.print( name );
+		sourceWriter.print( "\"" );
+		if ( param != null ) {
+			sourceWriter.print( ", new Object[]{" );
+			sourceWriter.print( param );
+			sourceWriter.print( "}" );
+		}
+		sourceWriter.println( ");" ); 
+		sourceWriter.outdent();
+		
+		writeDetailedLog( bind, type, true );
 	}
 
 	private void writeEventFilter( boolean hasFilter, EventElement event, String parentParam ) {
@@ -1577,13 +1620,17 @@ public class Mvp4gConfigurationFileWriter {
 		}
 	}
 
-	private void writeDetailedLog( String handler, String eventType ) {
+	private void writeDetailedLog( String handler, String eventType, boolean isBind ) {
 		DebugElement debug = configuration.getDebug();
 
 		if ( debug != null && debug.getLogLevel().equals( LogLevel.DETAILED.name() ) ) {
 			sourceWriter.print( "logger.log(" );
 			sourceWriter.print( handler );
-			sourceWriter.print( ".toString() + \" handles " );
+			if ( isBind ) {
+				sourceWriter.print( ".toString() + \" binds " ); 
+			} else {
+				sourceWriter.print( ".toString() + \" handles " );
+			}
 			sourceWriter.print( eventType );
 			sourceWriter.println( "\", BaseEventBus.logDepth);" );
 		}

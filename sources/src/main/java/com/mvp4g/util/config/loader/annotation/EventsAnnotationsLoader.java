@@ -339,8 +339,10 @@ public class EventsAnnotationsLoader extends Mvp4gAnnotationsLoader<Events> {
 			historyName = event.name();
 
 			element = new EventElement();
+
 			element.setType( method.getName() );
 			element.setHandlers( buildPresentersAndEventHandlers( c, method, event.handlers(), event.handlerNames(), configuration ) );
+			element.setBinds( buildPresentersAndEventHandlers( c, method, event.bind(), event.bindNames(), configuration ) );
 			element.setCalledMethod( event.calledMethod() );
 			element.setForwardToModules( buildChildModules( c, method, event, configuration ) );
 			element.setForwardToParent( Boolean.toString( event.forwardToParent() ) );

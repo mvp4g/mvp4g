@@ -1,5 +1,7 @@
 package com.mvp4g.util.test_tools;
 
+import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -26,11 +28,16 @@ public class SelectionPropertyStub implements SelectionProperty {
 	public String getFallbackValue() {
 		return value;
 	}
-
+	
 	public SortedSet<String> getPossibleValues() {
 		SortedSet<String> set = new TreeSet<String>();
 		set.add( value );
 		return set;
+	}
+
+	public List<? extends Set<String>> getFallbackValues(String value) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
