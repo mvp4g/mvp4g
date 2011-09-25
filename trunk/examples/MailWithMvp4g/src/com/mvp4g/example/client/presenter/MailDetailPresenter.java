@@ -37,10 +37,6 @@ public class MailDetailPresenter extends BasePresenter<MailDetailPresenter.IMail
 		 void setBody( String body );
 	}
 
-	public void onStart() {
-		//nothing to do, here just to create & bind the presenter's view before it's injected to the root view
-	}
-
 	public void onItemSelected( MailItem item ) {
 		view.setSubject( item.subject );
 		view.setSender( item.sender );

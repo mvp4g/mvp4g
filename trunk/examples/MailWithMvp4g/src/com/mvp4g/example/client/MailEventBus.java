@@ -7,16 +7,17 @@ import com.mvp4g.client.event.EventBus;
 import com.mvp4g.example.client.data.MailItem;
 import com.mvp4g.example.client.presenter.MailDetailPresenter;
 import com.mvp4g.example.client.presenter.MailListPresenter;
+import com.mvp4g.example.client.presenter.MailPresenter;
 import com.mvp4g.example.client.presenter.NavBarPresenter;
 import com.mvp4g.example.client.presenter.ShortCutsPresenter;
 import com.mvp4g.example.client.presenter.TopPresenter;
 import com.mvp4g.example.client.view.MailView;
 
-@Events( startView = MailView.class )
+@Events( startPresenter = MailPresenter.class )
 public interface MailEventBus extends EventBus {
 
 	@Start
-	@Event( handlers = { TopPresenter.class, NavBarPresenter.class, MailListPresenter.class, MailDetailPresenter.class, ShortCutsPresenter.class } )
+	@Event( handlers = { MailListPresenter.class, ShortCutsPresenter.class }, bind = { TopPresenter.class, NavBarPresenter.class, MailDetailPresenter.class } )
 	public void start();
 
 	@Event( handlers = MailDetailPresenter.class )
