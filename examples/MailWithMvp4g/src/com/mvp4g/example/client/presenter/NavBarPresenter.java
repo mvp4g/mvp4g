@@ -37,10 +37,6 @@ public class NavBarPresenter extends BasePresenter<NavBarPresenter.INavBarView, 
 		void setNavText( String text );
 	}
 
-	public void onStart() {
-		//do nothing, just here to instantiate the view before being injected
-	}
-
 	public void bind() {
 		view.getNewerButton().addClickHandler( new ClickHandler() {
 

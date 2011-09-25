@@ -38,8 +38,4 @@ public class TopPresenter extends BasePresenter<TopPresenter.ITopView, MailEvent
 		} );
 	}
 
-	public void onStart() {
-
-	}
-
 }
