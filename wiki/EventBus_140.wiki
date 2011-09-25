@@ -63,6 +63,7 @@ public interface MainEventBus extends EventBusWithLookup {
  * passive (see [http://code.google.com/p/mvp4g/wiki/EventBus#Passive_Event Passive Event])
  * broadcastTo (see [http://code.google.com/p/mvp4g/w/EventBusBroadcast_Event Broadcast Event])
  * generate ([http://code.google.com/p/mvp4g/wiki/PresenterViewService_140#Event_Generation see Event Generation])
+ * bind and bindNames (see [http://code.google.com/p/mvp4g/wiki/EventBus_140#Bind_Event Bind Event])
 
 ==Adding an handler to an event==
 
@@ -421,3 +422,20 @@ public interface OneBroadcastInterface {}
 @Event(...,broadcastTo=OneBroadcastInterface.class)
 void oneEventToBroadcast();
 }}}
+
+==Bind Event==
+
+If you need a presenter to be binded when an event is fired but actually don't need this presenter to handle this event (which is often the case for [http://code.google.com/p/mvp4g/wiki/GinIntegration_140#Using_GIN_to_manage_nested_views Nested View]).
+
+{{{
+@Event( ..., bind = { FirstNestedViewPresenter.class, SecondNestedViewPresenter.class } )
+public void start();
+}}}
+
+By adding a presenter to bind attribute, Mvp4g will bind this presenter the first time this event is fired.
+
+You can also add a bind thanks to the presenter name by adding the name to the attribute 'bindNames' of @Event annotation (not recommended). In this case, you need to verify that a presenter with the given name exists.
+
+You can't use the same presenter in handler and bind annotation for one event because a presenter set as an handler will be already automatically binded when the event is fired. Also, Mvp4g prohibits using bind attribute for passive events. Passive event, by definition, don't bind handlers (only handlers already binded will react to the passive event).
+
+You don't need to provide any methods in Presenter when you're using bind annotation. It will call 'bind' method of your presenter automatically.

@@ -38,14 +38,14 @@ public interface MyEventBus extends EventBus {
 ==Using GIN to manage nested views==
 
 Before GIN injection, if you wanted to display a view inside another view, you had to:
--define an event in order the nested presenter pass its view to the main presenter.
--have the main presenter handles this event and call a method on the main view to add the nested view.
--define a method in the view to add the nested view.
+- define an event in order the nested presenter pass its view to the main presenter.
+- have the main presenter handles this event and call a method on the main view to add the nested view.
+- define a method in the view to add the nested view.
 
 This method is really useful in case the nested view can be dynamically changed. It may seem like a lot of boilerplate code in case your view will always stay the same (for example, you may have an application with a header, a menu and a footer that will always be the same but you want to have a presenter for each of these sections). Thanks to GIN, you can ease this process by injecting the view of the nested presenter directly inside the view of the main presenter.
 
 In order to do this, you need to:
--inject the nested view inside the main view:
+- inject the nested view inside the main view:
 {{{
 public class MainView ... {
 
@@ -62,12 +62,12 @@ public class NestedView ... {
 	...
 }
 }}}
--make sure your nested presenter is binded with the nested view before its view is displayed, otherwise no action from the view will be managed. The easiest way to do this, it's to have your presenter handles an event before it is displayed. For example, if your nested view is displayed at start, it can handle the start event.
+-make sure your nested presenter is binded with the nested view before its view is displayed, otherwise no action from the view will be managed. The easiest way to do this, it's use a bind feature. For example, if your nested view is displayed at start, it can handle the start event.
 {{{
 @EventBus(startView=MainView.class)
 public interface OneEventBus extends EventBus {
 	
-	@Event(handler=NestedPresenter.class}
+	@Event(handler=MainPresenter.class, bind=NestedPresenter.class}
 	void start();
 	...
 	
@@ -82,10 +82,6 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.INestedView, 
 		//bind your view
 	}
 	
-	public void onStart(){
-		//nothing to do here, 
-                //the goal is to have the presenter binds with its view
-	}
 	...
 	
 }
