@@ -255,6 +255,36 @@ public class Mvp4gConfigurationTest {
 		} finally {
 			events.remove( event2 );
 		}
+		
+		// checking that combination with broadcastTo and passive event don't lead to exception
+		PresenterElement presenter = newPresenter( "testPresenter" );
+		presenter.setMultiple( "true" );
+		presenter.setView( "view" );
+		presenters.add( presenter );
+		
+		ViewElement view = newView( "view" );
+		view.setClassName( SimpleView.class.getCanonicalName() );
+		views.add( view );
+		
+		oracle.addClass( TestBroadcast.class );
+		
+		EventElement event3 = newEvent( "testEvent3" );
+		event3.setPassive( "true" );
+		event3.setBroadcastTo( TestBroadcast.class.getCanonicalName() );
+		event3.setGenerate( new String[] { "testPresenter" } );
+		events.add( event3 );
+		
+		try {
+			assertTrue( event3.isPassive() );
+			assertTrue(  event3.getBinds() == null );
+			configuration.validateEventHandlers();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertTrue( e.getMessage().contains( "Passive event can't have any binds elements. Remove bind annotation from the testEvent3 event in order to keep it passive" ));
+			fail();
+		} finally {
+			events.remove( event3 );
+			presenters.remove( presenter );
+		}
 	}
 
 	@Test
