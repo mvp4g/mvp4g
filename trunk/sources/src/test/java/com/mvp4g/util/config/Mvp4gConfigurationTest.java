@@ -238,7 +238,7 @@ public class Mvp4gConfigurationTest {
 			configuration.validateEventHandlers();
 			fail();
 		} catch ( InvalidMvp4gConfigurationException e ) {
-			assertTrue( e.getMessage().contains( "Event testEvent1: the same handler handler1 is used in the binds and handlers properties. If you need handler1 to handle this event, you should remove it from the bind properties." ));
+			assertTrue( e.getMessage().contains( "Event testEvent1: the same handler handler1 is used in the bind and handlers attributes. If you need handler1 to handle this event, you should remove it from the bind attribute." ));
 		} finally {
 			events.remove( event );
 		}
@@ -251,7 +251,7 @@ public class Mvp4gConfigurationTest {
 			configuration.validateEventHandlers();
 			fail();
 		} catch ( InvalidMvp4gConfigurationException e ) {
-			assertTrue( e.getMessage().contains( "Passive event can't have any binds elements. Remove bind annotation from the testEvent2 event in order to keep it passive" ));
+			assertTrue( e.getMessage().contains( "Passive event can't bind any elements. Remove bind attribute from the testEvent2 event in order to keep it passive." ));
 		} finally {
 			events.remove( event2 );
 		}
@@ -2485,6 +2485,8 @@ public class Mvp4gConfigurationTest {
 	private EventElement newEvent( String type ) {
 		EventElement event = new EventElement();
 		event.setType( type );
+		event.setBinds( new String[0] );
+		event.setHandlers( new String[0] );
 		return event;
 	}
 	
