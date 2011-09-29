@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.ext.BadPropertyValueException;
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -70,13 +69,6 @@ public class Mvp4gGenerator extends Generator {
 	 */
 	@Override
 	public String generate( TreeLogger logger, GeneratorContext context, String typeName ) throws UnableToCompleteException {
-		
-		try {
-			logger.log( TreeLogger.INFO, "User.agent: '" + context.getPropertyOracle().getSelectionProperty(logger, "user.agent").getCurrentValue()+ ", ginModule=" +  context.getPropertyOracle().getSelectionProperty(logger, "ginModule").getCurrentValue());
-		} catch (BadPropertyValueException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 
 		Date start = new Date();
 
