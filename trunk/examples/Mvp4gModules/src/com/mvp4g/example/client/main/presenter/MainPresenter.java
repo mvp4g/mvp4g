@@ -163,12 +163,13 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 		view.alert( "Main Info from passive product: " + info );
 	}
 
-	public boolean isActivated( boolean passive, String eventName, Object... parameters ) {
+	@Override
+	public boolean pass( String eventName, Object... parameters ) {
 		if ( view.getFilterByActivate().getValue() ) {
 			view.displayText( "Filtered by Activate: " + eventName );
 			return false;
 		} else {
-			return super.isActivated( passive, eventName, parameters );
+			return true;
 		}
 	}
 
