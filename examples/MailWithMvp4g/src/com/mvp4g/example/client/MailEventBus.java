@@ -11,7 +11,6 @@ import com.mvp4g.example.client.presenter.MailPresenter;
 import com.mvp4g.example.client.presenter.NavBarPresenter;
 import com.mvp4g.example.client.presenter.ShortCutsPresenter;
 import com.mvp4g.example.client.presenter.TopPresenter;
-import com.mvp4g.example.client.view.MailView;
 
 @Events( startPresenter = MailPresenter.class )
 public interface MailEventBus extends EventBus {
