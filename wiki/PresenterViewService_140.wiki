@@ -120,7 +120,7 @@ The following example shows how a presenter is blocked if the user is not logged
 {{{
 public class OnePresenter extends BasePresenter<IOneView, OneEventBus>{
 
-	public boolean pass( boolean passive, String eventName, Object... parameters ) {
+	public boolean pass( String eventName, Object... parameters ) {
 		if(!isUserLoggedIn()){
 			return false;
 		} else {
