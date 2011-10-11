@@ -102,4 +102,32 @@ public class BaseEventHandlerTest {
 		assertTrue( bus.tokenMode );
 	}
 
+	public class EventHanderWithPass extends BaseEventHandler<EventBus> {
+
+		private boolean pass = false;
+
+		@Override
+		protected boolean pass( String eventName, Object... parameters ) {
+			return pass;
+		}
+
+		public void setPass( boolean pass ) {
+			this.pass = pass;
+		}
+
+	}
+
+	@Test
+	public void testPass() {
+		EventHanderWithPass handler = new EventHanderWithPass();
+		handler.setPass( true );
+		assertTrue( handler.pass( "foo" ) );
+		assertTrue( handler.isActivated( false, "foo" ) );
+
+		handler.setPass( false );
+		assertFalse( handler.pass( "foo" ) );
+		assertFalse( handler.isActivated( false, "foo" ) );
+
+	}
+
 }

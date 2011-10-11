@@ -210,8 +210,7 @@ public class Mvp4gConfigurationFileWriter {
 		boolean hasChildren = ( children.size() > 0 );
 		if ( hasChildren ) {
 
-			sourceWriter
-					.println( "public java.util.Map<String, Mvp4gModule> modules = new java.util.HashMap<String, Mvp4gModule>();" );
+			sourceWriter.println( "public java.util.Map<String, Mvp4gModule> modules = new java.util.HashMap<String, Mvp4gModule>();" );
 			sourceWriter.println();
 
 			String moduleClassName = null;
@@ -711,6 +710,8 @@ public class Mvp4gConfigurationFileWriter {
 
 			}
 			sourceWriter.println( "){" );
+			
+			sourceWriter.indent();
 
 			if ( isWithTokenGeneration ) {
 				sourceWriter.println( "if(tokenMode){" );
@@ -780,6 +781,23 @@ public class Mvp4gConfigurationFileWriter {
 			writeLoadSiblingModule( event, param );
 			writeParentEvent( event, param );
 
+			// write bind annotations
+			if ( binds != null ) {
+
+				for ( String bind : binds ) {
+					eventHandler = getElement( bind, eventHandlers ); // get handler from set of all handlers by its name
+
+					if ( !eventHandler.isMultiple() ) {
+						// passive events not allowed for binds
+						writeBindHandling( bind, type, name, param );
+					} else {
+						writeMultipleActionBegin( eventHandler, "" );
+						writeBindHandling( "handler", type, name, param ); // handler contains bind for cycle
+						writeMultipleActionEnd();
+					}
+				}
+			}
+
 			if ( handlers != null ) {
 
 				for ( String handler : handlers ) {
@@ -794,25 +812,7 @@ public class Mvp4gConfigurationFileWriter {
 				}
 
 			}
-			
-			// write bind annotations
-			if ( binds != null ) {
-				
-				for ( String bind : binds ) {
-					eventHandler = getElement( bind, eventHandlers ); // get handler from set of all handlers by its name
-					
-					if ( !eventHandler.isMultiple() ) {
-						// passive events not allowed for binds
-						writeBindHandling( bind, type, name, param );
-					} else {
-						writeMultipleActionBegin( eventHandler, "" );
-						writeBindHandling( "handler" , type, name, param ); // handler contains bind for cycle
-						writeMultipleActionEnd();
-					}
-				}
-			}
-			
-			
+
 			if ( generates != null ) {
 				for ( String generate : generates ) {
 					eventHandler = getElement( generate, eventHandlers );
@@ -1029,14 +1029,14 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );
 	}
-	
+
 	/**
 	 * Only bind type needed to make it binded.
+	 * 
 	 * @param bind
 	 * @param type
 	 */
 	private void writeBindHandling( String bind, String type, String name, String param ) {
-		sourceWriter.indent();
 		sourceWriter.print( bind );
 		sourceWriter.print( ".isActivated(" );
 		sourceWriter.print( "false" ); // passive events not allowed for binds
@@ -1048,9 +1048,8 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( param );
 			sourceWriter.print( "}" );
 		}
-		sourceWriter.println( ");" ); 
-		sourceWriter.outdent();
-		
+		sourceWriter.println( ");" );
+	
 		writeDetailedLog( bind, type, true );
 	}
 
@@ -1403,7 +1402,7 @@ public class Mvp4gConfigurationFileWriter {
 
 	private void writeLoadSiblingModule( EventElement event, String param ) {
 
-		String passive = Boolean.toString(event.isPassive());
+		String passive = Boolean.toString( event.isPassive() );
 
 		List<String> siblingsToLoad = event.getSiblingsToLoad();
 		if ( ( siblingsToLoad != null ) && ( siblingsToLoad.size() > 0 ) ) {
@@ -1627,7 +1626,7 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( "logger.log(" );
 			sourceWriter.print( handler );
 			if ( isBind ) {
-				sourceWriter.print( ".toString() + \" binds " ); 
+				sourceWriter.print( ".toString() + \" binds " );
 			} else {
 				sourceWriter.print( ".toString() + \" handles " );
 			}

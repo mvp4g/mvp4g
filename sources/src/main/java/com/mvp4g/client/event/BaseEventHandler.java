@@ -72,7 +72,8 @@ public class BaseEventHandler<E extends EventBus> implements EventHandlerInterfa
 	 * @see com.mvp4g.client.event.EventHandlerInterface#isActivated()
 	 */
 	public final boolean isActivated( boolean passive, String eventName, Object... parameters ) {
-		if ( activated && pass( eventName, parameters ) ) {
+		boolean activated = this.activated && pass( eventName, parameters );
+		if ( activated ) {
 			if ( passive ) {
 				return binded;
 			} else {
@@ -114,7 +115,7 @@ public class BaseEventHandler<E extends EventBus> implements EventHandlerInterfa
 	public void onBeforeEvent() {
 
 	}
-	
+
 	/**
 	 * Set the event bus in token generation mode and return it. When the event bus is in token
 	 * generation mode, for the next call to an event method, it won't fire the event and forward it
