@@ -276,7 +276,6 @@ public class Mvp4gConfigurationTest {
 		
 		try {
 			assertTrue( event3.isPassive() );
-			assertTrue(  event3.getBinds() == null );
 			configuration.validateEventHandlers();
 		} catch ( InvalidMvp4gConfigurationException e ) {
 			assertTrue( e.getMessage().contains( "Passive event can't have any binds elements. Remove bind annotation from the testEvent3 event in order to keep it passive" ));
