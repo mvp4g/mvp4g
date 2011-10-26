@@ -19,7 +19,7 @@ import com.mvp4g.example.client.main.MainEventFilter;
 import com.mvp4g.example.client.main.view.MainView;
 import com.mvp4g.example.client.util.index.IndexGenerator;
 
-@Presenter( view = MainView.class, multiple = true )
+@Presenter( view = MainView.class )
 public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface, MainEventBus> {
 
 	public Map<Class<? extends Mvp4gModule>, Mvp4gModule> modules = new HashMap<Class<? extends Mvp4gModule>, Mvp4gModule>();
@@ -58,15 +58,23 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
 		HasClickHandlers getBroadcastInfo();
 
+		HasClickHandlers getShowStatus();
+
+		HasClickHandlers getActivateStatus();
+
+		void setActivateText( boolean showActivate );
+
 	}
 
 	@Inject
 	private IndexGenerator indexGenerator;
 
-	//have this filter to test force filter option & add/remove event filter
+	// have this filter to test force filter option & add/remove event filter
 	private MainEventFilter filter = new MainEventFilter();
-	
+
 	private int infoCount = 0;
+
+	private boolean isStatusActivated = true;
 
 	public void bind() {
 		view.getCompanyMenu().addClickHandler( new ClickHandler() {
@@ -112,6 +120,29 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 			}
 
 		} );
+		view.getShowStatus().addClickHandler( new ClickHandler() {
+
+			@Override
+			public void onClick( ClickEvent event ) {
+				eventBus.showStatus();
+			}
+
+		} );
+		view.getActivateStatus().addClickHandler( new ClickHandler() {
+
+			@Override
+			public void onClick( ClickEvent event ) {
+				if ( isStatusActivated ) {
+					eventBus.deactivateStatus();
+				} else {
+					eventBus.activateStatus();
+				}
+				view.setActivateText( isStatusActivated );
+				isStatusActivated = !isStatusActivated;				
+			}
+
+		} );
+		view.setActivateText( !isStatusActivated );
 	}
 
 	public void onChangeBody( IsWidget w ) {
@@ -154,12 +185,12 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 	public void onClearHistory() {
 		view.alert( "History has been cleared" );
 	}
-	
-	public void onBroadcastInfoFromProduct(String info){
+
+	public void onBroadcastInfoFromProduct( String info ) {
 		view.alert( "Main Info from product: " + info );
 	}
-	
-	public void onBroadcastInfoFromProductPassive(String info){
+
+	public void onBroadcastInfoFromProductPassive( String info ) {
 		view.alert( "Main Info from passive product: " + info );
 	}
 

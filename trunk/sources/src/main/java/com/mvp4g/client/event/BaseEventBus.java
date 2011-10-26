@@ -24,6 +24,7 @@ import com.mvp4g.client.Mvp4gException;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.history.DefaultHistoryProxy;
 import com.mvp4g.client.history.HistoryProxy;
+import com.mvp4g.client.presenter.PresenterInterface;
 
 /**
  * Base implementation of the event bus. It should only be used by the framework.
@@ -45,6 +46,17 @@ public abstract class BaseEventBus implements EventBus {
 	private Map<Class<?>, List<EventHandlerInterface<?>>> handlersMap = new HashMap<Class<?>, List<EventHandlerInterface<?>>>();
 
 	private List<EventFilter<?>> filters = new ArrayList<EventFilter<? extends EventBus>>();
+	
+	public static <E extends EventBus, H extends EventHandlerInterface<? super E>>  H setEventHandler(H eventHandler, E eventBus){
+		eventHandler.setEventBus( eventBus );
+		return eventHandler;
+	}
+	
+	public static <V, E extends EventBus, P extends PresenterInterface<? super V, ? super E>>  P setPresenter(P presenter, V view, E eventBus){
+		setEventHandler( presenter, eventBus );
+		presenter.setView( view );
+		return presenter;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -280,6 +292,7 @@ public abstract class BaseEventBus implements EventBus {
 	public void setTokenGenerationModeForNextEvent(){
 		tokenMode = true;
 	}
+	
 
 	/**
 	 * Returns the list of handlers with the given class

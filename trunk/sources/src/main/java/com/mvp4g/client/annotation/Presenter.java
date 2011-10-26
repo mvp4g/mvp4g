@@ -18,6 +18,8 @@ package com.mvp4g.client.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import com.mvp4g.client.Mvp4gSplitter;
+
 /**
  * This annotation allows to define a presenter for the framework.<br/>
  * <br/>
@@ -30,8 +32,9 @@ import java.lang.annotation.RetentionPolicy;
  * one.<br/>
  * It is recommended to affect a name only if needed.<br/>
  * <br/>
- * You can also activate the multiple feature. This feature allows you to create several instance of
- * the same handler.
+ * You can activate the multiple feature to create several instance of the same presenter. <br/>
+ * <br/>
+ * You can also use the async attribute to create a fragment for this presenter (or for a group of presenters).
  * 
  * @author plcoirier
  * 
@@ -46,5 +49,7 @@ public @interface Presenter {
 	String viewName() default "";
 
 	boolean multiple() default false;
+	
+	Class<? extends Mvp4gSplitter> async() default NotAsync.class;
 
 }

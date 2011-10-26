@@ -1,8 +1,6 @@
 package com.mvp4g.example.client.main;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
@@ -21,8 +19,11 @@ import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.example.client.Mvp4gGinModule;
 import com.mvp4g.example.client.company.CompanyModule;
 import com.mvp4g.example.client.main.historyConverter.MenuHistoryConverter;
+import com.mvp4g.example.client.main.presenter.DatePresenter;
 import com.mvp4g.example.client.main.presenter.InfoReceiverPresenter;
 import com.mvp4g.example.client.main.presenter.MainPresenter;
+import com.mvp4g.example.client.main.presenter.StatusContainerPresenter;
+import com.mvp4g.example.client.main.presenter.TimePresenter;
 import com.mvp4g.example.client.product.ProductModule;
 import com.mvp4g.example.client.util.HasBeenThereHandler;
 
@@ -81,11 +82,20 @@ public interface MainEventBus extends EventBusWithLookup {
 	//this event is just here to validate array
 	@Event( broadcastTo = HasBeenThereHandler.class, passive = true, generate = InfoReceiverPresenter.class )
 	void broadcastInfo( String[] info );
-	
+
 	@Event( handlers = MainPresenter.class )
-	void broadcastInfoFromProduct(String info);
-	
+	void broadcastInfoFromProduct( String info );
+
 	@Event( handlers = MainPresenter.class )
-	void broadcastInfoFromProductPassive(String info);
+	void broadcastInfoFromProductPassive( String info );
+
+	@Event( handlers = StatusContainerPresenter.class, bind = { DatePresenter.class, TimePresenter.class }, forwardToModules = CompanyModule.class )
+	void showStatus();
+
+	@Event( activate = { StatusContainerPresenter.class, DatePresenter.class, TimePresenter.class } )
+	void activateStatus();
+
+	@Event( deactivate = { StatusContainerPresenter.class, DatePresenter.class, TimePresenter.class } )
+	void deactivateStatus();
 
 }

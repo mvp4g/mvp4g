@@ -18,6 +18,8 @@ package com.mvp4g.client.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import com.mvp4g.client.Mvp4gSplitter;
+
 /**
  * This annotation allows to define an event handler for the framework.<br/>
  * <br/>
@@ -25,8 +27,9 @@ import java.lang.annotation.RetentionPolicy;
  * don't give a name, the framework will generate one.<br/>
  * It is recommended to affect a name only if needed.<br/>
  * <br/>
- * You can also activate the multiple feature. This feature allows you to create several instance of
- * the same handler.
+ * You can activate the multiple feature to create several instance of the same handler. <br/>
+ * <br/>
+ * You can also use the async attribute to create a fragment for this handler (or for a group of handlers).
  * 
  * 
  * @since 27.04.2010
@@ -38,4 +41,7 @@ public @interface EventHandler {
 	String name() default "";
 
 	boolean multiple() default false;
+
+	Class<? extends Mvp4gSplitter> async() default NotAsync.class;
+
 }

@@ -34,16 +34,6 @@ public class ServiceElementTest extends SimpleMvp4gElementTest {
 		assertEquals( serviceElement.getGeneratedClassName(), className + "Async" );
 	}
 
-	@Test
-	public void testGetGeneratedClassName() {
-		String packageName = "com.test";
-		String className = "Test";
-		ServiceElement serviceElement = (ServiceElement)element;
-		serviceElement.setProperty( "package", packageName );
-		serviceElement.setProperty( "generatedClassName", className );
-		assertEquals( serviceElement.getGeneratedClassName(), new ClassResolver().getClassNameFrom( packageName, className ) );
-	}
-
 	@Override
 	protected String[] getProperties() {
 		return properties;

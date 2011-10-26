@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -33,6 +34,7 @@ import com.google.gwt.inject.client.Ginjector;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.mvp4g.client.AbstractMvp4gSplitter;
 import com.mvp4g.client.Mvp4gEventPasser;
 import com.mvp4g.client.Mvp4gException;
 import com.mvp4g.client.Mvp4gModule;
@@ -144,11 +146,11 @@ public class Mvp4gGenerator extends Generator {
 		}
 
 		ClassSourceFileComposerFactory classFactory = new ClassSourceFileComposerFactory( packageName, generatedClassName );
-		
+
 		classFactory.addImplementedInterface( originalType.getName() );
 		String[] classesToImport = getClassesToImport();
-		for(String classToImport:classesToImport){
-			classFactory.addImport( classToImport );	
+		for ( String classToImport : classesToImport ) {
+			classFactory.addImport( classToImport );
 		}
 
 		return classFactory.createSourceWriter( context, printWriter );
@@ -159,7 +161,8 @@ public class Mvp4gGenerator extends Generator {
 				ServiceDefTarget.class.getName(), PresenterInterface.class.getName(), EventBus.class.getName(), Mvp4gException.class.getName(),
 				HistoryConverter.class.getName(), Mvp4gEventPasser.class.getName(), Mvp4gModule.class.getName(), GinModules.class.getName(),
 				Ginjector.class.getName(), BaseEventBus.class.getName(), EventFilter.class.getName(), EventHandlerInterface.class.getName(),
-				List.class.getName(), NavigationEventCommand.class.getName(), NavigationConfirmationInterface.class.getName() };
+				List.class.getName(), NavigationEventCommand.class.getName(), NavigationConfirmationInterface.class.getName(),
+				AbstractMvp4gSplitter.class.getName(), RunAsyncCallback.class.getName() };
 	}
 
 }

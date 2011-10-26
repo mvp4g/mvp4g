@@ -15,7 +15,6 @@
  */
 package com.mvp4g.util.config.element;
 
-
 /**
  * An Mvp4g EventHandler configuration element.</p>
  * 
@@ -23,23 +22,35 @@ package com.mvp4g.util.config.element;
  */
 public class EventHandlerElement extends Mvp4gWithServicesElement {
 
-    public EventHandlerElement() {
-        super("eventHandler");
-    }
-    
-    public EventHandlerElement(String tagName) {
-        super(tagName);
-    }
-    
-	public void setMultiple(String multiple){
+	public EventHandlerElement() {
+		super( "eventHandler" );
+	}
+
+	public EventHandlerElement( String tagName ) {
+		super( tagName );
+	}
+
+	public void setMultiple( String multiple ) {
 		setProperty( "multiple", multiple );
 	}
-	
-	public String getMultiple(){
+
+	public String getMultiple() {
 		return getProperty( "multiple" );
 	}
-	
-	public boolean isMultiple(){
+
+	public boolean isMultiple() {
 		return Boolean.TRUE.toString().equalsIgnoreCase( getMultiple() );
+	}
+
+	public void setAsync( String async ) {
+		setProperty( "async", async );
+	}
+
+	public String getAsync() {
+		return getProperty( "async" );
+	}
+
+	public boolean isAsync() {
+		return ( getAsync() != null );
 	}
 }

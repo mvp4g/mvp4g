@@ -144,7 +144,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		e4.setType( "event4" );
 		e4.setHandlers( new String[] { "handler3", "handler4" } );
 		e4.setPassive( "true" );
-		
+
 		events.add( e1 );
 		events.add( e2 );
 		events.add( e3 );
@@ -1646,18 +1646,14 @@ public class Mvp4gConfigurationFileReaderTest {
 	private String[] getExpectedNotNavigationEvents() {
 		return new String[] { "public void event1(java.lang.String attr0,java.lang.Object attr1){" };
 	};
-	
+
 	private String[] getExpectedBindedEvents() {
 		return new String[] {
 				"handler3.isActivated(false, \"event1\", new Object[]{attr0,attr1});",
 				"List<com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter> handlershandler2 = getHandlers(com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter.class);",
-				"if(handlershandler2!= null){",
-				"com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter handler;",
-				"int handlerCount = handlershandler2.size();",
-				"for(int i=0; i<handlerCount; i++){",
-				"handler = handlershandler2.get(i);",
-				"handler.isActivated(false, \"name3\");"
-		};
+				"if(handlershandler2!= null){", "com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter handler;",
+				"int handlerCount = handlershandler2.size();", "for(int i=0; i<handlerCount; i++){", "handler = handlershandler2.get(i);",
+				"handler.isActivated(false, \"name3\");" };
 	}
 
 	private String[] getExpectedEventsInheritMethods() {
@@ -1767,13 +1763,13 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedAsyncChildModule() {
-		return new String[] { "eventBus.beforeLoad();", "GWT.runAsync(new com.google.gwt.core.client.RunAsyncCallback() {",
+		return new String[] { "eventBus.beforeLoad();", "GWT.runAsync(new RunAsyncCallback() {",
 				"public void onSuccess() {", "eventBus.afterLoad();", "public void onFailure(Throwable reason) {", "eventBus.afterLoad();",
 				"eventBus.errorOnLoad(reason);" };
 	}
 
 	private String[] getExpectedAsyncChildModuleErrorEmpty() {
-		return new String[] { "eventBus.beforeLoad();", "GWT.runAsync(new com.google.gwt.core.client.RunAsyncCallback() {",
+		return new String[] { "eventBus.beforeLoad();", "GWT.runAsync(new RunAsyncCallback() {",
 				"public void onSuccess() {", "eventBus.afterLoad();", "public void onFailure(Throwable reason) {", "eventBus.afterLoad();",
 				"eventBus.errorOnLoad();" };
 	}
@@ -1829,16 +1825,16 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedDebug() {
-		return new String[] { "final com.mvp4g.client.event.DefaultMvp4gLogger logger = new com.mvp4g.client.event.DefaultMvp4gLogger();",
-				"int startLogDepth = BaseEventBus.logDepth;", "++BaseEventBus.logDepth;", "++BaseEventBus.logDepth;",
-				"BaseEventBus.logDepth = startLogDepth;",
+		return new String[] { "protected com.mvp4g.client.event.DefaultMvp4gLogger logger;",
+				"logger = new com.mvp4g.client.event.DefaultMvp4gLogger();", "int startLogDepth = BaseEventBus.logDepth;",
+				"++BaseEventBus.logDepth;", "++BaseEventBus.logDepth;", "BaseEventBus.logDepth = startLogDepth;",
 				"logger.log(\"Module: Mvp4gModule || event: test2 || param(s): \" + attr0, BaseEventBus.logDepth);",
 				"logger.log(\"Module: Mvp4gModule || event: test3 || param(s): \" + attr0+ \", \" + attr1, BaseEventBus.logDepth);",
 				"logger.log(\"Module: Mvp4gModule || event: test\", BaseEventBus.logDepth);", };
 	}
 
 	private String[] getExpectedDetailedDebug() {
-		return new String[] { "final com.mvp4g.util.test_tools.OneLogger logger = new com.mvp4g.util.test_tools.OneLogger();",
+		return new String[] { "protected com.mvp4g.util.test_tools.OneLogger logger;", "logger = new com.mvp4g.util.test_tools.OneLogger();",
 				"int startLogDepth = BaseEventBus.logDepth;", "++BaseEventBus.logDepth;", "++BaseEventBus.logDepth;",
 				"BaseEventBus.logDepth = startLogDepth;", "logger.log(\"Module: Mvp4gModule || event: test2\", BaseEventBus.logDepth);",
 				"logger.log(\"Module: Mvp4gModule || event: test || param(s): \" + attr0, BaseEventBus.logDepth);",
@@ -1894,7 +1890,8 @@ public class Mvp4gConfigurationFileReaderTest {
 		return new String[] {
 				MultiplePresenter.class.getCanonicalName() + " handler2 = addHandler(" + MultiplePresenter.class.getCanonicalName() + ".class);",
 				EventHandlerWithEvent.class.getCanonicalName() + " handler4 = addHandler(" + EventHandlerWithEvent.class.getCanonicalName()
-						+ ".class);", "if (handler2.isActivated(true, \"event4\")){", "handler2.onEvent4();", "if (handler4.isActivated(true, \"event4\")){", "handler4.onEvent4();" };
+						+ ".class);", "if (handler2.isActivated(true, \"event4\")){", "handler2.onEvent4();",
+				"if (handler4.isActivated(true, \"event4\")){", "handler4.onEvent4();" };
 	}
 
 	public String[] getExpectedEventsWithToken() {

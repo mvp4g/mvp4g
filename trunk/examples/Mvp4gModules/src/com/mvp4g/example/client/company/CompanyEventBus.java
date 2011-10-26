@@ -20,6 +20,7 @@ import com.mvp4g.example.client.company.presenter.CompanyEditPresenter;
 import com.mvp4g.example.client.company.presenter.CompanyListPresenter;
 import com.mvp4g.example.client.company.presenter.CompanyNameSelectorPresenter;
 import com.mvp4g.example.client.company.presenter.CompanyRowPresenter;
+import com.mvp4g.example.client.company.presenter.CompanyTimePresenter;
 import com.mvp4g.example.client.product.presenter.ProductCreationPresenter;
 
 @Events( startPresenter = CompanyListPresenter.class, module = CompanyModule.class )
@@ -104,5 +105,8 @@ public interface CompanyEventBus extends EventBus {
 
 	@Event( handlers = CompanyListPresenter.class )
 	void broadcastInfoFromProductPassive( String info );
+	
+	@Event(handlers = CompanyTimePresenter.class)
+	void showStatus();
 
 }

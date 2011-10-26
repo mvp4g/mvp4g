@@ -20,7 +20,7 @@ import com.mvp4g.example.client.main.presenter.MainPresenter;
 import com.mvp4g.example.client.util.display.IndexDisplayer;
 
 public class MainView extends Composite implements MainPresenter.MainViewInterface {
-	
+
 	protected VerticalPanel mainPanel;
 
 	private Label c = new Label( "Company" );
@@ -32,12 +32,14 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 	private Label clearHistory = new Label( "Clear History" );
 	private CheckBox filter = new CheckBox( "Filter Main EventBus events" );
 	private CheckBox filterActivate = new CheckBox( "Filter WIth Activate" );
-	
+
 	private ListBox startIndex = new ListBox();
 	private ListBox lastIndex = new ListBox();
 
 	private Anchor hasBeenThere = new Anchor( "Has been there!" );
 	private Anchor broadcastInfo = new Anchor( "Broadcast Info" );
+	private Anchor activateStatus = new Anchor();
+	private Anchor showStatus = new Anchor( "Show Status" );
 
 	@Inject
 	public MainView( IndexDisplayer indexDisplayer ) {
@@ -86,6 +88,8 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 		mainPanel.add( filterActivate );
 		mainPanel.add( hasBeenThere );
 		mainPanel.add( broadcastInfo );
+		mainPanel.add( showStatus );
+		mainPanel.add( activateStatus );
 		wait.add( new Label( "Wait" ) );
 
 		initWidget( mainPanel );
@@ -167,6 +171,21 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 	@Override
 	public HasValue<Boolean> getFilterByActivate() {
 		return filterActivate;
+	}
+
+	@Override
+	public HasClickHandlers getShowStatus() {
+		return showStatus;
+	}
+
+	@Override
+	public HasClickHandlers getActivateStatus() {
+		return activateStatus;
+	}
+
+	@Override
+	public void setActivateText( boolean showActivate ) {
+		activateStatus.setText( ( showActivate ) ? "Activate Status" : "Deactivate Status" );
 	}
 
 }

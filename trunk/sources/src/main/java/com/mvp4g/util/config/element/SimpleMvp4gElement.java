@@ -15,7 +15,6 @@
  */
 package com.mvp4g.util.config.element;
 
-
 /**
  * A simple Mvp4g configuration element.</p>
  * 
@@ -30,8 +29,6 @@ package com.mvp4g.util.config.element;
  * 
  */
 public class SimpleMvp4gElement extends Mvp4gElement {
-
-	protected ClassResolver resolver = new ClassResolver();
 
 	public SimpleMvp4gElement() {
 		super( "simple" );
@@ -54,9 +51,7 @@ public class SimpleMvp4gElement extends Mvp4gElement {
 	}
 
 	public String getClassName() {
-		String packageName = getProperty( "package" );
-		String className = getProperty( "class" );
-		return resolver.getClassNameFrom( packageName, className );
+		return getProperty( "class" );
 	}
 
 	@Override
