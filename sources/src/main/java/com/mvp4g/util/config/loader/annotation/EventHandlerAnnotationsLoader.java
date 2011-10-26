@@ -15,13 +15,15 @@
  */
 package com.mvp4g.util.config.loader.annotation;
 
+import java.util.Set;
+
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.mvp4g.client.Mvp4gSplitter;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.EventHandlerElement;
-import com.mvp4g.util.config.element.Mvp4gWithServicesElement;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 
 /**
@@ -30,37 +32,7 @@ import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
  * @author Dan Persa
  * 
  */
-public class EventHandlerAnnotationsLoader extends Mvp4gAnnotationsWithServiceLoader<EventHandler> {
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.mvp4g.util.config.loader.annotation.Mvp4gAnnotationsWithServiceLoader
-	 * #loadElementWithServices (com.google.gwt.core.ext.typeinfo.JClassType,
-	 * java.lang.annotation.Annotation, com.mvp4g.util.config.Mvp4gConfiguration)
-	 */
-	@Override
-	Mvp4gWithServicesElement loadElementWithServices( JClassType c, EventHandler annotation, Mvp4gConfiguration configuration )
-			throws Mvp4gAnnotationException {
-
-		String className = c.getQualifiedSourceName();
-
-		if ( c.getAnnotation( Presenter.class ) != null ) {
-			String err = "You can't annotate a class with @Presenter and @EventHandler: " + className + ".";
-			throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
-		}
-
-		String eventHandlerName = buildElementNameIfNeeded( annotation.name(), className, "" );
-
-		EventHandlerElement eventHandler = new EventHandlerElement();
-		eventHandler.setName( eventHandlerName );
-		eventHandler.setClassName( className );
-		eventHandler.setMultiple( Boolean.toString( annotation.multiple() ) );
-
-		addElement( configuration.getEventHandlers(), eventHandler, c, null );
-
-		return eventHandler;
-	}
+public class EventHandlerAnnotationsLoader extends AbstractHandlerAnnotationsLoader<EventHandler, EventHandlerElement> {
 
 	/*
 	 * (non-Javadoc)
@@ -71,5 +43,35 @@ public class EventHandlerAnnotationsLoader extends Mvp4gAnnotationsWithServiceLo
 	@Override
 	protected String getMandatoryInterfaceName() {
 		return EventHandlerInterface.class.getCanonicalName();
+	}
+
+	@Override
+	protected EventHandlerElement loadHandler( JClassType c, EventHandler annotation, Mvp4gConfiguration configuration )
+			throws Mvp4gAnnotationException {
+		if ( c.getAnnotation( Presenter.class ) != null ) {
+			String err = "You can't annotate a class with @Presenter and @EventHandler: " + c.getQualifiedSourceName() + ".";
+			throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
+		}
+		return new EventHandlerElement();
+	}
+
+	@Override
+	protected Set<EventHandlerElement> getConfigList( Mvp4gConfiguration configuration ) {
+		return configuration.getEventHandlers();
+	}
+
+	@Override
+	protected String getAnnotationName( EventHandler annotation ) {
+		return annotation.name();
+	}
+
+	@Override
+	protected boolean isAnnotationMultiple( EventHandler annotation ) {
+		return annotation.multiple();
+	}
+
+	@Override
+	protected Class<? extends Mvp4gSplitter> getAnnotationSplitter( EventHandler annotation ) {
+		return annotation.async();
 	}
 }

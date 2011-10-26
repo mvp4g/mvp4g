@@ -8,6 +8,11 @@
 	text-align: center;
 }
 
+a {
+	cursor: hand;
+	text-decoration: underline;
+}
+
 .link {
 	cursor: hand;
 	color: blue;

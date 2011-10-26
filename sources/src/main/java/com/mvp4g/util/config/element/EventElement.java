@@ -107,6 +107,14 @@ public class EventElement extends Mvp4gElement {
 	public void setSiblingsToLoad( String[] siblingsToLoad ) {
 		setFlexibleValues( "siblingsToLoad", siblingsToLoad );
 	}
+	
+	public List<String> getSplitters() {
+		return getFlexibleValues( "splitters" );
+	}
+
+	public void setSplitters( String[] siblingsToLoad ) {
+		setFlexibleValues( "splitters", siblingsToLoad );
+	}
 
 	public void setHistory( String history ) {
 		setProperty( "history", history );

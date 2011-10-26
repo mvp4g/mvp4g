@@ -18,17 +18,6 @@ public class SimpleMvp4gElementTest extends AbstractMvp4gElementTest<SimpleMvp4g
 	}
 
 	@Test
-	public void testGetClassName() {
-
-		String packageName = "com.test";
-		String className = "Test";
-
-		element.setProperty( "package", packageName );
-		element.setProperty( "class", className );
-		assertEquals( element.getClassName(), new ClassResolver().getClassNameFrom( packageName, className ) );
-	}
-
-	@Test
 	public void testToString() {
 		String name = "test";
 		String className = "com.test.Test";

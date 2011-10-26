@@ -38,6 +38,7 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.inject.client.GinModule;
 import com.mvp4g.client.Mvp4gModule;
+import com.mvp4g.client.SingleSplitter;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.History;
@@ -56,6 +57,7 @@ import com.mvp4g.client.view.ReverseViewInterface;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
 import com.mvp4g.util.config.element.DebugElement;
+import com.mvp4g.util.config.element.EventAssociation;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.EventFilterElement;
@@ -69,6 +71,7 @@ import com.mvp4g.util.config.element.Mvp4gElement;
 import com.mvp4g.util.config.element.Mvp4gWithServicesElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
+import com.mvp4g.util.config.element.SplitterElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.config.element.ViewElement;
 import com.mvp4g.util.config.loader.annotation.EventHandlerAnnotationsLoader;
@@ -135,6 +138,7 @@ public class Mvp4gConfiguration {
 	private Set<HistoryConverterElement> historyConverters = new HashSet<HistoryConverterElement>();
 	private Set<EventFilterElement> eventFilters = new HashSet<EventFilterElement>();
 	private Set<ChildModuleElement> childModules = new HashSet<ChildModuleElement>();
+	private Set<SplitterElement> splitters = new HashSet<SplitterElement>();
 	private StartElement start = null;
 	private HistoryElement history = null;
 	private EventBusElement eventBus = null;
@@ -222,6 +226,7 @@ public class Mvp4gConfiguration {
 		findChildModuleHistoryName();
 		checkUniquenessOfAllElements();
 		validateEventHandlers();
+		validateSplitters();
 		validateEventFilters();
 		validateHistoryConverters();
 		validateViews();
@@ -297,6 +302,13 @@ public class Mvp4gConfiguration {
 	 */
 	public Set<ChildModuleElement> getChildModules() {
 		return childModules;
+	}
+
+	/**
+	 * @return the splitters
+	 */
+	public Set<SplitterElement> getSplitters() {
+		return splitters;
 	}
 
 	/**
@@ -850,7 +862,7 @@ public class Mvp4gConfiguration {
 
 						}
 
-						if ( !presenter.isMultiple() ) {
+						if ( !presenter.isMultiple() && !presenter.isAsync() ) {
 							view.setInstantiateAtStart( true );
 						}
 					}
@@ -946,6 +958,120 @@ public class Mvp4gConfiguration {
 			}
 		}
 		return keep;
+	}
+
+	void validateSplitters() throws InvalidMvp4gConfigurationException {
+
+		Map<String, EventAssociation<EventElement>> eventAssociationMap = new HashMap<String, EventAssociation<EventElement>>();
+
+		// Add presenter that handles event
+		List<String> handlers, binds, activates, deactivates;
+		for ( EventElement event : events ) {
+			handlers = event.getHandlers();
+			if ( handlers != null ) {
+				for ( String handler : handlers ) {
+					getEventAssociation( eventAssociationMap, handler ).getHandlers().add( event );
+				}
+			}
+			binds = event.getBinds();
+			if ( binds != null ) {
+				for ( String bind : binds ) {
+					getEventAssociation( eventAssociationMap, bind ).getBinds().add( event );
+				}
+			}
+			activates = event.getActivate();
+			if ( activates != null ) {
+				for ( String activate : activates ) {
+					getEventAssociation( eventAssociationMap, activate ).getActivated().add( event );
+				}
+			}
+			deactivates = event.getDeactivate();
+			if ( deactivates != null ) {
+				for ( String deactivate : deactivates ) {
+					getEventAssociation( eventAssociationMap, deactivate ).getDeactivated().add( event );
+				}
+			}
+		}
+
+		Map<String, SplitterElement> splitterMap = new HashMap<String, SplitterElement>();
+		int singleIndex = 0;
+		for ( EventHandlerElement eventHandler : eventHandlers ) {
+			addSplitterHandler( eventHandler, false, singleIndex, eventAssociationMap.get( eventHandler.getName() ), splitterMap );
+			singleIndex++;
+		}
+
+		for ( PresenterElement presenter : presenters ) {
+			addSplitterHandler( presenter, true, singleIndex, eventAssociationMap.get( presenter.getName() ), splitterMap );
+			singleIndex++;
+		}
+
+		splitters = new HashSet<SplitterElement>( splitterMap.values() );
+	}
+
+	private <K, V> EventAssociation<V> getEventAssociation( Map<K, EventAssociation<V>> eventAssociationMap, K handler ) {
+		EventAssociation<V> eventAssociation = eventAssociationMap.get( handler );
+		if ( eventAssociation == null ) {
+			eventAssociation = new EventAssociation<V>();
+			eventAssociationMap.put( handler, eventAssociation );
+		}
+		return eventAssociation;
+	}
+
+	private <T extends EventHandlerElement> void addSplitterHandler( T handler, boolean isPresenter, int singleIndex,
+			EventAssociation<EventElement> eventAssociation, Map<String, SplitterElement> splitterMap ) {
+		String className = handler.getAsync();
+		if ( ( className != null ) && ( eventAssociation != null ) ) {
+			if ( SingleSplitter.class.getCanonicalName().equals( className ) ) {
+				className = className + singleIndex;
+			}
+			SplitterElement splitter = splitterMap.get( className );
+			if ( splitter == null ) {
+				splitter = new SplitterElement();
+				String simpleName = className.substring( className.lastIndexOf( "." ) + 1, className.length() );
+				splitter.setName( simpleName.substring( 0, 1 ).toLowerCase() + simpleName.substring( 1 ) );
+				splitter.setClassName( simpleName );
+				splitterMap.put( className, splitter );
+			}
+
+			@SuppressWarnings( "unchecked" )
+			List<EventHandlerElement> eventHandlers = (List<EventHandlerElement>)getSplitterList( splitter, isPresenter );
+			int index = eventHandlers.size();
+			if ( isPresenter ) {
+				index += splitter.getEventHandlers().size();
+			}
+			eventHandlers.add( handler );
+
+			Map<EventElement, EventAssociation<Integer>> events = splitter.getEvents();
+			for ( EventElement event : eventAssociation.getHandlers() ) {
+				setSplitterForEvent( handler.getName(), index, event.getSplitters(), splitter.getName(), getEventAssociation( events, event )
+						.getHandlers(), event.getHandlers() );
+			}
+			for ( EventElement event : eventAssociation.getBinds() ) {
+				setSplitterForEvent( handler.getName(), index, event.getSplitters(), splitter.getName(), getEventAssociation( events, event )
+						.getBinds(), event.getBinds() );
+			}
+			for ( EventElement event : eventAssociation.getActivated() ) {
+				setSplitterForEvent( handler.getName(), index, event.getSplitters(), splitter.getName(), getEventAssociation( events, event )
+						.getActivated(), event.getActivate() );
+			}
+			for ( EventElement event : eventAssociation.getDeactivated() ) {
+				setSplitterForEvent( handler.getName(), index, event.getSplitters(), splitter.getName(), getEventAssociation( events, event )
+						.getDeactivated(), event.getDeactivate() );
+			}
+		}
+	}
+
+	private List<? extends EventHandlerElement> getSplitterList( SplitterElement splitter, boolean isPresenter ) {
+		return isPresenter ? splitter.getPresenters() : splitter.getEventHandlers();
+	}
+
+	private void setSplitterForEvent( String handlerName, int handlerIndex, List<String> splitters, String splitterName,
+			List<Integer> splitterIndexes, List<String> eventHandlers ) {
+		splitterIndexes.add( handlerIndex );
+		eventHandlers.remove( handlerName );
+		if ( !splitters.contains( splitterName ) ) {
+			splitters.add( splitterName );
+		}
 	}
 
 	/**

@@ -15,7 +15,6 @@
  */
 package com.mvp4g.util.config.element;
 
-
 /**
  * An Mvp4g Service configuration element.</p>
  * 
@@ -47,9 +46,6 @@ public class ServiceElement extends SimpleMvp4gElement {
 		String generatedClass = getProperty( "generatedClassName" );
 		if ( generatedClass == null ) {
 			generatedClass = getClassName() + "Async";
-		} else {
-			String packageName = getProperty( "package" );
-			generatedClass = resolver.getClassNameFrom( packageName, generatedClass );
 		}
 		return generatedClass;
 	}
