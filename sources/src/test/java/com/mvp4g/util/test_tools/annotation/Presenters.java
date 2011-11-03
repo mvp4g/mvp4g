@@ -1,5 +1,6 @@
 package com.mvp4g.util.test_tools.annotation;
 
+import com.mvp4g.client.SingleSplitter;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.event.EventBus;
@@ -12,6 +13,10 @@ public class Presenters {
 
 	@Presenter( view = Object.class, multiple = true )
 	public static class MultiplePresenter extends BasePresenter<Object, EventBus> {
+	}
+
+	@Presenter( view = Object.class, async = SingleSplitter.class )
+	public static class AsyncPresenter extends BasePresenter<Object, EventBus> {
 	}
 
 	@Presenter( view = Object.class, viewName = "name" )
@@ -96,7 +101,7 @@ public class Presenters {
 	public static class BroadcastPresenter extends BasePresenter<Object, EventBus> implements TestBroadcast {
 
 	}
-	
+
 	@Presenter( view = Object.class )
 	public static class BroadcastPresenter2 extends BasePresenter<Object, EventBus> implements TestBroadcast, TestBroadcast2 {
 

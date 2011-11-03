@@ -130,6 +130,9 @@ public class Mvp4gConfiguration {
 	private static final String CHILD_MODULE_NOT_USED = "Module %s: the child module %s is not loaded by any of the event of this module. You should remove it if it is not used by another child module (ie used for sibling communication).";
 	private static final String UNKNOWN_MODULE = "Event %s: No instance of %s has been found. Is this module a child module, a parent module or a silbling module? If it's supposed to be a child module, have you forgotten to add it to @ChildModules of your event bus interface?";
 
+	private static final String ASYNC_START_PRESENTER = "Presenter %s: start presenter can't be loaded asynchronously. Async attribute must not be set.";
+	private static final String ASYNC_MULTIPLE_PRESENTER = "Presenter %s: multiple presenter can't be loaded asynchronously. Async attribute must not be set.";
+
 	private Set<PresenterElement> presenters = new HashSet<PresenterElement>();
 	private Set<EventHandlerElement> eventHandlers = new HashSet<EventHandlerElement>();
 	private Set<ViewElement> views = new HashSet<ViewElement>();
@@ -1018,9 +1021,15 @@ public class Mvp4gConfiguration {
 	}
 
 	private <T extends EventHandlerElement> void addSplitterHandler( T handler, boolean isPresenter, int singleIndex,
-			EventAssociation<EventElement> eventAssociation, Map<String, SplitterElement> splitterMap ) {
+			EventAssociation<EventElement> eventAssociation, Map<String, SplitterElement> splitterMap ) throws InvalidMvp4gConfigurationException {
 		String className = handler.getAsync();
 		if ( ( className != null ) && ( eventAssociation != null ) ) {
+			if ( handler.isMultiple() ) {
+				throw new InvalidMvp4gConfigurationException( String.format( ASYNC_MULTIPLE_PRESENTER, handler.getName() ) );
+			}
+			if ( isPresenter && handler.getName().equals( start.getPresenter() ) ) {
+				throw new InvalidMvp4gConfigurationException( String.format( ASYNC_START_PRESENTER, handler.getName() ) );
+			}
 			if ( SingleSplitter.class.getCanonicalName().equals( className ) ) {
 				className = className + singleIndex;
 			}

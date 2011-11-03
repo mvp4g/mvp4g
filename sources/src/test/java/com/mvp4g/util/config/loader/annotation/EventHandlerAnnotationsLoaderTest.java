@@ -1,13 +1,12 @@
 package com.mvp4g.util.config.loader.annotation;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.mvp4g.client.annotation.EventHandler;
@@ -16,26 +15,20 @@ import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 import com.mvp4g.util.test_tools.annotation.EventHandlers;
 import com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler;
 
-public class EventHandlerAnnotationsLoaderTest extends AbstractMvp4gAnnotationsWithServiceLoaderTest<EventHandler, EventHandlerAnnotationsLoader> {
+public class EventHandlerAnnotationsLoaderTest extends AbstractHandlerAnnotationsLoaderTest<EventHandler, EventHandlerElement, EventHandlerAnnotationsLoader> {
 
 	@Test
-	public void testNotMultiple() throws Mvp4gAnnotationException {
+	public void testPresenterAndEventHandler() {
 		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		JClassType type = oracle.addClass( getSimpleClass() );
+		JClassType type = oracle.addClass( EventHandlers.PresenterAndEventHandler.class );
 		annotedClasses.add( type );
-		loader.load( annotedClasses, configuration );
-		EventHandlerElement element = configuration.getEventHandlers().iterator().next();
-		assertFalse( element.isMultiple() );
-	}
-
-	@Test
-	public void testMultiple() throws Mvp4gAnnotationException {
-		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		JClassType type = oracle.addClass( EventHandlers.MultipleEventHandler.class );
-		annotedClasses.add( type );
-		loader.load( annotedClasses, configuration );
-		EventHandlerElement element = configuration.getEventHandlers().iterator().next();
-		assertTrue( element.isMultiple() );
+		try {
+			loader.load( annotedClasses, configuration );
+			fail();
+		} catch ( Mvp4gAnnotationException e ) {
+			assertEquals( EventHandlers.PresenterAndEventHandler.class.getCanonicalName()
+					+ ": You can't annotate a class with @Presenter and @EventHandler.", e.getMessage());
+		}
 	}
 
 	@Override
@@ -97,6 +90,16 @@ public class EventHandlerAnnotationsLoaderTest extends AbstractMvp4gAnnotationsW
 	@Override
 	protected Class<?> getWrongInterface() {
 		return Object.class;
+	}
+
+	@Override
+	protected Class<?> getMultipleClass() {
+		return EventHandlers.MultipleEventHandler.class;
+	}
+
+	@Override
+	protected Class<?> getAsyncClass() {
+		return EventHandlers.AsyncEventHandler.class;
 	}
 
 }

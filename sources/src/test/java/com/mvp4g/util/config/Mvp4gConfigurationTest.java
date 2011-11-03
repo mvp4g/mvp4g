@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +22,7 @@ import com.google.gwt.dev.util.UnitTestTreeLogger;
 import com.google.gwt.inject.client.GinModule;
 import com.mvp4g.client.DefaultMvp4gGinModule;
 import com.mvp4g.client.Mvp4gModule;
+import com.mvp4g.client.SingleSplitter;
 import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.DefaultMvp4gLogger;
 import com.mvp4g.client.event.EventBus;
@@ -32,6 +34,7 @@ import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.util.config.element.ChildModuleElement;
 import com.mvp4g.util.config.element.ChildModulesElement;
 import com.mvp4g.util.config.element.DebugElement;
+import com.mvp4g.util.config.element.EventAssociation;
 import com.mvp4g.util.config.element.EventBusElement;
 import com.mvp4g.util.config.element.EventElement;
 import com.mvp4g.util.config.element.EventFilterElement;
@@ -43,6 +46,7 @@ import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.InjectedElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
+import com.mvp4g.util.config.element.SplitterElement;
 import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.config.element.ViewElement;
 import com.mvp4g.util.exception.InvalidClassException;
@@ -58,6 +62,7 @@ import com.mvp4g.util.test_tools.annotation.EventFilters;
 import com.mvp4g.util.test_tools.annotation.Events.EventBusWithNoStartPresenter;
 import com.mvp4g.util.test_tools.annotation.HistoryConverters;
 import com.mvp4g.util.test_tools.annotation.Presenters;
+import com.mvp4g.util.test_tools.annotation.Presenters.PresenterWithService;
 import com.mvp4g.util.test_tools.annotation.TestBroadcast;
 import com.mvp4g.util.test_tools.annotation.TestBroadcast2;
 import com.mvp4g.util.test_tools.annotation.events.EventBusOk;
@@ -225,7 +230,7 @@ public class Mvp4gConfigurationTest {
 		historyConverters.add( new HistoryConverterElement() );
 		configuration.validateHistory();
 	}
-	
+
 	@Test
 	public void testEventBindsAnnotationRestriction() throws InvalidMvp4gConfigurationException {
 		// checking situation when handlers has the same attributes as binds
@@ -238,12 +243,15 @@ public class Mvp4gConfigurationTest {
 			configuration.validateEventHandlers();
 			fail();
 		} catch ( InvalidMvp4gConfigurationException e ) {
-			assertTrue( e.getMessage().contains( "Event testEvent1: the same handler handler1 is used in the bind and handlers attributes. If you need handler1 to handle this event, you should remove it from the bind attribute." ));
+			assertTrue( e
+					.getMessage()
+					.contains(
+							"Event testEvent1: the same handler handler1 is used in the bind and handlers attributes. If you need handler1 to handle this event, you should remove it from the bind attribute." ) );
 		} finally {
 			events.remove( event );
 		}
 		// checking situation when passive event has some binds
-		EventElement event2 = newEvent( "testEvent2");
+		EventElement event2 = newEvent( "testEvent2" );
 		event2.setBinds( new String[] { "someHandler" } );
 		event2.setPassive( "true" );
 		events.add( event2 );
@@ -251,34 +259,36 @@ public class Mvp4gConfigurationTest {
 			configuration.validateEventHandlers();
 			fail();
 		} catch ( InvalidMvp4gConfigurationException e ) {
-			assertTrue( e.getMessage().contains( "Passive event can't bind any elements. Remove bind attribute from the testEvent2 event in order to keep it passive." ));
+			assertTrue( e.getMessage().contains(
+					"Passive event can't bind any elements. Remove bind attribute from the testEvent2 event in order to keep it passive." ) );
 		} finally {
 			events.remove( event2 );
 		}
-		
+
 		// checking that combination with broadcastTo and passive event don't lead to exception
 		PresenterElement presenter = newPresenter( "testPresenter" );
 		presenter.setMultiple( "true" );
 		presenter.setView( "view" );
 		presenters.add( presenter );
-		
+
 		ViewElement view = newView( "view" );
 		view.setClassName( SimpleView.class.getCanonicalName() );
 		views.add( view );
-		
+
 		oracle.addClass( TestBroadcast.class );
-		
+
 		EventElement event3 = newEvent( "testEvent3" );
 		event3.setPassive( "true" );
 		event3.setBroadcastTo( TestBroadcast.class.getCanonicalName() );
 		event3.setGenerate( new String[] { "testPresenter" } );
 		events.add( event3 );
-		
+
 		try {
 			assertTrue( event3.isPassive() );
 			configuration.validateEventHandlers();
 		} catch ( InvalidMvp4gConfigurationException e ) {
-			assertTrue( e.getMessage().contains( "Passive event can't have any binds elements. Remove bind annotation from the testEvent3 event in order to keep it passive" ));
+			assertTrue( e.getMessage().contains(
+					"Passive event can't have any binds elements. Remove bind annotation from the testEvent3 event in order to keep it passive" ) );
 			fail();
 		} finally {
 			events.remove( event3 );
@@ -306,8 +316,6 @@ public class Mvp4gConfigurationTest {
 		setEventBus();
 		configuration.validateEventHandlers();
 	}
-	
-	
 
 	@Test( expected = InvalidClassException.class )
 	public void testEventHandlerWrongInterface() throws InvalidMvp4gConfigurationException {
@@ -544,7 +552,7 @@ public class Mvp4gConfigurationTest {
 		presenter3.setView( "view" );
 		presenter3.setMultiple( "true" );
 		presenters.add( presenter3 );
-		
+
 		PresenterElement presenter4 = newPresenter( "presenter4" );
 		presenter4.setView( "view" );
 		presenters.add( presenter4 );
@@ -558,7 +566,7 @@ public class Mvp4gConfigurationTest {
 		EventHandlerElement handler3 = newEventHandler( "handler3" );
 		handler3.setMultiple( "true" );
 		eventHandlers.add( handler3 );
-		
+
 		EventHandlerElement handler4 = newEventHandler( "handler4" );
 		eventHandlers.add( handler4 );
 
@@ -677,6 +685,62 @@ public class Mvp4gConfigurationTest {
 		assertEquals( "presenter3", handlers.get( 0 ) );
 		assertEquals( "presenter2", handlers.get( 1 ) );
 
+	}
+
+	@Test
+	public void testInstantiateViewAtStart() throws InvalidMvp4gConfigurationException {
+
+		ViewElement view1 = newView( "view1" );
+		Class<?> c = SimpleView.class;
+		view1.setClassName( c.getCanonicalName() );
+		oracle.addClass( c );
+		views.add( view1 );
+
+		ViewElement view2 = newView( "view2" );
+		view2.setClassName( c.getCanonicalName() );
+		oracle.addClass( c );
+		views.add( view2 );
+
+		ViewElement view3 = newView( "view3" );
+		view3.setClassName( c.getCanonicalName() );
+		oracle.addClass( c );
+		views.add( view3 );
+
+		PresenterElement presenter = new PresenterElement();
+		presenter.setName( "presenter1" );
+		c = SimplePresenter.class;
+		presenter.setClassName( c.getCanonicalName() );
+		oracle.addClass( c );
+		presenter.setView( "view1" );
+		presenters.add( presenter );
+
+		PresenterElement presenter2 = new PresenterElement();
+		presenter2.setName( "presenter2" );
+		c = PresenterWithService.class;
+		presenter2.setClassName( c.getCanonicalName() );
+		oracle.addClass( c );
+		presenter2.setView( "view2" );
+		presenter2.setMultiple( "true" );
+		presenters.add( presenter2 );
+
+		PresenterElement presenter3 = new PresenterElement();
+		presenter3.setName( "presenter3" );
+		c = Presenters.AsyncPresenter.class;
+		oracle.addClass( c );
+		presenter3.setClassName( c.getCanonicalName() );
+		presenter3.setView( "view3" );
+		presenter3.setAsync( "true" );
+		presenters.add( presenter3 );
+
+		EventElement event = newEvent( "event" );
+		event.setHandlers( new String[] { "presenter1", "presenter2", "presenter3" } );
+		events.add( event );
+		setEventBus();
+		configuration.validateEventHandlers();
+
+		assertTrue( view1.isInstantiateAtStart() );
+		assertFalse( view2.isInstantiateAtStart() );
+		assertFalse( view3.isInstantiateAtStart() );
 	}
 
 	@Test
@@ -1972,10 +2036,10 @@ public class Mvp4gConfigurationTest {
 		assertEquals( 2, generate.length );
 		assertEquals( generate[0], generate1.getName() );
 		assertEquals( generate[1], generate2.getName() );
-		
+
 		List<String> handlers = event1.getHandlers();
 		assertEquals( 1, handlers.size() );
-		assertEquals( generate2.getName(), handlers.get(0) );
+		assertEquals( generate2.getName(), handlers.get( 0 ) );
 	}
 
 	@Test
@@ -2445,7 +2509,150 @@ public class Mvp4gConfigurationTest {
 		setEventBus();
 		configuration.setParentEventBus( oracle.addClass( EventBusOk.class ) );
 		configuration.validateHistoryConverters();
+	}
 
+	@Test
+	public void testValidateSplitterStartPresenterOrMultiple() {
+		PresenterElement presenter = newPresenter( "presenter" );
+		configuration.getStart().setPresenter( "presenter" );
+		presenter.setAsync( "true" );
+		presenters.add( presenter );
+
+		EventElement event = new EventElement();
+		event.setType( "event" );
+		event.setHandlers( new String[] { "presenter" } );
+		events.add( event );
+
+		try {
+			configuration.validateSplitters();
+			fail();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertEquals( "Presenter presenter: start presenter can't be loaded asynchronously. Async attribute must not be set.", e.getMessage() );
+		}
+
+		presenter.setAsync( null );
+		presenter.setMultiple( "true" );
+		try {
+			configuration.validateSplitters();
+			fail();
+		} catch ( InvalidMvp4gConfigurationException e ) {
+			assertEquals( "Presenter presenter: multiple presenter can't be loaded asynchronously. Async attribute must not be set.", e.getMessage() );
+		}
+	}
+
+	@Test
+	public void testValidateSplitterTogether() throws InvalidMvp4gConfigurationException {
+		String splitterName = "com.TestSplitter";
+
+		PresenterElement presenter = newPresenter( "presenter" );
+		presenter.setAsync( splitterName );
+		presenters.add( presenter );
+
+		EventHandlerElement eventHandler = newEventHandler( "eventHandler" );
+		eventHandler.setAsync( splitterName );
+		eventHandlers.add( eventHandler );
+
+		EventElement event = new EventElement();
+		event.setType( "event" );
+		event.setHandlers( new String[] { "presenter", "eventHandler" } );
+		event.setBinds( new String[] { "presenter", "eventHandler" } );
+		event.setActivate( new String[] { "presenter", "eventHandler" } );
+		event.setDeactivate( new String[] { "presenter", "eventHandler" } );
+		events.add( event );
+
+		configuration.validateSplitters();
+
+		assertEquals( 1, configuration.getSplitters().size() );
+		SplitterElement splitter = configuration.getSplitters().iterator().next();
+		assertEquals( "TestSplitter", splitter.getClassName() );
+		assertEquals( "testSplitter", splitter.getName() );
+
+		assertEquals( 1, splitter.getEventHandlers().size() );
+		assertEquals( 1, splitter.getPresenters().size() );
+		assertSame( eventHandler, splitter.getEventHandlers().get( 0 ) );
+		assertSame( presenter, splitter.getPresenters().get( 0 ) );
+
+		Map<EventElement, EventAssociation<Integer>> events = splitter.getEvents();
+		assertEquals( 1, events.size() );
+		EventElement key = events.keySet().iterator().next();
+		assertSame( event, key );
+		EventAssociation<Integer> association = events.get( key );
+		List<Integer> list = new ArrayList<Integer>();
+		list.add( 0 );
+		list.add( 1 );
+		assertList( list, association.getActivated() );
+		assertList( list, association.getDeactivated() );
+		assertList( list, association.getBinds() );
+		assertList( list, association.getHandlers() );
+	}
+
+	@Test
+	public void testValidateSplitterSingle() throws InvalidMvp4gConfigurationException {
+		PresenterElement presenter = newPresenter( "presenter" );
+		presenter.setAsync( SingleSplitter.class.getCanonicalName() );
+		presenters.add( presenter );
+
+		EventHandlerElement eventHandler = newEventHandler( "eventHandler" );
+		eventHandler.setAsync( SingleSplitter.class.getCanonicalName() );
+		eventHandlers.add( eventHandler );
+
+		EventElement event = new EventElement();
+		event.setType( "event" );
+		event.setHandlers( new String[] { "presenter", "eventHandler" } );
+		event.setBinds( new String[] { "presenter", "eventHandler" } );
+		event.setActivate( new String[] { "presenter", "eventHandler" } );
+		event.setDeactivate( new String[] { "presenter", "eventHandler" } );
+		events.add( event );
+
+		configuration.validateSplitters();
+
+		assertEquals( 2, configuration.getSplitters().size() );
+
+		SplitterElement splitter;
+		Iterator<SplitterElement> it = configuration.getSplitters().iterator();
+		List<Integer> list = new ArrayList<Integer>();
+		list.add( 0 );
+		while ( it.hasNext() ) {
+			splitter = it.next();
+			if ( "SingleSplitter0".equals( splitter.getClassName() ) ) {
+				assertEquals( "singleSplitter0", splitter.getName() );
+				assertEquals( 1, splitter.getEventHandlers().size() );
+				assertEquals( 0, splitter.getPresenters().size() );
+				assertSame( eventHandler, splitter.getEventHandlers().get( 0 ) );
+				Map<EventElement, EventAssociation<Integer>> events = splitter.getEvents();
+				assertEquals( 1, events.size() );
+				EventElement key = events.keySet().iterator().next();
+				assertSame( event, key );
+				EventAssociation<Integer> association = events.get( key );
+				assertList( list, association.getActivated() );
+				assertList( list, association.getDeactivated() );
+				assertList( list, association.getBinds() );
+				assertList( list, association.getHandlers() );
+			} else if ( "SingleSplitter1".equals( splitter.getClassName() ) ) {
+				assertEquals( "singleSplitter1", splitter.getName() );
+				assertEquals( 0, splitter.getEventHandlers().size() );
+				assertEquals( 1, splitter.getPresenters().size() );
+				assertSame( presenter, splitter.getPresenters().get( 0 ) );
+				Map<EventElement, EventAssociation<Integer>> events = splitter.getEvents();
+				assertEquals( 1, events.size() );
+				EventElement key = events.keySet().iterator().next();
+				assertSame( event, key );
+				EventAssociation<Integer> association = events.get( key );
+				assertList( list, association.getActivated() );
+				assertList( list, association.getDeactivated() );
+				assertList( list, association.getBinds() );
+				assertList( list, association.getHandlers() );
+			} else {
+				fail( "Unknown splitter" );
+			}
+		}
+	}
+
+	private <T> void assertList( List<T> list1, List<T> list2 ) {
+		assertEquals( list1.size(), list2.size() );
+		for ( int i = 0; i < list1.size(); i++ ) {
+			assertEquals( list1.get( i ), list2.get( i ) );
+		}
 	}
 
 	private PresenterElement newPresenter( String name ) {
@@ -2488,7 +2695,7 @@ public class Mvp4gConfigurationTest {
 		event.setHandlers( new String[0] );
 		return event;
 	}
-	
+
 	private ServiceElement newService( String name ) {
 		ServiceElement service = new ServiceElement();
 		service.setName( name );

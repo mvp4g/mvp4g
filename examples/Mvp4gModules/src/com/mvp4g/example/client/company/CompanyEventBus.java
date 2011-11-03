@@ -107,6 +107,6 @@ public interface CompanyEventBus extends EventBus {
 	void broadcastInfoFromProductPassive( String info );
 	
 	@Event(handlers = CompanyTimePresenter.class)
-	void showStatus();
+	void showStatus(String status);
 
 }

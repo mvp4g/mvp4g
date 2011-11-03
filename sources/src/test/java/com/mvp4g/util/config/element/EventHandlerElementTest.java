@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class EventHandlerElementTest extends Mvp4gWithServicesElementTest {
 
-	private static final String[] properties = SimpleMvp4gElementTest.addProperties( new String[] { "multiple" } );
+	private static final String[] properties = SimpleMvp4gElementTest.addProperties( new String[] { "multiple", "async" } );
 
 	@Override
 	protected String[] getProperties() {
@@ -34,6 +34,14 @@ public class EventHandlerElementTest extends Mvp4gWithServicesElementTest {
 		element = new EventHandlerElement();
 		element.setMultiple( "false" );
 		assertFalse( element.isMultiple() );
+	}
+
+	@Test
+	public void testAsync() {
+		EventHandlerElement element = new EventHandlerElement();
+		assertFalse( element.isAsync() );
+		element.setAsync( "async" );
+		assertTrue( element.isAsync() );
 	}
 
 }

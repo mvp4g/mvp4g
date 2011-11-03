@@ -7,7 +7,6 @@ import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.main.MainEventBus;
 import com.mvp4g.example.client.main.StatusSplitter;
 import com.mvp4g.example.client.main.view.TimeView;
-import com.mvp4g.example.client.util.HasBeenThereHandler;
 
 @Presenter( view = TimeView.class, async = StatusSplitter.class )
 public class TimePresenter extends BasePresenter<TimePresenter.ITimeView, MainEventBus> /*implements HasBeenThereHandler*/ {

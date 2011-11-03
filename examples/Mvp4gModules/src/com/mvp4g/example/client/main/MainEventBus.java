@@ -90,7 +90,7 @@ public interface MainEventBus extends EventBusWithLookup {
 	void broadcastInfoFromProductPassive( String info );
 
 	@Event( handlers = StatusContainerPresenter.class, bind = { DatePresenter.class, TimePresenter.class }, forwardToModules = CompanyModule.class )
-	void showStatus();
+	void showStatus( String info);
 
 	@Event( activate = { StatusContainerPresenter.class, DatePresenter.class, TimePresenter.class } )
 	void activateStatus();
