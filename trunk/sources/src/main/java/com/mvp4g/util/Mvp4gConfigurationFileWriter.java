@@ -1629,6 +1629,7 @@ public class Mvp4gConfigurationFileWriter {
 					paramBuilder = new StringBuilder( 20 * nbParams );
 					int i;
 					for ( i = 0; i < ( nbParams - 1 ); i++ ) {
+						sourceWriter.print( "final " );
 						sourceWriter.print( objectClasses[i] );
 						sourceWriter.print( " attr" );
 						sourceWriter.print( Integer.toString( i ) );
@@ -1637,6 +1638,7 @@ public class Mvp4gConfigurationFileWriter {
 						paramBuilder.append( i );
 						paramBuilder.append( "," );
 					}
+					sourceWriter.print( "final " );
 					sourceWriter.print( objectClasses[i] );
 					sourceWriter.print( " attr" );
 					sourceWriter.print( Integer.toString( i ) );

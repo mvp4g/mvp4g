@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class PresenterElementTest extends Mvp4gWithServicesElementTest {
 
-	private static final String[] properties = SimpleMvp4gElementTest.addProperties( new String[] { "view", "multiple" } );
+	private static final String[] properties = SimpleMvp4gElementTest.addProperties( new String[] { "view", "multiple", "async" } );
 
 	@Override
 	protected String[] getProperties() {

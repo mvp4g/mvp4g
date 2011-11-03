@@ -35,26 +35,10 @@ public class EventAssociation<T> {
 	}
 
 	/**
-	 * @param activated
-	 *            the activated to set
-	 */
-	public void setActivated( List<T> activated ) {
-		this.activated = activated;
-	}
-
-	/**
 	 * @return the deactivated
 	 */
 	public List<T> getDeactivated() {
 		return deactivated;
-	}
-
-	/**
-	 * @param deactivated
-	 *            the deactivated to set
-	 */
-	public void setDeactivated( List<T> deactivated ) {
-		this.deactivated = deactivated;
 	}
 
 }

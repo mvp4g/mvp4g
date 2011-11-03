@@ -49,7 +49,7 @@ public class EventHandlerAnnotationsLoader extends AbstractHandlerAnnotationsLoa
 	protected EventHandlerElement loadHandler( JClassType c, EventHandler annotation, Mvp4gConfiguration configuration )
 			throws Mvp4gAnnotationException {
 		if ( c.getAnnotation( Presenter.class ) != null ) {
-			String err = "You can't annotate a class with @Presenter and @EventHandler: " + c.getQualifiedSourceName() + ".";
+			String err = "You can't annotate a class with @Presenter and @EventHandler.";
 			throw new Mvp4gAnnotationException( c.getQualifiedSourceName(), null, err );
 		}
 		return new EventHandlerElement();

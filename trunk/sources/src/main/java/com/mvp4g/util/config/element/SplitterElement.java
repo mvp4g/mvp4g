@@ -13,9 +13,7 @@ public class SplitterElement extends SimpleMvp4gElement {
 	private List<PresenterElement> presenters = new ArrayList<PresenterElement>();
 
 	private Map<EventElement, EventAssociation<Integer>> events = new HashMap<EventElement, EventAssociation<Integer>>();
-
-	private Map<EventElement, List<Integer>> binds = new HashMap<EventElement, List<Integer>>();
-
+	
 	public List<EventHandlerElement> getEventHandlers() {
 		return eventHandlers;
 	}
@@ -26,10 +24,6 @@ public class SplitterElement extends SimpleMvp4gElement {
 
 	public Map<EventElement, EventAssociation<Integer>> getEvents() {
 		return events;
-	}
-
-	public Map<EventElement, List<Integer>> getBinds() {
-		return binds;
 	}
 
 }

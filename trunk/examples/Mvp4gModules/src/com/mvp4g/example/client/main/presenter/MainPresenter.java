@@ -124,7 +124,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
 			@Override
 			public void onClick( ClickEvent event ) {
-				eventBus.showStatus();
+				eventBus.showStatus( "" );
 			}
 
 		} );

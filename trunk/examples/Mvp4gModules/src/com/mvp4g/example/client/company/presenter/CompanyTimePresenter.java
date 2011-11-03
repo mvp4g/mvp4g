@@ -13,7 +13,7 @@ public class CompanyTimePresenter extends BasePresenter<CompanyTimePresenter.ICo
 		void showTime();
 	}
 
-	public void onShowStatus() {
+	public void onShowStatus(String status) {
 		view.showTime();
 	}
 

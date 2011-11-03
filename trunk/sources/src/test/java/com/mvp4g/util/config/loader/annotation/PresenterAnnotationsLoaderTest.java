@@ -1,8 +1,6 @@
 package com.mvp4g.util.config.loader.annotation;
 
 import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +14,12 @@ import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ViewElement;
 import com.mvp4g.util.exception.loader.Mvp4gAnnotationException;
 import com.mvp4g.util.test_tools.annotation.Presenters;
+import com.mvp4g.util.test_tools.annotation.Presenters.AsyncPresenter;
+import com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter;
 import com.mvp4g.util.test_tools.annotation.presenters.PresenterWithName;
 import com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter;
 
-public class PresenterAnnotationsLoaderTest extends AbstractMvp4gAnnotationsWithServiceLoaderTest<Presenter, PresenterAnnotationsLoader> {
+public class PresenterAnnotationsLoaderTest extends AbstractHandlerAnnotationsLoaderTest<Presenter, PresenterElement, PresenterAnnotationsLoader> {
 
 	@Test
 	public void testView() throws Mvp4gAnnotationException {
@@ -45,26 +45,6 @@ public class PresenterAnnotationsLoaderTest extends AbstractMvp4gAnnotationsWith
 		assertEquals( view.getClassName(), Object.class.getName() );
 		assertEquals( view.getName(), "name" );
 
-	}
-
-	@Test
-	public void testNotMultiple() throws Mvp4gAnnotationException {
-		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		JClassType type = oracle.addClass( getSimpleClass() );
-		annotedClasses.add( type );
-		loader.load( annotedClasses, configuration );
-		PresenterElement element = configuration.getPresenters().iterator().next();
-		assertFalse( element.isMultiple() );
-	}
-
-	@Test
-	public void testMultiple() throws Mvp4gAnnotationException {
-		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		JClassType type = oracle.addClass( Presenters.MultiplePresenter.class );
-		annotedClasses.add( type );
-		loader.load( annotedClasses, configuration );
-		PresenterElement element = configuration.getPresenters().iterator().next();
-		assertTrue( element.isMultiple() );
 	}
 
 	@Override
@@ -126,6 +106,16 @@ public class PresenterAnnotationsLoaderTest extends AbstractMvp4gAnnotationsWith
 	@Override
 	protected Class<?> getWrongInterface() {
 		return Object.class;
+	}
+
+	@Override
+	protected Class<?> getMultipleClass() {
+		return MultiplePresenter.class;
+	}
+
+	@Override
+	protected Class<?> getAsyncClass() {
+		return AsyncPresenter.class;
 	}
 
 }

@@ -1,9 +1,12 @@
 package com.mvp4g.util.test_tools.annotation;
 
+import com.mvp4g.client.SingleSplitter;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.annotation.InjectService;
+import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.event.BaseEventHandler;
 import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.util.test_tools.annotation.services.SimpleService;
 import com.mvp4g.util.test_tools.annotation.services.SimpleServiceAsync;
 
@@ -12,6 +15,10 @@ public class EventHandlers {
 
 	@EventHandler( multiple = true )
 	public static class MultipleEventHandler extends BaseEventHandler<EventBus> {
+	}
+
+	@EventHandler( async = SingleSplitter.class )
+	public static class AsyncEventHandler extends BaseEventHandler<EventBus> {
 	}
 
 	@EventHandler( name = "name" )
@@ -78,6 +85,12 @@ public class EventHandlers {
 		@InjectService( serviceName = "name" )
 		public void setSthg( SimpleServiceAsync service ) {
 		}
+
+	}
+
+	@Presenter( view = Object.class )
+	@EventHandler
+	public static class PresenterAndEventHandler extends BasePresenter<Object, EventBus> {
 
 	}
 

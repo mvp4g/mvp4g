@@ -15,7 +15,7 @@ public class StatusContainerPresenter extends BasePresenter<StatusContainerPrese
 
 	}
 
-	public void onShowStatus() {
+	public void onShowStatus( String info) {
 		view.showPopup();
 	}
 
