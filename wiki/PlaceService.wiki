@@ -22,14 +22,14 @@ This is how Mvp4g retrieves an event from browser history:
 
 The token stored in the browser history will be built the following way: event type + "?" + value returned by the handling method of the event. This is the default implementation but you can easily override it ([http://code.google.com/p/mvp4g/wiki/PlaceService#Setting_a_Custom_Place_Service see this section for more information]).
 
-Any event can be stored in history. All you have to do is to associate an history converter to an event.
+Any event can be stored in history. All you have to do is to associate a history converter to an event.
 
 If you need to store event information when the event is stored in the browser history, you can do this thanks to the event to token conversion method.<br/> 
 If you need to retrieve event information when browser history changes, you can do this in the convertFromToken method of the history converter.
 
-==Create an History Converter==
+==Create a History Converter==
 
-To create an history converter, you have to:
+To create a history converter, you have to:
  * create a class that implements HistoryConverter 
  * have a constructor with no parameter or compatible with GIN  (ie annotated with @Inject, see [http://code.google.com/p/google-gin/ see GIN website for more information]).
  * annotate your class with @History
@@ -44,8 +44,8 @@ You can also give a name to your converter thanks to the attribute "name" of @Hi
 
 The @History annotation has also an attribute type. The event to token method that you will have to define for the event will depend on the type ([http://code.google.com/p/mvp4g/wiki/PlaceService#Associate_an_History_Converter_to_an_event see this section for more information]).
 
-==Associate an History Converter to an event==
-To add an history converter to an event, you need to specify the history converter attribute of the @Event annotation that annotates the method of your event.
+==Associate a History Converter to an event==
+To add a history converter to an event, you need to specify the history converter attribute of the @Event annotation that annotates the method of your event.
 
 {{{
 @Event(..., historyConverter = CompanyHistoryConverter.class)
@@ -55,9 +55,9 @@ public void goToCompany(long id);
 By defining the history converter class, Mvp4g will be able to find the instance of history converter with this class and associate it with the event.<br/>
 Mvp4g generates instances of history converter as singleton so for one class, it generates only one instance, which means that if for several events, the same history converter class is associated, then the events will share the same instance of the converter.
 
-Instead of the class, you can also specify the name of the history converter thanks of the attribute historyConverterName of @Event annotation. In this case, you need to make sure that an history converter with this name exits.
+Instead of the class, you can also specify the name of the history converter thanks of the attribute historyConverterName of @Event annotation. In this case, you need to make sure that a history converter with this name exits.
 
-When an history converter is associated to an event, it needs to implement the conversion method of this event. The method to define will depend on the history converter type:
+When a history converter is associated to an event, it needs to implement the conversion method of this event. The method to define will depend on the history converter type:
  * NONE: parameters won't be converted, only the event's name will be stored in browser's history.
  * DEFAULT: the history converter needs to define the handling method of the event but this method must return a String. The returned String will be added to the token and stored in browser's history.
 For example for the previous event, you need to define the following method in your history converter:
@@ -159,7 +159,7 @@ public interface MainEventBus extends EventBusWithLookup {...}
 In some cases, you may need to temporary stop storing events in browser history. In order to do so, Mvp4g provides three methods using the event bus:
  * setApplicationHistoryStored: this method enables/disables conversion (and storage to browser's history) of any events of any Mvp4g event bus. 
  * setHistoryStored: this method enables/disables conversion (and storage to browser's history) of any events fired on this event bus only.
- * setHistoryStoredForNextOne: this method enables/disables conversion (and storage to browser's history) of the next event fired on this event bus, associated with an history converter (other events fired while handling this event won't be affected by the call of this method).
+ * setHistoryStoredForNextOne: this method enables/disables conversion (and storage to browser's history) of the next event fired on this event bus, associated with a history converter (other events fired while handling this event won't be affected by the call of this method).
 
 In this example, none of the events fired on any event bus will be stored in browser history:
 {{{
@@ -225,7 +225,7 @@ public interface MainEventBus extends EventBusWithLookup {...}
 
 =History Management and Multi-Modules feature=
 
-Any module (child or parent module) can store its events into history by associating an history converter to an event. When an event of a module (except for the Root module) needs to be stored in history, the event will be converted the same way as described before except that the name of the module and all its parents (*but the Root Module*) will also be stored in the token.
+Any module (child or parent module) can store its events into history by associating a history converter to an event. When an event of a module (except for the Root module) needs to be stored in history, the event will be converted the same way as described before except that the name of the module and all its parents (*but the Root Module*) will also be stored in the token.
 
 For example, the following token: #module/submodule/event1 means:
  * event1: name of the event to forward
@@ -258,7 +258,7 @@ Only the Root module knows the place service, which means that you can configure
 =Hyperlink Token=
 
 You can easily generate an event's token for hyperlink widgets by following these steps:
- * have an history converter associated to the event.
+ * have a history converter associated to the event.
  * change the return type of the event to String.
  
 {{{
