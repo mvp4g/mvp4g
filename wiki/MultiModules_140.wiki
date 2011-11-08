@@ -3,7 +3,15 @@
 
 <wiki:toc max_depth="3" />
 
-=Multi-Modules=
+=Code Splitting=
+
+In Mvp4g, you have 2 ways to create fragments with code splitting. You can:
+ * divide your application into Mvp4g modules. Each module will then generate a fragment. This is the technique you should use most of the times. The main advantage of this solution is that it forces you to divide your application into smaller modules, easier to develop and maintain.
+ * create a splitter for the element you want to split (ie either a presenter/event handler or a group of them). Each splitter will then generate a fragment. This technique should be used only in particular case where boilerplate code to create a module is important compared to the element code (for example, the split element exchange a lot of different events with the rest of the application or you only want to split a few presenters).
+
+Whatever technique you decide to use, you shouldn't generate too many fragments or fragments that are too small otherwise you will increase the number of roundtrip to your server for no reason and will actually make your application slower. A good fragment should be between 5k and 500k. A bad practice would be to have a splitter for each single handler.
+
+==Multi-Modules==
 
 Thanks to Mvp4g, developers can easily split their application into modules. Each module will have its own event bus and own presenters/views/services.
 
@@ -15,7 +23,7 @@ An event can be handled by zero to many presenters and/or forwarded to zero to m
 
 Thanks to Mvp4g and GWT Code splitting feature, you can either load the code of your module at start or only when it needs to handle its first event.
 
-==Creating modules==
+===Creating modules===
 
  # You need to create an interface that extends Mvp4gModule:
 {{{
@@ -27,7 +35,7 @@ public interface CompanyModule extends Mvp4gModule {}
 public interface CompanyEventBus extends EventBus {...}
 }}}
 
-==Root Module==
+===Root Module===
 
 The root module is the top module of your application, the only module without parent. This module is the only module created manually by developers when calling:
 {{{
@@ -35,7 +43,7 @@ The root module is the top module of your application, the only module without p
 }}}
 This code is usually in your entry point. By default the top module class is Mvp4gModule, but you can use any Mvp4gModule you created.
 
-==Event forwarding from child to parent module==
+===Event forwarding from child to parent module===
 
 To forward an event to a parent module, you need to set the attribute forwardToParent to "true" thanks to @Event annotation.
 
@@ -63,7 +71,7 @@ You can forward an event only to:
  
 When forwarding an event to a sibling module, this sibling module will be loaded the same way as if its parent forwarded it an event.
 
-==Setting child modules==
+===Setting child modules===
 
 You can define child modules of a module thanks to ChildModule<b>s</b> annotation. This annotation contains a list of ChildModule annotation. Each annotation of this list define a child module. 
 
@@ -96,31 +104,6 @@ public void changeBody(Widget newBody);
 The only attribute of this annotation is a list of child module class name. You can specify one to several child module classes thanks to this attribute. At most one event should be set for each child module.
 
 The parent module's event used to display child module's start presenter's view must have one parameter which type is compatible with child module's start presenter's view interface.
-
-===Before, After, OnError===
-
-When the code of a child module is loaded thanks to GWT Code Splittin feature, you have the possibility to define:
- * a before event: this event will be called before starting to load the code of the child module. You can for example decide to display a wait popup.
- * an after event: this event will be called after the code of the module is done loading. You can for example decide to hide a wait popup.
- * an error event: this event will be called in case an error occurs while loading the code of the child module.
-
-You can define the three events thanks to three annotations: @BeforeLoadChildModule, @AfterLoadChildModule, @LoadChildModuleError.<br/>
-No object can be fired with the event(s) used before and/or after.<br/>
-An object may be fired for the event used in case of error but the type of this object must be compatible with java.lang.Throwable. In this case, the error returned by the RunAsync object is passed to the event.
-
-{{{
-@LoadChildModuleError
-@Event(handlers = MainPresenter.class)
-public void errorOnLoad(Throwable reason);
-
-@BeforeLoadChildModule
-@Event(handlers = MainPresenter.class)
-public void beforeLoad();
-
-@AfterLoadChildModule
-@Event(handlers = MainPresenter.class)
-public void afterLoad();
-}}}
 
 ===Forward Event===
 
@@ -157,3 +140,87 @@ When a child/sibling module is done loaded the following events will be fired:
  # child module forward event, on child event bus, every time an event is forwarded to a child module.
  # event to display child module start presenter's view, on parent event bus, only if AutoDisplay option is activated, every time an event is forwarded to a child module.
  # event forwarded to child module, on child event bus, every time an event is forwarded to a child module.
+
+==Splitter=
+
+In Mvp4g, you can easily create a code fragment for a presenter/event handler or a group of them. The code of the split element will be loaded when the split presenter/event handler has to handle its first event (or if you split a group of them, when one of the split presenters/event handlers has to handle its first event). The rest of the application considers a split presenter/event hander and a non-split presenter/event handler the same way (ie the rest of the application is not aware that a presenter/event handler is spit). The only restrictions are a start or a multiple presenter/event handler can't be split.
+
+===Split a single presenter/event handler===
+
+To split a single presenter/event handler, all you have to do is set the 'async' attribute of the @Presenter (or @EventHandler) to SingleSplitter.class.
+
+{{{
+@Presenter(…, async = SingleSplitter.class)
+public class OneSplitPresenter … { … }
+
+@Events(…)
+public interface OneEventBus … {
+
+    @Event(handlers = OneSplitPresenter.class)
+    void oneEvent(String oneParam);
+
+}
+}}}
+
+In the example above, OneSplitPresenter will be split and its code fragment will be loaded when oneEvent is fired.
+
+===Split a group of presenters/event handlers===
+
+To split a group of presenters/event handlers, you first have to create an interface extending Mvp4gSplitter.
+
+{{{
+public interface MySplitter extends Mvp4gSplitter {
+    // Do not add any method here.
+}
+}}}
+
+You then need to set the 'async' attribute of the @Presenter (or @EventHandler) of the presenters/event handlers you wish to split to this new splitter.
+
+{{{
+@Presenter(…, async = MySplitter.class)
+public class SplitPresenter1 … { … }
+
+@Presenter(…, async = MySplitter.class)
+public class SplitPresenter2 … { … }
+
+@Presenter(…, async = MySplitter.class)
+public class SplitPresenter3 … { … }
+
+@Events(…)
+public interface OneEventBus … {
+
+    @Event(handlers = SplitPresenter1.class)
+    void event1(String oneParam);
+
+    @Event(handlers = {SplitPresenter2.class, SplitPresenter3.class})
+    void event2(String oneParam);
+}
+}}}
+
+In the example above, SplitPresenter1, SplitPresenter2 and SplitPresenter3 will be split and one code fragment will be created for the three of them. This fragment will be loaded when event1 or event2 is fired.
+
+
+==Before, After, OnError==
+
+When the code of a child module or a splitter is loaded thanks to GWT Code Splitting feature, you have the possibility to define:
+ * a before event: this event will be called before starting to load the code. You can for example decide to display a wait popup.
+ * an after event: this event will be called after the code is done loading. You can for example decide to hide a wait popup.
+ * an error event: this event will be called in case an error occurs while loading the code.
+
+You can define the three events thanks to three annotations: @BeforeLoadChildModule, @AfterLoadChildModule, @LoadChildModuleError.<br/>
+No object can be fired with the event(s) used before and/or after.<br/>
+An object may be fired for the event used in case of error but the type of this object must be compatible with java.lang.Throwable. In this case, the error returned by the RunAsync object is passed to the event.
+
+{{{
+@LoadChildModuleError
+@Event(handlers = MainPresenter.class)
+public void errorOnLoad(Throwable reason);
+
+@BeforeLoadChildModule
+@Event(handlers = MainPresenter.class)
+public void beforeLoad();
+
+@AfterLoadChildModule
+@Event(handlers = MainPresenter.class)
+public void afterLoad();
+}}}
