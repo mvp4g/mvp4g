@@ -1588,7 +1588,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		EventAssociation<Integer> ea3 = new EventAssociation<Integer>();
 		ea3.getBinds().add( 1 );
 		splitter.getEvents().put( e3, ea3 );
-		
+
 		Set<EventElement> events = configuration.getEvents();
 		events.add( e1 );
 		events.add( e2 );
@@ -1619,7 +1619,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		loadConfig.setBeforeEvent( "beforeLoad" );
 		loadConfig.setErrorEvent( "errorOnLoad" );
 		configuration.setLoadChildConfig( loadConfig );
-		
+
 		PresenterElement presenter = new PresenterElement();
 		presenter.setName( "presenter" );
 		presenter.setClassName( SimplePresenter.class.getCanonicalName() );
@@ -1658,7 +1658,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		ea1.getHandlers().add( 0 );
 		ea1.getHandlers().add( 1 );
 		splitter.getEvents().put( e1, ea1 );
-		
+
 		Set<EventElement> events = configuration.getEvents();
 		events.add( e1 );
 		events.add( e2 );
@@ -1684,6 +1684,28 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedSplitterAsync(), false );
 		assertOutput( getExpectedSplitterLoadingConf(), true );
 		assertOutput( getExpectedSplitterPassive(), true );
+	}
+
+	@Test
+	public void testWriteMultipleImpl() {
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+		ChildModuleElement childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "childModule" );
+		childModule.setAutoDisplay( "false" );
+		configuration.getChildModules().add( childModule );
+
+		SplitterElement splitter = new SplitterElement();
+		splitter.setName( "splitter" );
+		splitter.setClassName( "Splitter" );
+		configuration.getSplitters().add( splitter );
+
+		configuration.setPropertiesValues( new String[] { "test" } );
+
+		assertOutput( getExpectedMultipleImpl(), false );
+		writer.writeConf();
+		assertOutput( getExpectedMultipleImpl(), true );
 	}
 
 	private void assertOutput( String[] statements, boolean expected ) {
@@ -1839,8 +1861,18 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	}
 
+	private String[] getExpectedMultipleImpl() {
+		return new String[] { "interface SplitterMultipleRunAsyncCallback extends com.google.gwt.core.client.RunAsyncCallback {}",
+				"interface SplitterRunAsyncImpl extends com.mvp4g.client.Mvp4gRunAsync<SplitterMultipleRunAsyncCallback> {}",
+				"public abstract class SplitterRunAsync implements SplitterMultipleRunAsyncCallback {",
+				"((SplitterRunAsyncImpl) GWT.create(SplitterRunAsyncImpl.class)).load(callback);",
+				"interface childModuleRunAsyncCallback extends com.google.gwt.core.client.RunAsyncCallback {}",
+				"interface childModuleRunAsync extends com.mvp4g.client.Mvp4gRunAsync<childModuleRunAsyncCallback> {}",
+				"((com.mvp4g.client.Mvp4gRunAsync) GWT.create(childModuleRunAsync.class )).load( new childModuleRunAsyncCallback() {public void onSuccess() {" };
+	}
+
 	private String[] getExpectedSplitterLoadingConf() {
-		return new String[] {"eventBus.beforeLoad();", "eventBus.afterLoad();", "eventBus.errorOnLoad(reason);"};
+		return new String[] { "eventBus.beforeLoad();", "eventBus.afterLoad();", "eventBus.errorOnLoad(reason);" };
 	}
 
 	private String[] getExpectedSplitter() {
@@ -1873,7 +1905,7 @@ public class Mvp4gConfigurationFileReaderTest {
 				"setActivated (false, new int[]{1});",
 				"public void event3(){",
 				"com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter presenter = (com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter) handlers[1];",
-				"presenter.isActivated(false, \"event3\");", "splitter.event1(attr0,attr1);","splitter.event2();","splitter.event3();" };
+				"presenter.isActivated(false, \"event3\");", "splitter.event1(attr0,attr1);", "splitter.event2();", "splitter.event3();" };
 
 	}
 
