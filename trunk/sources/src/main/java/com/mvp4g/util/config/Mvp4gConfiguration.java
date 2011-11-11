@@ -161,6 +161,8 @@ public class Mvp4gConfiguration {
 	private TypeOracle oracle = null;
 	private PropertyOracle propertyOracle;
 
+	private String[] propertiesValues;
+
 	/**
 	 * Contruct a Mvp4gConfiguration object
 	 * 
@@ -238,7 +240,7 @@ public class Mvp4gConfiguration {
 		validateChildModules();
 		validateEvents();
 		validateDebug();
-		String[] propertiesValues = validateGinModule();
+		propertiesValues = validateGinModule();
 		validateStart();
 
 		return propertiesValues;
@@ -496,6 +498,21 @@ public class Mvp4gConfiguration {
 	 */
 	public void setEventFilterConfiguration( EventFiltersElement eventFilterConfiguration ) {
 		this.eventFilterConfiguration = eventFilterConfiguration;
+	}
+
+	/**
+	 * @return the propertiesValues
+	 */
+	public boolean hasPropertiesValues() {
+		return ( propertiesValues != null ) && ( propertiesValues.length > 0 );
+	}
+
+	/**
+	 * @param propertiesValues
+	 *            the propertiesValues to set
+	 */
+	public void setPropertiesValues( String[] propertiesValues ) {
+		this.propertiesValues = propertiesValues;
 	}
 
 	/*

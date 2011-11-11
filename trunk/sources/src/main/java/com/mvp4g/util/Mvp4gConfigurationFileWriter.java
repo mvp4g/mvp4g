@@ -27,6 +27,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.user.rebind.SourceWriter;
 import com.mvp4g.client.AbstractMvp4gSplitter;
 import com.mvp4g.client.Mvp4gModule;
+import com.mvp4g.client.Mvp4gRunAsync;
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.event.BaseEventBus;
@@ -266,9 +267,30 @@ public class Mvp4gConfigurationFileWriter {
 			}
 			boolean isAsync = true;
 			boolean isAsyncEnabled = configuration.isAsyncEnabled();
+			boolean hasMultipleImpl = configuration.hasPropertiesValues();
+			String asyncImpl = null;
+			String asyncCallback = null;
 			for ( ChildModuleElement module : children ) {
-				moduleClassName = module.getClassName();
 				isAsync = module.isAsync() && isAsyncEnabled;
+
+				if ( hasMultipleImpl && isAsync ) {
+					asyncCallback = module.getName() + "RunAsyncCallback";
+					sourceWriter.print( "interface " );
+					sourceWriter.print( asyncCallback );
+					sourceWriter.print( " extends " );
+					sourceWriter.print( RunAsyncCallback.class.getName() );
+					sourceWriter.println( " {}" );
+					asyncImpl = module.getName() + "RunAsync";
+					sourceWriter.print( "interface " );
+					sourceWriter.print( asyncImpl );
+					sourceWriter.print( " extends " );
+					sourceWriter.print( Mvp4gRunAsync.class.getName() );
+					sourceWriter.print( "<" );
+					sourceWriter.print( asyncCallback );
+					sourceWriter.println( "> {}" );
+				}
+
+				moduleClassName = module.getClassName();
 				sourceWriter.print( "private void load" );
 				sourceWriter.print( module.getName() );
 				sourceWriter.println( "(final Mvp4gEventPasser passer){" );
@@ -277,7 +299,17 @@ public class Mvp4gConfigurationFileWriter {
 					if ( isBefore ) {
 						writeDispatchEvent( beforeEvent, null );
 					}
-					sourceWriter.println( "GWT.runAsync(new RunAsyncCallback() {" );
+					if ( hasMultipleImpl ) {
+						sourceWriter.print( "((" );
+						sourceWriter.print( Mvp4gRunAsync.class.getName() );
+						sourceWriter.print( ") GWT.create(" );
+						sourceWriter.print( asyncImpl );
+						sourceWriter.print( ".class )).load( new " );
+						sourceWriter.print( asyncCallback );
+					} else {
+						sourceWriter.print( "GWT.runAsync(new RunAsyncCallback" );
+					}
+					sourceWriter.print( "() {" );
 					sourceWriter.indent();
 					sourceWriter.println( "public void onSuccess() {" );
 					sourceWriter.indent();
@@ -1536,8 +1568,29 @@ public class Mvp4gConfigurationFileWriter {
 			}
 		}
 
+		boolean hasMultipleImpl = configuration.hasPropertiesValues();
+
 		Set<SplitterElement> splitters = configuration.getSplitters();
+		String asyncImpl = null, asyncMultipleCallback = null;
 		for ( SplitterElement splitter : splitters ) {
+
+			if ( hasMultipleImpl ) {
+				asyncMultipleCallback = splitter.getClassName() + "MultipleRunAsyncCallback";
+				sourceWriter.print( "interface " );
+				sourceWriter.print( asyncMultipleCallback );
+				sourceWriter.print( " extends " );
+				sourceWriter.print( RunAsyncCallback.class.getName() );
+				sourceWriter.println( " {}" );
+
+				asyncImpl = splitter.getClassName() + "RunAsyncImpl";
+				sourceWriter.print( "interface " );
+				sourceWriter.print( asyncImpl );
+				sourceWriter.print( " extends " );
+				sourceWriter.print( Mvp4gRunAsync.class.getName() );
+				sourceWriter.print( "<" );
+				sourceWriter.print( asyncMultipleCallback );
+				sourceWriter.println( "> {}" );
+			}
 
 			sourceWriter.print( "public class " );
 			sourceWriter.print( splitter.getClassName() );
@@ -1547,10 +1600,14 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.indent();
 
 			String runAsyncName = splitter.getClassName() + "RunAsync";
-			sourceWriter.print( "private abstract class " );
+			sourceWriter.print( "public abstract class " );
 			sourceWriter.print( runAsyncName );
 			sourceWriter.print( " implements " );
-			sourceWriter.print( RunAsyncCallback.class.getSimpleName() );
+			if ( hasMultipleImpl ) {
+				sourceWriter.print( asyncMultipleCallback );
+			} else {
+				sourceWriter.print( RunAsyncCallback.class.getSimpleName() );
+			}
 			sourceWriter.println( " { " );
 			sourceWriter.indent();
 			sourceWriter.println( "private boolean[] indexesToBuild;" );
@@ -1614,7 +1671,16 @@ public class Mvp4gConfigurationFileWriter {
 			if ( isBefore ) {
 				writeDispatchEvent( beforeEvent, null );
 			}
-			sourceWriter.println( "GWT.runAsync(callback);" );
+			if ( hasMultipleImpl ) {
+				sourceWriter.print( "((" );
+				sourceWriter.print( asyncImpl );
+				sourceWriter.print( ") GWT.create(" );
+				sourceWriter.print( asyncImpl );
+				sourceWriter.print( ".class)).load(" );
+			} else {
+				sourceWriter.print( "GWT.runAsync(" );
+			}
+			sourceWriter.println( "callback);" );
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
 

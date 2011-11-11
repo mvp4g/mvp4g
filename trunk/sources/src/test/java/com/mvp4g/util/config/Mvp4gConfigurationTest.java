@@ -2648,6 +2648,15 @@ public class Mvp4gConfigurationTest {
 		}
 	}
 
+	@Test
+	public void testHasPropertiesValues() {
+		assertFalse( configuration.hasPropertiesValues() );
+		configuration.setPropertiesValues( new String[] {} );
+		assertFalse( configuration.hasPropertiesValues() );
+		configuration.setPropertiesValues( new String[] { "test" } );
+		assertTrue( configuration.hasPropertiesValues() );
+	}
+
 	private <T> void assertList( List<T> list1, List<T> list2 ) {
 		assertEquals( list1.size(), list2.size() );
 		for ( int i = 0; i < list1.size(); i++ ) {
