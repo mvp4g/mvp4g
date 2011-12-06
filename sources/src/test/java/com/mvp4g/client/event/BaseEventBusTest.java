@@ -274,7 +274,7 @@ public class BaseEventBusTest {
 			assertEquals(
 					"Handler with type "
 							+ Presenters.PresenterNoParameter.class.getName()
-							+ " couldn't be created by the Mvp4g. Have you forgotten to set multiple attribute to true for this handler or are you trying to create an handler that belongs to another module (another type of event bus injected in this handler)?",
+							+ " couldn't be created by the Mvp4g. Have you forgotten to set multiple attribute to true for this handler or are you trying to create an handler that belongs to another module (another type of event bus injected in this handler) or have you set a splitter for this handler?",
 					e.getMessage() );
 		}
 	}

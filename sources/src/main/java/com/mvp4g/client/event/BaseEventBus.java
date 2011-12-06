@@ -46,13 +46,13 @@ public abstract class BaseEventBus implements EventBus {
 	private Map<Class<?>, List<EventHandlerInterface<?>>> handlersMap = new HashMap<Class<?>, List<EventHandlerInterface<?>>>();
 
 	private List<EventFilter<?>> filters = new ArrayList<EventFilter<? extends EventBus>>();
-	
-	public static <E extends EventBus, H extends EventHandlerInterface<? super E>>  H setEventHandler(H eventHandler, E eventBus){
+
+	public static <E extends EventBus, H extends EventHandlerInterface<? super E>> H setEventHandler( H eventHandler, E eventBus ) {
 		eventHandler.setEventBus( eventBus );
 		return eventHandler;
 	}
-	
-	public static <V, E extends EventBus, P extends PresenterInterface<? super V, ? super E>>  P setPresenter(P presenter, V view, E eventBus){
+
+	public static <V, E extends EventBus, P extends PresenterInterface<? super V, ? super E>> P setPresenter( P presenter, V view, E eventBus ) {
 		setEventHandler( presenter, eventBus );
 		presenter.setView( view );
 		return presenter;
@@ -189,7 +189,7 @@ public abstract class BaseEventBus implements EventBus {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.mvp4g.client.event.EventBus#addEventFilter(com.mvp4g.client.event.EventFilter)
+	 * @see com.mvp4g.client.event.EventBus#addEventFilter(com.mvp4g.client.event .EventFilter)
 	 */
 	public void addEventFilter( EventFilter<? extends EventBus> filter ) {
 		filters.add( filter );
@@ -198,7 +198,7 @@ public abstract class BaseEventBus implements EventBus {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.mvp4g.client.event.EventBus#removeEventFilter(com.mvp4g.client.event.EventFilter)
+	 * @see com.mvp4g.client.event.EventBus#removeEventFilter(com.mvp4g.client.event .EventFilter)
 	 */
 	public void removeEventFilter( EventFilter<? extends EventBus> filter ) {
 		filters.remove( filter );
@@ -232,42 +232,56 @@ public abstract class BaseEventBus implements EventBus {
 	 * 
 	 * @see com.mvp4g.client.event.EventBus#addHandler(java.lang.Class, boolean)
 	 */
-	public <T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass, boolean bind ) throws Mvp4gException {
+	public <E extends EventBus, T extends EventHandlerInterface<E>> T addHandler( Class<T> handlerClass, boolean bind ) throws Mvp4gException {
 		T handler = createHandler( handlerClass );
 		if ( handler == null ) {
 			throw new Mvp4gException(
 					"Handler with type "
 							+ handlerClass.getName()
-							+ " couldn't be created by the Mvp4g. Have you forgotten to set multiple attribute to true for this handler or are you trying to create an handler that belongs to another module (another type of event bus injected in this handler)?" );
+							+ " couldn't be created by the Mvp4g. Have you forgotten to set multiple attribute to true for this handler or are you trying to create an handler that belongs to another module (another type of event bus injected in this handler) or have you set a splitter for this handler?" );
 		}
+		finishAddHandler( handler, handlerClass, bind );
+		return handler;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.mvp4g.client.event.EventBus#addHandler(java.lang.Class, boolean)
+	 */
+	public <E extends EventBus, T extends EventHandlerInterface<E>> T addHandler( Class<T> handlerClass ) throws Mvp4gException {
+		return addHandler( handlerClass, true );
+	}
 
+	/**
+	 * Utility method to finish adding a handler by adding it to the map and by binding it if
+	 * needed. It should only be used by the framework.
+	 * 
+	 * @param handler
+	 *            New instance to add.
+	 * @param handlerClass
+	 *            class of the handler to add.
+	 * @param bind
+	 *            if true, bind the handler at creation, otherwise do nothing.
+	 * @param handlersMap
+	 */
+	public <E extends EventBus, T extends EventHandlerInterface<E>> void finishAddHandler( T handler, Class<T> handlerClass, boolean bind ) {
 		if ( bind ) {
 			handler.isActivated( false, null );
 		}
-
 		List<EventHandlerInterface<?>> handlers = handlersMap.get( handlerClass );
 		if ( handlers == null ) {
 			handlers = new ArrayList<EventHandlerInterface<?>>();
 			handlersMap.put( handlerClass, handlers );
 		}
 		handlers.add( handler );
-		return handler;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.mvp4g.client.event.EventBus#addHandler(java.lang.Class, boolean)
-	 */
-	public <T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass ) throws Mvp4gException {
-		return addHandler( handlerClass, true );
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.mvp4g.client.event.EventBus#removeHandler(com.mvp4g.client.event.EventHandlerInterface)
+	 * @see com.mvp4g.client.event.EventBus#removeHandler(com.mvp4g.client.event.
+	 * EventHandlerInterface)
 	 */
 	public <T extends EventHandlerInterface<?>> void removeHandler( T handler ) {
 		List<EventHandlerInterface<?>> handlers = handlersMap.get( handler.getClass() );
@@ -284,15 +298,15 @@ public abstract class BaseEventBus implements EventBus {
 	public HistoryProxy getHistory() {
 		return DefaultHistoryProxy.INSTANCE;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.mvp4g.client.event.EventBus#setTokenGenerationModeForNextEvent()
 	 */
-	public void setTokenGenerationModeForNextEvent(){
+	public void setTokenGenerationModeForNextEvent() {
 		tokenMode = true;
 	}
-	
 
 	/**
 	 * Returns the list of handlers with the given class
@@ -304,7 +318,7 @@ public abstract class BaseEventBus implements EventBus {
 	 * @return list of handlers
 	 */
 	@SuppressWarnings( "unchecked" )
-	protected <T extends EventHandlerInterface<?>> List<T> getHandlers( Class<T> handlerClass ) {
+	public <T extends EventHandlerInterface<?>> List<T> getHandlers( Class<T> handlerClass ) {
 		List<T> list = (List<T>)handlersMap.get( handlerClass );
 		return ( list == null ) ? null : new ArrayList<T>( list );
 	}
@@ -319,5 +333,4 @@ public abstract class BaseEventBus implements EventBus {
 	 * @return new instance created
 	 */
 	abstract protected <T extends EventHandlerInterface<?>> T createHandler( Class<T> handlerClass );
-
 }

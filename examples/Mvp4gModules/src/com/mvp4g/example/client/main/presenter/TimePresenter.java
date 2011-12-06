@@ -7,9 +7,10 @@ import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.main.MainEventBus;
 import com.mvp4g.example.client.main.StatusSplitter;
 import com.mvp4g.example.client.main.view.TimeView;
+import com.mvp4g.example.client.util.HasBeenThereHandler;
 
 @Presenter( view = TimeView.class, async = StatusSplitter.class )
-public class TimePresenter extends BasePresenter<TimePresenter.ITimeView, MainEventBus> /*implements HasBeenThereHandler*/ {
+public class TimePresenter extends BasePresenter<TimePresenter.ITimeView, MainEventBus> implements HasBeenThereHandler {
 
 	public interface ITimeView {
 
@@ -18,7 +19,7 @@ public class TimePresenter extends BasePresenter<TimePresenter.ITimeView, MainEv
 	}
 
 	public void bind() {
-		// doesn't make sense to call this in the bind method bust I'm just tested this method is correctly called.
+		// doesn't make sense to call this in the bind method but I'm just tested this method is correctly called.
 		setTime();
 	}
 

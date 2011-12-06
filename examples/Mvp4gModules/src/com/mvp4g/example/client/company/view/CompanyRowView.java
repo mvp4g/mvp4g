@@ -6,7 +6,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.company.presenter.CompanyRowPresenter.ICompanyRowView;
 
 public class CompanyRowView extends Composite implements ICompanyRowView {

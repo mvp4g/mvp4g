@@ -6,9 +6,10 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.main.MainEventBus;
+import com.mvp4g.example.client.main.StatusSplitter;
 import com.mvp4g.example.client.main.view.InfoReceiverView;
 
-@Presenter( view = InfoReceiverView.class, multiple = true )
+@Presenter( view = InfoReceiverView.class, multiple = true, async = StatusSplitter.class )
 public class InfoReceiverPresenter extends BasePresenter<InfoReceiverPresenter.IInfoReceiverView, MainEventBus> {
 
 	public interface IInfoReceiverView {

@@ -1,7 +1,6 @@
 package com.mvp4g.example.client.product;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;

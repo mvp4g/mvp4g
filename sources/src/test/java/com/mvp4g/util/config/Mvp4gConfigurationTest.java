@@ -8,6 +8,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -2032,10 +2034,10 @@ public class Mvp4gConfigurationTest {
 
 		configuration.validateEventHandlers();
 
-		String[] generate = event1.getGenerate();
-		assertEquals( 2, generate.length );
-		assertEquals( generate[0], generate1.getName() );
-		assertEquals( generate[1], generate2.getName() );
+		List<String> generate = event1.getGenerate();
+		assertEquals( 2, generate.size() );
+		assertEquals( generate.get( 0 ), generate1.getName() );
+		assertEquals( generate.get( 1 ), generate2.getName() );
 
 		List<String> handlers = event1.getHandlers();
 		assertEquals( 1, handlers.size() );
@@ -2512,7 +2514,7 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testValidateSplitterStartPresenterOrMultiple() {
+	public void testValidateSplitterStartPresenter() {
 		PresenterElement presenter = newPresenter( "presenter" );
 		configuration.getStart().setPresenter( "presenter" );
 		presenter.setAsync( "true" );
@@ -2529,15 +2531,6 @@ public class Mvp4gConfigurationTest {
 		} catch ( InvalidMvp4gConfigurationException e ) {
 			assertEquals( "Presenter presenter: start presenter can't be loaded asynchronously. Async attribute must not be set.", e.getMessage() );
 		}
-
-		presenter.setAsync( null );
-		presenter.setMultiple( "true" );
-		try {
-			configuration.validateSplitters();
-			fail();
-		} catch ( InvalidMvp4gConfigurationException e ) {
-			assertEquals( "Presenter presenter: multiple presenter can't be loaded asynchronously. Async attribute must not be set.", e.getMessage() );
-		}
 	}
 
 	@Test
@@ -2548,16 +2541,27 @@ public class Mvp4gConfigurationTest {
 		presenter.setAsync( splitterName );
 		presenters.add( presenter );
 
+		PresenterElement presenterMultiple = newPresenter( "presenterMultiple" );
+		presenterMultiple.setAsync( splitterName );
+		presenterMultiple.setMultiple( "true" );
+		presenters.add( presenterMultiple );
+
 		EventHandlerElement eventHandler = newEventHandler( "eventHandler" );
 		eventHandler.setAsync( splitterName );
 		eventHandlers.add( eventHandler );
 
+		EventHandlerElement eventHandlerMultiple = newEventHandler( "eventHandlerMultiple" );
+		eventHandlerMultiple.setAsync( splitterName );
+		eventHandlerMultiple.setMultiple( "true" );
+		eventHandlers.add( eventHandlerMultiple );
+
 		EventElement event = new EventElement();
 		event.setType( "event" );
-		event.setHandlers( new String[] { "presenter", "eventHandler" } );
-		event.setBinds( new String[] { "presenter", "eventHandler" } );
-		event.setActivate( new String[] { "presenter", "eventHandler" } );
-		event.setDeactivate( new String[] { "presenter", "eventHandler" } );
+		event.setHandlers( new String[] { "presenter", "eventHandler", "presenterMultiple", "eventHandlerMultiple" } );
+		event.setBinds( new String[] { "presenter", "eventHandler", "presenterMultiple", "eventHandlerMultiple" } );
+		event.setActivate( new String[] { "presenter", "eventHandler", "presenterMultiple", "eventHandlerMultiple" } );
+		event.setDeactivate( new String[] { "presenter", "eventHandler", "presenterMultiple", "eventHandlerMultiple" } );
+		event.setGenerate( new String[] { "presenterMultiple", "eventHandlerMultiple" } );
 		events.add( event );
 
 		configuration.validateSplitters();
@@ -2567,23 +2571,23 @@ public class Mvp4gConfigurationTest {
 		assertEquals( "TestSplitter", splitter.getClassName() );
 		assertEquals( "testSplitter", splitter.getName() );
 
-		assertEquals( 1, splitter.getEventHandlers().size() );
-		assertEquals( 1, splitter.getPresenters().size() );
-		assertSame( eventHandler, splitter.getEventHandlers().get( 0 ) );
-		assertSame( presenter, splitter.getPresenters().get( 0 ) );
+		assertEquals( 4, splitter.getHandlers().size() );
+		assertTrue( splitter.getHandlers().contains( eventHandler ) );
+		assertTrue( splitter.getHandlers().contains( presenter ) );
+		assertTrue( splitter.getHandlers().contains( eventHandlerMultiple ) );
+		assertTrue( splitter.getHandlers().contains( presenterMultiple ) );
 
-		Map<EventElement, EventAssociation<Integer>> events = splitter.getEvents();
+		Map<EventElement, EventAssociation<String>> events = splitter.getEvents();
 		assertEquals( 1, events.size() );
 		EventElement key = events.keySet().iterator().next();
 		assertSame( event, key );
-		EventAssociation<Integer> association = events.get( key );
-		List<Integer> list = new ArrayList<Integer>();
-		list.add( 0 );
-		list.add( 1 );
-		assertList( list, association.getActivated() );
-		assertList( list, association.getDeactivated() );
-		assertList( list, association.getBinds() );
-		assertList( list, association.getHandlers() );
+		EventAssociation<String> association = events.get( key );
+		List<String> list = Arrays.asList( "eventHandler", "eventHandlerMultiple", "presenter", "presenterMultiple" );
+		assertCollection( list, association.getActivated() );
+		assertCollection( list, association.getDeactivated() );
+		assertCollection( list, association.getBinds() );
+		assertCollection( list, association.getHandlers() );
+		assertCollection( Arrays.asList( "eventHandlerMultiple", "presenterMultiple" ), association.getGenerate() );
 	}
 
 	@Test
@@ -2592,52 +2596,89 @@ public class Mvp4gConfigurationTest {
 		presenter.setAsync( SingleSplitter.class.getCanonicalName() );
 		presenters.add( presenter );
 
+		PresenterElement presenterMultiple = newPresenter( "presenterMultiple" );
+		presenterMultiple.setAsync( SingleSplitter.class.getCanonicalName() );
+		presenterMultiple.setMultiple( "true" );
+		presenters.add( presenterMultiple );
+
 		EventHandlerElement eventHandler = newEventHandler( "eventHandler" );
 		eventHandler.setAsync( SingleSplitter.class.getCanonicalName() );
 		eventHandlers.add( eventHandler );
 
+		EventHandlerElement eventHandlerMultiple = newEventHandler( "eventHandlerMultiple" );
+		eventHandlerMultiple.setAsync( SingleSplitter.class.getCanonicalName() );
+		eventHandlerMultiple.setMultiple( "true" );
+		eventHandlers.add( eventHandlerMultiple );
+
 		EventElement event = new EventElement();
 		event.setType( "event" );
-		event.setHandlers( new String[] { "presenter", "eventHandler" } );
-		event.setBinds( new String[] { "presenter", "eventHandler" } );
-		event.setActivate( new String[] { "presenter", "eventHandler" } );
-		event.setDeactivate( new String[] { "presenter", "eventHandler" } );
+		event.setHandlers( new String[] { "presenter", "eventHandler", "presenterMultiple", "eventHandlerMultiple" } );
+		event.setBinds( new String[] { "presenter", "eventHandler", "presenterMultiple", "eventHandlerMultiple" } );
+		event.setActivate( new String[] { "presenter", "eventHandler", "presenterMultiple", "eventHandlerMultiple" } );
+		event.setDeactivate( new String[] { "presenter", "eventHandler", "presenterMultiple", "eventHandlerMultiple" } );
 		events.add( event );
 
 		configuration.validateSplitters();
 
-		assertEquals( 2, configuration.getSplitters().size() );
+		assertEquals( 4, configuration.getSplitters().size() );
 
 		SplitterElement splitter;
 		Iterator<SplitterElement> it = configuration.getSplitters().iterator();
-		List<Integer> list = new ArrayList<Integer>();
-		list.add( 0 );
+		List<String> list;
 		while ( it.hasNext() ) {
 			splitter = it.next();
 			if ( "SingleSplitter0".equals( splitter.getClassName() ) ) {
+				list = Arrays.asList( "eventHandler" );
 				assertEquals( "singleSplitter0", splitter.getName() );
-				assertEquals( 1, splitter.getEventHandlers().size() );
-				assertEquals( 0, splitter.getPresenters().size() );
-				assertSame( eventHandler, splitter.getEventHandlers().get( 0 ) );
-				Map<EventElement, EventAssociation<Integer>> events = splitter.getEvents();
+				assertEquals( 1, splitter.getHandlers().size() );
+				assertTrue( splitter.getHandlers().contains( eventHandler ) );
+				Map<EventElement, EventAssociation<String>> events = splitter.getEvents();
 				assertEquals( 1, events.size() );
 				EventElement key = events.keySet().iterator().next();
 				assertSame( event, key );
-				EventAssociation<Integer> association = events.get( key );
+				EventAssociation<String> association = events.get( key );
 				assertList( list, association.getActivated() );
 				assertList( list, association.getDeactivated() );
 				assertList( list, association.getBinds() );
 				assertList( list, association.getHandlers() );
 			} else if ( "SingleSplitter1".equals( splitter.getClassName() ) ) {
+				list = Arrays.asList( "eventHandlerMultiple" );
 				assertEquals( "singleSplitter1", splitter.getName() );
-				assertEquals( 0, splitter.getEventHandlers().size() );
-				assertEquals( 1, splitter.getPresenters().size() );
-				assertSame( presenter, splitter.getPresenters().get( 0 ) );
-				Map<EventElement, EventAssociation<Integer>> events = splitter.getEvents();
+				assertEquals( 1, splitter.getHandlers().size() );
+				assertTrue( splitter.getHandlers().contains( eventHandlerMultiple ) );
+				Map<EventElement, EventAssociation<String>> events = splitter.getEvents();
 				assertEquals( 1, events.size() );
 				EventElement key = events.keySet().iterator().next();
 				assertSame( event, key );
-				EventAssociation<Integer> association = events.get( key );
+				EventAssociation<String> association = events.get( key );
+				assertList( list, association.getActivated() );
+				assertList( list, association.getDeactivated() );
+				assertList( list, association.getBinds() );
+				assertList( list, association.getHandlers() );
+			} else if ( "SingleSplitter2".equals( splitter.getClassName() ) ) {
+				list = Arrays.asList( "presenterMultiple" );
+				assertEquals( "singleSplitter2", splitter.getName() );
+				assertEquals( 1, splitter.getHandlers().size() );
+				assertTrue( splitter.getHandlers().contains( presenterMultiple ) );
+				Map<EventElement, EventAssociation<String>> events = splitter.getEvents();
+				assertEquals( 1, events.size() );
+				EventElement key = events.keySet().iterator().next();
+				assertSame( event, key );
+				EventAssociation<String> association = events.get( key );
+				assertList( list, association.getActivated() );
+				assertList( list, association.getDeactivated() );
+				assertList( list, association.getBinds() );
+				assertList( list, association.getHandlers() );
+			} else if ( "SingleSplitter3".equals( splitter.getClassName() ) ) {
+				list = Arrays.asList( "presenter" );
+				assertEquals( "singleSplitter3", splitter.getName() );
+				assertEquals( 1, splitter.getHandlers().size() );
+				assertTrue( splitter.getHandlers().contains( presenter ) );
+				Map<EventElement, EventAssociation<String>> events = splitter.getEvents();
+				assertEquals( 1, events.size() );
+				EventElement key = events.keySet().iterator().next();
+				assertSame( event, key );
+				EventAssociation<String> association = events.get( key );
 				assertList( list, association.getActivated() );
 				assertList( list, association.getDeactivated() );
 				assertList( list, association.getBinds() );
@@ -2661,6 +2702,14 @@ public class Mvp4gConfigurationTest {
 		assertEquals( list1.size(), list2.size() );
 		for ( int i = 0; i < list1.size(); i++ ) {
 			assertEquals( list1.get( i ), list2.get( i ) );
+		}
+	}
+
+	private <T> void assertCollection( Collection<T> collection1, Collection<T> collection2 ) {
+		assertEquals( collection1.size(), collection2.size() );
+		Iterator<T> it = collection1.iterator();
+		while ( it.hasNext() ) {
+			assertTrue( collection2.contains( it.next() ) );
 		}
 	}
 
