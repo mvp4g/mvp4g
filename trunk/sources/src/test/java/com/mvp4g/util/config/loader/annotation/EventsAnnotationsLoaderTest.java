@@ -382,8 +382,7 @@ public class EventsAnnotationsLoaderTest {
 
 		Set<EventElement> events = configuration.getEvents();
 		assertEquals( 5, events.size() );
-		List<String> activates, deactivates, binds;
-		String[] generates;
+		List<String> activates, deactivates, binds, generates;
 		for ( EventElement e : events ) {
 			if ( "event1".equals( e.getType() ) ) {
 				assertEquals( String.class.getName(), e.getEventObjectClass()[0] );
@@ -407,23 +406,23 @@ public class EventsAnnotationsLoaderTest {
 				generates = e.getGenerate();
 				assertEquals( 2, activates.size() );
 				assertEquals( 2, deactivates.size() );
-				assertEquals( 2, generates.length );
+				assertEquals( 2, generates.size() );
 				assertEquals( "name", activates.get( 1 ) );
 				assertEquals( "name", deactivates.get( 1 ) );
-				assertEquals( "name", generates[1] );
+				assertEquals( "name", generates.get(1) );
 			} else if ( "event4".equals( e.getType() ) ) {
 				activates = e.getActivate();
 				deactivates = e.getDeactivate();
 				generates = e.getGenerate();
 				assertEquals( 4, activates.size() );
 				assertEquals( 4, deactivates.size() );
-				assertEquals( 4, generates.length );
+				assertEquals( 4, generates.size() );
 				assertEquals( "name", activates.get( 2 ) );
 				assertEquals( "name", deactivates.get( 2 ) );
-				assertEquals( "name", generates[2] );
+				assertEquals( "name", generates.get(2) );
 				assertEquals( "name1", activates.get( 3 ) );
 				assertEquals( "name1", deactivates.get( 3 ) );
-				assertEquals( "name1", generates[3] );
+				assertEquals( "name1", generates.get(3) );
 			} else if ( "event5".equals( e.getType() ) ) {
 				binds = e.getBinds();
 				assertEquals( 3, binds.size());

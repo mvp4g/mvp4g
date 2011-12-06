@@ -108,7 +108,7 @@ public interface EventBus {
 	 * @throws Mvp4gException
 	 *             thrown if the instance of the handler can not be created by the event bus
 	 */
-	<T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass ) throws Mvp4gException;
+	<E extends EventBus, T extends EventHandlerInterface<E>> T addHandler( Class<T> handlerClass ) throws Mvp4gException;
 
 	/**
 	 * Create a new instance of the handler, bind it only if this option is set to true and add it
@@ -130,7 +130,7 @@ public interface EventBus {
 	 * @throws Mvp4gException
 	 *             thrown if the instance of the handler can not be created by the event bus
 	 */
-	<T extends EventHandlerInterface<?>> T addHandler( Class<T> handlerClass, boolean bind ) throws Mvp4gException;
+	<E extends EventBus, T extends EventHandlerInterface<E>> T addHandler( Class<T> handlerClass, boolean bind ) throws Mvp4gException;
 
 	/**
 	 * Remove the instance of the handler from the event bus

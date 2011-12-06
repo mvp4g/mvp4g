@@ -10,7 +10,7 @@ import com.mvp4g.example.client.main.view.DateView;
 import com.mvp4g.example.client.util.HasBeenThereHandler;
 
 @Presenter( view = DateView.class, async = StatusSplitter.class )
-public class DatePresenter extends BasePresenter<DatePresenter.IDateView, MainEventBus> /*implements HasBeenThereHandler*/ {
+public class DatePresenter extends BasePresenter<DatePresenter.IDateView, MainEventBus> implements HasBeenThereHandler {
 
 	public interface IDateView {
 
@@ -19,7 +19,7 @@ public class DatePresenter extends BasePresenter<DatePresenter.IDateView, MainEv
 	}
 
 	public void bind() {
-		// doesn't make sense to call this in the bind method bust I'm just tested this method is correctly called.
+		// doesn't make sense to call this in the bind method but I'm just tested this method is correctly called.
 		setDate();
 	}
 

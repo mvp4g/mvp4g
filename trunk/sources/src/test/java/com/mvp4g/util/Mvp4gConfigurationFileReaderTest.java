@@ -1569,24 +1569,24 @@ public class Mvp4gConfigurationFileReaderTest {
 		e3.setSplitters( new String[] { "splitter" } );
 
 		SplitterElement splitter = new SplitterElement();
-		splitter.getPresenters().add( presenter );
-		splitter.getEventHandlers().add( eventHandler );
+		splitter.getHandlers().add( presenter );
+		splitter.getHandlers().add( eventHandler );
 		splitter.setName( "splitter" );
 		splitter.setClassName( "Splitter" );
-		EventAssociation<Integer> ea1 = new EventAssociation<Integer>();
-		ea1.getActivated().add( 0 );
-		ea1.getDeactivated().add( 1 );
-		ea1.getBinds().add( 1 );
-		ea1.getHandlers().add( 0 );
+		EventAssociation<String> ea1 = new EventAssociation<String>();
+		ea1.getActivated().add( "eventHandler" );
+		ea1.getDeactivated().add( "presenter" );
+		ea1.getBinds().add( "presenter" );
+		ea1.getHandlers().add( "eventHandler" );
 		splitter.getEvents().put( e1, ea1 );
 
-		EventAssociation<Integer> ea2 = new EventAssociation<Integer>();
-		ea2.getActivated().add( 0 );
-		ea2.getDeactivated().add( 1 );
+		EventAssociation<String> ea2 = new EventAssociation<String>();
+		ea2.getActivated().add( "eventHandler" );
+		ea2.getDeactivated().add( "presenter" );
 		splitter.getEvents().put( e2, ea2 );
 
-		EventAssociation<Integer> ea3 = new EventAssociation<Integer>();
-		ea3.getBinds().add( 1 );
+		EventAssociation<String> ea3 = new EventAssociation<String>();
+		ea3.getBinds().add( "presenter" );
 		splitter.getEvents().put( e3, ea3 );
 
 		Set<EventElement> events = configuration.getEvents();
@@ -1596,19 +1596,19 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		configuration.getSplitters().add( splitter );
 
-		assertOutput( getExpectedSplitter(), false );
-		assertOutput( getExpectedSplitterAsync(), false );
+		assertOutput( getExpectedSplitter( false ), false );
 		assertOutput( getExpectedSplitterLoadingConf(), false );
-		assertOutput( getExpectedSplitterPassive(), false );
+		assertOutput( getExpectedSplitterPassiveGenerateMultiple(), false );
+		assertOutput( getExpectedSplitterNotPassive(), false );
 		writer.writeConf();
-		assertOutput( getExpectedSplitter(), true );
-		assertOutput( getExpectedSplitterAsync(), true );
+		assertOutput( getExpectedSplitter( false ), true );
 		assertOutput( getExpectedSplitterLoadingConf(), false );
-		assertOutput( getExpectedSplitterPassive(), false );
+		assertOutput( getExpectedSplitterPassiveGenerateMultiple(), false );
+		assertOutput( getExpectedSplitterNotPassive(), true );
 	}
 
 	@Test
-	public void testWriteSplitterPassiveLoading() {
+	public void testWriteSplitterPassiveLoadingGenerate() {
 		EventElement event = new EventElement();
 		event.setType( "errorOnLoad" );
 		event.setEventObjectClass( new String[] { Throwable.class.getCanonicalName() } );
@@ -1624,12 +1624,34 @@ public class Mvp4gConfigurationFileReaderTest {
 		presenter.setName( "presenter" );
 		presenter.setClassName( SimplePresenter.class.getCanonicalName() );
 		presenter.setView( "view" );
+		presenter.setAsync( "Splitter" );
 		configuration.getPresenters().add( presenter );
+
+		ViewElement view = new ViewElement();
+		view.setName( "viewMultiple" );
+		view.setClassName( Object.class.getCanonicalName() );
+		configuration.getViews().add( view );
+
+		PresenterElement presenterMultiple = new PresenterElement();
+		presenterMultiple.setName( "presenterMultiple" );
+		presenterMultiple.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenterMultiple.setView( "viewMultiple" );
+		presenterMultiple.setMultiple( "true" );
+		presenter.setAsync( "Splitter" );
+		configuration.getPresenters().add( presenterMultiple );
 
 		EventHandlerElement eventHandler = new EventHandlerElement();
 		eventHandler.setName( "eventHandler" );
 		eventHandler.setClassName( SimpleEventHandler.class.getCanonicalName() );
+		presenter.setAsync( "Splitter" );
 		configuration.getEventHandlers().add( eventHandler );
+
+		EventHandlerElement eventHandlerMultiple = new EventHandlerElement();
+		eventHandlerMultiple.setName( "eventHandlerMultiple" );
+		eventHandlerMultiple.setClassName( SimpleEventHandler.class.getCanonicalName() );
+		eventHandlerMultiple.setMultiple( "true" );
+		presenter.setAsync( "Splitter" );
+		configuration.getEventHandlers().add( eventHandlerMultiple );
 
 		EventElement e1 = new EventElement();
 		e1.setType( "event1" );
@@ -1647,43 +1669,73 @@ public class Mvp4gConfigurationFileReaderTest {
 		e3.setSplitters( new String[] { "splitter" } );
 		e3.setPassive( "true" );
 
+		EventElement e4 = new EventElement();
+		e4.setType( "event4" );
+		e4.setSplitters( new String[] { "splitter" } );
+		e4.setEventObjectClass( new String[] { "String", "String", "String", "int" } );
+
+		EventElement e5 = new EventElement();
+		e5.setType( "event5" );
+		e5.setSplitters( new String[] { "splitter" } );
+		e5.setPassive( "true" );
+		e5.setEventObjectClass( new String[] { "String", "String", "String" } );
+
 		SplitterElement splitter = new SplitterElement();
-		splitter.getPresenters().add( presenter );
-		splitter.getEventHandlers().add( eventHandler );
+		splitter.getHandlers().add( presenter );
+		splitter.getHandlers().add( eventHandler );
+		splitter.getHandlers().add( eventHandlerMultiple );
+		splitter.getHandlers().add( presenterMultiple );
 		splitter.setName( "splitter" );
 		splitter.setClassName( "Splitter" );
-		EventAssociation<Integer> ea1 = new EventAssociation<Integer>();
-		ea1.getActivated().add( 0 );
-		ea1.getDeactivated().add( 1 );
-		ea1.getHandlers().add( 0 );
-		ea1.getHandlers().add( 1 );
+		EventAssociation<String> ea1 = new EventAssociation<String>();
+		ea1.getActivated().add( "eventHandler" );
+		ea1.getDeactivated().add( "presenter" );
+		ea1.getHandlers().add( "eventHandler" );
+		ea1.getHandlers().add( "presenter" );
+		ea1.getHandlers().add( "presenterMultiple" );
+		ea1.getHandlers().add( "eventHandlerMultiple" );
 		splitter.getEvents().put( e1, ea1 );
 
 		Set<EventElement> events = configuration.getEvents();
 		events.add( e1 );
 		events.add( e2 );
 		events.add( e3 );
+		events.add( e4 );
+		events.add( e5 );
 
-		EventAssociation<Integer> ea2 = new EventAssociation<Integer>();
-		ea2.getActivated().add( 0 );
-		ea2.getDeactivated().add( 1 );
+		EventAssociation<String> ea2 = new EventAssociation<String>();
+		ea2.getActivated().add( "eventHandler" );
+		ea2.getActivated().add( "eventHandlerMultiple" );
+		ea2.getDeactivated().add( "presenter" );
+		ea2.getDeactivated().add( "presenterMultiple" );
 		splitter.getEvents().put( e2, ea2 );
 
-		EventAssociation<Integer> ea3 = new EventAssociation<Integer>();
-		ea3.getBinds().add( 1 );
+		EventAssociation<String> ea3 = new EventAssociation<String>();
+		ea3.getBinds().add( "eventHandler" );
+		ea3.getBinds().add( "eventHandlerMultiple" );
+		ea3.getBinds().add( "presenterMultiple" );
+		ea3.getBinds().add( "presenter" );
 		splitter.getEvents().put( e3, ea3 );
+
+		EventAssociation<String> ea4 = new EventAssociation<String>();
+		ea4.getGenerate().add( "eventHandlerMultiple" );
+		splitter.getEvents().put( e4, ea4 );
+
+		EventAssociation<String> ea5 = new EventAssociation<String>();
+		ea5.getGenerate().add( "presenterMultiple" );
+		splitter.getEvents().put( e5, ea5 );
 
 		configuration.getSplitters().add( splitter );
 
-		assertOutput( getExpectedSplitter(), false );
-		assertOutput( getExpectedSplitterAsync(), false );
+		assertOutput( getExpectedSplitter( true ), false );
 		assertOutput( getExpectedSplitterLoadingConf(), false );
-		assertOutput( getExpectedSplitterPassive(), false );
+		assertOutput( getExpectedSplitterPassiveGenerateMultiple(), false );
+		assertOutput( getExpectedSplitterNotPassive(), false );
 		writer.writeConf();
-		assertOutput( getExpectedSplitter(), true );
-		assertOutput( getExpectedSplitterAsync(), false );
+		assertOutput( getExpectedSplitter( true ), true );
 		assertOutput( getExpectedSplitterLoadingConf(), true );
-		assertOutput( getExpectedSplitterPassive(), true );
+		assertOutput( getExpectedSplitterPassiveGenerateMultiple(), true );
+		assertOutput( getExpectedSplitterNotPassive(), false );
 	}
 
 	@Test
@@ -1845,27 +1897,50 @@ public class Mvp4gConfigurationFileReaderTest {
 				"addConverter( \"event7\",history);" };
 	}
 
-	private String[] getExpectedSplitterAsync() {
-		return new String[] { "load(new SplitterRunAsync(new boolean[]{true,true}){", "protected void afterOnSuccess(){",
-				"load(new SplitterRunAsync(new boolean[]{false,true}){",
-				"if (eventHandler.isActivated(false, \"event1\", new Object[]{attr0,attr1})){",
-				"presenter.isActivated(false, \"event1\", new Object[]{attr0,attr1});", "if (isActivated(false, new int[]{0,1})) {",
-				"if (isActivated(false, new int[]{1})) {", "if (isActivated(false, new int[]{1})) {" };
+	private String[] getExpectedSplitterPassiveGenerateMultiple() {
+		return new String[] {
+				"List<com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter> handlerspresenterMultiple = eventBus.getHandlers(com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter.class);",
+				"if(handlerspresenterMultiple!= null){",
+				"com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter handler;",
+				"int handlerCount = handlerspresenterMultiple.size();",
+				"for(int i=0; i<handlerCount; i++){",
+				"handler = handlerspresenterMultiple.get(i);",
+				"if (handler.isActivated(true, \"event1\", new Object[]{attr0,attr1})){",
+				"handler.onEvent1(attr0,attr1);",
+				"List<com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler> handlerseventHandlerMultiple = eventBus.getHandlers(com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler.class);",
+				"if(handlerseventHandlerMultiple!= null){",
+				"com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler handler;",
+				"int handlerCount = handlerseventHandlerMultiple.size();",
+				"handler = handlerseventHandlerMultiple.get(i);",
+				"handler.setActivated(true);",
+				"handler.setActivated(false);",
+				"public void event5(String attr0,String attr1,String attr2){",
+				"com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter presenterMultiple = BaseEventBus.setPresenter( injector.getpresenterMultiple(), injector.getviewMultiple(), eventBus);",
+				"eventBus.finishAddHandler(presenterMultiple,com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter.class, true);",
+				"if (presenterMultiple.isActivated(true, \"event5\", new Object[]{attr0,attr1,attr2})){",
+				"presenterMultiple.onEvent5(attr0,attr1,attr2);",
+				"public void event4(String attr0,String attr1,String attr2,int attr3){",
+				"com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler eventHandlerMultiple = BaseEventBus.setEventHandler( injector.geteventHandlerMultiple(), eventBus);",
+				"eventBus.finishAddHandler(eventHandlerMultiple,com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler.class, true);",
+				"if (eventHandlerMultiple.isActivated(false, \"event4\", new Object[]{attr0,attr1,attr2,attr3})){",
+				"eventHandlerMultiple.onEvent4(attr0,attr1,attr2,attr3);", "handler.isActivated(false, \"event3\");", "if (splitter != null ){",
+				"splitter.event1(attr0,attr1);", "public void event4(String attr0,String attr1,String attr2,int attr3){",
+				"loadsplitter(new Mvp4gEventPasser(new Object[]{attr0,attr1,attr2,attr3}){",
+				"splitter.event4((String) eventObjects[0],(String) eventObjects[1],(String) eventObjects[2],(Integer) eventObjects[3]);",
+				"public void event5(String attr0,String attr1,String attr2){", "loadsplitter(new Mvp4gEventPasser(new Object[]{attr0,attr1,attr2}){",
+				"splitter.event5((String) eventObjects[0],(String) eventObjects[1],(String) eventObjects[2]);" };
 	}
 
-	private String[] getExpectedSplitterPassive() {
-		return new String[] { "if (presenter != null ) {", "if (eventHandler != null ) {",
-				"if (eventHandler.isActivated(true, \"event1\", new Object[]{attr0,attr1})){",
-				"if (presenter.isActivated(true, \"event1\", new Object[]{attr0,attr1})){", "if (isActivated(true, new int[]{0,1})) {",
-				"if (isActivated(true, new int[]{1})) {", "if (isActivated(true, new int[]{1})) {", "presenter.onEvent1(attr0,attr1);", };
-
+	private String[] getExpectedSplitterNotPassive() {
+		return new String[] { "loadsplitter(new Mvp4gEventPasser(new Object[]{attr0,attr1}){", "loadsplitter(new Mvp4gEventPasser(){",
+				"presenter.isActivated(false, \"event1\", new Object[]{attr0,attr1});",
+				"splitter.event1((Integer) eventObjects[0],(String) eventObjects[1]);" };
 	}
 
 	private String[] getExpectedMultipleImpl() {
 		return new String[] { "interface SplitterMultipleRunAsyncCallback extends com.google.gwt.core.client.RunAsyncCallback {}",
 				"interface SplitterRunAsyncImpl extends com.mvp4g.client.Mvp4gRunAsync<SplitterMultipleRunAsyncCallback> {}",
-				"public abstract class SplitterRunAsync implements SplitterMultipleRunAsyncCallback {",
-				"((SplitterRunAsyncImpl) GWT.create(SplitterRunAsyncImpl.class)).load(callback);",
+				"((SplitterRunAsyncImpl) GWT.create(SplitterRunAsyncImpl.class)).load(new SplitterMultipleRunAsyncCallback(){",
 				"interface childModuleRunAsyncCallback extends com.google.gwt.core.client.RunAsyncCallback {}",
 				"interface childModuleRunAsync extends com.mvp4g.client.Mvp4gRunAsync<childModuleRunAsyncCallback> {}",
 				"((com.mvp4g.client.Mvp4gRunAsync) GWT.create(childModuleRunAsync.class )).load( new childModuleRunAsyncCallback() {public void onSuccess() {" };
@@ -1875,38 +1950,18 @@ public class Mvp4gConfigurationFileReaderTest {
 		return new String[] { "eventBus.beforeLoad();", "eventBus.afterLoad();", "eventBus.errorOnLoad(reason);" };
 	}
 
-	private String[] getExpectedSplitter() {
-		return new String[] {
-				"public class Splitter extends AbstractMvp4gSplitter {",
-				"private abstract class SplitterRunAsync implements RunAsyncCallback {",
-				"private boolean[] indexesToBuild;",
-				"public SplitterRunAsync(boolean[] indexesToBuild) {",
-				"this.indexesToBuild = indexesToBuild;",
-				"public void onSuccess() {",
-				"if ( indexesToBuild[0] && (handlers[0] == null)) {",
-				"handlers[0] = BaseEventBus.setEventHandler( injector.geteventHandler(), eventBus);",
-				"if ( indexesToBuild[1] && (handlers[1] == null)) {",
-				"handlers[1] = BaseEventBus.setPresenter( injector.getpresenter(), injector.getview(), eventBus);",
-				"afterOnSuccess();",
-				"public void onFailure( Throwable reason ) {",
-				"abstract protected void afterOnSuccess();",
-				"public Splitter(){",
-				"super(2);",
-				"private void load(SplitterRunAsync callback) {",
-				"GWT.runAsync(callback);",
-				"public void event1(final int attr0,final String attr1){",
-				"setActivated (true, new int[]{0});",
-				"setActivated (false, new int[]{1});",
-				"com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler eventHandler = (com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler) handlers[0];",
-				"eventHandler.onEvent1(attr0,attr1);",
-				"com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter presenter = (com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter) handlers[1];",
-				"public void event2(){",
-				"setActivated (true, new int[]{0});",
-				"setActivated (false, new int[]{1});",
-				"public void event3(){",
-				"com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter presenter = (com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter) handlers[1];",
-				"presenter.isActivated(false, \"event3\");", "splitter.event1(attr0,attr1);", "splitter.event2();", "splitter.event3();" };
-
+	private String[] getExpectedSplitter( boolean passive ) {
+		return new String[] { "private Splitter splitter;", "private void loadsplitter(final Mvp4gEventPasser passer) {",
+				"GWT.runAsync(new RunAsyncCallback(){", "public void onSuccess() {", "if (splitter == null) {", "splitter = new Splitter();",
+				"passer.pass(null);", "public void onFailure( Throwable reason ) {", "public class Splitter {",
+				"private com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler eventHandler;",
+				"private com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter presenter;", "public Splitter(){",
+				"eventHandler = BaseEventBus.setEventHandler( injector.geteventHandler(), eventBus);",
+				"presenter = BaseEventBus.setPresenter( injector.getpresenter(), injector.getview(), eventBus);",
+				"public void event1(int attr0,String attr1){", "eventHandler.setActivated(true);", "presenter.setActivated(false);",
+				"if (eventHandler.isActivated(" + passive + ", \"event1\", new Object[]{attr0,attr1})){", "eventHandler.onEvent1(attr0,attr1);",
+				"public void event2(){", "eventHandler.setActivated(true);", "presenter.setActivated(false);", "public void event3(){",
+				"presenter.isActivated(false, \"event3\");", "splitter.event2();", "splitter.event3();", "public void pass(Mvp4gModule module){" };
 	}
 
 	private String[] getExpectedEventsWithLookup() {
@@ -2118,10 +2173,13 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	public String[] getExpectedGenerateEvents() {
 		return new String[] {
-				MultiplePresenter.class.getCanonicalName() + " handler2 = addHandler(" + MultiplePresenter.class.getCanonicalName() + ".class);",
-				EventHandlerWithEvent.class.getCanonicalName() + " handler4 = addHandler(" + EventHandlerWithEvent.class.getCanonicalName()
-						+ ".class);", "if (handler2.isActivated(true, \"event4\")){", "handler2.onEvent4();",
-				"if (handler4.isActivated(true, \"event4\")){", "handler4.onEvent4();" };
+				MultiplePresenter.class.getCanonicalName()
+						+ " handler2 = BaseEventBus.setPresenter( injector.gethandler2(), injector.getview(), eventBus);",
+				"eventBus.finishAddHandler(handler4,com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent.class, true);",
+				EventHandlerWithEvent.class.getCanonicalName() + " handler4 = BaseEventBus.setEventHandler( injector.gethandler4(), eventBus);",
+				"eventBus.finishAddHandler(handler4,com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent.class, true);",
+				"if (handler2.isActivated(true, \"event4\")){", "handler2.onEvent4();", "if (handler4.isActivated(true, \"event4\")){",
+				"handler4.onEvent4();" };
 	}
 
 	public String[] getExpectedEventsWithToken() {

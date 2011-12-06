@@ -13,6 +13,8 @@ public class EventAssociation<T> {
 
 	private List<T> deactivated = new ArrayList<T>();
 
+	private List<T> generate = new ArrayList<T>();
+
 	/**
 	 * @return the handlers
 	 */
@@ -39,6 +41,13 @@ public class EventAssociation<T> {
 	 */
 	public List<T> getDeactivated() {
 		return deactivated;
+	}
+
+	/**
+	 * @return the generate
+	 */
+	public List<T> getGenerate() {
+		return generate;
 	}
 
 }

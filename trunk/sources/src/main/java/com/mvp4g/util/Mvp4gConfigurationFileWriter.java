@@ -25,7 +25,6 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.user.rebind.SourceWriter;
-import com.mvp4g.client.AbstractMvp4gSplitter;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.Mvp4gRunAsync;
 import com.mvp4g.client.annotation.Debug.LogLevel;
@@ -143,10 +142,6 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println();
 
 		writeEventHandlers();
-
-		sourceWriter.println();
-
-		writeSplitters();
 
 		sourceWriter.println();
 
@@ -695,21 +690,17 @@ public class Mvp4gConfigurationFileWriter {
 		eventHandlers.addAll( configuration.getEventHandlers() );
 
 		String[] objectClasses = null;
-		String type, calledMethod, history, param, name, className;
-		List<String> activate, deactivate, handlers, binds;
-		String[] generates;
-		EventHandlerElement eventHandler;
+		String type, history, param;
+		List<String> activate, deactivate, handlers, binds, generates;
 		boolean hasLog = ( configuration.getDebug() != null );
 		Set<EventFilterElement> filters = configuration.getEventFilters();
 		EventFiltersElement filtersElement = configuration.getEventFilterConfiguration();
 		boolean filterAfterHistory = ( filtersElement == null ) ? false : filtersElement.isAfterHistory();
 		boolean hasFilter = ( filters != null ) && ( filters.size() > 0 ) || ( ( filtersElement != null ) && ( filtersElement.isForceFilters() ) );
-		boolean isNavigationEvent, isWithTokenGeneration, isPassive;
+		boolean isNavigationEvent, isWithTokenGeneration;
 		for ( EventElement event : configuration.getEvents() ) {
 			type = event.getType();
-			calledMethod = event.getCalledMethod();
 			objectClasses = event.getEventObjectClass();
-			name = event.getName();
 
 			isNavigationEvent = event.isNavigationEvent();
 
@@ -720,7 +711,6 @@ public class Mvp4gConfigurationFileWriter {
 			deactivate = event.getDeactivate();
 			generates = event.getGenerate();
 			isWithTokenGeneration = event.isWithTokenGeneration();
-			isPassive = event.isPassive();
 
 			sourceWriter.print( "public " );
 			sourceWriter.print( ( isWithTokenGeneration ) ? "String " : "void " );
@@ -821,10 +811,10 @@ public class Mvp4gConfigurationFileWriter {
 			}
 
 			if ( ( activate != null ) && ( activate.size() > 0 ) ) {
-				writeActivation( activate, eventHandlers, true );
+				writeActivation( activate, eventHandlers, true, true );
 			}
 			if ( ( deactivate != null ) && ( deactivate.size() > 0 ) ) {
-				writeActivation( deactivate, eventHandlers, false );
+				writeActivation( deactivate, eventHandlers, false, true );
 			}
 
 			writeLoadChildModule( event, param );
@@ -832,51 +822,7 @@ public class Mvp4gConfigurationFileWriter {
 			writeLoadSplitters( event, param );
 			writeParentEvent( event, param );
 
-			// write bind annotations
-			if ( binds != null ) {
-
-				for ( String bind : binds ) {
-					eventHandler = getElement( bind, eventHandlers ); // get handler from set of all handlers by its name
-
-					if ( !eventHandler.isMultiple() ) {
-						// passive events not allowed for binds
-						writeBindHandling( bind, type, name, param );
-					} else {
-						writeMultipleActionBegin( eventHandler, "" );
-						writeBindHandling( "handler", type, name, param ); // handler contains bind for cycle
-						writeMultipleActionEnd();
-					}
-				}
-			}
-
-			if ( handlers != null ) {
-
-				for ( String handler : handlers ) {
-					eventHandler = getElement( handler, eventHandlers );
-					if ( !eventHandler.isMultiple() ) {
-						writeEventHandling( handler, type, name, calledMethod, param, isPassive );
-					} else {
-						writeMultipleActionBegin( eventHandler, "" );
-						writeEventHandling( "handler", type, name, calledMethod, param, isPassive );
-						writeMultipleActionEnd();
-					}
-				}
-
-			}
-
-			if ( generates != null ) {
-				for ( String generate : generates ) {
-					eventHandler = getElement( generate, eventHandlers );
-					className = eventHandler.getClassName();
-					sourceWriter.print( className );
-					sourceWriter.print( " " );
-					sourceWriter.print( generate );
-					sourceWriter.print( " = addHandler(" );
-					sourceWriter.print( className );
-					sourceWriter.println( ".class);" );
-					writeEventHandling( generate, type, name, calledMethod, param, isPassive );
-				}
-			}
+			writeEventAction( event, binds, handlers, generates, eventHandlers, param, true );
 
 			if ( hasLog ) {
 				sourceWriter.outdent();
@@ -951,6 +897,75 @@ public class Mvp4gConfigurationFileWriter {
 		}
 	}
 
+	private void writeEventAction( EventElement event, List<String> binds, List<String> handlers, List<String> generates,
+			Set<EventHandlerElement> eventHandlers, String param, boolean fromEventBus ) {
+		EventHandlerElement eventHandler;
+		String type = event.getType();
+		String name = event.getName();
+		String calledMethod = event.getCalledMethod();
+		boolean isPassive = event.isPassive();
+		String className;
+		// write bind annotations
+		if ( binds != null ) {
+
+			for ( String bind : binds ) {
+				eventHandler = getElement( bind, eventHandlers ); // get handler from set of all handlers by its name
+
+				if ( !eventHandler.isMultiple() ) {
+					// passive events not allowed for binds
+					writeBindHandling( bind, type, name, param );
+				} else {
+					writeMultipleActionBegin( eventHandler, "", fromEventBus );
+					writeBindHandling( "handler", type, name, param ); // handler contains bind for cycle
+					writeMultipleActionEnd();
+				}
+			}
+		}
+
+		if ( handlers != null ) {
+
+			for ( String handler : handlers ) {
+				eventHandler = getElement( handler, eventHandlers );
+				if ( !eventHandler.isMultiple() ) {
+					writeEventHandling( handler, type, name, calledMethod, param, isPassive );
+				} else {
+					writeMultipleActionBegin( eventHandler, "", fromEventBus );
+					writeEventHandling( "handler", type, name, calledMethod, param, isPassive );
+					writeMultipleActionEnd();
+				}
+			}
+
+		}
+
+		if ( generates != null ) {
+			for ( String generate : generates ) {
+				eventHandler = getElement( generate, eventHandlers );
+				className = eventHandler.getClassName();
+				sourceWriter.print( className );
+				sourceWriter.print( " " );
+				sourceWriter.print( generate );
+
+				sourceWriter.print( " = BaseEventBus." );
+				if ( eventHandler instanceof PresenterElement ) {
+					sourceWriter.print( "setPresenter( injector.get" );
+					sourceWriter.print( generate );
+					sourceWriter.print( "(), injector.get" );
+					sourceWriter.print( ( (PresenterElement)eventHandler ).getView() );
+				} else {
+					sourceWriter.print( "setEventHandler( injector.get" );
+					sourceWriter.print( generate );
+				}
+				sourceWriter.println( "(), eventBus);" );
+				sourceWriter.print( "eventBus.finishAddHandler(" );
+				sourceWriter.print( generate );
+				sourceWriter.print( "," );
+				sourceWriter.print( className );
+				sourceWriter.println( ".class, true);" );
+				writeEventHandling( generate, type, name, calledMethod, param, isPassive );
+			}
+		}
+	}
+
 	private void writeEventFilters() {
 		String filterName;
 		for ( EventFilterElement filter : configuration.getEventFilters() ) {
@@ -999,14 +1014,18 @@ public class Mvp4gConfigurationFileWriter {
 
 	}
 
-	private void writeMultipleActionBegin( EventHandlerElement eventHandler, String varSubName ) {
+	private void writeMultipleActionBegin( EventHandlerElement eventHandler, String varSubName, boolean fromEventBus ) {
 		String className = eventHandler.getClassName();
 		String elementName = eventHandler.getName() + varSubName;
 		sourceWriter.print( "List<" );
 		sourceWriter.print( className );
 		sourceWriter.print( "> handlers" );
 		sourceWriter.print( elementName );
-		sourceWriter.print( " = getHandlers(" );
+		sourceWriter.print( " = " );
+		if ( !fromEventBus ) {
+			sourceWriter.print( "eventBus." );
+		}
+		sourceWriter.print( "getHandlers(" );
 		sourceWriter.print( className );
 		sourceWriter.println( ".class);" );
 		sourceWriter.print( "if(handlers" );
@@ -1032,14 +1051,14 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println( "}" );
 	}
 
-	private void writeActivation( List<String> activateList, Set<EventHandlerElement> handlers, boolean activate ) {
+	private void writeActivation( List<String> activateList, Set<EventHandlerElement> handlers, boolean activate, boolean fromEventBus ) {
 		String activateStr = ".setActivated(" + Boolean.toString( activate ) + ");";
 		String varSubName = ( activate ) ? "act" : "de";
 		EventHandlerElement handler;
 		for ( String handlerName : activateList ) {
 			handler = getElement( handlerName, handlers );
 			if ( handler.isMultiple() ) {
-				writeMultipleActionBegin( handler, varSubName );
+				writeMultipleActionBegin( handler, varSubName, fromEventBus );
 				sourceWriter.print( "handler" );
 				sourceWriter.println( activateStr );
 				writeMultipleActionEnd();
@@ -1304,7 +1323,7 @@ public class Mvp4gConfigurationFileWriter {
 		String className, elementName, viewElementName;
 		ViewElement view;
 		for ( PresenterElement presenter : configuration.getPresenters() ) {
-			if ( presenter.isMultiple() ) {
+			if ( presenter.isMultiple() && !presenter.isAsync() ) {
 				className = presenter.getClassName();
 				elementName = presenter.getName();
 				viewElementName = presenter.getView();
@@ -1519,27 +1538,94 @@ public class Mvp4gConfigurationFileWriter {
 	private void writeLoadSplitters( EventElement event, String form ) {
 		List<String> splitters = event.getSplitters();
 		if ( splitters != null ) {
+			boolean done = false;
+			String[] eventObjectClasses;
+			String eventObject = null;
+			boolean toLoad;
 			for ( String splitter : splitters ) {
+				// If the event is passive but we need to generate multiple handlers, we have to load it. 
+				toLoad = !event.isPassive()
+						|| ( getElement( splitter, configuration.getSplitters() ).getEvents().get( event ).getGenerate().size() > 0 );
+
+				if ( !done && toLoad ) {
+					eventObjectClasses = event.getEventObjectClass();
+					if ( ( eventObjectClasses == null ) || ( eventObjectClasses.length == 0 ) ) {
+						eventObject = null;
+					} else {
+						int nbParam = eventObjectClasses.length;
+						StringBuilder eventObjectBuilder = new StringBuilder( nbParam * 70 );
+
+						int i;
+						for ( i = 0; i < ( nbParam - 1 ); i++ ) {
+							eventObjectBuilder.append( "(" );
+							eventObjectBuilder.append( getAssociatedClass( eventObjectClasses[i] ) );
+							eventObjectBuilder.append( ") eventObjects[" );
+							eventObjectBuilder.append( i );
+							eventObjectBuilder.append( "]," );
+						}
+						eventObjectBuilder.append( "(" );
+						eventObjectBuilder.append( getAssociatedClass( eventObjectClasses[i] ) );
+						eventObjectBuilder.append( ") eventObjects[" );
+						eventObjectBuilder.append( i );
+						eventObjectBuilder.append( "]" );
+						eventObject = eventObjectBuilder.toString();
+					}
+					done = true;
+				}
+
+				if ( toLoad ) {
+					sourceWriter.print( "load" );
+					sourceWriter.print( splitter );
+					sourceWriter.print( "(new Mvp4gEventPasser(" );
+					if ( form != null ) {
+						sourceWriter.print( "new Object[]{" );
+						sourceWriter.print( form );
+						sourceWriter.print( "}" );
+					}
+					sourceWriter.println( "){" );
+					sourceWriter.indent();
+					sourceWriter.println( "public void pass(Mvp4gModule module){" );
+				} else {
+					sourceWriter.print( "if (" );
+					sourceWriter.print( splitter );
+					sourceWriter.println( " != null ){" );
+				}
+				sourceWriter.indent();
 				sourceWriter.print( splitter );
 				sourceWriter.print( "." );
 				sourceWriter.print( event.getType() );
 				sourceWriter.print( "(" );
-				if ( ( form != null ) && ( form.length() > 0 ) ) {
-					sourceWriter.print( form );
+				if ( toLoad ) {
+					if ( eventObject != null ) {
+						sourceWriter.print( eventObject );
+					}
+				} else {
+					if ( ( form != null ) && ( form.length() > 0 ) ) {
+						sourceWriter.print( form );
+					}
 				}
 				sourceWriter.println( ");" );
+				sourceWriter.outdent();
+				sourceWriter.println( "}" );
+				if ( toLoad ) {
+					sourceWriter.outdent();
+					sourceWriter.println( "});" );
+				}
 			}
 		}
 	}
 
 	private void writeSplitterClasses() {
-		List<Integer> allIndexes;
 		String[] objectClasses;
 		StringBuilder paramBuilder = null;
-		boolean passive;
-		Map<EventElement, EventAssociation<Integer>> events;
-		int nbParams, handlersSize, allSize;
-		EventAssociation<Integer> eventAssociation;
+		StringBuilder constructorBuilder;
+		Map<EventElement, EventAssociation<String>> events;
+		int nbParams;
+		EventAssociation<String> eventAssociation;
+		Set<EventHandlerElement> eventHandlers;
+		String splitterName, splitterClassName, handlerName, handlerClassName, constructor;
+
+		List<String> activate, deactivate/* , handlers, binds, generates */;
 
 		ChildModulesElement loadConfig = configuration.getLoadChildConfig();
 		String errorEvent, beforeEvent, afterEvent;
@@ -1573,16 +1659,20 @@ public class Mvp4gConfigurationFileWriter {
 		Set<SplitterElement> splitters = configuration.getSplitters();
 		String asyncImpl = null, asyncMultipleCallback = null;
 		for ( SplitterElement splitter : splitters ) {
+			eventHandlers = splitter.getHandlers();
+			//multipleHandlers = splitter.getMultipleHandlers();
+			splitterName = splitter.getName();
+			splitterClassName = splitter.getClassName();
 
 			if ( hasMultipleImpl ) {
-				asyncMultipleCallback = splitter.getClassName() + "MultipleRunAsyncCallback";
+				asyncMultipleCallback = splitterClassName + "MultipleRunAsyncCallback";
 				sourceWriter.print( "interface " );
 				sourceWriter.print( asyncMultipleCallback );
 				sourceWriter.print( " extends " );
 				sourceWriter.print( RunAsyncCallback.class.getName() );
 				sourceWriter.println( " {}" );
 
-				asyncImpl = splitter.getClassName() + "RunAsyncImpl";
+				asyncImpl = splitterClassName + "RunAsyncImpl";
 				sourceWriter.print( "interface " );
 				sourceWriter.print( asyncImpl );
 				sourceWriter.print( " extends " );
@@ -1592,51 +1682,49 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.println( "> {}" );
 			}
 
-			sourceWriter.print( "public class " );
-			sourceWriter.print( splitter.getClassName() );
-			sourceWriter.print( " extends " );
-			sourceWriter.print( AbstractMvp4gSplitter.class.getSimpleName() );
-			sourceWriter.println( " { " );
-			sourceWriter.indent();
+			sourceWriter.print( "private " );
+			sourceWriter.print( splitterClassName );
+			sourceWriter.print( " " );
+			sourceWriter.print( splitterName );
+			sourceWriter.println( ";" );
 
-			String runAsyncName = splitter.getClassName() + "RunAsync";
-			sourceWriter.print( "public abstract class " );
-			sourceWriter.print( runAsyncName );
-			sourceWriter.print( " implements " );
+			sourceWriter.print( "private void load" );
+			sourceWriter.print( splitterName );
+			sourceWriter.println( "(final Mvp4gEventPasser passer) {" );
+			sourceWriter.indent();
+			if ( isBefore ) {
+				writeDispatchEvent( beforeEvent, null );
+			}
 			if ( hasMultipleImpl ) {
+				sourceWriter.print( "((" );
+				sourceWriter.print( asyncImpl );
+				sourceWriter.print( ") GWT.create(" );
+				sourceWriter.print( asyncImpl );
+				sourceWriter.print( ".class)).load(new " );
 				sourceWriter.print( asyncMultipleCallback );
 			} else {
+				sourceWriter.print( "GWT.runAsync(new " );
 				sourceWriter.print( RunAsyncCallback.class.getSimpleName() );
 			}
-			sourceWriter.println( " { " );
+			sourceWriter.println( "(){ " );
 			sourceWriter.indent();
-			sourceWriter.println( "private boolean[] indexesToBuild;" );
-			sourceWriter.print( "public " );
-			sourceWriter.print( runAsyncName );
-			sourceWriter.println( "(boolean[] indexesToBuild) {" );
-			sourceWriter.indent();
-			sourceWriter.println( "this.indexesToBuild = indexesToBuild;" );
-			sourceWriter.outdent();
-			sourceWriter.println( "}" );
 
 			sourceWriter.println( "public void onSuccess() { " );
 			sourceWriter.indent();
 			if ( isAfter ) {
 				writeDispatchEvent( afterEvent, null );
 			}
-			handlersSize = 0;
-			List<EventHandlerElement> eventHandlers = splitter.getEventHandlers();
-			for ( EventHandlerElement eventHandler : eventHandlers ) {
-				buildSplitterHandler( Integer.toString( handlersSize ), false, eventHandler.getName(), null );
-				handlersSize++;
-			}
-
-			List<PresenterElement> presenters = splitter.getPresenters();
-			for ( PresenterElement presenter : presenters ) {
-				buildSplitterHandler( Integer.toString( handlersSize ), true, presenter.getName(), presenter.getView() );
-				handlersSize++;
-			}
-			sourceWriter.println( "afterOnSuccess();" );
+			sourceWriter.print( "if (" );
+			sourceWriter.print( splitterName );
+			sourceWriter.println( " == null) {" );
+			sourceWriter.indent();
+			sourceWriter.print( splitterName );
+			sourceWriter.print( " = new " );
+			sourceWriter.print( splitterClassName );
+			sourceWriter.println( "();" );
+			sourceWriter.outdent();
+			sourceWriter.println( "}" );
+			sourceWriter.println( "passer.pass(null);" );
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
 			sourceWriter.println( "public void onFailure( Throwable reason ) {" );
@@ -1651,42 +1739,57 @@ public class Mvp4gConfigurationFileWriter {
 			}
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
-			sourceWriter.println( "abstract protected void afterOnSuccess();" );
 
+			sourceWriter.outdent();
+			sourceWriter.println( "});" );
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
 
-			sourceWriter.print( "public " );
-			sourceWriter.print( splitter.getClassName() );
-			sourceWriter.println( "(){" );
+			sourceWriter.print( "public class " );
+			sourceWriter.print( splitterClassName );
+			sourceWriter.println( " { " );
 			sourceWriter.indent();
-			sourceWriter.println( "super(" + ( splitter.getEventHandlers().size() + splitter.getPresenters().size() ) + ");" );
-			sourceWriter.outdent();
-			sourceWriter.println( "}" );
 
-			sourceWriter.print( "private void load(" );
-			sourceWriter.print( runAsyncName );
-			sourceWriter.println( " callback) {" );
-			sourceWriter.indent();
-			if ( isBefore ) {
-				writeDispatchEvent( beforeEvent, null );
+			constructorBuilder = new StringBuilder( eventHandlers.size() * 100 );
+			for ( EventHandlerElement eventHandler : eventHandlers ) {
+				handlerName = eventHandler.getName();
+				handlerClassName = eventHandler.getClassName();
+				if ( !eventHandler.isMultiple() ) {
+					sourceWriter.print( "private " );
+					sourceWriter.print( handlerClassName );
+					sourceWriter.print( " " );
+					sourceWriter.print( handlerName );
+					sourceWriter.println( ";" );
+					constructorBuilder.append( handlerName ).append( " = BaseEventBus." );
+					boolean isPresenter = eventHandler instanceof PresenterElement;
+					if ( isPresenter ) {
+						constructorBuilder.append( "setPresenter( injector.get" );
+						constructorBuilder.append( handlerName );
+						constructorBuilder.append( "(), injector.get" );
+						constructorBuilder.append( ( (PresenterElement)eventHandler ).getView() );
+					} else {
+						constructorBuilder.append( "setEventHandler( injector.get" );
+						constructorBuilder.append( handlerName );
+					}
+					constructorBuilder.append( "(), eventBus);" ).append( '\n' );
+				}
 			}
-			if ( hasMultipleImpl ) {
-				sourceWriter.print( "((" );
-				sourceWriter.print( asyncImpl );
-				sourceWriter.print( ") GWT.create(" );
-				sourceWriter.print( asyncImpl );
-				sourceWriter.print( ".class)).load(" );
-			} else {
-				sourceWriter.print( "GWT.runAsync(" );
+
+			constructor = constructorBuilder.toString();
+			if ( constructor.length() > 0 ) {
+				sourceWriter.print( "public " );
+				sourceWriter.print( splitterClassName );
+				sourceWriter.println( "(){" );
+				sourceWriter.print( constructor );
+				sourceWriter.println( "}" );
 			}
-			sourceWriter.println( "callback);" );
-			sourceWriter.outdent();
-			sourceWriter.println( "}" );
 
 			events = splitter.getEvents();
 			for ( EventElement event : events.keySet() ) {
 				eventAssociation = events.get( event );
+				activate = eventAssociation.getActivated();
+				deactivate = eventAssociation.getDeactivated();
+
 				sourceWriter.print( "public void " );
 				sourceWriter.print( event.getType() );
 				sourceWriter.print( "(" );
@@ -1695,7 +1798,6 @@ public class Mvp4gConfigurationFileWriter {
 					paramBuilder = new StringBuilder( 20 * nbParams );
 					int i;
 					for ( i = 0; i < ( nbParams - 1 ); i++ ) {
-						sourceWriter.print( "final " );
 						sourceWriter.print( objectClasses[i] );
 						sourceWriter.print( " attr" );
 						sourceWriter.print( Integer.toString( i ) );
@@ -1704,7 +1806,6 @@ public class Mvp4gConfigurationFileWriter {
 						paramBuilder.append( i );
 						paramBuilder.append( "," );
 					}
-					sourceWriter.print( "final " );
 					sourceWriter.print( objectClasses[i] );
 					sourceWriter.print( " attr" );
 					sourceWriter.print( Integer.toString( i ) );
@@ -1717,56 +1818,15 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.println( "){" );
 				sourceWriter.indent();
 
-				setSplitterActivate( eventAssociation.getActivated(), true );
-				setSplitterActivate( eventAssociation.getDeactivated(), false );
-
-				allIndexes = new ArrayList<Integer>( eventAssociation.getHandlers() );
-				allIndexes.addAll( eventAssociation.getBinds() );
-				allSize = allIndexes.size();
-				passive = event.isPassive();
-				// Event could only have handlers to activate/deactivate.
-				if ( allSize > 0 ) {
-					sourceWriter.print( "if (isActivated(" + passive + ", new int[]{" );
-					for ( int i = 0; i < allSize; i++ ) {
-						sourceWriter.print( Integer.toString( allIndexes.get( i ) ) );
-						if ( i < ( allSize - 1 ) ) {
-							sourceWriter.print( "," );
-						}
-					}
-					sourceWriter.println( "})) {" );
-					sourceWriter.indent();
-
-					if ( !passive ) {
-						sourceWriter.print( "load(new " );
-						sourceWriter.print( runAsyncName );
-						sourceWriter.print( "(new boolean[]{" );
-						for ( int i = 0; i < handlersSize; i++ ) {
-							sourceWriter.print( Boolean.toString( allIndexes.contains( i ) ) );
-							if ( i < ( handlersSize - 1 ) ) {
-								sourceWriter.print( "," );
-							}
-						}
-						sourceWriter.println( "}){" );
-
-						sourceWriter.indent();
-						sourceWriter.println( "protected void afterOnSuccess(){" );
-						sourceWriter.indent();
-					}
-
-					buildSplitterAction( false, event, paramBuilder, splitter );
-					buildSplitterAction( true, event, paramBuilder, splitter );
-
-					if ( !passive ) {
-						sourceWriter.outdent();
-						sourceWriter.println( "}" );
-						sourceWriter.outdent();
-						sourceWriter.println( "});" );
-					}
-
-					sourceWriter.outdent();
-					sourceWriter.println( "}" );
-
+				if ( ( activate != null ) && ( activate.size() > 0 ) ) {
+					writeActivation( activate, eventHandlers, true, false );
 				}
+				if ( ( deactivate != null ) && ( deactivate.size() > 0 ) ) {
+					writeActivation( deactivate, eventHandlers, false, false );
+				}
+
+				writeEventAction( event, eventAssociation.getBinds(), eventAssociation.getHandlers(), eventAssociation.getGenerate(), eventHandlers,
+						( paramBuilder == null ) ? null : paramBuilder.toString(), false );
 
 				sourceWriter.outdent();
 				sourceWriter.println( "}" );
@@ -1775,95 +1835,6 @@ public class Mvp4gConfigurationFileWriter {
 
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
-
-		}
-	}
-
-	private void setSplitterActivate( List<Integer> indexes, boolean isActivated ) {
-		int indexesLength = indexes.size();
-		if ( indexesLength > 0 ) {
-			indexesLength--;
-			sourceWriter.print( "setActivated (" + isActivated + ", new int[]{" );
-			for ( int i = 0; i < indexesLength; i++ ) {
-				sourceWriter.print( indexes.get( i ) + "," );
-			}
-			sourceWriter.println( indexes.get( indexesLength ) + "});" );
-		}
-	}
-
-	private void buildSplitterHandler( String index, boolean isPresenter, String handlerName, String viewName ) {
-		sourceWriter.print( "if ( indexesToBuild[" );
-		sourceWriter.print( index );
-		sourceWriter.print( "] && (handlers[" );
-		sourceWriter.print( index );
-		sourceWriter.println( "] == null)) {" );
-		sourceWriter.indent();
-		sourceWriter.print( "handlers[" );
-		sourceWriter.print( index );
-		sourceWriter.print( "] = BaseEventBus." );
-		if ( isPresenter ) {
-			sourceWriter.print( "setPresenter( injector.get" );
-			sourceWriter.print( handlerName );
-			sourceWriter.print( "(), injector.get" );
-			sourceWriter.print( viewName );
-		} else {
-			sourceWriter.print( "setEventHandler( injector.get" );
-			sourceWriter.print( handlerName );
-		}
-		sourceWriter.println( "(), eventBus);" );
-		sourceWriter.outdent();
-		sourceWriter.println( "}" );
-	}
-
-	private void buildSplitterAction( boolean bind, EventElement event, StringBuilder paramBuilder, SplitterElement splitter ) {
-		EventAssociation<Integer> association = splitter.getEvents().get( event );
-		List<EventHandlerElement> eventHandlers = splitter.getEventHandlers();
-		int eventHandlersSize = eventHandlers.size();
-		boolean passive = event.isPassive();
-		EventHandlerElement handler;
-		List<Integer> indexes = ( bind ) ? association.getBinds() : association.getHandlers();
-		for ( int i : indexes ) {
-			if ( i < eventHandlersSize ) {
-				handler = eventHandlers.get( i );
-			} else {
-				handler = splitter.getPresenters().get( i - eventHandlersSize );
-			}
-			sourceWriter.print( handler.getClassName() );
-			sourceWriter.print( " " );
-			sourceWriter.print( handler.getName() );
-			sourceWriter.print( " = " );
-			sourceWriter.print( "(" );
-			sourceWriter.print( handler.getClassName() );
-			sourceWriter.print( ") handlers[" + i );
-			sourceWriter.println( "];" );
-			if ( passive ) {
-				sourceWriter.print( "if (" );
-				sourceWriter.print( handler.getName() );
-				sourceWriter.print( " != null ) {" );
-				sourceWriter.indent();
-			}
-			if ( bind ) {
-				writeBindHandling( handler.getName(), event.getType(), event.getName(), ( paramBuilder == null ) ? null : paramBuilder.toString() );
-			} else {
-				writeEventHandling( handler.getName(), event.getType(), event.getName(), event.getCalledMethod(), ( paramBuilder == null ) ? null
-						: paramBuilder.toString(), passive );
-			}
-			if ( passive ) {
-				sourceWriter.outdent();
-				sourceWriter.println( "}" );
-			}
-		}
-	}
-
-	private void writeSplitters() {
-		for ( SplitterElement splitter : configuration.getSplitters() ) {
-			sourceWriter.print( "final " );
-			sourceWriter.print( splitter.getClassName() );
-			sourceWriter.print( " " );
-			sourceWriter.print( splitter.getName() );
-			sourceWriter.print( " =  new " );
-			sourceWriter.print( splitter.getClassName() );
-			sourceWriter.print( "();" );
 		}
 	}
 

@@ -13,8 +13,8 @@ import org.junit.Test;
 public class EventElementTest extends AbstractMvp4gElementTest<EventElement> {
 
 	private static final String[] properties = { "calledMethod", "type", "history", "forwardToParent", "name" };
-	private static final String[] values = { "eventObjectClass", "generate" };
-	private static final String[] flexibleValues = { "siblingsToLoad", "splitters" }; 
+	private static final String[] values = { "eventObjectClass" };
+	private static final String[] flexibleValues = { "siblingsToLoad", "splitters", "generate" }; 
 
 	@Test
 	public void testGetCalledMethod() {

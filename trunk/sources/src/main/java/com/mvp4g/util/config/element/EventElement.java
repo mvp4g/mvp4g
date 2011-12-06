@@ -167,11 +167,11 @@ public class EventElement extends Mvp4gElement {
 	}
 
 	public void setGenerate( String[] presenters ) {
-		setValues( "generate", presenters );
+		setFlexibleValues( "generate", presenters );
 	}
 
-	public String[] getGenerate() {
-		return getValues( "generate" );
+	public List<String> getGenerate() {
+		return getFlexibleValues( "generate" );
 	}
 	
 	public void setBinds( String[] binds ) {
