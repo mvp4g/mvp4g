@@ -143,7 +143,7 @@ When a child/sibling module is done loaded the following events will be fired:
 
 ==Splitter=
 
-In Mvp4g, you can easily create a code fragment for a presenter/event handler or a group of them. The code of the split element will be loaded when the split presenter/event handler has to handle its first event (or if you split a group of them, when one of the split presenters/event handlers has to handle its first event). The rest of the application considers a split presenter/event hander and a non-split presenter/event handler the same way (ie the rest of the application is not aware that a presenter/event handler is spit). The only restrictions are a start or a multiple presenter/event handler can't be split.
+In Mvp4g, you can easily create a code fragment for a presenter/event handler or a group of them. The code of the split element will be loaded when the split presenter/event handler has to handle its first event (or if you split a group of them, when one of the split presenters/event handlers has to handle its first event). The rest of the application considers a split presenter/event hander and a non-split presenter/event handler the same way (ie the rest of the application is not aware that a presenter/event handler is spit). The only restrictions are a start presenter can't be split.
 
 ===Split a single presenter/event handler===
 
@@ -199,6 +199,26 @@ public interface OneEventBus … {
 
 In the example above, SplitPresenter1, SplitPresenter2 and SplitPresenter3 will be split and one code fragment will be created for the three of them. This fragment will be loaded when event1 or event2 is fired.
 
+===Splitter and Multiple Presenter/Event Handler===
+
+You can split any multiple presenter/event handler like a regular presenter/event handler. The only limitation is a split multiple presenter/event handler can only be generated thanks to an event, using addHandler won't work.
+
+For example, if you have the following split multiple presenter:
+{{{
+@Presenter(..., multiple = true, async=SingleSplitter.class)
+public class OneSplitMultiplePresenter extends BasePresenter<OneEventBus> {...}
+}}}
+
+You can generate it thanks to an event:
+{{{
+@Event(..., generate = OneSplitMultiplePresenter.class)
+void addNewSthg();
+}}}
+
+but using addHandler will fire an exception:
+{{{
+eventHandler.addHandler(OneMultiplePresenter.class);
+}}}
 
 ==Before, After, OnError==
 
