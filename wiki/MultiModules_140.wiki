@@ -244,3 +244,45 @@ public void beforeLoad();
 @Event(handlers = MainPresenter.class)
 public void afterLoad();
 }}}
+
+==Loader==
+
+A loader let you control a module/splitter loading. You can:
+-execute asynchronous action(s) before the module/splitter loads,
+-prevent the module/splitter from being loaded,
+-execute actions after the module/splitter is done loaded or in case of error.
+
+===Creating a loader===
+
+You need to create a class that implements Mvp4gLoader. This interface defines 3 methods that you need to override:
+-preLoad: it is called before the module/splitter is loaded. When you're done executing your actions, you have to call the load command passed as a parameter to start the module/splitter loading. You can also use this method to prevent a module from being loaded by not executing the load command.
+-onSuccess and onFailure are called when the module is loaded successfuly/ failed to load.
+
+Here is an example that prevents a module of being loaded is the user is not logged in:
+{{{
+public class MyLoader extends implements Mvp4gLoader<MyEventBus> {
+
+	...
+
+	@Override
+	public void preLoad( MainEventBus eventBus, String eventName, Object[] params, Command load ) {
+		// Loads the module only if the user is logged in.
+		if ( isUserLoggedIn() ) {
+			load.execute();
+		}
+	}
+
+	@Override
+	public void onSuccess( MainEventBus eventBus, final String eventName, Object[] params ) {
+		// Nothing to do.
+	}
+
+	@Override
+	public void onFailure( MainEventBus eventBus, String eventName, Object[] params, Throwable err ) {
+		// Nothing to do.
+	}
+
+}
+}}}
+
+}}}
