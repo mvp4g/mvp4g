@@ -248,17 +248,17 @@ public void afterLoad();
 ==Loader==
 
 A loader let you control a module/splitter loading. You can:
--execute asynchronous action(s) before the module/splitter loads,
--prevent the module/splitter from being loaded,
--execute actions after the module/splitter is done loaded or in case of error.
+ * execute asynchronous action(s) before the module/splitter loads,
+ * prevent the module/splitter from being loaded,
+ * execute actions after the module/splitter is done loaded or in case of error.
 
 ===Creating a loader===
 
 You need to create a class that implements Mvp4gLoader. This interface defines 3 methods that you need to override:
--preLoad: it is called before the module/splitter is loaded. When you're done executing your actions, you have to call the load command passed as a parameter to start the module/splitter loading. You can also use this method to prevent a module from being loaded by not executing the load command.
--onSuccess and onFailure are called when the module is loaded successfuly/ failed to load.
+ * preLoad: it is called before the module/splitter is loaded. When you're done executing your actions, you have to call the load command, passed as a parameter, to start the module/splitter loading. You can also use this method to prevent a module/splitter from being loaded by not executing the load command.
+ * onSuccess and onFailure are called when the module is loaded successfuly/ failed to load.
 
-Here is an example that prevents a module of being loaded is the user is not logged in:
+Here is an example that prevents a module/splitter of being loaded is the user is not logged in:
 {{{
 public class MyLoader extends implements Mvp4gLoader<MyEventBus> {
 
@@ -285,4 +285,15 @@ public class MyLoader extends implements Mvp4gLoader<MyEventBus> {
 }
 }}}
 
+===Setting a loader===
+
+To set a loader for a module/splitter, you need to annotate it with @Loader and set the annotation value attribute to your loader class.
+{{{
+@Loader( MyLoader.class )
+public interface MyChildModule extends Mvp4gModule {}
+}}}
+
+{{{
+@Loader( MyPresenter.class )
+public interface MyStatusSplitter extends Mvp4gSplitter {}
 }}}
