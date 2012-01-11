@@ -14,7 +14,7 @@ import com.mvp4g.util.test_tools.annotation.events.EventBusOk;
 public class ChildModuleElementTest extends SimpleMvp4gElementTest {
 
 	private static final String[] properties = SimpleMvp4gElementTest.addProperties( new String[] { "eventToDisplayView", "async", "autoDisplay",
-			"historyName", "parentModuleClass" } );
+			"historyName", "parentModuleClass", "loader" } );
 
 	@Test
 	public void testIsAsyncPath() {

@@ -84,5 +84,13 @@ public class ChildModuleElement extends SimpleMvp4gElement {
 	public String getParentModuleClass() {
 		return getProperty( "parentModuleClass" );
 	}
+	
+	public void setLoader( String loader ) {
+		setProperty( "loader", loader );
+	}
+
+	public String getLoader() {
+		return getProperty( "loader" );
+	}
 
 }

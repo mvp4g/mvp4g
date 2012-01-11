@@ -46,6 +46,7 @@ import com.mvp4g.util.config.element.GinModuleElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.InjectedElement;
+import com.mvp4g.util.config.element.LoaderElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.config.element.SplitterElement;
@@ -58,8 +59,10 @@ import com.mvp4g.util.exception.NonUniqueIdentifierException;
 import com.mvp4g.util.exception.NotFoundClassException;
 import com.mvp4g.util.exception.UnknownConfigurationElementException;
 import com.mvp4g.util.test_tools.GeneratorContextStub;
+import com.mvp4g.util.test_tools.Loaders;
 import com.mvp4g.util.test_tools.Modules;
 import com.mvp4g.util.test_tools.PropertyOracleStub;
+import com.mvp4g.util.test_tools.Splitters;
 import com.mvp4g.util.test_tools.annotation.EventFilters;
 import com.mvp4g.util.test_tools.annotation.Events.EventBusWithNoStartPresenter;
 import com.mvp4g.util.test_tools.annotation.HistoryConverters;
@@ -1618,6 +1621,8 @@ public class Mvp4gConfigurationTest {
 	@Test
 	public void testFindChildModuleHistory() throws InvalidMvp4gConfigurationException {
 
+		setEventBus();
+
 		oracle.addClass( Modules.ModuleWithParent.class );
 		oracle.addClass( Modules.ModuleWithParentNoName.class );
 		oracle.addClass( Modules.Module1.class );
@@ -1637,7 +1642,7 @@ public class Mvp4gConfigurationTest {
 		childModule3.setClassName( Modules.ModuleWithParentNoName.class.getCanonicalName() );
 		childModules.add( childModule3 );
 
-		configuration.findChildModuleHistoryName();
+		configuration.findChildModuleHistoryNameAndLoader();
 
 		assertNull( childModule2.getHistoryName() );
 		assertNull( childModule3.getHistoryName() );
@@ -1646,6 +1651,7 @@ public class Mvp4gConfigurationTest {
 
 	@Test( expected = InvalidMvp4gConfigurationException.class )
 	public void testFindChildModuleSameHistory() throws InvalidMvp4gConfigurationException {
+		setEventBus();
 
 		oracle.addClass( Modules.ModuleWithParent.class );
 
@@ -1663,12 +1669,93 @@ public class Mvp4gConfigurationTest {
 		configuration.setModule( module );
 
 		try {
-			configuration.findChildModuleHistoryName();
+			configuration.findChildModuleHistoryNameAndLoader();
 			fail();
 		} catch ( InvalidMvp4gConfigurationException e ) {
 			String.format( "Module %s: You can't have two child modules with the same history name \"%s\".", module.getQualifiedSourceName(),
 					"moduleWithParent" );
 			throw e;
+		}
+	}
+
+	@Test
+	public void testChildModuleLoadersIncompatibleType() throws InvalidMvp4gConfigurationException {
+		EventBusElement eventBus = new EventBusElement( EventBus.class.getName(), BaseEventBus.class.getName(), false );
+		configuration.setEventBus( eventBus );
+
+		oracle.addClass( Loaders.Loader1.class );
+		oracle.addClass( Modules.ModuleWithLoader.class );
+
+		ChildModuleElement withLoader = new ChildModuleElement();
+		withLoader.setName( "withLoader" );
+		withLoader.setClassName( Modules.ModuleWithLoader.class.getCanonicalName() );
+		childModules.add( withLoader );
+
+		try {
+			configuration.findChildModuleHistoryNameAndLoader();
+			fail();
+		} catch ( InvalidTypeException e ) {
+			assertTrue( e.getMessage().contains( "Can not convert " + EventBus.class.getCanonicalName() ) );
+		}
+	}
+
+	@Test
+	public void testChildModuleLoaders() throws InvalidMvp4gConfigurationException {
+
+		setEventBus();
+
+		oracle.addClass( Loaders.Loader1.class );
+		oracle.addClass( Loaders.Loader2.class );
+		oracle.addClass( Modules.ModuleWithLoader.class );
+		oracle.addClass( Modules.ModuleWithSameLoader1.class );
+		oracle.addClass( Modules.ModuleWithSameLoader2.class );
+		oracle.addClass( Modules.Module1.class );
+
+		ChildModuleElement withLoader = new ChildModuleElement();
+		withLoader.setName( "withLoader" );
+		withLoader.setClassName( Modules.ModuleWithLoader.class.getCanonicalName() );
+		childModules.add( withLoader );
+
+		ChildModuleElement withSameLoader1 = new ChildModuleElement();
+		withSameLoader1.setName( "withSameLoader1" );
+		withSameLoader1.setClassName( Modules.ModuleWithSameLoader1.class.getCanonicalName() );
+		childModules.add( withSameLoader1 );
+
+		ChildModuleElement withSameLoader2 = new ChildModuleElement();
+		withSameLoader2.setName( "withSameLoader2" );
+		withSameLoader2.setClassName( Modules.ModuleWithSameLoader2.class.getCanonicalName() );
+		childModules.add( withSameLoader2 );
+
+		ChildModuleElement noLoader = new ChildModuleElement();
+		noLoader.setName( "noLoader" );
+		noLoader.setClassName( Modules.Module1.class.getCanonicalName() );
+		childModules.add( noLoader );
+
+		configuration.findChildModuleHistoryNameAndLoader();
+
+		String loader1Name = "loader" + Loaders.Loader1.class.getCanonicalName().replace( ".", "_" );
+		String loader2Name = "loader" + Loaders.Loader2.class.getCanonicalName().replace( ".", "_" );
+
+		assertEquals( loader1Name, withLoader.getLoader() );
+		assertEquals( loader2Name, withSameLoader1.getLoader() );
+		assertEquals( loader2Name, withSameLoader2.getLoader() );
+		assertNull( noLoader.getLoader() );
+
+		Set<LoaderElement> loaders = configuration.getLoaders();
+		assertEquals( 2, loaders.size() );
+		Iterator<LoaderElement> it = loaders.iterator();
+		LoaderElement next;
+		String name;
+		while ( it.hasNext() ) {
+			next = it.next();
+			name = next.getName();
+			if ( name.equals( loader1Name ) ) {
+				assertEquals( Loaders.Loader1.class.getCanonicalName(), next.getClassName() );
+			} else if ( name.equals( loader2Name ) ) {
+				assertEquals( Loaders.Loader2.class.getCanonicalName(), next.getClassName() );
+			} else {
+				fail( "Unknown loader " + next.getName() );
+			}
 		}
 	}
 
@@ -2515,6 +2602,8 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testValidateSplitterStartPresenter() {
+		setEventBus();
+
 		PresenterElement presenter = newPresenter( "presenter" );
 		configuration.getStart().setPresenter( "presenter" );
 		presenter.setAsync( "true" );
@@ -2535,7 +2624,9 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testValidateSplitterTogether() throws InvalidMvp4gConfigurationException {
-		String splitterName = "com.TestSplitter";
+		setEventBus();
+
+		String splitterName = oracle.addClass( Splitters.SimpleSplitter.class ).getQualifiedSourceName();
 
 		PresenterElement presenter = newPresenter( "presenter" );
 		presenter.setAsync( splitterName );
@@ -2566,10 +2657,13 @@ public class Mvp4gConfigurationTest {
 
 		configuration.validateSplitters();
 
+		splitterName = Splitters.SimpleSplitter.class.getCanonicalName().replace( ".", "_" );
+
 		assertEquals( 1, configuration.getSplitters().size() );
 		SplitterElement splitter = configuration.getSplitters().iterator().next();
-		assertEquals( "TestSplitter", splitter.getClassName() );
-		assertEquals( "testSplitter", splitter.getName() );
+		assertEquals( splitterName, splitter.getClassName() );
+		assertEquals( splitterName, splitter.getName() );
+		assertNull( splitter.getLoader() );
 
 		assertEquals( 4, splitter.getHandlers().size() );
 		assertTrue( splitter.getHandlers().contains( eventHandler ) );
@@ -2592,6 +2686,8 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testValidateSplitterSingle() throws InvalidMvp4gConfigurationException {
+		setEventBus();
+
 		PresenterElement presenter = newPresenter( "presenter" );
 		presenter.setAsync( SingleSplitter.class.getCanonicalName() );
 		presenters.add( presenter );
@@ -2627,9 +2723,10 @@ public class Mvp4gConfigurationTest {
 		List<String> list;
 		while ( it.hasNext() ) {
 			splitter = it.next();
-			if ( "SingleSplitter0".equals( splitter.getClassName() ) ) {
+			if ( "com_mvp4g_client_SingleSplitter0".equals( splitter.getClassName() ) ) {
 				list = Arrays.asList( "eventHandler" );
-				assertEquals( "singleSplitter0", splitter.getName() );
+				assertEquals( "com_mvp4g_client_SingleSplitter0", splitter.getName() );
+				assertNull( splitter.getLoader() );
 				assertEquals( 1, splitter.getHandlers().size() );
 				assertTrue( splitter.getHandlers().contains( eventHandler ) );
 				Map<EventElement, EventAssociation<String>> events = splitter.getEvents();
@@ -2641,9 +2738,10 @@ public class Mvp4gConfigurationTest {
 				assertList( list, association.getDeactivated() );
 				assertList( list, association.getBinds() );
 				assertList( list, association.getHandlers() );
-			} else if ( "SingleSplitter1".equals( splitter.getClassName() ) ) {
+			} else if ( "com_mvp4g_client_SingleSplitter1".equals( splitter.getClassName() ) ) {
 				list = Arrays.asList( "eventHandlerMultiple" );
-				assertEquals( "singleSplitter1", splitter.getName() );
+				assertEquals( "com_mvp4g_client_SingleSplitter1", splitter.getName() );
+				assertNull( splitter.getLoader() );
 				assertEquals( 1, splitter.getHandlers().size() );
 				assertTrue( splitter.getHandlers().contains( eventHandlerMultiple ) );
 				Map<EventElement, EventAssociation<String>> events = splitter.getEvents();
@@ -2655,9 +2753,10 @@ public class Mvp4gConfigurationTest {
 				assertList( list, association.getDeactivated() );
 				assertList( list, association.getBinds() );
 				assertList( list, association.getHandlers() );
-			} else if ( "SingleSplitter2".equals( splitter.getClassName() ) ) {
+			} else if ( "com_mvp4g_client_SingleSplitter2".equals( splitter.getClassName() ) ) {
 				list = Arrays.asList( "presenterMultiple" );
-				assertEquals( "singleSplitter2", splitter.getName() );
+				assertEquals( "com_mvp4g_client_SingleSplitter2", splitter.getName() );
+				assertNull( splitter.getLoader() );
 				assertEquals( 1, splitter.getHandlers().size() );
 				assertTrue( splitter.getHandlers().contains( presenterMultiple ) );
 				Map<EventElement, EventAssociation<String>> events = splitter.getEvents();
@@ -2669,9 +2768,10 @@ public class Mvp4gConfigurationTest {
 				assertList( list, association.getDeactivated() );
 				assertList( list, association.getBinds() );
 				assertList( list, association.getHandlers() );
-			} else if ( "SingleSplitter3".equals( splitter.getClassName() ) ) {
+			} else if ( "com_mvp4g_client_SingleSplitter3".equals( splitter.getClassName() ) ) {
 				list = Arrays.asList( "presenter" );
-				assertEquals( "singleSplitter3", splitter.getName() );
+				assertEquals( "com_mvp4g_client_SingleSplitter3", splitter.getName() );
+				assertNull( splitter.getLoader() );
 				assertEquals( 1, splitter.getHandlers().size() );
 				assertTrue( splitter.getHandlers().contains( presenter ) );
 				Map<EventElement, EventAssociation<String>> events = splitter.getEvents();
@@ -2685,6 +2785,103 @@ public class Mvp4gConfigurationTest {
 				assertList( list, association.getHandlers() );
 			} else {
 				fail( "Unknown splitter" );
+			}
+		}
+	}
+
+	@Test
+	public void testSplitterLoadersIncompatibleType() throws InvalidMvp4gConfigurationException {
+		EventBusElement eventBus = new EventBusElement( EventBus.class.getName(), BaseEventBus.class.getName(), false );
+		configuration.setEventBus( eventBus );
+
+		oracle.addClass( Loaders.Loader1.class );
+		oracle.addClass( Splitters.SplitterWithLoader.class );
+
+		PresenterElement presenter1 = newPresenter( "presenter1" );
+		presenter1.setAsync( Splitters.SplitterWithLoader.class.getCanonicalName() );
+		presenters.add( presenter1 );
+
+		EventElement event = new EventElement();
+		event.setHandlers( new String[] { "presenter1" } );
+		configuration.getEvents().add( event );
+
+		try {
+			configuration.validateSplitters();
+			fail();
+		} catch ( InvalidTypeException e ) {
+			assertTrue( e.getMessage().contains( "Can not convert " + EventBus.class.getCanonicalName() ) );
+		}
+	}
+
+	@Test
+	public void testSplitterLoaders() throws InvalidMvp4gConfigurationException {
+		setEventBus();
+
+		oracle.addClass( Loaders.Loader1.class );
+		oracle.addClass( Loaders.Loader2.class );
+		oracle.addClass( Splitters.SplitterWithLoader.class );
+		oracle.addClass( Splitters.SplitterWithSameLoader1.class );
+		oracle.addClass( Splitters.SplitterWithSameLoader2.class );
+
+		PresenterElement presenter1 = newPresenter( "presenter1" );
+		presenter1.setAsync( Splitters.SplitterWithLoader.class.getCanonicalName() );
+		presenters.add( presenter1 );
+
+		PresenterElement presenter2 = newPresenter( "presenter2" );
+		presenter2.setAsync( Splitters.SplitterWithSameLoader1.class.getCanonicalName() );
+		presenters.add( presenter2 );
+
+		PresenterElement presenter3 = newPresenter( "presenter3" );
+		presenter3.setAsync( Splitters.SplitterWithSameLoader2.class.getCanonicalName() );
+		presenters.add( presenter3 );
+
+		EventElement event = new EventElement();
+		event.setHandlers( new String[] { "presenter1", "presenter2", "presenter3" } );
+		configuration.getEvents().add( event );
+
+		configuration.validateSplitters();
+
+		assertEquals( 3, configuration.getSplitters().size() );
+
+		String loader1Name = "loader" + Loaders.Loader1.class.getCanonicalName().replace( ".", "_" );
+		String loader2Name = "loader" + Loaders.Loader2.class.getCanonicalName().replace( ".", "_" );
+
+		String splitter1Name = Splitters.SplitterWithLoader.class.getCanonicalName().replace( ".", "_" );
+		String splitter2Name = Splitters.SplitterWithSameLoader1.class.getCanonicalName().replace( ".", "_" );
+		String splitter3Name = Splitters.SplitterWithSameLoader2.class.getCanonicalName().replace( ".", "_" );
+
+		Set<SplitterElement> splitters = configuration.getSplitters();
+		Iterator<SplitterElement> itSplitter = splitters.iterator();
+		SplitterElement splitter;
+		String splitterName;
+		while ( itSplitter.hasNext() ) {
+			splitter = itSplitter.next();
+			splitterName = splitter.getName();
+			if ( splitter1Name.equals( splitterName ) ) {
+				assertEquals( splitter.getLoader(), loader1Name );
+			} else if ( splitter2Name.equals( splitterName ) ) {
+				assertEquals( splitter.getLoader(), loader2Name );
+			} else if ( splitter3Name.equals( splitterName ) ) {
+				assertEquals( splitter.getLoader(), loader2Name );
+			} else {
+				fail( "Unknown splitter " + splitterName );
+			}
+		}
+
+		Set<LoaderElement> loaders = configuration.getLoaders();
+		assertEquals( 2, loaders.size() );
+		Iterator<LoaderElement> it = loaders.iterator();
+		LoaderElement next;
+		String name;
+		while ( it.hasNext() ) {
+			next = it.next();
+			name = next.getName();
+			if ( name.equals( loader1Name ) ) {
+				assertEquals( Loaders.Loader1.class.getCanonicalName(), next.getClassName() );
+			} else if ( name.equals( loader2Name ) ) {
+				assertEquals( Loaders.Loader2.class.getCanonicalName(), next.getClassName() );
+			} else {
+				fail( "Unknown loader " + next.getName() );
 			}
 		}
 	}

@@ -37,6 +37,7 @@ import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.inject.client.GinModule;
+import com.mvp4g.client.Mvp4gLoader;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.SingleSplitter;
 import com.mvp4g.client.annotation.EventHandler;
@@ -45,6 +46,7 @@ import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.annotation.Service;
 import com.mvp4g.client.annotation.module.HistoryName;
+import com.mvp4g.client.annotation.module.Loader;
 import com.mvp4g.client.event.EventFilter;
 import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.event.Mvp4gLogger;
@@ -67,6 +69,7 @@ import com.mvp4g.util.config.element.GinModuleElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.InjectedElement;
+import com.mvp4g.util.config.element.LoaderElement;
 import com.mvp4g.util.config.element.Mvp4gElement;
 import com.mvp4g.util.config.element.Mvp4gWithServicesElement;
 import com.mvp4g.util.config.element.PresenterElement;
@@ -141,6 +144,7 @@ public class Mvp4gConfiguration {
 	private Set<EventFilterElement> eventFilters = new HashSet<EventFilterElement>();
 	private Set<ChildModuleElement> childModules = new HashSet<ChildModuleElement>();
 	private Set<SplitterElement> splitters = new HashSet<SplitterElement>();
+	private Set<LoaderElement> loaders = new HashSet<LoaderElement>();
 	private StartElement start = null;
 	private HistoryElement history = null;
 	private EventBusElement eventBus = null;
@@ -227,7 +231,7 @@ public class Mvp4gConfiguration {
 			throw new InvalidMvp4gConfigurationException( String.format( NO_EVENT_BUS, module.getSimpleSourceName() ) );
 		}
 
-		findChildModuleHistoryName();
+		findChildModuleHistoryNameAndLoader();
 		checkUniquenessOfAllElements();
 		validateEventHandlers();
 		validateSplitters();
@@ -313,6 +317,13 @@ public class Mvp4gConfiguration {
 	 */
 	public Set<SplitterElement> getSplitters() {
 		return splitters;
+	}
+
+	/**
+	 * @return the loaders
+	 */
+	public Set<LoaderElement> getLoaders() {
+		return loaders;
 	}
 
 	/**
@@ -1017,15 +1028,16 @@ public class Mvp4gConfiguration {
 			}
 		}
 
+		JClassType eventBusType = getType( null, eventBus.getInterfaceClassName() );
 		Map<String, SplitterElement> splitterMap = new HashMap<String, SplitterElement>();
 		int singleIndex = 0;
 		for ( EventHandlerElement eventHandler : eventHandlers ) {
-			addSplitterHandler( eventHandler, singleIndex, eventAssociationMap.get( eventHandler.getName() ), splitterMap );
+			addSplitterHandler( eventHandler, singleIndex, eventAssociationMap.get( eventHandler.getName() ), splitterMap, eventBusType );
 			singleIndex++;
 		}
 
 		for ( PresenterElement presenter : presenters ) {
-			addSplitterHandler( presenter, singleIndex, eventAssociationMap.get( presenter.getName() ), splitterMap );
+			addSplitterHandler( presenter, singleIndex, eventAssociationMap.get( presenter.getName() ), splitterMap, eventBusType );
 			singleIndex++;
 		}
 
@@ -1042,21 +1054,25 @@ public class Mvp4gConfiguration {
 	}
 
 	private <T extends EventHandlerElement> void addSplitterHandler( T handler, int singleIndex, EventAssociation<EventElement> eventAssociation,
-			Map<String, SplitterElement> splitterMap ) throws InvalidMvp4gConfigurationException {
+			Map<String, SplitterElement> splitterMap, JClassType eventBusType ) throws InvalidMvp4gConfigurationException {
 		String className = handler.getAsync();
 		if ( ( className != null ) && ( eventAssociation != null ) ) {
 			if ( handler.getName().equals( start.getPresenter() ) ) {
 				throw new InvalidMvp4gConfigurationException( String.format( ASYNC_START_PRESENTER, handler.getName() ) );
 			}
-			if ( SingleSplitter.class.getCanonicalName().equals( className ) ) {
+			boolean isSingleSplitter = SingleSplitter.class.getCanonicalName().equals( className );
+			if ( isSingleSplitter ) {
 				className = className + singleIndex;
 			}
 			SplitterElement splitter = splitterMap.get( className );
 			if ( splitter == null ) {
 				splitter = new SplitterElement();
-				String simpleName = className.substring( className.lastIndexOf( "." ) + 1, className.length() );
-				splitter.setName( simpleName.substring( 0, 1 ).toLowerCase() + simpleName.substring( 1 ) );
-				splitter.setClassName( simpleName );
+				String name = className.replace(".", "_");
+				splitter.setName( name );
+				splitter.setClassName( name );
+				if ( !isSingleSplitter ) {
+					splitter.setLoader( validateLoaderAndAdd( getType( splitter, className ), eventBusType, splitter ) );
+				}
 				splitterMap.put( className, splitter );
 			}
 
@@ -1726,6 +1742,14 @@ public class Mvp4gConfiguration {
 	 */
 	private <T extends Mvp4gElement> T getElement( String elementName, Set<T> elements, Mvp4gElement relatedElement )
 			throws UnknownConfigurationElementException {
+		T eFound = getElement( elementName, elements );
+		if ( eFound == null ) {
+			throw new UnknownConfigurationElementException( relatedElement, elementName );
+		}
+		return eFound;
+	}
+
+	private <T extends Mvp4gElement> T getElement( String elementName, Set<T> elements ) {
 		T eFound = null;
 		for ( T element : elements ) {
 			if ( element.getUniqueIdentifier().equals( elementName ) ) {
@@ -1733,11 +1757,6 @@ public class Mvp4gConfiguration {
 				break;
 			}
 		}
-
-		if ( eFound == null ) {
-			throw new UnknownConfigurationElementException( relatedElement, elementName );
-		}
-
 		return eFound;
 	}
 
@@ -1783,10 +1802,12 @@ public class Mvp4gConfiguration {
 		return ( child == null ) ? null : child.getParentEventBus();
 	}
 
-	void findChildModuleHistoryName() throws InvalidMvp4gConfigurationException {
+	void findChildModuleHistoryNameAndLoader() throws InvalidMvp4gConfigurationException {
 		JClassType childType;
 		HistoryName hName;
 		List<String> historyNames = new ArrayList<String>();
+		String moduleClassName;
+		JClassType eventBusType = getType( null, eventBus.getInterfaceClassName() );
 		for ( ChildModuleElement childModule : childModules ) {
 			childType = getType( childModule, childModule.getClassName() );
 			hName = childType.getAnnotation( HistoryName.class );
@@ -1798,9 +1819,11 @@ public class Mvp4gConfiguration {
 							hNameStr ) );
 				}
 				historyNames.add( hNameStr );
-
 				childModule.setHistoryName( hNameStr );
+
 			}
+			moduleClassName = childModule.getClassName();
+			childModule.setLoader( validateLoaderAndAdd( getType( childModule, moduleClassName ), eventBusType, childModule ) );
 		}
 	}
 
@@ -1809,6 +1832,31 @@ public class Mvp4gConfiguration {
 			throw new InvalidMvp4gConfigurationException( String.format( WRONG_HISTORY_NAME, element.getTagName(), element.getUniqueIdentifier(),
 					historyName ) );
 		}
+	}
+
+	String validateLoaderAndAdd( JClassType moduleType, JClassType eventBus, Mvp4gElement element ) throws NotFoundClassException,
+			InvalidTypeException {
+		String name = null;
+		Loader loaderAnnotation = moduleType.getAnnotation( Loader.class );
+		if ( loaderAnnotation != null ) {
+			JClassType loaderType = getType( element, loaderAnnotation.value().getCanonicalName() );
+			JGenericType loaderGenType = getType( null, Mvp4gLoader.class.getCanonicalName() ).isGenericType();
+			JParameterizedType genLoader = loaderType.asParameterizationOf( loaderGenType );
+			JClassType eventBusParam = (JClassType)genLoader.getMethods()[0].getParameters()[0].getType();
+			if ( !eventBus.isAssignableTo( eventBusParam ) ) {
+				throw new InvalidTypeException( element, "Loader, event bus not compatible", eventBusParam.getQualifiedSourceName(),
+						eventBus.getQualifiedSourceName() );
+			}
+			name = "loader" + loaderType.getQualifiedSourceName().replace( ".", "_" );
+			LoaderElement loader = getElement( name, loaders );
+			if ( loader == null ) {
+				loader = new LoaderElement();
+				loader.setName( name );
+				loader.setClassName( loaderType.getQualifiedSourceName() );
+				loaders.add( loader );
+			}
+		}
+		return name;
 	}
 
 	boolean checkIfParentEventReturnsString( EventElement e ) {
