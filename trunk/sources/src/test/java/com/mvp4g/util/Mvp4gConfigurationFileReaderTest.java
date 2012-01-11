@@ -35,6 +35,7 @@ import com.mvp4g.util.config.element.GinModuleElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.InjectedElement;
+import com.mvp4g.util.config.element.LoaderElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
 import com.mvp4g.util.config.element.SplitterElement;
@@ -42,6 +43,7 @@ import com.mvp4g.util.config.element.StartElement;
 import com.mvp4g.util.config.element.ViewElement;
 import com.mvp4g.util.test_tools.CustomPlaceService;
 import com.mvp4g.util.test_tools.GeneratorContextStub;
+import com.mvp4g.util.test_tools.Loaders;
 import com.mvp4g.util.test_tools.Modules;
 import com.mvp4g.util.test_tools.OneGinModule;
 import com.mvp4g.util.test_tools.OneLogger;
@@ -1066,6 +1068,41 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	@Test
+	public void testWriteLoadChildModuleWithLoader() {
+		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+
+		Set<ChildModuleElement> children = configuration.getChildModules();
+
+		JClassType loaderType = oracle.addClass( Loaders.Loader1.class );
+		LoaderElement loader = new LoaderElement();
+		loader.setName( "loader" );
+		loader.setClassName( loaderType.getQualifiedSourceName() );
+		configuration.getLoaders().add( loader );
+
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+		ChildModuleElement childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "childModule1" );
+		childModule.setLoader( "loader" );
+		childModule.setAutoDisplay( "false" );
+		children.add( childModule );
+
+		moduleType = oracle.addClass( Modules.Module1.class );
+		childModule = new ChildModuleElement();
+		childModule.setClassName( moduleType.getQualifiedSourceName() );
+		childModule.setName( "childModule2" );
+		childModule.setAsync( "false" );
+		childModule.setLoader( "loader" );
+		childModule.setAutoDisplay( "false" );
+		children.add( childModule );
+
+		assertOutput( getExpectedLoadChildModuleWithLoader(), false );
+		writer.writeConf();
+		assertOutput( getExpectedLoadChildModuleWithLoader(), true );
+
+	}
+
+	@Test
 	public void testWriteChildEvent() {
 
 		configuration.setLoadChildConfig( new ChildModulesElement() );
@@ -1600,11 +1637,13 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedSplitterLoadingConf(), false );
 		assertOutput( getExpectedSplitterPassiveGenerateMultiple(), false );
 		assertOutput( getExpectedSplitterNotPassive(), false );
+		assertOutput( getExpectedSplitterWithLoader(), false );
 		writer.writeConf();
 		assertOutput( getExpectedSplitter( false ), true );
 		assertOutput( getExpectedSplitterLoadingConf(), false );
 		assertOutput( getExpectedSplitterPassiveGenerateMultiple(), false );
 		assertOutput( getExpectedSplitterNotPassive(), true );
+		assertOutput( getExpectedSplitterWithLoader(), false );
 	}
 
 	@Test
@@ -1731,11 +1770,13 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedSplitterLoadingConf(), false );
 		assertOutput( getExpectedSplitterPassiveGenerateMultiple(), false );
 		assertOutput( getExpectedSplitterNotPassive(), false );
+		assertOutput( getExpectedSplitterWithLoader(), false );
 		writer.writeConf();
 		assertOutput( getExpectedSplitter( true ), true );
 		assertOutput( getExpectedSplitterLoadingConf(), true );
 		assertOutput( getExpectedSplitterPassiveGenerateMultiple(), true );
 		assertOutput( getExpectedSplitterNotPassive(), false );
+		assertOutput( getExpectedSplitterWithLoader(), false );
 	}
 
 	@Test
@@ -1758,6 +1799,81 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedMultipleImpl(), false );
 		writer.writeConf();
 		assertOutput( getExpectedMultipleImpl(), true );
+	}
+
+	@Test
+	public void testWriteSplitterWithLoader() {
+		PresenterElement presenter = new PresenterElement();
+		presenter.setName( "presenter" );
+		presenter.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenter.setView( "view" );
+		configuration.getPresenters().add( presenter );
+
+		EventHandlerElement eventHandler = new EventHandlerElement();
+		eventHandler.setName( "eventHandler" );
+		eventHandler.setClassName( SimpleEventHandler.class.getCanonicalName() );
+		configuration.getEventHandlers().add( eventHandler );
+
+		EventElement e1 = new EventElement();
+		e1.setType( "event1" );
+		e1.setSplitters( new String[] { "splitter" } );
+		e1.setEventObjectClass( new String[] { "int", "String" } );
+
+		EventElement e2 = new EventElement();
+		e2.setType( "event2" );
+		e2.setSplitters( new String[] { "splitter" } );
+
+		EventElement e3 = new EventElement();
+		e3.setType( "event3" );
+		e3.setSplitters( new String[] { "splitter" } );
+
+		SplitterElement splitter = new SplitterElement();
+		splitter.getHandlers().add( presenter );
+		splitter.getHandlers().add( eventHandler );
+		splitter.setName( "splitter" );
+		splitter.setClassName( "Splitter" );
+		EventAssociation<String> ea1 = new EventAssociation<String>();
+		ea1.getActivated().add( "eventHandler" );
+		ea1.getDeactivated().add( "presenter" );
+		ea1.getBinds().add( "presenter" );
+		ea1.getHandlers().add( "eventHandler" );
+		splitter.getEvents().put( e1, ea1 );
+
+		EventAssociation<String> ea2 = new EventAssociation<String>();
+		ea2.getActivated().add( "eventHandler" );
+		ea2.getDeactivated().add( "presenter" );
+		splitter.getEvents().put( e2, ea2 );
+
+		EventAssociation<String> ea3 = new EventAssociation<String>();
+		ea3.getBinds().add( "presenter" );
+		splitter.getEvents().put( e3, ea3 );
+
+		JClassType loaderType = ( (TypeOracleStub)configuration.getOracle() ).addClass( Loaders.Loader1.class );
+		LoaderElement loader = new LoaderElement();
+		loader.setName( "loader" );
+		loader.setClassName( loaderType.getQualifiedSourceName() );
+		configuration.getLoaders().add( loader );
+
+		splitter.setLoader( "loader" );
+
+		Set<EventElement> events = configuration.getEvents();
+		events.add( e1 );
+		events.add( e2 );
+		events.add( e3 );
+
+		configuration.getSplitters().add( splitter );
+
+		assertOutput( getExpectedSplitter( false ), false );
+		assertOutput( getExpectedSplitterLoadingConf(), false );
+		assertOutput( getExpectedSplitterPassiveGenerateMultiple(), false );
+		assertOutput( getExpectedSplitterNotPassive(), false );
+		assertOutput( getExpectedSplitterWithLoader(), false );
+		writer.writeConf();
+		assertOutput( getExpectedSplitter( false ), true );
+		assertOutput( getExpectedSplitterLoadingConf(), false );
+		assertOutput( getExpectedSplitterPassiveGenerateMultiple(), false );
+		assertOutput( getExpectedSplitterNotPassive(), true );
+		assertOutput( getExpectedSplitterWithLoader(), true );
 	}
 
 	private void assertOutput( String[] statements, boolean expected ) {
@@ -1804,7 +1920,8 @@ public class Mvp4gConfigurationFileReaderTest {
 				"String moduleHistoryName = eventType.substring(0, index);", "String nextToken = eventType.substring(index + 1);",
 				"Mvp4gEventPasser nextPasser = new Mvp4gEventPasser(nextToken) {", "public void pass(Mvp4gModule module) {",
 				"module.dispatchHistoryEvent((String) eventObjects[0], passer);", "passer.setEventObject(false);", "passer.pass(this);", "}else{",
-				"passer.pass(this);", "public void loadChildModule(String childModuleClassName, boolean passive, Mvp4gEventPasser passer){" };
+				"passer.pass(this);",
+				"public void loadChildModule(String childModuleClassName, String eventName, boolean passive, Mvp4gEventPasser passer){" };
 	}
 
 	private String[] getExpectedHistoryWithConfig() {
@@ -1925,16 +2042,22 @@ public class Mvp4gConfigurationFileReaderTest {
 				"if (eventHandlerMultiple.isActivated(false, \"event4\", new Object[]{attr0,attr1,attr2,attr3})){",
 				"eventHandlerMultiple.onEvent4(attr0,attr1,attr2,attr3);", "handler.isActivated(false, \"event3\");", "if (splitter != null ){",
 				"splitter.event1(attr0,attr1);", "public void event4(String attr0,String attr1,String attr2,int attr3){",
-				"loadsplitter(new Mvp4gEventPasser(new Object[]{attr0,attr1,attr2,attr3}){",
+				"loadsplitter(\"event4\", new Mvp4gEventPasser(new Object[]{attr0,attr1,attr2,attr3}){",
 				"splitter.event4((String) eventObjects[0],(String) eventObjects[1],(String) eventObjects[2],(Integer) eventObjects[3]);",
-				"public void event5(String attr0,String attr1,String attr2){", "loadsplitter(new Mvp4gEventPasser(new Object[]{attr0,attr1,attr2}){",
+				"public void event5(String attr0,String attr1,String attr2){",
+				"loadsplitter(\"event5\", new Mvp4gEventPasser(new Object[]{attr0,attr1,attr2}){",
 				"splitter.event5((String) eventObjects[0],(String) eventObjects[1],(String) eventObjects[2]);" };
 	}
 
 	private String[] getExpectedSplitterNotPassive() {
-		return new String[] { "loadsplitter(new Mvp4gEventPasser(new Object[]{attr0,attr1}){", "loadsplitter(new Mvp4gEventPasser(){",
-				"presenter.isActivated(false, \"event1\", new Object[]{attr0,attr1});",
+		return new String[] { "loadsplitter(\"event1\", new Mvp4gEventPasser(new Object[]{attr0,attr1}){",
+				"loadsplitter(\"event2\", new Mvp4gEventPasser(){", "presenter.isActivated(false, \"event1\", new Object[]{attr0,attr1});",
 				"splitter.event1((Integer) eventObjects[0],(String) eventObjects[1]);" };
+	}
+
+	private String[] getExpectedSplitterWithLoader() {
+		return new String[] { "loader.preLoad( eventBus, eventName, params, new Command(){", "public void execute() {",
+				"loader.onSuccess(eventBus, eventName, params );", "loader.onFailure( eventBus, eventName, params, reason );" };
 	}
 
 	private String[] getExpectedMultipleImpl() {
@@ -1951,7 +2074,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedSplitter( boolean passive ) {
-		return new String[] { "private Splitter splitter;", "private void loadsplitter(final Mvp4gEventPasser passer) {",
+		return new String[] { "private Splitter splitter;", "private void loadsplitter(final String eventName, final Mvp4gEventPasser passer) {",
 				"GWT.runAsync(new RunAsyncCallback(){", "public void onSuccess() {", "if (splitter == null) {", "splitter = new Splitter();",
 				"passer.pass(null);", "public void onFailure( Throwable reason ) {", "public class Splitter {",
 				"private com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler eventHandler;",
@@ -2034,19 +2157,27 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedChildModule( String moduleClassName ) {
-		return new String[] { "private void loadchildModule(final Mvp4gEventPasser passer){",
+		return new String[] { "private void loadchildModule(final String eventName, final Mvp4gEventPasser passer){",
 				moduleClassName + " newModule = (" + moduleClassName + ") modules.get(\"" + moduleClassName + "\");", "if(newModule == null){",
 				"newModule = GWT.create(" + moduleClassName + ".class);", "modules.put(\"" + moduleClassName + "\", newModule);",
 				"newModule.createAndStartModule();", "if(passer != null) passer.pass(newModule);", "newModule.setParentModule(itself);" };
 	}
 
 	private String[] getExpectedLoadChildModule() {
-		return new String[] { "public void loadChildModule(String childModuleClassName, boolean passive, Mvp4gEventPasser passer){", "if (passive){",
+		return new String[] {
+				"public void loadChildModule(String childModuleClassName, String eventName, boolean passive, Mvp4gEventPasser passer){",
 				"Mvp4gModule childModule = modules.get(childModuleClassName);", "if((childModule != null) && (passer != null)){",
 				"passer.pass(childModule);", "else if(\"com.mvp4g.util.test_tools.Modules.ModuleWithParent\".equals(childModuleClassName)){",
-				"loadchildModule2(passer);", "else if(\"com.mvp4g.util.test_tools.Modules.Module1\".equals(childModuleClassName)){",
-				"loadchildModule1(passer);",
-				"throw new Mvp4gException( \"ChildModule \" + childModuleClassName + \" doesn't exist. Is this module a sibling module?\" );" };
+				"loadchildModule2(eventName, passer);", "else if(\"com.mvp4g.util.test_tools.Modules.Module1\".equals(childModuleClassName)){",
+				"loadchildModule1(eventName, passer);",
+				"throw new Mvp4gException( \"ChildModule \" + childModuleClassName + \" not found. Is this module a sibling module?\" );" };
+	}
+
+	private String[] getExpectedLoadChildModuleWithLoader() {
+		return new String[] { "final Object[] params = (passer == null) ? null : passer.getEventObjects();",
+				"loader.preLoad( eventBus, eventName, params, new Command(){", "public void execute() {",
+				"loader.onFailure( eventBus, eventName, params, reason );", "loader.onSuccess(eventBus, eventName, params );",
+				"com.mvp4g.util.test_tools.Loaders.Loader1 loader;", "loader = injector.getloader();" };
 	}
 
 	private String[] getExpectedAsyncChildModule() {
@@ -2065,14 +2196,14 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	private String[] getExpectedEventChildModuleLoad() {
 		return new String[] {
-				"loadchild(new Mvp4gEventPasser(new Object[]{attr0}){",
+				"loadchild(\"event2\", new Mvp4gEventPasser(new Object[]{attr0}){",
 				"public void pass(Mvp4gModule module){",
 				"com.mvp4g.util.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event2((java.lang.String) eventObjects[0]);",
-				"loadchild(new Mvp4gEventPasser(new Object[]{attr0,attr1}){",
+				"loadchild(\"event3\", new Mvp4gEventPasser(new Object[]{attr0,attr1}){",
 				"com.mvp4g.util.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event3((java.lang.String) eventObjects[0],(java.lang.Object) eventObjects[1]);",
-				"loadchild(new Mvp4gEventPasser(){",
+				"loadchild(\"event1\", new Mvp4gEventPasser(){",
 				"public void pass(Mvp4gModule module){",
 				"com.mvp4g.util.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event1();" };
@@ -2080,14 +2211,15 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	private String[] getExpectedEventSiblingLoad( boolean passive ) {
 		return new String[] {
-				"parentModule.loadChildModule(\"com.mvp4g.util.test_tools.Modules.ModuleWithParent\", " + passive + ", new Mvp4gEventPasser(){",
+				"parentModule.loadChildModule(\"com.mvp4g.util.test_tools.Modules.ModuleWithParent\", \"event1\", " + passive
+						+ ", new Mvp4gEventPasser(){",
 				"public void pass(Mvp4gModule module){",
 				"com.mvp4g.util.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.util.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event1();",
-				"parentModule.loadChildModule(\"com.mvp4g.util.test_tools.Modules.ModuleWithParent\", " + passive
+				"parentModule.loadChildModule(\"com.mvp4g.util.test_tools.Modules.ModuleWithParent\", \"event2\", " + passive
 						+ ", new Mvp4gEventPasser(new Object[]{attr0}){",
 				"eventBus.event2((java.lang.String) eventObjects[0]);",
-				"parentModule.loadChildModule(\"com.mvp4g.util.test_tools.Modules.ModuleWithParent\", " + passive
+				"parentModule.loadChildModule(\"com.mvp4g.util.test_tools.Modules.ModuleWithParent\", \"event3\", " + passive
 						+ ", new Mvp4gEventPasser(new Object[]{attr0,attr1}){",
 				"eventBus.event3((java.lang.String) eventObjects[0],(java.lang.Object) eventObjects[1]);" };
 	}
@@ -2138,7 +2270,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedHistoryParent() {
-		return new String[] { "if(\"child\".equals(moduleHistoryName)){", "loadchild(nextPasser);", "return;" };
+		return new String[] { "if(\"child\".equals(moduleHistoryName)){", "loadchild(null, nextPasser);", "return;" };
 	}
 
 	private String[] getExpectedDefaultGinModule() {

@@ -43,6 +43,13 @@ public abstract class Mvp4gEventPasser {
 	}
 
 	/**
+	 * @return the eventObjects
+	 */
+	public Object[] getEventObjects() {
+		return eventObjects;
+	}
+
+	/**
 	 * Method call to execute the event of the sendee.
 	 * 
 	 * @param module

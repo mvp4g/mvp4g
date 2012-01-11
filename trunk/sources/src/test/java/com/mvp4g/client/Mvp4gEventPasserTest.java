@@ -20,6 +20,7 @@ public class Mvp4gEventPasserTest {
 
 		};
 		assertEquals( test, passer.eventObjects[0] );
+		assertEquals( test, passer.getEventObjects()[0] );
 	}
 	
 	@Test
@@ -35,8 +36,10 @@ public class Mvp4gEventPasserTest {
 
 		};
 		assertTrue( passer.eventObjects.length == 0 );
+		assertTrue( passer.getEventObjects().length == 0 );
 		passer.setEventObject( test );
 		assertEquals( test, passer.eventObjects[0] );
+		assertEquals( test, passer.getEventObjects()[0] );
 	}
 
 }

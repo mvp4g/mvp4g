@@ -71,7 +71,8 @@ public interface Mvp4gModule {
 	String place( String event, String form, boolean onlyToken );
 
 	/**
-	 * Take care of the event received from browser history change or pass it to a child module if needed.
+	 * Take care of the event received from browser history change or pass it to a child module if
+	 * needed.
 	 * 
 	 * @param token
 	 *            token stored in the browse history (event type + ascendant modules history name)
@@ -91,15 +92,19 @@ public interface Mvp4gModule {
 	 *            parent module to set
 	 */
 	void setParentModule( Mvp4gModule parentModule );
-	
+
 	/**
 	 * load a child module and pass it an event
 	 * 
 	 * @param childModuleClassName
-	 * 			class name of the child module to load
+	 *            class name of the child module to load
+	 * @param eventName
+	 *            Name of the event to forward.
+	 * @param passive
+	 *            True if the event to forward is passive.
 	 * @param passer
-	 * 			event to pass (optional)
+	 *            Event to forward.
 	 */
-	void loadChildModule(String childModuleClassName, boolean passive, Mvp4gEventPasser passer);
+	void loadChildModule( String childModuleClassName, String eventName, boolean passive, Mvp4gEventPasser passer );
 
 }

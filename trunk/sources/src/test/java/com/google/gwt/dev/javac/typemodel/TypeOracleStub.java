@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.mvp4g.client.Mvp4gLoader;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.EventFilter;
 import com.mvp4g.client.history.HistoryConverter;
@@ -178,6 +179,10 @@ public class TypeOracleStub extends TypeOracle {
 				new JParameter( method, findType( String.class.getName() ), "form", declaredAnnotations );
 				new JParameter( method, findType( EventBusWithLookup.class.getName() ), "eventBus", declaredAnnotations );
 				methods = new JMethod[] { method, method };
+			} else if ( isAssignableTo( findType( Mvp4gLoader.class.getName() ) ) ) {
+				JMethod method = new JMethod( this.getBaseType(), "preLoad", declaredAnnotations, null );
+				new JParameter( method, findType( EventBusWithLookup.class.getName() ), "eventBus", declaredAnnotations );
+				methods = new JMethod[] { method };
 			} else {
 				methods = super.getMethods();
 			}

@@ -31,6 +31,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
@@ -162,7 +163,7 @@ public class Mvp4gGenerator extends Generator {
 				HistoryConverter.class.getName(), Mvp4gEventPasser.class.getName(), Mvp4gModule.class.getName(), GinModules.class.getName(),
 				Ginjector.class.getName(), BaseEventBus.class.getName(), EventFilter.class.getName(), EventHandlerInterface.class.getName(),
 				List.class.getName(), NavigationEventCommand.class.getName(), NavigationConfirmationInterface.class.getName(),
-				RunAsyncCallback.class.getName(), Mvp4gRunAsync.class.getName() };
+				RunAsyncCallback.class.getName(), Mvp4gRunAsync.class.getName(), Command.class.getName() };
 	}
 
 }

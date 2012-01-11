@@ -20,4 +20,12 @@ public class SplitterElement extends SimpleMvp4gElement {
 		return events;
 	}
 
+	public void setLoader( String loader ) {
+		setProperty( "loader", loader );
+	}
+
+	public String getLoader() {
+		return getProperty( "loader" );
+	}
+
 }

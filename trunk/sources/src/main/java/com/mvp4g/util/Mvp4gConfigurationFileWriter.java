@@ -45,6 +45,7 @@ import com.mvp4g.util.config.element.EventHandlerElement;
 import com.mvp4g.util.config.element.HistoryConverterElement;
 import com.mvp4g.util.config.element.HistoryElement;
 import com.mvp4g.util.config.element.InjectedElement;
+import com.mvp4g.util.config.element.LoaderElement;
 import com.mvp4g.util.config.element.Mvp4gElement;
 import com.mvp4g.util.config.element.PresenterElement;
 import com.mvp4g.util.config.element.ServiceElement;
@@ -101,6 +102,8 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.print( configuration.getModule().getQualifiedSourceName() );
 		sourceWriter.println( " itself = this;" );
 
+		writeLoaders( false );
+
 		writeParentEventBus();
 
 		writeChildModules();
@@ -120,6 +123,8 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.print( "injector = GWT.create( " );
 		sourceWriter.print( injectorClassName );
 		sourceWriter.println( ".class );" );
+
+		writeLoaders( true );
 
 		writeViews();
 
@@ -265,8 +270,13 @@ public class Mvp4gConfigurationFileWriter {
 			boolean hasMultipleImpl = configuration.hasPropertiesValues();
 			String asyncImpl = null;
 			String asyncCallback = null;
+			String loaderName = null;
+			boolean hasLoader;
 			for ( ChildModuleElement module : children ) {
 				isAsync = module.isAsync() && isAsyncEnabled;
+
+				loaderName = module.getLoader();
+				hasLoader = ( loaderName != null );
 
 				if ( hasMultipleImpl && isAsync ) {
 					asyncCallback = module.getName() + "RunAsyncCallback";
@@ -288,8 +298,18 @@ public class Mvp4gConfigurationFileWriter {
 				moduleClassName = module.getClassName();
 				sourceWriter.print( "private void load" );
 				sourceWriter.print( module.getName() );
-				sourceWriter.println( "(final Mvp4gEventPasser passer){" );
+				sourceWriter.println( "(final String eventName, final Mvp4gEventPasser passer){" );
 				sourceWriter.indent();
+
+				if ( hasLoader ) {
+					sourceWriter.println( "final Object[] params = (passer == null) ? null : passer.getEventObjects();" );
+					sourceWriter.print( loaderName );
+					sourceWriter.println( ".preLoad( eventBus, eventName, params, new Command(){" );
+					sourceWriter.indent();
+					sourceWriter.println( "public void execute() {" );
+					sourceWriter.indent();
+				}
+
 				if ( isAsync ) {
 					if ( isBefore ) {
 						writeDispatchEvent( beforeEvent, null );
@@ -310,6 +330,10 @@ public class Mvp4gConfigurationFileWriter {
 					sourceWriter.indent();
 					if ( isAfter ) {
 						writeDispatchEvent( afterEvent, null );
+					}
+					if ( hasLoader ) {
+						sourceWriter.print( loaderName );
+						sourceWriter.println( ".onSuccess(eventBus, eventName, params );" );
 					}
 				}
 				sourceWriter.print( moduleClassName );
@@ -351,15 +375,28 @@ public class Mvp4gConfigurationFileWriter {
 						writeDispatchEvent( errorEvent, formError );
 						sourceWriter.outdent();
 					}
+					if ( hasLoader ) {
+						sourceWriter.print( loaderName );
+						sourceWriter.println( ".onFailure( eventBus, eventName, params, reason );" );
+					}
 					sourceWriter.println( "}" );
 					sourceWriter.outdent();
 					sourceWriter.println( "});" );
 				}
+
+				if ( hasLoader ) {
+					sourceWriter.outdent();
+					sourceWriter.println( "}" );
+					sourceWriter.outdent();
+					sourceWriter.println( "});" );
+				}
+
 				sourceWriter.outdent();
 				sourceWriter.println( "}" );
 			}
 		}
-		sourceWriter.println( "public void loadChildModule(String childModuleClassName, boolean passive, Mvp4gEventPasser passer){" );
+		sourceWriter
+				.println( "public void loadChildModule(String childModuleClassName, String eventName, boolean passive, Mvp4gEventPasser passer){" );
 		sourceWriter.indent();
 		if ( hasChildren ) {
 			sourceWriter.println( "if (passive){" );
@@ -383,14 +420,14 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.indent();
 				sourceWriter.print( "load" );
 				sourceWriter.print( childModuleName );
-				sourceWriter.println( "(passer);" );
+				sourceWriter.println( "(eventName, passer);" );
 				sourceWriter.outdent();
 				sourceWriter.println( "}" );
 			}
 			sourceWriter.println( "else {" );
 			sourceWriter.indent();
 			sourceWriter
-					.println( "throw new Mvp4gException( \"ChildModule \" + childModuleClassName + \" doesn't exist. Is this module a sibling module?\" );" );
+					.println( "throw new Mvp4gException( \"ChildModule \" + childModuleClassName + \" not found. Is this module a sibling module?\" );" );
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
 		}
@@ -453,6 +490,12 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( filter.getClassName() );
 			sourceWriter.print( " get" );
 			sourceWriter.print( filter.getName() );
+			sourceWriter.println( "();" );
+		}
+		for ( LoaderElement loader : configuration.getLoaders() ) {
+			sourceWriter.print( loader.getClassName() );
+			sourceWriter.print( " get" );
+			sourceWriter.print( loader.getName() );
 			sourceWriter.println( "();" );
 		}
 		sourceWriter.outdent();
@@ -1440,7 +1483,9 @@ public class Mvp4gConfigurationFileWriter {
 					}
 					sourceWriter.print( "load" );
 					sourceWriter.print( module.getName() );
-					sourceWriter.print( "(new Mvp4gEventPasser(" );
+					sourceWriter.print( "(\"" );
+					sourceWriter.print( event.getName() );
+					sourceWriter.print( "\", new Mvp4gEventPasser(" );
 					if ( param != null ) {
 						sourceWriter.print( "new Object[]{" );
 						sourceWriter.print( param );
@@ -1508,6 +1553,8 @@ public class Mvp4gConfigurationFileWriter {
 
 				sourceWriter.print( "parentModule.loadChildModule(\"" );
 				sourceWriter.print( moduleClassName );
+				sourceWriter.print( "\", \"" );
+				sourceWriter.print( event.getName() );
 				sourceWriter.print( "\", " );
 				sourceWriter.print( passive );
 				sourceWriter.print( ", new Mvp4gEventPasser(" );
@@ -1576,7 +1623,9 @@ public class Mvp4gConfigurationFileWriter {
 				if ( toLoad ) {
 					sourceWriter.print( "load" );
 					sourceWriter.print( splitter );
-					sourceWriter.print( "(new Mvp4gEventPasser(" );
+					sourceWriter.print( "(\"" );
+					sourceWriter.print( event.getName() );
+					sourceWriter.print( "\", new Mvp4gEventPasser(" );
 					if ( form != null ) {
 						sourceWriter.print( "new Object[]{" );
 						sourceWriter.print( form );
@@ -1623,9 +1672,10 @@ public class Mvp4gConfigurationFileWriter {
 		int nbParams;
 		EventAssociation<String> eventAssociation;
 		Set<EventHandlerElement> eventHandlers;
-		String splitterName, splitterClassName, handlerName, handlerClassName, constructor;
+		String splitterName, splitterClassName, handlerName, handlerClassName, constructor, loaderName;
+		boolean hasLoader;
 
-		List<String> activate, deactivate/* , handlers, binds, generates */;
+		List<String> activate, deactivate;
 
 		ChildModulesElement loadConfig = configuration.getLoadChildConfig();
 		String errorEvent, beforeEvent, afterEvent;
@@ -1663,6 +1713,8 @@ public class Mvp4gConfigurationFileWriter {
 			//multipleHandlers = splitter.getMultipleHandlers();
 			splitterName = splitter.getName();
 			splitterClassName = splitter.getClassName();
+			loaderName = splitter.getLoader();
+			hasLoader = ( loaderName != null );
 
 			if ( hasMultipleImpl ) {
 				asyncMultipleCallback = splitterClassName + "MultipleRunAsyncCallback";
@@ -1690,11 +1742,21 @@ public class Mvp4gConfigurationFileWriter {
 
 			sourceWriter.print( "private void load" );
 			sourceWriter.print( splitterName );
-			sourceWriter.println( "(final Mvp4gEventPasser passer) {" );
+			sourceWriter.println( "(final String eventName, final Mvp4gEventPasser passer) {" );
 			sourceWriter.indent();
+			if ( hasLoader ) {
+				sourceWriter.println( "final Object[] params = (passer == null) ? null : passer.getEventObjects();" );
+				sourceWriter.print( loaderName );
+				sourceWriter.println( ".preLoad( eventBus, eventName, params, new Command(){" );
+				sourceWriter.indent();
+				sourceWriter.println( "public void execute() {" );
+				sourceWriter.indent();
+			}
+
 			if ( isBefore ) {
 				writeDispatchEvent( beforeEvent, null );
 			}
+
 			if ( hasMultipleImpl ) {
 				sourceWriter.print( "((" );
 				sourceWriter.print( asyncImpl );
@@ -1713,6 +1775,10 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.indent();
 			if ( isAfter ) {
 				writeDispatchEvent( afterEvent, null );
+			}
+			if ( hasLoader ) {
+				sourceWriter.print( loaderName );
+				sourceWriter.println( ".onSuccess(eventBus, eventName, params );" );
 			}
 			sourceWriter.print( "if (" );
 			sourceWriter.print( splitterName );
@@ -1737,11 +1803,21 @@ public class Mvp4gConfigurationFileWriter {
 				writeDispatchEvent( errorEvent, formError );
 				sourceWriter.outdent();
 			}
+			if ( hasLoader ) {
+				sourceWriter.print( loaderName );
+				sourceWriter.println( ".onFailure( eventBus, eventName, params, reason );" );
+			}
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
 
 			sourceWriter.outdent();
 			sourceWriter.println( "});" );
+			if ( hasLoader ) {
+				sourceWriter.outdent();
+				sourceWriter.println( "}" );
+				sourceWriter.outdent();
+				sourceWriter.println( "});" );
+			}
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
 
@@ -1835,6 +1911,24 @@ public class Mvp4gConfigurationFileWriter {
 
 			sourceWriter.outdent();
 			sourceWriter.println( "}" );
+		}
+	}
+
+	private void writeLoaders( boolean forInstantion ) {
+		Set<LoaderElement> loaders = configuration.getLoaders();
+		for ( LoaderElement loader : loaders ) {
+			if ( !forInstantion ) {
+				sourceWriter.print( loader.getClassName() );
+				sourceWriter.print( " " );
+			}
+			sourceWriter.print( loader.getName() );
+			if ( forInstantion ) {
+				sourceWriter.print( " = " );
+				sourceWriter.print( "injector.get" );
+				sourceWriter.print( loader.getName() );
+				sourceWriter.print( "()" );
+			}
+			sourceWriter.println( ";" );
 		}
 	}
 
@@ -1946,7 +2040,7 @@ public class Mvp4gConfigurationFileWriter {
 				sourceWriter.indent();
 				sourceWriter.print( "load" );
 				sourceWriter.print( child.getName() );
-				sourceWriter.println( "(nextPasser);" );
+				sourceWriter.println( "(null, nextPasser);" );
 				sourceWriter.println( "return;" );
 				sourceWriter.outdent();
 				sourceWriter.println( "}" );

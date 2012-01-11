@@ -23,7 +23,7 @@ public class TestMvp4gGenerator {
 				"com.google.gwt.inject.client.GinModules", "com.google.gwt.inject.client.Ginjector", "com.mvp4g.client.event.BaseEventBus",
 				"com.mvp4g.client.event.EventFilter", "com.mvp4g.client.event.EventHandlerInterface", "java.util.List",
 				"com.mvp4g.client.history.NavigationEventCommand", "com.mvp4g.client.history.NavigationConfirmationInterface",
-				"com.google.gwt.core.client.RunAsyncCallback", "com.mvp4g.client.Mvp4gRunAsync" };
+				"com.google.gwt.core.client.RunAsyncCallback", "com.mvp4g.client.Mvp4gRunAsync", "com.google.gwt.user.client.Command" };
 		assertArrayEquals( classesToImport, generator.getClassesToImport() );
 	}
 
