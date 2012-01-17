@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.google.gwt.dev.javac.typemodel.StubClassType;
 import com.google.gwt.dev.javac.typemodel.TypeOracleStub;
 import com.mvp4g.util.test_tools.GeneratorContextStub;
-import com.mvp4g.util.test_tools.Mvp4gRunAsyncCallbackTest;
+import com.mvp4g.util.test_tools.Mvp4gRunAsyncCallbackStub;
 import com.mvp4g.util.test_tools.SourceWriterTestStub;
 
 public class TestMvp4gRunAsyncGenerator {
@@ -42,7 +42,7 @@ public class TestMvp4gRunAsyncGenerator {
 
 	@Test
 	public void testGetRunAsync() {
-		Assert.assertEquals( Mvp4gRunAsyncCallbackTest.class.getCanonicalName(), generator.getRunAsync( new StubClassType( oracle ) ) );
+		Assert.assertEquals( Mvp4gRunAsyncCallbackStub.class.getCanonicalName(), generator.getRunAsync( new StubClassType( oracle ) ) );
 	}
 
 	private void assertOutput( String[] statements, boolean expected ) {

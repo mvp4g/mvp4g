@@ -267,7 +267,8 @@ public class Mvp4gConfigurationFileWriter {
 			}
 			boolean isAsync = true;
 			boolean isAsyncEnabled = configuration.isAsyncEnabled();
-			boolean hasMultipleImpl = configuration.hasPropertiesValues();
+			String suffix = configuration.getSuffix();
+			boolean hasMultipleImpl = (suffix != null) && (suffix.length() > 0);
 			String asyncImpl = null;
 			String asyncCallback = null;
 			String loaderName = null;
@@ -279,13 +280,13 @@ public class Mvp4gConfigurationFileWriter {
 				hasLoader = ( loaderName != null );
 
 				if ( hasMultipleImpl && isAsync ) {
-					asyncCallback = module.getName() + "RunAsyncCallback";
+					asyncCallback = module.getName() + "RunAsyncCallback" + suffix;
 					sourceWriter.print( "interface " );
 					sourceWriter.print( asyncCallback );
 					sourceWriter.print( " extends " );
 					sourceWriter.print( RunAsyncCallback.class.getName() );
 					sourceWriter.println( " {}" );
-					asyncImpl = module.getName() + "RunAsync";
+					asyncImpl = module.getName() + "RunAsync" + suffix;
 					sourceWriter.print( "interface " );
 					sourceWriter.print( asyncImpl );
 					sourceWriter.print( " extends " );
@@ -1704,7 +1705,8 @@ public class Mvp4gConfigurationFileWriter {
 			}
 		}
 
-		boolean hasMultipleImpl = configuration.hasPropertiesValues();
+		String suffix = configuration.getSuffix();
+		boolean hasMultipleImpl = (suffix != null) && (suffix.length() > 0);
 
 		Set<SplitterElement> splitters = configuration.getSplitters();
 		String asyncImpl = null, asyncMultipleCallback = null;
@@ -1717,14 +1719,14 @@ public class Mvp4gConfigurationFileWriter {
 			hasLoader = ( loaderName != null );
 
 			if ( hasMultipleImpl ) {
-				asyncMultipleCallback = splitterClassName + "MultipleRunAsyncCallback";
+				asyncMultipleCallback = splitterClassName + "MultipleRunAsyncCallback" + suffix;
 				sourceWriter.print( "interface " );
 				sourceWriter.print( asyncMultipleCallback );
 				sourceWriter.print( " extends " );
 				sourceWriter.print( RunAsyncCallback.class.getName() );
 				sourceWriter.println( " {}" );
 
-				asyncImpl = splitterClassName + "RunAsyncImpl";
+				asyncImpl = splitterClassName + "RunAsyncImpl" + suffix;
 				sourceWriter.print( "interface " );
 				sourceWriter.print( asyncImpl );
 				sourceWriter.print( " extends " );

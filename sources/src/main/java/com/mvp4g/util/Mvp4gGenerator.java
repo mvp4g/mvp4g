@@ -91,10 +91,8 @@ public class Mvp4gGenerator extends Generator {
 					Presenter.class, History.class, Events.class, Service.class, EventHandler.class } );
 
 			Mvp4gConfiguration configuration = new Mvp4gConfiguration( logger, context );
-			String[] propertiesValues = configuration.load( module, scanResult );
-
-			String suffix = getSuffix( propertiesValues );
-
+			String suffix = "Impl" + configuration.load( module, scanResult );
+			
 			SourceWriter sourceWriter = getSourceWriter( logger, context, module, suffix );
 
 			generatedClassQualifiedName = module.getParameterizedQualifiedSourceName() + suffix;
@@ -116,20 +114,6 @@ public class Mvp4gGenerator extends Generator {
 		logger.log( TreeLogger.INFO, "Mvp4g Compilation: " + ( end.getTime() - start.getTime() ) + "ms." );
 
 		return generatedClassQualifiedName;
-	}
-
-	private String getSuffix( String[] propertiesValues ) {
-		if ( ( propertiesValues == null ) || ( propertiesValues.length == 0 ) ) {
-			return "Impl";
-		} else {
-			StringBuilder builder = new StringBuilder( propertiesValues.length * 200 );
-			for ( String propertyValue : propertiesValues ) {
-				builder.append( propertyValue );
-			}
-
-			//'-' is not a valid character for java class name
-			return ( "Impl_" + builder.toString().hashCode() ).replace( "-", "A" );
-		}
 	}
 
 	private SourceWriter getSourceWriter( TreeLogger logger, GeneratorContext context, JClassType originalType, String suffix )
