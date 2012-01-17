@@ -7,7 +7,7 @@ import java.util.Map;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
-import com.mvp4g.util.test_tools.Mvp4gRunAsyncCallbackTest;
+import com.mvp4g.util.test_tools.Mvp4gRunAsyncCallbackStub;
 
 public class StubClassType extends JClassType {
 
@@ -21,7 +21,7 @@ public class StubClassType extends JClassType {
 	public JMethod[] getOverridableMethods() {
 		Map<Class<? extends Annotation>, Annotation> declaredAnnotations = new HashMap<Class<? extends Annotation>, Annotation>();
 		JMethod method = new JMethod( this, "load", declaredAnnotations, null );
-		new JParameter( method, oracle.findType( Mvp4gRunAsyncCallbackTest.class.getCanonicalName() ), "callback", declaredAnnotations );
+		new JParameter( method, oracle.findType( Mvp4gRunAsyncCallbackStub.class.getCanonicalName() ), "callback", declaredAnnotations );
 		return new JMethod[] { method };
 	}
 

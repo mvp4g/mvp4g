@@ -164,7 +164,7 @@ public class Mvp4gConfiguration {
 	private TypeOracle oracle = null;
 	private PropertyOracle propertyOracle;
 
-	private String[] propertiesValues;
+	private String suffix;
 
 	/**
 	 * Contruct a Mvp4gConfiguration object
@@ -213,7 +213,7 @@ public class Mvp4gConfiguration {
 	 *             this exception is thrown where a configuration error occurs.
 	 * 
 	 */
-	public String[] load( JClassType module, Map<Class<? extends Annotation>, List<JClassType>> scanResult )
+	public String load( JClassType module, Map<Class<? extends Annotation>, List<JClassType>> scanResult )
 			throws InvalidMvp4gConfigurationException {
 
 		this.module = module;
@@ -243,10 +243,10 @@ public class Mvp4gConfiguration {
 		validateChildModules();
 		validateEvents();
 		validateDebug();
-		propertiesValues = validateGinModule();
+		suffix = getSuffix( validateGinModule() );
 		validateStart();
 
-		return propertiesValues;
+		return suffix;
 	}
 
 	public boolean isAsyncEnabled() {
@@ -510,20 +510,14 @@ public class Mvp4gConfiguration {
 		this.eventFilterConfiguration = eventFilterConfiguration;
 	}
 
-	/**
-	 * @return the propertiesValues
-	 */
-	public boolean hasPropertiesValues() {
-		return ( propertiesValues != null ) && ( propertiesValues.length > 0 );
+	public String getSuffix() {
+		return suffix;
 	}
 
-	/**
-	 * @param propertiesValues
-	 *            the propertiesValues to set
-	 */
-	public void setPropertiesValues( String[] propertiesValues ) {
-		this.propertiesValues = propertiesValues;
+	public void setSuffix( String suffix ) {
+		this.suffix = suffix;
 	}
+	
 
 	/*
 	 * Validation
@@ -1874,5 +1868,21 @@ public class Mvp4gConfiguration {
 			}
 		}
 		return false;
+	}
+	
+
+
+	String getSuffix( String[] propertiesValues ) {
+		if ( ( propertiesValues == null ) || ( propertiesValues.length == 0 ) ) {
+			return "";
+		} else {
+			StringBuilder builder = new StringBuilder( propertiesValues.length * 200 );
+			for ( String propertyValue : propertiesValues ) {
+				builder.append( propertyValue );
+			}
+
+			//'-' is not a valid character for java class name
+			return Integer.toString( builder.toString().hashCode()).replace( "-", "A" );
+		}
 	}
 }

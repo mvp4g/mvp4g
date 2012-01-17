@@ -2887,12 +2887,19 @@ public class Mvp4gConfigurationTest {
 	}
 
 	@Test
-	public void testHasPropertiesValues() {
-		assertFalse( configuration.hasPropertiesValues() );
-		configuration.setPropertiesValues( new String[] {} );
-		assertFalse( configuration.hasPropertiesValues() );
-		configuration.setPropertiesValues( new String[] { "test" } );
-		assertTrue( configuration.hasPropertiesValues() );
+	public void testSuffixGetterSetter() {
+		assertNull( configuration.getSuffix() );
+		String test = "test";
+		configuration.setSuffix( test );
+		assertEquals( test, configuration.getSuffix() );
+	}
+	
+	@Test
+	public void testGetSuffix(){
+		assertEquals( "", configuration.getSuffix( null ) );
+		assertEquals( "", configuration.getSuffix( new String[0] ) );
+		assertEquals( "2023092939", configuration.getSuffix( new String[]{"onevalue"} ) );
+		assertEquals( "A1211127213", configuration.getSuffix( new String[]{"onevalue", "valuetwo", "valuethree"} ) );
 	}
 
 	private <T> void assertList( List<T> list1, List<T> list2 ) {

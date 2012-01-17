@@ -1794,7 +1794,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		splitter.setClassName( "Splitter" );
 		configuration.getSplitters().add( splitter );
 
-		configuration.setPropertiesValues( new String[] { "test" } );
+		configuration.setSuffix( "suffix" );
 
 		assertOutput( getExpectedMultipleImpl(), false );
 		writer.writeConf();
@@ -2061,12 +2061,12 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedMultipleImpl() {
-		return new String[] { "interface SplitterMultipleRunAsyncCallback extends com.google.gwt.core.client.RunAsyncCallback {}",
-				"interface SplitterRunAsyncImpl extends com.mvp4g.client.Mvp4gRunAsync<SplitterMultipleRunAsyncCallback> {}",
-				"((SplitterRunAsyncImpl) GWT.create(SplitterRunAsyncImpl.class)).load(new SplitterMultipleRunAsyncCallback(){",
-				"interface childModuleRunAsyncCallback extends com.google.gwt.core.client.RunAsyncCallback {}",
-				"interface childModuleRunAsync extends com.mvp4g.client.Mvp4gRunAsync<childModuleRunAsyncCallback> {}",
-				"((com.mvp4g.client.Mvp4gRunAsync) GWT.create(childModuleRunAsync.class )).load( new childModuleRunAsyncCallback() {public void onSuccess() {" };
+		return new String[] { "interface SplitterMultipleRunAsyncCallbacksuffix extends com.google.gwt.core.client.RunAsyncCallback {}",
+				"interface SplitterRunAsyncImplsuffix extends com.mvp4g.client.Mvp4gRunAsync<SplitterMultipleRunAsyncCallbacksuffix> {}",
+				"((SplitterRunAsyncImplsuffix) GWT.create(SplitterRunAsyncImplsuffix.class)).load(new SplitterMultipleRunAsyncCallbacksuffix(){",
+				"interface childModuleRunAsyncCallbacksuffix extends com.google.gwt.core.client.RunAsyncCallback {}",
+				"interface childModuleRunAsyncsuffix extends com.mvp4g.client.Mvp4gRunAsync<childModuleRunAsyncCallbacksuffix> {}",
+				"((com.mvp4g.client.Mvp4gRunAsync) GWT.create(childModuleRunAsyncsuffix.class )).load( new childModuleRunAsyncCallbacksuffix() {public void onSuccess() {" };
 	}
 
 	private String[] getExpectedSplitterLoadingConf() {
