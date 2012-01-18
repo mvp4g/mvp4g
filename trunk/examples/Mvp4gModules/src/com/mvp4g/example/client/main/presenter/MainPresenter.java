@@ -3,14 +3,18 @@ package com.mvp4g.example.client.main.presenter;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.mvp4g.client.Mvp4gLoader;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
@@ -19,8 +23,9 @@ import com.mvp4g.example.client.main.MainEventFilter;
 import com.mvp4g.example.client.main.view.MainView;
 import com.mvp4g.example.client.util.index.IndexGenerator;
 
+@Singleton
 @Presenter( view = MainView.class )
-public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface, MainEventBus> {
+public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface, MainEventBus> implements Mvp4gLoader<MainEventBus> {
 
 	public Map<Class<? extends Mvp4gModule>, Mvp4gModule> modules = new HashMap<Class<? extends Mvp4gModule>, Mvp4gModule>();
 
@@ -53,6 +58,8 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 		HasValue<Boolean> getFilter();
 
 		HasValue<Boolean> getFilterByActivate();
+
+		HasValue<Boolean> getCompanyModuleFilter();
 
 		HasClickHandlers getHasBeenThere();
 
@@ -138,7 +145,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 					eventBus.activateStatus();
 				}
 				view.setActivateText( isStatusActivated );
-				isStatusActivated = !isStatusActivated;				
+				isStatusActivated = !isStatusActivated;
 			}
 
 		} );
@@ -202,6 +209,39 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 		} else {
 			return true;
 		}
+	}
+
+	@Override
+	public void preLoad( MainEventBus eventBus, String eventName, Object[] params, Command load ) {
+		if ( view.getCompanyModuleFilter().getValue() ) {
+			if ( eventName != null ) {
+				view.displayText( "Event " + eventName + " hasn't been forwarded to CompanyModule and/or StatusSplitter." );
+			} else {
+				view.displayText( "History change wasn't forwarded to Company module." );
+			}
+		} else {
+			load.execute();
+		}
+	}
+
+	@Override
+	public void onSuccess( MainEventBus eventBus, final String eventName, Object[] params ) {
+		// Use a scheduler because when I switch body, the 
+		Scheduler.get().scheduleDeferred( new Scheduler.ScheduledCommand() {
+			@Override
+			public void execute() {
+				if ( eventName != null ) {
+					view.displayText( "Event " + eventName + " has been forwarded to CompanyModule and/or StatusSplitter." );
+				} else {
+					view.displayText( "CompanyModule loaded because of History change." );
+				}
+			}
+		} );
+	}
+
+	@Override
+	public void onFailure( MainEventBus eventBus, String eventName, Object[] params, Throwable err ) {
+		view.displayText( "Event " + eventName + " has been forwarded to CompanyModule and/or StatusSplitter but it couldn't be loaded: " + err );
 	}
 
 }
