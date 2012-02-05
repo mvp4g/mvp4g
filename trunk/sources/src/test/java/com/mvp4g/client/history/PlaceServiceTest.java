@@ -24,35 +24,6 @@ import com.mvp4g.client.test_tools.ValueChangeEventStub;
  */
 public class PlaceServiceTest {
 
-	private class MyTestPlaceService extends PlaceService {
-
-		private boolean initEvent = false;
-		private boolean notFoundEvent = false;
-
-		public MyTestPlaceService( HistoryProxy history ) {
-			super( history );
-		}
-
-		public boolean isInitEvent() {
-			return initEvent;
-		}
-
-		public boolean isNotFoundEvent() {
-			return notFoundEvent;
-		}
-
-		@Override
-		protected void sendInitEvent() {
-			initEvent = true;
-		}
-
-		@Override
-		protected void sendNotFoundEvent() {
-			notFoundEvent = true;
-		}
-
-	}
-
 	private class MyTestNavigationConfirmation implements NavigationConfirmationInterface {
 
 		private NavigationEventCommand event;
@@ -67,7 +38,7 @@ public class PlaceServiceTest {
 
 	}
 
-	MyTestPlaceService placeServiceDefault = null;
+	PlaceService placeServiceDefault = null;
 	EventBusWithLookUpStub eventBus = null;
 	HistoryProxyStub history;
 	HistoryProxyStub historySeparator;
@@ -76,21 +47,19 @@ public class PlaceServiceTest {
 
 	@Before
 	public void setUp() {
-
 		history = new HistoryProxyStub();
 		historySeparator = new HistoryProxyStub();
 		historySeparatorAdd = new HistoryProxyStub();
 
 		eventBus = new EventBusWithLookUpStub();
 		module = new Mvp4gModuleStub( eventBus );
-		placeServiceDefault = new MyTestPlaceService( history );
+		placeServiceDefault = new PlaceService( history );
 		placeServiceDefault.setModule( module );
-		
 	}
 
 	@Test
 	public void testConstructor() {
-		assertEquals( history.getHandler(), placeServiceDefault );		
+		assertEquals( history.getHandler(), placeServiceDefault );
 	}
 
 	@Test
@@ -128,14 +97,14 @@ public class PlaceServiceTest {
 	public void testEmptyToken() {
 		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( "" );
 		placeServiceDefault.onValueChange( event );
-		assertTrue( placeServiceDefault.isInitEvent() );
+		assertTrue( module.isHistoryInit() );
 	}
 
 	@Test
 	public void testWrongToken() {
 		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( "wrongEventType" );
 		placeServiceDefault.onValueChange( event );
-		assertTrue( placeServiceDefault.isNotFoundEvent() );
+		assertTrue( module.isHistoryNotFound() );
 	}
 
 	@Test
@@ -170,7 +139,7 @@ public class PlaceServiceTest {
 		Mvp4gEventPasser passer = module.getPasser();
 		passer.setEventObject( false );
 		passer.pass( module );
-		assertTrue( placeServiceDefault.isNotFoundEvent() );
+		assertTrue( module.isHistoryNotFound() );
 
 		passer.setEventObject( true );
 		passer.pass( module );
@@ -188,7 +157,7 @@ public class PlaceServiceTest {
 		Mvp4gEventPasser passer = module.getPasser();
 		passer.setEventObject( true );
 		passer.pass( module );
-		assertTrue( placeServiceDefault.isNotFoundEvent() );
+		assertTrue( module.isHistoryNotFound() );
 
 	}
 
@@ -196,7 +165,7 @@ public class PlaceServiceTest {
 	public void testConverterForChildModuleWithParameter() {
 		String historyName = "child/eventType";
 		String form = "form";
-		placeServiceDefault.addConverter(  historyName, buildHistoryConverter( false ) );
+		placeServiceDefault.addConverter( historyName, buildHistoryConverter( false ) );
 		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( historyName + "?" + form );
 		placeServiceDefault.onValueChange( event );
 
@@ -314,22 +283,22 @@ public class PlaceServiceTest {
 		eventBus.assertEvent( eventType, new Object[] { form } );
 
 	}
-	
+
 	@Test
-	public void testEnabled(){
+	public void testEnabled() {
 		String form = "form";
 		String historyName = "historyName";
 		placeServiceDefault.addConverter( historyName, buildHistoryConverter( false ) );
-		
+
 		placeServiceDefault.setEnabled( false );
 		String token = placeServiceDefault.place( historyName, form, true );
 		assertEquals( historyName + "?" + form, token );
 		assertNull( history.getToken() );
-		
+
 		token = placeServiceDefault.place( historyName, form, false );
 		assertNull( token );
 		assertNull( history.getToken() );
-		
+
 		placeServiceDefault.setEnabled( true );
 		token = placeServiceDefault.place( historyName, form, false );
 		assertEquals( historyName + "?" + form, token );

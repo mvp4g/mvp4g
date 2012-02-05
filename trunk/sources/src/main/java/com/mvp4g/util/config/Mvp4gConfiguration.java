@@ -1858,7 +1858,7 @@ public class Mvp4gConfiguration {
 			try {
 				String eventType = e.getType();
 				JClassType string = oracle.getType( java.lang.String.class.getName() );
-				for ( JMethod m : parentEventBus.getMethods() ) {
+				for ( JMethod m : parentEventBus.getOverridableMethods() ) {
 					if ( eventType.equals( m.getName() ) ) {
 						return m.getReturnType().equals( string );
 					}

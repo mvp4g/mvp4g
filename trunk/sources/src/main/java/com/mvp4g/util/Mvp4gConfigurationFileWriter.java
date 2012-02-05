@@ -268,7 +268,7 @@ public class Mvp4gConfigurationFileWriter {
 			boolean isAsync = true;
 			boolean isAsyncEnabled = configuration.isAsyncEnabled();
 			String suffix = configuration.getSuffix();
-			boolean hasMultipleImpl = (suffix != null) && (suffix.length() > 0);
+			boolean hasMultipleImpl = ( suffix != null ) && ( suffix.length() > 0 );
 			String asyncImpl = null;
 			String asyncCallback = null;
 			String loaderName = null;
@@ -499,6 +499,25 @@ public class Mvp4gConfigurationFileWriter {
 			sourceWriter.print( loader.getName() );
 			sourceWriter.println( "();" );
 		}
+		DebugElement debug = configuration.getDebug();
+		if ( debug != null ) {
+			String loggerClass = debug.getLogger();
+			sourceWriter.print( loggerClass );
+			sourceWriter.print( " get" );
+			sourceWriter.print( loggerClass.replace( ".", "_" ) );
+			sourceWriter.println( "();" );
+		}
+		if ( configuration.isRootModule() ) {
+			HistoryElement history = configuration.getHistory();
+			String placeServiceClass = ( history == null ) ? null : history.getPlaceServiceClass();
+			if ( placeServiceClass == null ) {
+				placeServiceClass = PlaceService.class.getCanonicalName();
+			}
+			sourceWriter.print( placeServiceClass );
+			sourceWriter.print( " get" );
+			sourceWriter.print( placeServiceClass.replace( ".", "_" ) );
+			sourceWriter.println( "();" );
+		}
 		sourceWriter.outdent();
 		sourceWriter.print( "}" );
 
@@ -511,45 +530,15 @@ public class Mvp4gConfigurationFileWriter {
 	 * 
 	 */
 	private void writeHistory() {
-
 		if ( configuration.isRootModule() ) {
-
 			HistoryElement history = configuration.getHistory();
-			boolean hasHistoryConfiguration = ( history != null );
-
 			String placeServiceClass = ( history == null ) ? null : history.getPlaceServiceClass();
 			if ( placeServiceClass == null ) {
 				placeServiceClass = PlaceService.class.getCanonicalName();
 			}
-			sourceWriter.print( "placeService = new " );
-			sourceWriter.print( placeServiceClass );
-			sourceWriter.println( "(){" );
-
-			sourceWriter.indent();
-			sourceWriter.println( "protected void sendInitEvent(){" );
-			sourceWriter.indent();
-			if ( hasHistoryConfiguration ) {
-				sourceWriter.print( "eventBus." );
-				sourceWriter.print( history.getInitEvent() );
-				sourceWriter.println( "();" );
-			}
-			sourceWriter.outdent();
-			sourceWriter.println( "}" );
-			sourceWriter.outdent();
-			sourceWriter.indent();
-			sourceWriter.println( "protected void sendNotFoundEvent(){" );
-			sourceWriter.indent();
-			if ( hasHistoryConfiguration ) {
-				sourceWriter.print( "eventBus." );
-				sourceWriter.print( history.getNotFoundEvent() );
-				sourceWriter.println( "();" );
-			}
-			sourceWriter.outdent();
-			sourceWriter.println( "}" );
-
-			sourceWriter.outdent();
-			sourceWriter.println( "};" );
-
+			sourceWriter.print( "placeService = injector.get" );
+			sourceWriter.print( placeServiceClass.replace( ".", "_" ) );
+			sourceWriter.println( "();" );
 		}
 
 		String name = null;
@@ -559,7 +548,6 @@ public class Mvp4gConfigurationFileWriter {
 			createInstance( name, converter.getClassName(), true );
 			injectServices( name, converter.getInjectedServices() );
 		}
-
 	}
 
 	/**
@@ -668,11 +656,10 @@ public class Mvp4gConfigurationFileWriter {
 	 * 
 	 */
 	private void writeLogger() {
-
 		DebugElement debug = configuration.getDebug();
 		if ( debug != null ) {
-			sourceWriter.print( "logger = new " );
-			sourceWriter.print( debug.getLogger() );
+			sourceWriter.print( "logger = injector.get" );
+			sourceWriter.print( debug.getLogger().replace( ".", "_" ) );
 			sourceWriter.println( "();" );
 		}
 	}
@@ -1706,7 +1693,7 @@ public class Mvp4gConfigurationFileWriter {
 		}
 
 		String suffix = configuration.getSuffix();
-		boolean hasMultipleImpl = (suffix != null) && (suffix.length() > 0);
+		boolean hasMultipleImpl = ( suffix != null ) && ( suffix.length() > 0 );
 
 		Set<SplitterElement> splitters = configuration.getSplitters();
 		String asyncImpl = null, asyncMultipleCallback = null;
@@ -2062,6 +2049,28 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.outdent();
 		sourceWriter.println( "}" );
 
+		HistoryElement history = configuration.getHistory();
+		boolean hasHistoryConfiguration = configuration.isRootModule() && ( history != null );
+		sourceWriter.println( "public void sendInitEvent(){" );
+		sourceWriter.indent();
+		if ( hasHistoryConfiguration ) {
+			sourceWriter.print( "eventBus." );
+			sourceWriter.print( history.getInitEvent() );
+			sourceWriter.println( "();" );
+		}
+		sourceWriter.outdent();
+		sourceWriter.println( "}" );
+		sourceWriter.outdent();
+		sourceWriter.indent();
+		sourceWriter.println( "public void sendNotFoundEvent(){" );
+		sourceWriter.indent();
+		if ( hasHistoryConfiguration ) {
+			sourceWriter.print( "eventBus." );
+			sourceWriter.print( history.getNotFoundEvent() );
+			sourceWriter.println( "();" );
+		}
+		sourceWriter.outdent();
+		sourceWriter.println( "}" );
 	}
 
 	private void writeLog( String beforeText, String type, String[] objectClasses ) {

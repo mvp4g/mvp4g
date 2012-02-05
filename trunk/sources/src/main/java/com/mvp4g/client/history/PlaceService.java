@@ -52,7 +52,7 @@ import com.mvp4g.client.Mvp4gModule;
  * @author plcoirier
  * 
  */
-public abstract class PlaceService implements ValueChangeHandler<String> {
+public class PlaceService implements ValueChangeHandler<String> {
 
 	public static final String MODULE_SEPARATOR = "/";
 
@@ -63,7 +63,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 
 	@SuppressWarnings( "rawtypes" )
 	private Map<String, HistoryConverter> converters = new HashMap<String, HistoryConverter>();
-	
+
 	private boolean enabled = true;
 
 	private NavigationConfirmationInterface navigationConfirmation;
@@ -137,7 +137,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 				dispatchEvent( result[0], result[1], module );
 			}
 		} else {
-			sendInitEvent();
+			module.sendInitEvent();
 		}
 	}
 
@@ -158,14 +158,14 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	}
 
 	/**
-	 * Check if this event is a child's module event. If it's the case, forward the token to the child module and return true.
-	 *
+	 * Check if this event is a child's module event. If it's the case, forward the token to the
+	 * child module and return true.
+	 * 
 	 * @param eventName
-	 * 			name of the event that was stored in the token
+	 *            name of the event that was stored in the token
 	 * @param param
-	 * 			parameters stored in the token
-	 * @return
-	 * 		true if this child module's event.
+	 *            parameters stored in the token
+	 * @return true if this child module's event.
 	 */
 	protected boolean forwardToChildModuleIfNeeded( final String eventName, final String param ) {
 		boolean forAChild = eventName.contains( MODULE_SEPARATOR );
@@ -177,7 +177,7 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 					if ( (Boolean)eventObjects[0] ) {
 						dispatchEvent( eventName, param, module );
 					} else {
-						sendNotFoundEvent();
+						module.sendNotFoundEvent();
 					}
 				}
 			};
@@ -190,11 +190,11 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 * Dispatch the event thanks to the history converter.
 	 * 
 	 * @param historyName
-	 * 			name of the event stored in the token
+	 *            name of the event stored in the token
 	 * @param param
-	 * 			parameters stored in the token			
+	 *            parameters stored in the token
 	 * @param module
-	 * 			module to which belongs the event
+	 *            module to which belongs the event
 	 */
 	@SuppressWarnings( "unchecked" )
 	protected void dispatchEvent( String historyName, String param, Mvp4gModule module ) {
@@ -202,14 +202,14 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 			@SuppressWarnings( "rawtypes" )
 			HistoryConverter converter = converters.get( historyName );
 			if ( converter == null ) {
-				sendNotFoundEvent();
+				module.sendNotFoundEvent();
 			} else {
 				String[] tab = historyName.split( MODULE_SEPARATOR );
 				String finalEventName = tab[tab.length - 1];
 				converter.convertFromToken( finalEventName, param, module.getEventBus() );
 			}
 		} else {
-			sendNotFoundEvent();
+			module.sendNotFoundEvent();
 		}
 	}
 
@@ -226,13 +226,13 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	 * @return the generated token
 	 */
 	public String place( String eventName, String param, boolean onlyToken ) {
-		
+
 		if ( !enabled && !onlyToken ) {
 			return null;
 		}
 
-		String token = tokenize( eventName, param);
-		
+		String token = tokenize( eventName, param );
+
 		if ( converters.get( eventName ).isCrawlable() ) {
 			token = CRAWLABLE + token;
 		}
@@ -241,18 +241,17 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 		}
 		return token;
 	}
-	
+
 	/**
 	 * Transform an event and its parameters to a token
 	 * 
 	 * @param eventName
-	 * 			event's name
+	 *            event's name
 	 * @param param
-	 * 			event's parameters
-	 * @return
-	 * 			token to store in the history
+	 *            event's parameters
+	 * @return token to store in the history
 	 */
-	public String tokenize(String eventName, String param){
+	public String tokenize( String eventName, String param ) {
 		String token = eventName;
 		if ( ( param != null ) && ( param.length() > 0 ) ) {
 			token = token + getParamSeparator() + param;
@@ -320,25 +319,10 @@ public abstract class PlaceService implements ValueChangeHandler<String> {
 	}
 
 	/**
-	 * @return
-	 * 		separator used to differenciate the event's name and its parameters
+	 * @return separator used to differenciate the event's name and its parameters
 	 */
 	protected String getParamSeparator() {
 		return "?";
 	}
-
-	/**
-	 * Call when token retrieved is null or equals to empty string
-	 * 
-	 * Don't implement this method, the framework will.
-	 */
-	abstract protected void sendInitEvent();
-
-	/**
-	 * Call when token retrieved doesn't correspond to an event
-	 * 
-	 * Don't implement this method, the framework will.
-	 */
-	abstract protected void sendNotFoundEvent();
 
 }

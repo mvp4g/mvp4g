@@ -10,10 +10,10 @@ import com.mvp4g.client.history.NavigationEventCommand;
 public class Mvp4gModuleStub implements Mvp4gModule {
 
 	public final String TOKEN = "token";
-	
+
 	private EventBus eventBus;
 	private String eventType;
-	private boolean tokenOnly;
+	private boolean tokenOnly, historyNotFound, historyInit;
 	private Object form;
 	private Mvp4gEventPasser passer;
 
@@ -69,7 +69,7 @@ public class Mvp4gModuleStub implements Mvp4gModule {
 	public Object getForm() {
 		return form;
 	}
-	
+
 	/**
 	 * @return the tokenOnly
 	 */
@@ -99,18 +99,36 @@ public class Mvp4gModuleStub implements Mvp4gModule {
 
 	public void confirmEvent( NavigationEventCommand event ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void loadChildModule( String childModuleClassName, String eventName, boolean passive, Mvp4gEventPasser passer ) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public void sendInitEvent() {
+		historyInit = true;
+	}
+
+	@Override
+	public void sendNotFoundEvent() {
+		historyNotFound = true;
+	}
+
+	public boolean isHistoryNotFound() {
+		return historyNotFound;
+	}
+
+	public boolean isHistoryInit() {
+		return historyInit;
 	}
 
 }

@@ -107,4 +107,18 @@ public interface Mvp4gModule {
 	 */
 	void loadChildModule( String childModuleClassName, String eventName, boolean passive, Mvp4gEventPasser passer );
 
+	/**
+	 * Called by the place service when token retrieved is null or equals to empty string
+	 * 
+	 * Don't implement this method, the framework will.
+	 */
+	void sendInitEvent();
+
+	/**
+	 * Called by the place service when token retrieved doesn't correspond to an event
+	 * 
+	 * Don't implement this method, the framework will.
+	 */
+	void sendNotFoundEvent();
+
 }
