@@ -799,7 +799,6 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	@Test
 	public void testHistory() {
-
 		HistoryConverterElement hc1 = new HistoryConverterElement();
 		hc1.setName( "userConverter" );
 		hc1.setClassName( "com.mvp4g.example.client.history.display.UserHistoryConverter" );
@@ -1907,8 +1906,8 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedDefaultHistory() {
-		return new String[] { "placeService = new com.mvp4g.client.history.PlaceService(){", "protected void sendInitEvent(){",
-				"protected void sendNotFoundEvent(){", "placeService.setModule(itself);", };
+		return new String[] { "com.mvp4g.client.history.PlaceService getcom_mvp4g_client_history_PlaceService();",
+				"placeService = injector.getcom_mvp4g_client_history_PlaceService();" };
 
 	}
 
@@ -1921,11 +1920,13 @@ public class Mvp4gConfigurationFileReaderTest {
 				"Mvp4gEventPasser nextPasser = new Mvp4gEventPasser(nextToken) {", "public void pass(Mvp4gModule module) {",
 				"module.dispatchHistoryEvent((String) eventObjects[0], passer);", "passer.setEventObject(false);", "passer.pass(this);", "}else{",
 				"passer.pass(this);",
-				"public void loadChildModule(String childModuleClassName, String eventName, boolean passive, Mvp4gEventPasser passer){" };
+				"public void loadChildModule(String childModuleClassName, String eventName, boolean passive, Mvp4gEventPasser passer){",
+				"public void sendInitEvent(){", "public void sendNotFoundEvent(){", };
 	}
 
 	private String[] getExpectedHistoryWithConfig() {
-		return new String[] { "placeService = new com.mvp4g.util.test_tools.CustomPlaceService(){" };
+		return new String[] { "com.mvp4g.util.test_tools.CustomPlaceService getcom_mvp4g_util_test_tools_CustomPlaceService();",
+				"placeService = injector.getcom_mvp4g_util_test_tools_CustomPlaceService();" };
 
 	}
 
@@ -2061,7 +2062,8 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedMultipleImpl() {
-		return new String[] { "interface SplitterMultipleRunAsyncCallbacksuffix extends com.google.gwt.core.client.RunAsyncCallback {}",
+		return new String[] {
+				"interface SplitterMultipleRunAsyncCallbacksuffix extends com.google.gwt.core.client.RunAsyncCallback {}",
 				"interface SplitterRunAsyncImplsuffix extends com.mvp4g.client.Mvp4gRunAsync<SplitterMultipleRunAsyncCallbacksuffix> {}",
 				"((SplitterRunAsyncImplsuffix) GWT.create(SplitterRunAsyncImplsuffix.class)).load(new SplitterMultipleRunAsyncCallbacksuffix(){",
 				"interface childModuleRunAsyncCallbacksuffix extends com.google.gwt.core.client.RunAsyncCallback {}",
@@ -2243,7 +2245,8 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	private String[] getExpectedDebug() {
 		return new String[] { "protected com.mvp4g.client.event.DefaultMvp4gLogger logger;",
-				"logger = new com.mvp4g.client.event.DefaultMvp4gLogger();", "int startLogDepth = BaseEventBus.logDepth;",
+				"com.mvp4g.client.event.DefaultMvp4gLogger getcom_mvp4g_client_event_DefaultMvp4gLogger();",
+				"logger = injector.getcom_mvp4g_client_event_DefaultMvp4gLogger();", "int startLogDepth = BaseEventBus.logDepth;",
 				"++BaseEventBus.logDepth;", "++BaseEventBus.logDepth;", "BaseEventBus.logDepth = startLogDepth;",
 				"logger.log(\"Module: Mvp4gModule || event: test2 || param(s): \" + attr0, BaseEventBus.logDepth);",
 				"logger.log(\"Module: Mvp4gModule || event: test3 || param(s): \" + attr0+ \", \" + attr1, BaseEventBus.logDepth);",
@@ -2251,9 +2254,11 @@ public class Mvp4gConfigurationFileReaderTest {
 	}
 
 	private String[] getExpectedDetailedDebug() {
-		return new String[] { "protected com.mvp4g.util.test_tools.OneLogger logger;", "logger = new com.mvp4g.util.test_tools.OneLogger();",
-				"int startLogDepth = BaseEventBus.logDepth;", "++BaseEventBus.logDepth;", "++BaseEventBus.logDepth;",
-				"BaseEventBus.logDepth = startLogDepth;", "logger.log(\"Module: Mvp4gModule || event: test2\", BaseEventBus.logDepth);",
+		return new String[] { "protected com.mvp4g.util.test_tools.OneLogger logger;",
+				"com.mvp4g.util.test_tools.OneLogger getcom_mvp4g_util_test_tools_OneLogger();",
+				"logger = injector.getcom_mvp4g_util_test_tools_OneLogger();", "int startLogDepth = BaseEventBus.logDepth;",
+				"++BaseEventBus.logDepth;", "++BaseEventBus.logDepth;", "BaseEventBus.logDepth = startLogDepth;",
+				"logger.log(\"Module: Mvp4gModule || event: test2\", BaseEventBus.logDepth);",
 				"logger.log(\"Module: Mvp4gModule || event: test || param(s): \" + attr0, BaseEventBus.logDepth);",
 				"logger.log(handler.toString() + \" handles test2\", BaseEventBus.logDepth);" };
 	}
