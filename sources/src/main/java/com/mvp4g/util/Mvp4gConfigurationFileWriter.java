@@ -2065,8 +2065,12 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println( "public void sendNotFoundEvent(){" );
 		sourceWriter.indent();
 		if ( hasHistoryConfiguration ) {
+			String event = history.getNotFoundEvent();
+			if (event == null) {
+				event = history.getInitEvent();
+			}
 			sourceWriter.print( "eventBus." );
-			sourceWriter.print( history.getNotFoundEvent() );
+			sourceWriter.print( event );
 			sourceWriter.println( "();" );
 		}
 		sourceWriter.outdent();

@@ -15,7 +15,6 @@
  */
 package com.mvp4g.util.config.element;
 
-
 /**
  * An Mvp4g History configuration element.</p>
  * 
@@ -52,11 +51,11 @@ public class HistoryElement extends Mvp4gElement {
 	public String getPlaceServiceClass() {
 		return getProperty( "placeServiceClass" );
 	}
-	
+
 	public void setInitEvent( String initEvent ) {
 		setProperty( "initEvent", initEvent );
 	}
-	
+
 	public String getInitEvent() {
 		return getProperty( "initEvent" );
 	}
@@ -66,11 +65,7 @@ public class HistoryElement extends Mvp4gElement {
 	}
 
 	public String getNotFoundEvent() {
-		String event = getProperty( "notFoundEvent" );
-		if ( event == null ) {
-			event = getInitEvent();
-		}
-		return event;
+		return getProperty( "notFoundEvent" );
 	}
 
 }
