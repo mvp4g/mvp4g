@@ -1,4 +1,4 @@
-#summary GIN integration (Draft for Mvp4g 1.3.0)
+#summary GIN integration
 
 <wiki:toc max_depth="3" />
 
@@ -37,14 +37,14 @@ public interface MyEventBus extends EventBus {
 ==Using GIN to manage nested views==
 
 Before GIN injection, if you wanted to display a view inside another view, you had to:
--define an event in order the nested presenter pass its view to the main presenter.
--have the main presenter handles this event and call a method on the main view to add the nested view.
--define a method in the view to add the nested view.
+- define an event in order the nested presenter pass its view to the main presenter.
+- have the main presenter handles this event and call a method on the main view to add the nested view.
+- define a method in the view to add the nested view.
 
 This method is really useful in case the nested view can be dynamically changed. It may seem like a lot of boilerplate code in case your view will always stay the same (for example, you may have an application with a header, a menu and a footer that will always be the same but you want to have a presenter for each of these sections). Thanks to GIN, you can ease this process by injecting the view of the nested presenter directly inside the view of the main presenter.
 
 In order to do this, you need to:
--inject the nested view inside the main view:
+- inject the nested view inside the main view:
 {{{
 public class MainView ... {
 
@@ -61,12 +61,12 @@ public class NestedView ... {
 	...
 }
 }}}
--make sure your nested presenter is binded with the nested view before its view is displayed, otherwise no action from the view will be managed. The easiest way to do this, it's to have your presenter handles an event before it is displayed. For example, if your nested view is displayed at start, it can handle the start event.
+-make sure your nested presenter is binded with the nested view before its view is displayed, otherwise no action from the view will be managed. The easiest way to do this, it's use a bind feature. For example, if your nested view is displayed at start, it can handle the start event.
 {{{
 @EventBus(startView=MainView.class)
 public interface OneEventBus extends EventBus {
 	
-	@Event(handler=NestedPresenter.class}
+	@Event(handler=MainPresenter.class, bind=NestedPresenter.class}
 	void start();
 	...
 	
@@ -81,10 +81,6 @@ public class NestedPresenter extends BasePresenter<NestedPresenter.INestedView, 
 		//bind your view
 	}
 	
-	public void onStart(){
-		//nothing to do here, 
-                //the goal is to have the presenter binds with its view
-	}
 	...
 	
 }
@@ -119,4 +115,42 @@ public class MyGinModule extends AbstractGinModule {
 //for each event bus 
 @EventBus(ginModules = MyGinModule.class) 
 public interface MyEventBus ... { ... } 
+}}}
+
+==Setting GIN module for multiple devices==
+Modern applications usually have one version for each type of device (desktop, mobile, tablet). Thanks to the MVP pattern, you can easily create a version for
+each device by just switching the injected view implementation. To switch the view, you just have to change the GIN module used to configure your injection.
+You can easily do this with Mvp4g thanks to the attribute 'ginModuleProperties' of @Events.
+
+The idea is that you can configure a deferred property inside your GWT xml configuration file that Mvp4g will use when generating your event bus. This property
+should define a GIN module class name. Before doing so, you may want to set mobile user agent, you can read [http://code.google.com/p/google-web-toolkit/wiki/ConditionalProperties this page] to learn how to do it (don't forget to read the example 2 to avoid permutation explosion).
+
+The first step is then to define a deferred property inside our GWT xml file:
+{{{
+<module rename-to='mvp4gmodules'>  
+	...
+	<define-property name="ginModule" values="com$mvp4g$client$DefaultMvp4gGinModule,com$mvp4g$example$client$MobileGinModule,com$mvp4g$example$client$TabletGinModule" />
+
+	<set-property name="ginModule" value="com$mvp4g$client$DefaultMvp4gGinModule" >
+		<when-property-is name="mobile.user.agent" value="not_mobile" />
+	</set-property>
+	<set-property name="ginModule" value="com$mvp4g$example$client$MobileGinModule">  
+		<any>
+			<when-property-is name="mobile.user.agent" value="android" />
+			<when-property-is name="mobile.user.agent" value="iphone" />
+		</any>	
+	</set-property>
+	<set-property name="ginModule" value="com$mvp4g$example$client$TabletGinModule">  
+		<when-property-is name="mobile.user.agent" value="ipad" />
+	</set-property>
+	...
+</module>		
+}}}
+
+[http://www.qondio.com/graphics/attention.png] '.' is not a valid value for a deferred property so you will have to replace it by '$'. Thus `com.mvp4g.client.DefaultMvp4gGinModule` becomes `com$mvp4g$client$DefaultMvp4gGinModule`
+
+Now that you have defined this property, you can just tell Mvp4g to use it:
+{{{
+@EventBus(..., ginModuleProperties="ginModule")
+public interface OneEvent extends EventBus 
 }}}
