@@ -9,10 +9,9 @@ import com.mvp4g.example.client.bean.UserBean;
 import com.mvp4g.example.client.presenter.RootPresenter;
 import com.mvp4g.example.client.presenter.UserCreatePresenter;
 import com.mvp4g.example.client.presenter.UserDisplayPresenter;
-import com.mvp4g.example.client.view.RootView;
 
 //start view is the view that will be automatically added to the RootPanel/RootLayoutPanel
-@Events( startView = RootView.class )
+@Events( startPresenter = RootPresenter.class )
 public interface TestEventBus extends EventBus {
 
 	//framework will automatically call onUserCreated method of UserDisplayPresenter instance
