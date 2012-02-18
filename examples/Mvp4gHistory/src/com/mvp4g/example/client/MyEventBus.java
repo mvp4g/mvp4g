@@ -18,10 +18,9 @@ import com.mvp4g.example.client.presenter.TopBarPresenter;
 import com.mvp4g.example.client.presenter.display.CartDisplayPresenter;
 import com.mvp4g.example.client.presenter.display.DealDisplayPresenter;
 import com.mvp4g.example.client.presenter.display.ProductDisplayPresenter;
-import com.mvp4g.example.client.view.RootTemplateView;
 import com.mvp4g.example.client.widget.IView;
 
-@Events( startView = RootTemplateView.class, historyOnStart = true )
+@Events( startPresenter = RootTemplatePresenter.class, historyOnStart = true )
 public interface MyEventBus extends EventBus {
 
 	@Event( handlers = RootTemplatePresenter.class )
