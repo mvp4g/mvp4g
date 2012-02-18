@@ -1,4 +1,4 @@
-#summary Defining an event bus (Draft for Mvp4g 1.3.0)
+#summary Defining an event bus
 
 <wiki:toc max_depth="3" />
 
@@ -21,13 +21,13 @@ To create an event bus, you need to:
  * annotate it with @Events
 
 Annotation @Events has the following attributes:
- * startView (mandatory) and startViewName (optional), [http://code.google.com/p/mvp4g/wiki/EventBus#Start_View see StartView].
+ * startPresenter (mandatory) and startPresenterName (optional), [http://code.google.com/p/mvp4g/wiki/EventBus#Start_Presenter see StartPresenter].
  * historyOnStart (optional, by default false), use only in case of history management, [http://code.google.com/p/mvp4g/wiki/PlaceService see Mvp4g & Browse history].
  * module (optional, by default Mvp4gModule), use only in case of multi-module, [http://code.google.com/p/mvp4g/wiki/MultiModules see Multi-modules feature].
  * ginModules (optional, [http://code.google.com/p/mvp4g/wiki/GinIntegration see GIN integration]).
 
 {{{
-@Events(startView = MainView.class)
+@Events(startPresenter = MainPresenter.class)
 public interface MainEventBus extends EventBus { ... }
 }}}
 
@@ -38,7 +38,7 @@ To create an event, you need to:
  * annotate it with @Event.
 
 {{{
-@Events(startView = MainView.class)
+@Events(startPresenter = MainPresenter.class)
 public interface MainEventBus extends EventBusWithLookup {
 
 	@Event(...)
@@ -56,11 +56,13 @@ public interface MainEventBus extends EventBusWithLookup {
  * calledMethod (see next paragraph)
  * name: Some Mvp4g methods let you manipulate an event thanks to its name. By default the event's name is the event's method's name but you can override it to ease refractoring ([http://code.google.com/p/mvp4g/wiki/PlaceService#Place_Service see convertFromToken method], [http://code.google.com/p/mvp4g/wiki/EventBus#Event_Filtering see filterEvent method], [http://code.google.com/p/mvp4g/wiki/EventBus#with_lookup see dispatch method]).
  * historyConverter & historyConverterName: used only for history management([http://code.google.com/p/mvp4g/wiki/PlaceService see Mvp4g & Browse history])
- * modulesToLoad and forwardToParent ([http://code.google.com/p/mvp4g/wiki/MultiModules see Multi-modules feature])
- * activate, activateNames, deactivate, deactivateNames (see [http://code.google.com/p/mvp4g/wiki/EventBus?ts=1284236703&updated=EventBus#Activating/Deactivating_presenters see Activating/Deactivating presenters])
- * navigationEvent (see [http://code.google.com/p/mvp4g/wiki/EventBus_130#Navigation_Event Navigation Event])
- * passive (see [http://code.google.com/p/mvp4g/wiki/EventBus_130#Passive_Event Passive Event])
- * broadcastTo (see [http://code.google.com/p/mvp4g/wiki/EventBus_130#Broadcast_Event Broadcast Event])
+ * forwardToModules and forwardToParent ([http://code.google.com/p/mvp4g/wiki/MultiModules see Multi-modules feature])
+ * activate, activateNames, deactivate, deactivateNames (see [http://code.google.com/p/mvp4g/wiki/EventBus#Activating/Deactivating_presenters see Activating/Deactivating presenters])
+ * navigationEvent (see [http://code.google.com/p/mvp4g/wiki/EventBus#Navigation_Event Navigation Event])
+ * passive (see [http://code.google.com/p/mvp4g/wiki/EventBus#Passive_Event Passive Event])
+ * broadcastTo (see [http://code.google.com/p/mvp4g/w/EventBusBroadcast_Event Broadcast Event])
+ * generate ([http://code.google.com/p/mvp4g/wiki/PresenterViewService_140#Event_Generation see Event Generation])
+ * bind and bindNames (see [http://code.google.com/p/mvp4g/wiki/EventBus_140#Bind_Event Bind Event])
 
 ==Adding an handler to an event==
 
@@ -137,17 +139,17 @@ You can also deactivate (or activate) a presenter thanks to the presenter name b
 
 A presenter can also deactivate itself by calling its setActivated method.
 
-==Start View & Start Event==
+==Start Presenter & Start Event==
 
-===Start View===
+===Start Presenter===
 
-Each module needs to define a start view. The start view is the view that is added to the RootPanel or RootLayoutPanel when the application starts.
+Each module needs to define a start presenter. The start presenter is the presenter which view is added to the RootPanel or RootLayoutPanel when the application starts.
 
-To define a start view, you need to specify the class of the start view thanks to the attribute 'startView' of the @Events annotation that annotates your event bus interface. Mvp4g will automaticaly find the instance of the view. However Mvp4g will find the instance of the view only if the view is injected into a presenter.
+To define a start presenter, you need to specify its class thanks to the attribute 'startPresenter' of the @Events annotation that annotates your event bus interface. Mvp4g will automaticaly find the instance of the presenter if it is annotated with @Presenter or @EventHandler.
 
-In addition to set the class, you can also specify its name thanks to the attribute 'startViewName' of the @Events annotation.
+In addition to set the class, you can also specify its name thanks to the attribute 'startPresenterName' of the @Events annotation.
 
-In case of a child module that is not displayed thanks to the auto-display feature, you may not need a start view. You can then tell the framework that there is no start view by setting the 'startView' attribute of @Events to 'NoStartView' (a root module must have a start view).
+In case of a child module that is not displayed thanks to the auto-display feature, you may not need a start presenter. You can then tell the framework that there is no start presenter by setting the 'startPresenter' attribute of @Events to 'NoStartPresenter' (a root module must have a start presenter).
 
 ===Start Event===
 
@@ -266,13 +268,13 @@ Mvp4g allows you to filter events in order to stop an event before it is forward
 ===Creating Filters===
  
 To create a filter, you need to:
- 1. {{{implement EventFilter<E>}}}
+ 1. implement EventFilter<E>
    -E: type of your event bus interface. 
  2. override filterEvent method: this method will allow to stop an event or not. If filterEvent method returns false, then the event is stopped, otherwise, it is forwarded to the handlers.
   
 ===Adding Filters===
  
-Once you have created a filter, you need to tell Mvp4g to use it. This will be done thanks to the {{{@Filters}}} that annotates your event bus interface.
+Once you have created a filter, you need to tell Mvp4g to use it. This will be done thanks to the @Filters that annotates your event bus interface.
  {{{
 	@Events( ... )
 	@Filters( filterClasses = OneEventFilter.class )
@@ -329,10 +331,10 @@ void goToPage1();
 
 ===Creating a control object for navigation events===
 To create a control object, you need to:
- * implement {{{NavigationConfirmationInterface}}}
- * define the {{{confirm}}} method.
+ * implement NavigationConfirmationInterface
+ * define the confirm method.
 
-When an event needs to be control, the confirm method is called with one parameter, a NavigationEventCommand that represents the event to control. To confirm an event, you just have to call the {{{NavigationEventCommand}}}'s method {{{fireEvent}}}. To stop an event, just don't call this method.
+When an event needs to be control, the confirm method is called with one parameter, a NavigationEventCommand that represents the event to control. To confirm an event, you just have to call the NavigationEventCommand's method fireEvent. To stop an event, just don't call this method.
 
 {{{
 public class Presenter extends ... implements NavigationConfirmationInterface {
@@ -405,9 +407,9 @@ void sessionExpired();
 
 ==Broadcast Event==
 
-You can easily forward an event to a lot of handlers or child modules thanks to the broadcast feature. You can specify a broadcast interface for an event and any handler or child module that implements this interface will receive it if:
+You can easily forward an event to a lot of handlers or modules thanks to the broadcast feature. You can specify a broadcast interface for an event and any handler or module that implements this interface will receive it if:
  * the handler is compatibable with the Mvp4g module defining the event (ie if the Mvp4g module's event bus can be injected into the handler). Otherwise the handler will be ignored.
- * the child module is a child module of the Mvp4g module defining the event.
+ * the module is a child module, a sibling module or a parent module of the Mvp4g module defining the event.
 
 This interface should be as simple as possible and doesn't need any method.
 
@@ -419,3 +421,20 @@ public interface OneBroadcastInterface {}
 @Event(...,broadcastTo=OneBroadcastInterface.class)
 void oneEventToBroadcast();
 }}}
+
+==Bind Event==
+
+If you need a presenter to be binded when an event is fired but actually don't need this presenter to handle this event (which is often the case for [http://code.google.com/p/mvp4g/wiki/GinIntegration_140#Using_GIN_to_manage_nested_views Nested View]).
+
+{{{
+@Event( ..., bind = { FirstNestedViewPresenter.class, SecondNestedViewPresenter.class } )
+public void start();
+}}}
+
+By adding a presenter to bind attribute, Mvp4g will bind this presenter the first time this event is fired.
+
+You can also add a bind thanks to the presenter name by adding the name to the attribute 'bindNames' of @Event annotation (not recommended). In this case, you need to verify that a presenter with the given name exists.
+
+You can't use the same presenter in handler and bind annotation for one event because a presenter set as an handler will be already automatically binded when the event is fired. Also, Mvp4g prohibits using bind attribute for passive events. Passive event, by definition, don't bind handlers (only handlers already binded will react to the passive event).
+
+You don't need to provide any methods in Presenter when you're using bind annotation. It will call 'bind' method of your presenter automatically.
