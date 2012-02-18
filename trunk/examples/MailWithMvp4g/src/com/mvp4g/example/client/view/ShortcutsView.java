@@ -16,18 +16,22 @@
 package com.mvp4g.example.client.view;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.ResizeComposite;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
-import com.mvp4g.example.client.presenter.ShortCutsPresenter;
 import com.mvp4g.example.client.presenter.ShortCutsPresenter.FOLDER_TYPE;
+import com.mvp4g.example.client.presenter.interfaces.IShortCutsView;
+import com.mvp4g.example.client.presenter.interfaces.IShortCutsView.IShortCutsPresenter;
 import com.mvp4g.example.client.view.widget.ContactPopup;
 import com.mvp4g.example.client.view.widget.Contacts;
 import com.mvp4g.example.client.view.widget.Mailboxes;
+import com.mvp4g.example.client.view.widget.ReverseResizeComposite;
 import com.mvp4g.example.client.view.widget.Tasks;
 
 /**
@@ -37,7 +41,7 @@ import com.mvp4g.example.client.view.widget.Tasks;
  * {@link com.google.gwt.user.client.ui.Tree}, and other custom widgets.
  */
 @Singleton
-public class ShortcutsView extends ResizeComposite implements ShortCutsPresenter.IShortCutsView {
+public class ShortcutsView extends ReverseResizeComposite<IShortCutsPresenter> implements IShortCutsView {
 
 	interface Binder extends UiBinder<StackLayoutPanel, ShortcutsView> {
 	}
@@ -74,13 +78,31 @@ public class ShortcutsView extends ResizeComposite implements ShortCutsPresenter
 	}
 
 	public void showContactPopup( String name, String email, int left, int top ) {
-		ContactPopup popup = new ContactPopup( name, email );
-		popup.setPopupPosition( left, top );
-		popup.show();
+
 	}
 
 	public void addFolder( FOLDER_TYPE folder ) {
 		mailboxes.addImageItem( folder );
+	}
+
+	@Override
+	public void addContact( String name, final int index ) {
+		final Anchor anchor = contacts.addContact( name );
+		anchor.addClickHandler( new ClickHandler() {
+
+			@Override
+			public void onClick( ClickEvent event ) {
+				presenter.onContactClick( index, anchor );
+			}
+		} );
+	}
+
+	@Override
+	public void showContactPopup( String name, String email, IsWidget widget ) {
+		ContactPopup popup = new ContactPopup( name, email );
+		Widget w = widget.asWidget();
+		popup.setPopupPosition( w.getAbsoluteLeft() + 14, w.getAbsoluteTop() + 14);
+		popup.show();
 	}
 
 }

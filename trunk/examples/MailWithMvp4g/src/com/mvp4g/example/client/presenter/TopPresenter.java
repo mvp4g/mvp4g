@@ -1,41 +1,21 @@
 package com.mvp4g.example.client.presenter;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.MailEventBus;
-import com.mvp4g.example.client.view.TopPanel;
+import com.mvp4g.example.client.presenter.interfaces.ITopView;
+import com.mvp4g.example.client.presenter.interfaces.ITopView.ITopPresenter;
+import com.mvp4g.example.client.view.TopView;
 
-@Presenter( view = TopPanel.class )
-public class TopPresenter extends BasePresenter<TopPresenter.ITopView, MailEventBus> {
+@Presenter( view = TopView.class )
+public class TopPresenter extends BasePresenter<ITopView, MailEventBus> implements ITopPresenter {
 
-	public interface ITopView {
-		HasClickHandlers getAboutButton();
-
-		HasClickHandlers getSignOutLink();
-
-		void showAboutDialog();
-
-		void showAlert( String message );
+	public void onAboutButtonClick() {
+		view.showAboutDialog();
 	}
 
-	@Override
-	public void bind() {
-		view.getAboutButton().addClickHandler( new ClickHandler() {
-
-			public void onClick( ClickEvent event ) {
-				view.showAboutDialog();
-			}
-		} );
-
-		view.getSignOutLink().addClickHandler( new ClickHandler() {
-
-			public void onClick( ClickEvent event ) {
-				view.showAlert( "If this were implemented, you would be signed out now." );
-			}
-		} );
+	public void onSignOutLinkClick() {
+		view.showAlert( "If this were implemented, you would be signed out now." );
 	}
 
 }

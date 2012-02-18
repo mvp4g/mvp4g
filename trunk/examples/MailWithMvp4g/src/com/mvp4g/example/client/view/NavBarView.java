@@ -17,20 +17,23 @@ package com.mvp4g.example.client.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
-import com.mvp4g.example.client.presenter.NavBarPresenter;
+import com.mvp4g.example.client.presenter.interfaces.INavBarView;
+import com.mvp4g.example.client.presenter.interfaces.INavBarView.INavBarPresenter;
+import com.mvp4g.example.client.view.widget.ReverseComposite;
 
 /**
  * A simple widget representing prev/next page navigation.
  */
 @Singleton
-public class NavBarView extends Composite implements NavBarPresenter.INavBarView {
+public class NavBarView extends ReverseComposite<INavBarPresenter> implements INavBarView {
 
 	@UiTemplate( "NavBarView.ui.xml" )
 	interface Binder extends UiBinder<Widget, NavBarView> {
@@ -48,21 +51,26 @@ public class NavBarView extends Composite implements NavBarPresenter.INavBarView
 	public NavBarView() {
 		initWidget( binder.createAndBindUi( this ) );
 	}
-
-	public Anchor getNewerButton() {
-		return newerButton;
+	
+	@UiHandler("newerButton")
+	public void onNewerClick(ClickEvent event){
+		presenter.onNewerButtonClick();
 	}
-
-	public Anchor getOlderButton() {
-		return olderButton;
-	}
-
-	public Widget getViewWidget() {
-		return this;
+	
+	@UiHandler("olderButton")
+	public void onOlderClick(ClickEvent event){
+		presenter.onOlderButtonClick();
 	}
 
 	public void setNavText( String text ) {
 		countLabel.setInnerHTML( text );
 	}
 
+	public void setOlderVisible( boolean visible ) {
+		olderButton.setVisible( visible );
+	}
+
+	public void setNewerVisible( boolean visible ) {
+		newerButton.setVisible( visible );
+	}
 }

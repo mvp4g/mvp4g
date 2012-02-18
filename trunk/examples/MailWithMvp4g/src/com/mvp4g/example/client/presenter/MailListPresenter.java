@@ -15,33 +15,18 @@
  */
 package com.mvp4g.example.client.presenter;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.resources.client.CssResource;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.MailEventBus;
-import com.mvp4g.example.client.data.MailItem;
-import com.mvp4g.example.client.data.MailItems;
+import com.mvp4g.example.client.MailItems;
+import com.mvp4g.example.client.bean.MailItem;
+import com.mvp4g.example.client.presenter.interfaces.IMailListView;
+import com.mvp4g.example.client.presenter.interfaces.IMailListView.IMailListPresenter;
 import com.mvp4g.example.client.view.MailListView;
 
 @Presenter( view = MailListView.class )
-public class MailListPresenter extends BasePresenter<MailListPresenter.IMailListView, MailEventBus> {
-
-	public interface IMailListView {
-
-		HasClickHandlers getTable();
-
-		void clearEmails();
-
-		void setRow( int row, String sender, String email, String subject );
-
-		int getClickedRow( ClickEvent event );
-
-		void selectRow( int row, boolean selected );
-
-	}
+public class MailListPresenter extends BasePresenter<IMailListView, MailEventBus> implements IMailListPresenter {
 
 	private int startIndex, selectedRow = -1;
 
@@ -52,20 +37,13 @@ public class MailListPresenter extends BasePresenter<MailListPresenter.IMailList
 	static final int VISIBLE_EMAIL_COUNT = 20;
 
 	@Override
-	public void bind() {
-		view.getTable().addClickHandler( new ClickHandler() {
-
-			public void onClick( ClickEvent event ) {
-				int row = view.getClickedRow( event );
-				if ( row != -1 ) {
-					selectRow( row );
-				}
-			}
-		} );
+	public void onTableClick( int row ) {
+		if ( row != -1 ) {
+			selectRow( row );
+		}
 	}
 
 	public void onStart() {
-
 		update();
 
 		// Select the first row if none is selected.

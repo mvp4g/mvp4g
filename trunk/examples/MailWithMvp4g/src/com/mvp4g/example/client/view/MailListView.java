@@ -17,24 +17,25 @@ package com.mvp4g.example.client.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.ResizeComposite;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.mvp4g.example.client.presenter.MailListPresenter;
+import com.mvp4g.example.client.presenter.interfaces.IMailListView;
+import com.mvp4g.example.client.presenter.interfaces.IMailListView.IMailListPresenter;
+import com.mvp4g.example.client.view.widget.ReverseComposite;
 
 /**
  * A composite that displays a list of emails that can be selected.
  */
 @Singleton
-public class MailListView extends ResizeComposite implements MailListPresenter.IMailListView {
+public class MailListView extends ReverseComposite<IMailListPresenter> implements IMailListView {
 
 	interface Binder extends UiBinder<Widget, MailListView> {
 	}
@@ -57,6 +58,14 @@ public class MailListView extends ResizeComposite implements MailListPresenter.I
 		initWidget( binder.createAndBindUi( this ) );
 		initTable();
 		header.setWidget( 0, 3, navView );
+	}
+
+	@UiHandler( "table" )
+	public void onTableClick( ClickEvent event ) {
+		Cell c = table.getCellForEvent( event );
+		if ( c != null ) {
+			presenter.onTableClick( c.getRowIndex() );
+		}
 	}
 
 	/**
@@ -90,21 +99,12 @@ public class MailListView extends ResizeComposite implements MailListPresenter.I
 		table.clear( true );
 	}
 
-	public int getClickedRow( ClickEvent event ) {
-		Cell cell = table.getCellForEvent( event );
-		return ( cell == null ) ? -1 : cell.getRowIndex();
-	}
-
 	public void selectRow( int row, boolean selected ) {
 		if ( selected ) {
 			table.getRowFormatter().addStyleName( row, selectionStyle.selectedRow() );
 		} else {
 			table.getRowFormatter().removeStyleName( row, selectionStyle.selectedRow() );
 		}
-	}
-
-	public HasClickHandlers getTable() {
-		return table;
 	}
 
 }

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.mvp4g.example.client.data;
+package com.mvp4g.example.client.bean;
 
 /**
  * A simple structure containing the basic components of an email.

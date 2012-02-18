@@ -16,24 +16,26 @@
 package com.mvp4g.example.client.view;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
-import com.mvp4g.example.client.presenter.TopPresenter;
+import com.mvp4g.example.client.presenter.interfaces.ITopView;
+import com.mvp4g.example.client.presenter.interfaces.ITopView.ITopPresenter;
 import com.mvp4g.example.client.view.widget.AboutDialog;
+import com.mvp4g.example.client.view.widget.ReverseComposite;
 
 /**
  * The top panel, which contains the 'welcome' message and various links.
  */
 @Singleton
-public class TopPanel extends Composite implements TopPresenter.ITopView {
+public class TopView extends ReverseComposite<ITopPresenter> implements ITopView {
 
-	interface Binder extends UiBinder<Widget, TopPanel> {
+	interface Binder extends UiBinder<Widget, TopView> {
 	}
 
 	private static final Binder binder = GWT.create( Binder.class );
@@ -43,20 +45,18 @@ public class TopPanel extends Composite implements TopPresenter.ITopView {
 	@UiField
 	Anchor aboutLink;
 
-	public TopPanel() {
+	public TopView() {
 		initWidget( binder.createAndBindUi( this ) );
 	}
 
-	public HasClickHandlers getAboutButton() {
-		return aboutLink;
+	@UiHandler( "signOutLink" )
+	public void onSignOutLink( ClickEvent event ) {
+		presenter.onSignOutLinkClick();
 	}
 
-	public HasClickHandlers getSignOutLink() {
-		return signOutLink;
-	}
-
-	public Widget getViewWidget() {
-		return this;
+	@UiHandler( "aboutLink" )
+	public void onAboutLinkClick( ClickEvent event ) {
+		presenter.onAboutButtonClick();
 	}
 
 	public void showAboutDialog() {
