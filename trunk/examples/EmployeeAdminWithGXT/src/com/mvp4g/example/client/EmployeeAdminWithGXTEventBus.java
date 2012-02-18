@@ -9,10 +9,9 @@ import com.mvp4g.example.client.presenter.RootTemplatePresenter;
 import com.mvp4g.example.client.presenter.UserListPresenter;
 import com.mvp4g.example.client.presenter.UserProfilePresenter;
 import com.mvp4g.example.client.presenter.UserRolePresenter;
-import com.mvp4g.example.client.view.RootTemplateView;
 import com.mvp4g.example.client.widget.interfaces.IWidget;
 
-@Events( startView = RootTemplateView.class )
+@Events( startPresenter = RootTemplatePresenter.class )
 public interface EmployeeAdminWithGXTEventBus extends EventBus {
 
 	@Event( handlers = RootTemplatePresenter.class )
