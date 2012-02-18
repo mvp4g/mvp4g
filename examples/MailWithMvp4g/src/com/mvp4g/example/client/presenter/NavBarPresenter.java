@@ -15,49 +15,30 @@
  */
 package com.mvp4g.example.client.presenter;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Anchor;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.MailEventBus;
+import com.mvp4g.example.client.presenter.interfaces.INavBarView;
+import com.mvp4g.example.client.presenter.interfaces.INavBarView.INavBarPresenter;
 import com.mvp4g.example.client.view.NavBarView;
 
 /**
  * A simple widget representing prev/next page navigation.
  */
 @Presenter( view = NavBarView.class )
-public class NavBarPresenter extends BasePresenter<NavBarPresenter.INavBarView, MailEventBus> {
+public class NavBarPresenter extends BasePresenter<INavBarView, MailEventBus> implements INavBarPresenter {
 
-	public interface INavBarView {
-		Anchor getNewerButton();
-
-		Anchor getOlderButton();
-
-		void setNavText( String text );
+	public void onNewerButtonClick() {
+		eventBus.newer();
 	}
 
-	public void bind() {
-		view.getNewerButton().addClickHandler( new ClickHandler() {
-
-			public void onClick( ClickEvent event ) {
-				eventBus.newer();
-			}
-
-		} );
-
-		view.getOlderButton().addClickHandler( new ClickHandler() {
-
-			public void onClick( ClickEvent event ) {
-				eventBus.older();
-			}
-
-		} );
+	public void onOlderButtonClick() {
+		eventBus.older();
 	}
 
 	public void onSetNavStatus( int startIndex, int endIndex, int numberOfElements ) {
-		view.getNewerButton().setVisible( startIndex != 1 );
-		view.getOlderButton().setVisible( ( startIndex + MailListPresenter.VISIBLE_EMAIL_COUNT ) <= numberOfElements );
+		view.setNewerVisible( startIndex != 1 );
+		view.setOlderVisible( ( startIndex + MailListPresenter.VISIBLE_EMAIL_COUNT ) <= numberOfElements );
 		view.setNavText( "" + startIndex + " - " + endIndex + " of " + numberOfElements );
 	}
 

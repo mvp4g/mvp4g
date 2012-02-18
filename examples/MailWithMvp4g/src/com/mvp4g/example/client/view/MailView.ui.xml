@@ -4,7 +4,7 @@
 
 	<g:DockLayoutPanel unit='EM'>
 		<g:north size='5'>
-			<mailView:TopPanel ui:field='topPanel' />
+			<mailView:TopView ui:field='topPanel' />
 		</g:north>
 
 		<g:center>

@@ -3,12 +3,13 @@ package com.mvp4g.example.client.view;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.inject.Inject;
-import com.mvp4g.example.client.presenter.MailPresenter.IMailView;
+import com.mvp4g.example.client.presenter.interfaces.IMailView;
+import com.mvp4g.example.client.presenter.interfaces.IMailView.IMailPresenter;
+import com.mvp4g.example.client.view.widget.ReverseResizeComposite;
 
-public class MailView extends Composite implements IMailView {
+public class MailView extends ReverseResizeComposite<IMailPresenter> implements IMailView {
 
 	interface Binder extends UiBinder<DockLayoutPanel, MailView> {
 	}
@@ -16,7 +17,7 @@ public class MailView extends Composite implements IMailView {
 	private static final Binder binder = GWT.create( Binder.class );
 
 	@UiField( provided = true )
-	TopPanel topPanel;
+	TopView topPanel;
 	@UiField( provided = true )
 	MailListView mailList;
 	@UiField( provided = true )
@@ -25,7 +26,7 @@ public class MailView extends Composite implements IMailView {
 	MailDetailView mailDetail;
 
 	@Inject
-	public MailView( TopPanel topPanel, ShortcutsView shortcuts, MailListView mailList, MailDetailView mailDetail ) {
+	public MailView( TopView topPanel, ShortcutsView shortcuts, MailListView mailList, MailDetailView mailDetail ) {
 		this.topPanel = topPanel;
 		this.shortcuts = shortcuts;
 		this.mailList = mailList;

@@ -13,9 +13,11 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.mvp4g.example.client.data;
+package com.mvp4g.example.client;
 
 import java.util.ArrayList;
+
+import com.mvp4g.example.client.bean.MailItem;
 
 /**
  * A simple client-side generator of fake email messages.

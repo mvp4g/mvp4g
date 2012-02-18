@@ -20,16 +20,17 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
-import com.mvp4g.example.client.presenter.MailDetailPresenter;
+import com.mvp4g.example.client.presenter.interfaces.IMailDetailView;
+import com.mvp4g.example.client.presenter.interfaces.IMailDetailView.IMailDetailPresenter;
+import com.mvp4g.example.client.view.widget.ReverseComposite;
 
 /**
  * A composite for displaying the details of an email message.
  */
 @Singleton
-public class MailDetailView extends ResizeComposite implements MailDetailPresenter.IMailDetailView {
+public class MailDetailView extends ReverseComposite<IMailDetailPresenter> implements IMailDetailView {
 
 	interface Binder extends UiBinder<Widget, MailDetailView> {
 	}

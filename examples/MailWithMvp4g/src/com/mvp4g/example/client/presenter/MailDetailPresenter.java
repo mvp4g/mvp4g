@@ -18,24 +18,16 @@ package com.mvp4g.example.client.presenter;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.MailEventBus;
-import com.mvp4g.example.client.data.MailItem;
+import com.mvp4g.example.client.bean.MailItem;
+import com.mvp4g.example.client.presenter.interfaces.IMailDetailView;
+import com.mvp4g.example.client.presenter.interfaces.IMailDetailView.IMailDetailPresenter;
 import com.mvp4g.example.client.view.MailDetailView;
 
 /**
  * A composite for displaying the details of an email message.
  */
 @Presenter( view = MailDetailView.class )
-public class MailDetailPresenter extends BasePresenter<MailDetailPresenter.IMailDetailView, MailEventBus> {
-
-	public interface IMailDetailView {
-		 void setSubject( String subject );
-
-		 void setSender( String sender );
-
-		 void setRecipient( String recipient );
-
-		 void setBody( String body );
-	}
+public class MailDetailPresenter extends BasePresenter<IMailDetailView, MailEventBus> implements IMailDetailPresenter{
 
 	public void onItemSelected( MailItem item ) {
 		view.setSubject( item.subject );

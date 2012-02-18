@@ -4,7 +4,7 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
-import com.mvp4g.example.client.data.MailItem;
+import com.mvp4g.example.client.bean.MailItem;
 import com.mvp4g.example.client.presenter.MailDetailPresenter;
 import com.mvp4g.example.client.presenter.MailListPresenter;
 import com.mvp4g.example.client.presenter.MailPresenter;
