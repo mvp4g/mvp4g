@@ -1,4 +1,5 @@
 #summary Tutorial, examples, projects made with Mvp4g.
+#labels Featured
 
 <wiki:toc max_depth="3" />
 
