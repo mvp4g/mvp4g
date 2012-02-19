@@ -1,5 +1,7 @@
 #summary Tutorial, examples, projects made with Mvp4g.
 
+<wiki:toc max_depth="3" />
+
 To help you understand the framework, Mvp4g comes with tutorials and examples. You can also check real projects to give you a better idea of what you can do with Mvp4g.
 
 ==Tutorial==
