@@ -1,4 +1,4 @@
-#summary Mvp4g & Browser History (Draft for Mvp4g 1.3.0)
+#summary Mvp4g & Browser History
 
 <wiki:toc max_depth="3" />
 
