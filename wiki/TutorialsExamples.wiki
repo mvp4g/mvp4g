@@ -10,19 +10,19 @@ _These tutorials have been written for Mvp4g-1.3.1, they'll soon be updated to r
 [http://mvp4g.blogspot.com/2011/04/history-with-mvp4g.html History]: See how you can add browser history support to your Mvp4g application. Also read about history advanced feature to learn about [http://mvp4g.blogspot.com/2011/06/navigation-control.html how to control your user navigation], [http://mvp4g.blogspot.com/2011/07/hyperlink-navigation.html use hyperlink navigation] or [http://mvp4g.blogspot.com/2011/08/custom-place-service.html define your own place service].
 
 ==Examples==
-TestMvp4g: A basic example to easily understand how the framework works. UML diagram of this example is available at [http://mvp4g.googlecode.com/svn/tags/mvp4g-1.3.1/examples/TestMvp4g/TestMvp4g_UML.png here] (thanks to Steffen Nissen)
+`TestMvp4g`: A basic example to easily understand how the framework works. UML diagram of this example is available at [http://mvp4g.googlecode.com/svn/tags/mvp4g-1.3.1/examples/TestMvp4g/TestMvp4g_UML.png here] (thanks to Steffen Nissen)
 
 
-EmployeeAdmin: The GWT `PureMvc` example (as shown [http://employeeadm.appspot.com/ here]) but implemented with the Mvp4g framework. This example also illustrates how to easily unit test the presenters using JUnit directly.
+`EmployeeAdmin`: The GWT `PureMvc` example (as shown [http://employeeadm.appspot.com/ here]) but implemented with the Mvp4g framework. This example also illustrates how to easily unit test the presenters using JUnit directly.
 
 
-EmployeeAdmin with GXT: Same example as `EmployeeAdmin` but implemented with GXT using different approaches ([http://groups.google.com/group/mvp4g/browse_thread/thread/5ba8664afbbda1f7 see Mvp4g and GXT post]). It also illustrates how to do unit tests with EasyMock.
+`EmployeeAdmin with GXT`: Same example as `EmployeeAdmin` but implemented with GXT using different approaches ([http://groups.google.com/group/mvp4g/browse_thread/thread/5ba8664afbbda1f7 see Mvp4g and GXT post]). It also illustrates how to do unit tests with EasyMock.
 
-Mvp4gHistory: This example shows how history is managed thanks to a Place Service.
+`Mvp4gHistory`: This example shows how history is managed thanks to a Place Service.
 
-MailWithMvp4g: This example shows the GWT Mail example converted with Mvp4g. It illustrates how Mvp4g can be used with `UiBinder` and the Reverse MVP approach.
+`MailWithMvp4g`: This example shows the GWT Mail example converted with Mvp4g. It illustrates how Mvp4g can be used with `UiBinder` and the Reverse MVP approach.
 
-Mvp4gModules: This example covers pretty much all the feature available in Mvp4g (Code splitting, history, filters...).
+`Mvp4gModules`: This example covers pretty much all the feature available in Mvp4g (Code splitting, history, filters...).
 
 You can test these examples thanks to the [http://mvp4gshowcase.appspot.com/ Showcase].
 
