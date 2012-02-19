@@ -1,0 +1,9 @@
+#summary Tutorial, examples, projects made with Mvp4g.
+
+To help you understand the framework, Mvp4g comes with tutorials and examples. You can also check real projects to give you a better idea of what you can do with Mvp4g.
+
+==Tutorial==
+
+[http://mvp4g.blogspot.com/2011/04/mvp-pattern-associated-with-event-bus.html Layout]: Learn how to create your first Mvp4g application and how set/manage its layout.
+
+[http://mvp4g.blogspot.com/2011/04/history-with-mvp4g.html History]: See how you can add browser history support to your Mvp4g application. Also read about history advanced feature to learn about [http://mvp4g.blogspot.com/2011/06/navigation-control.html how to control your user navigation], [http://mvp4g.blogspot.com/2011/07/hyperlink-navigation.html use hyperlink navigation] or [http://mvp4g.blogspot.com/2011/08/custom-place-service.html define your own place service].
