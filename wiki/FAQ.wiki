@@ -58,7 +58,8 @@ Yes, Mvp4g let you use anything you want for the back-end communication. You can
 ==Can I still use an xml file to configure my application?==
 Mvp4g 1.2.0 is the last version that supports XML configuration. 
 
-==Moving from 1.3 to 1.4==
+==Migrating from 1.3 to 1.4==
 A few changes in your code is needed when moving from 1.3 to 1.4:
- * The startView attribute of @Events has been replaced by startPresenter. Instead of setting the start view, you should replace it by the start presenter.
+ * The 'startView' attribute of @Events has been replaced by 'startPresenter'. Instead of setting the start view, you should replace it by the start presenter.
+ * The 'modulesToLoad' attribute of @Event has been renamed 'forwardToModules'.
  * If you have defined a custom place service, it shouldn't be abstract anymore.
