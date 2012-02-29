@@ -6,7 +6,6 @@
 To help you understand the framework, Mvp4g comes with tutorials and examples. You can also check real projects to give you a better idea of what you can do with Mvp4g.
 
 ==Tutorial==
-_These tutorials have been written for Mvp4g-1.3.1, they'll soon be updated to reflect new features available in Mvp4g-1.4.0_
 
 [http://mvp4g.blogspot.com/2011/04/mvp-pattern-associated-with-event-bus.html Layout]: Learn how to create your first Mvp4g application and how to set/manage its layout.
 
