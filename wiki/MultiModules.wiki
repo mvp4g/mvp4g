@@ -81,7 +81,7 @@ A ChildModule annotation has three attributes:
 
 A child module will be started (ie its presenters/views/services will be instantiated and its start event will be fired) only the first time an event is forwarded to it. 
 
-===Child module AutoDisplay===
+===`Child module AutoDisplay`===
 For the Root Module, Mvp4g automaticaly add the Root Module start presenter's view to the RootPanel/RootLayoutPanel when the application starts.
 
 The same thing can be done for child modules in order them not to take care of it when they're done loaded. This is done thanks to the AutoDisplay feature.
