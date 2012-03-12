@@ -107,18 +107,15 @@ public class Mvp4gModuleStub implements Mvp4gModule {
 
 	}
 
-	@Override
 	public void loadChildModule( String childModuleClassName, String eventName, boolean passive, Mvp4gEventPasser passer ) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void sendInitEvent() {
 		historyInit = true;
 	}
 
-	@Override
 	public void sendNotFoundEvent() {
 		historyNotFound = true;
 	}
