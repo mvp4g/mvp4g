@@ -177,7 +177,7 @@ public class PlaceService implements ValueChangeHandler<String> {
 					if ( (Boolean)eventObjects[0] ) {
 						dispatchEvent( eventName, param, module );
 					} else {
-						module.sendNotFoundEvent();
+						sendNotFoundEvent();
 					}
 				}
 			};
@@ -202,14 +202,14 @@ public class PlaceService implements ValueChangeHandler<String> {
 			@SuppressWarnings( "rawtypes" )
 			HistoryConverter converter = converters.get( historyName );
 			if ( converter == null ) {
-				module.sendNotFoundEvent();
+				sendNotFoundEvent();
 			} else {
 				String[] tab = historyName.split( MODULE_SEPARATOR );
 				String finalEventName = tab[tab.length - 1];
 				converter.convertFromToken( finalEventName, param, module.getEventBus() );
 			}
 		} else {
-			module.sendNotFoundEvent();
+			sendNotFoundEvent();
 		}
 	}
 
@@ -295,6 +295,15 @@ public class PlaceService implements ValueChangeHandler<String> {
 		this.navigationConfirmation = navigationConfirmation;
 	}
 
+	/**
+	 * Calls not found event from the root module.
+	 * We should call event for root module because 
+	 * it is the only module that has this event defined. 
+	 */
+	private void sendNotFoundEvent() {
+		this.module.sendNotFoundEvent();
+	}
+	
 	/**
 	 * Ask for user's confirmation before firing an event
 	 * 
