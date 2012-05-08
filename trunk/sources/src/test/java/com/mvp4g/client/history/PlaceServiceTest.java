@@ -130,33 +130,38 @@ public class PlaceServiceTest {
 	@Test
 	public void testConverterForChildModuleNoParameter() {
 		String historyName = "child/historyName";
+		EventBusWithLookUpStub childBus = new EventBusWithLookUpStub();
+		Mvp4gModuleStub childModule = new Mvp4gModuleStub( childBus );
 		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( historyName );
-
 		placeServiceDefault.addConverter( historyName, buildHistoryConverter( false ) );
 		placeServiceDefault.onValueChange( event );
+		
 
 		assertEquals( historyName, module.getEventType() );
 		Mvp4gEventPasser passer = module.getPasser();
 		passer.setEventObject( false );
-		passer.pass( module );
+		passer.pass( childModule );
 		assertTrue( module.isHistoryNotFound() );
 
 		passer.setEventObject( true );
-		passer.pass( module );
-		eventBus.assertEvent( "historyName", new Object[] { null } );
+		passer.pass( childModule );
+		childBus.assertEvent( "historyName", new Object[] { null } );
+
 
 	}
 
 	@Test
 	public void testConverterForChildModuleNoConverter() {
 		String historyName = "child/historyName";
+		EventBusWithLookUpStub childBus = new EventBusWithLookUpStub();
+		Mvp4gModuleStub childModule = new Mvp4gModuleStub( childBus );
 		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( historyName );
-
+		
 		placeServiceDefault.onValueChange( event );
 		assertEquals( historyName, module.getEventType() );
 		Mvp4gEventPasser passer = module.getPasser();
 		passer.setEventObject( true );
-		passer.pass( module );
+		passer.pass( childModule );
 		assertTrue( module.isHistoryNotFound() );
 
 	}
@@ -165,6 +170,8 @@ public class PlaceServiceTest {
 	public void testConverterForChildModuleWithParameter() {
 		String historyName = "child/eventType";
 		String form = "form";
+		EventBusWithLookUpStub childBus = new EventBusWithLookUpStub();
+		Mvp4gModuleStub childModule = new Mvp4gModuleStub( childBus );
 		placeServiceDefault.addConverter( historyName, buildHistoryConverter( false ) );
 		ValueChangeEvent<String> event = new ValueChangeEventStub<String>( historyName + "?" + form );
 		placeServiceDefault.onValueChange( event );
@@ -172,8 +179,8 @@ public class PlaceServiceTest {
 		assertEquals( historyName, module.getEventType() );
 		Mvp4gEventPasser passer = module.getPasser();
 		passer.setEventObject( true );
-		passer.pass( module );
-		eventBus.assertEvent( "eventType", new Object[] { form } );
+		passer.pass( childModule );
+		childBus.assertEvent( "eventType", new Object[] { form } );
 
 	}
 
