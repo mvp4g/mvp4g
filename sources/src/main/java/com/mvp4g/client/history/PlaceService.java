@@ -174,10 +174,11 @@ public class PlaceService implements ValueChangeHandler<String> {
 
 				@Override
 				public void pass( Mvp4gModule module ) {
+
 					if ( (Boolean)eventObjects[0] ) {
 						dispatchEvent( eventName, param, module );
 					} else {
-						sendNotFoundEvent();
+						sendNotFoundEvent( module );
 					}
 				}
 			};
@@ -202,14 +203,14 @@ public class PlaceService implements ValueChangeHandler<String> {
 			@SuppressWarnings( "rawtypes" )
 			HistoryConverter converter = converters.get( historyName );
 			if ( converter == null ) {
-				sendNotFoundEvent();
+				sendNotFoundEvent( module );
 			} else {
 				String[] tab = historyName.split( MODULE_SEPARATOR );
 				String finalEventName = tab[tab.length - 1];
 				converter.convertFromToken( finalEventName, param, module.getEventBus() );
 			}
 		} else {
-			sendNotFoundEvent();
+			sendNotFoundEvent( module );
 		}
 	}
 
@@ -296,11 +297,15 @@ public class PlaceService implements ValueChangeHandler<String> {
 	}
 
 	/**
-	 * Calls not found event from the root module.
-	 * We should call event for root module because 
-	 * it is the only module that has this event defined. 
+	 * Calls not found event. By default it will called a root module 
+	 * event, but you can override the method if you want to call some 
+	 * specific event for child module
+	 * @param module
+	 * 				the last module where event wasn't found. If you will have 
+	 * 				a correct historyName at the begin of url, then this will be a
+	 * 				child module, else rootModule.
 	 */
-	private void sendNotFoundEvent() {
+	protected void sendNotFoundEvent( Mvp4gModule module ) {
 		this.module.sendNotFoundEvent();
 	}
 	
