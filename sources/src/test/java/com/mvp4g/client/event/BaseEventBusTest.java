@@ -20,7 +20,9 @@ import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.test_tools.EventFilterStub;
 import com.mvp4g.client.test_tools.Mvp4gModuleStub;
 import com.mvp4g.util.test_tools.annotation.Presenters;
+import com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler;
 import com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter;
+import com.mvp4g.util.test_tools.annotation.views.SimpleInjectedView;
 
 public class BaseEventBusTest {
 
@@ -282,5 +284,31 @@ public class BaseEventBusTest {
 	@Test
 	public void testHistoryProxy() {
 		assertSame( DefaultHistoryProxy.INSTANCE, bus.getHistory() );
+	}
+
+	@Test
+	public void testSetPresenter() {
+		SimplePresenter presenter = new SimplePresenter();
+		SimpleInjectedView view = new SimpleInjectedView();
+		SimplePresenter presenter2 = BaseEventBus.setPresenter( false, presenter, view, bus );
+		assertSame( presenter, presenter2 );
+		assertSame( presenter.getEventBus(), bus );
+		assertSame( presenter.getView(), view );
+
+		presenter = new SimplePresenter();
+		view = new SimpleInjectedView();
+		presenter2 = BaseEventBus.setPresenter( true, presenter, view, bus );
+		assertSame( presenter, presenter2 );
+		assertSame( presenter.getEventBus(), bus );
+		assertSame( presenter.getView(), view );
+		assertSame( presenter, view.getPresenter() );
+	}
+
+	@Test
+	public void testSetEventHandler() {
+		SimpleEventHandler eventHandler = new SimpleEventHandler();
+		SimpleEventHandler eventHandler2 = BaseEventBus.setEventHandler( eventHandler, bus );
+		assertSame( eventHandler, eventHandler2 );
+		assertSame( eventHandler.getEventBus(), bus );
 	}
 }
