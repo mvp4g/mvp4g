@@ -51,7 +51,6 @@ import com.mvp4g.util.test_tools.SourceWriterTestStub;
 import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter1;
 import com.mvp4g.util.test_tools.annotation.EventFilters.EventFilter2;
 import com.mvp4g.util.test_tools.annotation.Presenters;
-import com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter;
 import com.mvp4g.util.test_tools.annotation.events.EventBusOk;
 import com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent;
 import com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler;
@@ -449,9 +448,9 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		EventElement e4 = new EventElement();
 		e4.setType( "event4" );
-		e4.setHandlers( new String[] { "handler3", "handler4" } );
+		e4.setHandlers( new String[] { "handler3", "handler4", "handler6" } );
 		e4.setPassive( "true" );
-		e4.setGenerate( new String[] { "handler2", "handler4" } );
+		e4.setGenerate( new String[] { "handler2", "handler4", "handler6" } );
 
 		events.add( e1 );
 		events.add( e2 );
@@ -611,11 +610,9 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		configuration.getViews().add( view );
 
-		assertOutput( getReverseView(), false );
-		assertOutput( getMultiplePresenters(), false );
+		assertOutput( getMultiplePresenters(false), false );
 		writer.writeConf();
-		assertOutput( getReverseView(), false );
-		assertOutput( getMultiplePresenters(), true );
+		assertOutput( getMultiplePresenters(false), true );
 	}
 
 	@Test
@@ -636,11 +633,9 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		configuration.getViews().add( view );
 
-		assertOutput( getReverseView(), false );
-		assertOutput( getMultiplePresenters(), false );
+		assertOutput( getMultiplePresenters(true), false );
 		writer.writeConf();
-		assertOutput( getReverseView(), true );
-		assertOutput( getMultiplePresenters(), true );
+		assertOutput( getMultiplePresenters(true), true );
 	}
 
 	@Test
@@ -1580,11 +1575,23 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	@Test
 	public void testWriteSplitter() {
+		ViewElement view = new ViewElement();
+		view.setName( "view" );
+		view.setClassName( String.class.getCanonicalName() );
+		configuration.getViews().add( view );
+
 		PresenterElement presenter = new PresenterElement();
 		presenter.setName( "presenter" );
 		presenter.setClassName( SimplePresenter.class.getCanonicalName() );
 		presenter.setView( "view" );
 		configuration.getPresenters().add( presenter );
+		
+		PresenterElement presenterWithView = new PresenterElement();
+		presenterWithView.setName( "presenterWithView" );
+		presenterWithView.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenterWithView.setView( "view" );
+		presenterWithView.setInverseView( "true" );
+		configuration.getPresenters().add( presenterWithView );		
 
 		EventHandlerElement eventHandler = new EventHandlerElement();
 		eventHandler.setName( "eventHandler" );
@@ -1607,6 +1614,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		SplitterElement splitter = new SplitterElement();
 		splitter.getHandlers().add( presenter );
 		splitter.getHandlers().add( eventHandler );
+		splitter.getHandlers().add( presenterWithView );
 		splitter.setName( "splitter" );
 		splitter.setClassName( "Splitter" );
 		EventAssociation<String> ea1 = new EventAssociation<String>();
@@ -1666,9 +1674,21 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.getPresenters().add( presenter );
 
 		ViewElement view = new ViewElement();
-		view.setName( "viewMultiple" );
-		view.setClassName( Object.class.getCanonicalName() );
+		view.setName( "view" );
+		view.setClassName( String.class.getCanonicalName() );
 		configuration.getViews().add( view );
+
+		PresenterElement presenterWithView = new PresenterElement();
+		presenterWithView.setName( "presenterWithView" );
+		presenterWithView.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenterWithView.setView( "view" );
+		presenterWithView.setInverseView( "true" );
+		configuration.getPresenters().add( presenterWithView );
+
+		ViewElement viewMultiple = new ViewElement();
+		viewMultiple.setName( "viewMultiple" );
+		viewMultiple.setClassName( Object.class.getCanonicalName() );
+		configuration.getViews().add( viewMultiple );
 
 		PresenterElement presenterMultiple = new PresenterElement();
 		presenterMultiple.setName( "presenterMultiple" );
@@ -1677,6 +1697,15 @@ public class Mvp4gConfigurationFileReaderTest {
 		presenterMultiple.setMultiple( "true" );
 		presenter.setAsync( "Splitter" );
 		configuration.getPresenters().add( presenterMultiple );
+		
+		PresenterElement presenterMultipleWithView = new PresenterElement();
+		presenterMultipleWithView.setName( "presenterMultipleWithView" );
+		presenterMultipleWithView.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenterMultipleWithView.setView( "viewMultiple" );
+		presenterMultipleWithView.setMultiple( "true" );
+		presenterMultipleWithView.setInverseView( "true" );
+		presenter.setAsync( "Splitter" );
+		configuration.getPresenters().add( presenterMultipleWithView );		
 
 		EventHandlerElement eventHandler = new EventHandlerElement();
 		eventHandler.setName( "eventHandler" );
@@ -1723,6 +1752,8 @@ public class Mvp4gConfigurationFileReaderTest {
 		splitter.getHandlers().add( eventHandler );
 		splitter.getHandlers().add( eventHandlerMultiple );
 		splitter.getHandlers().add( presenterMultiple );
+		splitter.getHandlers().add( presenterWithView );
+		splitter.getHandlers().add( presenterMultipleWithView );
 		splitter.setName( "splitter" );
 		splitter.setClassName( "Splitter" );
 		EventAssociation<String> ea1 = new EventAssociation<String>();
@@ -1761,6 +1792,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		EventAssociation<String> ea5 = new EventAssociation<String>();
 		ea5.getGenerate().add( "presenterMultiple" );
+		ea5.getGenerate().add( "presenterMultipleWithView" );
 		splitter.getEvents().put( e5, ea5 );
 
 		configuration.getSplitters().add( splitter );
@@ -1802,11 +1834,23 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	@Test
 	public void testWriteSplitterWithLoader() {
+		ViewElement view = new ViewElement();
+		view.setName( "view" );
+		view.setClassName( String.class.getCanonicalName() );
+		configuration.getViews().add( view );
+
 		PresenterElement presenter = new PresenterElement();
 		presenter.setName( "presenter" );
 		presenter.setClassName( SimplePresenter.class.getCanonicalName() );
 		presenter.setView( "view" );
 		configuration.getPresenters().add( presenter );
+
+		PresenterElement presenterWithView = new PresenterElement();
+		presenterWithView.setName( "presenterWithView" );
+		presenterWithView.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenterWithView.setView( "view" );
+		presenterWithView.setInverseView( "true" );
+		configuration.getPresenters().add( presenterWithView );
 
 		EventHandlerElement eventHandler = new EventHandlerElement();
 		eventHandler.setName( "eventHandler" );
@@ -1828,6 +1872,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		SplitterElement splitter = new SplitterElement();
 		splitter.getHandlers().add( presenter );
+		splitter.getHandlers().add( presenterWithView );
 		splitter.getHandlers().add( eventHandler );
 		splitter.setName( "splitter" );
 		splitter.setClassName( "Splitter" );
@@ -1952,11 +1997,9 @@ public class Mvp4gConfigurationFileReaderTest {
 		return new String[] { "rootView.setPresenter(rootPresenter);" };
 	}
 
-	private String[] getMultiplePresenters() {
+	private String[] getMultiplePresenters(boolean reverse) {
 		return new String[] { "if (com.mvp4g.util.test_tools.RootPresenter.class.equals(handlerClass)){",
-				"com.mvp4g.util.test_tools.RootPresenter rootPresenter = injector.getrootPresenter();",
-				"com.mvp4g.util.test_tools.RootView rootView = injector.getrootView();", "rootPresenter.setView(rootView);",
-				"rootPresenter.setEventBus(eventBus);", "return (T) rootPresenter;" };
+				"BaseEventBus.setPresenter(" + reverse + ", injector.getrootPresenter(), injector.getrootView(), eventBus);" };
 	}
 
 	private String[] getExpectedEvents() {
@@ -2033,12 +2076,13 @@ public class Mvp4gConfigurationFileReaderTest {
 				"handler.setActivated(true);",
 				"handler.setActivated(false);",
 				"public void event5(String attr0,String attr1,String attr2){",
-				"com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter presenterMultiple = BaseEventBus.setPresenter( injector.getpresenterMultiple(), injector.getviewMultiple(), eventBus);",
+				"com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter presenterMultiple = BaseEventBus.setPresenter(false, injector.getpresenterMultiple(), injector.getviewMultiple(), eventBus);",
+				"com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter presenterMultipleWithView = BaseEventBus.setPresenter(true, injector.getpresenterMultipleWithView(), injector.getviewMultiple(), eventBus);",
 				"eventBus.finishAddHandler(presenterMultiple,com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter.class, true);",
 				"if (presenterMultiple.isActivated(true, \"event5\", new Object[]{attr0,attr1,attr2})){",
 				"presenterMultiple.onEvent5(attr0,attr1,attr2);",
 				"public void event4(String attr0,String attr1,String attr2,int attr3){",
-				"com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler eventHandlerMultiple = BaseEventBus.setEventHandler( injector.geteventHandlerMultiple(), eventBus);",
+				"com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler eventHandlerMultiple = BaseEventBus.setEventHandler(injector.geteventHandlerMultiple(), eventBus);",
 				"eventBus.finishAddHandler(eventHandlerMultiple,com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler.class, true);",
 				"if (eventHandlerMultiple.isActivated(false, \"event4\", new Object[]{attr0,attr1,attr2,attr3})){",
 				"eventHandlerMultiple.onEvent4(attr0,attr1,attr2,attr3);", "handler.isActivated(false, \"event3\");", "if (splitter != null ){",
@@ -2082,7 +2126,8 @@ public class Mvp4gConfigurationFileReaderTest {
 				"private com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler eventHandler;",
 				"private com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter presenter;", "public Splitter(){",
 				"eventHandler = BaseEventBus.setEventHandler( injector.geteventHandler(), eventBus);",
-				"presenter = BaseEventBus.setPresenter( injector.getpresenter(), injector.getview(), eventBus);",
+				"presenter = BaseEventBus.setPresenter( false, injector.getpresenter(), injector.getview(), eventBus);",
+				"presenterWithView = BaseEventBus.setPresenter( true, injector.getpresenterWithView(), injector.getview(), eventBus);",
 				"public void event1(int attr0,String attr1){", "eventHandler.setActivated(true);", "presenter.setActivated(false);",
 				"if (eventHandler.isActivated(" + passive + ", \"event1\", new Object[]{attr0,attr1})){", "eventHandler.onEvent1(attr0,attr1);",
 				"public void event2(){", "eventHandler.setActivated(true);", "presenter.setActivated(false);", "public void event3(){",
@@ -2310,13 +2355,14 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	public String[] getExpectedGenerateEvents() {
 		return new String[] {
-				MultiplePresenter.class.getCanonicalName()
-						+ " handler2 = BaseEventBus.setPresenter( injector.gethandler2(), injector.getview(), eventBus);",
-				"eventBus.finishAddHandler(handler4,com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent.class, true);",
-				EventHandlerWithEvent.class.getCanonicalName() + " handler4 = BaseEventBus.setEventHandler( injector.gethandler4(), eventBus);",
+				"com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter handler2 = BaseEventBus.setPresenter(false, injector.gethandler2(), injector.getview(), eventBus);",
+				"eventBus.finishAddHandler(handler2,com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter.class, true);",
+				"com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter handler6 = BaseEventBus.setPresenter(true, injector.gethandler6(), injector.getview(), eventBus);",
+				"eventBus.finishAddHandler(handler6,com.mvp4g.util.test_tools.annotation.Presenters.MultiplePresenter.class, true);",
+				"com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent handler4 = BaseEventBus.setEventHandler(injector.gethandler4(), eventBus);",
 				"eventBus.finishAddHandler(handler4,com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent.class, true);",
 				"if (handler2.isActivated(true, \"event4\")){", "handler2.onEvent4();", "if (handler4.isActivated(true, \"event4\")){",
-				"handler4.onEvent4();" };
+				"handler4.onEvent4();", "if (handler6.isActivated(true, \"event4\")){", "handler6.onEvent4();" };
 	}
 
 	public String[] getExpectedEventsWithToken() {
@@ -2402,5 +2448,19 @@ public class Mvp4gConfigurationFileReaderTest {
 		eh2.setClassName( EventHandlerWithEvent.class.getCanonicalName() );
 		eventHandlers.add( eh1 );
 		eventHandlers.add( eh2 );
+
+		PresenterElement p5 = new PresenterElement();
+		p5.setName( "handler5" );
+		p5.setClassName( Presenters.MultiplePresenter.class.getCanonicalName() );
+		p5.setInverseView( "true" );
+		p5.setView( "view" );
+		PresenterElement p6 = new PresenterElement();
+		p6.setName( "handler6" );
+		p6.setMultiple( Boolean.TRUE.toString() );
+		p6.setClassName( Presenters.MultiplePresenter.class.getCanonicalName() );
+		p6.setInverseView( "true" );
+		p6.setView( "view" );
+		presenters.add( p5 );
+		presenters.add( p6 );
 	}
 }

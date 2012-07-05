@@ -5,11 +5,13 @@ import com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter;
 
 public class SimpleInjectedView extends SimpleView implements ReverseViewInterface<SimplePresenter> {
 
+	SimplePresenter presenter;
+
 	public SimplePresenter getPresenter() {
-		return null;
+		return presenter;
 	}
 
 	public void setPresenter( SimplePresenter presenter ) {
-
+		this.presenter = presenter;
 	}
 }

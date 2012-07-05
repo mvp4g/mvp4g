@@ -25,6 +25,7 @@ import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.history.DefaultHistoryProxy;
 import com.mvp4g.client.history.HistoryProxy;
 import com.mvp4g.client.presenter.PresenterInterface;
+import com.mvp4g.client.view.ReverseViewInterface;
 
 /**
  * Base implementation of the event bus. It should only be used by the framework.
@@ -52,9 +53,13 @@ public abstract class BaseEventBus implements EventBus {
 		return eventHandler;
 	}
 
-	public static <V, E extends EventBus, P extends PresenterInterface<? super V, ? super E>> P setPresenter( P presenter, V view, E eventBus ) {
+	@SuppressWarnings( "unchecked" )
+	public static <V, E extends EventBus, P extends PresenterInterface<? super V, ? super E>> P setPresenter( boolean reverseView, P presenter, V view, E eventBus ) {
 		setEventHandler( presenter, eventBus );
 		presenter.setView( view );
+		if (reverseView) {
+			((ReverseViewInterface<P>) view).setPresenter( presenter );
+		}
 		return presenter;
 	}
 

@@ -935,7 +935,6 @@ public class Mvp4gConfigurationFileWriter {
 		String name = event.getName();
 		String calledMethod = event.getCalledMethod();
 		boolean isPassive = event.isPassive();
-		String className;
 		// write bind annotations
 		if ( binds != null ) {
 
@@ -971,26 +970,15 @@ public class Mvp4gConfigurationFileWriter {
 		if ( generates != null ) {
 			for ( String generate : generates ) {
 				eventHandler = getElement( generate, eventHandlers );
-				className = eventHandler.getClassName();
-				sourceWriter.print( className );
-				sourceWriter.print( " " );
-				sourceWriter.print( generate );
-
-				sourceWriter.print( " = BaseEventBus." );
 				if ( eventHandler instanceof PresenterElement ) {
-					sourceWriter.print( "setPresenter( injector.get" );
-					sourceWriter.print( generate );
-					sourceWriter.print( "(), injector.get" );
-					sourceWriter.print( ( (PresenterElement)eventHandler ).getView() );
+					createPresenter( (PresenterElement)eventHandler, true );
 				} else {
-					sourceWriter.print( "setEventHandler( injector.get" );
-					sourceWriter.print( generate );
+					createEventHandler( eventHandler, true );
 				}
-				sourceWriter.println( "(), eventBus);" );
 				sourceWriter.print( "eventBus.finishAddHandler(" );
-				sourceWriter.print( generate );
+				sourceWriter.print( eventHandler.getName() );
 				sourceWriter.print( "," );
-				sourceWriter.print( className );
+				sourceWriter.print( eventHandler.getClassName() );
 				sourceWriter.println( ".class, true);" );
 				writeEventHandling( generate, type, name, calledMethod, param, isPassive );
 			}
@@ -1332,6 +1320,38 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.println( "();" );
 	}
 
+	private void createPresenter( PresenterElement presenter, boolean withInstanceName ) {
+		String elementName = presenter.getName();
+		if ( withInstanceName ) {
+			sourceWriter.print( presenter.getClassName() );
+			sourceWriter.print( " " );
+			sourceWriter.print( elementName );
+			sourceWriter.print( " = " );
+		}
+		sourceWriter.print( "BaseEventBus.setPresenter(" );
+		sourceWriter.print( Boolean.toString( presenter.hasInverseView() ) );
+		sourceWriter.print( ", injector.get" );
+		sourceWriter.print( elementName );
+		sourceWriter.print( "(), injector.get" );
+		sourceWriter.print( presenter.getView() );
+		sourceWriter.println( "(), eventBus);" );
+		injectServices( elementName, presenter.getInjectedServices() );
+	}
+
+	private void createEventHandler( EventHandlerElement eventHandler, boolean withInstanceName ) {
+		String elementName = eventHandler.getName();
+		if ( withInstanceName ) {
+			sourceWriter.print( eventHandler.getClassName() );
+			sourceWriter.print( " " );
+			sourceWriter.print( elementName );
+			sourceWriter.print( " = " );
+		}
+		sourceWriter.print( "BaseEventBus.setEventHandler(injector.get" );
+		sourceWriter.print( elementName );
+		sourceWriter.println( "(), eventBus);" );
+		injectServices( elementName, eventHandler.getInjectedServices() );
+	}
+
 	/**
 	 * Write the lines to inject services into an element
 	 * 
@@ -1350,56 +1370,26 @@ public class Mvp4gConfigurationFileWriter {
 	private void writeMultipleConstructor() {
 		sourceWriter.println( "protected <T extends EventHandlerInterface<?>> T createHandler( Class<T> handlerClass ){" );
 		sourceWriter.indent();
-		Set<ViewElement> views = configuration.getViews();
-		String className, elementName, viewElementName;
-		ViewElement view;
 		for ( PresenterElement presenter : configuration.getPresenters() ) {
 			if ( presenter.isMultiple() && !presenter.isAsync() ) {
-				className = presenter.getClassName();
-				elementName = presenter.getName();
-				viewElementName = presenter.getView();
-				view = getElement( viewElementName, views );
 				sourceWriter.print( "if (" );
-				sourceWriter.print( className );
+				sourceWriter.print( presenter.getClassName() );
 				sourceWriter.println( ".class.equals(handlerClass)){" );
 				sourceWriter.indent();
-				createInstance( elementName, className, false );
-				createInstance( viewElementName, view.getClassName(), false );
-				sourceWriter.print( elementName );
-				sourceWriter.print( ".setView(" );
-				sourceWriter.print( viewElementName );
-				sourceWriter.println( ");" );
-				sourceWriter.print( elementName );
-				sourceWriter.println( ".setEventBus(eventBus);" );
-
-				if ( presenter.hasInverseView() ) {
-					sourceWriter.print( viewElementName );
-					sourceWriter.println( ".setPresenter(" + elementName + ");" );
-				}
-
-				injectServices( elementName, presenter.getInjectedServices() );
 				sourceWriter.print( "return (T) " );
-				sourceWriter.print( elementName );
-				sourceWriter.println( ";" );
+				createPresenter( presenter, false );
 				sourceWriter.outdent();
 				sourceWriter.println( "}" );
 			}
 		}
 		for ( EventHandlerElement eventHandler : configuration.getEventHandlers() ) {
 			if ( eventHandler.isMultiple() ) {
-				className = eventHandler.getClassName();
-				elementName = eventHandler.getName();
 				sourceWriter.print( "if (" );
-				sourceWriter.print( className );
+				sourceWriter.print( eventHandler.getClassName() );
 				sourceWriter.println( ".class.equals(handlerClass)){" );
 				sourceWriter.indent();
-				createInstance( elementName, className, false );
-				sourceWriter.print( elementName );
-				sourceWriter.println( ".setEventBus(eventBus);" );
-				injectServices( elementName, eventHandler.getInjectedServices() );
 				sourceWriter.print( "return (T) " );
-				sourceWriter.print( elementName );
-				sourceWriter.println( ";" );
+				createEventHandler( eventHandler, false );
 				sourceWriter.outdent();
 				sourceWriter.println( "}" );
 			}
@@ -1828,15 +1818,22 @@ public class Mvp4gConfigurationFileWriter {
 					constructorBuilder.append( handlerName ).append( " = BaseEventBus." );
 					boolean isPresenter = eventHandler instanceof PresenterElement;
 					if ( isPresenter ) {
-						constructorBuilder.append( "setPresenter( injector.get" );
+						PresenterElement presenter = (PresenterElement)eventHandler;
+						constructorBuilder.append( "setPresenter( " );
+						constructorBuilder.append( Boolean.toString( presenter.hasInverseView() ) );
+						constructorBuilder.append( ", injector.get" );
 						constructorBuilder.append( handlerName );
 						constructorBuilder.append( "(), injector.get" );
-						constructorBuilder.append( ( (PresenterElement)eventHandler ).getView() );
+						constructorBuilder.append( presenter.getView() );
 					} else {
 						constructorBuilder.append( "setEventHandler( injector.get" );
 						constructorBuilder.append( handlerName );
 					}
 					constructorBuilder.append( "(), eventBus);" ).append( '\n' );
+					for ( InjectedElement service : eventHandler.getInjectedServices() ) {
+						sourceWriter.print( eventHandler.getName() );
+						sourceWriter.println( "." + service.getSetterName() + "(" + service.getElementName() + ");" );
+					}
 				}
 			}
 
@@ -2066,7 +2063,7 @@ public class Mvp4gConfigurationFileWriter {
 		sourceWriter.indent();
 		if ( hasHistoryConfiguration ) {
 			String event = history.getNotFoundEvent();
-			if (event == null) {
+			if ( event == null ) {
 				event = history.getInitEvent();
 			}
 			sourceWriter.print( "eventBus." );
