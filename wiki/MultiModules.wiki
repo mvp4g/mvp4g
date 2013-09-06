@@ -293,6 +293,6 @@ public interface MyChildModule extends Mvp4gModule {}
 }}}
 
 {{{
-@Loader( MyPresenter.class )
+@Loader( MyLoader.class )
 public interface MyStatusSplitter extends Mvp4gSplitter {}
 }}}
