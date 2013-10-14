@@ -1,6 +1,6 @@
 package com.mvp4g.util.config.element;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 import java.util.Set;

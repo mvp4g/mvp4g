@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.mvp4g.client.annotation.EventHandler;

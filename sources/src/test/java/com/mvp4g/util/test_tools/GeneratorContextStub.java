@@ -3,6 +3,7 @@ package com.mvp4g.util.test_tools;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
+import com.google.gwt.core.ext.CachedGeneratorResult;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.PropertyOracle;
 import com.google.gwt.core.ext.TreeLogger;
@@ -57,6 +58,36 @@ public class GeneratorContextStub implements GeneratorContext {
 	public OutputStream tryCreateResource( TreeLogger logger, String partialPath ) throws UnableToCompleteException {
 		// nothing to do
 		return null;
+	}
+	
+	@Override
+	public boolean checkRebindRuleAvailable(String sourceTypeName) {
+			// nothing to do
+			return false;
+	}
+
+	@Override
+	public CachedGeneratorResult getCachedGeneratorResult() {
+			// nothing to do
+			return null;
+	}
+
+	@Override
+	public boolean isGeneratorResultCachingEnabled() {
+			// nothing to do
+			return false;
+	}
+
+	@Override
+	public boolean isProdMode() {
+			// nothing to do
+			return false;
+	}
+
+	@Override
+	public boolean tryReuseTypeFromCache(String typeName) {
+			// nothing to do
+			return false;
 	}
 
 }
