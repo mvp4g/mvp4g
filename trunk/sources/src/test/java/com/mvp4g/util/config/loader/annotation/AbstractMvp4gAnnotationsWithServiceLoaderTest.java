@@ -1,8 +1,8 @@
 package com.mvp4g.util.config.loader.annotation;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertSame;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;

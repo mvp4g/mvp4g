@@ -1,8 +1,8 @@
 package com.mvp4g.client.test_tools;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import com.google.gwt.user.client.Command;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;

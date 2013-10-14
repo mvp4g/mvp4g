@@ -1,6 +1,6 @@
 package com.mvp4g.util.config.element;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
