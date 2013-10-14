@@ -171,8 +171,8 @@ public class Mvp4gConfiguration {
 	 * 
 	 * @param logger
 	 *            logger of the GWT compiler
-	 * @param oracle
-	 *            oracle of the GWT compiler
+	 * @param context
+	 *            context of the GWT compiler
 	 */
 	public Mvp4gConfiguration( TreeLogger logger, GeneratorContext context ) {
 		this.logger = logger;
