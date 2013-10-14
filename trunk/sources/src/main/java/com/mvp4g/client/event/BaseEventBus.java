@@ -268,7 +268,6 @@ public abstract class BaseEventBus implements EventBus {
 	 *            class of the handler to add.
 	 * @param bind
 	 *            if true, bind the handler at creation, otherwise do nothing.
-	 * @param handlersMap
 	 */
 	public <E extends EventBus, T extends EventHandlerInterface<E>> void finishAddHandler( T handler, Class<T> handlerClass, boolean bind ) {
 		if ( bind ) {
