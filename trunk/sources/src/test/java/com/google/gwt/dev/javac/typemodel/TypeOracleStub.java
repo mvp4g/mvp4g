@@ -97,7 +97,7 @@ public class TypeOracleStub extends TypeOracle {
 
 					Map<Class<? extends Annotation>, Annotation> declaredAnnotations = new HashMap<Class<? extends Annotation>, Annotation>();
 					for ( Class<?> param : m.getParameterTypes() ) {
-						new JParameter( method, findType( param.getName() ), param.getSimpleName(), declaredAnnotations );
+						new JParameter( method, findType( param.getName() ), param.getSimpleName(), declaredAnnotations, true );
 					}
 
 				}
@@ -169,19 +169,19 @@ public class TypeOracleStub extends TypeOracle {
 			Map<Class<? extends Annotation>, Annotation> declaredAnnotations = new HashMap<Class<? extends Annotation>, Annotation>();
 			if ( isAssignableTo( findType( HistoryConverter.class.getName() ) ) ) {
 				JMethod method = new JMethod( this.getBaseType(), "convertFromToken", declaredAnnotations, null );
-				new JParameter( method, findType( String.class.getName() ), "eventType", declaredAnnotations );
-				new JParameter( method, findType( String.class.getName() ), "form", declaredAnnotations );
-				new JParameter( method, findType( EventBusWithLookup.class.getName() ), "eventBus", declaredAnnotations );
+				new JParameter( method, findType( String.class.getName() ), "eventType", declaredAnnotations, true );
+				new JParameter( method, findType( String.class.getName() ), "form", declaredAnnotations, true );
+				new JParameter( method, findType( EventBusWithLookup.class.getName() ), "eventBus", declaredAnnotations, true );
 				methods = new JMethod[] { method, method };
 			} else if ( isAssignableTo( findType( EventFilter.class.getName() ) ) ) {
 				JMethod method = new JMethod( this.getBaseType(), "filterEvent", declaredAnnotations, null );
-				new JParameter( method, findType( String.class.getName() ), "eventType", declaredAnnotations );
-				new JParameter( method, findType( String.class.getName() ), "form", declaredAnnotations );
-				new JParameter( method, findType( EventBusWithLookup.class.getName() ), "eventBus", declaredAnnotations );
+				new JParameter( method, findType( String.class.getName() ), "eventType", declaredAnnotations, true );
+				new JParameter( method, findType( String.class.getName() ), "form", declaredAnnotations, true );
+				new JParameter( method, findType( EventBusWithLookup.class.getName() ), "eventBus", declaredAnnotations, true );
 				methods = new JMethod[] { method, method };
 			} else if ( isAssignableTo( findType( Mvp4gLoader.class.getName() ) ) ) {
 				JMethod method = new JMethod( this.getBaseType(), "preLoad", declaredAnnotations, null );
-				new JParameter( method, findType( EventBusWithLookup.class.getName() ), "eventBus", declaredAnnotations );
+				new JParameter( method, findType( EventBusWithLookup.class.getName() ), "eventBus", declaredAnnotations, true );
 				methods = new JMethod[] { method };
 			} else {
 				methods = super.getMethods();
