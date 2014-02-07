@@ -28,8 +28,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<gwt.version>2.5.1</gwt.version>
-		<gin.version>2.1.1</gin.version>
+		<gwt.version>2.6.0</gwt.version>
+		<gin.version>2.1.2</gin.version>
 	</properties>
 
 	<developers>
@@ -109,8 +109,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<meminitial>128m</meminitial>
 					<maxmem>1024m</maxmem>
 					<encoding>${project.build.sourceEncoding}</encoding>

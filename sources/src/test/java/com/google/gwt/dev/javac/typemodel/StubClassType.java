@@ -21,7 +21,7 @@ public class StubClassType extends JClassType {
 	public JMethod[] getOverridableMethods() {
 		Map<Class<? extends Annotation>, Annotation> declaredAnnotations = new HashMap<Class<? extends Annotation>, Annotation>();
 		JMethod method = new JMethod( this, "load", declaredAnnotations, null );
-		new JParameter( method, oracle.findType( Mvp4gRunAsyncCallbackStub.class.getCanonicalName() ), "callback", declaredAnnotations );
+		new JParameter( method, oracle.findType( Mvp4gRunAsyncCallbackStub.class.getCanonicalName() ), "callback", declaredAnnotations, true);
 		return new JMethod[] { method };
 	}
 
