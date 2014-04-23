@@ -3,7 +3,7 @@
 =Road Map 1.5.0=
 
  * Support IncrementalGenerator for SuperDevMod.
-
+ * Patch for update mvp4g for last gin 2.1.1 and gwt 2.6.0 (Issue 128)
 
 
 = Release Notes =
