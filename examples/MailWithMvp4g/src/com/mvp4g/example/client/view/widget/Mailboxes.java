@@ -15,116 +15,124 @@
  */
 package com.mvp4g.example.client.view.widget;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.mvp4g.example.client.presenter.ShortCutsPresenter.FOLDER_TYPE;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * A tree displaying a set of email folders.
  */
-public class Mailboxes extends Composite {
+public class Mailboxes
+  extends Composite {
 
-	/**
-	 * Specifies the images that will be bundled for this Composite and specify that tree's images
-	 * should also be included in the same bundle.
-	 */
-	public interface Images extends ClientBundle, Tree.Resources {
-		ImageResource drafts();
+  /**
+   * Specifies the images that will be bundled for this Composite and specify that tree's images
+   * should also be included in the same bundle.
+   */
+  public interface Images
+    extends ClientBundle,
+            Tree.Resources {
+    ImageResource drafts();
 
-		ImageResource home();
+    ImageResource home();
 
-		ImageResource inbox();
+    ImageResource inbox();
 
-		ImageResource sent();
+    ImageResource sent();
 
-		ImageResource templates();
+    ImageResource templates();
 
-		ImageResource trash();
+    ImageResource trash();
 
-		@Source( "noimage.png" )
-		ImageResource treeLeaf();
-	}
+    @Source("noimage.png")
+    ImageResource treeLeaf();
+  }
 
-	private static Images images = GWT.create( Images.class );
-	private static Map<String, ImageResource> itemImages = new HashMap<String, ImageResource>();
-	static {
-		itemImages.put( "Inbox", images.inbox() );
-		itemImages.put( "Drafts", images.drafts() );
-		itemImages.put( "Templates", images.templates() );
-		itemImages.put( "Sent", images.sent() );
-		itemImages.put( "Trash", images.trash() );
-	}
-	private Tree tree;
-	private TreeItem root;
+  private static Images                     images     = GWT.create(Images.class);
+  private static Map<String, ImageResource> itemImages = new HashMap<String, ImageResource>();
 
-	/**
-	 * Constructs a new mailboxes widget with a bundle of images.
-	 * 
-	 * @param images
-	 *            a bundle that provides the images for this widget
-	 */
-	public Mailboxes() {
-		tree = new Tree( images );
-		TreeItem root = new TreeItem( imageItemHTML( images.home(), "foo@example.com" ) );
-		tree.addItem( root );
-		this.root = root;
-		root.setState( true );
-		initWidget( tree );
-	}
+  static {
+    itemImages.put("Inbox",
+                   images.inbox());
+    itemImages.put("Drafts",
+                   images.drafts());
+    itemImages.put("Templates",
+                   images.templates());
+    itemImages.put("Sent",
+                   images.sent());
+    itemImages.put("Trash",
+                   images.trash());
+  }
 
-	/**
-	 * A helper method to simplify adding tree items that have attached images.
-	 * {@link #addImageItem(TreeItem, String, ImageResource) code}
-	 * 
-	 * @param root
-	 *            the tree item to which the new item will be added.
-	 * @param title
-	 *            the text associated with this item.
-	 */
-	public void addImageItem( FOLDER_TYPE folder ) {
+  private Tree     tree;
+  private TreeItem root;
 
-		TreeItem item;
-		switch ( folder ) {
-		case INBOX:
-			item = new TreeItem( imageItemHTML( images.inbox(), "Inbox" ) );
-			break;
-		case DRAFS:
-			item = new TreeItem( imageItemHTML( images.drafts(), "Drafts" ) );
-			break;
-		case TEMPLATES:
-			item = new TreeItem( imageItemHTML( images.templates(), "Templates" ) );
-			break;
-		case SENT:
-			item = new TreeItem( imageItemHTML( images.sent(), "Sent" ) );
-			break;
-		default:
-			item = new TreeItem( imageItemHTML( images.trash(), "Trash" ) );
-			break;
+  /**
+   * Constructs a new mailboxes widget with a bundle of images.
+   */
+  public Mailboxes() {
+    tree = new Tree(images);
+    TreeItem root = new TreeItem(imageItemHTML(images.home(),
+                                               "foo@example.com"));
+    tree.addItem(root);
+    this.root = root;
+    root.setState(true);
+    initWidget(tree);
+  }
 
-		}
+  /**
+   * A helper method to simplify adding tree items that have attached images.
+   */
+  public void addImageItem(FOLDER_TYPE folder) {
 
-		root.addItem( item );
-	}
+    TreeItem item;
+    switch (folder) {
+      case INBOX:
+        item = new TreeItem(imageItemHTML(images.inbox(),
+                                          "Inbox"));
+        break;
+      case DRAFS:
+        item = new TreeItem(imageItemHTML(images.drafts(),
+                                          "Drafts"));
+        break;
+      case TEMPLATES:
+        item = new TreeItem(imageItemHTML(images.templates(),
+                                          "Templates"));
+        break;
+      case SENT:
+        item = new TreeItem(imageItemHTML(images.sent(),
+                                          "Sent"));
+        break;
+      default:
+        item = new TreeItem(imageItemHTML(images.trash(),
+                                          "Trash"));
+        break;
 
-	/**
-	 * Generates HTML for a tree item with an attached icon.
-	 * 
-	 * @param imageProto
-	 *            the image prototype to use
-	 * @param title
-	 *            the title of the item
-	 * @return the resultant HTML
-	 */
-	private String imageItemHTML( ImageResource imageProto, String title ) {
-		return AbstractImagePrototype.create( imageProto ).getHTML() + " " + title;
-	}
+    }
+
+    root.addItem(item);
+  }
+
+  /**
+   * Generates HTML for a tree item with an attached icon.
+   *
+   * @param imageProto the image prototype to use
+   * @param title      the title of the item
+   * @return the resultant HTML
+   */
+  private SafeHtml imageItemHTML(ImageResource imageProto,
+                                  String title) {
+    return SafeHtmlUtils.fromTrustedString(AbstractImagePrototype.create(imageProto).getHTML() + " " + title);
+  }
 
 }
