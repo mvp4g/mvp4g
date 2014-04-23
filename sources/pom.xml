@@ -60,7 +60,6 @@
 	</contributors>
 
 	<dependencies>
-		
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-dev</artifactId>
@@ -87,12 +86,19 @@
 			<artifactId>gin</artifactId>
 			<version>${gin.version}</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
+    <!-- for use with maven 3 -->
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-webdav-jackrabbit</artifactId>
+        <version>1.0-beta-7</version>
+      </extension>
+    </extensions>
 
-		<resources>
+    <resources>
 			<resource>
 				<directory>src/main/java</directory>
 				<includes>
@@ -103,7 +109,6 @@
 		</resources>
 
 		<plugins>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -184,7 +189,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
 
@@ -200,5 +204,4 @@
 			<url>dav:https://mvp4g.googlecode.com/svn/maven2/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
-
 </project>
