@@ -8,7 +8,7 @@
 
 = Release Notes =
 
-==1.4.0 (02/18/11)==
+==1.4.0 (02/18/12)==
  * Support for multiple devices: easily switch your GIN configuration for each device
  * Possibility to split one or a few presenter event hander
  * Possibility to block a presenter/event handler for an event
