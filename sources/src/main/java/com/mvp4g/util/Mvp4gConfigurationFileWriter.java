@@ -699,9 +699,7 @@ public class Mvp4gConfigurationFileWriter {
 	 * Write the events included in the configuration file
 	 * 
 	 * Pre-condition: mvp4g configuration has been pre-loaded from configuration file.
-	 * 
-	 * @param eventsConf
-	 *            List of events tag included in the configuration file
+	 *
 	 * @throws UnableToCompleteException
 	 *             thrown if the events tag aren't correct.
 	 * @throws InvalidMvp4gConfigurationException
@@ -1357,7 +1355,7 @@ public class Mvp4gConfigurationFileWriter {
 	 * 
 	 * @param elementName
 	 *            name of the element where services need to be injected
-	 * @param services
+	 * @param injectedServices
 	 *            name of the services to inject
 	 */
 	private void injectServices( String elementName, List<InjectedElement> injectedServices ) {
