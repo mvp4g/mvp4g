@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<metadata>
+<metadata modelVersion="1.1.0">
   <groupId>com.googlecode.mvp4g</groupId>
   <artifactId>mvp4g</artifactId>
   <version>1.5.0-SNAPSHOT</version>
   <versioning>
     <snapshot>
-      <timestamp>20140207.000000</timestamp>
-      <buildNumber>5</buildNumber>
+      <timestamp>20140423.151219</timestamp>
+      <buildNumber>6</buildNumber>
     </snapshot>
-    <lastUpdated>20140207000000</lastUpdated>
+    <lastUpdated>20140423151219</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>1.5.0-20140423.151219-6</value>
+        <updated>20140423151219</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>1.5.0-20140423.151219-6</value>
+        <updated>20140423151219</updated>
+      </snapshotVersion>
+    </snapshotVersions>
   </versioning>
 </metadata>
