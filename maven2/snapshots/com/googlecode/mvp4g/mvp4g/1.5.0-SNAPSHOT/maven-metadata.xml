@@ -26,6 +26,12 @@
         <value>1.5.0-20140423.151219-6</value>
         <updated>20140423151219</updated>
       </snapshotVersion>
+      <snapshotVersion>
+        <classifier>javadoc</classifier>
+        <extension>jar</extension>
+        <value>1.5.0-20140423.151219-6</value>
+        <updated>20140423151219</updated>
+      </snapshotVersion>
     </snapshotVersions>
   </versioning>
 </metadata>
