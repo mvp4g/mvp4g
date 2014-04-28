@@ -29,8 +29,9 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 
 public class AnnotationScanner {
 
-	public static Map<Class<? extends Annotation>, List<JClassType>> scan( TreeLogger logger, TypeOracle typeOracle,
-			Class<? extends Annotation>[] annotationClasses ) {
+	public static Map<Class<? extends Annotation>, List<JClassType>> scan(TreeLogger logger,
+                                                                        TypeOracle typeOracle,
+			                                                                  Class<? extends Annotation>[] annotationClasses ) {
 
 		Map<Class<? extends Annotation>, List<JClassType>> annotationMap = new HashMap<Class<? extends Annotation>, List<JClassType>>();
 		for ( Class<? extends Annotation> c : annotationClasses ) {
