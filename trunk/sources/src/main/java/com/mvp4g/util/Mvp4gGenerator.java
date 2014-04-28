@@ -36,7 +36,9 @@ import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventFilter;
 import com.mvp4g.client.event.EventHandlerInterface;
-import com.mvp4g.client.history.*;
+import com.mvp4g.client.history.HistoryConverter;
+import com.mvp4g.client.history.NavigationConfirmationInterface;
+import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.PresenterInterface;
 import com.mvp4g.util.config.Mvp4gConfiguration;
 import com.mvp4g.util.config.element.EventBusElement;
@@ -138,10 +140,19 @@ public class Mvp4gGenerator
 
       Mvp4gConfiguration configuration = new Mvp4gConfiguration(logger,
                                                                 context);
+
       String suffix = "Impl" + configuration.load(module,
                                                   scanResult);
 
       generatedClassQualifiedName = module.getParameterizedQualifiedSourceName() + suffix;
+
+      // validate configuration
+      if (!ConfigurationValidator.impl.isValidate(logger,
+                                                  context,
+                                                  module,
+                                                  configuration)) {
+        throw new UnableToCompleteException();
+      }
 
       // check weather there is a usual version or not.
       if (checkAlreadyGenerated(logger,
@@ -149,7 +160,7 @@ public class Mvp4gGenerator
                                 configuration)) {
         // Log
         logger.log(TreeLogger.INFO,
-                   "reuse already generated files",
+                   "Reuse already generated files",
                    null);
         // stop generating
         return new RebindResult(RebindMode.USE_EXISTING,
@@ -157,7 +168,7 @@ public class Mvp4gGenerator
       } else {
         // Log
         logger.log(TreeLogger.INFO,
-                   "Generate files ... ",
+                   "Start generate files ... ",
                    null);
       }
 
@@ -335,4 +346,5 @@ public class Mvp4gGenerator
     }
 
     return true;
-  }}
+  }
+}
