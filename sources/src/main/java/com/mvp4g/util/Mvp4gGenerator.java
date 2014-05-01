@@ -146,14 +146,6 @@ public class Mvp4gGenerator
 
       generatedClassQualifiedName = module.getParameterizedQualifiedSourceName() + suffix;
 
-      // validate configuration
-      if (!ConfigurationValidator.impl.isValidate(logger,
-                                                  context,
-                                                  module,
-                                                  configuration)) {
-        throw new UnableToCompleteException();
-      }
-
       // check weather there is a usual version or not.
       if (checkAlreadyGenerated(logger,
                                 context,
