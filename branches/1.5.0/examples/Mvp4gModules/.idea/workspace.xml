@@ -2,112 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="240632fc-e975-4aaa-9fb6-4f6cf6f7c268" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/workDir" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__aopalliance_aopalliance_1_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_nodep_2_2_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_gwt_gwt_servlet_2_6_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_gwt_gwt_user_2_6_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_gwt_inject_gin_2_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_inject_extensions_guice_assistedinject_3_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_inject_guice_3_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_mvp4g_mvp4g_1_5_0_SNAPSHOT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_inject_javax_inject_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_validation_validation_api_1_0_0_GA.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_validation_validation_api_sources_1_0_0_GA.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_11.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_easymock_easymock_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_json_json_20090211.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_objenesis_objenesis_1_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/Mvp4gModules_war.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/Mvp4gModules_war_exploded.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/AbstractCompanyPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/AbstractCompanyPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/AbstractCompanyView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/AbstractCompanyView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/AbstractMvp4gSplitterAsyncCallback.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/AbstractMvp4gSplitterAsyncCallback.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/presenter/AbstractProductPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/presenter/AbstractProductPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/view/AbstractProductView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/view/AbstractProductView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/util/token/BaseTokenGenerator.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/util/token/BaseTokenGenerator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/bean/CompanyBean.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/bean/CompanyBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/history/CompanyCreationHistoryConverter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/history/CompanyCreationHistoryConverter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/CompanyCreationPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/CompanyCreationPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/CompanyCreationView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/CompanyCreationView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/CompanyDisplayPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/CompanyDisplayPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/CompanyDisplayView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/CompanyDisplayView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/CompanyEditPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/CompanyEditPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/CompanyEditView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/CompanyEditView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/CompanyEventBus.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/CompanyEventBus.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/CompanyEventFilter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/CompanyEventFilter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/history/CompanyHistoryConverter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/history/CompanyHistoryConverter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/handler/CompanyListHandler.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/handler/CompanyListHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/CompanyListPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/CompanyListPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/CompanyListView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/CompanyListView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/CompanyModule.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/CompanyModule.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/CompanyNameSelectorPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/CompanyNameSelectorPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/CompanyNameSelectorView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/CompanyNameSelectorView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/CompanyRowPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/CompanyRowPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/CompanyRowView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/CompanyRowView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/CompanyService.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/CompanyService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/CompanyServiceAsync.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/CompanyServiceAsync.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/server/CompanyServiceImpl.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/server/CompanyServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/CompanyTimePresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/presenter/CompanyTimePresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/CompanyTimeView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/company/view/CompanyTimeView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/CustomLogger.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/CustomLogger.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/CustomPlaceService.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/CustomPlaceService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/presenter/DatePresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/presenter/DatePresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/view/DateView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/view/DateView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/FirefoxGinModule.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/FirefoxGinModule.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/view/FirefoxMainView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/view/FirefoxMainView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/util/display/FullNameIndexDisplayer.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/util/display/FullNameIndexDisplayer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/util/display/IndexDisplayer.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/util/display/IndexDisplayer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/util/index/IndexGenerator.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/util/index/IndexGenerator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/presenter/InfoReceiverPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/presenter/InfoReceiverPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/view/InfoReceiverView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/view/InfoReceiverView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/common/widget/LabelWithValue.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/common/widget/LabelWithValue.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/MainEventBus.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/MainEventBus.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/MainEventFilter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/MainEventFilter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/presenter/MainPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/presenter/MainPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/view/MainView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/view/MainView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/historyConverter/MenuHistoryConverter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/historyConverter/MenuHistoryConverter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/Mvp4gGinModule.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/Mvp4gGinModule.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/Mvp4gModules.gwt.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/Mvp4gModules.gwt.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/Mvp4gModules.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/Mvp4gModules.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/util/index/PlusFiveIndexGenerator.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/util/index/PlusFiveIndexGenerator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/bean/ProductBean.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/bean/ProductBean.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/presenter/ProductCreationPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/presenter/ProductCreationPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/view/ProductCreationView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/view/ProductCreationView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/presenter/ProductDisplayPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/presenter/ProductDisplayPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/view/ProductDisplayView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/view/ProductDisplayView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/presenter/ProductEditPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/presenter/ProductEditPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/view/ProductEditView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/view/ProductEditView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/ProductEventBus.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/ProductEventBus.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/historyConverter/ProductHistoryConverter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/historyConverter/ProductHistoryConverter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/presenter/ProductListPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/presenter/ProductListPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/view/ProductListView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/view/ProductListView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/ProductModule.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/ProductModule.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/ProductService.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/ProductService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/ProductServiceAsync.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/product/ProductServiceAsync.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/server/ProductServiceImpl.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/server/ProductServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/util/index/SameIndexGenerator.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/util/index/SameIndexGenerator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/presenter/StatusContainerPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/presenter/StatusContainerPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/view/StatusContainerView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/view/StatusContainerView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/StatusSplitter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/StatusSplitter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/presenter/TimePresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/presenter/TimePresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/view/TimeView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/main/view/TimeView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/util/token/TokenGenerator.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/util/token/TokenGenerator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Mvp4gModules.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Mvp4gModules.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -161,8 +57,8 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
-    <breakpoint_rules converted="true" />
     <ui_properties converted="true" />
+    <breakpoint_rules converted="true" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
@@ -183,7 +79,7 @@
       <file leaf-file-name="CompanyEventBus.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/company/CompanyEventBus.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.88850176" vertical-offset="0" max-vertical-offset="2346">
+            <state vertical-scroll-proportion="0.0" vertical-offset="765" max-vertical-offset="2346">
               <caret line="45" column="108" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -376,8 +272,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -447,10 +343,6 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="GWT.ConfigurationType" factoryName="GWT Configuration">
-      <module name="" />
-      <method />
-    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -470,6 +362,10 @@
       </option>
       <envs />
       <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="GWT.ConfigurationType" factoryName="GWT Configuration">
+      <module name="" />
       <method />
     </configuration>
     <configuration default="false" name="ApplicationServer" type="GWT.ConfigurationType" factoryName="GWT Configuration" singleton="true">
@@ -543,6 +439,10 @@
           <option name="myVcsRoot" value="$PROJECT_DIR$" />
           <option name="myCopyRoot" value="$PROJECT_DIR$" />
         </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/.idea" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/.idea" />
+        </SvnCopyRootSimple>
       </list>
     </option>
     <option name="myMoreRealMappingRoots">
@@ -560,6 +460,7 @@
       <created>1398980426366</created>
       <updated>1398980426366</updated>
       <workItem from="1398980428162" duration="1007000" />
+      <workItem from="1398981571107" duration="20000" />
     </task>
     <task id="LOCAL-00001" summary="Isuue 121 fixed">
       <created>1398981204101</created>
@@ -573,38 +474,38 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1007000" />
+    <option name="totallyTimeSpent" value="1027000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="51" y="22" width="2509" height="1418" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3295626" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3295626" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39969835" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23631942" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23631942" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24969599" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295626" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -636,6 +537,24 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1598" max-vertical-offset="3553">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/company/CompanyEventBus.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="765" max-vertical-offset="2346">
+          <caret line="45" column="108" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3553">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
@@ -644,7 +563,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/company/CompanyEventBus.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.88850176" vertical-offset="0" max-vertical-offset="2346">
+        <state vertical-scroll-proportion="0.0" vertical-offset="765" max-vertical-offset="2346">
           <caret line="45" column="108" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
