@@ -13,75 +13,79 @@ import com.mvp4g.example.client.product.ProductServiceAsync;
 import com.mvp4g.example.client.product.bean.ProductBean;
 import com.mvp4g.example.client.util.HasBeenThereHandler;
 
-public abstract class AbstractProductPresenter extends LazyPresenter<AbstractProductPresenter.ProductViewInterface, ProductEventBus> implements HasBeenThereHandler {
+public abstract class AbstractProductPresenter
+  extends LazyPresenter<AbstractProductPresenter.ProductViewInterface, ProductEventBus>
+  implements HasBeenThereHandler {
 
-	protected ProductBean product = null;
+  protected ProductBean product = null;
 
-	@Inject
-	protected ProductServiceAsync service = null;
+  @Inject
+  protected ProductServiceAsync service = null;
 
-	public interface ProductViewInterface extends LazyView, IsWidget {
-		HasValue<String> getName();
+  public interface ProductViewInterface
+    extends LazyView,
+            IsWidget {
+    HasValue<String> getName();
 
-		HasClickHandlers getLeftButton();
+    HasClickHandlers getLeftButton();
 
-		HasClickHandlers getRightButton();
+    HasClickHandlers getRightButton();
 
-		void alert( String message );
-	}
+    void alert(String message);
+  }
 
-	public void bindView() {
-		view.getLeftButton().addClickHandler( new ClickHandler() {
+  public void bindView() {
+    view.getLeftButton().addClickHandler(new ClickHandler() {
 
-			public void onClick( ClickEvent event ) {
-				clickOnLeftButton( event );
-			}
-		} );
+      public void onClick(ClickEvent event) {
+        clickOnLeftButton(event);
+      }
+    });
 
-		view.getRightButton().addClickHandler( new ClickHandler() {
+    view.getRightButton().addClickHandler(new ClickHandler() {
 
-			public void onClick( ClickEvent event ) {
-				clickOnRightButton( event );
-			}
-		} );
+      public void onClick(ClickEvent event) {
+        clickOnRightButton(event);
+      }
+    });
 
-	}
+  }
 
-	public void onHasBeenThere() {
-		view.alert( "Has been on " + getPageName() );
-	}
-	
-	public void onBroadcastInfo( String[] info ) {
-		int size = info.length;
-		StringBuilder builder = new StringBuilder( 20 + size * 30 );
-		builder.append( getPageName() );
-		builder.append( " received this information: " );
-		if ( size > 0 ) {
-			builder.append( info[0] );
-			for ( int i = 1; i < size; i++ ) {
-				builder.append( ", " );
-				builder.append( info[i] );
-			}
-		}
-		view.alert( builder.toString() );
-	}
+  public void onHasBeenThere() {
+    view.alert("Has been on " + getPageName());
+  }
 
-	protected void fillView() {
-		view.getName().setValue( product.getName() );
-	}
+  public void onBroadcastInfo(String[] info) {
+    int size = info.length;
+    StringBuilder builder = new StringBuilder(20 + size * 30);
+    builder.append(getPageName());
+    builder.append(" received this information: ");
+    if (size > 0) {
+      builder.append(info[0]);
+      for (int i = 1; i < size; i++) {
+        builder.append(", ");
+        builder.append(info[i]);
+      }
+    }
+    view.alert(builder.toString());
+  }
 
-	protected void fillBean() {
-		product.setName( view.getName().getValue() );
-	}
+  protected void fillView() {
+    view.getName().setValue(product.getName());
+  }
 
-	protected void clear() {
-		view.getName().setValue( "" );
-	}
+  protected void fillBean() {
+    product.setName(view.getName().getValue());
+  }
 
-	abstract protected void clickOnLeftButton( ClickEvent event );
+  protected void clear() {
+    view.getName().setValue("");
+  }
 
-	abstract protected void clickOnRightButton( ClickEvent event );
+  abstract protected void clickOnLeftButton(ClickEvent event);
 
-	abstract protected String getPageName();
+  abstract protected void clickOnRightButton(ClickEvent event);
+
+  abstract protected String getPageName();
 
 }

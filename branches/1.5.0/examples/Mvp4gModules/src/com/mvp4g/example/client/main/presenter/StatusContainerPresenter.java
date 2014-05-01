@@ -6,17 +6,19 @@ import com.mvp4g.example.client.main.MainEventBus;
 import com.mvp4g.example.client.main.StatusSplitter;
 import com.mvp4g.example.client.main.view.StatusContainerView;
 
-@Presenter( view = StatusContainerView.class, async = StatusSplitter.class )
-public class StatusContainerPresenter extends BasePresenter<StatusContainerPresenter.IStatusContainerView, MainEventBus> {
+@Presenter(view = StatusContainerView.class,
+           async = StatusSplitter.class)
+public class StatusContainerPresenter
+  extends BasePresenter<StatusContainerPresenter.IStatusContainerView, MainEventBus> {
 
-	public interface IStatusContainerView {
+  public interface IStatusContainerView {
 
-		void showPopup();
+    void showPopup();
 
-	}
+  }
 
-	public void onShowStatus( String info) {
-		view.showPopup();
-	}
+  public void onShowStatus(String info) {
+    view.showPopup();
+  }
 
 }

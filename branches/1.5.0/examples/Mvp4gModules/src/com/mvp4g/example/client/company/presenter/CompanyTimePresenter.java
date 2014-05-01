@@ -6,15 +6,17 @@ import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.company.CompanyEventBus;
 import com.mvp4g.example.client.company.view.CompanyTimeView;
 
-@Presenter( view = CompanyTimeView.class, async = SingleSplitter.class )
-public class CompanyTimePresenter extends BasePresenter<CompanyTimePresenter.ICompanyTimeView, CompanyEventBus> {
+@Presenter(view = CompanyTimeView.class,
+           async = SingleSplitter.class)
+public class CompanyTimePresenter
+  extends BasePresenter<CompanyTimePresenter.ICompanyTimeView, CompanyEventBus> {
 
-	public interface ICompanyTimeView {
-		void showTime();
-	}
+  public interface ICompanyTimeView {
+    void showTime();
+  }
 
-	public void onShowStatus(String status) {
-		view.showTime();
-	}
+  public void onShowStatus(String status) {
+    view.showTime();
+  }
 
 }

@@ -6,8 +6,10 @@ import com.mvp4g.client.annotation.module.Loader;
 import com.mvp4g.example.client.main.presenter.MainPresenter;
 import com.mvp4g.example.client.util.HasBeenThereHandler;
 
-@Loader( MainPresenter.class )
-@HistoryName( "company" )
-public interface CompanyModule extends Mvp4gModule, HasBeenThereHandler {
+@Loader(MainPresenter.class)
+@HistoryName("company")
+public interface CompanyModule
+  extends Mvp4gModule,
+          HasBeenThereHandler {
 
 }

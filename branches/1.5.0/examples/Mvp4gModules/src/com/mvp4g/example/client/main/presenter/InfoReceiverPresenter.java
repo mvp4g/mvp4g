@@ -9,37 +9,40 @@ import com.mvp4g.example.client.main.MainEventBus;
 import com.mvp4g.example.client.main.StatusSplitter;
 import com.mvp4g.example.client.main.view.InfoReceiverView;
 
-@Presenter( view = InfoReceiverView.class, multiple = true, async = StatusSplitter.class )
-public class InfoReceiverPresenter extends BasePresenter<InfoReceiverPresenter.IInfoReceiverView, MainEventBus> {
+@Presenter(view = InfoReceiverView.class,
+           multiple = true,
+           async = StatusSplitter.class)
+public class InfoReceiverPresenter
+  extends BasePresenter<InfoReceiverPresenter.IInfoReceiverView, MainEventBus> {
 
-	public interface IInfoReceiverView {
+  public interface IInfoReceiverView {
 
-		void show();
+    void show();
 
-		void hide();
+    void hide();
 
-		void setInfo( String[] info );
+    void setInfo(String[] info);
 
-		HasClickHandlers getClose();
+    HasClickHandlers getClose();
 
-	}
+  }
 
-	@Override
-	public void bind() {
-		view.getClose().addClickHandler( new ClickHandler() {
+  @Override
+  public void bind() {
+    view.getClose().addClickHandler(new ClickHandler() {
 
-			@Override
-			public void onClick( ClickEvent event ) {
-				view.hide();
-				eventBus.removeHandler( InfoReceiverPresenter.this );
-			}
+      @Override
+      public void onClick(ClickEvent event) {
+        view.hide();
+        eventBus.removeHandler(InfoReceiverPresenter.this);
+      }
 
-		} );
-	}
+    });
+  }
 
-	public void onBroadcastInfo( String[] info ) {
-		view.setInfo( info );
-		view.show();
-	}
+  public void onBroadcastInfo(String[] info) {
+    view.setInfo(info);
+    view.show();
+  }
 
 }

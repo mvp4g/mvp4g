@@ -10,41 +10,43 @@ import com.mvp4g.client.view.LazyView;
 import com.mvp4g.example.client.company.CompanyEventBus;
 import com.mvp4g.example.client.company.view.CompanyNameSelectorView;
 
-@Presenter(view=CompanyNameSelectorView.class)
-public class CompanyNameSelectorPresenter extends LazyPresenter<CompanyNameSelectorPresenter.CompanyNameSelectorViewInterface, CompanyEventBus> {
+@Presenter(view = CompanyNameSelectorView.class)
+public class CompanyNameSelectorPresenter
+  extends LazyPresenter<CompanyNameSelectorPresenter.CompanyNameSelectorViewInterface, CompanyEventBus> {
 
-	public interface CompanyNameSelectorViewInterface extends LazyView {
+  public interface CompanyNameSelectorViewInterface
+    extends LazyView {
 
-		public void show();
+    public void show();
 
-		public void hide();
+    public void hide();
 
-		public HasClickHandlers getSelectButton();
+    public HasClickHandlers getSelectButton();
 
-		public ListBox getNames();
+    public ListBox getNames();
 
-	}
+  }
 
-	@Override
-	public void bindView() {
-		ListBox names = view.getNames();
-		for ( int i = 0; i < 10; i++ ) {
-			names.addItem( "Company" + i );
-		}
-		view.getSelectButton().addClickHandler( new ClickHandler() {
+  @Override
+  public void bindView() {
+    ListBox names = view.getNames();
+    for (int i = 0; i < 10; i++) {
+      names.addItem("Company" + i);
+    }
+    view.getSelectButton().addClickHandler(new ClickHandler() {
 
-			public void onClick( ClickEvent event ) {
-				ListBox names = view.getNames();
-				String name = names.getValue( names.getSelectedIndex() );
-				view.hide();
-				eventBus.nameSelected( name );
-			}
+      public void onClick(ClickEvent event) {
+        ListBox names = view.getNames();
+        String name = names.getValue(names.getSelectedIndex());
+        view.hide();
+        eventBus.nameSelected(name);
+      }
 
-		} );
-	}
+    });
+  }
 
-	public void onDisplayNameSelector() {
-		view.show();
-	}
+  public void onDisplayNameSelector() {
+    view.show();
+  }
 
 }

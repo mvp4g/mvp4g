@@ -5,25 +5,28 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Label;
 
-public class LabelWithValue extends Label implements HasValue<String> {
+public class LabelWithValue
+  extends Label
+  implements HasValue<String> {
 
-	public String getValue() {
-		return getText();
-	}
+  public String getValue() {
+    return getText();
+  }
 
-	public void setValue( String value ) {
-		setText( value );
+  public void setValue(String value) {
+    setText(value);
 
-	}
+  }
 
-	public void setValue( String value, boolean fireEvents ) {
-		// TODO Auto-generated method stub
+  public void setValue(String value,
+                       boolean fireEvents) {
+    // TODO Auto-generated method stub
 
-	}
+  }
 
-	public HandlerRegistration addValueChangeHandler( ValueChangeHandler<String> handler ) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
 }

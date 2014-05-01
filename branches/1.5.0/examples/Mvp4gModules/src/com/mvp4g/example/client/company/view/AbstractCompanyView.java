@@ -9,55 +9,64 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.BaseCycleView;
 import com.mvp4g.example.client.company.presenter.AbstractCompanyPresenter.CompanyViewInterface;
 
-public abstract class AbstractCompanyView extends BaseCycleView implements CompanyViewInterface {
+public abstract class AbstractCompanyView
+  extends BaseCycleView
+  implements CompanyViewInterface {
 
-	private Button leftButton = null;
-	private Button rightButton = null;
-	private Button selectButton = null;
+  private Button leftButton   = null;
+  private Button rightButton  = null;
+  private Button selectButton = null;
 
-	public HasClickHandlers getLeftButton() {
-		return leftButton;
-	}
+  public HasClickHandlers getLeftButton() {
+    return leftButton;
+  }
 
-	public HasClickHandlers getRightButton() {
-		return rightButton;
-	}
-	
-	public HasClickHandlers getSelectNameButton() {
-		return selectButton;
-	}
+  public HasClickHandlers getRightButton() {
+    return rightButton;
+  }
 
-	public void alert(String message){
-		Window.alert( message );
-	}
-	
-	public boolean confirm(String message){
-		return Window.confirm( message );
-	}
+  public HasClickHandlers getSelectNameButton() {
+    return selectButton;
+  }
 
-	public void createView() {
-		selectButton = new Button( "Select Name");
-		leftButton = new Button( getLeftButtonName() );
-		rightButton = new Button( getRightButtonName() );
+  public void alert(String message) {
+    Window.alert(message);
+  }
 
-		Grid grid = new Grid( 2, 2 );
-		grid.setText( 0, 0, "Name :" );
-		grid.setWidget( 0, 1, createAndGetNameWidget() );
+  public boolean confirm(String message) {
+    return Window.confirm(message);
+  }
 
-		HorizontalPanel buttons = new HorizontalPanel();
-		buttons.add( selectButton );
-		buttons.add( leftButton );
-		buttons.add( rightButton );
+  public void createView() {
+    selectButton = new Button("Select Name");
+    leftButton = new Button(getLeftButtonName());
+    rightButton = new Button(getRightButtonName());
 
-		grid.setWidget( 1, 1, buttons );
+    Grid grid = new Grid(2,
+                         2);
+    grid.setText(0,
+                 0,
+                 "Name :");
+    grid.setWidget(0,
+                   1,
+                   createAndGetNameWidget());
 
-		initWidget( grid );
-	}
+    HorizontalPanel buttons = new HorizontalPanel();
+    buttons.add(selectButton);
+    buttons.add(leftButton);
+    buttons.add(rightButton);
 
-	abstract protected String getLeftButtonName();
+    grid.setWidget(1,
+                   1,
+                   buttons);
 
-	abstract protected String getRightButtonName();
+    initWidget(grid);
+  }
 
-	abstract protected Widget createAndGetNameWidget();
+  abstract protected String getLeftButtonName();
+
+  abstract protected String getRightButtonName();
+
+  abstract protected Widget createAndGetNameWidget();
 
 }
