@@ -19,7 +19,7 @@ import com.mvp4g.example.client.util.HasBeenThereHandler;
         ginModuleProperties = "ginModule")
 @Debug(logLevel = LogLevel.DETAILED,
        logger = CustomLogger.class)
-@ChildModules({ @ChildModule(moduleClass = CompanyModule.class),
+@ChildModules({@ChildModule(moduleClass = CompanyModule.class),
                 @ChildModule(moduleClass = ProductModule.class,
                              async = false,
                              autoDisplay = false)})

@@ -12,65 +12,68 @@ import com.mvp4g.example.client.company.CompanyEventBus;
 import com.mvp4g.example.client.company.CompanyServiceAsync;
 import com.mvp4g.example.client.company.bean.CompanyBean;
 
-public abstract class AbstractCompanyPresenter extends CyclePresenter<AbstractCompanyPresenter.CompanyViewInterface, CompanyEventBus> {
+public abstract class AbstractCompanyPresenter
+  extends CyclePresenter<AbstractCompanyPresenter.CompanyViewInterface, CompanyEventBus> {
 
-	protected CompanyBean company = null;
+  protected CompanyBean company = null;
 
-	@Inject
-	protected CompanyServiceAsync service = null;
+  @Inject
+  protected CompanyServiceAsync service = null;
 
-	public interface CompanyViewInterface extends CycleView, IsWidget {
-		HasValue<String> getName();
+  public interface CompanyViewInterface
+    extends CycleView,
+            IsWidget {
+    HasValue<String> getName();
 
-		HasClickHandlers getLeftButton();
+    HasClickHandlers getLeftButton();
 
-		HasClickHandlers getRightButton();
-		
-		HasClickHandlers getSelectNameButton();
+    HasClickHandlers getRightButton();
 
-		void alert(String message);
-		
-		boolean confirm(String message);		
-		
-	}
+    HasClickHandlers getSelectNameButton();
 
-	public void bindView() {
-		view.getLeftButton().addClickHandler( new ClickHandler() {
+    void alert(String message);
 
-			public void onClick( ClickEvent event ) {
-				clickOnLeftButton( event );
-			}
-		} );
+    boolean confirm(String message);
 
-		view.getRightButton().addClickHandler( new ClickHandler() {
+  }
 
-			public void onClick( ClickEvent event ) {
-				clickOnRightButton( event );
-			}
-		} );
-		view.getSelectNameButton().addClickHandler( new ClickHandler() {
-			
-			public void onClick( ClickEvent event ) {
-				eventBus.displayNameSelector();
-			}
-		});
+  public void bindView() {
+    view.getLeftButton().addClickHandler(new ClickHandler() {
 
-	}
+      public void onClick(ClickEvent event) {
+        clickOnLeftButton(event);
+      }
+    });
 
-	protected void fillView() {
-		view.getName().setValue( company.getName() );
-	}
+    view.getRightButton().addClickHandler(new ClickHandler() {
 
-	protected void fillBean() {
-		company.setName( view.getName().getValue() );
-	}
+      public void onClick(ClickEvent event) {
+        clickOnRightButton(event);
+      }
+    });
+    view.getSelectNameButton().addClickHandler(new ClickHandler() {
 
-	protected void clear() {
-		view.getName().setValue( "" );
-	}
+      public void onClick(ClickEvent event) {
+        eventBus.displayNameSelector();
+      }
+    });
 
-	abstract protected void clickOnLeftButton( ClickEvent event );
+  }
 
-	abstract protected void clickOnRightButton( ClickEvent event );
+  protected void fillView() {
+    view.getName().setValue(company.getName());
+  }
+
+  protected void fillBean() {
+    company.setName(view.getName().getValue());
+  }
+
+  protected void clear() {
+    view.getName().setValue("");
+  }
+
+  abstract protected void clickOnLeftButton(ClickEvent event);
+
+  abstract protected void clickOnRightButton(ClickEvent event);
 
 }

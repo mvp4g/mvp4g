@@ -1,20 +1,22 @@
 package com.mvp4g.example.client.product;
 
-import java.util.List;
-
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.mvp4g.example.client.product.bean.ProductBean;
 
-@RemoteServiceRelativePath( "product" )
-public interface ProductService extends RemoteService {
+import java.util.List;
 
-	public List<ProductBean> getProducts( int start, int end );
+@RemoteServiceRelativePath("product")
+public interface ProductService
+  extends RemoteService {
 
-	public void createProduct( ProductBean product );
+  public List<ProductBean> getProducts(int start,
+                                       int end);
 
-	public void deleteProduct( ProductBean product );
+  public void createProduct(ProductBean product);
 
-	public void updateProduct( ProductBean product );
+  public void deleteProduct(ProductBean product);
+
+  public void updateProduct(ProductBean product);
 
 }

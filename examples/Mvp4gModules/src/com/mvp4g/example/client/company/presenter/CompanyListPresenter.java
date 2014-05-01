@@ -1,8 +1,5 @@
 package com.mvp4g.example.client.company.presenter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.HasValue;
@@ -15,144 +12,154 @@ import com.mvp4g.example.client.company.CompanyEventBus;
 import com.mvp4g.example.client.company.bean.CompanyBean;
 import com.mvp4g.example.client.company.view.CompanyListView;
 
-@Presenter( view = CompanyListView.class )
-public class CompanyListPresenter extends LazyPresenter<CompanyListPresenter.CompanyListViewInterface, CompanyEventBus> {
+import java.util.ArrayList;
+import java.util.List;
 
-	public interface CompanyListViewInterface extends LazyView, IsWidget {
-		void setGoToCreationToken( String token );
+@Presenter(view = CompanyListView.class)
+public class CompanyListPresenter
+  extends LazyPresenter<CompanyListPresenter.CompanyListViewInterface, CompanyEventBus> {
 
-		void setGoToProductsToken( String token );
+  public interface CompanyListViewInterface
+    extends LazyView,
+            IsWidget {
+    void setGoToCreationToken(String token);
 
-		void addCompany( IsWidget w );
+    void setGoToProductsToken(String token);
 
-		void removeCompany( int row );
+    void addCompany(IsWidget w);
 
-		void clearTable();
+    void removeCompany(int row);
 
-		HasValue<Boolean> isFiltered();
+    void clearTable();
 
-		HasValue<Boolean> isDisabledModuleHistory();
+    HasValue<Boolean> isFiltered();
 
-		HasValue<Boolean> isDisabledApplicationHistory();
+    HasValue<Boolean> isDisabledModuleHistory();
 
-		void alert( String msg );
-	}
+    HasValue<Boolean> isDisabledApplicationHistory();
 
-	private List<CompanyBean> companies;
+    void alert(String msg);
+  }
 
-	private List<EventHandlerInterface<CompanyEventBus>> rows = new ArrayList<EventHandlerInterface<CompanyEventBus>>();
+  private List<CompanyBean> companies;
 
-	@Override
-	public void bindView() {
-		view.setGoToCreationToken( getTokenGenerator().goToCreation() );
-		view.setGoToProductsToken( getTokenGenerator().goToProduct( 0, 5 ) );
+  private List<EventHandlerInterface<CompanyEventBus>> rows = new ArrayList<EventHandlerInterface<CompanyEventBus>>();
 
-		HasValue<Boolean> isFiltered = view.isFiltered();
-		isFiltered.setValue( false );
-		eventBus.setFilteringEnabled( false );
-		isFiltered.addValueChangeHandler( new ValueChangeHandler<Boolean>() {
+  @Override
+  public void bindView() {
+    view.setGoToCreationToken(getTokenGenerator().goToCreation());
+    view.setGoToProductsToken(getTokenGenerator().goToProduct(0,
+                                                              5));
 
-			public void onValueChange( ValueChangeEvent<Boolean> event ) {
-				eventBus.setFilteringEnabled( event.getValue() );
-			}
+    HasValue<Boolean> isFiltered = view.isFiltered();
+    isFiltered.setValue(false);
+    eventBus.setFilteringEnabled(false);
+    isFiltered.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
-		} );
-		view.isDisabledApplicationHistory().addValueChangeHandler( new ValueChangeHandler<Boolean>() {
+      public void onValueChange(ValueChangeEvent<Boolean> event) {
+        eventBus.setFilteringEnabled(event.getValue());
+      }
 
-			@Override
-			public void onValueChange( ValueChangeEvent<Boolean> event ) {
-				eventBus.setApplicationHistoryStored( !event.getValue().booleanValue() );
-			}
+    });
+    view.isDisabledApplicationHistory().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
-		} );
-		view.isDisabledModuleHistory().addValueChangeHandler( new ValueChangeHandler<Boolean>() {
+      @Override
+      public void onValueChange(ValueChangeEvent<Boolean> event) {
+        eventBus.setApplicationHistoryStored(!event.getValue().booleanValue());
+      }
 
-			@Override
-			public void onValueChange( ValueChangeEvent<Boolean> event ) {
-				eventBus.setHistoryStored( !event.getValue().booleanValue() );
-			}
+    });
+    view.isDisabledModuleHistory().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
-		} );
-	}
+      @Override
+      public void onValueChange(ValueChangeEvent<Boolean> event) {
+        eventBus.setHistoryStored(!event.getValue().booleanValue());
+      }
 
-	public void onGoToCompany( int start, int end ) {
-		view.clearTable();
-		for ( EventHandlerInterface<CompanyEventBus> row : rows ) {
-			eventBus.removeHandler( row );
-		}
-		rows.clear();
-		eventBus.getCompanyList( start, end );
-	}
+    });
+  }
 
-	public void onCompanyListRetrieved( List<CompanyBean> companies ) {
-		this.companies = companies;
-		for ( int i = 0; i < companies.size(); i++ ) {
-			addCompany( companies.get( i ) );
-		}
-	}
+  public void onGoToCompany(int start,
+                            int end) {
+    view.clearTable();
+    for (EventHandlerInterface<CompanyEventBus> row : rows) {
+      eventBus.removeHandler(row);
+    }
+    rows.clear();
+    eventBus.getCompanyList(start,
+                            end);
+  }
 
-	public void onBackToList() {
-		eventBus.changeBody( view );
-	}
+  public void onCompanyListRetrieved(List<CompanyBean> companies) {
+    this.companies = companies;
+    for (int i = 0; i < companies.size(); i++) {
+      addCompany(companies.get(i));
+    }
+  }
 
-	public void onCompanyDeleted( CompanyBean company ) {
-		finishDeletion( company );
-	}
+  public void onBackToList() {
+    eventBus.changeBody(view);
+  }
 
-	public void onCompanyCreated( CompanyBean company ) {
-		companies.add( company );
-		addCompany( company );
-	}
+  public void onCompanyDeleted(CompanyBean company) {
+    finishDeletion(company);
+  }
 
-	public void onForward() {
-		eventBus.selectCompanyMenu();
-	}
+  public void onCompanyCreated(CompanyBean company) {
+    companies.add(company);
+    addCompany(company);
+  }
 
-	public void onHasBeenThere() {
-		view.alert( "Has been on Company list page" );
-	}
+  public void onForward() {
+    eventBus.selectCompanyMenu();
+  }
 
-	public void onBroadcastInfo( String[] info ) {
-		int size = info.length;
-		StringBuilder builder = new StringBuilder( 20 + size * 30 );
-		builder.append( "Company received this information: " );
-		if ( size > 0 ) {
-			builder.append( info[0] );
-			for ( int i = 1; i < size; i++ ) {
-				builder.append( ", " );
-				builder.append( info[i] );
-			}
-		}
-		view.alert( builder.toString() );
-	}
+  public void onHasBeenThere() {
+    view.alert("Has been on Company list page");
+  }
 
-	public void onGoToCompanyFromProduct( String info ) {
-		eventBus.goToCompany( 0, 5 );
-		view.alert( "Going to company from product: " + info );
-	}
+  public void onBroadcastInfo(String[] info) {
+    int size = info.length;
+    StringBuilder builder = new StringBuilder(20 + size * 30);
+    builder.append("Company received this information: ");
+    if (size > 0) {
+      builder.append(info[0]);
+      for (int i = 1; i < size; i++) {
+        builder.append(", ");
+        builder.append(info[i]);
+      }
+    }
+    view.alert(builder.toString());
+  }
 
-	public void onBroadcastInfoFromProduct( String info ) {
-		view.alert( "Company Info from product: " + info );
-	}
+  public void onGoToCompanyFromProduct(String info) {
+    eventBus.goToCompany(0,
+                         5);
+    view.alert("Going to company from product: " + info);
+  }
 
-	public void onBroadcastInfoFromProductPassive( String info ) {
-		view.alert( "Company Info from passive product: " + info );
-	}
+  public void onBroadcastInfoFromProduct(String info) {
+    view.alert("Company Info from product: " + info);
+  }
 
-	private void addCompany( CompanyBean company ) {
-		CompanyRowPresenter presenter = eventBus.addHandler( CompanyRowPresenter.class );
-		presenter.setCompany( company );
-		view.addCompany( presenter.getView() );
-		rows.add( presenter );
-	}
+  public void onBroadcastInfoFromProductPassive(String info) {
+    view.alert("Company Info from passive product: " + info);
+  }
 
-	private void finishDeletion( CompanyBean company ) {
-		int row = companies.indexOf( company );
-		EventHandlerInterface<CompanyEventBus> handler = rows.remove( row );
-		eventBus.removeHandler( handler );
-		companies.remove( row );
-		view.removeCompany( row );
-		eventBus.displayMessage( "Deletion Succeeded" );
-	}
+  private void addCompany(CompanyBean company) {
+    CompanyRowPresenter presenter = eventBus.addHandler(CompanyRowPresenter.class);
+    presenter.setCompany(company);
+    view.addCompany(presenter.getView());
+    rows.add(presenter);
+  }
+
+  private void finishDeletion(CompanyBean company) {
+    int row = companies.indexOf(company);
+    EventHandlerInterface<CompanyEventBus> handler = rows.remove(row);
+    eventBus.removeHandler(handler);
+    companies.remove(row);
+    view.removeCompany(row);
+    eventBus.displayMessage("Deletion Succeeded");
+  }
 
 }

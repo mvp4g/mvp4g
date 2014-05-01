@@ -13,94 +13,98 @@ import com.mvp4g.example.client.company.CompanyServiceAsync;
 import com.mvp4g.example.client.company.bean.CompanyBean;
 import com.mvp4g.example.client.company.view.CompanyRowView;
 
-@Presenter( view = CompanyRowView.class, multiple = true )
-public class CompanyRowPresenter extends BasePresenter<CompanyRowPresenter.ICompanyRowView, CompanyEventBus> {
+@Presenter(view = CompanyRowView.class,
+           multiple = true)
+public class CompanyRowPresenter
+  extends BasePresenter<CompanyRowPresenter.ICompanyRowView, CompanyEventBus> {
 
-	public interface ICompanyRowView extends IsWidget {
+  public interface ICompanyRowView
+    extends IsWidget {
 
-		HasClickHandlers getDisplay();
+    HasClickHandlers getDisplay();
 
-		HasClickHandlers getEdit();
+    HasClickHandlers getEdit();
 
-		HasClickHandlers getQuickEdit();
+    HasClickHandlers getQuickEdit();
 
-		HasClickHandlers getDelete();
+    HasClickHandlers getDelete();
 
-		void setName( String name );
+    void setName(String name);
 
-		void alert( String message );
+    void alert(String message);
 
-	}
+  }
 
-	private CompanyBean company;
-	
-	@Inject
-	private CompanyServiceAsync service;
-	
-	private boolean calledQuickEdit = false;
+  private CompanyBean company;
 
-	@Override
-	public void bind() {
+  @Inject
+  private CompanyServiceAsync service;
 
-		view.getDisplay().addClickHandler( new ClickHandler() {
+  private boolean calledQuickEdit = false;
 
-			public void onClick( ClickEvent event ) {
-				eventBus.goToDisplay( company );
-			}
-		} );
-		view.getEdit().addClickHandler( new ClickHandler() {
+  @Override
+  public void bind() {
 
-			public void onClick( ClickEvent event ) {
-				eventBus.goToEdit( company );
-			}
-		} );
-		view.getDelete().addClickHandler( new ClickHandler() {
+    view.getDisplay().addClickHandler(new ClickHandler() {
 
-			public void onClick( ClickEvent event ) {
-				deleteCompany( company );
-			}
-		} );
-		view.getQuickEdit().addClickHandler( new ClickHandler() {
+      public void onClick(ClickEvent event) {
+        eventBus.goToDisplay(company);
+      }
+    });
+    view.getEdit().addClickHandler(new ClickHandler() {
 
-			public void onClick( ClickEvent event ) {
-				calledQuickEdit = true;
-				eventBus.displayNameSelector();
-			}
-		} );
-	}
+      public void onClick(ClickEvent event) {
+        eventBus.goToEdit(company);
+      }
+    });
+    view.getDelete().addClickHandler(new ClickHandler() {
 
-	public void setCompany( CompanyBean company ) {
-		this.company = company;
-		view.setName( company.getName() );
-	}
+      public void onClick(ClickEvent event) {
+        deleteCompany(company);
+      }
+    });
+    view.getQuickEdit().addClickHandler(new ClickHandler() {
 
-	private void deleteCompany( final CompanyBean company ) {
-		service.deleteCompany( company, new AsyncCallback<Void>() {
+      public void onClick(ClickEvent event) {
+        calledQuickEdit = true;
+        eventBus.displayNameSelector();
+      }
+    });
+  }
 
-			public void onFailure( Throwable caught ) {
+  public void setCompany(CompanyBean company) {
+    this.company = company;
+    view.setName(company.getName());
+  }
 
-			}
+  private void deleteCompany(final CompanyBean company) {
+    service.deleteCompany(company,
+                          new AsyncCallback<Void>() {
 
-			public void onSuccess( Void result ) {
-				eventBus.companyDeleted( company );
-			}
-		} );
-	}
+                            public void onFailure(Throwable caught) {
 
-	public void onCompanyUpdated( CompanyBean newBean ) {
-		if ( newBean.equals( company ) ) {
-			company = newBean;
-			view.setName( company.getName() );			
-		}
-	}
+                            }
 
-	public void onNameSelected( String name ) {
-		if ( calledQuickEdit ) {
-			company.setName( name );
-			view.setName( name );
-			view.alert( "Name changed with quick edit." );
-			calledQuickEdit = false;
-		}
-	}
+                            public void onSuccess(Void result) {
+                              eventBus.companyDeleted(company);
+                            }
+                          });
+  }
+
+  public void onCompanyUpdated(CompanyBean newBean) {
+    if (newBean.equals(company)) {
+      company = newBean;
+      view.setName(company.getName());
+    }
+  }
+
+  public void onNameSelected(String name) {
+    if (calledQuickEdit) {
+      company.setName(name);
+      view.setName(name);
+      view.alert("Name changed with quick edit.");
+      calledQuickEdit = false;
+    }
+  }
 
 }

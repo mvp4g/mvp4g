@@ -1,7 +1,5 @@
 package com.mvp4g.example.client.product.presenter;
 
-import java.util.List;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -17,145 +15,160 @@ import com.mvp4g.example.client.product.ProductServiceAsync;
 import com.mvp4g.example.client.product.bean.ProductBean;
 import com.mvp4g.example.client.product.view.ProductListView;
 
-@Presenter( view = ProductListView.class )
-public class ProductListPresenter extends LazyPresenter<ProductListPresenter.ProductListViewInterface, ProductEventBus> {
+import java.util.List;
 
-	@Inject
-	private ProductServiceAsync service = null;
+@Presenter(view = ProductListView.class)
+public class ProductListPresenter
+  extends LazyPresenter<ProductListPresenter.ProductListViewInterface, ProductEventBus> {
 
-	private List<ProductBean> products = null;
+  @Inject
+  private ProductServiceAsync service = null;
 
-	public interface ProductListViewInterface extends LazyView, IsWidget {
-		HasClickHandlers getCreateButton();
+  private List<ProductBean> products = null;
 
-		HasClickHandlers getCompanyButton();
+  public interface ProductListViewInterface
+    extends LazyView,
+            IsWidget {
+    HasClickHandlers getCreateButton();
 
-		HasClickHandlers getInfoButton();
+    HasClickHandlers getCompanyButton();
 
-		HasClickHandlers getPassiveInfoButton();
+    HasClickHandlers getInfoButton();
 
-		HasClickHandlers[] addProduct( String product, int row );
+    HasClickHandlers getPassiveInfoButton();
 
-		void removeProduct( int row );
+    HasClickHandlers[] addProduct(String product,
+                                  int row);
 
-		void updateProduct( String product, int row );
+    void removeProduct(int row);
 
-		void clearTable();
-	}
+    void updateProduct(String product,
+                       int row);
 
-	@Override
-	public void bindView() {
-		view.getCreateButton().addClickHandler( new ClickHandler() {
+    void clearTable();
+  }
 
-			public void onClick( ClickEvent event ) {
-				eventBus.goToCreation();
-			}
+  @Override
+  public void bindView() {
+    view.getCreateButton().addClickHandler(new ClickHandler() {
 
-		} );
-		view.getCompanyButton().addClickHandler( new ClickHandler() {
+      public void onClick(ClickEvent event) {
+        eventBus.goToCreation();
+      }
 
-			@Override
-			public void onClick( ClickEvent event ) {
-				eventBus.goToCompanyFromProduct( "Coming from Product" );
-			}
+    });
+    view.getCompanyButton().addClickHandler(new ClickHandler() {
 
-		} );
-		view.getInfoButton().addClickHandler( new ClickHandler() {
+      @Override
+      public void onClick(ClickEvent event) {
+        eventBus.goToCompanyFromProduct("Coming from Product");
+      }
 
-			@Override
-			public void onClick( ClickEvent event ) {
-				eventBus.broadcastInfoFromProduct( "Coming from Product" );
-			}
+    });
+    view.getInfoButton().addClickHandler(new ClickHandler() {
 
-		} );
-		view.getPassiveInfoButton().addClickHandler( new ClickHandler() {
+      @Override
+      public void onClick(ClickEvent event) {
+        eventBus.broadcastInfoFromProduct("Coming from Product");
+      }
 
-			@Override
-			public void onClick( ClickEvent event ) {
-				eventBus.broadcastInfoFromProductPassive("Coming from Product" );
-			}
+    });
+    view.getPassiveInfoButton().addClickHandler(new ClickHandler() {
 
-		} );
-	}
+      @Override
+      public void onClick(ClickEvent event) {
+        eventBus.broadcastInfoFromProductPassive("Coming from Product");
+      }
 
-	public void onGoToProduct( Integer start, Integer end ) {
-		service.getProducts( start, end, new AsyncCallback<List<ProductBean>>() {
+    });
+  }
 
-			public void onSuccess( List<ProductBean> result ) {
-				products = result;
-				for ( int i = 0; i < result.size(); i++ ) {
-					addProduct( result.get( i ), i );
-				}
-				eventBus.changeBody( view );
-			}
+  public void onGoToProduct(Integer start,
+                            Integer end) {
+    service.getProducts(start,
+                        end,
+                        new AsyncCallback<List<ProductBean>>() {
 
-			public void onFailure( Throwable caught ) {
-				eventBus.displayMessage( "Failed to retrieve products" );
-			}
-		} );
-		view.clearTable();
-	}
+                          public void onSuccess(List<ProductBean> result) {
+                            products = result;
+                            for (int i = 0; i < result.size(); i++) {
+                              addProduct(result.get(i),
+                                         i);
+                            }
+                            eventBus.changeBody(view);
+                          }
 
-	public void onBackToList() {
-		eventBus.changeBody( view );
-	}
+                          public void onFailure(Throwable caught) {
+                            eventBus.displayMessage("Failed to retrieve products");
+                          }
+                        });
+    view.clearTable();
+  }
 
-	public void onProductDeleted( ProductBean product ) {
-		finishDeletion( product );
-	}
+  public void onBackToList() {
+    eventBus.changeBody(view);
+  }
 
-	public void onProductCreated( ProductBean product ) {
-		int row = products.size();
-		products.add( product );
-		view.addProduct( product.getName(), row );
-	}
+  public void onProductDeleted(ProductBean product) {
+    finishDeletion(product);
+  }
 
-	public void onGoToProduct2( String[] indexes ) {
-		for ( String index : indexes ) {
-			Window.alert( "Index= " + index );
-		}
-	}
+  public void onProductCreated(ProductBean product) {
+    int row = products.size();
+    products.add(product);
+    view.addProduct(product.getName(),
+                    row);
+  }
 
-	private void addProduct( final ProductBean product, int row ) {
-		HasClickHandlers[] buttons = view.addProduct( product.getName(), row );
-		buttons[0].addClickHandler( new ClickHandler() {
+  public void onGoToProduct2(String[] indexes) {
+    for (String index : indexes) {
+      Window.alert("Index= " + index);
+    }
+  }
 
-			public void onClick( ClickEvent event ) {
-				eventBus.goToDisplay( product );
-			}
-		} );
-		buttons[1].addClickHandler( new ClickHandler() {
+  private void addProduct(final ProductBean product,
+                          int row) {
+    HasClickHandlers[] buttons = view.addProduct(product.getName(),
+                                                 row);
+    buttons[0].addClickHandler(new ClickHandler() {
 
-			public void onClick( ClickEvent event ) {
-				eventBus.goToEdit( product );
-			}
-		} );
-		buttons[2].addClickHandler( new ClickHandler() {
+      public void onClick(ClickEvent event) {
+        eventBus.goToDisplay(product);
+      }
+    });
+    buttons[1].addClickHandler(new ClickHandler() {
 
-			public void onClick( ClickEvent event ) {
-				deleteProduct( product );
-			}
-		} );
-	}
+      public void onClick(ClickEvent event) {
+        eventBus.goToEdit(product);
+      }
+    });
+    buttons[2].addClickHandler(new ClickHandler() {
 
-	private void deleteProduct( final ProductBean product ) {
-		service.deleteProduct( product, new AsyncCallback<Void>() {
+      public void onClick(ClickEvent event) {
+        deleteProduct(product);
+      }
+    });
+  }
 
-			public void onFailure( Throwable caught ) {
-				eventBus.displayMessage( "Deletion Failed" );
-			}
+  private void deleteProduct(final ProductBean product) {
+    service.deleteProduct(product,
+                          new AsyncCallback<Void>() {
 
-			public void onSuccess( Void result ) {
-				finishDeletion( product );
-			}
-		} );
-	}
+                            public void onFailure(Throwable caught) {
+                              eventBus.displayMessage("Deletion Failed");
+                            }
 
-	private void finishDeletion( ProductBean Product ) {
-		int row = products.indexOf( Product );
-		products.remove( row );
-		view.removeProduct( row );
-		eventBus.displayMessage( "Deletion Succeeded" );
-	}
+                            public void onSuccess(Void result) {
+                              finishDeletion(product);
+                            }
+                          });
+  }
+
+  private void finishDeletion(ProductBean Product) {
+    int row = products.indexOf(Product);
+    products.remove(row);
+    view.removeProduct(row);
+    eventBus.displayMessage("Deletion Succeeded");
+  }
 
 }
