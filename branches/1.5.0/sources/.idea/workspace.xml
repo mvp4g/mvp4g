@@ -1,0 +1,801 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="6c3fb16c-05d3-4469-ae57-f21113aa2922" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__aopalliance_aopalliance_1_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_gwt_gwt_dev_2_6_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_gwt_gwt_user_2_6_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_gwt_inject_gin_2_1_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_inject_extensions_guice_assistedinject_3_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_inject_guice_3_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_inject_javax_inject_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_validation_validation_api_1_0_0_GA.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_validation_validation_api_sources_1_0_0_GA.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_11.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_json_json_20090211.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/mvp4g.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/mvp4g/util/ConfigurationValidator.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mvp4g/util/config/Mvp4gConfiguration.java" afterPath="$PROJECT_DIR$/src/main/java/com/mvp4g/util/config/Mvp4gConfiguration.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mvp4g/util/Mvp4gGenerator.java" afterPath="$PROJECT_DIR$/src/main/java/com/mvp4g/util/Mvp4gGenerator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+    </list>
+    <ignored path="mvp4g.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="DebuggerManager">
+    <breakpoint_any converted="true">
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </breakpoint_any>
+    <breakpoint_rules converted="true" />
+    <ui_properties converted="true" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="mvp4g" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3655">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Mvp4gGenerator.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mvp4g/util/Mvp4gGenerator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1122" max-vertical-offset="5049">
+              <caret line="147" column="0" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Mvp4gConfiguration.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mvp4g/util/config/Mvp4gConfiguration.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.88199514" vertical-offset="22599" max-vertical-offset="35615">
+              <caret line="1372" column="123" selection-start-line="1372" selection-start-column="92" selection-end-line="1372" selection-end-column="92" />
+              <folding>
+                <element signature="e#0#83380#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#7256#7274#0" expanded="true" />
+                <element signature="e#7362#7383#0" expanded="true" />
+                <element signature="e#7471#7484#0" expanded="true" />
+                <element signature="e#7572#7586#0" expanded="true" />
+                <element signature="e#7674#7690#0" expanded="true" />
+                <element signature="e#7778#7803#0" expanded="true" />
+                <element signature="e#7891#7911#0" expanded="true" />
+                <element signature="e#7999#8019#0" expanded="true" />
+                <element signature="e#8107#8124#0" expanded="true" />
+                <element signature="e#8212#8227#0" expanded="true" />
+                <element signature="e#8769#8789#0" expanded="true" />
+                <element signature="e#8928#8956#0" expanded="true" />
+                <element signature="e#9995#9996#0" expanded="true" />
+                <element signature="e#10025#10026#0" expanded="true" />
+                <element signature="e#12203#12204#0" expanded="true" />
+                <element signature="e#12292#12293#0" expanded="true" />
+                <element signature="e#12428#12429#0" expanded="true" />
+                <element signature="e#12455#12456#0" expanded="true" />
+                <element signature="e#12564#12565#0" expanded="true" />
+                <element signature="e#12594#12595#0" expanded="true" />
+                <element signature="e#12682#12683#0" expanded="true" />
+                <element signature="e#12704#12705#0" expanded="true" />
+                <element signature="e#12829#12830#0" expanded="true" />
+                <element signature="e#12863#12864#0" expanded="true" />
+                <element signature="e#12954#12955#0" expanded="true" />
+                <element signature="e#12977#12978#0" expanded="true" />
+                <element signature="e#13074#13075#0" expanded="true" />
+                <element signature="e#13099#13100#0" expanded="true" />
+                <element signature="e#13208#13209#0" expanded="true" />
+                <element signature="e#13237#13238#0" expanded="true" />
+                <element signature="e#13346#13347#0" expanded="true" />
+                <element signature="e#13375#13376#0" expanded="true" />
+                <element signature="e#13462#13463#0" expanded="true" />
+                <element signature="e#13488#13489#0" expanded="true" />
+                <element signature="e#13569#13570#0" expanded="true" />
+                <element signature="e#13593#13594#0" expanded="true" />
+                <element signature="e#13680#13681#0" expanded="true" />
+                <element signature="e#13702#13703#0" expanded="true" />
+                <element signature="e#13795#13796#0" expanded="true" />
+                <element signature="e#13823#13824#0" expanded="true" />
+                <element signature="e#13916#13917#0" expanded="true" />
+                <element signature="e#13940#13941#0" expanded="true" />
+                <element signature="e#14043#14044#0" expanded="true" />
+                <element signature="e#14075#14076#0" expanded="true" />
+                <element signature="e#14171#14172#0" expanded="true" />
+                <element signature="e#14196#14197#0" expanded="true" />
+                <element signature="e#14304#14305#0" expanded="true" />
+                <element signature="e#14338#14339#0" expanded="true" />
+                <element signature="e#14409#14410#0" expanded="true" />
+                <element signature="e#14432#14433#0" expanded="true" />
+                <element signature="e#14503#14504#0" expanded="true" />
+                <element signature="e#14526#14527#0" expanded="true" />
+                <element signature="e#14660#14661#0" expanded="true" />
+                <element signature="e#14690#14691#0" expanded="true" />
+                <element signature="e#14856#14857#0" expanded="true" />
+                <element signature="e#14902#14903#0" expanded="true" />
+                <element signature="e#15052#15053#0" expanded="true" />
+                <element signature="e#15092#15093#0" expanded="true" />
+                <element signature="e#15207#15208#0" expanded="true" />
+                <element signature="e#15246#15247#0" expanded="true" />
+                <element signature="e#15382#15383#0" expanded="true" />
+                <element signature="e#15427#15428#0" expanded="true" />
+                <element signature="e#15525#15526#0" expanded="true" />
+                <element signature="e#15557#15558#0" expanded="true" />
+                <element signature="e#15697#15698#0" expanded="true" />
+                <element signature="e#15745#15746#0" expanded="true" />
+                <element signature="e#16016#16017#0" expanded="true" />
+                <element signature="e#16047#16048#0" expanded="true" />
+                <element signature="e#16124#16125#0" expanded="true" />
+                <element signature="e#16152#16153#0" expanded="true" />
+                <element signature="e#16223#16224#0" expanded="true" />
+                <element signature="e#16245#16246#0" expanded="true" />
+                <element signature="e#16338#16339#0" expanded="true" />
+                <element signature="e#16366#16367#0" expanded="true" />
+                <element signature="e#16449#16450#0" expanded="true" />
+                <element signature="e#16475#16476#0" expanded="true" />
+                <element signature="e#16588#16589#0" expanded="true" />
+                <element signature="e#16624#16625#0" expanded="true" />
+                <element signature="e#16723#16724#0" expanded="true" />
+                <element signature="e#16764#16765#0" expanded="true" />
+                <element signature="e#17037#17038#0" expanded="true" />
+                <element signature="e#17060#17061#0" expanded="true" />
+                <element signature="e#17102#17103#0" expanded="true" />
+                <element signature="e#17132#17133#0" expanded="true" />
+                <element signature="e#17589#17621#0" expanded="true" />
+                <element signature="e#18092#18105#0" expanded="true" />
+                <element signature="e#19146#19186#0" expanded="true" />
+                <element signature="e#19254#19280#0" expanded="true" />
+                <element signature="e#19967#19983#0" expanded="true" />
+                <element signature="e#20955#20983#0" expanded="true" />
+                <element signature="e#21124#21132#0" expanded="true" />
+                <element signature="e#23673#23698#0" expanded="true" />
+                <element signature="e#26151#26179#0" expanded="true" />
+                <element signature="e#26244#26272#0" expanded="true" />
+                <element signature="e#26339#26367#0" expanded="true" />
+                <element signature="e#26432#26460#0" expanded="true" />
+                <element signature="e#26641#26673#0" expanded="true" />
+                <element signature="e#31713#31731#0" expanded="true" />
+                <element signature="e#35791#35812#0" expanded="true" />
+                <element signature="e#39743#39783#0" expanded="true" />
+                <element signature="e#41349#41374#0" expanded="true" />
+                <element signature="e#51335#51363#0" expanded="true" />
+                <element signature="e#51433#51465#0" expanded="true" />
+                <element signature="e#58924#58944#0" expanded="true" />
+                <element signature="e#67619#67627#0" expanded="true" />
+                <element signature="e#78789#78797#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="true" />
+    </FindUsagesManager>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/src/main/java/com/mvp4g/util/Mvp4gGenerator.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/mvp4g/util/config/Mvp4gConfiguration.java" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Mvp4g" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Mvp4g" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Lifecycle" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$LifecycleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+      </PATH>
+    </treeState>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="51" />
+    <option name="y" value="22" />
+    <option name="width" value="2509" />
+    <option name="height" value="1418" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="config" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="options.lastSelected" value="project.propVCSSupport.Confirmation" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="LayoutCode.rearrangeEntriesJava" value="false" />
+    <property name="dynamic.classpath" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <list size="0" />
+    <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
+      <Host>localhost</Host>
+      <Port>5050</Port>
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="StructureViewFactory">
+    <option name="ACTIVE_ACTIONS" value=",ALPHA_COMPARATOR" />
+  </component>
+  <component name="SvnConfiguration" cleanupOnStartRun="true">
+    <configuration>$USER_HOME$/.subversion</configuration>
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6c3fb16c-05d3-4469-ae57-f21113aa2922" name="Default" comment="" />
+      <created>1398971261121</created>
+      <updated>1398971261121</updated>
+      <workItem from="1398971262456" duration="2259000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="2259000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="51" y="22" width="2509" height="1418" extended-state="6" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3295626" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295626" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24969599" sideWeight="0.5005624" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17754358" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24969599" sideWeight="0.49943757" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295626" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3655">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mvp4g/util/Mvp4gGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1122" max-vertical-offset="5049">
+          <caret line="147" column="0" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mvp4g/util/config/Mvp4gConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.88199514" vertical-offset="22599" max-vertical-offset="35615">
+          <caret line="1372" column="123" selection-start-line="1372" selection-start-column="92" selection-end-line="1372" selection-end-column="92" />
+          <folding>
+            <element signature="e#0#83380#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#7256#7274#0" expanded="true" />
+            <element signature="e#7362#7383#0" expanded="true" />
+            <element signature="e#7471#7484#0" expanded="true" />
+            <element signature="e#7572#7586#0" expanded="true" />
+            <element signature="e#7674#7690#0" expanded="true" />
+            <element signature="e#7778#7803#0" expanded="true" />
+            <element signature="e#7891#7911#0" expanded="true" />
+            <element signature="e#7999#8019#0" expanded="true" />
+            <element signature="e#8107#8124#0" expanded="true" />
+            <element signature="e#8212#8227#0" expanded="true" />
+            <element signature="e#8769#8789#0" expanded="true" />
+            <element signature="e#8928#8956#0" expanded="true" />
+            <element signature="e#9995#9996#0" expanded="true" />
+            <element signature="e#10025#10026#0" expanded="true" />
+            <element signature="e#12203#12204#0" expanded="true" />
+            <element signature="e#12292#12293#0" expanded="true" />
+            <element signature="e#12428#12429#0" expanded="true" />
+            <element signature="e#12455#12456#0" expanded="true" />
+            <element signature="e#12564#12565#0" expanded="true" />
+            <element signature="e#12594#12595#0" expanded="true" />
+            <element signature="e#12682#12683#0" expanded="true" />
+            <element signature="e#12704#12705#0" expanded="true" />
+            <element signature="e#12829#12830#0" expanded="true" />
+            <element signature="e#12863#12864#0" expanded="true" />
+            <element signature="e#12954#12955#0" expanded="true" />
+            <element signature="e#12977#12978#0" expanded="true" />
+            <element signature="e#13074#13075#0" expanded="true" />
+            <element signature="e#13099#13100#0" expanded="true" />
+            <element signature="e#13208#13209#0" expanded="true" />
+            <element signature="e#13237#13238#0" expanded="true" />
+            <element signature="e#13346#13347#0" expanded="true" />
+            <element signature="e#13375#13376#0" expanded="true" />
+            <element signature="e#13462#13463#0" expanded="true" />
+            <element signature="e#13488#13489#0" expanded="true" />
+            <element signature="e#13569#13570#0" expanded="true" />
+            <element signature="e#13593#13594#0" expanded="true" />
+            <element signature="e#13680#13681#0" expanded="true" />
+            <element signature="e#13702#13703#0" expanded="true" />
+            <element signature="e#13795#13796#0" expanded="true" />
+            <element signature="e#13823#13824#0" expanded="true" />
+            <element signature="e#13916#13917#0" expanded="true" />
+            <element signature="e#13940#13941#0" expanded="true" />
+            <element signature="e#14043#14044#0" expanded="true" />
+            <element signature="e#14075#14076#0" expanded="true" />
+            <element signature="e#14171#14172#0" expanded="true" />
+            <element signature="e#14196#14197#0" expanded="true" />
+            <element signature="e#14304#14305#0" expanded="true" />
+            <element signature="e#14338#14339#0" expanded="true" />
+            <element signature="e#14409#14410#0" expanded="true" />
+            <element signature="e#14432#14433#0" expanded="true" />
+            <element signature="e#14503#14504#0" expanded="true" />
+            <element signature="e#14526#14527#0" expanded="true" />
+            <element signature="e#14660#14661#0" expanded="true" />
+            <element signature="e#14690#14691#0" expanded="true" />
+            <element signature="e#14856#14857#0" expanded="true" />
+            <element signature="e#14902#14903#0" expanded="true" />
+            <element signature="e#15052#15053#0" expanded="true" />
+            <element signature="e#15092#15093#0" expanded="true" />
+            <element signature="e#15207#15208#0" expanded="true" />
+            <element signature="e#15246#15247#0" expanded="true" />
+            <element signature="e#15382#15383#0" expanded="true" />
+            <element signature="e#15427#15428#0" expanded="true" />
+            <element signature="e#15525#15526#0" expanded="true" />
+            <element signature="e#15557#15558#0" expanded="true" />
+            <element signature="e#15697#15698#0" expanded="true" />
+            <element signature="e#15745#15746#0" expanded="true" />
+            <element signature="e#16016#16017#0" expanded="true" />
+            <element signature="e#16047#16048#0" expanded="true" />
+            <element signature="e#16124#16125#0" expanded="true" />
+            <element signature="e#16152#16153#0" expanded="true" />
+            <element signature="e#16223#16224#0" expanded="true" />
+            <element signature="e#16245#16246#0" expanded="true" />
+            <element signature="e#16338#16339#0" expanded="true" />
+            <element signature="e#16366#16367#0" expanded="true" />
+            <element signature="e#16449#16450#0" expanded="true" />
+            <element signature="e#16475#16476#0" expanded="true" />
+            <element signature="e#16588#16589#0" expanded="true" />
+            <element signature="e#16624#16625#0" expanded="true" />
+            <element signature="e#16723#16724#0" expanded="true" />
+            <element signature="e#16764#16765#0" expanded="true" />
+            <element signature="e#17037#17038#0" expanded="true" />
+            <element signature="e#17060#17061#0" expanded="true" />
+            <element signature="e#17102#17103#0" expanded="true" />
+            <element signature="e#17132#17133#0" expanded="true" />
+            <element signature="e#17589#17621#0" expanded="true" />
+            <element signature="e#18092#18105#0" expanded="true" />
+            <element signature="e#19146#19186#0" expanded="true" />
+            <element signature="e#19254#19280#0" expanded="true" />
+            <element signature="e#19967#19983#0" expanded="true" />
+            <element signature="e#20955#20983#0" expanded="true" />
+            <element signature="e#21124#21132#0" expanded="true" />
+            <element signature="e#23673#23698#0" expanded="true" />
+            <element signature="e#26151#26179#0" expanded="true" />
+            <element signature="e#26244#26272#0" expanded="true" />
+            <element signature="e#26339#26367#0" expanded="true" />
+            <element signature="e#26432#26460#0" expanded="true" />
+            <element signature="e#26641#26673#0" expanded="true" />
+            <element signature="e#31713#31731#0" expanded="true" />
+            <element signature="e#35791#35812#0" expanded="true" />
+            <element signature="e#39743#39783#0" expanded="true" />
+            <element signature="e#41349#41374#0" expanded="true" />
+            <element signature="e#51335#51363#0" expanded="true" />
+            <element signature="e#51433#51465#0" expanded="true" />
+            <element signature="e#58924#58944#0" expanded="true" />
+            <element signature="e#67619#67627#0" expanded="true" />
+            <element signature="e#78789#78797#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
+
