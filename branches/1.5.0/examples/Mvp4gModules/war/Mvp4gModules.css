@@ -1,0 +1,45 @@
+.gwt-Image {
+	cursor: hand;
+}
+
+.messageBar {
+	background: orange;
+	width: 100%;
+	text-align: center;
+}
+
+a {
+	cursor: hand;
+	text-decoration: underline;
+}
+
+.link {
+	cursor: hand;
+	color: blue;
+	font-size: 10px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.tabs{
+	border-bottom: 1px solid #D0E4F6;	
+}
+
+.tab {
+	margin-right: 10px;
+	padding: 2px 20px;
+	cursor: pointer;
+	background: #D0E4F6;
+}
+
+.tab.first {
+	margin-left: 10px;	
+}
+
+.tab.selected {
+	background: #92C1F0;
+}
+
+.body{
+	margin-top: 10px;
+}
