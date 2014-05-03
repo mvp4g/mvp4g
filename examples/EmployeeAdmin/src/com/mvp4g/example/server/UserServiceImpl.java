@@ -1,81 +1,85 @@
 package com.mvp4g.example.server;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mvp4g.example.client.Constants;
 import com.mvp4g.example.client.UserService;
 import com.mvp4g.example.client.bean.UserBean;
 
-public class UserServiceImpl extends RemoteServiceServlet implements UserService, Constants {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 263606265567100312L;
+public class UserServiceImpl
+  extends RemoteServiceServlet
+  implements UserService,
+             Constants {
 
-	static private final String[] FIRST_NAMES = { "Karim", "Cristiano", "Iker", "Sergio" };
-	static private final String[] LAST_NAMES = { "Benzema", "Ronaldo", "Casillas", "Ramos" };
+  /**
+   *
+   */
+  private static final long serialVersionUID = 263606265567100312L;
 
-	static private int NB_USERS = 4;
+  static private final String[] FIRST_NAMES = {"Karim", "Cristiano", "Iker", "Sergio"};
+  static private final String[] LAST_NAMES  = {"Benzema", "Ronaldo", "Casillas", "Ramos"};
 
-	public List<UserBean> getUsers() {
-		List<UserBean> users = new ArrayList<UserBean>();
-		UserBean user = null;
-		String firstName = null;
-		String lastName = null;
-		String username = null;
-		List<String> roles = null;
+  static private int NB_USERS = 4;
 
-		Random random = new Random();
+  public List<UserBean> getUsers() {
+    List<UserBean> users = new ArrayList<UserBean>();
+    UserBean user = null;
+    String firstName = null;
+    String lastName = null;
+    String username = null;
+    List<String> roles = null;
 
-		for ( int i = 0; i < NB_USERS; i++ ) {
-			user = new UserBean();
+    Random random = new Random();
 
-			firstName = FIRST_NAMES[i % FIRST_NAMES.length];
-			user.setFirstName( firstName );
+    for (int i = 0; i < NB_USERS; i++) {
+      user = new UserBean();
 
-			lastName = LAST_NAMES[i % LAST_NAMES.length];
-			user.setLastName( lastName );
+      firstName = FIRST_NAMES[i % FIRST_NAMES.length];
+      user.setFirstName(firstName);
 
-			username = ( firstName.substring( 0, 1 ) + lastName ).toLowerCase();
-			user.setUsername( username );
+      lastName = LAST_NAMES[i % LAST_NAMES.length];
+      user.setLastName(lastName);
 
-			user.setEmail( username + "@real.com" );
+      username = (firstName.substring(0,
+                                      1) + lastName).toLowerCase();
+      user.setUsername(username);
 
-			user.setDepartment( DEPARTMENTS[i % DEPARTMENTS.length] );
+      user.setEmail(username + "@real.com");
 
-			user.setPassword( "1234" );
+      user.setDepartment(DEPARTMENTS[i % DEPARTMENTS.length]);
 
-			roles = new ArrayList<String>();
-			int nbRoles = random.nextInt( ROLES.length );
-			String role = null;
-			for ( int j = 0; j < nbRoles; j++ ) {
-				role = ROLES[random.nextInt( ROLES.length )];
-				if ( !roles.contains( role ) ) {
-					roles.add( role );
-				}
-			}
-			user.setRoles( roles );
+      user.setPassword("1234");
 
-			users.add( user );
-		}
+      roles = new ArrayList<String>();
+      int nbRoles = random.nextInt(ROLES.length);
+      String role = null;
+      for (int j = 0; j < nbRoles; j++) {
+        role = ROLES[random.nextInt(ROLES.length)];
+        if (!roles.contains(role)) {
+          roles.add(role);
+        }
+      }
+      user.setRoles(roles);
 
-		return users;
-	}
+      users.add(user);
+    }
 
-	public void deleteUser( UserBean user ) {
-		// deletion always succeeds		
-	}
+    return users;
+  }
 
-	public void createUser( UserBean user ) {
-		// creation always succeeds		
-	}
+  public void deleteUser(UserBean user) {
+    // deletion always succeeds
+  }
 
-	public void updateUser( UserBean user ) {
-		// update always succeeds		
-	}
+  public void createUser(UserBean user) {
+    // creation always succeeds
+  }
+
+  public void updateUser(UserBean user) {
+    // update always succeeds
+  }
 
 }
