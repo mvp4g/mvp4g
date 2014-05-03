@@ -14,98 +14,133 @@ import com.mvp4g.example.client.widget.interfaces.IListBox;
 import com.mvp4g.example.client.widget.interfaces.ITextBox;
 import com.mvp4g.example.client.widget.interfaces.IWidget;
 
-public class UserProfileView extends Composite implements IUserProfileView {
+public class UserProfileView
+  extends Composite
+  implements IUserProfileView {
 
-	private MyTextBox firstName = new MyTextBox();
-	private MyTextBox lastName = new MyTextBox();
-	private MyTextBox email = new MyTextBox();
-	private MyTextBox username = new MyTextBox();
-	private MyPasswordTextBox password = new MyPasswordTextBox();
-	private MyPasswordTextBox confirmPassword = new MyPasswordTextBox();
-	private MyListBox department = new MyListBox();
+  private MyTextBox         firstName       = new MyTextBox();
+  private MyTextBox         lastName        = new MyTextBox();
+  private MyTextBox         email           = new MyTextBox();
+  private MyTextBox         username        = new MyTextBox();
+  private MyPasswordTextBox password        = new MyPasswordTextBox();
+  private MyPasswordTextBox confirmPassword = new MyPasswordTextBox();
+  private MyListBox         department      = new MyListBox();
 
-	private MyButton update = new MyButton();
-	private MyButton cancel = new MyButton( "Cancel" );
+  private MyButton update = new MyButton();
+  private MyButton cancel = new MyButton("Cancel");
 
-	public UserProfileView() {
-		CaptionPanel cp = new CaptionPanel( "User Profile" );
+  public UserProfileView() {
+    CaptionPanel cp = new CaptionPanel("User Profile");
 
-		Grid g = new Grid( 8, 2 );
+    Grid g = new Grid(8,
+                      2);
 
-		g.setText( 0, 0, "First Name" );
-		g.setText( 1, 0, "Last Name" );
-		g.setText( 2, 0, "Email" );
-		g.setText( 3, 0, "Username *" );
-		g.setText( 4, 0, "Password *" );
-		g.setText( 5, 0, "Confirm Password *" );
-		g.setText( 6, 0, "Department *" );
+    g.setText(0,
+              0,
+              "First Name");
+    g.setText(1,
+              0,
+              "Last Name");
+    g.setText(2,
+              0,
+              "Email");
+    g.setText(3,
+              0,
+              "Username *");
+    g.setText(4,
+              0,
+              "Password *");
+    g.setText(5,
+              0,
+              "Confirm Password *");
+    g.setText(6,
+              0,
+              "Department *");
 
-		g.setWidget( 0, 1, firstName );
-		g.setWidget( 1, 1, lastName );
-		g.setWidget( 2, 1, email );
-		g.setWidget( 3, 1, username );
-		g.setWidget( 4, 1, password );
-		g.setWidget( 5, 1, confirmPassword );
-		g.setWidget( 6, 1, department );
+    g.setWidget(0,
+                1,
+                firstName);
+    g.setWidget(1,
+                1,
+                lastName);
+    g.setWidget(2,
+                1,
+                email);
+    g.setWidget(3,
+                1,
+                username);
+    g.setWidget(4,
+                1,
+                password);
+    g.setWidget(5,
+                1,
+                confirmPassword);
+    g.setWidget(6,
+                1,
+                department);
 
-		g.setWidget( 7, 0, update );
-		g.setWidget( 7, 1, cancel );
+    g.setWidget(7,
+                0,
+                update);
+    g.setWidget(7,
+                1,
+                cancel);
 
-		cp.add( g );
+    cp.add(g);
 
-		initWidget( cp );
-	}
+    initWidget(cp);
+  }
 
-	public IWidget getViewWidget() {
-		return this;
-	}
+  public IWidget getViewWidget() {
+    return this;
+  }
 
-	public IButton getCancelButton() {
-		return cancel;
-	}
+  public IButton getCancelButton() {
+    return cancel;
+  }
 
-	public ITextBox getConfirmPassword() {
-		return confirmPassword;
-	}
+  public ITextBox getConfirmPassword() {
+    return confirmPassword;
+  }
 
-	public IListBox getDepartment() {
-		return department;
-	}
+  public IListBox getDepartment() {
+    return department;
+  }
 
-	public ITextBox getEmail() {
-		return email;
-	}
+  public ITextBox getEmail() {
+    return email;
+  }
 
-	public ITextBox getFirstName() {
-		return firstName;
-	}
+  public ITextBox getFirstName() {
+    return firstName;
+  }
 
-	public ITextBox getLastName() {
-		return lastName;
-	}
+  public ITextBox getLastName() {
+    return lastName;
+  }
 
-	public ITextBox getPassword() {
-		return password;
-	}
+  public ITextBox getPassword() {
+    return password;
+  }
 
-	public IButton getUpdateButton() {
-		return update;
-	}
+  public IButton getUpdateButton() {
+    return update;
+  }
 
-	public ITextBox getUsername() {
-		return username;
-	}
+  public ITextBox getUsername() {
+    return username;
+  }
 
-	public Widget getMyWidget() {
-		return this;
-	}
+  public Widget getMyWidget() {
+    return this;
+  }
 
-	public void showAddMode() {
-		update.setText( "Add User" );
-	}
+  public void showAddMode() {
+    update.setText("Add User");
+  }
 
-	public void showUpdateMode() {
-		update.setText( "Update" );
-	}
+  public void showUpdateMode() {
+    update.setText("Update");
+  }
 
 }
