@@ -8,3 +8,4 @@
   * [GinIntegration GIN integration]
   * [FAQ FAQ]
   * [ReleaseNotesAndRoadMap Release Notes and Road Map]
+  * [Downloads Downloads]
