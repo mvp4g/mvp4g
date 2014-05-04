@@ -10,34 +10,37 @@ import com.mvp4g.example.client.MyEventBus;
 import com.mvp4g.example.client.view.AccountView;
 import com.mvp4g.example.client.widget.IView;
 
-@Presenter( view = AccountView.class )
-public class AccountPresenter extends LazyPresenter<AccountPresenter.AccountViewInterface, MyEventBus> {
-	
-	public interface AccountViewInterface extends LazyView, IView {
+@Presenter(view = AccountView.class)
+public class AccountPresenter
+  extends LazyPresenter<AccountPresenter.AccountViewInterface, MyEventBus> {
 
-		 HasClickHandlers getShowCart();
+  public interface AccountViewInterface
+    extends LazyView,
+            IView {
 
-		 void setUsername(String username);
-		 
-	}
+    HasClickHandlers getShowCart();
 
-	private String username = null;
+    void setUsername(String username);
 
-	@Override
-	public void bindView() {
-		view.getShowCart().addClickHandler( new ClickHandler() {
+  }
 
-			public void onClick( ClickEvent event ) {
-				eventBus.displayCart( username );
-			}
+  private String username = null;
 
-		} );
-	}
+  @Override
+  public void bindView() {
+    view.getShowCart().addClickHandler(new ClickHandler() {
 
-	public void onLogin( String username ) {
-		this.username = username;
-		view.setUsername( username );
-		eventBus.changeBottomWidget( view );
-	}
+      public void onClick(ClickEvent event) {
+        eventBus.displayCart(username);
+      }
+
+    });
+  }
+
+  public void onLogin(String username) {
+    this.username = username;
+    view.setUsername(username);
+    eventBus.changeBottomWidget(view);
+  }
 
 }

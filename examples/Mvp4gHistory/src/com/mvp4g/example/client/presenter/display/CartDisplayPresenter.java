@@ -1,7 +1,5 @@
 package com.mvp4g.example.client.presenter.display;
 
-import java.util.List;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
@@ -13,41 +11,51 @@ import com.mvp4g.example.client.bean.ProductBean;
 import com.mvp4g.example.client.view.display.CartDisplayView;
 import com.mvp4g.example.client.widget.IView;
 
-@Presenter( view = CartDisplayView.class )
-public class CartDisplayPresenter extends LazyPresenter<CartDisplayPresenter.CartDisplayViewInterface, MyEventBus> {
+import java.util.List;
 
-	public interface CartDisplayViewInterface extends LazyView, IView {
+@Presenter(view = CartDisplayView.class)
+public class CartDisplayPresenter
+  extends LazyPresenter<CartDisplayPresenter.CartDisplayViewInterface, MyEventBus> {
 
-		void clear();
+  public interface CartDisplayViewInterface
+    extends LazyView,
+            IView {
 
-		void addProduct( String name, String price, String description );
+    void clear();
 
-	}
+    void addProduct(String name,
+                    String price,
+                    String description);
 
-	@Inject
-	private ServiceAsync service = null;
+  }
 
-	public void onDisplayCart( String username ) {
-		view.clear();
-		if ( username != null ) {
-			service.getCart( username, new AsyncCallback<List<ProductBean>>() {
+  @Inject
+  private ServiceAsync service = null;
 
-				public void onFailure( Throwable caught ) {
-					//do sthg						
-				}
+  public void onDisplayCart(String username) {
+    view.clear();
+    if (username != null) {
+      service.getCart(username,
+                      new AsyncCallback<List<ProductBean>>() {
 
-				public void onSuccess( List<ProductBean> products ) {
-										
-					for ( ProductBean product : products ) {
-						view.addProduct( product.getName(), product.getPrice(), product.getDescription() );
-					}
+                        public void onFailure(Throwable caught) {
+                          //do sthg
+                        }
 
-					eventBus.changeMainWidget( view );
-				}
+                        public void onSuccess(List<ProductBean> products) {
 
-			} );
-		}
+                          for (ProductBean product : products) {
+                            view.addProduct(product.getName(),
+                                            product.getPrice(),
+                                            product.getDescription());
+                          }
 
-	}	
+                          eventBus.changeMainWidget(view);
+                        }
+
+                      });
+    }
+
+  }
 
 }

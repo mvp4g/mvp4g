@@ -7,43 +7,50 @@ import com.mvp4g.example.client.MyEventBus;
 import com.mvp4g.example.client.ServiceAsync;
 import com.mvp4g.example.client.bean.BasicBean;
 
-public abstract class AbstractHistoryConverter<T extends BasicBean> implements HistoryConverter<MyEventBus> {
+public abstract class AbstractHistoryConverter<T extends BasicBean>
+  implements HistoryConverter<MyEventBus> {
 
-	@Inject
-	protected ServiceAsync service = null;
+  @Inject
+  protected ServiceAsync service = null;
 
-	public void convertFromToken( final String eventType, String param, final MyEventBus eventBus ) {
+  public void convertFromToken(final String eventType,
+                               String param,
+                               final MyEventBus eventBus) {
 
-		String[] idTab = ( param == null ) ? null : param.split( "=" );
+    String[] idTab = (param == null) ? null : param.split("=");
 
-		if ( ( idTab != null ) && ( idTab.length > 1 ) ) {
+    if ((idTab != null) && (idTab.length > 1)) {
 
-			serviceCall( idTab[1], new AsyncCallback<T>() {
+      serviceCall(idTab[1],
+                  new AsyncCallback<T>() {
 
-				public void onFailure( Throwable caught ) {
-					// TODO Auto-generated method stub
+                    public void onFailure(Throwable caught) {
+                      // TODO Auto-generated method stub
 
-				}
+                    }
 
-				public void onSuccess( T result ) {
-					sendEvent( eventBus, result );
-				}
+                    public void onSuccess(T result) {
+                      sendEvent(eventBus,
+                                result);
+                    }
 
-			} );
-		}
-	}
+                  });
+    }
+  }
 
-	
-	public boolean isCrawlable() {
-		return false;
-	}
 
-	protected String convertToToken( T form ) {
-		return "id=" + form.getId();
-	}
-	
-	abstract void serviceCall( String id, AsyncCallback<T> callback );
+  public boolean isCrawlable() {
+    return false;
+  }
 
-	abstract void sendEvent( MyEventBus eventBus, T result );
+  protected String convertToToken(T form) {
+    return "id=" + form.getId();
+  }
+
+  abstract void serviceCall(String id,
+                            AsyncCallback<T> callback);
+
+  abstract void sendEvent(MyEventBus eventBus,
+                          T result);
 
 }

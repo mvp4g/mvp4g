@@ -10,59 +10,61 @@ import com.mvp4g.example.client.bean.ProductBean;
 import com.mvp4g.example.client.view.RootTemplateView;
 import com.mvp4g.example.client.widget.IView;
 
-@Presenter( view = RootTemplateView.class )
-public class RootTemplatePresenter extends LazyPresenter<RootTemplatePresenter.RootTemplateViewInterface, MyEventBus> {
+@Presenter(view = RootTemplateView.class)
+public class RootTemplatePresenter
+  extends LazyPresenter<RootTemplatePresenter.RootTemplateViewInterface, MyEventBus> {
 
-	public interface RootTemplateViewInterface extends LazyView {
+  public interface RootTemplateViewInterface
+    extends LazyView {
 
-		void setTopWidget( Widget w );
+    void setTopWidget(Widget w);
 
-		void clearMainWidget();
+    void clearMainWidget();
 
-		void setMainWidget( Widget w );
+    void setMainWidget(Widget w);
 
-		void setBottomWidget( Widget w );
+    void setBottomWidget(Widget w);
 
-		void setMessage( String message );
+    void setMessage(String message);
 
-	}
+  }
 
-	public void onChangeTopWidget( IView top ) {
-		view.setTopWidget( top.getViewWidget() );
-	}
+  public void onChangeTopWidget(IView top) {
+    view.setTopWidget(top.getViewWidget());
+  }
 
-	public void onChangeBottomWidget( IView bottom ) {
-		view.setBottomWidget( bottom.getViewWidget() );
-	}
+  public void onChangeBottomWidget(IView bottom) {
+    view.setBottomWidget(bottom.getViewWidget());
+  }
 
-	public void onChangeMainWidget( IView main ) {
-		view.setMainWidget( main.getViewWidget() );
-	}
+  public void onChangeMainWidget(IView main) {
+    view.setMainWidget(main.getViewWidget());
+  }
 
-	public void onDisplayMessage( String message ) {
-		view.setMessage( message );
-	}
+  public void onDisplayMessage(String message) {
+    view.setMessage(message);
+  }
 
-	public void onInit() {
-		view.clearMainWidget();
-		view.setMessage( "" );
-	}
+  public void onInit() {
+    view.clearMainWidget();
+    view.setMessage("");
+  }
 
-	public void onNotFound() {
-		eventBus.init();
-		view.setMessage( "Page not found" );
-	}
+  public void onNotFound() {
+    eventBus.init();
+    view.setMessage("Page not found");
+  }
 
-	public void onDisplayProduct( ProductBean bean ) {
-		view.setMessage( "" );
-	}
+  public void onDisplayProduct(ProductBean bean) {
+    view.setMessage("");
+  }
 
-	public void onDisplayDeal( DealBean bean ) {
-		view.setMessage( "" );
-	}
+  public void onDisplayDeal(DealBean bean) {
+    view.setMessage("");
+  }
 
-	public void onDisplayCart( String username ) {
-		view.setMessage( "" );
-	}
+  public void onDisplayCart(String username) {
+    view.setMessage("");
+  }
 
 }

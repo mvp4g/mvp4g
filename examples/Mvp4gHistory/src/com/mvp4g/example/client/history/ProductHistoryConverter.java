@@ -6,20 +6,24 @@ import com.mvp4g.example.client.MyEventBus;
 import com.mvp4g.example.client.bean.ProductBean;
 
 @History
-public class ProductHistoryConverter extends AbstractHistoryConverter<ProductBean> {
-	
-	public String onDisplayProduct(ProductBean product){
-		return convertToToken( product );
-	}
+public class ProductHistoryConverter
+  extends AbstractHistoryConverter<ProductBean> {
 
-	@Override
-	void serviceCall( String id, AsyncCallback<ProductBean> callback ) {
-		service.getProductDetails( id, callback );
-	}
+  public String onDisplayProduct(ProductBean product) {
+    return convertToToken(product);
+  }
 
-	@Override
-	void sendEvent( MyEventBus eventBus, ProductBean result ) {
-		eventBus.displayProduct( result );
-	}
+  @Override
+  void serviceCall(String id,
+                   AsyncCallback<ProductBean> callback) {
+    service.getProductDetails(id,
+                              callback);
+  }
+
+  @Override
+  void sendEvent(MyEventBus eventBus,
+                 ProductBean result) {
+    eventBus.displayProduct(result);
+  }
 
 }
