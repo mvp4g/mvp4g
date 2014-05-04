@@ -24,9 +24,9 @@ If you do not use maven, you can download the new versions from this page.
 
 === Downloads ===
 
-  # mvp4g - jar: ([https://drive.google.com/file/d/0B5ysvJf9aZ6VLW1PRWhqSTc0cEU/edit?usp=sharing Download here])
-  # mvp4g - javadoc: ([https://drive.google.com/file/d/0B5ysvJf9aZ6VSXYwZHZ6OXAzaW8/edit?usp=sharing Download here])
-  # mvp4g - sources: ([https://drive.google.com/file/d/0B5ysvJf9aZ6VUEUzTDNLcF9jVDg/edit?usp=sharing Download here])
+  * mvp4g - jar: ([https://drive.google.com/file/d/0B5ysvJf9aZ6VLW1PRWhqSTc0cEU/edit?usp=sharing Download here])
+  * mvp4g - javadoc: ([https://drive.google.com/file/d/0B5ysvJf9aZ6VSXYwZHZ6OXAzaW8/edit?usp=sharing Download here])
+  * mvp4g - sources: ([https://drive.google.com/file/d/0B5ysvJf9aZ6VUEUzTDNLcF9jVDg/edit?usp=sharing Download here])
 
 === Fixed Issues ===
 
