@@ -1,9 +1,8 @@
 #summary Release Notes and Road Map (Draft for Mvp4g 1.2.0)
 
 =Road Map 1.5.0=
-
- * NotFoundEvent not fire for child module events. (Issue 112)
  * Support IncrementalGenerator for SuperDevMod.
+ * NotFoundEvent not fire for child module events. (Issue 112)
  * Multiple presenter failed to inject itself to the enclosed reverse view (Issue 115) 
  * Error should be thrown if historyOnStart is set to true for child module. (Issue 121)
  * Patch for update mvp4g for last gin 2.1.2 and gwt 2.6.0 (Issue 128)
