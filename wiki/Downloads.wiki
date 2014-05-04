@@ -1,7 +1,7 @@
 #summary Here you can download new versions of Mvp4g (starting with version 1.5.0).
 #labels Featured
 
-<wiki:toc max_depth="3" />
+<wiki:toc max_depth="2" />
 
 = Download Area =
 
