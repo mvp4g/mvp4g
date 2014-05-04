@@ -1,0 +1,40 @@
+#summary Here you will find new versions of Mvp4g starting with version 1.5.0.
+#labels Featured
+
+<wiki:toc max_depth="3" />
+
+= Download Area =
+
+Since Google has stopped supporting downloads on google projects, there is no chance to add new versions of mvp4g to the download area.
+New versions of mvp4g will be found as maven dependencies.
+
+If you do not use maven, you can download the new versions from this page. 
+
+== SNAPSHOT 1.5.0 (05/01/2014 - 22:07:09) ==
+
+=== Maven Dependency ===
+
+{{{
+<dependency>
+	<groupId>com.googlecode.mvp4g</groupId>
+	<artifactId>mvp4g</artifactId>
+	<version>1.5.0-SNAPSHOT-20140501.220709-7</version>
+</dependency>
+}}}
+
+=== Downloads ===
+
+  # mvp4g - jar: ([https://drive.google.com/file/d/0B5ysvJf9aZ6VLW1PRWhqSTc0cEU/edit?usp=sharing Download here])
+  # mvp4g - javadoc: ([https://drive.google.com/file/d/0B5ysvJf9aZ6VSXYwZHZ6OXAzaW8/edit?usp=sharing Download here])
+  # mvp4g - sources: ([https://drive.google.com/file/d/0B5ysvJf9aZ6VUEUzTDNLcF9jVDg/edit?usp=sharing Download here])
+
+=== Fixed Issues ===
+
+ * NotFoundEvent not fire for child module events. (Issue 112)
+ * Multiple presenter failed to inject itself to the enclosed reverse view (Issue 115) 
+ * Error should be thrown if historyOnStart is set to true for child module. (Issue 121)
+ * Patch for update mvp4g for last gin 2.1.2 and gwt 2.6.0 (Issue 128)
+
+=== Improvements ===
+
+ * Support IncrementalGenerator for SuperDevMod.
