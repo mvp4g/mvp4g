@@ -30,44 +30,46 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * A simple example of an 'about' dialog box.
  */
-public class AboutDialog extends DialogBox {
+public class AboutDialog
+  extends DialogBox {
 
-	interface Binder extends UiBinder<Widget, AboutDialog> {
-	}
+  interface Binder
+    extends UiBinder<Widget, AboutDialog> {
+  }
 
-	private static final Binder binder = GWT.create( Binder.class );
+  private static final Binder binder = GWT.create(Binder.class);
 
-	@UiField
-	Button closeButton;
+  @UiField
+  Button closeButton;
 
-	public AboutDialog() {
-		// Use this opportunity to set the dialog's caption.
-		setText( "About the Mail Sample" );
-		setWidget( binder.createAndBindUi( this ) );
+  public AboutDialog() {
+    // Use this opportunity to set the dialog's caption.
+    setText("About the Mail Sample");
+    setWidget(binder.createAndBindUi(this));
 
-		setAnimationEnabled( true );
-		setGlassEnabled( true );
-	}
+    setAnimationEnabled(true);
+    setGlassEnabled(true);
+  }
 
-	@Override
-	protected void onPreviewNativeEvent( NativePreviewEvent preview ) {
-		super.onPreviewNativeEvent( preview );
+  @Override
+  protected void onPreviewNativeEvent(NativePreviewEvent preview) {
+    super.onPreviewNativeEvent(preview);
 
-		NativeEvent evt = preview.getNativeEvent();
-		if ( evt.getType().equals( "keydown" ) ) {
-			// Use the popup's key preview hooks to close the dialog when either
-			// enter or escape is pressed.
-			switch ( evt.getKeyCode() ) {
-			case KeyCodes.KEY_ENTER:
-			case KeyCodes.KEY_ESCAPE:
-				hide();
-				break;
-			}
-		}
-	}
+    NativeEvent evt = preview.getNativeEvent();
+    if (evt.getType().equals("keydown")) {
+      // Use the popup's key preview hooks to close the dialog when either
+      // enter or escape is pressed.
+      switch (evt.getKeyCode()) {
+        case KeyCodes.KEY_ENTER:
+        case KeyCodes.KEY_ESCAPE:
+          hide();
+          break;
+      }
+    }
+  }
 
-	@UiHandler( "closeButton" )
-	void onSignOutClicked( ClickEvent event ) {
-		hide();
-	}
+  @UiHandler("closeButton")
+  void onSignOutClicked(ClickEvent event) {
+    hide();
+  }
 }

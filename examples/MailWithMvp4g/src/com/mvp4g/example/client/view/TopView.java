@@ -33,40 +33,43 @@ import com.mvp4g.example.client.view.widget.ReverseComposite;
  * The top panel, which contains the 'welcome' message and various links.
  */
 @Singleton
-public class TopView extends ReverseComposite<ITopPresenter> implements ITopView {
+public class TopView
+  extends ReverseComposite<ITopPresenter>
+  implements ITopView {
 
-	interface Binder extends UiBinder<Widget, TopView> {
-	}
+  interface Binder
+    extends UiBinder<Widget, TopView> {
+  }
 
-	private static final Binder binder = GWT.create( Binder.class );
+  private static final Binder binder = GWT.create(Binder.class);
 
-	@UiField
-	Anchor signOutLink;
-	@UiField
-	Anchor aboutLink;
+  @UiField
+  Anchor signOutLink;
+  @UiField
+  Anchor aboutLink;
 
-	public TopView() {
-		initWidget( binder.createAndBindUi( this ) );
-	}
+  public TopView() {
+    initWidget(binder.createAndBindUi(this));
+  }
 
-	@UiHandler( "signOutLink" )
-	public void onSignOutLink( ClickEvent event ) {
-		presenter.onSignOutLinkClick();
-	}
+  @UiHandler("signOutLink")
+  public void onSignOutLink(ClickEvent event) {
+    presenter.onSignOutLinkClick();
+  }
 
-	@UiHandler( "aboutLink" )
-	public void onAboutLinkClick( ClickEvent event ) {
-		presenter.onAboutButtonClick();
-	}
+  @UiHandler("aboutLink")
+  public void onAboutLinkClick(ClickEvent event) {
+    presenter.onAboutButtonClick();
+  }
 
-	public void showAboutDialog() {
-		AboutDialog dlg = new AboutDialog();
-		dlg.show();
-		dlg.center();
-	}
+  public void showAboutDialog() {
+    AboutDialog dlg = new AboutDialog();
+    dlg.show();
+    dlg.center();
+  }
 
-	public void showAlert( String message ) {
-		Window.alert( message );
-	}
+  public void showAlert(String message) {
+    Window.alert(message);
+  }
 
 }

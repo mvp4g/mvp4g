@@ -30,46 +30,49 @@ import com.mvp4g.example.client.view.widget.ReverseComposite;
  * A composite for displaying the details of an email message.
  */
 @Singleton
-public class MailDetailView extends ReverseComposite<IMailDetailPresenter> implements IMailDetailView {
+public class MailDetailView
+  extends ReverseComposite<IMailDetailPresenter>
+  implements IMailDetailView {
 
-	interface Binder extends UiBinder<Widget, MailDetailView> {
-	}
+  interface Binder
+    extends UiBinder<Widget, MailDetailView> {
+  }
 
-	private static final Binder binder = GWT.create( Binder.class );
+  private static final Binder binder = GWT.create(Binder.class);
 
-	@UiField
-	Element subject;
-	@UiField
-	Element sender;
-	@UiField
-	Element recipient;
-	@UiField
-	HTML body;
+  @UiField
+  Element subject;
+  @UiField
+  Element sender;
+  @UiField
+  Element recipient;
+  @UiField
+  HTML    body;
 
-	public MailDetailView() {
-		initWidget( binder.createAndBindUi( this ) );
-	}
+  public MailDetailView() {
+    initWidget(binder.createAndBindUi(this));
+  }
 
-	public void setBody( String b ) {
-		// WARNING: For the purposes of this demo, we're using HTML directly, on
-		// the assumption that the "server" would have appropriately scrubbed
-		// the
-		// HTML. Failure to do so would open your application to XSS attacks.
-		body.setHTML( b );
+  public void setBody(String b) {
+    // WARNING: For the purposes of this demo, we're using HTML directly, on
+    // the assumption that the "server" would have appropriately scrubbed
+    // the
+    // HTML. Failure to do so would open your application to XSS attacks.
+    body.setHTML(b);
 
-	}
+  }
 
-	public void setRecipient( String r ) {
-		recipient.setInnerHTML( r );
+  public void setRecipient(String r) {
+    recipient.setInnerHTML(r);
 
-	}
+  }
 
-	public void setSender( String s ) {
-		sender.setInnerText( s );
+  public void setSender(String s) {
+    sender.setInnerText(s);
 
-	}
+  }
 
-	public void setSubject( String s ) {
-		subject.setInnerText( s );
-	}
+  public void setSubject(String s) {
+    subject.setInnerText(s);
+  }
 }

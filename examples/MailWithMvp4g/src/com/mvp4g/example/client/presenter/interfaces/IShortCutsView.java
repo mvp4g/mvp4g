@@ -5,15 +5,19 @@ import com.mvp4g.example.client.presenter.ShortCutsPresenter.FOLDER_TYPE;
 
 public interface IShortCutsView {
 
-	interface IShortCutsPresenter {
-		void onContactClick(int index, IsWidget contactWidget);
-	}
+  interface IShortCutsPresenter {
+    void onContactClick(int index,
+                        IsWidget contactWidget);
+  }
 
-	void addContact( String name, int index );
+  void addContact(String name,
+                  int index);
 
-	void addTask( String task );
+  void addTask(String task);
 
-	void addFolder( FOLDER_TYPE folder );
+  void addFolder(FOLDER_TYPE folder);
 
-	void showContactPopup( String name, String email, IsWidget widget );
+  void showContactPopup(String name,
+                        String email,
+                        IsWidget widget);
 }

@@ -26,13 +26,15 @@ import com.mvp4g.example.client.view.MailDetailView;
 /**
  * A composite for displaying the details of an email message.
  */
-@Presenter( view = MailDetailView.class )
-public class MailDetailPresenter extends BasePresenter<IMailDetailView, MailEventBus> implements IMailDetailPresenter{
+@Presenter(view = MailDetailView.class)
+public class MailDetailPresenter
+  extends BasePresenter<IMailDetailView, MailEventBus>
+  implements IMailDetailPresenter {
 
-	public void onItemSelected( MailItem item ) {
-		view.setSubject( item.subject );
-		view.setSender( item.sender );
-		view.setRecipient( "foo@example.com" );
-		view.setBody( item.body );
-	}
+  public void onItemSelected(MailItem item) {
+    view.setSubject(item.subject);
+    view.setSender(item.sender);
+    view.setRecipient("foo@example.com");
+    view.setBody(item.body);
+  }
 }

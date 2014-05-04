@@ -8,8 +8,9 @@ import com.mvp4g.example.client.presenter.interfaces.IMailView.IMailPresenter;
 import com.mvp4g.example.client.view.MailView;
 
 
-
-@Presenter( view = MailView.class )
-public class MailPresenter extends BasePresenter<IMailView, MailEventBus>  implements IMailPresenter {
+@Presenter(view = MailView.class)
+public class MailPresenter
+  extends BasePresenter<IMailView, MailEventBus>
+  implements IMailPresenter {
 
 }
