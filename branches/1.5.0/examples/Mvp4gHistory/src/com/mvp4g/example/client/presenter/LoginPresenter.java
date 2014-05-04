@@ -13,42 +13,46 @@ import com.mvp4g.example.client.MyEventBus;
 import com.mvp4g.example.client.view.LoginView;
 import com.mvp4g.example.client.widget.IView;
 
-@Presenter( view = LoginView.class )
-public class LoginPresenter extends LazyPresenter<LoginPresenter.LoginViewInterface, MyEventBus> {
+@Presenter(view = LoginView.class)
+public class LoginPresenter
+  extends LazyPresenter<LoginPresenter.LoginViewInterface, MyEventBus> {
 
-	public interface LoginViewInterface extends LazyView, IView {
+  public interface LoginViewInterface
+    extends LazyView,
+            IView {
 
-		HasValue<String> getUserName();
+    HasValue<String> getUserName();
 
-		HasClickHandlers getLoginButton();
+    HasClickHandlers getLoginButton();
 
-	}
+  }
 
-	@Override
-	public void bindView() {
-		view.getLoginButton().addClickHandler( new ClickHandler() {
+  @Override
+  public void bindView() {
+    view.getLoginButton().addClickHandler(new ClickHandler() {
 
-			public void onClick( ClickEvent event ) {
-				String username = view.getUserName().getValue();
-				if ( ( username == null ) || ( username.length() == 0 ) ) {
-					eventBus.displayMessage( "Please enter your username" );
-				} else {
-					Cookies.setCookie( Constants.USERNAME, username );
-					eventBus.login( username );
-					eventBus.displayMessage( "" );
-				}
-			}
+      public void onClick(ClickEvent event) {
+        String username = view.getUserName().getValue();
+        if ((username == null) || (username.length() == 0)) {
+          eventBus.displayMessage("Please enter your username");
+        } else {
+          Cookies.setCookie(Constants.USERNAME,
+                            username);
+          eventBus.login(username);
+          eventBus.displayMessage("");
+        }
+      }
 
-		} );
-	}
+    });
+  }
 
-	public void onStart() {
-		String username = Cookies.getCookie( Constants.USERNAME );
-		if ( username == null ) {
-			eventBus.changeBottomWidget( view );
-		} else {
-			eventBus.login( username );
-		}
-	}
+  public void onStart() {
+    String username = Cookies.getCookie(Constants.USERNAME);
+    if (username == null) {
+      eventBus.changeBottomWidget(view);
+    } else {
+      eventBus.login(username);
+    }
+  }
 
 }

@@ -1,7 +1,5 @@
 package com.mvp4g.example.client.presenter;
 
-import java.util.List;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -21,152 +19,163 @@ import com.mvp4g.example.client.bean.ProductBean;
 import com.mvp4g.example.client.view.TopBarView;
 import com.mvp4g.example.client.widget.IView;
 
-@Presenter( view = TopBarView.class )
-public class TopBarPresenter extends LazyPresenter<TopBarPresenter.TopBarViewInterface, MyEventBus> {
+import java.util.List;
 
-	public interface TopBarViewInterface extends LazyView, IView {
+@Presenter(view = TopBarView.class)
+public class TopBarPresenter
+  extends LazyPresenter<TopBarPresenter.TopBarViewInterface, MyEventBus> {
 
-		String getSelectedProduct();
+  public interface TopBarViewInterface
+    extends LazyView,
+            IView {
 
-		void setSelectedProduct( int index );
+    String getSelectedProduct();
 
-		void addProduct( String text, String value );
+    void setSelectedProduct(int index);
 
-		String getSelectedDeal();
+    void addProduct(String text,
+                    String value);
 
-		void setSelectedDeal( int index );
+    String getSelectedDeal();
 
-		void addDeal( String text, String value );
+    void setSelectedDeal(int index);
 
-		HasClickHandlers getShowProductButton();
+    void addDeal(String text,
+                 String value);
 
-		HasClickHandlers getShowDealButton();
+    HasClickHandlers getShowProductButton();
 
-		HasValue<Boolean> getSave();
+    HasClickHandlers getShowDealButton();
 
-	}
+    HasValue<Boolean> getSave();
 
-	@Inject
-	private ServiceAsync service = null;
+  }
 
-	private List<BasicBean> products;
-	private ProductBean productSelected = null;
+  @Inject
+  private ServiceAsync service = null;
 
-	private List<BasicBean> deals;
-	private DealBean dealSelected = null;
+  private List<BasicBean> products;
+  private ProductBean productSelected = null;
 
-	public void bindView() {
-		view.getShowDealButton().addClickHandler( new ClickHandler() {
+  private List<BasicBean> deals;
+  private DealBean dealSelected = null;
 
-			public void onClick( ClickEvent event ) {
-				String dealId = view.getSelectedDeal();
-				service.getDealDetails( dealId, new AsyncCallback<DealBean>() {
+  public void bindView() {
+    view.getShowDealButton().addClickHandler(new ClickHandler() {
 
-					public void onFailure( Throwable caught ) {
-						//do sthg						
-					}
+      public void onClick(ClickEvent event) {
+        String dealId = view.getSelectedDeal();
+        service.getDealDetails(dealId,
+                               new AsyncCallback<DealBean>() {
 
-					public void onSuccess( DealBean deal ) {
-						dealSelected = deal;
-						eventBus.displayDeal( deal );
-					}
+                                 public void onFailure(Throwable caught) {
+                                   //do sthg
+                                 }
 
-				} );
-			}
+                                 public void onSuccess(DealBean deal) {
+                                   dealSelected = deal;
+                                   eventBus.displayDeal(deal);
+                                 }
 
-		} );
+                               });
+      }
 
-		view.getShowProductButton().addClickHandler( new ClickHandler() {
+    });
 
-			public void onClick( ClickEvent event ) {
-				String productId = view.getSelectedProduct();
-				service.getProductDetails( productId, new AsyncCallback<ProductBean>() {
+    view.getShowProductButton().addClickHandler(new ClickHandler() {
 
-					public void onFailure( Throwable caught ) {
-						//do sthg						
-					}
+      public void onClick(ClickEvent event) {
+        String productId = view.getSelectedProduct();
+        service.getProductDetails(productId,
+                                  new AsyncCallback<ProductBean>() {
 
-					public void onSuccess( ProductBean product ) {
-						productSelected = product;						
-						eventBus.displayProduct( product );
-					}
+                                    public void onFailure(Throwable caught) {
+                                      //do sthg
+                                    }
 
-				} );
-			}
+                                    public void onSuccess(ProductBean product) {
+                                      productSelected = product;
+                                      eventBus.displayProduct(product);
+                                    }
 
-		} );
-		view.getSave().addValueChangeHandler( new ValueChangeHandler<Boolean>() {
-			
-			public void onValueChange( ValueChangeEvent<Boolean> event ) {
-				eventBus.setHistoryStored( event.getValue() );				
-			}
-		});
+                                  });
+      }
 
-	}
+    });
+    view.getSave().addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
-	public void onStart() {
-		service.getDeals( new AsyncCallback<List<BasicBean>>() {
+      public void onValueChange(ValueChangeEvent<Boolean> event) {
+        eventBus.setHistoryStored(event.getValue());
+      }
+    });
 
-			public void onFailure( Throwable caught ) {
-				//do sthg				
-			}
+  }
 
-			public void onSuccess( List<BasicBean> deals ) {
-				service.getProducts( new AsyncCallback<List<BasicBean>>() {
+  public void onStart() {
+    service.getDeals(new AsyncCallback<List<BasicBean>>() {
 
-					public void onFailure( Throwable caught ) {
-						//do sthg				
-					}
+      public void onFailure(Throwable caught) {
+        //do sthg
+      }
 
-					public void onSuccess( List<BasicBean> products ) {
-						TopBarPresenter.this.products = products;
-						for ( BasicBean product : products ) {
-							view.addProduct( product.getName(), product.getId() );
-						}
+      public void onSuccess(List<BasicBean> deals) {
+        service.getProducts(new AsyncCallback<List<BasicBean>>() {
 
-						if ( productSelected != null ) {
-							view.setSelectedProduct( products.indexOf( productSelected ) );
-						}
-						eventBus.changeTopWidget( view );
-					}
+          public void onFailure(Throwable caught) {
+            //do sthg
+          }
 
-				} );
+          public void onSuccess(List<BasicBean> products) {
+            TopBarPresenter.this.products = products;
+            for (BasicBean product : products) {
+              view.addProduct(product.getName(),
+                              product.getId());
+            }
 
-				TopBarPresenter.this.deals = deals;
-				for ( BasicBean deal : deals ) {
-					view.addDeal( deal.getName(), deal.getId() );
-				}
+            if (productSelected != null) {
+              view.setSelectedProduct(products.indexOf(productSelected));
+            }
+            eventBus.changeTopWidget(view);
+          }
 
-				if ( dealSelected != null ) {
-					view.setSelectedDeal( deals.indexOf( dealSelected ) );
-				}
+        });
 
-			}
+        TopBarPresenter.this.deals = deals;
+        for (BasicBean deal : deals) {
+          view.addDeal(deal.getName(),
+                       deal.getId());
+        }
 
-		} );
-	}
+        if (dealSelected != null) {
+          view.setSelectedDeal(deals.indexOf(dealSelected));
+        }
 
-	public void onDisplayDeal( DealBean bean ) {
-		if ( ( bean != null ) && ( !bean.equals( dealSelected ) ) ) {
-			dealSelected = bean;
-			if ( deals != null ) {
-				view.setSelectedDeal( deals.indexOf( dealSelected ) );
-			}
-		}
-	}
+      }
 
-	public void onDisplayProduct( ProductBean bean ) {
-		if ( ( bean != null ) && ( !bean.equals( productSelected ) ) ) {
-			productSelected = bean;
-			if ( products != null ) {
-				view.setSelectedDeal( products.indexOf( productSelected ) );
-			}
-		}
-	}
+    });
+  }
 
-	public void onInit() {
-		view.setSelectedProduct( 0 );
-		view.setSelectedDeal( 0 );
-	}
+  public void onDisplayDeal(DealBean bean) {
+    if ((bean != null) && (!bean.equals(dealSelected))) {
+      dealSelected = bean;
+      if (deals != null) {
+        view.setSelectedDeal(deals.indexOf(dealSelected));
+      }
+    }
+  }
+
+  public void onDisplayProduct(ProductBean bean) {
+    if ((bean != null) && (!bean.equals(productSelected))) {
+      productSelected = bean;
+      if (products != null) {
+        view.setSelectedDeal(products.indexOf(productSelected));
+      }
+    }
+  }
+
+  public void onInit() {
+    view.setSelectedProduct(0);
+    view.setSelectedDeal(0);
+  }
 
 }
