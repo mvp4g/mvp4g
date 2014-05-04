@@ -2,16 +2,20 @@ package com.mvp4g.example.client.presenter.interfaces;
 
 import com.mvp4g.client.view.ReverseViewInterface;
 
-public interface IMailDetailView extends ReverseViewInterface<IMailDetailView.IMailDetailPresenter>{
-	
-	interface IMailDetailPresenter {};
+public interface IMailDetailView
+  extends ReverseViewInterface<IMailDetailView.IMailDetailPresenter> {
 
-	void setSubject( String subject );
+  interface IMailDetailPresenter {
+  }
 
-	void setSender( String sender );
+  ;
 
-	void setRecipient( String recipient );
+  void setSubject(String subject);
 
-	void setBody( String body );
+  void setSender(String sender);
+
+  void setRecipient(String recipient);
+
+  void setBody(String body);
 
 }

@@ -9,29 +9,35 @@ import com.mvp4g.example.client.presenter.interfaces.IMailView;
 import com.mvp4g.example.client.presenter.interfaces.IMailView.IMailPresenter;
 import com.mvp4g.example.client.view.widget.ReverseResizeComposite;
 
-public class MailView extends ReverseResizeComposite<IMailPresenter> implements IMailView {
+public class MailView
+  extends ReverseResizeComposite<IMailPresenter>
+  implements IMailView {
 
-	interface Binder extends UiBinder<DockLayoutPanel, MailView> {
-	}
+  interface Binder
+    extends UiBinder<DockLayoutPanel, MailView> {
+  }
 
-	private static final Binder binder = GWT.create( Binder.class );
+  private static final Binder binder = GWT.create(Binder.class);
 
-	@UiField( provided = true )
-	TopView topPanel;
-	@UiField( provided = true )
-	MailListView mailList;
-	@UiField( provided = true )
-	ShortcutsView shortcuts;
-	@UiField( provided = true )
-	MailDetailView mailDetail;
+  @UiField(provided = true)
+  TopView        topPanel;
+  @UiField(provided = true)
+  MailListView   mailList;
+  @UiField(provided = true)
+  ShortcutsView  shortcuts;
+  @UiField(provided = true)
+  MailDetailView mailDetail;
 
-	@Inject
-	public MailView( TopView topPanel, ShortcutsView shortcuts, MailListView mailList, MailDetailView mailDetail ) {
-		this.topPanel = topPanel;
-		this.shortcuts = shortcuts;
-		this.mailList = mailList;
-		this.mailDetail = mailDetail;
-		initWidget( binder.createAndBindUi( this ) );
-	}
+  @Inject
+  public MailView(TopView topPanel,
+                  ShortcutsView shortcuts,
+                  MailListView mailList,
+                  MailDetailView mailDetail) {
+    this.topPanel = topPanel;
+    this.shortcuts = shortcuts;
+    this.mailList = mailList;
+    this.mailDetail = mailDetail;
+    initWidget(binder.createAndBindUi(this));
+  }
 
 }

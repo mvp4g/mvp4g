@@ -33,44 +33,47 @@ import com.mvp4g.example.client.view.widget.ReverseComposite;
  * A simple widget representing prev/next page navigation.
  */
 @Singleton
-public class NavBarView extends ReverseComposite<INavBarPresenter> implements INavBarView {
+public class NavBarView
+  extends ReverseComposite<INavBarPresenter>
+  implements INavBarView {
 
-	@UiTemplate( "NavBarView.ui.xml" )
-	interface Binder extends UiBinder<Widget, NavBarView> {
-	}
+  @UiTemplate("NavBarView.ui.xml")
+  interface Binder
+    extends UiBinder<Widget, NavBarView> {
+  }
 
-	private static final Binder binder = GWT.create( Binder.class );
+  private static final Binder binder = GWT.create(Binder.class);
 
-	@UiField
-	Element countLabel;
-	@UiField
-	Anchor newerButton;
-	@UiField
-	Anchor olderButton;
+  @UiField
+  Element countLabel;
+  @UiField
+  Anchor  newerButton;
+  @UiField
+  Anchor  olderButton;
 
-	public NavBarView() {
-		initWidget( binder.createAndBindUi( this ) );
-	}
-	
-	@UiHandler("newerButton")
-	public void onNewerClick(ClickEvent event){
-		presenter.onNewerButtonClick();
-	}
-	
-	@UiHandler("olderButton")
-	public void onOlderClick(ClickEvent event){
-		presenter.onOlderButtonClick();
-	}
+  public NavBarView() {
+    initWidget(binder.createAndBindUi(this));
+  }
 
-	public void setNavText( String text ) {
-		countLabel.setInnerHTML( text );
-	}
+  @UiHandler("newerButton")
+  public void onNewerClick(ClickEvent event) {
+    presenter.onNewerButtonClick();
+  }
 
-	public void setOlderVisible( boolean visible ) {
-		olderButton.setVisible( visible );
-	}
+  @UiHandler("olderButton")
+  public void onOlderClick(ClickEvent event) {
+    presenter.onOlderButtonClick();
+  }
 
-	public void setNewerVisible( boolean visible ) {
-		newerButton.setVisible( visible );
-	}
+  public void setNavText(String text) {
+    countLabel.setInnerHTML(text);
+  }
+
+  public void setOlderVisible(boolean visible) {
+    olderButton.setVisible(visible);
+  }
+
+  public void setNewerVisible(boolean visible) {
+    newerButton.setVisible(visible);
+  }
 }

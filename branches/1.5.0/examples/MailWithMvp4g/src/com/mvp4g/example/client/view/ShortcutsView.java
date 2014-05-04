@@ -28,11 +28,7 @@ import com.google.inject.Singleton;
 import com.mvp4g.example.client.presenter.ShortCutsPresenter.FOLDER_TYPE;
 import com.mvp4g.example.client.presenter.interfaces.IShortCutsView;
 import com.mvp4g.example.client.presenter.interfaces.IShortCutsView.IShortCutsPresenter;
-import com.mvp4g.example.client.view.widget.ContactPopup;
-import com.mvp4g.example.client.view.widget.Contacts;
-import com.mvp4g.example.client.view.widget.Mailboxes;
-import com.mvp4g.example.client.view.widget.ReverseResizeComposite;
-import com.mvp4g.example.client.view.widget.Tasks;
+import com.mvp4g.example.client.view.widget.*;
 
 /**
  * A composite that contains the shortcut stack panel on the left side. The mailbox tree and
@@ -41,68 +37,77 @@ import com.mvp4g.example.client.view.widget.Tasks;
  * {@link com.google.gwt.user.client.ui.Tree}, and other custom widgets.
  */
 @Singleton
-public class ShortcutsView extends ReverseResizeComposite<IShortCutsPresenter> implements IShortCutsView {
+public class ShortcutsView
+  extends ReverseResizeComposite<IShortCutsPresenter>
+  implements IShortCutsView {
 
-	interface Binder extends UiBinder<StackLayoutPanel, ShortcutsView> {
-	}
+  interface Binder
+    extends UiBinder<StackLayoutPanel, ShortcutsView> {
+  }
 
-	private static final Binder binder = GWT.create( Binder.class );
+  private static final Binder binder = GWT.create(Binder.class);
 
-	@UiField
-	Mailboxes mailboxes;
-	@UiField
-	Tasks tasks;
-	@UiField
-	Contacts contacts;
+  @UiField
+  Mailboxes mailboxes;
+  @UiField
+  Tasks     tasks;
+  @UiField
+  Contacts  contacts;
 
-	/**
-	 * Constructs a new shortcuts widget using the specified images.
-	 * 
-	 * @param images
-	 *            a bundle that provides the images for this widget
-	 */
-	public ShortcutsView() {
-		initWidget( binder.createAndBindUi( this ) );
-	}
+  /**
+   * Constructs a new shortcuts widget using the specified images.
+   */
+  public ShortcutsView() {
+    initWidget(binder.createAndBindUi(this));
+  }
 
-	public Anchor addContact( String name ) {
-		return contacts.addContact( name );
-	}
+  public Anchor addContact(String name) {
+    return contacts.addContact(name);
+  }
 
-	public void addTask( String task ) {
-		tasks.addTask( task );
-	}
+  public void addTask(String task) {
+    tasks.addTask(task);
+  }
 
-	public Widget getViewWidget() {
-		return this;
-	}
+  public Widget getViewWidget() {
+    return this;
+  }
 
-	public void showContactPopup( String name, String email, int left, int top ) {
+  public void showContactPopup(String name,
+                               String email,
+                               int left,
+                               int top) {
 
-	}
+  }
 
-	public void addFolder( FOLDER_TYPE folder ) {
-		mailboxes.addImageItem( folder );
-	}
+  public void addFolder(FOLDER_TYPE folder) {
+    mailboxes.addImageItem(folder);
+  }
 
-	@Override
-	public void addContact( String name, final int index ) {
-		final Anchor anchor = contacts.addContact( name );
-		anchor.addClickHandler( new ClickHandler() {
+  @Override
+  public void addContact(String name,
+                         final int index) {
+    final Anchor anchor = contacts.addContact(name);
+    anchor.addClickHandler(new ClickHandler() {
 
-			@Override
-			public void onClick( ClickEvent event ) {
-				presenter.onContactClick( index, anchor );
-			}
-		} );
-	}
+      @Override
+      public void onClick(ClickEvent event) {
+        presenter.onContactClick(index,
+                                 anchor);
+      }
+    });
+  }
 
-	@Override
-	public void showContactPopup( String name, String email, IsWidget widget ) {
-		ContactPopup popup = new ContactPopup( name, email );
-		Widget w = widget.asWidget();
-		popup.setPopupPosition( w.getAbsoluteLeft() + 14, w.getAbsoluteTop() + 14);
-		popup.show();
-	}
+  @Override
+  public void showContactPopup(String name,
+                               String email,
+                               IsWidget widget) {
+    ContactPopup popup = new ContactPopup(name,
+                                          email);
+    Widget w = widget.asWidget();
+    popup.setPopupPosition(w.getAbsoluteLeft() + 14,
+                           w.getAbsoluteTop() + 14);
+    popup.show();
+  }
 
 }

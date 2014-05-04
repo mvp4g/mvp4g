@@ -131,7 +131,7 @@ public class Mailboxes
    * @return the resultant HTML
    */
   private SafeHtml imageItemHTML(ImageResource imageProto,
-                                  String title) {
+                                 String title) {
     return SafeHtmlUtils.fromTrustedString(AbstractImagePrototype.create(imageProto).getHTML() + " " + title);
   }
 

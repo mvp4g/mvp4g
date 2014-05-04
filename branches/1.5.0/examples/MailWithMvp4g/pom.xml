@@ -5,7 +5,7 @@
 
 	<groupId>com.googlecode.mvp4g</groupId>
 	<artifactId>mailwithmvp4g</artifactId>
-	<version>1.5.0</version>
+	<version>1.5.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>MailWithMvp4g</name>
 
@@ -18,14 +18,22 @@
 	</licenses>
 
 	<properties>
-    <gwt.version>2.6.0</gwt.version>
+    <aopalliance.version>1.0</aopalliance.version>
+    <easymock.version>3.2</easymock.version>
     <gin.version>2.1.2</gin.version>
+    <guice.version>3.0</guice.version>
+    <gwt.version>2.6.0</gwt.version>
+    <junit.version>4.11</junit.version>
+    <mvp4g.version>[1.5.0-SNAPSHOT]</mvp4g.version>
 	</properties>
 
 	<developers>
 		<developer>
 			<name>Pierre-Laurent Coirier</name>
 		</developer>
+    <developer>
+      <name>Frank Hossfeld</name>
+    </developer>
 	</developers>
 
 	<contributors>
@@ -50,7 +58,7 @@
     <dependency>
       <groupId>com.googlecode.mvp4g</groupId>
       <artifactId>mvp4g</artifactId>
-      <version>1.5.0-SNAPSHOT</version>
+      <version>${mvp4g.version}</version>
     </dependency>
 
     <dependency>
@@ -67,9 +75,15 @@
     </dependency>
 
     <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>${guice.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>${junit.version}</version>
       <type>jar</type>
       <scope>test</scope>
     </dependency>
@@ -77,7 +91,7 @@
     <dependency>
       <groupId>org.easymock</groupId>
       <artifactId>easymock</artifactId>
-      <version>3.2</version>
+      <version>${easymock.version}</version>
       <type>jar</type>
       <scope>test</scope>
     </dependency>
@@ -86,6 +100,12 @@
       <groupId>com.google.gwt.inject</groupId>
       <artifactId>gin</artifactId>
       <version>${gin.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>aopalliance</groupId>
+      <artifactId>aopalliance</artifactId>
+      <version>${aopalliance.version}</version>
     </dependency>
 	</dependencies>
 

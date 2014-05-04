@@ -25,21 +25,25 @@ import com.mvp4g.example.client.view.NavBarView;
 /**
  * A simple widget representing prev/next page navigation.
  */
-@Presenter( view = NavBarView.class )
-public class NavBarPresenter extends BasePresenter<INavBarView, MailEventBus> implements INavBarPresenter {
+@Presenter(view = NavBarView.class)
+public class NavBarPresenter
+  extends BasePresenter<INavBarView, MailEventBus>
+  implements INavBarPresenter {
 
-	public void onNewerButtonClick() {
-		eventBus.newer();
-	}
+  public void onNewerButtonClick() {
+    eventBus.newer();
+  }
 
-	public void onOlderButtonClick() {
-		eventBus.older();
-	}
+  public void onOlderButtonClick() {
+    eventBus.older();
+  }
 
-	public void onSetNavStatus( int startIndex, int endIndex, int numberOfElements ) {
-		view.setNewerVisible( startIndex != 1 );
-		view.setOlderVisible( ( startIndex + MailListPresenter.VISIBLE_EMAIL_COUNT ) <= numberOfElements );
-		view.setNavText( "" + startIndex + " - " + endIndex + " of " + numberOfElements );
-	}
+  public void onSetNavStatus(int startIndex,
+                             int endIndex,
+                             int numberOfElements) {
+    view.setNewerVisible(startIndex != 1);
+    view.setOlderVisible((startIndex + MailListPresenter.VISIBLE_EMAIL_COUNT) <= numberOfElements);
+    view.setNavText("" + startIndex + " - " + endIndex + " of " + numberOfElements);
+  }
 
 }

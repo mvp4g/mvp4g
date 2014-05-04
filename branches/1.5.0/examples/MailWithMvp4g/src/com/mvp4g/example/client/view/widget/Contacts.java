@@ -27,30 +27,33 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * A component that displays a list of contacts.
  */
-public class Contacts extends Composite {
+public class Contacts
+  extends Composite {
 
-	interface Binder extends UiBinder<Widget, Contacts> {
-	}
+  interface Binder
+    extends UiBinder<Widget, Contacts> {
+  }
 
-	interface Style extends CssResource {
-		String item();
-	}
+  interface Style
+    extends CssResource {
+    String item();
+  }
 
-	private static final Binder binder = GWT.create( Binder.class );
+  private static final Binder binder = GWT.create(Binder.class);
 
-	@UiField
-	ComplexPanel panel;
-	@UiField
-	Style style;
+  @UiField
+  ComplexPanel panel;
+  @UiField
+  Style        style;
 
-	public Contacts() {
-		initWidget( binder.createAndBindUi( this ) );
-	}
+  public Contacts() {
+    initWidget(binder.createAndBindUi(this));
+  }
 
-	public Anchor addContact( String contact ) {
-		Anchor link = new Anchor( contact );
-		link.setStyleName( style.item() );
-		panel.add( link );
-		return link;
-	}
+  public Anchor addContact(String contact) {
+    Anchor link = new Anchor(contact);
+    link.setStyleName(style.item());
+    panel.add(link);
+    return link;
+  }
 }

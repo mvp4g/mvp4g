@@ -35,76 +35,107 @@ import com.mvp4g.example.client.view.widget.ReverseComposite;
  * A composite that displays a list of emails that can be selected.
  */
 @Singleton
-public class MailListView extends ReverseComposite<IMailListPresenter> implements IMailListView {
+public class MailListView
+  extends ReverseComposite<IMailListPresenter>
+  implements IMailListView {
 
-	interface Binder extends UiBinder<Widget, MailListView> {
-	}
+  interface Binder
+    extends UiBinder<Widget, MailListView> {
+  }
 
-	interface SelectionStyle extends CssResource {
-		String selectedRow();
-	}
+  interface SelectionStyle
+    extends CssResource {
+    String selectedRow();
+  }
 
-	private static final Binder binder = GWT.create( Binder.class );
+  private static final Binder binder = GWT.create(Binder.class);
 
-	@UiField
-	FlexTable header;
-	@UiField
-	FlexTable table;
-	@UiField
-	SelectionStyle selectionStyle;
+  @UiField
+  FlexTable      header;
+  @UiField
+  FlexTable      table;
+  @UiField
+  SelectionStyle selectionStyle;
 
-	@Inject
-	public MailListView( NavBarView navView ) {
-		initWidget( binder.createAndBindUi( this ) );
-		initTable();
-		header.setWidget( 0, 3, navView );
-	}
+  @Inject
+  public MailListView(NavBarView navView) {
+    initWidget(binder.createAndBindUi(this));
+    initTable();
+    header.setWidget(0,
+                     3,
+                     navView);
+  }
 
-	@UiHandler( "table" )
-	public void onTableClick( ClickEvent event ) {
-		Cell c = table.getCellForEvent( event );
-		if ( c != null ) {
-			presenter.onTableClick( c.getRowIndex() );
-		}
-	}
+  @UiHandler("table")
+  public void onTableClick(ClickEvent event) {
+    Cell c = table.getCellForEvent(event);
+    if (c != null) {
+      presenter.onTableClick(c.getRowIndex());
+    }
+  }
 
-	/**
-	 * Initializes the table so that it contains enough rows for a full page of emails. Also creates
-	 * the images that will be used as 'read' flags.
-	 */
-	private void initTable() {
-		// Initialize the header.
-		header.getColumnFormatter().setWidth( 0, "128px" );
-		header.getColumnFormatter().setWidth( 1, "192px" );
-		header.getColumnFormatter().setWidth( 3, "256px" );
+  /**
+   * Initializes the table so that it contains enough rows for a full page of emails. Also creates
+   * the images that will be used as 'read' flags.
+   */
+  private void initTable() {
+    // Initialize the header.
+    header.getColumnFormatter().setWidth(0,
+                                         "128px");
+    header.getColumnFormatter().setWidth(1,
+                                         "192px");
+    header.getColumnFormatter().setWidth(3,
+                                         "256px");
 
-		header.setText( 0, 0, "Sender" );
-		header.setText( 0, 1, "Email" );
-		header.setText( 0, 2, "Subject" );
-		header.getCellFormatter().setHorizontalAlignment( 0, 3, HasHorizontalAlignment.ALIGN_RIGHT );
+    header.setText(0,
+                   0,
+                   "Sender");
+    header.setText(0,
+                   1,
+                   "Email");
+    header.setText(0,
+                   2,
+                   "Subject");
+    header.getCellFormatter().setHorizontalAlignment(0,
+                                                     3,
+                                                     HasHorizontalAlignment.ALIGN_RIGHT);
 
-		// Initialize the table.
-		table.getColumnFormatter().setWidth( 0, "128px" );
-		table.getColumnFormatter().setWidth( 1, "192px" );
+    // Initialize the table.
+    table.getColumnFormatter().setWidth(0,
+                                        "128px");
+    table.getColumnFormatter().setWidth(1,
+                                        "192px");
 
-	}
+  }
 
-	public void setRow( int row, String sender, String email, String subject ) {
-		table.setText( row, 0, sender );
-		table.setText( row, 1, email );
-		table.setText( row, 2, subject );
-	}
+  public void setRow(int row,
+                     String sender,
+                     String email,
+                     String subject) {
+    table.setText(row,
+                  0,
+                  sender);
+    table.setText(row,
+                  1,
+                  email);
+    table.setText(row,
+                  2,
+                  subject);
+  }
 
-	public void clearEmails() {
-		table.clear( true );
-	}
+  public void clearEmails() {
+    table.clear(true);
+  }
 
-	public void selectRow( int row, boolean selected ) {
-		if ( selected ) {
-			table.getRowFormatter().addStyleName( row, selectionStyle.selectedRow() );
-		} else {
-			table.getRowFormatter().removeStyleName( row, selectionStyle.selectedRow() );
-		}
-	}
+  public void selectRow(int row,
+                        boolean selected) {
+    if (selected) {
+      table.getRowFormatter().addStyleName(row,
+                                           selectionStyle.selectedRow());
+    } else {
+      table.getRowFormatter().removeStyleName(row,
+                                              selectionStyle.selectedRow());
+    }
+  }
 
 }

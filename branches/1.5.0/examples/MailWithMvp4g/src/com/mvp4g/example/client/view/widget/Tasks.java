@@ -26,30 +26,33 @@ import com.google.gwt.user.client.ui.FlowPanel;
 /**
  * Composite that represents a collection of <code>Task</code> items.
  */
-public class Tasks extends Composite {
+public class Tasks
+  extends Composite {
 
-	interface Binder extends UiBinder<FlowPanel, Tasks> {
-	}
+  interface Binder
+    extends UiBinder<FlowPanel, Tasks> {
+  }
 
-	interface Style extends CssResource {
-		String item();
-	}
+  interface Style
+    extends CssResource {
+    String item();
+  }
 
-	@UiField
-	Style style;
+  @UiField
+  Style style;
 
-	private static final Binder binder = GWT.create( Binder.class );
+  private static final Binder binder = GWT.create(Binder.class);
 
-	private FlowPanel panel;
+  private FlowPanel panel;
 
-	public Tasks() {
-		panel = binder.createAndBindUi( this );
-		initWidget( panel );
-	}
+  public Tasks() {
+    panel = binder.createAndBindUi(this);
+    initWidget(panel);
+  }
 
-	public void addTask( String task ) {
-		CheckBox cb = new CheckBox( task );
-		cb.setStyleName( style.item() );
-		panel.add( cb );
-	}
+  public void addTask(String task) {
+    CheckBox cb = new CheckBox(task);
+    cb.setStyleName(style.item());
+    panel.add(cb);
+  }
 }
