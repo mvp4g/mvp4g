@@ -5,6 +5,7 @@
  * Support IncrementalGenerator for SuperDevMod.
  * Patch for update mvp4g for last gin 2.1.2 and gwt 2.6.0 (Issue 128)
  * Error should be thrown if historyOnStart is set to true for child module. (Issue 121)
+ * NotFoundEvent not fire for child module events. (Issue 112)
 
 
 = Release Notes =
