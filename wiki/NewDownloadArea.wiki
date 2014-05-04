@@ -10,7 +10,7 @@ New versions of mvp4g will be found as maven dependencies.
 
 If you do not use maven, you can download the new versions from this page. 
 
-== SNAPSHOT 1.5.0 (05/01/2014 - 22:07:09) ==
+== SNAPSHOT 1.5.0 (05/01/2014 - 22:07:09 - 7) ==
 
 === Downloads ===
 
