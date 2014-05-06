@@ -13,8 +13,8 @@ New versions of mvp4g will be found here.
 === Downloads ===
 
   * mvp4g - jar: ([http://mvp4g.googlecode.com/svn/maven2/snapshots/com/googlecode/mvp4g/mvp4g/1.5.0-SNAPSHOT/mvp4g-1.5.0-20140501.220709-7.jar Download here])
-  * mvp4g - javadoc: ([http://mvp4g.googlecode.com/svn/maven2/snapshots/com/googlecode/mvp4g/mvp4g/1.5.0-SNAPSHOT/mvp4g-1.5.0-20140501.220709-7-sources.jar Download here])
-  * mvp4g - sources: ([http://mvp4g.googlecode.com/svn/maven2/snapshots/com/googlecode/mvp4g/mvp4g/1.5.0-SNAPSHOT/mvp4g-1.5.0-20140501.220709-7-javadoc.jar Download here])
+  * mvp4g - javadoc: ([http://mvp4g.googlecode.com/svn/maven2/snapshots/com/googlecode/mvp4g/mvp4g/1.5.0-SNAPSHOT/mvp4g-1.5.0-20140501.220709-7-javadoc.jar Download here])
+  * mvp4g - sources: ([http://mvp4g.googlecode.com/svn/maven2/snapshots/com/googlecode/mvp4g/mvp4g/1.5.0-SNAPSHOT/mvp4g-1.5.0-20140501.220709-7-sources.jar Download here])
 
 === Fixed Issues ===
 
