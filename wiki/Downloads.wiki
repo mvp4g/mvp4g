@@ -6,27 +6,15 @@
 = Download Area =
 
 Since Google has stopped supporting downloads on google projects, there is no chance to add new versions of mvp4g to the download area.
-New versions of mvp4g will be found as maven dependencies.
-
-If you do not use maven, you can download the new versions from this page. 
+New versions of mvp4g will be found here.
 
 == SNAPSHOT 1.5.0 (05/01/2014 - 22:07:09) ==
 
-=== Maven Dependency ===
-
-{{{
-<dependency>
-	<groupId>com.googlecode.mvp4g</groupId>
-	<artifactId>mvp4g</artifactId>
-	<version>1.5.0-SNAPSHOT-20140501.220709-7</version>
-</dependency>
-}}}
-
 === Downloads ===
 
-  * mvp4g - jar: ([https://drive.google.com/file/d/0B5ysvJf9aZ6VLW1PRWhqSTc0cEU/edit?usp=sharing Download here])
-  * mvp4g - javadoc: ([https://drive.google.com/file/d/0B5ysvJf9aZ6VSXYwZHZ6OXAzaW8/edit?usp=sharing Download here])
-  * mvp4g - sources: ([https://drive.google.com/file/d/0B5ysvJf9aZ6VUEUzTDNLcF9jVDg/edit?usp=sharing Download here])
+  * mvp4g - jar: (http://mvp4g.googlecode.com/svn/maven2/snapshots/com/googlecode/mvp4g/mvp4g/1.5.0-SNAPSHOT/mvp4g-1.5.0-20140501.220709-7.jar Download here])
+  * mvp4g - javadoc: ([http://mvp4g.googlecode.com/svn/maven2/snapshots/com/googlecode/mvp4g/mvp4g/1.5.0-SNAPSHOT/mvp4g-1.5.0-20140501.220709-7-sources.jar Download here])
+  * mvp4g - sources: ([http://mvp4g.googlecode.com/svn/maven2/snapshots/com/googlecode/mvp4g/mvp4g/1.5.0-SNAPSHOT/mvp4g-1.5.0-20140501.220709-7-javadoc.jar Download here])
 
 === Fixed Issues ===
 
