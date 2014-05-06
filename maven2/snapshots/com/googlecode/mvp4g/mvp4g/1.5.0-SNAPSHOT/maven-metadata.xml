@@ -39,8 +39,8 @@
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom.asc</extension>
-        <value>1.5.0-20140501.220709-7</value>
-        <updated>20140501220709</updated>
+        <value>1.5.0-20140506.192324-8</value>
+        <updated>20140506192324</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>sources</classifier>
