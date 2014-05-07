@@ -1,91 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="38e82b4f-8e82-4a5a-8db2-098701dbb0dc" name="Default" comment="update example MailWithMvp4g">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/workDir" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/MailWithMvp4g.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/MailWithMvp4g_war.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/MailWithMvp4g_war_exploded.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__aopalliance_aopalliance_1_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_nodep_2_2_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_gwt_gwt_servlet_2_6_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_gwt_gwt_user_2_6_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_gwt_inject_gin_2_1_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_inject_extensions_guice_assistedinject_3_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_inject_guice_3_0.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_mvp4g_mvp4g_1_5_0_SNAPSHOT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_inject_javax_inject_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_validation_validation_api_1_0_0_GA.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_validation_validation_api_sources_1_0_0_GA.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_11.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_easymock_easymock_3_2.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_json_json_20090211.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_objenesis_objenesis_1_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/aopalliance.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/gin-1.5-post-gwt-2.2.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/guice-assistedinject-snapshot.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/guice-snapshot.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/javax.inject.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/mvp4g-1.4.0.jar" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/AboutDialog.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/AboutDialog.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/AboutDialog.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/AboutDialog.ui.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/bean/Contact.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/bean/Contact.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/ContactPopup.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/ContactPopup.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/ContactPopup.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/ContactPopup.ui.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Contacts.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Contacts.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Contacts.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Contacts.ui.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/IMailDetailView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/IMailDetailView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/IMailListView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/IMailListView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/IMailView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/IMailView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/INavBarView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/INavBarView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/IShortCutsView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/IShortCutsView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/ITopView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/ITopView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/MailDetailPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/MailDetailPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailDetailView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailDetailView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailDetailView.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailDetailView.ui.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/MailEntryPoint.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/MailEntryPoint.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/MailEventBus.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/MailEventBus.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/bean/MailItem.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/bean/MailItem.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/MailItems.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/MailItems.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/MailListPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/MailListPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailListView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailListView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailListView.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailListView.ui.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/MailPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/MailPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailView.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailView.ui.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/MailWithMvp4g.gwt.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/MailWithMvp4g.gwt.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Mailboxes.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Mailboxes.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/NavBarPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/NavBarPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/NavBarView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/NavBarView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/NavBarView.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/NavBarView.ui.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/ReverseComposite.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/ReverseComposite.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/ReverseResizeComposite.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/ReverseResizeComposite.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/ShortCutsPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/ShortCutsPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/ShortcutsView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/ShortcutsView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/ShortcutsView.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/ShortcutsView.ui.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Tasks.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Tasks.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Tasks.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Tasks.ui.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/TopPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/TopPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/TopView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/TopView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/TopView.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/TopView.ui.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/resources/global.css" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/resources/global.css" />
+    <list default="true" readonly="true" id="38e82b4f-8e82-4a5a-8db2-098701dbb0dc" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_mvp4g_mvp4g_1_5_0_SNAPSHOT.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_mvp4g_mvp4g_1_5_0_SNAPSHOT.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MailWithMvp4g.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -151,72 +70,172 @@
       <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3723">
-              <caret line="109" column="0" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3808">
+              <caret line="73" column="87" selection-start-line="73" selection-start-column="29" selection-end-line="73" selection-end-column="29" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MailWithMvp4g.gwt.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/MailWithMvp4g.gwt.xml">
+      <file leaf-file-name="MailListPresenter.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/MailListPresenter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="646">
-              <caret line="32" column="116" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="527" max-vertical-offset="2601">
+              <caret line="31" column="51" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TopView.ui.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/view/TopView.ui.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="87" max-vertical-offset="969">
-              <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
-              <folding>
-                <marker date="1399207751000" expanded="true" signature="285:336" placeholder="{...}" />
-                <marker date="1399207751000" expanded="true" signature="352:384" placeholder="{...}" />
-                <marker date="1399207751000" expanded="true" signature="423:549" placeholder="{...}" />
-                <marker date="1399207751000" expanded="true" signature="582:640" placeholder="{...}" />
-              </folding>
+      <file leaf-file-name="MAVEN/com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" pinned="false" current="false" current-in-tab="false">
+        <entry file="uml://MAVEN/com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT">
+          <provider selected="true" editor-type-id="UmlEditorProvider">
+            <state>
+              <ID>MAVEN</ID>
+              <OriginalElement>com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT</OriginalElement>
+              <nodes>
+                <node x="0.0" y="0.0">com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT</node>
+                <node x="241.0" y="390.0">com.google.gwt.inject:gin:jar:2.1.2/com.google.inject:guice:jar:3.0</node>
+                <node x="250.0" y="273.0">junit:junit:jar:4.11/org.hamcrest:hamcrest-core:jar:1.3</node>
+                <node x="432.0" y="429.0">com.google.gwt.inject:gin:jar:2.1.2/com.google.inject.extensions:guice-assistedinject:jar:3.0/com.google.inject:guice:jar:3.0</node>
+                <node x="284.0" y="312.0">org.easymock:easymock:jar:3.2/cglib:cglib-nodep:jar:2.2.2</node>
+                <node x="159.0" y="468.0">aopalliance:aopalliance:jar:1.0</node>
+                <node x="159.0" y="390.0">com.google.gwt.inject:gin:jar:2.1.2</node>
+                <node x="159.0" y="195.0">com.google.inject:guice:jar:3.0</node>
+                <node x="159.0" y="312.0">org.easymock:easymock:jar:3.2</node>
+                <node x="255.0" y="195.0">com.google.inject:guice:jar:3.0/javax.inject:javax.inject:jar:1</node>
+                <node x="-37.5" y="-14.5">com.googlecode.mvp4g:mvp4g:jar:1.5.0-SNAPSHOT</node>
+                <node x="-26.0" y="-14.5">com.googlecode.mvp4g:mvp4g:jar:1.5.0-SNAPSHOT/com.google.gwt.inject:gin:jar:2.1.2</node>
+                <node x="284.0" y="351.0">org.easymock:easymock:jar:3.2/org.objenesis:objenesis:jar:1.3</node>
+                <node x="241.0" y="429.0">com.google.gwt.inject:gin:jar:2.1.2/com.google.inject.extensions:guice-assistedinject:jar:3.0</node>
+                <node x="159.0" y="273.0">junit:junit:jar:4.11</node>
+                <node x="279.0" y="156.0">com.google.gwt:gwt-user:jar:2.6.0/org.json:json:jar:20090211</node>
+                <node x="279.0" y="78.0">com.google.gwt:gwt-user:jar:2.6.0/javax.validation:validation-api:jar:1.0.0.GA</node>
+                <node x="159.0" y="78.0">com.google.gwt:gwt-user:jar:2.6.0</node>
+                <node x="279.0" y="117.0">com.google.gwt:gwt-user:jar:2.6.0/javax.validation:validation-api:jar:sources:1.0.0.GA</node>
+                <node x="159.0" y="39.0">com.google.gwt:gwt-servlet:jar:2.6.0</node>
+                <node x="255.0" y="234.0">com.google.inject:guice:jar:3.0/aopalliance:aopalliance:jar:1.0</node>
+              </nodes>
+              <notes />
+              <edges>
+                <edge source="com.google.gwt.inject:gin:jar:2.1.2/com.google.inject.extensions:guice-assistedinject:jar:3.0" target="com.google.gwt.inject:gin:jar:2.1.2/com.google.inject.extensions:guice-assistedinject:jar:3.0/com.google.inject:guice:jar:3.0">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="com.google.gwt.inject:gin:jar:2.1.2">
+                  <point x="0.0" y="0.0" />
+                  <point x="64.5" y="404.5" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.googlecode.mvp4g:mvp4g:jar:1.5.0-SNAPSHOT" target="com.googlecode.mvp4g:mvp4g:jar:1.5.0-SNAPSHOT/com.google.gwt.inject:gin:jar:2.1.2">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.google.gwt.inject:gin:jar:2.1.2" target="com.google.gwt.inject:gin:jar:2.1.2/com.google.inject:guice:jar:3.0">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="com.google.gwt:gwt-servlet:jar:2.6.0">
+                  <point x="0.0" y="0.0" />
+                  <point x="64.5" y="53.5" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.google.gwt:gwt-user:jar:2.6.0" target="com.google.gwt:gwt-user:jar:2.6.0/javax.validation:validation-api:jar:sources:1.0.0.GA">
+                  <point x="0.0" y="0.0" />
+                  <point x="204.0" y="131.5" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="org.easymock:easymock:jar:3.2" target="org.easymock:easymock:jar:3.2/cglib:cglib-nodep:jar:2.2.2">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="com.googlecode.mvp4g:mvp4g:jar:1.5.0-SNAPSHOT">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.google.gwt.inject:gin:jar:2.1.2" target="com.google.gwt.inject:gin:jar:2.1.2/com.google.inject.extensions:guice-assistedinject:jar:3.0">
+                  <point x="0.0" y="0.0" />
+                  <point x="185.0" y="443.5" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="org.easymock:easymock:jar:3.2" target="org.easymock:easymock:jar:3.2/org.objenesis:objenesis:jar:1.3">
+                  <point x="0.0" y="0.0" />
+                  <point x="206.5" y="365.5" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="com.google.inject:guice:jar:3.0">
+                  <point x="0.0" y="0.0" />
+                  <point x="64.5" y="209.5" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="aopalliance:aopalliance:jar:1.0">
+                  <point x="0.0" y="0.0" />
+                  <point x="64.5" y="482.5" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.google.inject:guice:jar:3.0" target="com.google.inject:guice:jar:3.0/aopalliance:aopalliance:jar:1.0">
+                  <point x="0.0" y="0.0" />
+                  <point x="192.0" y="248.5" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.google.gwt:gwt-user:jar:2.6.0" target="com.google.gwt:gwt-user:jar:2.6.0/javax.validation:validation-api:jar:1.0.0.GA">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="junit:junit:jar:4.11">
+                  <point x="0.0" y="0.0" />
+                  <point x="64.5" y="287.5" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="org.easymock:easymock:jar:3.2">
+                  <point x="0.0" y="0.0" />
+                  <point x="64.5" y="326.5" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="junit:junit:jar:4.11" target="junit:junit:jar:4.11/org.hamcrest:hamcrest-core:jar:1.3">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.google.gwt:gwt-user:jar:2.6.0" target="com.google.gwt:gwt-user:jar:2.6.0/org.json:json:jar:20090211">
+                  <point x="0.0" y="0.0" />
+                  <point x="204.0" y="170.5" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="com.google.gwt:gwt-user:jar:2.6.0">
+                  <point x="0.0" y="0.0" />
+                  <point x="64.5" y="92.5" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="com.google.inject:guice:jar:3.0" target="com.google.inject:guice:jar:3.0/javax.inject:javax.inject:jar:1">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+              </edges>
+              <settings layout="Hierarchic Group" zoom="1.0" x="-88.0" y="72.0" />
+              <SelectedNodes>
+                <node>com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT</node>
+              </SelectedNodes>
+              <Categories />
+              <VISIBILITY>All</VISIBILITY>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ShortcutsView.ui.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/view/ShortcutsView.ui.xml">
+      <file leaf-file-name="settings.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$USER_HOME$/.m2/settings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="172" max-vertical-offset="1819">
-              <caret line="27" column="30" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
-              <folding>
-                <marker date="1399207751000" expanded="true" signature="209:324" placeholder="{...}" />
-                <marker date="1399207751000" expanded="true" signature="351:632" placeholder="{...}" />
-                <marker date="1399207751000" expanded="true" signature="680:808" placeholder="{...}" />
-                <marker date="1399207751000" expanded="true" signature="827:951" placeholder="{...}" />
-                <marker date="1399207751000" expanded="true" signature="973:1100" placeholder="{...}" />
-                <marker date="1399207751000" expanded="true" signature="1142:1203" placeholder="{...}" />
-                <marker date="1399207751000" expanded="true" signature="1228:1285" placeholder="{...}" />
-                <marker date="1399207751000" expanded="true" signature="1313:1373" placeholder="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ShortcutsView.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/view/ShortcutsView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="240" max-vertical-offset="1326">
-              <caret line="58" column="0" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="901">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Contacts.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Contacts.java">
+      <file leaf-file-name="MailWithMvp4g.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/war/MailWithMvp4g.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.31591174" vertical-offset="0" max-vertical-offset="861">
-              <caret line="37" column="65" selection-start-line="37" selection-start-column="25" selection-end-line="37" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="17" max-vertical-offset="629">
+              <caret line="1" column="44" selection-start-line="1" selection-start-column="44" selection-end-line="1" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -232,9 +251,11 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/MailWithMvp4g.gwt.xml" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/view/ShortcutsView.java" />
+        <option value="$PROJECT_DIR$/war/MailWithMvp4g.html" />
+        <option value="$PROJECT_DIR$/profiles.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>
@@ -251,6 +272,34 @@
         <PATH_ELEMENT>
           <option name="myItemId" value="" />
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="MailWithMvp4g" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Dependencies" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependenciesNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="MailWithMvp4g" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Profiles" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProfilesNode" />
         </PATH_ELEMENT>
       </PATH>
     </treeState>
@@ -274,6 +323,11 @@
   <component name="ProjectReloadState">
     <option name="STATE" value="0" />
   </component>
+  <component name="ProjectStructureProblems">
+    <ignored-problems>
+      <problem id="invalid-module-dependency(module:MailWithMvp4g,Maven: com.googlecode.mvp4g:mvp4g:1.5.0-SNAPSHOT)" />
+    </ignored-problems>
+  </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
@@ -288,6 +342,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -380,7 +435,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -390,11 +444,11 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../.." />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.3397651" />
-    <property name="options.lastSelected" value="preferences.externalResources" />
+    <property name="options.lastSelected" value="MavenSettings" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
@@ -403,6 +457,9 @@
     <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="dynamic.classpath" value="false" />
+    <property name="FullScreen" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
   </component>
   <component name="RunManager" selected="JavaScript Debug.JavaScript">
     <configuration default="true" type="Remote" factoryName="Remote">
@@ -536,6 +593,10 @@
           <option name="myVcsRoot" value="$PROJECT_DIR$" />
           <option name="myCopyRoot" value="$PROJECT_DIR$" />
         </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/.idea" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/.idea" />
+        </SvnCopyRootSimple>
       </list>
     </option>
     <option name="myMoreRealMappingRoots">
@@ -552,43 +613,56 @@
       <changelist id="38e82b4f-8e82-4a5a-8db2-098701dbb0dc" name="Default" comment="" />
       <created>1399207523287</created>
       <updated>1399207523287</updated>
-      <workItem from="1399207524590" duration="850000" />
+      <workItem from="1399207524590" duration="2892000" />
+      <workItem from="1399355449232" duration="597000" />
+      <workItem from="1399403658618" duration="661000" />
+      <workItem from="1399404675540" duration="1923000" />
+      <workItem from="1399446501314" duration="120000" />
     </task>
+    <task id="LOCAL-00001" summary="update example MailWithMvp4g">
+      <created>1399208425101</created>
+      <updated>1399208425101</updated>
+    </task>
+    <task id="LOCAL-00002" summary="set doctype">
+      <created>1399215347101</created>
+      <updated>1399215347101</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="850000" />
+    <option name="totallyTimeSpent" value="6193000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="51" y="22" width="2509" height="1418" extended-state="6" />
+    <frame x="51" y="22" width="2509" height="1418" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3295626" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3295626" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39969835" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295626" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28293473" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28252938" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24969599" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295626" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -608,7 +682,8 @@
       <TodoPanelSettings />
     </option>
     <MESSAGE value="update example MailWithMvp4g" />
-    <option name="LAST_COMMIT_MESSAGE" value="update example MailWithMvp4g" />
+    <MESSAGE value="set doctype" />
+    <option name="LAST_COMMIT_MESSAGE" value="set doctype" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -620,8 +695,180 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1077" max-vertical-offset="3808">
+          <caret line="73" column="87" selection-start-line="73" selection-start-column="29" selection-end-line="73" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/MailListPresenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="527" max-vertical-offset="2601">
+          <caret line="31" column="51" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://MAVEN/com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>MAVEN</ID>
+          <OriginalElement>com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT</OriginalElement>
+          <nodes>
+            <node x="0.0" y="0.0">com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT</node>
+            <node x="241.0" y="390.0">com.google.gwt.inject:gin:jar:2.1.2/com.google.inject:guice:jar:3.0</node>
+            <node x="250.0" y="273.0">junit:junit:jar:4.11/org.hamcrest:hamcrest-core:jar:1.3</node>
+            <node x="432.0" y="429.0">com.google.gwt.inject:gin:jar:2.1.2/com.google.inject.extensions:guice-assistedinject:jar:3.0/com.google.inject:guice:jar:3.0</node>
+            <node x="284.0" y="312.0">org.easymock:easymock:jar:3.2/cglib:cglib-nodep:jar:2.2.2</node>
+            <node x="159.0" y="468.0">aopalliance:aopalliance:jar:1.0</node>
+            <node x="159.0" y="390.0">com.google.gwt.inject:gin:jar:2.1.2</node>
+            <node x="159.0" y="195.0">com.google.inject:guice:jar:3.0</node>
+            <node x="159.0" y="312.0">org.easymock:easymock:jar:3.2</node>
+            <node x="255.0" y="195.0">com.google.inject:guice:jar:3.0/javax.inject:javax.inject:jar:1</node>
+            <node x="-37.5" y="-14.5">com.googlecode.mvp4g:mvp4g:jar:1.5.0-SNAPSHOT</node>
+            <node x="-26.0" y="-14.5">com.googlecode.mvp4g:mvp4g:jar:1.5.0-SNAPSHOT/com.google.gwt.inject:gin:jar:2.1.2</node>
+            <node x="284.0" y="351.0">org.easymock:easymock:jar:3.2/org.objenesis:objenesis:jar:1.3</node>
+            <node x="241.0" y="429.0">com.google.gwt.inject:gin:jar:2.1.2/com.google.inject.extensions:guice-assistedinject:jar:3.0</node>
+            <node x="159.0" y="273.0">junit:junit:jar:4.11</node>
+            <node x="279.0" y="156.0">com.google.gwt:gwt-user:jar:2.6.0/org.json:json:jar:20090211</node>
+            <node x="279.0" y="78.0">com.google.gwt:gwt-user:jar:2.6.0/javax.validation:validation-api:jar:1.0.0.GA</node>
+            <node x="159.0" y="78.0">com.google.gwt:gwt-user:jar:2.6.0</node>
+            <node x="279.0" y="117.0">com.google.gwt:gwt-user:jar:2.6.0/javax.validation:validation-api:jar:sources:1.0.0.GA</node>
+            <node x="159.0" y="39.0">com.google.gwt:gwt-servlet:jar:2.6.0</node>
+            <node x="255.0" y="234.0">com.google.inject:guice:jar:3.0/aopalliance:aopalliance:jar:1.0</node>
+          </nodes>
+          <notes />
+          <edges>
+            <edge source="com.google.gwt.inject:gin:jar:2.1.2/com.google.inject.extensions:guice-assistedinject:jar:3.0" target="com.google.gwt.inject:gin:jar:2.1.2/com.google.inject.extensions:guice-assistedinject:jar:3.0/com.google.inject:guice:jar:3.0">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="com.google.gwt.inject:gin:jar:2.1.2">
+              <point x="0.0" y="0.0" />
+              <point x="64.5" y="404.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mvp4g:jar:1.5.0-SNAPSHOT" target="com.googlecode.mvp4g:mvp4g:jar:1.5.0-SNAPSHOT/com.google.gwt.inject:gin:jar:2.1.2">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.google.gwt.inject:gin:jar:2.1.2" target="com.google.gwt.inject:gin:jar:2.1.2/com.google.inject:guice:jar:3.0">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="com.google.gwt:gwt-servlet:jar:2.6.0">
+              <point x="0.0" y="0.0" />
+              <point x="64.5" y="53.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.google.gwt:gwt-user:jar:2.6.0" target="com.google.gwt:gwt-user:jar:2.6.0/javax.validation:validation-api:jar:sources:1.0.0.GA">
+              <point x="0.0" y="0.0" />
+              <point x="204.0" y="131.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="org.easymock:easymock:jar:3.2" target="org.easymock:easymock:jar:3.2/cglib:cglib-nodep:jar:2.2.2">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="com.googlecode.mvp4g:mvp4g:jar:1.5.0-SNAPSHOT">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.google.gwt.inject:gin:jar:2.1.2" target="com.google.gwt.inject:gin:jar:2.1.2/com.google.inject.extensions:guice-assistedinject:jar:3.0">
+              <point x="0.0" y="0.0" />
+              <point x="185.0" y="443.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="org.easymock:easymock:jar:3.2" target="org.easymock:easymock:jar:3.2/org.objenesis:objenesis:jar:1.3">
+              <point x="0.0" y="0.0" />
+              <point x="206.5" y="365.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="com.google.inject:guice:jar:3.0">
+              <point x="0.0" y="0.0" />
+              <point x="64.5" y="209.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="aopalliance:aopalliance:jar:1.0">
+              <point x="0.0" y="0.0" />
+              <point x="64.5" y="482.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.google.inject:guice:jar:3.0" target="com.google.inject:guice:jar:3.0/aopalliance:aopalliance:jar:1.0">
+              <point x="0.0" y="0.0" />
+              <point x="192.0" y="248.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.google.gwt:gwt-user:jar:2.6.0" target="com.google.gwt:gwt-user:jar:2.6.0/javax.validation:validation-api:jar:1.0.0.GA">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="junit:junit:jar:4.11">
+              <point x="0.0" y="0.0" />
+              <point x="64.5" y="287.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="org.easymock:easymock:jar:3.2">
+              <point x="0.0" y="0.0" />
+              <point x="64.5" y="326.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="junit:junit:jar:4.11" target="junit:junit:jar:4.11/org.hamcrest:hamcrest-core:jar:1.3">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.google.gwt:gwt-user:jar:2.6.0" target="com.google.gwt:gwt-user:jar:2.6.0/org.json:json:jar:20090211">
+              <point x="0.0" y="0.0" />
+              <point x="204.0" y="170.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="com.google.gwt:gwt-user:jar:2.6.0">
+              <point x="0.0" y="0.0" />
+              <point x="64.5" y="92.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.google.inject:guice:jar:3.0" target="com.google.inject:guice:jar:3.0/javax.inject:javax.inject:jar:1">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+          </edges>
+          <settings layout="Hierarchic Group" zoom="1.0" x="-88.0" y="72.0" />
+          <SelectedNodes>
+            <node>com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT</node>
+          </SelectedNodes>
+          <Categories />
+          <VISIBILITY>All</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.m2/settings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="901">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/war/MailWithMvp4g.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="17" max-vertical-offset="629">
+          <caret line="1" column="44" selection-start-line="1" selection-start-column="44" selection-end-line="1" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3723">
           <caret line="109" column="0" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/war/MailWithMvp4g.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="17" max-vertical-offset="629">
+          <caret line="1" column="44" selection-start-line="1" selection-start-column="44" selection-end-line="1" selection-end-column="44" />
           <folding />
         </state>
       </provider>
@@ -630,62 +877,205 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="755">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#div#1;n#body#0;n#HTML#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/MailWithMvp4g.gwt.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="646">
-          <caret line="32" column="116" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/view/TopView.ui.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="87" max-vertical-offset="969">
-          <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
-          <folding>
-            <marker date="1399207751000" expanded="true" signature="285:336" placeholder="{...}" />
-            <marker date="1399207751000" expanded="true" signature="352:384" placeholder="{...}" />
-            <marker date="1399207751000" expanded="true" signature="423:549" placeholder="{...}" />
-            <marker date="1399207751000" expanded="true" signature="582:640" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/view/ShortcutsView.ui.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="172" max-vertical-offset="1819">
-          <caret line="27" column="30" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
-          <folding>
-            <marker date="1399207751000" expanded="true" signature="209:324" placeholder="{...}" />
-            <marker date="1399207751000" expanded="true" signature="351:632" placeholder="{...}" />
-            <marker date="1399207751000" expanded="true" signature="680:808" placeholder="{...}" />
-            <marker date="1399207751000" expanded="true" signature="827:951" placeholder="{...}" />
-            <marker date="1399207751000" expanded="true" signature="973:1100" placeholder="{...}" />
-            <marker date="1399207751000" expanded="true" signature="1142:1203" placeholder="{...}" />
-            <marker date="1399207751000" expanded="true" signature="1228:1285" placeholder="{...}" />
-            <marker date="1399207751000" expanded="true" signature="1313:1373" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/view/ShortcutsView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="240" max-vertical-offset="1326">
-          <caret line="58" column="0" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Contacts.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31591174" vertical-offset="0" max-vertical-offset="861">
+        <state vertical-scroll-proportion="0.35416666" vertical-offset="0" max-vertical-offset="768">
           <caret line="37" column="65" selection-start-line="37" selection-start-column="25" selection-end-line="37" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/view/ShortcutsView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3736979" vertical-offset="240" max-vertical-offset="1326">
+          <caret line="58" column="0" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/view/ShortcutsView.ui.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3736979" vertical-offset="172" max-vertical-offset="1819">
+          <caret line="27" column="30" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/view/TopView.ui.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3736979" vertical-offset="87" max-vertical-offset="969">
+          <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/MailWithMvp4g.gwt.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7083333" vertical-offset="0" max-vertical-offset="768">
+          <caret line="32" column="116" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/war/MailWithMvp4g.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="17" max-vertical-offset="629">
+          <caret line="1" column="44" selection-start-line="1" selection-start-column="44" selection-end-line="1" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.m2/settings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="901">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://MAVEN/com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>MAVEN</ID>
+          <OriginalElement>com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT</OriginalElement>
+          <nodes>
+            <node x="0.0" y="0.0">com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT</node>
+            <node x="241.0" y="390.0">com.google.gwt.inject:gin:jar:2.1.2/com.google.inject:guice:jar:3.0</node>
+            <node x="250.0" y="273.0">junit:junit:jar:4.11/org.hamcrest:hamcrest-core:jar:1.3</node>
+            <node x="432.0" y="429.0">com.google.gwt.inject:gin:jar:2.1.2/com.google.inject.extensions:guice-assistedinject:jar:3.0/com.google.inject:guice:jar:3.0</node>
+            <node x="284.0" y="312.0">org.easymock:easymock:jar:3.2/cglib:cglib-nodep:jar:2.2.2</node>
+            <node x="159.0" y="468.0">aopalliance:aopalliance:jar:1.0</node>
+            <node x="159.0" y="390.0">com.google.gwt.inject:gin:jar:2.1.2</node>
+            <node x="159.0" y="195.0">com.google.inject:guice:jar:3.0</node>
+            <node x="159.0" y="312.0">org.easymock:easymock:jar:3.2</node>
+            <node x="255.0" y="195.0">com.google.inject:guice:jar:3.0/javax.inject:javax.inject:jar:1</node>
+            <node x="-37.5" y="-14.5">com.googlecode.mvp4g:mvp4g:jar:1.5.0-SNAPSHOT</node>
+            <node x="-26.0" y="-14.5">com.googlecode.mvp4g:mvp4g:jar:1.5.0-SNAPSHOT/com.google.gwt.inject:gin:jar:2.1.2</node>
+            <node x="284.0" y="351.0">org.easymock:easymock:jar:3.2/org.objenesis:objenesis:jar:1.3</node>
+            <node x="241.0" y="429.0">com.google.gwt.inject:gin:jar:2.1.2/com.google.inject.extensions:guice-assistedinject:jar:3.0</node>
+            <node x="159.0" y="273.0">junit:junit:jar:4.11</node>
+            <node x="279.0" y="156.0">com.google.gwt:gwt-user:jar:2.6.0/org.json:json:jar:20090211</node>
+            <node x="279.0" y="78.0">com.google.gwt:gwt-user:jar:2.6.0/javax.validation:validation-api:jar:1.0.0.GA</node>
+            <node x="159.0" y="78.0">com.google.gwt:gwt-user:jar:2.6.0</node>
+            <node x="279.0" y="117.0">com.google.gwt:gwt-user:jar:2.6.0/javax.validation:validation-api:jar:sources:1.0.0.GA</node>
+            <node x="159.0" y="39.0">com.google.gwt:gwt-servlet:jar:2.6.0</node>
+            <node x="255.0" y="234.0">com.google.inject:guice:jar:3.0/aopalliance:aopalliance:jar:1.0</node>
+          </nodes>
+          <notes />
+          <edges>
+            <edge source="com.google.gwt.inject:gin:jar:2.1.2/com.google.inject.extensions:guice-assistedinject:jar:3.0" target="com.google.gwt.inject:gin:jar:2.1.2/com.google.inject.extensions:guice-assistedinject:jar:3.0/com.google.inject:guice:jar:3.0">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="com.google.gwt.inject:gin:jar:2.1.2">
+              <point x="0.0" y="0.0" />
+              <point x="64.5" y="404.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mvp4g:jar:1.5.0-SNAPSHOT" target="com.googlecode.mvp4g:mvp4g:jar:1.5.0-SNAPSHOT/com.google.gwt.inject:gin:jar:2.1.2">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.google.gwt.inject:gin:jar:2.1.2" target="com.google.gwt.inject:gin:jar:2.1.2/com.google.inject:guice:jar:3.0">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="com.google.gwt:gwt-servlet:jar:2.6.0">
+              <point x="0.0" y="0.0" />
+              <point x="64.5" y="53.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.google.gwt:gwt-user:jar:2.6.0" target="com.google.gwt:gwt-user:jar:2.6.0/javax.validation:validation-api:jar:sources:1.0.0.GA">
+              <point x="0.0" y="0.0" />
+              <point x="204.0" y="131.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="org.easymock:easymock:jar:3.2" target="org.easymock:easymock:jar:3.2/cglib:cglib-nodep:jar:2.2.2">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="com.googlecode.mvp4g:mvp4g:jar:1.5.0-SNAPSHOT">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.google.gwt.inject:gin:jar:2.1.2" target="com.google.gwt.inject:gin:jar:2.1.2/com.google.inject.extensions:guice-assistedinject:jar:3.0">
+              <point x="0.0" y="0.0" />
+              <point x="185.0" y="443.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="org.easymock:easymock:jar:3.2" target="org.easymock:easymock:jar:3.2/org.objenesis:objenesis:jar:1.3">
+              <point x="0.0" y="0.0" />
+              <point x="206.5" y="365.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="com.google.inject:guice:jar:3.0">
+              <point x="0.0" y="0.0" />
+              <point x="64.5" y="209.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="aopalliance:aopalliance:jar:1.0">
+              <point x="0.0" y="0.0" />
+              <point x="64.5" y="482.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.google.inject:guice:jar:3.0" target="com.google.inject:guice:jar:3.0/aopalliance:aopalliance:jar:1.0">
+              <point x="0.0" y="0.0" />
+              <point x="192.0" y="248.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.google.gwt:gwt-user:jar:2.6.0" target="com.google.gwt:gwt-user:jar:2.6.0/javax.validation:validation-api:jar:1.0.0.GA">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="junit:junit:jar:4.11">
+              <point x="0.0" y="0.0" />
+              <point x="64.5" y="287.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="org.easymock:easymock:jar:3.2">
+              <point x="0.0" y="0.0" />
+              <point x="64.5" y="326.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="junit:junit:jar:4.11" target="junit:junit:jar:4.11/org.hamcrest:hamcrest-core:jar:1.3">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.google.gwt:gwt-user:jar:2.6.0" target="com.google.gwt:gwt-user:jar:2.6.0/org.json:json:jar:20090211">
+              <point x="0.0" y="0.0" />
+              <point x="204.0" y="170.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT" target="com.google.gwt:gwt-user:jar:2.6.0">
+              <point x="0.0" y="0.0" />
+              <point x="64.5" y="92.5" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="com.google.inject:guice:jar:3.0" target="com.google.inject:guice:jar:3.0/javax.inject:javax.inject:jar:1">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+          </edges>
+          <settings layout="Hierarchic Group" zoom="1.0" x="-88.0" y="72.0" />
+          <SelectedNodes>
+            <node>com.googlecode.mvp4g:mailwithmvp4g:1.5.0-SNAPSHOT</node>
+          </SelectedNodes>
+          <Categories />
+          <VISIBILITY>All</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/MailListPresenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2363">
+          <caret line="31" column="51" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3808">
+          <caret line="73" column="87" selection-start-line="73" selection-start-column="29" selection-end-line="73" selection-end-column="29" />
           <folding />
         </state>
       </provider>
@@ -780,6 +1170,9 @@
         </settings>
       </state>
     </states>
+  </component>
+  <component name="mavenExecuteGoalHistory">
+    <option value="" />
   </component>
 </project>
 
