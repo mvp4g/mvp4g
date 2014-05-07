@@ -46,7 +46,7 @@
       <excludeFolder url="file://$MODULE_DIR$/war/WEB-INF/classes" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
     <orderEntry type="library" name="Maven: com.googlecode.mvp4g:mvp4g:1.5.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.google.gwt.inject:gin:2.1.2" level="project" />
     <orderEntry type="library" name="Maven: com.google.inject:guice:3.0" level="project" />
