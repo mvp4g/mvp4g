@@ -18,13 +18,16 @@
 	</licenses>
 
 	<properties>
+    <asm.version>3.3.1</asm.version>
     <aopalliance.version>1.0</aopalliance.version>
+    <cglib.version>3.1</cglib.version>
     <easymock.version>3.2</easymock.version>
     <gin.version>2.1.2</gin.version>
     <guice.version>3.0</guice.version>
     <gwt.version>2.6.0</gwt.version>
     <junit.version>4.11</junit.version>
     <mvp4g.version>1.5.0-SNAPSHOT</mvp4g.version>
+    <objenesis.version>2.1</objenesis.version>
 	</properties>
 
 	<developers>
@@ -56,6 +59,13 @@
 
 	<dependencies>
     <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>${asm.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>com.googlecode.mvp4g</groupId>
       <artifactId>mvp4g</artifactId>
       <version>${mvp4g.version}</version>
@@ -71,7 +81,14 @@
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
       <version>${gwt.version}</version>
-      <scope>provided</scope>
+      <!--<scope>provided</scope>-->
+    </dependency>
+
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib-nodep</artifactId>
+      <version>${cglib.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -106,6 +123,12 @@
       <groupId>aopalliance</groupId>
       <artifactId>aopalliance</artifactId>
       <version>${aopalliance.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.objenesis</groupId>
+      <artifactId>objenesis</artifactId>
+      <version>${objenesis.version}</version>
     </dependency>
   </dependencies>
 
