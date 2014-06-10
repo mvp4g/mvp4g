@@ -28,7 +28,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<gwt.version>2.6.0</gwt.version>
+		<gwt.version>2.6.1</gwt.version>
 		<gin.version>2.1.2</gin.version>
 	</properties>
 
@@ -60,6 +60,7 @@
 	</contributors>
 
 	<dependencies>
+<!-- http://mvnrepository.com/artifact/com.google.gwt/gwt-dev -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-dev</artifactId>
@@ -67,6 +68,7 @@
 			<scope>provided</scope>
 		</dependency>
 
+<!-- http://mvnrepository.com/artifact/com.google.gwt/gwt-user -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
@@ -74,6 +76,7 @@
 			<scope>provided</scope>
 		</dependency>
 
+<!-- http://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -81,6 +84,7 @@
 			<scope>test</scope>
 		</dependency>
 
+<!-- http://mvnrepository.com/artifact/com.google.gwt.inject/gin -->
 		<dependency>
 			<groupId>com.google.gwt.inject</groupId>
 			<artifactId>gin</artifactId>
@@ -89,13 +93,16 @@
 	</dependencies>
 
 	<build>
+
     <!-- for use with maven 3 -->
     <extensions>
+<!-- http://mvnrepository.com/artifact/org.apache.maven.wagon/wagon-webdav-jackrabbit -->
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
         <artifactId>wagon-webdav-jackrabbit</artifactId>
         <version>1.0-beta-7</version>
       </extension>
+      
     </extensions>
 
     <resources>
@@ -109,6 +116,8 @@
 		</resources>
 
 		<plugins>
+		
+<!-- http://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -125,6 +134,7 @@
 				</configuration>
 			</plugin>
 
+<!-- http://mvnrepository.com/artifact/org.apache.maven.plugins/maven-eclipse-plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
@@ -134,6 +144,7 @@
 				</configuration>
 			</plugin>
 
+<!-- http://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -143,6 +154,7 @@
 				</configuration>
 			</plugin>
 
+<!-- http://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -160,6 +172,7 @@
 				</executions>
 			</plugin>
 
+<!-- http://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -175,6 +188,7 @@
 				</executions>
 			</plugin>
 
+<!-- http://mvnrepository.com/artifact/org.apache.maven.plugins/maven-gpg-plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
