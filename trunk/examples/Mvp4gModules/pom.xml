@@ -18,7 +18,7 @@
 	</licenses>
 
 	<properties>
-    <gwt.version>2.6.0</gwt.version>
+    <gwt.version>2.6.1</gwt.version>
     <gin.version>2.1.2</gin.version>
 	</properties>
 
