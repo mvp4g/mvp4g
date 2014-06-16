@@ -1,23 +1,5 @@
 package com.mvp4g.util.config;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.dev.javac.typemodel.TypeOracleStub;
 import com.google.gwt.dev.util.UnitTestTreeLogger;
@@ -25,51 +7,15 @@ import com.google.gwt.inject.client.GinModule;
 import com.mvp4g.client.DefaultMvp4gGinModule;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.SingleSplitter;
-import com.mvp4g.client.event.BaseEventBus;
-import com.mvp4g.client.event.DefaultMvp4gLogger;
-import com.mvp4g.client.event.EventBus;
-import com.mvp4g.client.event.EventBusWithLookup;
-import com.mvp4g.client.event.EventFilter;
-import com.mvp4g.client.event.Mvp4gLogger;
+import com.mvp4g.client.event.*;
 import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.client.history.PlaceService;
-import com.mvp4g.util.config.element.ChildModuleElement;
-import com.mvp4g.util.config.element.ChildModulesElement;
-import com.mvp4g.util.config.element.DebugElement;
-import com.mvp4g.util.config.element.EventAssociation;
-import com.mvp4g.util.config.element.EventBusElement;
-import com.mvp4g.util.config.element.EventElement;
-import com.mvp4g.util.config.element.EventFilterElement;
-import com.mvp4g.util.config.element.EventFiltersElement;
-import com.mvp4g.util.config.element.EventHandlerElement;
-import com.mvp4g.util.config.element.GinModuleElement;
-import com.mvp4g.util.config.element.HistoryConverterElement;
-import com.mvp4g.util.config.element.HistoryElement;
-import com.mvp4g.util.config.element.InjectedElement;
-import com.mvp4g.util.config.element.LoaderElement;
-import com.mvp4g.util.config.element.PresenterElement;
-import com.mvp4g.util.config.element.ServiceElement;
-import com.mvp4g.util.config.element.SplitterElement;
-import com.mvp4g.util.config.element.StartElement;
-import com.mvp4g.util.config.element.ViewElement;
-import com.mvp4g.util.exception.InvalidClassException;
-import com.mvp4g.util.exception.InvalidMvp4gConfigurationException;
-import com.mvp4g.util.exception.InvalidTypeException;
-import com.mvp4g.util.exception.NonUniqueIdentifierException;
-import com.mvp4g.util.exception.NotFoundClassException;
-import com.mvp4g.util.exception.UnknownConfigurationElementException;
-import com.mvp4g.util.test_tools.GeneratorContextStub;
-import com.mvp4g.util.test_tools.Loaders;
-import com.mvp4g.util.test_tools.Modules;
-import com.mvp4g.util.test_tools.PropertyOracleStub;
-import com.mvp4g.util.test_tools.Splitters;
-import com.mvp4g.util.test_tools.annotation.EventFilters;
+import com.mvp4g.util.config.element.*;
+import com.mvp4g.util.exception.*;
+import com.mvp4g.util.test_tools.*;
+import com.mvp4g.util.test_tools.annotation.*;
 import com.mvp4g.util.test_tools.annotation.Events.EventBusWithNoStartPresenter;
-import com.mvp4g.util.test_tools.annotation.HistoryConverters;
-import com.mvp4g.util.test_tools.annotation.Presenters;
 import com.mvp4g.util.test_tools.annotation.Presenters.PresenterWithService;
-import com.mvp4g.util.test_tools.annotation.TestBroadcast;
-import com.mvp4g.util.test_tools.annotation.TestBroadcast2;
 import com.mvp4g.util.test_tools.annotation.events.EventBusOk;
 import com.mvp4g.util.test_tools.annotation.gin.OneGinModule;
 import com.mvp4g.util.test_tools.annotation.handlers.EventHandlerWithEvent;
@@ -82,6 +28,12 @@ import com.mvp4g.util.test_tools.annotation.services.ServiceWithName;
 import com.mvp4g.util.test_tools.annotation.services.SimpleService;
 import com.mvp4g.util.test_tools.annotation.views.SimpleInjectedView;
 import com.mvp4g.util.test_tools.annotation.views.SimpleView;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 public class Mvp4gConfigurationTest {
 
