@@ -5,6 +5,16 @@
 
 = Download Area =
 
+== SNAPSHOT 1.5.0 (06/22/2014 - 18:23:26) ==
+
+Fixed an issue with the RebindResult
+
+=== Downloads ===
+
+  * mvp4g - jar: ([http://mvp4g.googlecode.com/svn/maven2/snapshots/com/googlecode/mvp4g/mvp4g/1.5.0-SNAPSHOT/mvp4g-1.5.0-20140622.182326-10.jar Download here])
+  * mvp4g - javadoc: ([http://mvp4g.googlecode.com/svn/maven2/snapshots/com/googlecode/mvp4g/mvp4g/1.5.0-SNAPSHOT/mvp4g-1.5.0-20140622.182326-10-javadoc.jar Download here])
+  * mvp4g - sources: ([http://mvp4g.googlecode.com/svn/maven2/snapshots/com/googlecode/mvp4g/mvp4g/1.5.0-SNAPSHOT/mvp4g-1.5.0-20140622.182326-10-sources.jar Download here])
+
 == SNAPSHOT 1.5.0 (05/06/2014 - 19:23:24) ==
 
 Compiled with JDK 1.6 & GWT 2.6
