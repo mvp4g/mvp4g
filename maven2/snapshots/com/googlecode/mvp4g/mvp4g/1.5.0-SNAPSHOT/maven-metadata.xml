@@ -42,6 +42,12 @@
         <value>1.5.0-20140622.182326-10</value>
         <updated>20140622182326</updated>
       </snapshotVersion>
+      <snapshotVersion>
+        <classifier>sources</classifier>
+        <extension>jar.asc</extension>
+        <value>1.5.0-20140622.182326-10</value>
+        <updated>20140622182326</updated>
+      </snapshotVersion>
     </snapshotVersions>
   </versioning>
 </metadata>
