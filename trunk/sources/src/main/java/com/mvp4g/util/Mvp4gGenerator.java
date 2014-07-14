@@ -146,13 +146,9 @@ public class Mvp4gGenerator
 
       generatedClassQualifiedName = module.getParameterizedQualifiedSourceName() + suffix;
 
-      // validate configuration
-      if (!ConfigurationValidator.impl.isValidate(logger,
-                                                  context,
-                                                  module,
-                                                  configuration)) {
-        throw new UnableToCompleteException();
-      }
+      String packageName = module.getPackage().getName();
+      String originalClassName = module.getSimpleSourceName();
+      String generatedClassName = originalClassName + suffix;
 
       // check weather there is a usual version or not.
       if (checkAlreadyGenerated(logger,
@@ -164,19 +160,20 @@ public class Mvp4gGenerator
                    null);
         // stop generating
         return new RebindResult(RebindMode.USE_EXISTING,
-                                generatedClassQualifiedName);
-      } else {
-        // Log
-        logger.log(TreeLogger.INFO,
-                   "Start generate files ... ",
-                   null);
+                                packageName + "." + generatedClassName);
       }
+
+      // Log
+      logger.log(TreeLogger.INFO,
+                 "Start generate files ... ",
+                 null);
 
       // No, there is non. Create a new one.
       SourceWriter sourceWriter = getSourceWriter(logger,
                                                   context,
                                                   module,
-                                                  suffix);
+                                                  packageName,
+                                                  generatedClassName);
 
       if (sourceWriter != null) {
         logger.log(TreeLogger.INFO,
@@ -192,31 +189,28 @@ public class Mvp4gGenerator
         new RebindResult(RebindMode.USE_EXISTING,
                          generatedClassQualifiedName);
       }
+
+      Date end = new Date();
+
+      logger.log(TreeLogger.INFO,
+                 "Mvp4g Compilation: " + (end.getTime() - start.getTime()) + "ms.");
+
+      return new RebindResult(RebindMode.USE_ALL_NEW_WITH_NO_CACHING,
+                              packageName + "." + generatedClassName);
     } catch (InvalidMvp4gConfigurationException e) {
       logger.log(TreeLogger.ERROR,
                  e.getMessage(),
                  e);
       throw new UnableToCompleteException();
     }
-
-    Date end = new Date();
-
-    logger.log(TreeLogger.INFO,
-               "Mvp4g Compilation: " + (end.getTime() - start.getTime()) + "ms.");
-
-    return new RebindResult(RebindMode.USE_ALL_NEW_WITH_NO_CACHING,
-                            generatedClassQualifiedName);
   }
 
   private SourceWriter getSourceWriter(TreeLogger logger,
                                        GeneratorContext context,
                                        JClassType originalType,
-                                       String suffix)
+                                       String packageName,
+                                       String generatedClassName)
     throws UnableToCompleteException {
-
-    String packageName = originalType.getPackage().getName();
-    String originalClassName = originalType.getSimpleSourceName();
-    String generatedClassName = originalClassName + suffix;
 
     logger.log(TreeLogger.INFO,
                "Generating writer for " + packageName + "." + generatedClassName,
