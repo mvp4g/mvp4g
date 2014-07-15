@@ -25,8 +25,8 @@
     <developerConnection>scm:svn:https://mvp4g.googlecode.com/svn/tags/mvp4g-1.5.0</developerConnection>
     <url>http://mvp4g.googlecode.com/svn/tags/mvp4g-1.5.0</url>
     <!--<connection>scm:svn:http://mvp4g.googlecode.com/svn/branches/1.5.0</connection>-->
-    <!--<developerConnection>scm:svn:https://mvp4g.googlecode.com/svn/branches/1.5.0</developerConnection>-->
-    <!--<url>http://mvp4g.googlecode.com/svn/branches/1.5.0</url>-->
+    <!--<developerConnection>scm:svn:https://mvp4g.googlecode.com/svn/branches/1.5.1</developerConnection>-->
+    <!--<url>http://mvp4g.googlecode.com/svn/branches/1.5.1</url>-->
 	</scm>
 
 	<properties>
