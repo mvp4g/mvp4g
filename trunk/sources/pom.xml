@@ -5,7 +5,7 @@
 
 	<groupId>com.googlecode.mvp4g</groupId>
 	<artifactId>mvp4g</artifactId>
-	<version>1.5.0-SNAPSHOT</version>
+	<version>1.5.0</version>
 	<packaging>jar</packaging>
 	<name>Mvp4g</name>
 
@@ -21,12 +21,12 @@
 	</licenses>
 
 	<scm>
-    <!--<connection>scm:svn:http://mvp4g.googlecode.com/svn/tags/mvp4g-1.5.0</connection>-->
-    <!--<developerConnection>scm:svn:https://mvp4g.googlecode.com/svn/tags/mvp4g-1.5.0</developerConnection>-->
-    <!--<url>http://mvp4g.googlecode.com/svn/tags/mvp4g-1.5.0</url>-->
-    <connection>scm:svn:http://mvp4g.googlecode.com/svn/branches/1.5.0</connection>
-    <developerConnection>scm:svn:https://mvp4g.googlecode.com/svn/branches/1.5.0</developerConnection>
-    <url>http://mvp4g.googlecode.com/svn/branches/1.5.0</url>
+    <connection>scm:svn:http://mvp4g.googlecode.com/svn/tags/mvp4g-1.5.0</connection>
+    <developerConnection>scm:svn:https://mvp4g.googlecode.com/svn/tags/mvp4g-1.5.0</developerConnection>
+    <url>http://mvp4g.googlecode.com/svn/tags/mvp4g-1.5.0</url>
+    <!--<connection>scm:svn:http://mvp4g.googlecode.com/svn/branches/1.5.0</connection>-->
+    <!--<developerConnection>scm:svn:https://mvp4g.googlecode.com/svn/branches/1.5.0</developerConnection>-->
+    <!--<url>http://mvp4g.googlecode.com/svn/branches/1.5.0</url>-->
 	</scm>
 
 	<properties>
@@ -57,9 +57,12 @@
 		<contributor>
 			<name>Harald Schilly</name>
 		</contributor>
-		<contributor>
-			<name>Lukasz Dywicky</name>
-		</contributor>
+    <contributor>
+      <name>Lukasz Dywicky</name>
+    </contributor>
+    <contributor>
+      <name>Lukas Schmidt</name>
+    </contributor>
 		<contributor>
 			<name>Sergey Shvets</name>
 		</contributor>
@@ -185,9 +188,12 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
 				<version>1.5</version>
+        <configuration>
+          <useAgent>true</useAgent>
+        </configuration>
 				<executions>
 					<execution>
-						<id>sign-artifacts</id>
+            <id>sign-artifacts</id>
 						<phase>verify</phase>
 						<goals>
 							<goal>sign</goal>
