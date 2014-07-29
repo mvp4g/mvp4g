@@ -19,11 +19,15 @@
 
 	<properties>
     <aopalliance.version>1.0</aopalliance.version>
+    <asm.version>3.3.1</asm.version>
     <gwt.version>2.6.1</gwt.version>
     <gin.version>2.1.2</gin.version>
     <guice.version>3.0</guice.version>
     <javax.inject.version>1</javax.inject.version>
     <mvp4g.version>1.5.0</mvp4g.version>
+
+    <project.build.sourceDirectory>/src</project.build.sourceDirectory>
+    <project.build.testSourceDirectory>/test</project.build.testSourceDirectory>
 	</properties>
 
 	<developers>
@@ -63,20 +67,35 @@
 			<version>${gwt.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>${gwt.version}</version>
-			<scope>provided</scope>
-		</dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <version>${gwt.version}</version>
+      <scope>provided</scope>
+    </dependency>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<type>jar</type>
-			<scope>test</scope>
-		</dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-dev</artifactId>
+      <version>${gwt.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm-commons</artifactId>
+      <version>${asm.version}</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
 
 		<dependency>
 			<groupId>org.easymock</groupId>
@@ -201,6 +220,26 @@
 				</configuration>
 			</plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.17</version>
+        <configuration>
+          <additionalClasspathElements>
+            <additionalClasspathElement>${project.build.sourceDirectory}</additionalClasspathElement>
+            <additionalClasspathElement>${project.build.testSourceDirectory}</additionalClasspathElement>
+          </additionalClasspathElements>
+          <useSystemClassLoader>true</useSystemClassLoader>
+          <useManifestOnlyJar>false</useManifestOnlyJar>
+          <forkMode>always</forkMode>
+          <systemProperties>
+            <property>
+              <name>gwt.args</name>
+              <value>-out www-test</value>
+            </property>
+          </systemProperties>
+        </configuration>
+      </plugin>
 		</plugins>
 	</build>	
 
