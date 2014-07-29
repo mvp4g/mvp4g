@@ -31,9 +31,12 @@
 	</properties>
 
 	<developers>
-		<developer>
-			<name>Pierre-Laurent Coirier</name>
-		</developer>
+    <developer>
+      <name>Pierre-Laurent Coirier</name>
+    </developer>
+    <developer>
+      <name>Frank Hossfeld</name>
+    </developer>
 	</developers>
 
 	<contributors>
@@ -49,9 +52,12 @@
 		<contributor>
 			<name>Harald Schilly</name>
 		</contributor>
-		<contributor>
-			<name>Lukasz Dywicky</name>
-		</contributor>
+    <contributor>
+      <name>Lukasz Dywicky</name>
+    </contributor>
+    <contributor>
+      <name>Lukas Schmidt</name>
+    </contributor>
 	</contributors>
 
 	<dependencies>
