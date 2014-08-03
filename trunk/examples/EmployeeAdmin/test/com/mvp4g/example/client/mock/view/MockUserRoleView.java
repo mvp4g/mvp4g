@@ -3,10 +3,9 @@ package com.mvp4g.example.client.mock.view;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.example.client.mock.widget.MyMockButton;
 import com.mvp4g.example.client.mock.widget.MyMockListBox;
-import com.mvp4g.example.client.presenter.UserRolePresenter.IUserRoleView;
+import com.mvp4g.example.client.ui.user.role.IUserRoleView;
 import com.mvp4g.example.client.widget.interfaces.IButton;
 import com.mvp4g.example.client.widget.interfaces.IListBox;
-import com.mvp4g.example.client.widget.interfaces.IWidget;
 
 public class MockUserRoleView implements IUserRoleView {
 
@@ -36,8 +35,8 @@ public class MockUserRoleView implements IUserRoleView {
 		return selectedRoles;
 	}
 
-	public IWidget getViewWidget() {
-		return this;
+	public Widget getViewWidget() {
+		return null;
 	}
 
 	public Widget getMyWidget() {
@@ -48,4 +47,8 @@ public class MockUserRoleView implements IUserRoleView {
 		return error;
 	}
 
+  @Override
+  public Widget asWidget() {
+    return null;
+  }
 }

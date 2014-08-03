@@ -1,16 +1,15 @@
 package com.mvp4g.example.client.mock.eventbus;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
-
+import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.example.client.EmployeeAdminEventBus;
-import com.mvp4g.example.client.bean.UserBean;
+import com.mvp4g.example.shared.dto.UserBean;
 import com.mvp4g.example.client.widget.interfaces.IWidget;
+
+import static junit.framework.Assert.*;
 
 public class MockEventBus extends BaseEventBusWithLookUp implements EmployeeAdminEventBus {
 
@@ -119,7 +118,27 @@ public class MockEventBus extends BaseEventBusWithLookUp implements EmployeeAdmi
 		startEvent = true;
 	}
 
-	public void assertStart() {
+  @Override
+  public void setMasterView(Widget widget) {
+
+  }
+
+  @Override
+  public void setProfileView(Widget widget) {
+
+  }
+
+  @Override
+  public void setRoleView(Widget widget) {
+
+  }
+
+  @Override
+  public void getUserList() {
+
+  }
+
+  public void assertStart() {
 		assertTrue( startEvent );
 		startEvent = false;
 	}

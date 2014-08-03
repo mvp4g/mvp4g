@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.example.client.Constants;
-import com.mvp4g.example.client.UserServiceAsync;
-import com.mvp4g.example.client.bean.UserBean;
+import com.mvp4g.example.client.service.UserServiceAsync;
+import com.mvp4g.example.shared.dto.UserBean;
 
 public class MockUserServiceAsync implements UserServiceAsync, Constants {
 
