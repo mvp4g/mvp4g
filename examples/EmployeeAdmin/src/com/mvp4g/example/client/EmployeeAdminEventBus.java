@@ -1,45 +1,62 @@
 package com.mvp4g.example.client;
 
+import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
-import com.mvp4g.example.client.bean.UserBean;
-import com.mvp4g.example.client.presenter.RootTemplatePresenter;
-import com.mvp4g.example.client.presenter.UserListPresenter;
-import com.mvp4g.example.client.presenter.UserProfilePresenter;
-import com.mvp4g.example.client.presenter.UserRolePresenter;
-import com.mvp4g.example.client.widget.interfaces.IWidget;
+import com.mvp4g.example.client.ui.shell.ShellPresenter;
+import com.mvp4g.example.client.ui.user.list.UserListPresenter;
+import com.mvp4g.example.client.ui.user.profile.UserProfilePresenter;
+import com.mvp4g.example.client.ui.user.role.UserRolePresenter;
+import com.mvp4g.example.shared.dto.UserBean;
 
-@Events( startPresenter = RootTemplatePresenter.class )
-public interface EmployeeAdminEventBus extends EventBus {
+@Events(startPresenter = ShellPresenter.class,
+        historyOnStart = false)
+@Debug(logLevel = Debug.LogLevel.DETAILED)
+public interface EmployeeAdminEventBus
+    extends EventBus {
 
-	@Event( handlers = RootTemplatePresenter.class )
-	public void changeTopWidget( IWidget widget );
+  @Start
+  @Event(handlers = {UserProfilePresenter.class, UserRolePresenter.class, UserListPresenter.class})
+  public void start();
 
-	@Event( handlers = RootTemplatePresenter.class )
-	public void changeLeftBottomWidget( IWidget widget );
+  @Event(handlers = ShellPresenter.class)
+  public void setMasterView(Widget widget);
 
-	@Event( handlers = RootTemplatePresenter.class )
-	public void changeRightBottomWidget( IWidget widget );
+  @Event(handlers = ShellPresenter.class)
+  public void setProfileView(Widget widget);
 
-	@Event( handlers = { UserProfilePresenter.class, UserRolePresenter.class } )
-	public void createNewUser( UserBean user );
+  @Event(handlers = ShellPresenter.class)
+  public void setRoleView(Widget widget);
 
-	@Event( handlers = { UserProfilePresenter.class, UserRolePresenter.class } )
-	public void selectUser( UserBean user );
+  @Event(handlers = UserListPresenter.class)
+  public void showUserList();
 
-	@Event( handlers = { UserProfilePresenter.class, UserRolePresenter.class, UserListPresenter.class } )
-	public void unselectUser();
+  @Event(handlers = {UserProfilePresenter.class, UserRolePresenter.class, UserListPresenter.class})
+  public void selectUser(UserBean user);
 
-	@Event( handlers = UserListPresenter.class )
-	public void userCreated( UserBean user );
+  @Event(handlers = {UserProfilePresenter.class, UserRolePresenter.class, UserListPresenter.class})
+  public void unselectUser();
 
-	@Event( handlers = { UserRolePresenter.class, UserListPresenter.class } )
-	public void userUpdated( UserBean user );
+  @Event(handlers = {UserProfilePresenter.class, UserRolePresenter.class})
+  public void createNewUser(UserBean user);
 
-	@Start
-	@Event( handlers = { UserProfilePresenter.class, UserRolePresenter.class, UserListPresenter.class } )
-	public void start();
+
+//  @Event(handlers = ShellPresenter.class)
+//  public void changeTopWidget(IWidget widget);
+
+//  @Event(handlers = ShellPresenter.class)
+//  public void changeLeftBottomWidget(IWidget widget);
+//
+//  @Event(handlers = ShellPresenter.class)
+//  public void changeRightBottomWidget(IWidget widget);
+//
+//  @Event(handlers = UserListPresenter.class)
+//  public void userCreated(UserBean user);
+//
+//  @Event(handlers = {UserRolePresenter.class, UserListPresenter.class})
+//  public void userUpdated(UserBean user);
 
 }

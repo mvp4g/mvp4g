@@ -1,0 +1,52 @@
+@CHARSET "utf-8;";
+
+.clear {
+    clear: both;
+}
+
+.container {
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 6px;
+    margin: 6px;
+    padding: 6px;
+}
+
+.containerHeadline {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.fieldContainerLabel {
+    float: left;
+    width: 132px;
+    vertical-align: middle;
+}
+
+.fieldContainerWidget {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.label {
+    font-weight: normal;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.selectedRoles {
+    float: left;
+    margin-top: 3px;
+    margin-right: 12px;
+    width: 150px;
+}
+
+.removeButton {
+    float: left;
+}
+
+.addButtom {
+    float: right;
+    margin-right: 16px;
+}
