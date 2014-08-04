@@ -28,7 +28,7 @@ public class UserListView
 
   private FlowLayoutPanel container;
 
-  private DataGrid<UserBean>       grid;
+  private DataGrid<UserBean> grid;
 
   private Button deleteButton;
   private Button newButton;
@@ -233,11 +233,6 @@ public class UserListView
     }
   }
 
-  @Override
-  public void setPresenter(IUserListPresenter presenter) {
-    this.presenter = presenter;
-  }
-
   /**
    * Get a cell value from a record.
    *
@@ -246,7 +241,12 @@ public class UserListView
   private static interface GetValue<T> {
     T getValue(UserBean user);
 
+  }  @Override
+  public void setPresenter(IUserListPresenter presenter) {
+    this.presenter = presenter;
   }
+
+
 
   @Override
   public IUserListView.IUserListPresenter getPresenter() {

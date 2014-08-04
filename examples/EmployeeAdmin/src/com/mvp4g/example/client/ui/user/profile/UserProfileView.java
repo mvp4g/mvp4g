@@ -31,23 +31,7 @@ public class UserProfileView
                RequiresResize,
                Editor<UserBean> {
 
-  interface Driver
-      extends SimpleBeanEditorDriver<UserBean, UserProfileView> {
-
-  }
-
-  private Driver driver = GWT.create(Driver.class);
-
   private final static String WIDGET_WIDTH = "262px";
-
-  private Button cancelButton;
-
-  private IUserProfileView.IUserProfilePresenter presenter;
-
-  private FlowLayoutPanel container;
-
-  private Button updateButton;
-
   @Path("firstName")
   TextBox              firstName       = new TextBox();
   @Path("lastName")
@@ -75,13 +59,16 @@ public class UserProfileView
       appendable.append(object);
     }
   });
-
   KeyUpHandler handler = new KeyUpHandler() {
     public void onKeyUp(KeyUpEvent event) {
       enableUpdateButton();
     }
   };
-
+  private Driver driver = GWT.create(Driver.class);
+  private Button cancelButton;
+  private IUserProfileView.IUserProfilePresenter presenter;
+  private FlowLayoutPanel container;
+  private Button updateButton;
   private boolean create;
 
   public UserProfileView() {
@@ -187,9 +174,9 @@ public class UserProfileView
     firstName.addKeyUpHandler(handler);
     lastName.addKeyUpHandler(handler);
     username.addKeyUpHandler(handler);
-		password.addKeyUpHandler(handler);
-		confirmPassword.addKeyUpHandler(handler);
-		department.addValueChangeHandler(new ValueChangeHandler<String>() {
+    password.addKeyUpHandler(handler);
+    confirmPassword.addKeyUpHandler(handler);
+    department.addValueChangeHandler(new ValueChangeHandler<String>() {
       @Override
       public void onValueChange(ValueChangeEvent<String> event) {
         enableUpdateButton();
@@ -209,14 +196,28 @@ public class UserProfileView
     confirmPassword.setValue("");
   }
 
-  @Override
-  public void setPresenter(IUserProfilePresenter presenter) {
-    this.presenter = presenter;
+  private void enableUpdateButton() {
+    boolean enabled = (username.getValue() != null) && (username.getValue()
+                                                                .length() > 0
+    ) &&
+                      (department.getValue() != null) &&
+                      (password.getValue() != null) && (password.getValue()
+                                                                .length() > 0
+    ) &&
+                      (confirmPassword.getValue() != null) && (confirmPassword.getValue()
+                                                                              .length() > 0
+    ) && (confirmPassword.getValue()
+                         .equals(password.getValue())
+                      );
+    updateButton.setEnabled(enabled);
   }
 
   @Override
   public void clear() {
     initialize();
+  }  @Override
+  public void setPresenter(IUserProfilePresenter presenter) {
+    this.presenter = presenter;
   }
 
   @Override
@@ -236,24 +237,15 @@ public class UserProfileView
     firstName.setFocus(true);
   }
 
+  interface Driver
+      extends SimpleBeanEditorDriver<UserBean, UserProfileView> {
+
+  }
+
   @Override
   public IUserProfilePresenter getPresenter() {
     return presenter;
   }
 
-  private void enableUpdateButton() {
-    boolean enabled = (username.getValue() != null) && (username.getValue()
-                                                                .length() > 0
-    ) &&
-                      (department.getValue() != null) &&
-                      (password.getValue() != null) && (password.getValue()
-                                                                .length() > 0
-    ) &&
-                      (confirmPassword.getValue() != null) && (confirmPassword.getValue()
-                                                                              .length() > 0
-    ) && (confirmPassword.getValue()
-                         .equals(password.getValue())
-                      );
-    updateButton.setEnabled(enabled);
-  }
+
 }
