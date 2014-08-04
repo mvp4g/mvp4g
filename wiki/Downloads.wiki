@@ -5,6 +5,17 @@
 
 = Download Area =
 
+== Release 1.5.0 (08/04/2014) ==
+
+Release Notes are available here:
+([https://code.google.com/p/mvp4g/wiki/ReleaseNotesAndRoadMap Release Notes 1.5.0])
+
+=== Downloads ===
+
+  * mvp4g - jar: ([http://mvp4g.googlecode.com/svn/maven2/releases/com/googlecode/mvp4g/mvp4g/1.5.0/mvp4g-1.5.0.jar Download here])
+  * mvp4g - javadoc: ([http://mvp4g.googlecode.com/svn/maven2/releases/com/googlecode/mvp4g/mvp4g/1.5.0/mvp4g-1.5.0-javadoc.jar Download here])
+  * mvp4g - sources: ([/mvp4g-1.5.0-sources.jar Download here])
+
 == SNAPSHOT 1.5.0 (06/22/2014 - 18:23:26) ==
 
 Fixed an issue with the RebindResult
