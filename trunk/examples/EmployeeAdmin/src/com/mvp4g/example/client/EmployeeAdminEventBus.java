@@ -43,20 +43,4 @@ public interface EmployeeAdminEventBus
   @Event(handlers = {UserProfilePresenter.class, UserRolePresenter.class})
   public void createNewUser(UserBean user);
 
-
-//  @Event(handlers = ShellPresenter.class)
-//  public void changeTopWidget(IWidget widget);
-
-//  @Event(handlers = ShellPresenter.class)
-//  public void changeLeftBottomWidget(IWidget widget);
-//
-//  @Event(handlers = ShellPresenter.class)
-//  public void changeRightBottomWidget(IWidget widget);
-//
-//  @Event(handlers = UserListPresenter.class)
-//  public void userCreated(UserBean user);
-//
-//  @Event(handlers = {UserRolePresenter.class, UserListPresenter.class})
-//  public void userUpdated(UserBean user);
-
 }

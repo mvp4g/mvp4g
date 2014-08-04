@@ -58,9 +58,6 @@ public class ShellView
     }
     profileView.add(widget);
     profileWidget = widget;
-  }  @Override
-  public IShellView.IShellPresenter getPresenter() {
-    return this.presenter;
   }
 
   @Override
@@ -70,7 +67,12 @@ public class ShellView
     }
     roleView.add(widget);
     roleWidget = widget;
+  }  @Override
+  public IShellView.IShellPresenter getPresenter() {
+    return this.presenter;
   }
+
+
 
   @Override
   public void setPresenter(IShellView.IShellPresenter presenter) {

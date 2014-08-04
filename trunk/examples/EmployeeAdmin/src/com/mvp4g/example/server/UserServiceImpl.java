@@ -89,8 +89,10 @@ public class UserServiceImpl
   public UserBean createUser(UserBean user) {
     long lastId = 0;
     for (int i = 0; i < userList.size(); i++) {
-      if (lastId < userList.get(i).getId()) {
-        lastId = userList.get(i).getId();
+      if (lastId < userList.get(i)
+                           .getId()) {
+        lastId = userList.get(i)
+                         .getId();
       }
     }
     user.setId(lastId++);
@@ -100,8 +102,10 @@ public class UserServiceImpl
 
   public UserBean updateUser(UserBean user) {
     for (int i = 0; i < userList.size(); i++) {
-      if (user.getId() == userList.get(i).getId()) {
-        userList.set(i, user);
+      if (user.getId() == userList.get(i)
+                                  .getId()) {
+        userList.set(i,
+                     user);
         return user;
       }
     }

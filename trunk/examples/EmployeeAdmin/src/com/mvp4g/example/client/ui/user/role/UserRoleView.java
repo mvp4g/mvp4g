@@ -48,7 +48,7 @@ public class UserRoleView
       appendable.append(object);
     }
   });
-  private ListBox rolesChoices  = new ListBox();
+  private ListBox              rolesChoices  = new ListBox();
 
 
   public UserRoleView() {

@@ -10,6 +10,7 @@ public interface IUserRoleView
     extends IsWidget {
 
   public void clear();
+
   public void disable();
 
   public void showUser(UserBean user);

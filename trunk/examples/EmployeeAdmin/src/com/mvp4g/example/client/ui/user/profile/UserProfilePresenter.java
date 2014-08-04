@@ -38,6 +38,7 @@ public class UserProfilePresenter
                          public void onFailure(Throwable caught) {
                            Window.alert("PANIC!");
                          }
+
                          @Override
                          public void onSuccess(UserBean result) {
                            eventBus.unselectUser();
@@ -54,6 +55,7 @@ public class UserProfilePresenter
                          public void onFailure(Throwable caught) {
                            Window.alert("PANIC!");
                          }
+
                          @Override
                          public void onSuccess(UserBean result) {
                            eventBus.unselectUser();
