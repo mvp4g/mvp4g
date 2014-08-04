@@ -194,6 +194,8 @@ public class UserProfileView
     username.setValue("");
     password.setValue("");
     confirmPassword.setValue("");
+
+    department.setValue(null);
   }
 
   private void enableUpdateButton() {
