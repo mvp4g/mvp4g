@@ -1,0 +1,23 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Mvp4gHistory:war exploded">
+    <output-path>$PROJECT_DIR$/target/Mvp4gHistory</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Mvp4gHistory/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Mvp4gHistory" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.googlecode.mvp4g:mvp4g:1.5.0" />
+          <element id="library" level="project" name="Maven: com.google.gwt.inject:gin:2.1.2" />
+          <element id="library" level="project" name="Maven: com.google.inject:guice:3.0" />
+          <element id="library" level="project" name="Maven: javax.inject:javax.inject:1" />
+          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
+          <element id="library" level="project" name="Maven: com.google.inject.extensions:guice-assistedinject:3.0" />
+          <element id="library" level="project" name="Maven: com.google.gwt:gwt-servlet:2.6.1" />
+        </element>
+      </element>
+      <element id="gwt-compiler-output" facet="Mvp4gHistory/gwt/GWT" />
+    </root>
+  </artifact>
+</component>
