@@ -18,14 +18,24 @@
 	</licenses>
 
 	<properties>
-    <gwt.version>2.6.1</gwt.version>
-    <gin.version>2.1.2</gin.version>
+        <aopalliance.version>1.0</aopalliance.version>
+        <gwt.version>2.6.1</gwt.version>
+        <gin.version>2.1.2</gin.version>
+        <guice.version>3.0</guice.version>
+        <javax.inject.version>1</javax.inject.version>
+        <mvp4g.version>1.5.0</mvp4g.version>
+
+        <project.build.sourceDirectory>/src</project.build.sourceDirectory>
+        <project.build.testSourceDirectory>/test</project.build.testSourceDirectory>
 	</properties>
 
 	<developers>
 		<developer>
 			<name>Pierre-Laurent Coirier</name>
 		</developer>
+        <developer>
+            <name>Frank Hossfeld</name>
+        </developer>
 	</developers>
 
 	<contributors>
@@ -44,50 +54,67 @@
 		<contributor>
 			<name>Lukasz Dywicky</name>
 		</contributor>
+        <contributor>
+            <name>Lukas Schmidt</name>
+        </contributor>
 	</contributors>
 
 	<dependencies>
-    <dependency>
-      <groupId>com.googlecode.mvp4g</groupId>
-      <artifactId>mvp4g</artifactId>
-      <version>1.5.0-SNAPSHOT</version>
-    </dependency>
+        <dependency>
+          <groupId>com.googlecode.mvp4g</groupId>
+          <artifactId>mvp4g</artifactId>
+          <version>${mvp4g.version}</version>
+        </dependency>
 
-    <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-servlet</artifactId>
-      <version>${gwt.version}</version>
-    </dependency>
+        <dependency>
+          <groupId>com.google.gwt</groupId>
+          <artifactId>gwt-servlet</artifactId>
+          <version>${gwt.version}</version>
+        </dependency>
 
-    <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-user</artifactId>
-      <version>${gwt.version}</version>
-      <scope>provided</scope>
-    </dependency>
+        <dependency>
+          <groupId>com.google.gwt</groupId>
+          <artifactId>gwt-user</artifactId>
+          <version>${gwt.version}</version>
+          <scope>provided</scope>
+        </dependency>
 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <type>jar</type>
-      <scope>test</scope>
-    </dependency>
+        <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.11</version>
+          <type>jar</type>
+          <scope>test</scope>
+        </dependency>
 
-    <dependency>
-      <groupId>org.easymock</groupId>
-      <artifactId>easymock</artifactId>
-      <version>3.2</version>
-      <type>jar</type>
-      <scope>test</scope>
-    </dependency>
+        <dependency>
+          <groupId>org.easymock</groupId>
+          <artifactId>easymock</artifactId>
+          <version>3.2</version>
+          <type>jar</type>
+          <scope>test</scope>
+        </dependency>
 
-    <dependency>
-      <groupId>com.google.gwt.inject</groupId>
-      <artifactId>gin</artifactId>
-      <version>${gin.version}</version>
-    </dependency>
+        <dependency>
+          <groupId>aopalliance</groupId>
+          <artifactId>aopalliance</artifactId>
+          <version>${aopalliance.version}</version>
+        </dependency>
+
+        <dependency>
+          <groupId>com.google.gwt.inject</groupId>
+          <artifactId>gin</artifactId>
+          <version>${gin.version}</version>
+        </dependency>
+
+        <dependency>
+          <groupId>javax.inject</groupId>
+          <artifactId>javax.inject</artifactId>
+          <version>${javax.inject.version}</version>
+        </dependency>
+
 	</dependencies>
+
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -137,7 +164,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-        <version>2.2.1</version>
+                <version>2.2.1</version>
 				<configuration>
 					<attach>true</attach>
 				</configuration>
@@ -171,22 +198,13 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.2.0</version>
+				<version>2.6.1</version>
 				<configuration>
 					<runTarget>MailWithMvp4g.html</runTarget>
 					<hostedWebapp>${basedir}/war</hostedWebapp>
 				</configuration>
 			</plugin>
 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>gwt-maven-plugin</artifactId>
-        <version>2.6.0</version>
-        <configuration>
-          <runTarget>EmployeeAdmin.html</runTarget>
-          <hostedWebapp>${basedir}/war</hostedWebapp>
-        </configuration>
-      </plugin>
 
     </plugins>
 	</build>	
