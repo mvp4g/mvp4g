@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="d26de748-5bf9-4c27-9df1-891971a9e2a4" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/SDM___ApplicationServer.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/SDM___CodeServer.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/SDM___JavaScript.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="EmployeeAdmin.iws" />
@@ -38,10 +41,10 @@
       <file leaf-file-name="workspace.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.538462" vertical-offset="2837" max-vertical-offset="27217">
-              <caret line="183" column="70" selection-start-line="183" selection-start-column="70" selection-end-line="183" selection-end-column="70" />
+            <state vertical-scroll-proportion="-10.538462" vertical-offset="2905" max-vertical-offset="27302">
+              <caret line="187" column="70" selection-start-line="187" selection-start-column="70" selection-end-line="187" selection-end-column="70" />
               <folding>
-                <marker date="1407133680000" expanded="true" signature="208:230" placeholder="..." />
+                <marker date="1407134423000" expanded="true" signature="208:230" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -690,6 +693,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdmin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdmin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value=".idea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="runConfigurations" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -721,7 +742,7 @@
     <property name="OverrideImplement.overriding.sorted" value="false" />
     <property name="LayoutCode.rearrangeEntries" value="true" />
   </component>
-  <component name="RunManager" selected="JavaScript Debug.SDM - JavaScript">
+  <component name="RunManager" selected="GWT Configuration.SDM - ApplicationServer">
     <configuration default="false" name="ShellPresenterTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -1068,7 +1089,8 @@
     <MESSAGE value="update pom" />
     <MESSAGE value="update mvp4g.jar to 1.5" />
     <MESSAGE value="update mvp4g.jar to 1.5 - code formatting" />
-    <option name="LAST_COMMIT_MESSAGE" value="update mvp4g.jar to 1.5 - code formatting" />
+    <MESSAGE value="update mvp4g.jar to 1.5 - running configurations" />
+    <option name="LAST_COMMIT_MESSAGE" value="update mvp4g.jar to 1.5 - running configurations" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1444,10 +1466,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.538462" vertical-offset="2837" max-vertical-offset="27846">
-          <caret line="183" column="70" selection-start-line="183" selection-start-column="70" selection-end-line="183" selection-end-column="70" />
+        <state vertical-scroll-proportion="-10.538462" vertical-offset="2905" max-vertical-offset="27302">
+          <caret line="187" column="70" selection-start-line="187" selection-start-column="70" selection-end-line="187" selection-end-column="70" />
           <folding>
-            <marker date="1407133680000" expanded="true" signature="208:230" placeholder="..." />
+            <marker date="1407134423000" expanded="true" signature="208:230" placeholder="..." />
           </folding>
         </state>
       </provider>
