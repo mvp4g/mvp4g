@@ -2,6 +2,7 @@ package com.mvp4g.example.shared.dto;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserBean
@@ -16,6 +17,11 @@ public class UserBean
   private String       password   = null;
   private String       department = null;
   private List<String> roles      = null;
+
+
+  public UserBean() {
+    roles = new ArrayList<String>();
+  }
 
   public String getFirstName() {
     return firstName;

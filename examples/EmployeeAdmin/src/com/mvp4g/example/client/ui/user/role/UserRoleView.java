@@ -178,7 +178,7 @@ public class UserRoleView
 
     rolesChoices.clear();
     for (String role : Constants.ROLES) {
-      if (!roles.contains(role)) {
+      if (!selectedRolesItems.contains(role)) {
         rolesChoices.addItem(role);
       }
     }
