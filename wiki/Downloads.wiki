@@ -14,7 +14,7 @@ Release Notes are available here:
 
   * mvp4g - jar: ([http://mvp4g.googlecode.com/svn/maven2/releases/com/googlecode/mvp4g/mvp4g/1.5.0/mvp4g-1.5.0.jar Download here])
   * mvp4g - javadoc: ([http://mvp4g.googlecode.com/svn/maven2/releases/com/googlecode/mvp4g/mvp4g/1.5.0/mvp4g-1.5.0-javadoc.jar Download here])
-  * mvp4g - sources: ([/mvp4g-1.5.0-sources.jar Download here])
+  * mvp4g - sources: ([http://mvp4g.googlecode.com/svn/maven2/releases/com/googlecode/mvp4g/mvp4g/1.5.0/mvp4g-1.5.0-sources.jar Download here])
 
 == SNAPSHOT 1.5.0 (06/22/2014 - 18:23:26) ==
 
