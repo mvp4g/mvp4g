@@ -24,7 +24,7 @@
         <guice.version>3.0</guice.version>
         <javax.inject.version>1</javax.inject.version>
         <mvp4g.version>1.5.0</mvp4g.version>
-        <gxt.version>3.1.1</gxt.version>
+        <gxt.version>3.0.1</gxt.version>
 
         <project.build.sourceDirectory>/src</project.build.sourceDirectory>
         <project.build.testSourceDirectory>/test</project.build.testSourceDirectory>
@@ -203,7 +203,7 @@
                 <artifactId>gwt-maven-plugin</artifactId>
                 <version>2.6.1</version>
                 <configuration>
-                    <runTarget>MailWithMvp4g.html</runTarget>
+                    <runTarget>EmployeeAdminWithGXT.html</runTarget>
                     <hostedWebapp>${basedir}/war</hostedWebapp>
                 </configuration>
             </plugin>
