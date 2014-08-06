@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="EmployeeAdminWithGXT:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="EmployeeAdminWithGXT.war">
+      <element id="artifact" artifact-name="EmployeeAdminWithGXT:war exploded" />
+    </root>
+  </artifact>
+</component>
