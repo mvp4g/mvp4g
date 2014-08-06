@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Mvp4gPerformances:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="Mvp4gPerformances.war">
+      <element id="artifact" artifact-name="Mvp4gPerformances:war exploded" />
+    </root>
+  </artifact>
+</component>
