@@ -14,7 +14,7 @@ import com.mvp4g.example.client.presenters.TestMvp4gPresenter7;
 import com.mvp4g.example.client.presenters.TestMvp4gPresenter8;
 import com.mvp4g.example.client.presenters.TestMvp4gPresenter9;
 
-@Events( startView = MainView.class )
+@Events( startPresenter = MainPresenter.class )
 public interface TestEventBus extends EventBus {
 
 	@Event( handlers = { TestMvp4gPresenter1.class, TestMvp4gPresenter2.class, TestMvp4gPresenter3.class, TestMvp4gPresenter4.class,
