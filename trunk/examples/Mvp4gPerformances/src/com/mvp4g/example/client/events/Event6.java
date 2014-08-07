@@ -3,32 +3,33 @@ package com.mvp4g.example.client.events;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
-public class Event6 extends GwtEvent<Event6.Event6Handler> {
+public class Event6
+  extends GwtEvent<Event6.Event6Handler> {
 
-	public interface Event6Handler extends EventHandler {
-		void handle( Event6 event );
-	}
+  public static final GwtEvent.Type<Event6.Event6Handler> TYPE = new GwtEvent.Type<Event6.Event6Handler>();
+  private String event = null;
 
-	public static final GwtEvent.Type<Event6.Event6Handler> TYPE = new GwtEvent.Type<Event6.Event6Handler>();
+  public Event6(String event) {
+    this.event = event;
+  }
 
-	private String event = null;
+  public String getEvent() {
+    return event;
+  }
 
-	public Event6( String event ) {
-		this.event = event;
-	}
+  @Override
+  protected void dispatch(Event6Handler handler) {
+    handler.handle(this);
+  }
 
-	public String getEvent() {
-		return event;
-	}
+  @Override
+  public Type<Event6.Event6Handler> getAssociatedType() {
+    return TYPE;
+  }
 
-	@Override
-	protected void dispatch( Event6Handler handler ) {
-		handler.handle( this );
-	}
-
-	@Override
-	public Type<Event6.Event6Handler> getAssociatedType() {
-		return TYPE;
-	}
+  public interface Event6Handler
+    extends EventHandler {
+    void handle(Event6 event);
+  }
 
 }
