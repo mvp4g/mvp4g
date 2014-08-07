@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Mvp4gShowCase:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="Mvp4gShowCase.war">
+      <element id="artifact" artifact-name="Mvp4gShowCase:war exploded" />
+    </root>
+  </artifact>
+</component>
