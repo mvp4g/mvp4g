@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="TestAnnotationProcessor:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="TestAnnotationProcessor.war">
+      <element id="artifact" artifact-name="TestAnnotationProcessor:war exploded" />
+    </root>
+  </artifact>
+</component>

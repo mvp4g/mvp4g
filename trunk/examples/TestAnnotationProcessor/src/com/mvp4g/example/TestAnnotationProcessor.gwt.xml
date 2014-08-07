@@ -19,4 +19,12 @@
   <source path='client'/>
   <source path='shared'/>
 
+    <!-- Super Dev Mode                                             -->
+    <add-linker name="xsiframe"/>
+    <set-configuration-property name="devModeRedirectEnabled" value="true"/>
+
+    <set-configuration-property name="gwt.superdevmode" value="on"/>
+    <set-configuration-property name="generatorResultCachingEnabled" value="true"/>
+
+    <set-configuration-property name="devModeUrlWhitelistRegexp" value="http://(localhost|127\.0\.0\.1)(:\d+)?/.*"/>
 </module>
