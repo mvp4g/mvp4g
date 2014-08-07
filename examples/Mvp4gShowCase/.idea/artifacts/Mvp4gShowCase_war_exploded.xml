@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Mvp4gShowCase:war exploded">
+    <output-path>$PROJECT_DIR$/target/Mvp4gShowCase</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Mvp4gShowCase/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Mvp4gShowCase" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.google.gwt:gwt-servlet:2.6.1" />
+        </element>
+      </element>
+      <element id="gwt-compiler-output" facet="Mvp4gShowCase/gwt/GWT" />
+    </root>
+  </artifact>
+</component>

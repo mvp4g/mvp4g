@@ -11,7 +11,7 @@ public class MenuItem extends TreeItem {
 	private boolean withXml = false;
 
 	public MenuItem( String description, String appId, String projectName, String eventBusName, boolean withXml ) {
-		super( projectName );
+        this.setText(projectName);
 		this.description = description;
 		this.appId = appId;
 		this.projectName = projectName;

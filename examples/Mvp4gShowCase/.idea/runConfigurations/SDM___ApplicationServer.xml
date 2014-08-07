@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SDM - ApplicationServer" type="GWT.ConfigurationType" factoryName="GWT Configuration" singleton="true">
+    <module name="Mvp4gShowCase" />
+    <option name="VM_PARAMETERS" value="-Xmx1024m -Djava.debugger.xBreakpoint=true -Dgwt.codeserver.port=9876" />
+    <option name="SHELL_PARAMETERS" value="-logLevel TRACE" />
+    <option name="RUN_PAGE" value="Mvp4gShowCase.html" />
+    <option name="OPEN_IN_BROWSER" value="false" />
+    <RunnerSettings RunnerId="Debug">
+      <option name="DEBUG_PORT" value="" />
+      <option name="TRANSPORT" value="0" />
+      <option name="LOCAL" value="true" />
+    </RunnerSettings>
+    <ConfigurationWrapper RunnerId="Debug" />
+    <method />
+  </configuration>
+</component>
