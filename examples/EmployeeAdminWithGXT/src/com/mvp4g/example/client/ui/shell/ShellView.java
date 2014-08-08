@@ -33,26 +33,22 @@ public class ShellView
 
     southPanel = new HorizontalLayoutContainer();
     southPanel.setSize("100%",
-                       "100%");
+                       "480px");
     BorderLayoutContainer.BorderLayoutData southPanelData = new BorderLayoutContainer.BorderLayoutData();
     southPanelData.setMargins(new Margins(4));
     shellPanel.setSouthWidget(southPanel,
                               southPanelData);
 
     profileView = new SimpleContainer();
-    profileView.setSize("50%",
-                        "420px");
     HorizontalLayoutContainer.HorizontalLayoutData hld01 = new HorizontalLayoutContainer.HorizontalLayoutData(.5,
-                                                                                                              1,
+                                                                                                              -1,
                                                                                                               new Margins(3));
     southPanel.add(profileView,
                    hld01);
 
     roleView = new SimpleContainer();
-    roleView.setSize("50%",
-                     "420px");
     HorizontalLayoutContainer.HorizontalLayoutData hld02 = new HorizontalLayoutContainer.HorizontalLayoutData(.5,
-                                                                                                              1,
+                                                                                                              -1,
                                                                                                               new Margins(3));
     southPanel.add(roleView,
                    hld02);
@@ -81,6 +77,7 @@ public class ShellView
     }
     profileView.add(widget);
     profileWidget = widget;
+    shellPanel.forceLayout();
   }
 
   @Override
@@ -90,6 +87,7 @@ public class ShellView
     }
     roleView.add(widget);
     roleWidget = widget;
+    shellPanel.forceLayout();
   }
 
   @Override
