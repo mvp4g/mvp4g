@@ -6,28 +6,33 @@ import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.ReverseViewInterface;
 import com.mvp4g.example.shared.dto.UserBean;
-import com.sencha.gxt.widget.core.client.ContentPanel;
+import com.sencha.gxt.core.client.util.Margins;
+import com.sencha.gxt.widget.core.client.FramedPanel;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.form.FieldLabel;
+import com.sencha.gxt.widget.core.client.form.PasswordField;
+import com.sencha.gxt.widget.core.client.form.TextField;
 
 public class UserProfileView
-    implements IUserProfileView,
-               ReverseViewInterface<IUserProfileView.IUserProfilePresenter>,
-               Editor<UserBean> {
+        implements IUserProfileView,
+        ReverseViewInterface<IUserProfileView.IUserProfilePresenter>,
+        Editor<UserBean> {
 //
 //  private final static String WIDGET_WIDTH = "262px";
 
-  //  @Path("firstName")
-//  TextBox              firstName       = new TextBox();
-//  @Path("lastName")
-//  TextBox              lastName        = new TextBox();
-//  @Path("email")
-//  TextBox              email           = new TextBox();
-//  @Path("username")
-//  TextBox              username        = new TextBox();
-//  @Path("password")
-//  PasswordTextBox      password        = new PasswordTextBox();
-//  @Path("password")
-//  PasswordTextBox      confirmPassword = new PasswordTextBox();
-//  @Path("department")
+    @Path("firstName")
+    TextField firstName = new TextField();
+    @Path("lastName")
+    TextField lastName = new TextField();
+    @Path("email")
+    TextField email = new TextField();
+    @Path("username")
+    TextField username = new TextField();
+    @Path("password")
+    PasswordField password = new PasswordField();
+    @Path("password")
+    PasswordField confirmPassword = new PasswordField();
+    //    @Path("department")
 //  ValueListBox<String> department      = new ValueListBox<String>(new Renderer<String>() {
 //    @Override
 //    public String render(String object) {
@@ -47,26 +52,45 @@ public class UserProfileView
 //      enableUpdateButton();
 //    }
 //  };
-  private Driver driver = GWT.create(Driver.class);
-  //  private Button                                 cancelButton;
-  private IUserProfileView.IUserProfilePresenter presenter;
-  private ContentPanel                           container;
+    private Driver driver = GWT.create(Driver.class);
+    //  private Button                                 cancelButton;
+    private IUserProfileView.IUserProfilePresenter presenter;
+    private FramedPanel container;
 //  private Button                                 updateButton;
 //  private boolean                                create;
 
-  public UserProfileView() {
-    createView();
+    public UserProfileView() {
+        createView();
 
-    bind();
-    initialize();
+        bind();
+        initialize();
 
-    driver.initialize(this);
-  }
+        driver.initialize(this);
+    }
 
-  private void createView() {
-    container = new ContentPanel();
-    container.setHeaderVisible(true);
-    container.setHeadingText("User Profile");
+    private void createView() {
+        container = new FramedPanel();
+        container.setHeaderVisible(true);
+        container.setHeadingText("User Profile");
+
+        firstName.setAllowBlank(false);
+        lastName.setAllowBlank(false);
+        email.setAllowBlank(false);
+        password.setAllowBlank(false);
+        confirmPassword.setAllowBlank(false);
+        username.setAllowBlank(false);
+
+        VerticalLayoutContainer form = new VerticalLayoutContainer();
+        container.add(form);
+
+        form.add(new FieldLabel(firstName, "First Name"), new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(8)));
+        form.add(new FieldLabel(lastName, "Last Name"), new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(8)));
+        form.add(new FieldLabel(email, "E-Mail"), new VerticalLayoutContainer.VerticalLayoutData(1, 1, new Margins(8)));
+        form.add(new FieldLabel(username, "Username"), new VerticalLayoutContainer.VerticalLayoutData(1, 1, new Margins(8)));
+        form.add(new FieldLabel(password, "Password"), new VerticalLayoutContainer.VerticalLayoutData(1, 1, new Margins(8)));
+        form.add(new FieldLabel(confirmPassword, "Confirm Password"), new VerticalLayoutContainer.VerticalLayoutData(1, 1, new Margins(8)));
+
+
 ////    container.addStyleName(Resources.CSS.employeeAdmin()
 ////                                        .container());
 ////
@@ -131,9 +155,9 @@ public class UserProfileView
 ////    password.setWidth(UserProfileView.WIDGET_WIDTH);
 ////    confirmPassword.setWidth(UserProfileView.WIDGET_WIDTH);
 ////    department.setWidth(UserProfileView.WIDGET_WIDTH);
-  }
+    }
 
-  private void bind() {
+    private void bind() {
 //    updateButton.addClickHandler(new ClickHandler() {
 //      @Override
 //      public void onClick(ClickEvent event) {
@@ -165,9 +189,9 @@ public class UserProfileView
 //        enableUpdateButton();
 //      }
 //    });
-  }
+    }
 
-  private void initialize() {
+    private void initialize() {
 //    updateButton.setEnabled(false);
 //    cancelButton.setEnabled(false);
 //
@@ -179,9 +203,9 @@ public class UserProfileView
 //    confirmPassword.setValue("");
 //
 //    department.setValue(null);
-  }
+    }
 
-  private void enableUpdateButton() {
+    private void enableUpdateButton() {
 //    boolean enabled = (username.getValue() != null) && (username.getValue()
 //                                                                .length() > 0
 //    ) &&
@@ -195,21 +219,21 @@ public class UserProfileView
 //                         .equals(password.getValue())
 //                      );
 //    updateButton.setEnabled(enabled);
-  }
+    }
 
-  @Override
-  public Widget asWidget() {
-    return container;
-  }
+    @Override
+    public Widget asWidget() {
+        return container;
+    }
 
-  @Override
-  public void clear() {
+    @Override
+    public void clear() {
 //    initialize();
-  }
+    }
 
-  @Override
-  public void showUser(UserBean user,
-                       boolean create) {
+    @Override
+    public void showUser(UserBean user,
+                         boolean create) {
 //    this.create = create;
 //    driver.edit(user);
 //    updateButton.setEnabled(false);
@@ -222,21 +246,21 @@ public class UserProfileView
 //
 //    firstName.selectAll();
 //    firstName.setFocus(true);
-  }
+    }
 
-  @Override
-  public void setPresenter(IUserProfilePresenter presenter) {
-    this.presenter = presenter;
-  }
+    @Override
+    public IUserProfilePresenter getPresenter() {
+        return presenter;
+    }
 
-  interface Driver
-      extends SimpleBeanEditorDriver<UserBean, UserProfileView> {
+    @Override
+    public void setPresenter(IUserProfilePresenter presenter) {
+        this.presenter = presenter;
+    }
 
-  }
 
+    interface Driver
+            extends SimpleBeanEditorDriver<UserBean, UserProfileView> {
 
-  @Override
-  public IUserProfilePresenter getPresenter() {
-    return presenter;
-  }
+    }
 }
