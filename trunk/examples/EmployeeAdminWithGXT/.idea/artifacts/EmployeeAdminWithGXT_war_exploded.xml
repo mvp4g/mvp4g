@@ -18,7 +18,8 @@
           <element id="library" level="project" name="Maven: javax.validation:validation-api:1.0.0.GA" />
           <element id="library" level="project" name="Maven: javax.validation:validation-api:sources:1.0.0.GA" />
           <element id="library" level="project" name="Maven: org.json:json:20090211" />
-          <element id="library" level="project" name="Maven: com.sencha.gxt:gxt:3.1.1" />
+          <element id="library" level="project" name="Maven: com.sencha.gxt:gxt:3.1.0" />
+          <element id="library" level="project" name="Maven: com.sencha.gxt:gxt-theme-neptune:3.1.0" />
         </element>
       </element>
       <element id="gwt-compiler-output" facet="EmployeeAdminWithGXT/gwt/GWT" />
