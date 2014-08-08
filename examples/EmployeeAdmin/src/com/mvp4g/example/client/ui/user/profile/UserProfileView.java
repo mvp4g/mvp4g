@@ -65,11 +65,11 @@ public class UserProfileView
     }
   };
   private Driver driver = GWT.create(Driver.class);
-  private Button cancelButton;
+  private Button                                 cancelButton;
   private IUserProfileView.IUserProfilePresenter presenter;
-  private FlowLayoutPanel container;
-  private Button updateButton;
-  private boolean create;
+  private FlowLayoutPanel                        container;
+  private Button                                 updateButton;
+  private boolean                                create;
 
   public UserProfileView() {
     createView();
@@ -217,9 +217,6 @@ public class UserProfileView
   @Override
   public void clear() {
     initialize();
-  }  @Override
-  public void setPresenter(IUserProfilePresenter presenter) {
-    this.presenter = presenter;
   }
 
   @Override
@@ -237,12 +234,17 @@ public class UserProfileView
 
     firstName.selectAll();
     firstName.setFocus(true);
+  }  @Override
+  public void setPresenter(IUserProfilePresenter presenter) {
+    this.presenter = presenter;
   }
 
   interface Driver
       extends SimpleBeanEditorDriver<UserBean, UserProfileView> {
 
   }
+
+
 
   @Override
   public IUserProfilePresenter getPresenter() {

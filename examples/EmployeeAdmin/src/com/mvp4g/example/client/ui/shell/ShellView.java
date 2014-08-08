@@ -67,11 +67,12 @@ public class ShellView
     }
     roleView.add(widget);
     roleWidget = widget;
-  }  @Override
+  }
+
+  @Override
   public IShellView.IShellPresenter getPresenter() {
     return this.presenter;
   }
-
 
 
   @Override
