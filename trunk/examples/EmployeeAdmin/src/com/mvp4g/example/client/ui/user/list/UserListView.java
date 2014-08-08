@@ -241,11 +241,12 @@ public class UserListView
   private static interface GetValue<T> {
     T getValue(UserBean user);
 
-  }  @Override
+  }
+
+  @Override
   public void setPresenter(IUserListPresenter presenter) {
     this.presenter = presenter;
   }
-
 
 
   @Override
