@@ -6,7 +6,6 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.Mvp4gModule;
 
-
 /**
  * application entry point
  */

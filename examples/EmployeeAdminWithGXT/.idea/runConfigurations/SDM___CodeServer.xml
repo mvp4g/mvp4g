@@ -6,6 +6,14 @@
     <option name="RUN_PAGE" value="EmployeeAdminWithGXT.html" />
     <option name="OPEN_IN_BROWSER" value="false" />
     <option name="USE_SUPER_DEV_MODE" value="true" />
+    <RunnerSettings RunnerId="Debug">
+      <option name="DEBUG_PORT" value="" />
+      <option name="TRANSPORT" value="0" />
+      <option name="LOCAL" value="true" />
+    </RunnerSettings>
+    <RunnerSettings RunnerId="Run" />
+    <ConfigurationWrapper RunnerId="Debug" />
+    <ConfigurationWrapper RunnerId="Run" />
     <method />
   </configuration>
 </component>

@@ -1,113 +1,114 @@
 package com.mvp4g.example.server;
 
-import static com.mvp4g.example.client.Constants.DEPARTMENTS;
-import static com.mvp4g.example.client.Constants.ROLES;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.mvp4g.example.client.Constants;
+import com.mvp4g.example.client.service.UserService;
+import com.mvp4g.example.shared.dto.UserBean;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.servlet.http.HttpSession;
+public class UserServiceImpl
+    extends RemoteServiceServlet
+    implements UserService,
+               Constants {
 
-import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
-import com.extjs.gxt.ui.client.data.PagingLoadConfig;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.mvp4g.example.client.UserService;
-import com.mvp4g.example.client.bean.UserBean;
+  static private final String[] FIRST_NAMES = {"Karim", "Cristiano", "Iker", "Sergio", "Philip", "Mehsut", "Manuel"};
+  static private final String[] LAST_NAMES  = {"Benzema", "Ronaldo", "Casillas", "Ramos", "Lahm", "Oezil", "Neuer"};
+  private static List<UserBean> userList;
+  static private int NB_USERS = 32;
 
-public class UserServiceImpl extends RemoteServiceServlet implements UserService {
+  public List<UserBean> getUsers() {
+    if (userList == null) {
+      userList = this.createUserList();
+    }
+    return userList;
+  }
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 263606265567100312L;
+  private List<UserBean> createUserList() {
+    List<UserBean> users = new ArrayList<UserBean>();
+    UserBean user = null;
+    String firstName = null;
+    String lastName = null;
+    String username = null;
+    List<String> roles = null;
 
-	static private final String[] FIRST_NAMES = { "Karim", "Cristiano", "Iker", "Sergio" };
-	static private final String[] LAST_NAMES = { "Benzema", "Ronaldo", "Casillas", "Ramos" };
+    long id = 0;
 
-	static private int NB_USERS = 4;
+    Random random = new Random();
 
-	@SuppressWarnings( "unchecked" )
-	public PagingLoadResult<UserBean> getUsers( PagingLoadConfig config ) {
-		HttpSession session = getThreadLocalRequest().getSession();
-		List<UserBean> users = (List)session.getAttribute( "users" );
-		if ( users == null ) {
-			users = loadUsers();
-			session.setAttribute( "users", users );
-		}
+    for (int i = 0; i < NB_USERS; i++) {
+      user = new UserBean();
 
-		ArrayList<UserBean> sublist = new ArrayList<UserBean>();
-		int start = config.getOffset();
-		int limit = users.size();
-		if ( config.getLimit() > 0 ) {
-			limit = Math.min( start + config.getLimit(), limit );
-		}
-		for ( int i = config.getOffset(); i < limit; i++ ) {
-			sublist.add( users.get( i ) );
-		}
-		return new BasePagingLoadResult<UserBean>( sublist, config.getOffset(), users.size() );
+      user.setId(i);
 
-	}
+      firstName = FIRST_NAMES[i % FIRST_NAMES.length];
+      user.setFirstName(firstName);
 
-	public void deleteUser( UserBean user ) {
-		// deletion always succeeds		
-	}
+      lastName = LAST_NAMES[i % LAST_NAMES.length];
+      user.setLastName(lastName);
 
-	public void createUser( UserBean user ) {
-		// creation always succeeds		
-	}
+      username = (firstName.substring(0,
+                                      1) + lastName
+      ).toLowerCase();
+      user.setUsername(username);
 
-	public void updateUser( UserBean user ) {
-		// update always succeeds		
-	}
+      user.setEmail(username + "@mvp4g.com");
 
-	private List<UserBean> loadUsers() {
-		List<UserBean> users = new ArrayList<UserBean>();
+      user.setDepartment(DEPARTMENTS[i % DEPARTMENTS.length]);
 
-		UserBean user = null;
-		String firstName = null;
-		String lastName = null;
-		String username = null;
-		List<String> roles = null;
+      user.setPassword("1234");
 
-		Random random = new Random();
+      roles = new ArrayList<String>();
+      int nbRoles = random.nextInt(ROLES.length);
+      String role = null;
+      for (int j = 0; j < nbRoles; j++) {
+        role = ROLES[random.nextInt(ROLES.length)];
+        if (!roles.contains(role)) {
+          roles.add(role);
+        }
+      }
+      user.setRoles(roles);
 
-		for ( int k = 0; k < 10; k++ ) {
-			for ( int i = 0; i < NB_USERS; i++ ) {
-				user = new UserBean();
+      users.add(user);
+    }
 
-				firstName = FIRST_NAMES[i % FIRST_NAMES.length] + k;
-				user.setFirstName( firstName );
+    return users;
+  }
 
-				lastName = LAST_NAMES[i % LAST_NAMES.length] + k;
-				user.setLastName( lastName );
+  public void deleteUser(UserBean user) {
+    for (UserBean userBean : userList) {
+      if (userBean.getId() == user.getId()) {
+        userList.remove(userBean);
+        return;
+      }
+    }
+  }
 
-				username = ( firstName.substring( 0, 1 ) + lastName ).toLowerCase() + k;
-				user.setUsername( username );
+  public UserBean createUser(UserBean user) {
+    long lastId = 0;
+    for (int i = 0; i < userList.size(); i++) {
+      if (lastId < userList.get(i)
+                           .getId()) {
+        lastId = userList.get(i)
+                         .getId();
+      }
+    }
+    user.setId(lastId++);
+    userList.add(user);
+    return user;
+  }
 
-				user.setEmail( username + "@real.com" );
-
-				user.setDepartment( DEPARTMENTS[i % DEPARTMENTS.length] );
-
-				user.setPassword( "1234" );
-
-				roles = new ArrayList<String>();
-				int nbRoles = random.nextInt( ROLES.length );
-				String role = null;
-				for ( int j = 0; j < nbRoles; j++ ) {
-					role = ROLES[random.nextInt( ROLES.length )];
-					if ( !roles.contains( role ) ) {
-						roles.add( role );
-					}
-				}
-				user.setRoles( roles );
-
-				users.add( user );
-			}
-		}
-
-		return users;
-	}
-
+  public UserBean updateUser(UserBean user) {
+    for (int i = 0; i < userList.size(); i++) {
+      if (user.getId() == userList.get(i)
+                                  .getId()) {
+        userList.set(i,
+                     user);
+        return user;
+      }
+    }
+    return user;
+  }
 }

@@ -7,7 +7,6 @@ import com.extjs.gxt.ui.client.data.PagingLoadConfig;
 import com.extjs.gxt.ui.client.data.PagingLoadResult;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.example.client.Constants;
-import com.mvp4g.example.client.UserServiceAsync;
 import com.mvp4g.example.client.bean.UserBean;
 
 public class MockUserServiceAsync implements UserServiceAsync, Constants {
