@@ -12,9 +12,6 @@ To help you understand the framework, Mvp4g comes with tutorials and examples. Y
 [http://mvp4g.blogspot.com/2011/04/history-with-mvp4g.html History]: See how you can add browser history support to your Mvp4g application. Also read about history advanced feature to learn about [http://mvp4g.blogspot.com/2011/06/navigation-control.html how to control your user navigation], [http://mvp4g.blogspot.com/2011/07/hyperlink-navigation.html use hyperlink navigation] or [http://mvp4g.blogspot.com/2011/08/custom-place-service.html define your own place service].
 
 ==Examples==
-`TestMvp4g`: A basic example to easily understand how the framework works. UML diagram of this example is available at [http://mvp4g.googlecode.com/svn/tags/mvp4g-1.3.1/examples/TestMvp4g/TestMvp4g_UML.png here] (thanks to Steffen Nissen)
-
-
 `EmployeeAdmin`: The GWT `PureMvc` example (as shown [http://employeeadm.appspot.com/ here]) but implemented with the Mvp4g framework. This example also illustrates how to easily unit test the presenters using JUnit directly.
 
 
@@ -26,7 +23,7 @@ To help you understand the framework, Mvp4g comes with tutorials and examples. Y
 
 `Mvp4gModules`: This example covers pretty much all the feature available in Mvp4g (Code splitting, history, filters...).
 
-You can test these examples thanks to the [http://mvp4gshowcase.appspot.com/ Showcase].
+You can test these examples thanks to the [http://http://mvp4gexsc.appspot.com// Showcase].
 
 ==Projects==
 [http://code.google.com/p/santa-exchange/ Santa Exchange]: The web site lets users manage a gift exchange and send invitations via email to create a Secret Santa party. This project code is intended to provide a solid foundation for building other web sites in the future and to demo all of the features needed in an enterprise-quality software project using these technologies. The best part, this project is open-source. This great example is available thanks to Kenneth Pronovici.
