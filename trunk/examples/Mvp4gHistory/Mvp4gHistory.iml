@@ -33,8 +33,13 @@
         <setting name="webFacet" value="Web" />
       </configuration>
     </facet>
+    <facet type="google-app-engine" name="Google App Engine">
+      <configuration>
+        <sdk-home-path>$MODULE_DIR$/../../../../../../GWT App Engine/appengine-java-sdk-1.9.8</sdk-home-path>
+      </configuration>
+    </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/war/WEB-INF/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -45,61 +50,6 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="library" name="com.google.gwt.eclipse.core.GWT_CONTAINER" level="application" />
-    <orderEntry type="module-library">
-      <library name="aopalliance.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/aopalliance.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="gin-1.5-post-gwt-2.2.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/gin-1.5-post-gwt-2.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="guice-assistedinject-snapshot.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/guice-assistedinject-snapshot.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="guice-snapshot.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/guice-snapshot.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="javax.inject.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/javax.inject.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="mvp4g-1.4.0.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/mvp4g-1.4.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" name="Maven: com.googlecode.mvp4g:mvp4g:1.5.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.gwt.inject:gin:2.1.2" level="project" />
     <orderEntry type="library" name="Maven: com.google.inject:guice:3.0" level="project" />
