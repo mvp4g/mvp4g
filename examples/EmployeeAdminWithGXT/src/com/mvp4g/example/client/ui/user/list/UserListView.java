@@ -38,8 +38,8 @@ public class UserListView
 
   private FramedPanel container;
 
-  private ListStore<UserBean> store;
-  private Grid<UserBean>      grid;
+  private ListStore<UserBean>              store;
+  private Grid<UserBean>                   grid;
   private IdentityValueProvider<UserBean>  identity;
   private CheckBoxSelectionModel<UserBean> sm;
 
@@ -59,7 +59,7 @@ public class UserListView
     store = new ListStore<UserBean>(userBeanProperties.id());
 
     identity = new IdentityValueProvider<UserBean>();
-    sm       = new CheckBoxSelectionModel<UserBean>(identity);
+    sm = new CheckBoxSelectionModel<UserBean>(identity);
     sm.setSelectionMode(Style.SelectionMode.SINGLE);
     sm.addSelectionHandler(new SelectionHandler<UserBean>() {
       @Override
@@ -99,8 +99,10 @@ public class UserListView
                               cm);
     grid.setSize("100%",
                  "100%");
-    grid.getView().setAutoExpandColumn(lastNameColumn);
-    grid.getView().setStripeRows(true);
+    grid.getView()
+        .setAutoExpandColumn(lastNameColumn);
+    grid.getView()
+        .setStripeRows(true);
     grid.setSelectionModel(sm);
   }
 
@@ -143,7 +145,7 @@ public class UserListView
     deleteButton.addSelectHandler(new SelectEvent.SelectHandler() {
       @Override
       public void onSelect(SelectEvent event) {
-       if (sm.getSelectedItem() == null) {
+        if (sm.getSelectedItem() == null) {
           Window.alert("Please select a user");
         } else {
           if (Window.confirm("Are you sure?")) {

@@ -43,12 +43,10 @@ public class UserRoleView
 
   private ListStore<Role>              storeSelectedRoles;
   private Grid<Role>                   gridSelectedRoles;
-  private IdentityValueProvider<Role>  identitySelectedRoles;
   private CheckBoxSelectionModel<Role> smSelectedRoles;
 
   private ListStore<Role>              storeRolesChoices;
   private Grid<Role>                   gridRolesChoices;
-  private IdentityValueProvider<Role>  identityRolesChoices;
   private CheckBoxSelectionModel<Role> smRolesChoices;
 
   public UserRoleView() {
@@ -73,25 +71,6 @@ public class UserRoleView
     return roles;
   }
 
-  private List<Role> createRoleListForStore(List<String> list) {
-    long id = 1;
-    List<Role> roles = new ArrayList<Role>();
-    for (String role : list) {
-      roles.add(new Role(id++,
-                         role));
-    }
-    return roles;
-  }
-
-  private Role getRole(String roleString) {
-    for (Role role : roles) {
-      if (role.equals(roleString)) {
-        return role;
-      }
-    }
-    return null;
-  }
-
   private void createButtons() {
     removeButton = new TextButton("Remove");
     removeButton.setWidth("100px");
@@ -102,7 +81,7 @@ public class UserRoleView
   private void createGridRolesChoices() {
     storeRolesChoices = new ListStore<Role>(roleProperties.id());
 
-    identityRolesChoices = new IdentityValueProvider<Role>();
+    IdentityValueProvider<Role> identityRolesChoices = new IdentityValueProvider<Role>();
     smRolesChoices = new CheckBoxSelectionModel<Role>(identityRolesChoices);
     smRolesChoices.setSelectionMode(Style.SelectionMode.SINGLE);
     smRolesChoices.addSelectionHandler(new SelectionHandler<Role>() {
@@ -137,7 +116,7 @@ public class UserRoleView
   private void createGridSelectedRoles() {
     storeSelectedRoles = new ListStore<Role>(roleProperties.id());
 
-    identitySelectedRoles = new IdentityValueProvider<Role>();
+    IdentityValueProvider<Role> identitySelectedRoles = new IdentityValueProvider<Role>();
     smSelectedRoles = new CheckBoxSelectionModel<Role>(identitySelectedRoles);
     smSelectedRoles.setSelectionMode(Style.SelectionMode.SINGLE);
     smSelectedRoles.addSelectionHandler(new SelectionHandler<Role>() {
@@ -158,14 +137,14 @@ public class UserRoleView
     ColumnModel<Role> cm = new ColumnModel<Role>(columns);
 
     gridSelectedRoles = new Grid<Role>(storeSelectedRoles,
-                                      cm);
+                                       cm);
     gridSelectedRoles.setSize("100%",
                               "100%");
     gridSelectedRoles.setBorders(true);
     gridSelectedRoles.getView()
-                    .setAutoExpandColumn(roleColumn);
+                     .setAutoExpandColumn(roleColumn);
     gridSelectedRoles.getView()
-                    .setStripeRows(true);
+                     .setStripeRows(true);
     gridSelectedRoles.setSelectionModel(smSelectedRoles);
   }
 
@@ -179,28 +158,58 @@ public class UserRoleView
     container.add(vlc01);
 
     HorizontalLayoutContainer hlc01 = new HorizontalLayoutContainer();
-    vlc01.add(hlc01, new VerticalLayoutContainer.VerticalLayoutData(1, 180));
-    hlc01.add(gridRolesChoices, new HorizontalLayoutContainer.HorizontalLayoutData(1, 1, new Margins(0, 0, 6, 0)));
-    hlc01.add(addButton, new HorizontalLayoutContainer.HorizontalLayoutData(-1, -1, new Margins(141, 3, 6, 12)));
+    vlc01.add(hlc01,
+              new VerticalLayoutContainer.VerticalLayoutData(1,
+                                                             180));
+    hlc01.add(gridRolesChoices,
+              new HorizontalLayoutContainer.HorizontalLayoutData(1,
+                                                                 1,
+                                                                 new Margins(0,
+                                                                             0,
+                                                                             6,
+                                                                             0)));
+    hlc01.add(addButton,
+              new HorizontalLayoutContainer.HorizontalLayoutData(-1,
+                                                                 -1,
+                                                                 new Margins(141,
+                                                                             3,
+                                                                             6,
+                                                                             12)));
 
     HorizontalLayoutContainer hlc02 = new HorizontalLayoutContainer();
-    vlc01.add(hlc02, new VerticalLayoutContainer.VerticalLayoutData(1, 180));
-    hlc02.add(gridSelectedRoles, new HorizontalLayoutContainer.HorizontalLayoutData(1, 1, new Margins(0, 0, 0, 0)));
-    hlc02.add(removeButton, new HorizontalLayoutContainer.HorizontalLayoutData(-1, -1, new Margins(143, 3, 3, 12)));
+    vlc01.add(hlc02,
+              new VerticalLayoutContainer.VerticalLayoutData(1,
+                                                             180));
+    hlc02.add(gridSelectedRoles,
+              new HorizontalLayoutContainer.HorizontalLayoutData(1,
+                                                                 1,
+                                                                 new Margins(0,
+                                                                             0,
+                                                                             0,
+                                                                             0)));
+    hlc02.add(removeButton,
+              new HorizontalLayoutContainer.HorizontalLayoutData(-1,
+                                                                 -1,
+                                                                 new Margins(143,
+                                                                             3,
+                                                                             3,
+                                                                             12)));
   }
 
   private void bind() {
     addButton.addSelectHandler(new SelectEvent.SelectHandler() {
       @Override
       public void onSelect(SelectEvent event) {
-        presenter.doAddRole(smRolesChoices.getSelectedItem().getRole());
+        presenter.doAddRole(smRolesChoices.getSelectedItem()
+                                          .getRole());
       }
     });
 
     removeButton.addSelectHandler(new SelectEvent.SelectHandler() {
       @Override
       public void onSelect(SelectEvent event) {
-        presenter.doRemoveRole(smSelectedRoles.getSelectedItem().getRole());
+        presenter.doRemoveRole(smSelectedRoles.getSelectedItem()
+                                              .getRole());
       }
     });
 
@@ -259,7 +268,8 @@ public class UserRoleView
     for (Role role : roles) {
       boolean alreadyUsed = false;
       for (String roleString : selectedRolesItems) {
-        if (role.getRole().equals(roleString)) {
+        if (role.getRole()
+                .equals(roleString)) {
           alreadyUsed = true;
           break;
         }
@@ -269,6 +279,16 @@ public class UserRoleView
       }
     }
     addButton.setEnabled(false);
+  }
+
+  private List<Role> createRoleListForStore(List<String> list) {
+    long id = 1;
+    List<Role> roles = new ArrayList<Role>();
+    for (String role : list) {
+      roles.add(new Role(id++,
+                         role));
+    }
+    return roles;
   }
 
   interface RoleProperties

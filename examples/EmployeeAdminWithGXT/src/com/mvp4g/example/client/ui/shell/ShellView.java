@@ -56,7 +56,13 @@ public class ShellView
     listView = new SimpleContainer();
     listView.setSize("100%",
                      "100%");
-    vlc.add(listView, new VerticalLayoutContainer.VerticalLayoutData(1, 1, new Margins(6, 6, 0, 6)));
+    vlc.add(listView,
+            new VerticalLayoutContainer.VerticalLayoutData(1,
+                                                           1,
+                                                           new Margins(6,
+                                                                       6,
+                                                                       0,
+                                                                       6)));
     shellPanel.add(vlc);
   }
 

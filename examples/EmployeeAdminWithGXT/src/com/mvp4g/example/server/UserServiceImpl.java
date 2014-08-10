@@ -17,7 +17,7 @@ public class UserServiceImpl
   static private final String[] FIRST_NAMES = {"Karim", "Cristiano", "Iker", "Sergio", "Philip", "Mehsut", "Manuel"};
   static private final String[] LAST_NAMES  = {"Benzema", "Ronaldo", "Casillas", "Ramos", "Lahm", "Oezil", "Neuer"};
   private static List<UserBean> userList;
-  static private int NB_USERS = 32;
+  private static int NB_USERS = 32;
 
   public List<UserBean> getUsers() {
     if (userList == null) {
@@ -28,13 +28,11 @@ public class UserServiceImpl
 
   private List<UserBean> createUserList() {
     List<UserBean> users = new ArrayList<UserBean>();
-    UserBean user = null;
+    UserBean user;
     String firstName = null;
     String lastName = null;
     String username = null;
     List<String> roles = null;
-
-    long id = 0;
 
     Random random = new Random();
 
@@ -88,11 +86,9 @@ public class UserServiceImpl
 
   public UserBean createUser(UserBean user) {
     long lastId = 0;
-    for (int i = 0; i < userList.size(); i++) {
-      if (lastId < userList.get(i)
-                           .getId()) {
-        lastId = userList.get(i)
-                         .getId();
+    for (UserBean anUserList : userList) {
+      if (lastId < anUserList.getId()) {
+        lastId = anUserList.getId();
       }
     }
     user.setId(++lastId);

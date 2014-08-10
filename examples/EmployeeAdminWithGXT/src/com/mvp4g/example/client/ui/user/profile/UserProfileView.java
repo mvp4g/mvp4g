@@ -204,15 +204,18 @@ public class UserProfileView
 
   private void enableUpdateButton() {
     boolean enabled = (username.getValue() != null) && (username.getValue()
-                                                                .length() > 0) &&
+                                                                .length() > 0
+    ) &&
                       (department.getValue() != null) &&
                       (password.getValue() != null) && (password.getValue()
-                                                                .length() > 0) &&
+                                                                .length() > 0
+    ) &&
                       (confirmPassword.getValue() != null) && (confirmPassword.getValue()
                                                                               .length() > 0 &&
                                                                (confirmPassword.getValue()
                                                                                .equals(password.getValue())
-                      ));
+                                                               )
+    );
     updateButton.setEnabled(enabled);
   }
 
