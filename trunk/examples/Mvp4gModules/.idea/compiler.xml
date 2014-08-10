@@ -20,6 +20,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Mvp4gModules" target="1.6" />
+      <module name="mvp4gmodules" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
