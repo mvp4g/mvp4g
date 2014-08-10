@@ -2,20 +2,56 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="1b7cd25e-a769-4a0f-b12d-2db86e82202d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/validators" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/validators/EmailValidator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sencha_gxt_gxt_3_1_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/workDir/EmployeeAdminWithGXT" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/EmployeeAdmiWithGXT.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/MockGwtEvent.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/event/MockGridEvent.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/eventbus/MockEventBus.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/service/MockUserServiceAsync.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/view/MockRootTemplateView.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/view/MockUserListView.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/view/MockUserProfileView.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/MyMockButton.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/MyMockLabel.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/MyMockListBox.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/MyMockTextBox.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/MyMockWidget.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/gxt/MyGXTMockButton.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/gxt/MyGXTMockPagingToolBar.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/gxt/MyGXTMockTable.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/gxt/MyGXTMockWidget.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/presenter/RootTemplatePresenterTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/presenter/UserListPresenterTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/presenter/UserProfilePresenterTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/presenter/UserRolePresenterTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/util/BeanModelFactoryTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/util/BeanModelLookupTest.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/util/GWTMockUtilities.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/util/GXTBridge.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/war/gxt-all.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/lib/asm-3.3.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/lib/cglib-2.2.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/lib/easymock-3.0.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/event" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/eventbus" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/gxt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/lib/junit-4.5.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/lib" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/lib/objenesis-1.2.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/presenter" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/service" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/util" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/view" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/war/EmployeeAdminWithGXT.html" afterPath="$PROJECT_DIR$/war/EmployeeAdminWithGXT.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/EmployeeAdminWithGXT.iml" afterPath="$PROJECT_DIR$/EmployeeAdminWithGXT.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/EmployeeAdminWithGXTEventBus.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/EmployeeAdminWithGXTEventBus.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_sencha_gxt_gxt_theme_neptune_3_1_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sencha_gxt_gxt_theme_neptune_3_1_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/ShellView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/ShellView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListPresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfilePresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfilePresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfileView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfileView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRolePresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRolePresenter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRoleView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRoleView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/server/UserServiceImpl.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/server/UserServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/war/WEB-INF/appengine-web.xml" afterPath="$PROJECT_DIR$/war/WEB-INF/appengine-web.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="EmployeeAdminWithGXT.iws" />
@@ -70,130 +106,108 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
-    <ui_properties converted="true" />
     <breakpoint_rules converted="true" />
+    <ui_properties converted="true" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="EmployeeAdminWithGXT" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5577651">
-      <split-first>
-        <leaf>
-          <file leaf-file-name="UserRoleView.java" pinned="false" current="true" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRoleView.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.7127127" vertical-offset="1090" max-vertical-offset="3077">
-                  <caret line="216" column="20" selection-start-line="216" selection-start-column="20" selection-end-line="216" selection-end-column="20" />
-                  <folding>
-                    <element signature="e#1905#1911#0" expanded="true" />
-                    <element signature="e#2670#2676#0" expanded="true" />
-                    <element signature="e#2933#2939#0" expanded="true" />
-                    <element signature="method#createGridRolesChoices#0;class#UserRoleView#0" expanded="false" />
-                    <element signature="e#3778#4018#0" expanded="true" />
-                    <element signature="e#4082#4096#0" expanded="true" />
-                    <element signature="e#4349#4372#0" expanded="true" />
-                    <element signature="e#4492#4498#0" expanded="true" />
-                    <element signature="method#createGridSelectedRoles#0;class#UserRoleView#0" expanded="false" />
-                    <element signature="e#5303#5545#0" expanded="true" />
-                    <element signature="e#5609#5623#0" expanded="true" />
-                    <element signature="e#5877#5900#0" expanded="true" />
-                    <element signature="e#6021#6027#0" expanded="true" />
-                    <element signature="method#createView#0;class#UserRoleView#0" expanded="false" />
-                    <element signature="e#7579#7763#0" expanded="true" />
-                    <element signature="e#7801#7989#0" expanded="true" />
-                    <element signature="e#8039#8274#0" expanded="true" />
-                    <element signature="e#8325#8564#0" expanded="true" />
-                    <element signature="e#9140#9148#0" expanded="true" />
-                    <element signature="class#RoleProperties#0;class#UserRoleView#0" expanded="false" />
-                    <element signature="class#Role#0;class#UserRoleView#0" expanded="false" />
-                    <element signature="method#setPresenter#0;class#UserRoleView#0" expanded="false" />
-                    <element signature="method#getPresenter#0;class#UserRoleView#0" expanded="false" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="EmployeeAdminWithGXTEventBus.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/EmployeeAdminWithGXTEventBus.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="629" max-vertical-offset="884">
-                  <caret line="37" column="28" selection-start-line="37" selection-start-column="28" selection-end-line="37" selection-end-column="28" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="EmployeeAdminWithGXT.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/EmployeeAdminWithGXT.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="476">
-                  <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="UserRolePresenter.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRolePresenter.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="1360">
-                  <caret line="25" column="3" selection-start-line="25" selection-start-column="3" selection-end-line="25" selection-end-column="3" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="BorderLayoutContainer.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="jar://$MAVEN_REPOSITORY$/com/sencha/gxt/gxt/3.1.0/gxt-3.1.0-sources.jar!/com/sencha/gxt/widget/core/client/container/BorderLayoutContainer.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="2669" max-vertical-offset="19499">
-                  <caret line="157" column="11" selection-start-line="157" selection-start-column="11" selection-end-line="157" selection-end-column="11" />
-                  <folding>
-                    <marker date="1399470402000" expanded="true" signature="32572:32656" placeholder="{...}" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ShellView.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/ShellView.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="578" max-vertical-offset="1836">
-                  <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="UserListView.java" pinned="false" current="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListView.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.7241379" vertical-offset="527" max-vertical-offset="3128">
-                  <caret line="99" column="24" selection-start-line="99" selection-start-column="24" selection-end-line="100" selection-end-column="25" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="UserProfileView.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfileView.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="4471">
-                  <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf>
+      <file leaf-file-name="UserServiceImpl.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/server/UserServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1802" max-vertical-offset="1972">
+              <caret line="106" column="5" selection-start-line="106" selection-start-column="5" selection-end-line="106" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="appengine-web.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/war/WEB-INF/appengine-web.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.2042042" vertical-offset="0" max-vertical-offset="999">
+              <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EmployeeAdminWithGXT.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/war/EmployeeAdminWithGXT.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="187" max-vertical-offset="731">
+              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2425" max-vertical-offset="3859">
+              <caret line="143" column="16" selection-start-line="143" selection-start-column="16" selection-end-line="143" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EmployeeAdminWithGXTEventBus.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/EmployeeAdminWithGXTEventBus.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="629" max-vertical-offset="884">
+              <caret line="37" column="28" selection-start-line="37" selection-start-column="28" selection-end-line="37" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EmployeeAdminWithGXT.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/EmployeeAdminWithGXT.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="476">
+              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserRolePresenter.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRolePresenter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="384" max-vertical-offset="1360">
+              <caret line="25" column="3" selection-start-line="25" selection-start-column="3" selection-end-line="25" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BorderLayoutContainer.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/sencha/gxt/gxt/3.1.0/gxt-3.1.0-sources.jar!/com/sencha/gxt/widget/core/client/container/BorderLayoutContainer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2669" max-vertical-offset="19499">
+              <caret line="157" column="11" selection-start-line="157" selection-start-column="11" selection-end-line="157" selection-end-column="11" />
+              <folding>
+                <marker date="1399470402000" expanded="true" signature="32572:32656" placeholder="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ShellView.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/ShellView.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="578" max-vertical-offset="1938">
+              <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -206,30 +220,31 @@
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/widget/impl/MyGXTComboBox.java" />
         <option value="$PROJECT_DIR$/.classpath" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/widget/interfaces/gxt/IGXTTable.java" />
-        <option value="$PROJECT_DIR$/src/com/mvp4g/example/shared/dto/UserBean.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/service/UserServiceAsync.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/Constants.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/IUserRoleView.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/FieldContainer.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/ShellPresenter.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/UserRolePresenter.java" />
-        <option value="$PROJECT_DIR$/war/EmployeeAdminWithGXT.html" />
         <option value="/employeeadminwithgxt-0.js" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/IShellView.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/EmployeeAdminWithGXT.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/EmployeeAdminWithGXT.gwt.xml" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/resources/ImageResources.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListPresenter.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/EmployeeAdminWithGXTEventBus.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfilePresenter.java" />
-        <option value="$PROJECT_DIR$/src/com/mvp4g/example/server/UserServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/validators/EmailValidator.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfileView.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/ShellView.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRolePresenter.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListView.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRoleView.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/shared/dto/UserBean.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/server/UserServiceImpl.java" />
+        <option value="$PROJECT_DIR$/war/EmployeeAdminWithGXT.html" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/war/WEB-INF/appengine-web.xml" />
       </list>
     </option>
   </component>
@@ -237,12 +252,13 @@
     <option name="generalSettings">
       <MavenGeneralSettings>
         <option name="localRepository" value="$MAVEN_REPOSITORY$" />
-        <option name="mavenHome" value="/Applications/Development/apache-maven-3.1.1" />
+        <option name="mavenHome" value="/Applications/Developement/apache-maven-3.2.2" />
         <option name="userSettingsFile" value="$USER_HOME$/.m2/settings.xml" />
       </MavenGeneralSettings>
     </option>
     <option name="importingSettings">
       <MavenImportingSettings>
+        <option name="excludeTargetFolder" value="false" />
         <option name="importAutomatically" value="true" />
       </MavenImportingSettings>
     </option>
@@ -353,10 +369,204 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="workDir" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="workDir" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com.mvp4g.example.EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="war" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="war" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WEB-INF" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mock" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="target" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="example" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="example" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dto" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="example" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -366,11 +576,11 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="options.lastSelected" value="preferences.sourceCode.General" />
+    <property name="options.lastSelected" value="reference.settings.project.maven.importing" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Mvp4gPerformances" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Mvp4gShowCase" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="dynamic.classpath" value="false" />
     <property name="recentsLimit" value="5" />
@@ -383,6 +593,8 @@
     <property name="FullScreen" value="false" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
+    <property name="LayoutCode.rearrangeEntries" value="true" />
+    <property name="GOOGLE_APP_ENGINE_ACCOUNT_EMAIL" value="frank.hossfeld@googlemail.com" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -400,7 +612,7 @@
       <recent name="$PROJECT_DIR$/src/com/mvp4g/example/client/resources" />
     </key>
   </component>
-  <component name="RunManager" selected="GWT Configuration.SDM - CodeServer">
+  <component name="RunManager" selected="Google AppEngine Dev Server.EmployeeAdmiWithGXT">
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
       <module name="" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
@@ -437,6 +649,11 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
+    <configuration default="true" type="GoogleAppEngineDevServer" factoryName="Local" ALTERNATIVE_JRE_ENABLED="false">
+      <server-settings />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <method />
+    </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
       <method />
     </configuration>
@@ -468,6 +685,10 @@
       <envs />
       <method />
     </configuration>
+    <configuration default="true" type="GWT.ConfigurationType" factoryName="GWT Configuration">
+      <module name="" />
+      <method />
+    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -489,14 +710,11 @@
       <patterns />
       <method />
     </configuration>
-    <configuration default="true" type="GWT.ConfigurationType" factoryName="GWT Configuration">
-      <module name="" />
-      <method />
-    </configuration>
-    <list size="3">
+    <list size="4">
       <item index="0" class="java.lang.String" itemvalue="GWT Configuration.SDM - ApplicationServer" />
       <item index="1" class="java.lang.String" itemvalue="GWT Configuration.SDM - CodeServer" />
-      <item index="2" class="java.lang.String" itemvalue="JavaScript Debug.SDM - JavaScript" />
+      <item index="2" class="java.lang.String" itemvalue="Google AppEngine Dev Server.EmployeeAdmiWithGXT" />
+      <item index="3" class="java.lang.String" itemvalue="JavaScript Debug.SDM - JavaScript" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -572,28 +790,28 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="51" y="22" width="2509" height="1418" extended-state="0" />
+    <frame x="51" y="22" width="2509" height="1418" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2254902" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952183" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32880846" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24969599" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952183" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39969835" sideWeight="0.4997973" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39969835" sideWeight="0.50020266" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32880846" sideWeight="0.50020266" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32880846" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32880846" sideWeight="0.4997973" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952183" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15808675" sideWeight="0.50048685" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14389947" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14389947" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15808675" sideWeight="0.49951315" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32880846" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32880846" sideWeight="0.4997973" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -602,7 +820,7 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295626" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -624,7 +842,8 @@
     <MESSAGE value="- First steps for migrating GXT 2.2.5 to 3.1.1&#10;- Adding workDir&#10;- Adding IntelliJ-Run-Configurations for Super Dev Mode&#10;- Create a own EmployeeAdminWithGXT EntryPoint&#10;- Updating gwt.xml&#10;- Deleting libs-Folder&#10;- Updating pom.xml&#10;- Deleting jars (war/WEB-INF/libs/)&#10;&#10;&#10;" />
     <MESSAGE value="CodeStyle&#10;" />
     <MESSAGE value="- update GXT -&gt; 3.1&#10;- implemented Layout&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="- update GXT -&gt; 3.1&#10;- implemented Layout&#10;" />
+    <MESSAGE value="- GXT example implemented&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="- GXT example implemented&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -636,18 +855,10 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/ShellView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="120" max-vertical-offset="3270">
-          <caret line="8" column="7" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="30" max-vertical-offset="225">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="578" max-vertical-offset="1938">
+          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -691,13 +902,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850">
           <caret line="44" column="0" selection-start-line="25" selection-start-column="3" selection-end-line="44" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/war/EmployeeAdminWithGXT.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.6153846" vertical-offset="91" max-vertical-offset="833">
-          <caret line="17" column="0" selection-start-line="15" selection-start-column="1" selection-end-line="17" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -776,21 +980,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/shared/dto/UserBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.06640625" vertical-offset="0" max-vertical-offset="2227">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1122" max-vertical-offset="3825">
-          <caret line="89" column="35" selection-start-line="89" selection-start-column="35" selection-end-line="89" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/sencha/gxt/gxt/3.1.0/gxt-3.1.0.jar!/com/sencha/gxt/widget/core/client/ContentPanel.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="402" max-vertical-offset="3366">
@@ -802,7 +991,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="4495" max-vertical-offset="15215">
           <caret line="321" column="32" selection-start-line="321" selection-start-column="32" selection-end-line="321" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -821,13 +1009,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/gxt/MyGXTMockWidget.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
-          <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/sencha/gxt/gxt/3.1.0/gxt-3.1.0-sources.jar!/com/sencha/gxt/widget/core/client/form/FieldLabel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.421875" vertical-offset="4878" max-vertical-offset="8874">
@@ -839,7 +1020,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="238">
           <caret line="4" column="31" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -854,7 +1034,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="391">
           <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -865,19 +1044,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/server/UserServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="578" max-vertical-offset="1921">
-          <caret line="102" column="45" selection-start-line="102" selection-start-column="45" selection-end-line="102" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/sencha/gxt/gxt/3.1.0/gxt-3.1.0-sources.jar!/com/sencha/gxt/data/shared/ListStore.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1682" max-vertical-offset="7157">
           <caret line="146" column="29" selection-start-line="146" selection-start-column="29" selection-end-line="146" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -895,7 +1065,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1258">
           <caret line="47" column="7" selection-start-line="47" selection-start-column="7" selection-end-line="47" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -903,17 +1072,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.85" vertical-offset="0" max-vertical-offset="1496">
           <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/sencha/gxt/gxt/3.1.0/gxt-3.1.0-sources.jar!/com/sencha/gxt/widget/core/client/container/BorderLayoutContainer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1408" max-vertical-offset="18666">
-          <caret line="157" column="11" selection-start-line="157" selection-start-column="11" selection-end-line="157" selection-end-column="11" />
-          <folding>
-            <marker date="1399470402000" expanded="true" signature="32572:32656" placeholder="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -928,22 +1086,61 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7008245" vertical-offset="0" max-vertical-offset="5253">
           <caret line="68" column="35" selection-start-line="68" selection-start-column="35" selection-end-line="68" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/sencha/gxt/gxt/3.1.0/gxt-3.1.0-sources.jar!/com/sencha/gxt/widget/core/client/form/SimpleComboBox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3329298" vertical-offset="915" max-vertical-offset="1751">
+          <caret line="84" column="14" selection-start-line="84" selection-start-column="14" selection-end-line="84" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="http://localhost:9876/sourcemaps/employeeadminwithgxt/gen/com/mvp4g/example/client/ui/user/role/com_mvp4g_client_Mvp4gModuleImpl_com_mvp4g_client_Mvp4gModuleGinjector_com_mvp4g_client_Mvp4gModuleGinjectorGinjector_fragment.java">
+      <provider selected="true" editor-type-id="httpFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/sencha/gxt/gxt/3.1.0/gxt-3.1.0-sources.jar!/com/sencha/gxt/core/client/util/Margins.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.64839095" vertical-offset="0" max-vertical-offset="839">
+          <caret line="38" column="9" selection-start-line="38" selection-start-column="9" selection-end-line="38" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.2586207" vertical-offset="0" max-vertical-offset="3162">
+          <caret line="99" column="24" selection-start-line="99" selection-start-column="24" selection-end-line="100" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfileView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4063">
+          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRoleView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4335">
+          <caret line="148" column="3" selection-start-line="148" selection-start-column="3" selection-end-line="148" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/shared/dto/UserBean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="856" max-vertical-offset="1819">
+          <caret line="92" column="28" selection-start-line="92" selection-start-column="28" selection-end-line="92" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/ShellView.java">
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/server/UserServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1785">
-          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRolePresenter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="56" max-vertical-offset="1241">
-          <caret line="25" column="3" selection-start-line="25" selection-start-column="3" selection-end-line="25" selection-end-column="3" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="578" max-vertical-offset="1853">
+          <caret line="106" column="5" selection-start-line="106" selection-start-column="5" selection-end-line="106" selection-end-column="5" />
           <folding />
         </state>
       </provider>
@@ -964,71 +1161,53 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/sencha/gxt/gxt/3.1.0/gxt-3.1.0-sources.jar!/com/sencha/gxt/widget/core/client/form/SimpleComboBox.java">
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRolePresenter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3329298" vertical-offset="915" max-vertical-offset="1751">
-          <caret line="84" column="14" selection-start-line="84" selection-start-column="14" selection-end-line="84" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfileView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4063">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="56" max-vertical-offset="1241">
+          <caret line="25" column="3" selection-start-line="25" selection-start-column="3" selection-end-line="25" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="http://localhost:9876/sourcemaps/employeeadminwithgxt/gen/com/mvp4g/example/client/ui/user/role/com_mvp4g_client_Mvp4gModuleImpl_com_mvp4g_client_Mvp4gModuleGinjector_com_mvp4g_client_Mvp4gModuleGinjectorGinjector_fragment.java">
-      <provider selected="true" editor-type-id="httpFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/sencha/gxt/gxt/3.1.0/gxt-3.1.0-sources.jar!/com/sencha/gxt/core/client/util/Margins.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/com/sencha/gxt/gxt/3.1.0/gxt-3.1.0-sources.jar!/com/sencha/gxt/widget/core/client/container/BorderLayoutContainer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.64839095" vertical-offset="0" max-vertical-offset="839">
-          <caret line="38" column="9" selection-start-line="38" selection-start-column="9" selection-end-line="38" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7241379" vertical-offset="527" max-vertical-offset="3128">
-          <caret line="99" column="24" selection-start-line="99" selection-start-column="24" selection-end-line="100" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRoleView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7127127" vertical-offset="1090" max-vertical-offset="3077">
-          <caret line="216" column="20" selection-start-line="216" selection-start-column="20" selection-end-line="216" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1408" max-vertical-offset="18666">
+          <caret line="157" column="11" selection-start-line="157" selection-start-column="11" selection-end-line="157" selection-end-column="11" />
           <folding>
-            <element signature="e#1905#1911#0" expanded="true" />
-            <element signature="e#2670#2676#0" expanded="true" />
-            <element signature="e#2933#2939#0" expanded="true" />
-            <element signature="method#createGridRolesChoices#0;class#UserRoleView#0" expanded="false" />
-            <element signature="e#3778#4018#0" expanded="true" />
-            <element signature="e#4082#4096#0" expanded="true" />
-            <element signature="e#4349#4372#0" expanded="true" />
-            <element signature="e#4492#4498#0" expanded="true" />
-            <element signature="method#createGridSelectedRoles#0;class#UserRoleView#0" expanded="false" />
-            <element signature="e#5303#5545#0" expanded="true" />
-            <element signature="e#5609#5623#0" expanded="true" />
-            <element signature="e#5877#5900#0" expanded="true" />
-            <element signature="e#6021#6027#0" expanded="true" />
-            <element signature="method#createView#0;class#UserRoleView#0" expanded="false" />
-            <element signature="e#7579#7763#0" expanded="true" />
-            <element signature="e#7801#7989#0" expanded="true" />
-            <element signature="e#8039#8274#0" expanded="true" />
-            <element signature="e#8325#8564#0" expanded="true" />
-            <element signature="e#9140#9148#0" expanded="true" />
-            <element signature="class#RoleProperties#0;class#UserRoleView#0" expanded="false" />
-            <element signature="class#Role#0;class#UserRoleView#0" expanded="false" />
-            <element signature="method#setPresenter#0;class#UserRoleView#0" expanded="false" />
-            <element signature="method#getPresenter#0;class#UserRoleView#0" expanded="false" />
+            <marker date="1399470402000" expanded="true" signature="32572:32656" placeholder="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/ShellView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1785">
+          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/war/EmployeeAdminWithGXT.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="187" max-vertical-offset="731">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2425" max-vertical-offset="3859">
+          <caret line="143" column="16" selection-start-line="143" selection-start-column="16" selection-end-line="143" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/war/WEB-INF/appengine-web.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2042042" vertical-offset="0" max-vertical-offset="999">
+          <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+          <folding />
         </state>
       </provider>
     </entry>
