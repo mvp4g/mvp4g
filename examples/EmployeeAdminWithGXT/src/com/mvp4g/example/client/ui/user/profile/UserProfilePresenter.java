@@ -27,7 +27,7 @@ public class UserProfilePresenter
 
   @Override
   public void doCancel() {
-//    eventBus.unselectUser();
+    eventBus.unselectUser();
   }
 
   @Override
@@ -41,8 +41,8 @@ public class UserProfilePresenter
 
                          @Override
                          public void onSuccess(UserBean result) {
-//                           eventBus.unselectUser();
-//                           eventBus.showUserList();
+                           eventBus.unselectUser();
+                           eventBus.showUserList();
                          }
                        });
   }
@@ -58,8 +58,8 @@ public class UserProfilePresenter
 
                          @Override
                          public void onSuccess(UserBean result) {
-//                           eventBus.unselectUser();
-//                           eventBus.showUserList();
+                           eventBus.unselectUser();
+                           eventBus.showUserList();
                          }
                        });
   }

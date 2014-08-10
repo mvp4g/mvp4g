@@ -32,9 +32,8 @@ public class ShellView
     super.add(shellPanel);
 
     southPanel = new HorizontalLayoutContainer();
-    southPanel.setSize("100%",
-                       "480px");
-    BorderLayoutContainer.BorderLayoutData southPanelData = new BorderLayoutContainer.BorderLayoutData();
+
+    BorderLayoutContainer.BorderLayoutData southPanelData = new BorderLayoutContainer.BorderLayoutData(406);
     southPanelData.setMargins(new Margins(4));
     shellPanel.setSouthWidget(southPanel,
                               southPanelData);

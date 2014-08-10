@@ -17,70 +17,9 @@ public class UserRolePresenter
     implements IUserRoleView.IUserRolePresenter {
 
   private UserBean user;
-  private boolean enabled = false;
 
   @Inject
   private UserServiceAsync service;
-
-//	@Override
-//	public void bind() {
-//		IButton add = view.getAddButton();
-//		add.addClickHandler( new ClickHandler() {
-//
-//			public void onClick( ClickEvent event ) {
-//				addRole( view.getRoleChoiceListBox().getSelectedValue() );
-//			}
-//
-//		} );
-//
-//		IButton remove = view.getRemoveButton();
-//		remove.addClickHandler( new ClickHandler() {
-//
-//			public void onClick( ClickEvent event ) {
-//				deleteRole( view.getSelectedRolesListBox().getSelectedValue() );
-//			}
-//
-//		} );
-//
-//		IListBox selectedRoles = view.getSelectedRolesListBox();
-//		selectedRoles.addClickHandler( new ClickHandler() {
-//
-//			public void onClick( ClickEvent event ) {
-//				enableRemoveButton();
-//			}
-//
-//		} );
-//		selectedRoles.addKeyUpHandler( new KeyUpHandler() {
-//
-//			public void onKeyUp( KeyUpEvent event ) {
-//				enableRemoveButton();
-//			}
-//
-//		} );
-//
-//		IListBox rolesChoices = view.getRoleChoiceListBox();
-//		rolesChoices.addClickHandler( new ClickHandler() {
-//
-//			public void onClick( ClickEvent event ) {
-//				enabledAddButton();
-//			}
-//
-//		} );
-//		rolesChoices.addKeyUpHandler( new KeyUpHandler() {
-//
-//			public void onKeyUp( KeyUpEvent event ) {
-//				enabledAddButton();
-//			}
-//
-//		} );
-//		rolesChoices.addItem( "--None Selected--" );
-//		for ( String role : ROLES ) {
-//			rolesChoices.addItem( role );
-//		}
-//
-//		disable();
-//
-//	}
 
   public void onStart() {
     eventBus.setRoleView(view.asWidget());
@@ -128,7 +67,7 @@ public class UserRolePresenter
                          public void onSuccess(UserBean result) {
                            view.clear();
                            view.disable();
-//                           eventBus.selectUser(result);
+                           eventBus.selectUser(result);
                          }
                        });
   }
