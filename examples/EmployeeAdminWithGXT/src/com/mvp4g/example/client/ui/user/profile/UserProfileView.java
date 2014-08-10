@@ -31,7 +31,7 @@ public class UserProfileView
                ReverseViewInterface<IUserProfileView.IUserProfilePresenter>,
                Editor<UserBean> {
 
-  private final static int WIDGET_WIDTH = 175;
+  private final static int WIDGET_WIDTH = 150;
 
   @Path("firstName")
   TextField              firstName       = new TextField();

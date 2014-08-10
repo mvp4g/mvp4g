@@ -71,20 +71,20 @@ public class UserListView
     });
 
     ColumnConfig<UserBean, String> firstNameColumn = new ColumnConfig<UserBean, String>(userBeanProperties.firstName(),
-                                                                                        200,
+                                                                                        150,
                                                                                         "First Name");
 
     ColumnConfig<UserBean, String> lastNameColumn = new ColumnConfig<UserBean, String>(userBeanProperties.lastName(),
-                                                                                       200,
+                                                                                       150,
                                                                                        "Last Name");
     ColumnConfig<UserBean, String> departmentColumn = new ColumnConfig<UserBean, String>(userBeanProperties.department(),
-                                                                                         300,
+                                                                                         150,
                                                                                          "Department");
     ColumnConfig<UserBean, String> emailColumn = new ColumnConfig<UserBean, String>(userBeanProperties.email(),
-                                                                                    300,
+                                                                                    200,
                                                                                     "E-Mail");
     ColumnConfig<UserBean, String> userNameColumn = new ColumnConfig<UserBean, String>(userBeanProperties.username(),
-                                                                                       200,
+                                                                                       150,
                                                                                        "Username");
     List<ColumnConfig<UserBean, ?>> columns = new ArrayList<ColumnConfig<UserBean, ?>>();
     columns.add(sm.getColumn());

@@ -1,57 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="1b7cd25e-a769-4a0f-b12d-2db86e82202d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/workDir/EmployeeAdminWithGXT" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/EmployeeAdmiWithGXT.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/MockGwtEvent.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/event/MockGridEvent.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/eventbus/MockEventBus.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/service/MockUserServiceAsync.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/view/MockRootTemplateView.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/view/MockUserListView.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/view/MockUserProfileView.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/MyMockButton.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/MyMockLabel.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/MyMockListBox.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/MyMockTextBox.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/MyMockWidget.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/gxt/MyGXTMockButton.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/gxt/MyGXTMockPagingToolBar.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/gxt/MyGXTMockTable.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/gxt/MyGXTMockWidget.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/presenter/RootTemplatePresenterTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/presenter/UserListPresenterTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/presenter/UserProfilePresenterTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/presenter/UserRolePresenterTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/util/BeanModelFactoryTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/util/BeanModelLookupTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/util/GWTMockUtilities.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/util/GXTBridge.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/war/gxt-all.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/lib/asm-3.3.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/lib/cglib-2.2.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/lib/easymock-3.0.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/event" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/eventbus" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget/gxt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/lib/junit-4.5.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/lib" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/lib/objenesis-1.2.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/presenter" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/service" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/util" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/view" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/com/mvp4g/example/client/mock/widget" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/war/EmployeeAdminWithGXT.html" afterPath="$PROJECT_DIR$/war/EmployeeAdminWithGXT.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/EmployeeAdminWithGXT.iml" afterPath="$PROJECT_DIR$/EmployeeAdminWithGXT.iml" />
+    <list default="true" readonly="true" id="1b7cd25e-a769-4a0f-b12d-2db86e82202d" name="Default" comment="- remove test classes&#10;- prepare for appengine">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfileView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfileView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/war/WEB-INF/appengine-web.xml" afterPath="$PROJECT_DIR$/war/WEB-INF/appengine-web.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="EmployeeAdminWithGXT.iws" />
@@ -115,22 +68,40 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="UserServiceImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/server/UserServiceImpl.java">
+      <file leaf-file-name="appengine-web.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/war/WEB-INF/appengine-web.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1802" max-vertical-offset="1972">
-              <caret line="106" column="5" selection-start-line="106" selection-start-column="5" selection-end-line="106" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
+              <caret line="2" column="24" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="appengine-web.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/war/WEB-INF/appengine-web.xml">
+      <file leaf-file-name="UserListView.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2042042" vertical-offset="0" max-vertical-offset="999">
-              <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="323" max-vertical-offset="3162">
+              <caret line="65" column="29" selection-start-line="65" selection-start-column="29" selection-end-line="65" selection-end-column="29" />
+              <folding>
+                <element signature="e#6076#6218#0" expanded="true" />
+                <element signature="e#6256#6605#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserProfileView.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfileView.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.1567623" vertical-offset="0" max-vertical-offset="4114">
+              <caret line="33" column="45" selection-start-line="33" selection-start-column="45" selection-end-line="33" selection-end-column="45" />
+              <folding>
+                <element signature="e#2544#2646#0" expanded="true" />
+                <element signature="e#6657#6917#0" expanded="true" />
+                <element signature="e#6955#7155#0" expanded="true" />
+                <element signature="e#7432#7565#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -235,16 +206,16 @@
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/EmployeeAdminWithGXTEventBus.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfilePresenter.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/validators/EmailValidator.java" />
-        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfileView.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/ShellView.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRolePresenter.java" />
-        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListView.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRoleView.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/shared/dto/UserBean.java" />
         <option value="$PROJECT_DIR$/src/com/mvp4g/example/server/UserServiceImpl.java" />
         <option value="$PROJECT_DIR$/war/EmployeeAdminWithGXT.html" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/war/WEB-INF/appengine-web.xml" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListView.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfileView.java" />
       </list>
     </option>
   </component>
@@ -252,7 +223,7 @@
     <option name="generalSettings">
       <MavenGeneralSettings>
         <option name="localRepository" value="$MAVEN_REPOSITORY$" />
-        <option name="mavenHome" value="/Applications/Developement/apache-maven-3.2.2" />
+        <option name="mavenHome" value="/Applications/Development/apache-maven-3.2.2" />
         <option name="userSettingsFile" value="$USER_HOME$/.m2/settings.xml" />
       </MavenGeneralSettings>
     </option>
@@ -457,46 +428,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="EmployeeAdminWithGXT" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="EmployeeAdminWithGXT" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mock" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="EmployeeAdminWithGXT" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="EmployeeAdminWithGXT" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="target" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -563,6 +494,184 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="example" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="example" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="user" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="example" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="user" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="profile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="example" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="user" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="list" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="example" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value=".idea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EmployeeAdminWithGXT" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value=".idea" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="runConfigurations" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -576,7 +685,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="options.lastSelected" value="reference.settings.project.maven.importing" />
+    <property name="options.lastSelected" value="MavenSettings" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
@@ -793,7 +902,7 @@
     <frame x="51" y="22" width="2509" height="1418" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2254902" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2254902" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32880846" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24969599" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -810,7 +919,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14389947" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15808675" sideWeight="0.49951315" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15808675" sideWeight="0.49951315" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32880846" sideWeight="0.4997973" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -843,7 +952,8 @@
     <MESSAGE value="CodeStyle&#10;" />
     <MESSAGE value="- update GXT -&gt; 3.1&#10;- implemented Layout&#10;" />
     <MESSAGE value="- GXT example implemented&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="- GXT example implemented&#10;" />
+    <MESSAGE value="- remove test classes&#10;- prepare for appengine" />
+    <option name="LAST_COMMIT_MESSAGE" value="- remove test classes&#10;- prepare for appengine" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1108,20 +1218,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.2586207" vertical-offset="0" max-vertical-offset="3162">
-          <caret line="99" column="24" selection-start-line="99" selection-start-column="24" selection-end-line="100" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfileView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4063">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/role/UserRoleView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4335">
@@ -1205,9 +1301,33 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/war/WEB-INF/appengine-web.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2042042" vertical-offset="0" max-vertical-offset="999">
-          <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
+          <caret line="2" column="24" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/list/UserListView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="323" max-vertical-offset="3162">
+          <caret line="65" column="29" selection-start-line="65" selection-start-column="29" selection-end-line="65" selection-end-column="29" />
+          <folding>
+            <element signature="e#6076#6218#0" expanded="true" />
+            <element signature="e#6256#6605#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/user/profile/UserProfileView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.1567623" vertical-offset="0" max-vertical-offset="4114">
+          <caret line="33" column="45" selection-start-line="33" selection-start-column="45" selection-end-line="33" selection-end-column="45" />
+          <folding>
+            <element signature="e#2544#2646#0" expanded="true" />
+            <element signature="e#6657#6917#0" expanded="true" />
+            <element signature="e#6955#7155#0" expanded="true" />
+            <element signature="e#7432#7565#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
