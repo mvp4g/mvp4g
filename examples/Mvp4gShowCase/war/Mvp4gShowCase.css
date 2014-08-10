@@ -6,12 +6,18 @@ h1 {
 	margin: 20px;	
 }
 
-.mvp4gshowcase .gwt-TabPanelBottom {
-	height: 500px;
+.mvp4gshowcase .gwt-TabPanelBottom .gwt-Frame {
+	height: 700px;
 	width: 850px;
 }
 
-.mvp4gshowcase .gwt-TabPanel {
+.demo-frame {
+    height: 680px;
+    width: 850px;
+    margin: 20px;
+}
+
+.mvp4gshowcase .gwt-TabPanel .gwt-Frame {
 	margin: 20px;
 }
 
