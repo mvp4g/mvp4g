@@ -10,6 +10,7 @@ import com.mvp4g.example.client.ui.shell.ShellPresenter;
 import com.mvp4g.example.client.ui.user.list.UserListPresenter;
 import com.mvp4g.example.client.ui.user.profile.UserProfilePresenter;
 import com.mvp4g.example.client.ui.user.role.UserRolePresenter;
+import com.mvp4g.example.shared.dto.UserBean;
 
 @Events(startPresenter = ShellPresenter.class,
         historyOnStart = false)
@@ -33,13 +34,13 @@ public interface EmployeeAdminWithGXTEventBus
   @Event(handlers = UserListPresenter.class)
   public void showUserList();
 
-//  @Event(handlers = {UserProfilePresenter.class, UserRolePresenter.class, UserListPresenter.class})
-//  public void selectUser(UserBean user);
-//
-//  @Event(handlers = {UserProfilePresenter.class, UserRolePresenter.class, UserListPresenter.class})
-//  public void unselectUser();
-//
-//  @Event(handlers = {UserProfilePresenter.class, UserRolePresenter.class})
-//  public void createNewUser(UserBean user);
+  @Event(handlers = {UserProfilePresenter.class, UserRolePresenter.class, UserListPresenter.class})
+  public void selectUser(UserBean user);
+
+  @Event(handlers = {UserProfilePresenter.class, UserRolePresenter.class, UserListPresenter.class})
+  public void unselectUser();
+
+  @Event(handlers = {UserProfilePresenter.class, UserRolePresenter.class})
+  public void createNewUser(UserBean user);
 
 }

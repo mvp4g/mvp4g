@@ -95,7 +95,7 @@ public class UserServiceImpl
                          .getId();
       }
     }
-    user.setId(lastId++);
+    user.setId(++lastId);
     userList.add(user);
     return user;
   }

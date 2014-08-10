@@ -44,7 +44,7 @@ public class UserListPresenter
 
       public void onSuccess(List<UserBean> result) {
         view.setUserList(result);
-//        eventBus.unselectUser();
+        eventBus.unselectUser();
       }
     });
   }
@@ -60,18 +60,18 @@ public class UserListPresenter
 
                          @Override
                          public void onSuccess(Void result) {
-//                           eventBus.showUserList();
+                           eventBus.showUserList();
                          }
                        });
   }
 
   @Override
   public void doNewUser() {
-//    eventBus.createNewUser(new UserBean());
+    eventBus.createNewUser(new UserBean());
   }
 
   @Override
   public void doShowUser(UserBean user) {
-//    eventBus.selectUser(user);
+    eventBus.selectUser(user);
   }
 }
