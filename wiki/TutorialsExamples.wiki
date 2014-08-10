@@ -23,7 +23,7 @@ To help you understand the framework, Mvp4g comes with tutorials and examples. Y
 
 `Mvp4gModules`: This example covers pretty much all the feature available in Mvp4g (Code splitting, history, filters...).
 
-You can test these examples thanks to the [http://http://mvp4gexsc.appspot.com// Showcase].
+You can test these examples thanks to the [http://mvp4gexsc.appspot.com/ Showcase].
 
 ==Projects==
 [http://code.google.com/p/santa-exchange/ Santa Exchange]: The web site lets users manage a gift exchange and send invitations via email to create a Secret Santa party. This project code is intended to provide a solid foundation for building other web sites in the future and to demo all of the features needed in an enterprise-quality software project using these technologies. The best part, this project is open-source. This great example is available thanks to Kenneth Pronovici.
