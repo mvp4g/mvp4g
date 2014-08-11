@@ -15,7 +15,7 @@ To integrate Mvp4g into your project, the following steps need to be done
 
 Add the following libraries to your project:
   * GIN libraries ([http://code.google.com/p/google-gin/downloads/list Download here])
-  * Mvp4g ([http://mvp4g.googlecode.com/svn/maven2/releases/com/googlecode/mvp4g/mvp4g/1.5.0/ Download here])  
+  * Mvp4g ([http://mvp4g.googlecode.com/svn/maven2/releases/com/googlecode/mvp4g/mvp4g/ Download here])  
 
 _You can also download the Mvp4g examples and copy the libraries inside the lib directory
   
