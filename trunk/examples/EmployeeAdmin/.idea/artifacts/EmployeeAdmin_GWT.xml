@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact name="EmployeeAdmin:GWT">
+    <output-path>$PROJECT_DIR$/output</output-path>
+    <root id="root">
+      <element id="gwt-compiler-output" facet="EmployeeAdmin/gwt/GWT" />
+    </root>
+  </artifact>
+</component>
