@@ -23,6 +23,7 @@
   <source path='client'/>
 
   <!-- Deferred Binding rules                                     -->
+  <!-- Desktop                                                    -->
   <replace-with class="com.mvp4g.example.client.views.desktop.shell.ShellView">
     <when-type-is class="com.mvp4g.example.client.ui.shell.IShellView"/>
   </replace-with>
@@ -44,6 +45,66 @@
   </replace-with>
 
   <replace-with class="com.mvp4g.example.client.views.desktop.navigation.NavBarView">
+    <when-type-is class="com.mvp4g.example.client.ui.navigation.INavBarView"/>
+  </replace-with>
+  <!-- Table                                                      -->
+  <replace-with class="com.mvp4g.example.client.views.desktop.shell.ShellView">
+    <when-property-is name="deviceDetector" value="tablet"/>
+    <when-type-is class="com.mvp4g.example.client.ui.shell.IShellView"/>
+  </replace-with>
+
+  <replace-with class="com.mvp4g.example.client.views.desktop.top.TopView">
+    <when-property-is name="deviceDetector" value="tablet"/>
+    <when-type-is class="com.mvp4g.example.client.ui.top.ITopView"/>
+  </replace-with>
+
+  <replace-with class="com.mvp4g.example.client.views.desktop.detail.MailDetailView">
+    <when-property-is name="deviceDetector" value="tablet"/>
+    <when-type-is class="com.mvp4g.example.client.ui.detail.IMailDetailView"/>
+  </replace-with>
+
+  <replace-with class="com.mvp4g.example.client.views.desktop.list.MailListView">
+    <when-property-is name="deviceDetector" value="tablet"/>
+    <when-type-is class="com.mvp4g.example.client.ui.list.IMailListView"/>
+  </replace-with>
+
+  <replace-with class="com.mvp4g.example.client.views.desktop.shortcuts.ShortcutsView">
+    <when-property-is name="deviceDetector" value="tablet"/>
+    <when-type-is class="com.mvp4g.example.client.ui.shortcuts.IShortCutsView"/>
+  </replace-with>
+
+  <replace-with class="com.mvp4g.example.client.views.desktop.navigation.NavBarView">
+    <when-property-is name="deviceDetector" value="tablet"/>
+    <when-type-is class="com.mvp4g.example.client.ui.navigation.INavBarView"/>
+  </replace-with>
+  <!-- MobiLe                                                     -->
+  <replace-with class="com.mvp4g.example.client.views.desktop.shell.ShellView">
+    <when-property-is name="deviceDetector" value="mobile"/>
+    <when-type-is class="com.mvp4g.example.client.ui.shell.IShellView"/>
+  </replace-with>
+
+  <replace-with class="com.mvp4g.example.client.views.desktop.top.TopView">
+    <when-property-is name="deviceDetector" value="mobile"/>
+    <when-type-is class="com.mvp4g.example.client.ui.top.ITopView"/>
+  </replace-with>
+
+  <replace-with class="com.mvp4g.example.client.views.desktop.detail.MailDetailView">
+    <when-property-is name="deviceDetector" value="mobile"/>
+    <when-type-is class="com.mvp4g.example.client.ui.detail.IMailDetailView"/>
+  </replace-with>
+
+  <replace-with class="com.mvp4g.example.client.views.desktop.list.MailListView">
+    <when-property-is name="deviceDetector" value="mobile"/>
+    <when-type-is class="com.mvp4g.example.client.ui.list.IMailListView"/>
+  </replace-with>
+
+  <replace-with class="com.mvp4g.example.client.views.desktop.shortcuts.ShortcutsView">
+    <when-property-is name="deviceDetector" value="mobile"/>
+    <when-type-is class="com.mvp4g.example.client.ui.shortcuts.IShortCutsView"/>
+  </replace-with>
+
+  <replace-with class="com.mvp4g.example.client.views.desktop.navigation.NavBarView">
+    <when-property-is name="deviceDetector" value="mobile"/>
     <when-type-is class="com.mvp4g.example.client.ui.navigation.INavBarView"/>
   </replace-with>
 
