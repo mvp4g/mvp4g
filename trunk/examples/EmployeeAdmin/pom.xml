@@ -29,7 +29,7 @@
     <project.build.sourceDirectory>/src</project.build.sourceDirectory>
     <project.build.testSourceDirectory>/test</project.build.testSourceDirectory>
 
-    <gwt.output>/Users/hoss/Documents/Developement/OpenSource/mvp4g/trunk/examples/EmployeeAdmin/output</gwt.output>
+    <gwt.output>${basedir}/output</gwt.output>
     <gwt.gen>genSources</gwt.gen>
     <gwt.extra>extra</gwt.extra>
 	</properties>
