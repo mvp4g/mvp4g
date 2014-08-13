@@ -1,12 +1,14 @@
 package com.mvp4g.example.client.ui.user.list;
 
 import com.google.gwt.user.client.ui.IsWidget;
+import com.mvp4g.client.view.ReverseViewInterface;
 import com.mvp4g.example.shared.dto.UserBean;
 
 import java.util.List;
 
 public interface IUserListView
-    extends IsWidget {
+    extends IsWidget,
+            ReverseViewInterface<IUserListView.IUserListPresenter> {
 
   void setUserList(List<UserBean> userList);
 

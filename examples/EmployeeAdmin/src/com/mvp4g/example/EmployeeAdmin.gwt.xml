@@ -22,6 +22,23 @@
   <source path="client"/>
   <source path="shared"/>
 
+  <replace-with class="com.mvp4g.example.client.ui.shell.ShellView">
+    <when-type-is class="com.mvp4g.example.client.ui.shell.IShellView"/>
+  </replace-with>
+
+  <replace-with class="com.mvp4g.example.client.ui.user.list.UserListView">
+    <when-type-is class="com.mvp4g.example.client.ui.user.list.IUserListView"/>
+  </replace-with>
+
+  <replace-with class="com.mvp4g.example.client.ui.user.profile.UserProfileView">
+    <when-type-is class="com.mvp4g.example.client.ui.user.profile.IUserProfileView"/>
+  </replace-with>
+
+  <replace-with class="com.mvp4g.example.client.ui.user.role.UserRoleView">
+    <when-type-is class="com.mvp4g.example.client.ui.user.role.IUserRoleView"/>
+  </replace-with>
+
+
   <!-- Super Dev Mode                                             -->
   <add-linker name="xsiframe"/>
   <set-configuration-property name="devModeRedirectEnabled" value="true"/>

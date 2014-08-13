@@ -6,7 +6,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.example.client.EmployeeAdminEventBus;
 
 
-@Presenter(view = ShellView.class)
+@Presenter(view = IShellView.class)
 public class ShellPresenter
     extends BasePresenter<IShellView, EmployeeAdminEventBus>
     implements IShellView.IShellPresenter {

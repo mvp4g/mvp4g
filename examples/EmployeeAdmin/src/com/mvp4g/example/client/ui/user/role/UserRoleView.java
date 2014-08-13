@@ -10,7 +10,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
-import com.mvp4g.client.view.ReverseViewInterface;
 import com.mvp4g.example.client.Constants;
 import com.mvp4g.example.client.resources.Resources;
 import com.mvp4g.example.client.widgets.FlowLayoutPanel;
@@ -23,7 +22,6 @@ import java.util.List;
 public class UserRoleView
     extends ResizeComposite
     implements IUserRoleView,
-               ReverseViewInterface<IUserRoleView.IUserRolePresenter>,
                ProvidesResize,
                RequiresResize {
 
