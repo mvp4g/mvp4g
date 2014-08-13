@@ -28,24 +28,29 @@ import com.mvp4g.client.Mvp4gModule;
  * This application demonstrates how to construct a relatively complex user interface, similar to
  * many common email readers. It has no back-end, populating its components with hard-coded data.
  */
-public class MailEntryPoint implements EntryPoint {
+public class MailEntryPoint
+    implements EntryPoint {
 
-	interface GlobalResources extends ClientBundle {
-		@NotStrict
-		@Source( "resources/global.css" )
-		CssResource css();
-	}
+  /**
+   * This method constructs the application user interface by instantiating controls and hooking
+   * up event handler.
+   */
+  public void onModuleLoad() {
+    // Inject global styles.
+    GWT.<GlobalResources>create(GlobalResources.class)
+       .css()
+       .ensureInjected();
 
-	/**
-	 * This method constructs the application user interface by instantiating controls and hooking
-	 * up event handler.
-	 */
-	public void onModuleLoad() {
-		// Inject global styles.
-		GWT.<GlobalResources> create( GlobalResources.class ).css().ensureInjected();
+    Mvp4gModule module = (Mvp4gModule) GWT.create(Mvp4gModule.class);
+    module.createAndStartModule();
+    RootLayoutPanel.get()
+                   .add((Widget) module.getStartView());
+  }
 
-		Mvp4gModule module = (Mvp4gModule)GWT.create( Mvp4gModule.class );
-		module.createAndStartModule();
-		RootLayoutPanel.get().add( (Widget)module.getStartView() );
-	}
+  interface GlobalResources
+      extends ClientBundle {
+    @NotStrict
+    @Source("resources/global.css")
+    CssResource css();
+  }
 }
