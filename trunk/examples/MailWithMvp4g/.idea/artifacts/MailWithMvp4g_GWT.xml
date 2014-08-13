@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact name="MailWithMvp4g:GWT">
+    <output-path>$PROJECT_DIR$/output</output-path>
+    <root id="root">
+      <element id="gwt-compiler-output" facet="MailWithMvp4g/gwt/GWT" />
+    </root>
+  </artifact>
+</component>

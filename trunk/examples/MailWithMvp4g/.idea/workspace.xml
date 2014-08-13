@@ -2,12 +2,91 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="4cfde1f1-5660-4d40-9576-a8c5760a2950" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/war/WEB-INF/appengine-web.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/google/gwt/user/client" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/detail" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/detail" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/mobile/detail" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/google" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/google/gwt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/list" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/list" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/mobile/list" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/mobile" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/output" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shell" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/mobile/shell" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shortcuts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shortcuts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/mobile/shortcuts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/top" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/top" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/mobile/top" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/google/gwt/user" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/MailWithMvp4g_GWT.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/NavBarPresenter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/INavBarView.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/NavBarView.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/NavBarView.ui.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/MailDetailPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/detail/MailDetailPresenter.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/MailListPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/list/MailListPresenter.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/MailPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/ShellPresenter.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/ShortCutsPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shortcuts/ShortCutsPresenter.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/TopPresenter.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/top/TopPresenter.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/IMailDetailView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/detail/IMailDetailView.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/IMailListView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/list/IMailListView.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/IMailView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/IShellView.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/IShortCutsView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shortcuts/IShortCutsView.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/interfaces/ITopView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/top/ITopView.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailDetailView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/detail/MailDetailView.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailDetailView.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/detail/MailDetailView.ui.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailListView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/list/MailListView.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailListView.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/list/MailListView.ui.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shell/ShellView.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/MailView.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shell/ShellView.ui.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/ShortcutsView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shortcuts/ShortcutsView.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/ShortcutsView.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shortcuts/ShortcutsView.ui.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/TopView.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/top/TopView.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/TopView.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/top/TopView.ui.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/AboutDialog.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/AboutDialog.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/AboutDialog.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/AboutDialog.ui.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/ContactPopup.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/ContactPopup.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/ContactPopup.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/ContactPopup.ui.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Contacts.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/Contacts.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Contacts.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/Contacts.ui.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Mailboxes.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/Mailboxes.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/ReverseComposite.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/ReverseComposite.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/ReverseResizeComposite.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/ReverseResizeComposite.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Tasks.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/Tasks.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/Tasks.ui.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/Tasks.ui.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/bean/Contact.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/bean/Contact.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/MailEntryPoint.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/MailEntryPoint.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/MailEventBus.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/MailEventBus.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/bean/MailItem.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/bean/MailItem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/MailItems.java" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/MailItems.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/MailWithMvp4g.gwt.xml" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/MailWithMvp4g.gwt.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MailWithMvp4g.iml" afterPath="$PROJECT_DIR$/MailWithMvp4g.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/MailWithMvp4g_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/MailWithMvp4g_war_exploded.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/SDM___ApplicationServer.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/SDM___ApplicationServer.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/SDM___CodeServer.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/SDM___CodeServer.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/resources/global.css" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/resources/global.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/drafts.png" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/drafts.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/home.png" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/home.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/inbox.png" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/inbox.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/noimage.png" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/noimage.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/sent.png" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/sent.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/templates.png" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/templates.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/mvp4g/example/client/view/widget/trash.png" afterPath="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/trash.png" />
     </list>
     <ignored path="MailWithMvp4g.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -72,58 +151,148 @@
     <favorites_list name="MailWithMvp4g" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3689">
-              <caret line="138" column="30" selection-start-line="138" selection-start-column="30" selection-end-line="138" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="web.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/war/WEB-INF/web.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="323">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="appengine-web.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/war/WEB-INF/appengine-web.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.21693735" vertical-offset="0" max-vertical-offset="862">
-              <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MailEventBus.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/MailEventBus.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="578" max-vertical-offset="680">
-              <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MailWithMvp4g.iml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/MailWithMvp4g.iml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="1343">
-              <caret line="24" column="19" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf>
+          <file leaf-file-name="MailListPresenter.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/list/MailListPresenter.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1394">
+                  <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Contacts.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/Contacts.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="731">
+                  <caret line="53" column="12" selection-start-line="53" selection-start-column="12" selection-end-line="53" selection-end-column="12" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Tasks.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/Tasks.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="714">
+                  <caret line="51" column="12" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="12" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Tasks.ui.xml" pinned="false" current="true" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/Tasks.ui.xml">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.11512415" vertical-offset="0" max-vertical-offset="886">
+                  <caret line="6" column="64" selection-start-line="6" selection-start-column="64" selection-end-line="6" selection-end-column="64" />
+                  <folding>
+                    <marker date="1407918841000" expanded="true" signature="223:277" placeholder="{...}" />
+                    <marker date="1407918841000" expanded="true" signature="289:318" placeholder="{...}" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Mailboxes.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/Mailboxes.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="1972">
+                  <caret line="82" column="14" selection-start-line="82" selection-start-column="14" selection-end-line="82" selection-end-column="14" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ReverseResizeComposite.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/ReverseResizeComposite.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="459">
+                  <caret line="6" column="27" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="27" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ShellView.ui.xml" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shell/ShellView.ui.xml">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="-7.418182" vertical-offset="0" max-vertical-offset="561">
+                  <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="IMailListView.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/list/IMailListView.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
+                  <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="MailEventBus.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/MailEventBus.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="697">
+                  <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="MailListView.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/list/MailListView.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="810" max-vertical-offset="3383">
+                  <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+                  <folding>
+                    <element signature="e#2384#2567#0" expanded="true" />
+                    <element signature="e#2583#2931#0" expanded="true" />
+                    <element signature="e#3012#3194#0" expanded="true" />
+                    <element signature="e#3210#3558#0" expanded="true" />
+                    <element signature="e#3640#3824#0" expanded="true" />
+                    <element signature="e#3840#4188#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="SplitLayoutPanel.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-servlet/2.6.1/gwt-servlet-2.6.1-sources.jar!/com/google/gwt/user/client/ui/SplitLayoutPanel.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8024">
+                  <caret line="57" column="45" selection-start-line="57" selection-start-column="45" selection-end-line="57" selection-end-column="45" />
+                  <folding>
+                    <element signature="e#8034#8195#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="DockLayoutPanel.java" pinned="false" current="false" current-in-tab="true">
+            <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-servlet/2.6.1/gwt-servlet-2.6.1-sources.jar!/com/google/gwt/user/client/ui/DockLayoutPanel.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.29575893" vertical-offset="1656" max-vertical-offset="10200">
+                  <caret line="132" column="5" selection-start-line="132" selection-start-column="5" selection-end-line="132" selection-end-column="5" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -134,8 +303,45 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/MailWithMvp4g.iml" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/war/WEB-INF/appengine-web.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/MailPresenter.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/IMailView.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shell/MailView.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shell/MailListView.ui.xml" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/presenter/NavBarPresenter.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/AboutDialog.ui.xml" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/top/TopView.ui.xml" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/ContactPopup.ui.xml" />
+        <option value="localhost:9876/sourcemaps/mailwithmvp4g/gen/com/mvp4g/example/client/views/desktop/shell/ShellView_BinderImpl.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/top/ITopView.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/top/TopPresenter.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/IShellView.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/detail/MailDetailPresenter.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/detail/IMailDetailView.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/ShellPresenter.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/top/TopView.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shortcuts/IShortCutsView.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/navigation/NavBarPresenter.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shortcuts/ShortCutsPresenter.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/MailWithMvp4g.gwt.xml" />
+        <option value="/mailwithmvp4g-0.js" />
+        <option value="localhost:9876/sourcemaps/mailwithmvp4g/gen/com/mvp4g/example/client/ui/shortcuts/com_mvp4g_client_Mvp4gModuleImpl_com_mvp4g_client_Mvp4gModuleGinjector_com_mvp4g_client_Mvp4gModuleGinjectorGinjector_fragment.java" />
+        <option value="localhost:9876/sourcemaps/mailwithmvp4g/gen/com/mvp4g/client/com_mvp4g_client_Mvp4gModuleImpl_com_mvp4g_client_Mvp4gModuleGinjectorImpl.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shortcuts/ShortcutsView.ui.xml" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shortcuts/ShortcutsView.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/detail/MailDetailView.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/bean/MailItem.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/navigation/NavBarView.ui.xml" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shell/ShellView.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/MySplitLayoutPanel.java" />
+        <option value="$PROJECT_DIR$/src/com/google/gwt/user/client/ui/MySplitLayoutPanel.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/list/MailListView.ui.xml" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shell/ShellView.ui.xml" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/MailEventBus.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/list/IMailListView.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/list/MailListView.java" />
+        <option value="$PROJECT_DIR$/src/com/mvp4g/example/client/ui/list/MailListPresenter.java" />
       </list>
     </option>
   </component>
@@ -149,6 +355,7 @@
     </option>
     <option name="importingSettings">
       <MavenImportingSettings>
+        <option name="excludeTargetFolder" value="false" />
         <option name="importAutomatically" value="true" />
       </MavenImportingSettings>
     </option>
@@ -208,7 +415,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
-    <option name="STATE" value="2" />
+    <option name="STATE" value="0" />
   </component>
   <component name="ProjectStructureProblems">
     <ignored-problems>
@@ -237,128 +444,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MailWithMvp4g" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MailWithMvp4g" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MailWithMvp4g" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MailWithMvp4g" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="war" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MailWithMvp4g" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MailWithMvp4g" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="war" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="WEB-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MailWithMvp4g" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MailWithMvp4g" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MailWithMvp4g" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MailWithMvp4g" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="example" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MailWithMvp4g" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MailWithMvp4g" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="example" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MailWithMvp4g" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MailWithMvp4g" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="example" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -371,7 +456,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="options.lastSelected" value="MavenSettings" />
+    <property name="options.lastSelected" value="reference.settings.project.maven.importing" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
@@ -386,10 +471,24 @@
     <property name="FullScreen" value="false" />
     <property name="LayoutCode.rearrangeEntriesXML" value="true" />
     <property name="GOOGLE_APP_ENGINE_ACCOUNT_EMAIL" value="frank.hossfeld@googlemail.com" />
+    <property name="LayoutCode.rearrangeEntriesJava" value="true" />
+    <property name="LayoutCode.rearrangeEntries" value="true" />
+    <property name="OverrideImplement.combined" value="true" />
+    <property name="OverrideImplement.overriding.sorted" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.mvp4g.example.client.widgets" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/war/WEB-INF" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/navigation" />
+      <recent name="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shortcuts" />
+      <recent name="$PROJECT_DIR$/src/com/mvp4g/example/client/widgets" />
+      <recent name="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/detail" />
+      <recent name="$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/top" />
     </key>
   </component>
   <component name="RunManager" selected="JavaScript Debug.SDM - JavaScript">
@@ -551,36 +650,36 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="51" y="22" width="2509" height="1418" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32880846" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32880846" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39958593" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2933635" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3989442" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2933635" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12322659" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19821645" sideWeight="0.50053364" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12322659" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19821645" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19821645" sideWeight="0.49839914" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295626" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295626" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -600,163 +699,412 @@
       <TodoPanelSettings />
     </option>
     <MESSAGE value="- Remove Lib-Folder&#10;- Preparement for Super-Dev-Mode (Run Configurations)&#10;- pom.xml Cleanup &#10;- Adding workDir&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Remove Lib-Folder&#10;- Preparement for Super-Dev-Mode (Run Configurations)&#10;- pom.xml Cleanup &#10;- Adding workDir&#10;" />
+    <MESSAGE value="- prepare for app-engine" />
+    <MESSAGE value="update mail example, prepare for multi-design" />
+    <option name="LAST_COMMIT_MESSAGE" value="update mail example, prepare for multi-design" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="17" />
+    </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/war/WEB-INF/web.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1896" max-vertical-offset="3689">
-          <caret line="141" column="21" selection-start-line="141" selection-start-column="21" selection-end-line="141" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/MailEventBus.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="578" max-vertical-offset="680">
-          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MailWithMvp4g.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="374" max-vertical-offset="2159">
-          <caret line="22" column="19" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1020" max-vertical-offset="3689">
-          <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/MailEventBus.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="578" max-vertical-offset="680">
-          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MailWithMvp4g.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="391" max-vertical-offset="2159">
-          <caret line="23" column="21" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="488" max-vertical-offset="3255">
-          <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/MailEventBus.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="600">
-          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MailWithMvp4g.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="1905">
-          <caret line="23" column="21" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3255">
-          <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/MailEventBus.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="450">
-          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MailWithMvp4g.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1905">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="11925">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1300">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/MailEventBus.java">
+    <entry file="file://$PROJECT_DIR$/war/WEB-INF/appengine-web.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="450">
-          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="289">
+          <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4114">
+          <caret line="14" column="63" selection-start-line="14" selection-start-column="63" selection-end-line="14" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/AboutDialog.ui.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="799">
+          <caret line="4" column="33" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/ContactPopup.ui.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="799">
+          <caret line="5" column="34" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="http://localhost:9876/sourcemaps/mailwithmvp4g/gen/com/mvp4g/example/client/views/desktop/shell/ShellView_BinderImpl.java">
+      <provider selected="true" editor-type-id="httpFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/IShellView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
+          <caret line="12" column="19" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/top/TopPresenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
+          <caret line="16" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/detail/IMailDetailView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
+          <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shell/ShellPresenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="561">
+          <caret line="17" column="23" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/top/ITopView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
+          <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/top/TopView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="918">
+          <caret line="36" column="18" selection-start-line="36" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/detail/MailDetailPresenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="527">
+          <caret line="42" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="http://localhost:9876/sourcemaps/mailwithmvp4g/gen/com/mvp4g/example/client/views/desktop/detail/MailDetailView_BinderImpl.java">
+      <provider selected="true" editor-type-id="httpFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shortcuts/IShortCutsView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+          <caret line="8" column="65" selection-start-line="8" selection-start-column="65" selection-end-line="8" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/top/TopView.ui.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="816">
+          <caret line="8" column="36" selection-start-line="8" selection-start-column="36" selection-end-line="8" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/MailWithMvp4g.gwt.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="698">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MailWithMvp4g.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="1343">
-          <caret line="24" column="19" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1088">
+          <caret line="24" column="69" selection-start-line="24" selection-start-column="69" selection-end-line="24" selection-end-column="69" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-servlet/2.6.1/gwt-servlet-2.6.1-sources.jar!/com/google/gwt/user/client/ui/SimplePanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3689">
-          <caret line="138" column="30" selection-start-line="138" selection-start-column="30" selection-end-line="138" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="551" max-vertical-offset="2822">
+          <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#4271#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="http://localhost:9876/sourcemaps/mailwithmvp4g/gen/com/mvp4g/client/com_mvp4g_client_Mvp4gModuleImpl_com_mvp4g_client_Mvp4gModuleGinjectorImpl.java">
+      <provider selected="true" editor-type-id="httpFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="http://localhost:9876/sourcemaps/mailwithmvp4g/gen/com/mvp4g/example/client/ui/shortcuts/com_mvp4g_client_Mvp4gModuleImpl_com_mvp4g_client_Mvp4gModuleGinjector_com_mvp4g_client_Mvp4gModuleGinjectorGinjector_fragment.java">
+      <provider selected="true" editor-type-id="httpFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-servlet/2.6.1/gwt-servlet-2.6.1-sources.jar!/com/google/gwt/core/client/impl/Impl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1265" max-vertical-offset="7072">
+          <caret line="107" column="0" selection-start-line="107" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/war/WEB-INF/web.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/shortcuts/ShortCutsPresenter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1300">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="330" max-vertical-offset="1275">
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/war/WEB-INF/appengine-web.xml">
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-servlet/2.6.1/gwt-servlet-2.6.1-sources.jar!/com/google/gwt/user/client/ui/ResizeComposite.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21693735" vertical-offset="0" max-vertical-offset="862">
-          <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
+          <caret line="22" column="22" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="37" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-servlet/2.6.1/gwt-servlet-2.6.1-sources.jar!/com/google/gwt/user/client/ui/FlowPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1139">
+          <caret line="28" column="38" selection-start-line="28" selection-start-column="38" selection-end-line="28" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-servlet/2.6.1/gwt-servlet-2.6.1-sources.jar!/com/google/gwt/user/client/ui/ComplexPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3723">
+          <caret line="25" column="22" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="34" />
+          <folding>
+            <element signature="e#6471#6587#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shortcuts/ShortcutsView.ui.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="391" max-vertical-offset="1428">
+          <caret line="46" column="75" selection-start-line="46" selection-start-column="75" selection-end-line="46" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shortcuts/ShortcutsView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="493" max-vertical-offset="1564">
+          <caret line="90" column="13" selection-start-line="90" selection-start-column="13" selection-end-line="90" selection-end-column="13" />
+          <folding>
+            <element signature="e#2507#2686#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/MailEntryPoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="697">
+          <caret line="44" column="34" selection-start-line="44" selection-start-column="34" selection-end-line="44" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/MailItems.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17685306" vertical-offset="0" max-vertical-offset="3451">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/bean/MailItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="305" max-vertical-offset="1513">
+          <caret line="47" column="9" selection-start-line="47" selection-start-column="9" selection-end-line="47" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-servlet/2.6.1/gwt-servlet-2.6.1-sources.jar!/com/google/gwt/user/client/ui/SimpleLayoutPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.15795587" vertical-offset="0" max-vertical-offset="1666">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/detail/MailDetailView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1037">
+          <caret line="42" column="10" selection-start-line="42" selection-start-column="10" selection-end-line="42" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/detail/MailDetailView.ui.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="91" max-vertical-offset="952">
+          <caret line="31" column="40" selection-start-line="31" selection-start-column="40" selection-end-line="31" selection-end-column="40" />
+          <folding>
+            <marker date="1407918639000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1407918639000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1407918639000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1407918639000" expanded="true" signature="-1:-1" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-servlet/2.6.1/gwt-servlet-2.6.1-sources.jar!/com/google/gwt/event/logical/shared/ResizeEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="129" max-vertical-offset="1666">
+          <caret line="34" column="26" selection-start-line="34" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-servlet/2.6.1/gwt-servlet-2.6.1-sources.jar!/com/google/gwt/user/client/ui/SplitLayoutPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8024">
+          <caret line="57" column="45" selection-start-line="57" selection-start-column="45" selection-end-line="57" selection-end-column="45" />
+          <folding>
+            <element signature="e#8034#8195#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-servlet/2.6.1/gwt-servlet-2.6.1-sources.jar!/com/google/gwt/user/client/ui/DockLayoutPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.29575893" vertical-offset="1656" max-vertical-offset="10200">
+          <caret line="132" column="5" selection-start-line="132" selection-start-column="5" selection-end-line="132" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shell/ShellView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="74" max-vertical-offset="935">
+          <caret line="24" column="10" selection-start-line="24" selection-start-column="10" selection-end-line="24" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/list/MailListView.ui.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="372" max-vertical-offset="1105">
+          <caret line="57" column="4" selection-start-line="57" selection-start-column="4" selection-end-line="57" selection-end-column="5" />
+          <folding>
+            <marker date="1407940332000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1407940332000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1407940332000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1407940332000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1407940332000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1407940332000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1407940332000" expanded="true" signature="-1:-1" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/shell/ShellView.ui.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.418182" vertical-offset="0" max-vertical-offset="561">
+          <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/MailEventBus.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="697">
+          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/Mailboxes.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="1972">
+          <caret line="82" column="14" selection-start-line="82" selection-start-column="14" selection-end-line="82" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/ReverseResizeComposite.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="459">
+          <caret line="6" column="27" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/list/IMailListView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
+          <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/views/desktop/list/MailListView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="810" max-vertical-offset="3383">
+          <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+          <folding>
+            <element signature="e#2384#2567#0" expanded="true" />
+            <element signature="e#2583#2931#0" expanded="true" />
+            <element signature="e#3012#3194#0" expanded="true" />
+            <element signature="e#3210#3558#0" expanded="true" />
+            <element signature="e#3640#3824#0" expanded="true" />
+            <element signature="e#3840#4188#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/ui/list/MailListPresenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1394">
+          <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/Contacts.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="731">
+          <caret line="53" column="12" selection-start-line="53" selection-start-column="12" selection-end-line="53" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/Tasks.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="714">
+          <caret line="51" column="12" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/mvp4g/example/client/widgets/Tasks.ui.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.11512415" vertical-offset="0" max-vertical-offset="886">
+          <caret line="6" column="64" selection-start-line="6" selection-start-column="64" selection-end-line="6" selection-end-column="64" />
+          <folding>
+            <marker date="1407918841000" expanded="true" signature="223:277" placeholder="{...}" />
+            <marker date="1407918841000" expanded="true" signature="289:318" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>

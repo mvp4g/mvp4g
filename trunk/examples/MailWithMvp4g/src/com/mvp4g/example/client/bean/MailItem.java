@@ -20,35 +20,78 @@ package com.mvp4g.example.client.bean;
  */
 public final class MailItem {
 
-	/**
-	 * The sender's name.
-	 */
-	public String sender;
+  /**
+   * The sender's name.
+   */
+  public String sender;
 
-	/**
-	 * The sender's email.
-	 */
-	public String email;
+  /**
+   * The sender's email.
+   */
+  public String email;
 
-	/**
-	 * The email subject line.
-	 */
-	public String subject;
+  /**
+   * The email subject line.
+   */
+  public String subject;
 
-	/**
-	 * The email's HTML body.
-	 */
-	public String body;
+  /**
+   * The email's HTML body.
+   */
+  public String body;
 
-	/**
-	 * Read flag.
-	 */
-	public boolean read;
+  /**
+   * Read flag.
+   */
+  public boolean read;
 
-	public MailItem( String sender, String email, String subject, String body ) {
-		this.sender = sender;
-		this.email = email;
-		this.subject = subject;
-		this.body = body;
-	}
+  public MailItem(String sender,
+                  String email,
+                  String subject,
+                  String body) {
+    this.sender = sender;
+    this.email = email;
+    this.subject = subject;
+    this.body = body;
+  }
+
+  public String getSender() {
+    return sender;
+  }
+
+  public void setSender(String sender) {
+    this.sender = sender;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getSubject() {
+    return subject;
+  }
+
+  public void setSubject(String subject) {
+    this.subject = subject;
+  }
+
+  public String getBody() {
+    return body;
+  }
+
+  public void setBody(String body) {
+    this.body = body;
+  }
+
+  public boolean isRead() {
+    return read;
+  }
+
+  public void setRead(boolean read) {
+    this.read = read;
+  }
 }

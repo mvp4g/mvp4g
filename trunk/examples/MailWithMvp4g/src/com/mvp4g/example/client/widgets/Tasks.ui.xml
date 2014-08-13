@@ -1,0 +1,20 @@
+<ui:UiBinder
+    xmlns:ui='urn:ui:com.google.gwt.uibinder'
+    xmlns:g='urn:import:com.google.gwt.user.client.ui'
+    >
+
+  <ui:style field='style'
+            type='com.mvp4g.example.client.widgets.Tasks.Style'>
+    .tasks {
+      padding: 0.5em;
+      line-height: 150%;
+    }
+
+    .item {
+      display: block;
+    }
+  </ui:style>
+
+  <g:FlowPanel styleName='{style.tasks}'>
+  </g:FlowPanel>
+</ui:UiBinder>
