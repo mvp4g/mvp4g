@@ -1,13 +1,15 @@
 package com.mvp4g.example.client.ui.user.role;
 
 import com.google.gwt.user.client.ui.IsWidget;
+import com.mvp4g.client.view.ReverseViewInterface;
 import com.mvp4g.example.shared.dto.UserBean;
 
 /**
  * Created by hoss on 01.08.14.
  */
 public interface IUserRoleView
-    extends IsWidget {
+    extends IsWidget,
+            ReverseViewInterface<IUserRoleView.IUserRolePresenter> {
 
   public void clear();
 

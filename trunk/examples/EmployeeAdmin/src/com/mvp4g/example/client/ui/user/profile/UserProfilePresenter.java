@@ -10,7 +10,7 @@ import com.mvp4g.example.client.service.UserServiceAsync;
 import com.mvp4g.example.shared.dto.UserBean;
 
 
-@Presenter(view = UserProfileView.class)
+@Presenter(view = IUserProfileView.class)
 public class UserProfilePresenter
     extends BasePresenter<IUserProfileView, EmployeeAdminEventBus>
     implements IUserProfileView.IUserProfilePresenter {

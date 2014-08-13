@@ -2,13 +2,11 @@ package com.mvp4g.example.client.ui.shell;
 
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.*;
-import com.mvp4g.client.view.ReverseViewInterface;
 import com.mvp4g.example.client.widgets.FlowLayoutPanel;
 
 public class ShellView
     extends ResizeComposite
     implements IShellView,
-               ReverseViewInterface<IShellView.IShellPresenter>,
                ProvidesResize,
                RequiresResize {
 

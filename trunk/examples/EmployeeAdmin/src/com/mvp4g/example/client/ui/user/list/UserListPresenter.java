@@ -11,7 +11,7 @@ import com.mvp4g.example.shared.dto.UserBean;
 
 import java.util.List;
 
-@Presenter(view = UserListView.class)
+@Presenter(view = IUserListView.class)
 public class UserListPresenter
     extends BasePresenter<IUserListView, EmployeeAdminEventBus>
     implements IUserListView.IUserListPresenter {

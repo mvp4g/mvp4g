@@ -10,7 +10,6 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
-import com.mvp4g.client.view.ReverseViewInterface;
 import com.mvp4g.example.client.resources.Resources;
 import com.mvp4g.example.client.widgets.FlowLayoutPanel;
 import com.mvp4g.example.shared.dto.UserBean;
@@ -20,7 +19,6 @@ import java.util.List;
 public class UserListView
     extends ResizeComposite
     implements IUserListView,
-               ReverseViewInterface<IUserListView.IUserListPresenter>,
                ProvidesResize,
                RequiresResize {
 
