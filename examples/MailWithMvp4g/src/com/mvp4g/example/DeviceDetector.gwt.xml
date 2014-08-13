@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- Defines the formfactor property and its provider function. -->
+<!-- Defines the deviceDetectors property and its provider function. -->
+<!-- Thanks to Google FormFactor.gwt.xml! :-)                        -->
 <module>
 
   <!-- Determine if we are in a mobile browser. -->
