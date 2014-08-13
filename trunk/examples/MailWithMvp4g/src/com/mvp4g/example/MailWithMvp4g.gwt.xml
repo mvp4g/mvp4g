@@ -15,6 +15,8 @@
 
   <!-- Other module inherits                                      -->
   <inherits name='com.mvp4g.Mvp4gModule'/>
+  <inherits name='com.mvp4g.example.DeviceDetector'/>
+
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.mvp4g.example.client.MailEntryPoint'/>
