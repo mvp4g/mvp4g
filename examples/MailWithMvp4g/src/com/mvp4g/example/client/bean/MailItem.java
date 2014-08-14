@@ -45,6 +45,9 @@ public final class MailItem {
    */
   public boolean read;
 
+  public MailItem() {
+  }
+
   public MailItem(String sender,
                   String email,
                   String subject,

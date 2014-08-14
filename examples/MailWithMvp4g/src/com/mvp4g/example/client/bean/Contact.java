@@ -4,6 +4,9 @@ public class Contact {
   private String email;
   private String name;
 
+  public Contact() {
+  }
+
   public Contact(String name,
                  String email) {
     this.name = name;
