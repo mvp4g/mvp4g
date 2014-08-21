@@ -24,6 +24,7 @@
     <guice.version>3.0</guice.version>
     <javax.inject.version>1</javax.inject.version>
     <mvp4g.version>1.5.0</mvp4g.version>
+    <mgwt.version>2.0.0-beta2</mgwt.version>
 
     <project.build.sourceDirectory>/src</project.build.sourceDirectory>
     <project.build.testSourceDirectory>/test</project.build.testSourceDirectory>
@@ -115,6 +116,12 @@
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
       <version>${javax.inject.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.googlecode.mgwt</groupId>
+      <artifactId>mgwt</artifactId>
+      <version>${mgwt.version}</version>
     </dependency>
 
   </dependencies>
