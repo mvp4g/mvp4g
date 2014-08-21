@@ -17,6 +17,7 @@
   <inherits name='com.mvp4g.Mvp4gModule'/>
   <inherits name='com.mvp4g.example.DeviceDetector'/>
 
+  <inherits name='com.googlecode.mgwt.MGWT'/>
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.mvp4g.example.client.MailEntryPoint'/>
