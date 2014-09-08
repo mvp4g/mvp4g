@@ -50,7 +50,7 @@
   <replace-with class="com.mvp4g.example.client.views.desktop.navigation.NavBarView">
     <when-type-is class="com.mvp4g.example.client.ui.navigation.INavBarView"/>
   </replace-with>
-  <!-- Table                                                      -->
+  <!-- Tablet                                                     -->
   <replace-with class="com.mvp4g.example.client.views.desktop.shell.ShellView">
     <when-property-is name="deviceDetector" value="tablet"/>
     <when-type-is class="com.mvp4g.example.client.ui.shell.IShellView"/>

@@ -15,7 +15,11 @@
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
           <element id="library" level="project" name="Maven: com.google.inject.extensions:guice-assistedinject:3.0" />
           <element id="library" level="project" name="Maven: com.google.gwt:gwt-servlet:2.6.1" />
+          <element id="library" level="project" name="Maven: com.googlecode.mgwt:mgwt:2.0.0-rc1" />
         </element>
+      </element>
+      <element id="directory" name=".">
+        <element id="gwt-compiler-output" facet="MailWithMvp4g/gwt/GWT" />
       </element>
     </root>
   </artifact>

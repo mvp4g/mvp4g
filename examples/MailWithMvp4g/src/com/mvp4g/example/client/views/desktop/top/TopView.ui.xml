@@ -18,10 +18,12 @@
       text-align: right;
     }
 
-     @sprite .logo {
+    @sprite .logo {
       gwt-image: 'logo';
       position: absolute;
+      margin-top: 10px;
     }
+
   </ui:style>
 
   <g:HTMLPanel>
