@@ -29,7 +29,7 @@
     <project.build.sourceDirectory>/src</project.build.sourceDirectory>
     <project.build.testSourceDirectory>/test</project.build.testSourceDirectory>
 
-    <gwt.output>${basedir}/output</gwt.output>
+    <gwt.output>${basedir}/war</gwt.output>
     <gwt.gen>genSources</gwt.gen>
     <gwt.extra>extra</gwt.extra>
   </properties>
@@ -63,6 +63,15 @@
       <name>Lukas Schmidt</name>
     </contributor>
   </contributors>
+
+  <repositories>
+    <repository>
+      <id>gwt-sonatype-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/google</url>
+      <snapshots><enabled>true</enabled></snapshots>
+      <releases><enabled>true</enabled></releases>
+    </repository>
+  </repositories>
 
   <dependencies>
     <dependency>
@@ -197,10 +206,11 @@
           <webAppSourceDirectory>${basedir}/target/${project.build.finalName}</webAppSourceDirectory>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.4</version>
+        <version>2.1.1</version>
         <configuration>
           <warSourceDirectory>${basedir}/war</warSourceDirectory>
         </configuration>
@@ -223,8 +233,8 @@
               <compileReport>true</compileReport>
               <warSourceDirectory>${gwt.war}</warSourceDirectory>
               <webappDirectory>${gwt.output}</webappDirectory>
-              <gen>${gwt.output}/${gwt.gen}</gen>
-              <extra>${gwt.output}/${gwt.extra}</extra>
+              <gen>${gwt.baseDir}/${gwt.gen}</gen>
+              <extra>${gwt.baseDir}/${gwt.extra}</extra>
               <fragmentCount>8</fragmentCount>
               <extraJvmArgs>-Xms1G -Xmx1G -Xss1024k -XX:MaxPermSize=1024m -Dgwt.persistentunitcache=false</extraJvmArgs>
               <localWorkers>7</localWorkers>

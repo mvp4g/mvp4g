@@ -2,8 +2,8 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:mvp4g="urn:import:com.google.gwt.user.client.ui">
 
-  <g:DockLayoutPanel unit='EM'>
-    <g:north size='5'>
+  <g:DockLayoutPanel unit='PX'>
+    <g:north size='95'>
       <g:SimpleLayoutPanel ui:field='topPanel'/>
     </g:north>
 
