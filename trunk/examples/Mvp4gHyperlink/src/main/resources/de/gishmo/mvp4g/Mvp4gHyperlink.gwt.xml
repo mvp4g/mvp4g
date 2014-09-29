@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='Mvp4gHyperlink'>
+  <!-- Inherit the core Web Toolkit stuff.                        -->
+  <inherits name='com.google.gwt.user.User' />
+
+  <!-- We need the JUnit module in the main module,               -->
+  <!-- otherwise eclipse complains (Google plugin bug?)           -->
+  <!--<inherits name='com.google.gwt.junit.JUnit' />-->
+
+  <!-- Inherit the default GWT style sheet.  You can change       -->
+  <!-- the theme of your GWT application by uncommenting          -->
+  <!-- any one of the following lines.                            -->
+  <inherits name='com.google.gwt.user.theme.standard.Standard' />
+  <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
+  <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
+
+  <!-- Other module inherits                                      -->
+  <inherits name='com.mvp4g.Mvp4gModule'/>
+  <inherits name="com.google.gwt.resources.Resources" />
+
+  <!-- Specify the app entry point class.                         -->
+  <entry-point class='de.gishmo.mvp4g.client.Mvp4gHyperlink' />
+
+  <!-- Specify the paths for translatable code                    -->
+  <source path='client' />
+  <source path='shared' />
+
+
+  <replace-with class="de.gishmo.mvp4g.client.ui.shell.ShellView">
+    <when-type-is class="de.gishmo.mvp4g.client.ui.shell.IShellView"/>
+  </replace-with>
+
+  <replace-with class="de.gishmo.mvp4g.client.ui.header.HeaderView">
+    <when-type-is class="de.gishmo.mvp4g.client.ui.header.IHeaderView"/>
+  </replace-with>
+
+  <replace-with class="de.gishmo.mvp4g.client.ui.navigation.NavigationView">
+    <when-type-is class="de.gishmo.mvp4g.client.ui.navigation.INaviationView"/>
+  </replace-with>
+
+  <replace-with class="de.gishmo.mvp4g.client.ui.page01.Page01View">
+    <when-type-is class="de.gishmo.mvp4g.client.ui.page01.IPage01View"/>
+  </replace-with>
+
+  <replace-with class="de.gishmo.mvp4g.client.ui.page02.Page02View">
+    <when-type-is class="de.gishmo.mvp4g.client.ui.page02.IPage02View"/>
+  </replace-with>
+
+  <replace-with class="de.gishmo.mvp4g.client.ui.page03.Page03View">
+    <when-type-is class="de.gishmo.mvp4g.client.ui.page03.IPage03View"/>
+  </replace-with>
+
+  <replace-with class="de.gishmo.mvp4g.client.ui.page04.Page04View">
+    <when-type-is class="de.gishmo.mvp4g.client.ui.page04.IPage04View"/>
+  </replace-with>
+
+  <replace-with class="de.gishmo.mvp4g.client.ui.page05.Page05View">
+    <when-type-is class="de.gishmo.mvp4g.client.ui.page05.IPage05View"/>
+  </replace-with>
+
+  <replace-with class="de.gishmo.mvp4g.client.ui.page06.Page06View">
+    <when-type-is class="de.gishmo.mvp4g.client.ui.page06.IPage06View"/>
+  </replace-with>
+
+
+  <!-- Super Dev Mode                                             -->
+  <add-linker name="xsiframe"/>
+  <!--<set-configuration-property name="devModeRedirectEnabled" value="true"/>-->
+
+  <!--<set-configuration-property name="gwt.superdevmode" value="on"/>-->
+  <!--<set-configuration-property name="generatorResultCachingEnabled" value="true"/>-->
+
+  <set-configuration-property name="devModeUrlWhitelistRegexp" value="http://(localhost|127\.0\.0\.1)(:\d+)?/.*"/>
+
+</module>

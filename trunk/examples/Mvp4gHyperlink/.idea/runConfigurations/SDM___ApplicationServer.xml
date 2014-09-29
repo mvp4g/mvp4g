@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SDM - ApplicationServer" type="GWT.ConfigurationType" factoryName="GWT Configuration" singleton="true">
+    <module name="mvp4gHyperlink" />
+    <option name="VM_PARAMETERS" value="-Xmx1024m -Dgwt.codeServer.port=9876 " />
+    <option name="RUN_PAGE" value="Mvp4gHyperlink.html" />
+    <option name="GWT_MODULE" value="de.gishmo.mvp4g.Mvp4gHyperlink" />
+    <option name="OPEN_IN_BROWSER" value="false" />
+    <RunnerSettings RunnerId="Run" />
+    <ConfigurationWrapper RunnerId="Run" />
+    <method />
+  </configuration>
+</component>
