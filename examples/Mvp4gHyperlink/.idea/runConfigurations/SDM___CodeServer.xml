@@ -1,0 +1,20 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SDM - CodeServer" type="GWT.ConfigurationType" factoryName="GWT Configuration" singleton="true">
+    <module name="mvp4gHyperlink" />
+    <option name="VM_PARAMETERS" value="-Xmx1024m" />
+    <option name="SHELL_PARAMETERS" value="-port 9876 -workDir &quot;$PROJECT_DIR$/workDir&quot;" />
+    <option name="RUN_PAGE" value="Mvp4gHyperlink.html" />
+    <option name="GWT_MODULE" value="de.gishmo.mvp4g.Mvp4gHyperlink" />
+    <option name="OPEN_IN_BROWSER" value="false" />
+    <option name="USE_SUPER_DEV_MODE" value="true" />
+    <RunnerSettings RunnerId="Debug">
+      <option name="DEBUG_PORT" value="" />
+      <option name="TRANSPORT" value="0" />
+      <option name="LOCAL" value="true" />
+    </RunnerSettings>
+    <RunnerSettings RunnerId="Run" />
+    <ConfigurationWrapper RunnerId="Debug" />
+    <ConfigurationWrapper RunnerId="Run" />
+    <method />
+  </configuration>
+</component>
