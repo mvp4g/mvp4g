@@ -32,4 +32,4 @@ You can test these examples thanks to the [http://mvp4gexsc.appspot.com/ Showcas
 
 [http://www.nimble.com Nimble]: Nimble is a revolutionary Social Relationship Manager that links contacts, calendars and communication to social listening and engagement.
 
-[https://demo.hossfeld-solutions.net/leelaV5/LeelaV5.html Zeitarbeit Pro] (in German): This project illustrates a complete HR product to manage employees, candidates, clients, orders, bills, payrolls... It has been developed by Hossfeld Solutions using Mvp4g and GXT. (User-id: user003, password: pass003)
+[https://demo.hossfeld-solutions.net/leelaV5/s2/logon/Logon.jsp Zeitarbeit Pro] (in German): This project illustrates a complete HR product to manage employees, candidates, clients, orders, bills, payrolls... It has been developed by Hossfeld Solutions using Mvp4g and GXT. (User-id: user003, password: pass003)
