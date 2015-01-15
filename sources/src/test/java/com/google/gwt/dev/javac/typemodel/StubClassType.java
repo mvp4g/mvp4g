@@ -7,7 +7,7 @@ import java.util.Map;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
-import com.mvp4g.util.test_tools.Mvp4gRunAsyncCallbackStub;
+import com.mvp4g.rebind.test_tools.Mvp4gRunAsyncCallbackStub;
 
 public class StubClassType extends JClassType {
 
