@@ -13,8 +13,8 @@ import com.mvp4g.client.Mvp4gLoader;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.EventFilter;
 import com.mvp4g.client.history.HistoryConverter;
-import com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter;
-import com.mvp4g.util.test_tools.annotation.views.SimpleView;
+import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter;
+import com.mvp4g.rebind.test_tools.annotation.views.SimpleView;
 
 public class TypeOracleStub extends TypeOracle {
 
@@ -73,7 +73,7 @@ public class TypeOracleStub extends TypeOracle {
 			}
 			type.addAnnotations( annotations );
 
-			if ( c.getPackage().getName().contains( "com.mvp4g.util.test_tools.annotation" ) ) {
+			if ( c.getPackage().getName().contains( "com.mvp4g.rebind.test_tools.annotation" ) ) {
 				JMethod method = null;
 				String returnType;
 				for ( Method m : c.getDeclaredMethods() ) {

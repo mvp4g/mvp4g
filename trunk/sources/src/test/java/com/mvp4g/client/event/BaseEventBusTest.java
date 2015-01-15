@@ -19,10 +19,10 @@ import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.test_tools.EventFilterStub;
 import com.mvp4g.client.test_tools.Mvp4gModuleStub;
-import com.mvp4g.util.test_tools.annotation.Presenters;
-import com.mvp4g.util.test_tools.annotation.handlers.SimpleEventHandler;
-import com.mvp4g.util.test_tools.annotation.presenters.SimplePresenter;
-import com.mvp4g.util.test_tools.annotation.views.SimpleInjectedView;
+import com.mvp4g.rebind.test_tools.annotation.Presenters;
+import com.mvp4g.rebind.test_tools.annotation.handlers.SimpleEventHandler;
+import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter;
+import com.mvp4g.rebind.test_tools.annotation.views.SimpleInjectedView;
 
 public class BaseEventBusTest {
 
