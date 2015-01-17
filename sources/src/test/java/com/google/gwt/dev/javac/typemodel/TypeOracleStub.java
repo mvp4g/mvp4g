@@ -1,13 +1,5 @@
 package com.google.gwt.dev.javac.typemodel;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.mvp4g.client.Mvp4gLoader;
 import com.mvp4g.client.event.EventBusWithLookup;
@@ -16,94 +8,112 @@ import com.mvp4g.client.history.HistoryConverter;
 import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter;
 import com.mvp4g.rebind.test_tools.annotation.views.SimpleView;
 
-public class TypeOracleStub extends TypeOracle {
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-	private boolean isGWT2 = true;
+public class TypeOracleStub extends TypeOracle {
 
 	@Override
 	public JClassType findType( String name ) {
 
 		JClassType type;
-		if ( "com.google.gwt.core.client.RunAsyncCallback".equals( name ) ) {
-			// if GWT2, return any class as long as type is not null
-			type = ( isGWT2 ) ? findType( Object.class.getName() ) : null;
-		} else {
 
-			type = super.findType( name );
+		type = super.findType( name );
 
-			if ( type == null ) {
-				try {
-					type = addClass( Class.forName( name ) );
-				} catch ( ClassNotFoundException e ) {
-					e.printStackTrace();
-				}
+		if ( type == null ) {
+			try {
+				type = addClass( Class.forName( name ) );
+			} catch ( ClassNotFoundException e ) {
+				e.printStackTrace();
 			}
 		}
 
 		return type;
 	}
 
-	public JGenericType addClass( Class<?> c ) {
+	public JGenericType addClass(Class<?> c) {
 		JGenericType type = null;
-		if ( !c.isArray() ) {
-			JPackage p = getOrCreatePackage( c.getPackage().getName() );
+		if (!c.isArray()) {
+			JPackage p = getOrCreatePackage(c.getPackage()
+																			 .getName());
 			Class<?> enclosingClass = c.getEnclosingClass();
 			JClassType enclosingType = null;
-			if ( enclosingClass != null ) {
-				enclosingType = findType( enclosingClass.getName() );
+			if (enclosingClass != null) {
+				enclosingType = findType(enclosingClass.getName());
 			}
 
-			type = new MyGenericType( this, p, ( enclosingType == null ) ? null : enclosingType.getSimpleSourceName(), c.getSimpleName(),
-					c.isInterface(), new JTypeParameter[0] );
+			type = new MyGenericType(this,
+															 p,
+															 (enclosingType == null) ? null : enclosingType.getSimpleSourceName(),
+															 c.getSimpleName(),
+															 c.isInterface(),
+															 new JTypeParameter[0]);
 
 			Class<?> superClass = c.getSuperclass();
-			if ( superClass != null ) {
-				type.setSuperclass( findType( superClass.getName() ) );
+			if (superClass != null) {
+				type.setSuperclass(findType(superClass.getName()));
 			}
 
-			List<JClassType> implementedInterfaces = getImplementedInterfaces( c );
+			List<JClassType> implementedInterfaces = getImplementedInterfaces(c);
 
-			for ( JClassType implementedInterface : implementedInterfaces ) {
-				type.addImplementedInterface( implementedInterface );
+			for (JClassType implementedInterface : implementedInterfaces) {
+				type.addImplementedInterface(implementedInterface);
 			}
 
 			Map<Class<? extends Annotation>, Annotation> annotations = new HashMap<Class<? extends Annotation>, Annotation>();
-			for ( Annotation a : c.getAnnotations() ) {
-				annotations.put( a.annotationType(), a );
+			for (Annotation a : c.getAnnotations()) {
+				annotations.put(a.annotationType(),
+												a);
 			}
-			type.addAnnotations( annotations );
+			type.addAnnotations(annotations);
 
-			if ( c.getPackage().getName().contains( "com.mvp4g.rebind.test_tools.annotation" ) ) {
+			if (c.getPackage()
+					 .getName()
+					 .contains("com.mvp4g.rebind.test_tools.annotation")) {
 				JMethod method = null;
 				String returnType;
-				for ( Method m : c.getDeclaredMethods() ) {
+				for (Method m : c.getDeclaredMethods()) {
 					annotations = new HashMap<Class<? extends Annotation>, Annotation>();
-					for ( Annotation a : m.getAnnotations() ) {
-						annotations.put( a.annotationType(), a );
+					for (Annotation a : m.getAnnotations()) {
+						annotations.put(a.annotationType(),
+														a);
 					}
 
-					method = new JMethod( type, m.getName(), annotations, null );
-					returnType = m.getReturnType().getCanonicalName();
+					method = new JMethod(type,
+															 m.getName(),
+															 annotations,
+															 null);
+					returnType = m.getReturnType()
+												.getCanonicalName();
 					// if return type not an object, just return object
-					if ( !returnType.contains( "." ) ) {
+					if (!returnType.contains(".")) {
 						returnType = Object.class.getName();
 					}
-					method.setReturnType( findType( returnType ) );
-					if ( m.getModifiers() == Modifier.PUBLIC ) {
-						method.addModifierBits( 0x00000020 );
+					method.setReturnType(findType(returnType));
+					if (m.getModifiers() == Modifier.PUBLIC) {
+						method.addModifierBits(0x00000020);
 					} else {
-						method.addModifierBits( 0x00000010 );
+						method.addModifierBits(0x00000010);
 					}
 
 					Map<Class<? extends Annotation>, Annotation> declaredAnnotations = new HashMap<Class<? extends Annotation>, Annotation>();
-					for ( Class<?> param : m.getParameterTypes() ) {
-						new JParameter( method, findType( param.getName() ), param.getSimpleName(), declaredAnnotations, true );
+					for (Class<?> param : m.getParameterTypes()) {
+						new JParameter(method,
+													 findType(param.getName()),
+													 param.getSimpleName(),
+													 declaredAnnotations,
+													 true);
 					}
 
 				}
 			}
 		} else {
-			type = (JGenericType)findType( Object.class.getCanonicalName() );
+			type = (JGenericType) findType(Object.class.getCanonicalName());
 		}
 
 		return type;
@@ -191,13 +201,4 @@ public class TypeOracleStub extends TypeOracle {
 		}
 
 	}
-
-	/**
-	 * @param isGWT2
-	 *            the isGWT2 to set
-	 */
-	public void setGWT2( boolean isGWT2 ) {
-		this.isGWT2 = isGWT2;
-	}
-
 }

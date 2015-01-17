@@ -21,7 +21,8 @@ import com.mvp4g.rebind.test_tools.annotation.gin.OneGinModule;
 import com.mvp4g.rebind.test_tools.annotation.handlers.EventHandlerWithEvent;
 import com.mvp4g.rebind.test_tools.annotation.handlers.SimpleEventHandler;
 import com.mvp4g.rebind.test_tools.annotation.history_converters.HistoryConverterForEvent;
-import com.mvp4g.rebind.test_tools.annotation.history_converters.SimpleHistoryConverter;
+import com.mvp4g.rebind.test_tools.annotation.history_converters.SimpleHistoryConverter01;
+import com.mvp4g.rebind.test_tools.annotation.history_converters.SimpleHistoryConverter02;
 import com.mvp4g.rebind.test_tools.annotation.presenters.PresenterWithName;
 import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter;
 import com.mvp4g.rebind.test_tools.annotation.services.ServiceWithName;
@@ -118,7 +119,7 @@ public class Mvp4gConfigurationTest {
 	@Test( expected = NonUniqueIdentifierException.class )
 	public void testUniquenessFailureOnPresenterAndHistoryConverterConflict() throws NonUniqueIdentifierException {
 		presenters.add( newPresenter( "one" ) );
-		historyConverters.add( newHistoryConverter( "one" ) );
+		historyConverters.add( newHistoryConverter01("one") );
 
 		configuration.checkUniquenessOfAllElements();
 	}
@@ -142,7 +143,7 @@ public class Mvp4gConfigurationTest {
 	@Test( expected = NonUniqueIdentifierException.class )
 	public void testUniquenessFailureOnViewAndHistoryConverterConflict() throws NonUniqueIdentifierException {
 		views.add( newView( "one" ) );
-		historyConverters.add( newHistoryConverter( "one" ) );
+		historyConverters.add( newHistoryConverter01("one") );
 
 		configuration.checkUniquenessOfAllElements();
 	}
@@ -158,7 +159,7 @@ public class Mvp4gConfigurationTest {
 	@Test( expected = NonUniqueIdentifierException.class )
 	public void testUniquenessFailureOnEventAndHistoryConverterConflict() throws NonUniqueIdentifierException {
 		events.add( newEvent( "one" ) );
-		historyConverters.add( newHistoryConverter( "one" ) );
+		historyConverters.add( newHistoryConverter01("one") );
 
 		configuration.checkUniquenessOfAllElements();
 	}
@@ -166,7 +167,7 @@ public class Mvp4gConfigurationTest {
 	@Test( expected = NonUniqueIdentifierException.class )
 	public void testUniquenessFailureOnServiceAndHistoryConverterConflict() throws NonUniqueIdentifierException {
 		services.add( newService( "one" ) );
-		historyConverters.add( newHistoryConverter( "one" ) );
+		historyConverters.add( newHistoryConverter01("one") );
 
 		configuration.checkUniquenessOfAllElements();
 	}
@@ -177,7 +178,7 @@ public class Mvp4gConfigurationTest {
 		views.add( newView( "two" ) );
 		events.add( newEvent( "three" ) );
 		services.add( newService( "four" ) );
-		historyConverters.add( newHistoryConverter( "five" ) );
+		historyConverters.add( newHistoryConverter01("five") );
 
 		configuration.checkUniquenessOfAllElements();
 	}
@@ -265,7 +266,7 @@ public class Mvp4gConfigurationTest {
 		views.add( newView( "badHandler" ) );
 		services.add( newService( "badHandler" ) );
 		events.add( newEvent( "badHanlder" ) );
-		historyConverters.add( newHistoryConverter( "badHanlder" ) );
+		historyConverters.add( newHistoryConverter01("badHanlder") );
 
 		EventElement event = newEvent( "testEvent" );
 		event.setHandlers( new String[] { "badHandler" } );
@@ -576,7 +577,7 @@ public class Mvp4gConfigurationTest {
 		events.add( newEvent( "badView" ) );
 		services.add( newService( "badView" ) );
 		presenters.add( newPresenter( "badView" ) );
-		historyConverters.add( newHistoryConverter( "badView" ) );
+		historyConverters.add( newHistoryConverter01("badView") );
 
 		PresenterElement presenter = newPresenter( "testPresenter" );
 		presenter.setView( "badView" );
@@ -742,7 +743,7 @@ public class Mvp4gConfigurationTest {
 		events.add( newEvent( "badService" ) );
 		views.add( newView( "badService" ) );
 		presenters.add( newPresenter( "badService" ) );
-		historyConverters.add( newHistoryConverter( "badService" ) );
+		historyConverters.add( newHistoryConverter01("badService") );
 
 		PresenterElement presenter = newPresenter( "testPresenter" );
 		presenter.getInjectedServices().add( new InjectedElement( "badService", "setBadService" ) );
@@ -757,9 +758,9 @@ public class Mvp4gConfigurationTest {
 		events.add( newEvent( "badService" ) );
 		views.add( newView( "badService" ) );
 		presenters.add( newPresenter( "badService" ) );
-		historyConverters.add( newHistoryConverter( "badService" ) );
+		historyConverters.add( newHistoryConverter01("badService") );
 
-		HistoryConverterElement historyConverter = newHistoryConverter( "testHistoryConverter" );
+		HistoryConverterElement historyConverter = newHistoryConverter02("testHistoryConverter");
 		historyConverter.getInjectedServices().add( new InjectedElement( "badService", "setBadService" ) );
 		historyConverters.add( historyConverter );
 
@@ -774,7 +775,7 @@ public class Mvp4gConfigurationTest {
 		presenter.getInjectedServices().add( new InjectedElement( "testService", "setTestService" ) );
 		presenters.add( presenter );
 
-		HistoryConverterElement historyConverter = newHistoryConverter( "testHistoryConverter" );
+		HistoryConverterElement historyConverter = newHistoryConverter01("testHistoryConverter");
 		historyConverter.getInjectedServices().add( new InjectedElement( "testService", "setTestService" ) );
 		historyConverters.add( historyConverter );
 
@@ -797,7 +798,7 @@ public class Mvp4gConfigurationTest {
 		presenter.getInjectedServices().add( new InjectedElement( "service1", "setTestService" ) );
 		presenters.add( presenter );
 
-		HistoryConverterElement historyConverter = newHistoryConverter( "testHistoryConverter" );
+		HistoryConverterElement historyConverter = newHistoryConverter01("testHistoryConverter");
 		historyConverter.getInjectedServices().add( new InjectedElement( "service2", "setTestService" ) );
 		historyConverters.add( historyConverter );
 
@@ -879,8 +880,8 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testEventHistoryConverterRemove() throws InvalidMvp4gConfigurationException {
-		HistoryConverterElement hc1 = newHistoryConverter( "hc1" );
-		HistoryConverterElement hc2 = newHistoryConverter( "hc2" );
+		HistoryConverterElement hc1 = newHistoryConverter01("hc1");
+		HistoryConverterElement hc2 = newHistoryConverter01("hc2");
 		historyConverters.add( hc1 );
 		historyConverters.add( hc2 );
 
@@ -902,7 +903,7 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testEventHistoryConverterSucceeds() throws InvalidMvp4gConfigurationException {
-		historyConverters.add( newHistoryConverter( "testHistoryConverter" ) );
+		historyConverters.add( newHistoryConverter01("testHistoryConverter") );
 
 		EventElement event = newEvent( "testEvent" );
 		event.setHistory( "testHistoryConverter" );
@@ -917,7 +918,7 @@ public class Mvp4gConfigurationTest {
 		services.add( newService( "badEvent" ) );
 		presenters.add( newPresenter( "badEvent" ) );
 		views.add( newView( "badEvent" ) );
-		historyConverters.add( newHistoryConverter( "badEvent" ) );
+		historyConverters.add( newHistoryConverter01("badEvent") );
 
 		configuration.getStart().setEventType( "badEvent" );
 
@@ -930,7 +931,7 @@ public class Mvp4gConfigurationTest {
 		services.add( newService( "badEvent" ) );
 		presenters.add( newPresenter( "badEvent" ) );
 		views.add( newView( "badEvent" ) );
-		historyConverters.add( newHistoryConverter( "badEvent" ) );
+		historyConverters.add( newHistoryConverter01("badEvent") );
 
 		configuration.getHistory().setInitEvent( "badEvent" );
 
@@ -952,7 +953,7 @@ public class Mvp4gConfigurationTest {
 		ChildModuleElement childModule1 = newChildModule( "child1" );
 		childModule1.setEventToDisplayView( "testEvent" );
 		childModules.add( childModule1 );
-		configuration.getOthersEventBusClassMap().put( Modules.Module1.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
+		configuration.getOthersEventBusClassMap().put( Modules.Module01.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
 
 		ChildModuleElement childModule2 = newChildModule( "child2" );
 		childModules.add( childModule2 );
@@ -989,7 +990,7 @@ public class Mvp4gConfigurationTest {
 		childModule1.setEventToDisplayView( "testEvent" );
 		childModules.add( childModule1 );
 		configuration.getOthersEventBusClassMap()
-				.put( Modules.Module1.class.getCanonicalName(), oracle.addClass( EventBusWithNoStartPresenter.class ) );
+				.put( Modules.Module01.class.getCanonicalName(), oracle.addClass( EventBusWithNoStartPresenter.class ) );
 
 		EventElement event = newEvent( "testEvent" );
 		event.setForwardToModules( new String[] { "child1" } );
@@ -1092,7 +1093,7 @@ public class Mvp4gConfigurationTest {
 
 		setEventBus();
 
-		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
+		configuration.setModule( oracle.addClass( Modules.ModuleWithParent01.class ) );
 		try {
 			configuration.validateChildModules();
 			fail();
@@ -1100,7 +1101,7 @@ public class Mvp4gConfigurationTest {
 			assertEquals(
 					e.getMessage(),
 					String.format( "%s: child module %s doesn't define any event to load its view.",
-							Modules.ModuleWithParent.class.getCanonicalName(), childModule1.getClassName() ) );
+							Modules.ModuleWithParent01.class.getCanonicalName(), childModule1.getClassName() ) );
 		}
 
 		childModule1.setAutoDisplay( "false" );
@@ -1154,7 +1155,7 @@ public class Mvp4gConfigurationTest {
 		ChildModuleElement childModule = newChildModule( "child" );
 		childModule.setEventToDisplayView( "testEvent" );
 
-		configuration.getOthersEventBusClassMap().put( Modules.Module1.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
+		configuration.getOthersEventBusClassMap().put( Modules.Module01.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
 
 		childModules.add( childModule );
 
@@ -1164,7 +1165,7 @@ public class Mvp4gConfigurationTest {
 		events.add( event );
 
 		setEventBus();
-		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
+		configuration.setModule( oracle.addClass( Modules.ModuleWithParent01.class ) );
 		try {
 			configuration.validateChildModules();
 			fail();
@@ -1193,7 +1194,7 @@ public class Mvp4gConfigurationTest {
 		events.add( event );
 
 		setEventBus();
-		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
+		configuration.setModule( oracle.addClass( Modules.ModuleWithParent01.class ) );
 		try {
 			configuration.validateChildModules();
 			fail();
@@ -1206,7 +1207,7 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testForwardSiblingModule() throws InvalidMvp4gConfigurationException {
-		String siblingModule = oracle.addClass( Modules.Module1.class ).getQualifiedSourceName();
+		String siblingModule = oracle.addClass( Modules.Module01.class ).getQualifiedSourceName();
 
 		EventElement event = newEvent( "testEvent" );
 		event.setForwardToModules( new String[] { siblingModule } );
@@ -1225,7 +1226,7 @@ public class Mvp4gConfigurationTest {
 
 		configuration.setParentEventBus( parentEventBus );
 
-		String currentModule = oracle.addClass( Modules.ModuleWithParent.class ).getQualifiedSourceName();
+		String currentModule = oracle.addClass( Modules.ModuleWithParent01.class ).getQualifiedSourceName();
 
 		childModuleMap.put( "sibling", sibling );
 
@@ -1236,7 +1237,7 @@ public class Mvp4gConfigurationTest {
 		childModuleMap.put( currentModule, module );
 
 		setEventBus();
-		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
+		configuration.setModule( oracle.addClass( Modules.ModuleWithParent01.class ) );
 
 		List<ChildModuleElement> siblings = configuration.getSiblings();
 		assertEquals( 1, siblings.size() );
@@ -1257,7 +1258,7 @@ public class Mvp4gConfigurationTest {
 
 		String siblingModule1 = oracle.addClass( Modules.BroadcastModule.class ).getQualifiedSourceName();
 		String siblingModule2 = oracle.addClass( Modules.BroadcastModule2.class ).getQualifiedSourceName();
-		String siblingModule3 = oracle.addClass( Modules.Module1.class ).getQualifiedSourceName();
+		String siblingModule3 = oracle.addClass( Modules.Module01.class ).getQualifiedSourceName();
 
 		EventElement event = newEvent( "testEvent" );
 		event.setBroadcastTo( TestBroadcast.class.getCanonicalName() );
@@ -1295,16 +1296,17 @@ public class Mvp4gConfigurationTest {
 
 		configuration.setParentEventBus( parentEventBus );
 
-		String currentModule = oracle.addClass( Modules.ModuleWithParent.class ).getQualifiedSourceName();
+		configuration.setModule(oracle.addClass(Modules.ModuleWithParent01.class));
+		String currentModule01 = Modules.ModuleWithParent01.class.getCanonicalName();
 
-		ChildModuleElement module = new ChildModuleElement();
-		module.setParentEventBus( parentEventBus );
-		module.setParentModuleClass( currentParentModule );
-		module.setClassName( currentModule );
-		childModuleMap.put( currentModule, module );
+		ChildModuleElement module01 = new ChildModuleElement();
+		module01.setParentEventBus(parentEventBus);
+		module01.setParentModuleClass(currentParentModule);
+		module01.setClassName(currentModule01);
+		childModuleMap.put(currentModule01,
+											 module01);
 
 		setEventBus();
-		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
 
 		List<ChildModuleElement> siblings = configuration.getSiblings();
 		assertEquals( 3, siblings.size() );
@@ -1331,7 +1333,7 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testForwardParentModule() throws InvalidMvp4gConfigurationException {
-		String parentModule = oracle.addClass( Modules.Module1.class ).getQualifiedSourceName();
+		String parentModule = oracle.addClass( Modules.Module01.class ).getQualifiedSourceName();
 
 		EventElement event = newEvent( "testEvent" );
 		event.setForwardToModules( new String[] { parentModule } );
@@ -1343,7 +1345,7 @@ public class Mvp4gConfigurationTest {
 
 		configuration.setParentEventBus( parentEventBus );
 
-		String currentModule = oracle.addClass( Modules.ModuleWithParent.class ).getQualifiedSourceName();
+		String currentModule = oracle.addClass( Modules.ModuleWithParent01.class ).getQualifiedSourceName();
 
 		ChildModuleElement module = new ChildModuleElement();
 		module.setParentEventBus( parentEventBus );
@@ -1351,8 +1353,9 @@ public class Mvp4gConfigurationTest {
 		module.setClassName( currentModule );
 		childModuleMap.put( currentModule, module );
 
+
 		setEventBus();
-		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
+//		configuration.setModule(oracle.addClass(Modules.Module01.class));
 
 		List<ChildModuleElement> siblings = configuration.getSiblings();
 		assertEquals( 0, siblings.size() );
@@ -1384,7 +1387,7 @@ public class Mvp4gConfigurationTest {
 
 		configuration.setParentEventBus( parentEventBus );
 
-		String currentModule = oracle.addClass( Modules.ModuleWithParent.class ).getQualifiedSourceName();
+		String currentModule = oracle.addClass( Modules.ModuleWithParent01.class ).getQualifiedSourceName();
 
 		ChildModuleElement module = new ChildModuleElement();
 		module.setParentEventBus( parentEventBus );
@@ -1393,7 +1396,7 @@ public class Mvp4gConfigurationTest {
 		childModuleMap.put( currentModule, module );
 
 		setEventBus();
-		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
+		configuration.setModule( oracle.addClass( Modules.ModuleWithParent01.class ) );
 
 		List<ChildModuleElement> siblings = configuration.getSiblings();
 		assertEquals( 0, siblings.size() );
@@ -1421,9 +1424,9 @@ public class Mvp4gConfigurationTest {
 			assertEquals( "Event event: Root module has no parent so you can't forward event to parent.", ex.getMessage() );
 		}
 
-		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
+		configuration.setModule( oracle.addClass( Modules.ModuleWithParent01.class ) );
 
-		setParentEventBus( Modules.ModuleWithParent.class, EventBusOk.class );
+		setParentEventBus( Modules.ModuleWithParent01.class, EventBusOk.class );
 		configuration.loadParentModule();
 		configuration.validateEvents();
 	}
@@ -1510,8 +1513,8 @@ public class Mvp4gConfigurationTest {
 
 		historyConverters.add( new HistoryConverterElement() );
 
-		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
-		setParentEventBus( Modules.ModuleWithParent.class, EventBusOk.class );
+		configuration.setModule( oracle.addClass( Modules.ModuleWithParent01.class ) );
+		setParentEventBus( Modules.ModuleWithParent01.class, EventBusOk.class );
 		configuration.loadParentModule();
 
 		configuration.getHistory().setInitEvent( "event" );
@@ -1562,8 +1565,8 @@ public class Mvp4gConfigurationTest {
 			assertTrue( e.getMessage().contains( "Child module that defines history converter must have a" ) );
 		}
 
-		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
-		setParentEventBus( Modules.ModuleWithParent.class, EventBusOk.class );
+		configuration.setModule( oracle.addClass( Modules.ModuleWithParent01.class ) );
+		setParentEventBus( Modules.ModuleWithParent01.class, EventBusOk.class );
 		configuration.loadParentModule();
 		assertEquals( "moduleWithParent", configuration.getHistoryName() );
 
@@ -1575,18 +1578,18 @@ public class Mvp4gConfigurationTest {
 
 		setEventBus();
 
-		oracle.addClass( Modules.ModuleWithParent.class );
+		oracle.addClass( Modules.ModuleWithParent01.class );
 		oracle.addClass( Modules.ModuleWithParentNoName.class );
-		oracle.addClass( Modules.Module1.class );
+		oracle.addClass( Modules.Module01.class );
 
 		ChildModuleElement childModule1 = new ChildModuleElement();
 		childModule1.setName( "child1" );
-		childModule1.setClassName( Modules.ModuleWithParent.class.getCanonicalName() );
-		childModules.add( childModule1 );
+		childModule1.setClassName( Modules.ModuleWithParent01.class.getCanonicalName() );
+		childModules.add(childModule1);
 
 		ChildModuleElement childModule2 = new ChildModuleElement();
-		childModule2.setName( "child2" );
-		childModule2.setClassName( Modules.Module1.class.getCanonicalName() );
+		childModule2.setName("child2");
+		childModule2.setClassName( Modules.Module01.class.getCanonicalName() );
 		childModules.add( childModule2 );
 
 		ChildModuleElement childModule3 = new ChildModuleElement();
@@ -1598,23 +1601,23 @@ public class Mvp4gConfigurationTest {
 
 		assertNull( childModule2.getHistoryName() );
 		assertNull( childModule3.getHistoryName() );
-		assertEquals( "moduleWithParent", childModule1.getHistoryName() );
+		assertEquals( "moduleWithParent01", childModule1.getHistoryName() );
 	}
 
 	@Test( expected = InvalidMvp4gConfigurationException.class )
 	public void testFindChildModuleSameHistory() throws InvalidMvp4gConfigurationException {
 		setEventBus();
 
-		oracle.addClass( Modules.ModuleWithParent.class );
+		oracle.addClass( Modules.ModuleWithParent01.class );
 
 		ChildModuleElement childModule1 = new ChildModuleElement();
 		childModule1.setName( "child1" );
-		childModule1.setClassName( Modules.ModuleWithParent.class.getCanonicalName() );
+		childModule1.setClassName( Modules.ModuleWithParent01.class.getCanonicalName() );
 		childModules.add( childModule1 );
 
 		ChildModuleElement childModule2 = new ChildModuleElement();
 		childModule2.setName( "child2" );
-		childModule2.setClassName( Modules.ModuleWithParent.class.getCanonicalName() );
+		childModule2.setClassName( Modules.ModuleWithParent02.class.getCanonicalName() );
 		childModules.add( childModule2 );
 
 		JClassType module = oracle.addClass( Mvp4gModule.class );
@@ -1661,26 +1664,26 @@ public class Mvp4gConfigurationTest {
 		oracle.addClass( Modules.ModuleWithLoader.class );
 		oracle.addClass( Modules.ModuleWithSameLoader1.class );
 		oracle.addClass( Modules.ModuleWithSameLoader2.class );
-		oracle.addClass( Modules.Module1.class );
+		oracle.addClass( Modules.Module01.class );
 
 		ChildModuleElement withLoader = new ChildModuleElement();
 		withLoader.setName( "withLoader" );
 		withLoader.setClassName( Modules.ModuleWithLoader.class.getCanonicalName() );
-		childModules.add( withLoader );
+		childModules.add(withLoader);
 
 		ChildModuleElement withSameLoader1 = new ChildModuleElement();
-		withSameLoader1.setName( "withSameLoader1" );
+		withSameLoader1.setName("withSameLoader1");
 		withSameLoader1.setClassName( Modules.ModuleWithSameLoader1.class.getCanonicalName() );
-		childModules.add( withSameLoader1 );
+		childModules.add(withSameLoader1);
 
 		ChildModuleElement withSameLoader2 = new ChildModuleElement();
-		withSameLoader2.setName( "withSameLoader2" );
+		withSameLoader2.setName("withSameLoader2");
 		withSameLoader2.setClassName( Modules.ModuleWithSameLoader2.class.getCanonicalName() );
-		childModules.add( withSameLoader2 );
+		childModules.add(withSameLoader2);
 
 		ChildModuleElement noLoader = new ChildModuleElement();
-		noLoader.setName( "noLoader" );
-		noLoader.setClassName( Modules.Module1.class.getCanonicalName() );
+		noLoader.setName("noLoader");
+		noLoader.setClassName( Modules.Module01.class.getCanonicalName() );
 		childModules.add( noLoader );
 
 		configuration.findChildModuleHistoryNameAndLoader();
@@ -1739,7 +1742,7 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testLoadAnnotation() throws Exception {
-		configuration.setModule( oracle.addClass( Mvp4gModule.class ) );
+		configuration.setModule( oracle.addClass( Modules.ModuleWithParentNoName.class ) );
 
 		List<JClassType> aPresenters = new ArrayList<JClassType>();
 		aPresenters.add( oracle.findType( SimplePresenter.class.getName() ) );
@@ -1748,7 +1751,7 @@ public class Mvp4gConfigurationTest {
 		assertEquals( 2, presenters.size() );
 
 		List<JClassType> aHC = new ArrayList<JClassType>();
-		aHC.add( oracle.findType( SimpleHistoryConverter.class.getName() ) );
+		aHC.add( oracle.findType( SimpleHistoryConverter01.class.getName() ) );
 		aHC.add( oracle.findType( HistoryConverterForEvent.class.getName() ) );
 		configuration.loadHistoryConverters( aHC );
 		assertEquals( 2, historyConverters.size() );
@@ -1777,7 +1780,8 @@ public class Mvp4gConfigurationTest {
 	@Test
 	public void testAsyncEnabled() {
 		assertEquals( configuration.isAsyncEnabled(), true );
-		oracle.setGWT2( false );
+		// TODO
+//		oracle.setGWT2( false );
 		assertEquals( configuration.isAsyncEnabled(), false );
 	}
 
@@ -2208,7 +2212,7 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testForwardEventWithParameter() throws InvalidMvp4gConfigurationException {
-		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
+		configuration.setModule( oracle.addClass( Modules.Module01.class ) );
 		EventElement e = newEvent( "forward" );
 		e.setEventObjectClass( new String[] { Object.class.getCanonicalName() } );
 		events.add( e );
@@ -2242,7 +2246,7 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testForwardOk() throws InvalidMvp4gConfigurationException {
-		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
+		configuration.setModule( oracle.addClass( Modules.Module01.class ) );
 		EventElement e = newEvent( "forward" );
 		events.add( e );
 
@@ -2335,7 +2339,7 @@ public class Mvp4gConfigurationTest {
 		setEventBus();
 		assertTrue( configuration.isRootModule() );
 
-		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
+		configuration.setModule( oracle.addClass( Modules.Module01.class ) );
 		assertTrue( configuration.isRootModule() );
 
 		configuration.setParentEventBus( oracle.addClass( EventBusOk.class ) );
@@ -2344,7 +2348,7 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testRootModuleWithHistoryName() {
-		configuration.setModule( oracle.addClass( Modules.ModuleWithParent.class ) );
+		configuration.setModule( oracle.addClass( Modules.ModuleWithParent01.class ) );
 		EventBusElement eventBus = new EventBusElement( EventBusOk.class.getName(), BaseEventBus.class.getName(), false );
 		configuration.setEventBus( eventBus );
 
@@ -2354,7 +2358,7 @@ public class Mvp4gConfigurationTest {
 			configuration.loadParentModule();
 			fail();
 		} catch ( InvalidMvp4gConfigurationException e ) {
-			assertEquals( "Module " + Modules.ModuleWithParent.class.getCanonicalName() + " can't have an history name since it's a root module.",
+			assertEquals( "Module " + Modules.ModuleWithParent01.class.getCanonicalName() + " can't have an history name since it's a root module.",
 					e.getMessage() );
 		}
 
@@ -2370,8 +2374,8 @@ public class Mvp4gConfigurationTest {
 		assertNull( configuration.getParentEventBus() );
 		assertTrue( configuration.isRootModule() );
 
-		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
-		setParentEventBus( Modules.Module1.class, EventBus.class );
+		configuration.setModule( oracle.addClass( Modules.Module01.class ) );
+		setParentEventBus( Modules.Module01.class, EventBus.class );
 		JClassType c = oracle.addClass( EventBus.class );
 		configuration.loadParentModule();
 		assertEquals( c.getQualifiedSourceName(), configuration.getParentEventBus().getQualifiedSourceName() );
@@ -2510,7 +2514,7 @@ public class Mvp4gConfigurationTest {
 			assertEquals( "Event event1: you can't generate a token for this event if it has no history converter.", e.getMessage() );
 		}
 
-		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
+		configuration.setModule( oracle.addClass( Modules.Module01.class ) );
 
 		try {
 			configuration.validateHistoryConverters();
@@ -2543,10 +2547,10 @@ public class Mvp4gConfigurationTest {
 		event.setForwardToParent( "true" );
 		events.add( event );
 
-		HistoryConverterElement hc1 = newHistoryConverter( "history" );
+		HistoryConverterElement hc1 = newHistoryConverter01("history");
 		historyConverters.add( hc1 );
 
-		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
+		configuration.setModule( oracle.addClass( Modules.Module01.class ) );
 		setEventBus();
 		configuration.setParentEventBus( oracle.addClass( EventBusOk.class ) );
 		configuration.validateHistoryConverters();
@@ -2890,7 +2894,7 @@ public class Mvp4gConfigurationTest {
 	private ChildModuleElement newChildModule( String name ) {
 		ChildModuleElement childModule = new ChildModuleElement();
 		childModule.setName( name );
-		Class<?> c = Modules.Module1.class;
+		Class<?> c = Modules.Module01.class;
 		oracle.addClass( c );
 		childModule.setClassName( c.getCanonicalName() );
 		return childModule;
@@ -2898,7 +2902,7 @@ public class Mvp4gConfigurationTest {
 
 	private ViewElement newView( String name ) {
 		ViewElement view = new ViewElement();
-		view.setName( name );
+		view.setName(name);
 		return view;
 	}
 
@@ -2906,20 +2910,29 @@ public class Mvp4gConfigurationTest {
 		EventElement event = new EventElement();
 		event.setType( type );
 		event.setBinds( new String[0] );
-		event.setHandlers( new String[0] );
+		event.setHandlers(new String[0]);
 		return event;
 	}
 
 	private ServiceElement newService( String name ) {
 		ServiceElement service = new ServiceElement();
-		service.setName( name );
+		service.setName(name);
 		return service;
 	}
 
-	private HistoryConverterElement newHistoryConverter( String name ) {
+	private HistoryConverterElement newHistoryConverter01(String name) {
 		HistoryConverterElement historyConverter = new HistoryConverterElement();
 		historyConverter.setName( name );
-		Class<?> c = SimpleHistoryConverter.class;
+		Class<?> c = SimpleHistoryConverter01.class;
+		oracle.addClass( c );
+		historyConverter.setClassName(c.getCanonicalName());
+		return historyConverter;
+	}
+
+	private HistoryConverterElement newHistoryConverter02(String name) {
+		HistoryConverterElement historyConverter = new HistoryConverterElement();
+		historyConverter.setName( name );
+		Class<?> c = SimpleHistoryConverter02.class;
 		oracle.addClass( c );
 		historyConverter.setClassName( c.getCanonicalName() );
 		return historyConverter;

@@ -1,10 +1,11 @@
 package com.mvp4g.rebind.config.element;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 import java.util.List;
 
-import org.junit.Test;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public class Mvp4gWithServicesElementTest extends SimpleMvp4gElementTest {
 
@@ -27,7 +28,7 @@ public class Mvp4gWithServicesElementTest extends SimpleMvp4gElementTest {
 		assertEquals( 0, services.size() );
 		e.setValues( "test", tab );
 		assertEquals( 0, services.size() );
-		assertEquals( e.getValues( "test" ), tab );
+		assertArrayEquals(tab, e.getValues("test"));
 	}
 
 	@Override

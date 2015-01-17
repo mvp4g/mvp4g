@@ -122,30 +122,30 @@ public class Events {
 
 	}
 
-	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class, module = Modules.Module1.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class, module = Modules.Module01.class )
 	public static interface EventBusForOtherModule extends EventBus {
 
 	}
 
-	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ), @ChildModule( moduleClass = Modules.Module1.class ) } )
+	@ChildModules( { @ChildModule( moduleClass = Modules.Module01.class ), @ChildModule( moduleClass = Modules.Module01.class ) } )
 	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
 	public static interface EventBusWithSameChild extends EventBus {
 
 	}
 
-	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ),
-			@ChildModule( moduleClass = Modules.ModuleWithParent.class, async = false, autoDisplay = false ) } )
+	@ChildModules( { @ChildModule( moduleClass = Modules.Module01.class ),
+			@ChildModule( moduleClass = Modules.ModuleWithParent01.class, async = false, autoDisplay = false ) } )
 	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusWithChildren extends EventBus {
 
-		@DisplayChildModuleView( Modules.Module1.class )
+		@DisplayChildModuleView( Modules.Module01.class )
 		@Event( )
 		public void event1( String obj );
 
-		@Event( handlers = PresenterWithName.class, forwardToModules = Modules.Module1.class )
+		@Event( handlers = PresenterWithName.class, forwardToModules = Modules.Module01.class )
 		public void event2();
 
-		@Event( handlers = PresenterWithName.class, forwardToModules = { Modules.ModuleWithParent.class, Modules.Module1.class } )
+		@Event( handlers = PresenterWithName.class, forwardToModules = { Modules.ModuleWithParent01.class, Modules.Module01.class } )
 		public void event3();
 
 		@Event( handlers = PresenterWithName.class, forwardToParent = true )
@@ -155,10 +155,10 @@ public class Events {
 	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusWithSiblings extends EventBus {
 
-		@Event( handlers = PresenterWithName.class, forwardToModules = Modules.Module1.class )
+		@Event( handlers = PresenterWithName.class, forwardToModules = Modules.Module01.class )
 		public void event1();
 
-		@Event( handlers = PresenterWithName.class, forwardToModules = { Modules.ModuleWithParent.class, Modules.Module1.class } )
+		@Event( handlers = PresenterWithName.class, forwardToModules = { Modules.ModuleWithParent01.class, Modules.Module01.class } )
 		public void event2();
 	}
 
@@ -218,34 +218,34 @@ public class Events {
 
 	}
 
-	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ) } )
+	@ChildModules( { @ChildModule( moduleClass = Modules.Module01.class ) } )
 	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusUnknownModuleForEvent extends EventBus {
 
-		@Event( handlers = PresenterWithName.class, forwardToModules = Modules.ModuleWithParent.class )
+		@Event( handlers = PresenterWithName.class, forwardToModules = Modules.ModuleWithParent01.class )
 		public void event2();
 
 	}
 
-	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ) } )
+	@ChildModules( { @ChildModule( moduleClass = Modules.Module01.class ) } )
 	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusUnknownModuleForLoadModuleViewEvent extends EventBus {
 
-		@DisplayChildModuleView( Modules.ModuleWithParent.class )
+		@DisplayChildModuleView( Modules.ModuleWithParent01.class )
 		@Event( handlers = PresenterWithName.class )
 		public void event2();
 
 	}
 
-	@ChildModules( { @ChildModule( moduleClass = Modules.Module1.class ) } )
+	@ChildModules( { @ChildModule( moduleClass = Modules.Module01.class ) } )
 	@com.mvp4g.client.annotation.Events( startPresenter = PresenterWithName.class )
 	public static interface EventBusSameModuleForLoadModuleViewEvent extends EventBus {
 
-		@DisplayChildModuleView( Modules.Module1.class )
+		@DisplayChildModuleView( Modules.Module01.class )
 		@Event( handlers = PresenterWithName.class )
 		public void event1();
 
-		@DisplayChildModuleView( Modules.Module1.class )
+		@DisplayChildModuleView( Modules.Module01.class )
 		@Event( handlers = PresenterWithName.class )
 		public void event2();
 

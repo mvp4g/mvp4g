@@ -1,19 +1,19 @@
 package com.mvp4g.rebind.config.loader.annotation;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import org.junit.Test;
-
-import static org.junit.Assert.*;
-
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.rebind.config.element.EventHandlerElement;
 import com.mvp4g.rebind.exception.loader.Mvp4gAnnotationException;
 import com.mvp4g.rebind.test_tools.annotation.EventHandlers;
 import com.mvp4g.rebind.test_tools.annotation.handlers.SimpleEventHandler;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class EventHandlerAnnotationsLoaderTest extends AbstractHandlerAnnotationsLoaderTest<EventHandler, EventHandlerElement, EventHandlerAnnotationsLoader> {
 
@@ -71,7 +71,6 @@ public class EventHandlerAnnotationsLoaderTest extends AbstractHandlerAnnotation
 		return new EventHandlerAnnotationsLoader();
 	}
 
-	@SuppressWarnings( "unchecked" )
 	@Override
 	protected Set<EventHandlerElement> getSet() {
 		return configuration.getEventHandlers();
