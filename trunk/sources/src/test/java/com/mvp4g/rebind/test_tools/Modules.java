@@ -8,12 +8,20 @@ import com.mvp4g.rebind.test_tools.annotation.TestBroadcast2;
 
 public class Modules {
 
-	public static interface Module1 extends Mvp4gModule {
+	public static interface Module01
+			extends Mvp4gModule {
 
 	}
 
-	@HistoryName( "moduleWithParent" )
-	public static interface ModuleWithParent extends Mvp4gModule {
+	@HistoryName( "moduleWithParent01" )
+	public static interface ModuleWithParent01 extends Mvp4gModule {
+
+		public void setParentModule( Mvp4gModule module );
+
+	}
+
+	@HistoryName( "moduleWithParent02" )
+	public static interface ModuleWithParent02 extends Mvp4gModule {
 
 		public void setParentModule( Mvp4gModule module );
 
