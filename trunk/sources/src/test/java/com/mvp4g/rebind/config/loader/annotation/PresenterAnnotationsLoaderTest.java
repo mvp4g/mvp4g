@@ -1,13 +1,5 @@
 package com.mvp4g.rebind.config.loader.annotation;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import org.junit.Test;
-
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.rebind.config.element.PresenterElement;
@@ -18,6 +10,13 @@ import com.mvp4g.rebind.test_tools.annotation.Presenters.AsyncPresenter;
 import com.mvp4g.rebind.test_tools.annotation.Presenters.MultiplePresenter;
 import com.mvp4g.rebind.test_tools.annotation.presenters.PresenterWithName;
 import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
 
 public class PresenterAnnotationsLoaderTest extends AbstractHandlerAnnotationsLoaderTest<Presenter, PresenterElement, PresenterAnnotationsLoader> {
 
@@ -87,7 +86,6 @@ public class PresenterAnnotationsLoaderTest extends AbstractHandlerAnnotationsLo
 		return new PresenterAnnotationsLoader();
 	}
 
-	@SuppressWarnings( "unchecked" )
 	@Override
 	protected Set<PresenterElement> getSet() {
 		return configuration.getPresenters();

@@ -1,20 +1,5 @@
 package com.mvp4g.rebind.config.loader.annotation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.dev.javac.typemodel.TypeOracleStub;
 import com.mvp4g.client.DefaultMvp4gGinModule;
@@ -26,14 +11,7 @@ import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.DefaultMvp4gLogger;
 import com.mvp4g.rebind.config.Mvp4gConfiguration;
-import com.mvp4g.rebind.config.element.ChildModuleElement;
-import com.mvp4g.rebind.config.element.ChildModulesElement;
-import com.mvp4g.rebind.config.element.EventBusElement;
-import com.mvp4g.rebind.config.element.EventElement;
-import com.mvp4g.rebind.config.element.EventFilterElement;
-import com.mvp4g.rebind.config.element.EventFiltersElement;
-import com.mvp4g.rebind.config.element.HistoryElement;
-import com.mvp4g.rebind.config.element.StartElement;
+import com.mvp4g.rebind.config.element.*;
 import com.mvp4g.rebind.exception.loader.Mvp4gAnnotationException;
 import com.mvp4g.rebind.test_tools.CustomPlaceService;
 import com.mvp4g.rebind.test_tools.GeneratorContextStub;
@@ -48,6 +26,12 @@ import com.mvp4g.rebind.test_tools.annotation.gin.OneGinModule;
 import com.mvp4g.rebind.test_tools.annotation.history_converters.HistoryConverterForEvent;
 import com.mvp4g.rebind.test_tools.annotation.presenters.PresenterWithName;
 import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 public class EventsAnnotationsLoaderTest {
 
@@ -514,7 +498,7 @@ public class EventsAnnotationsLoaderTest {
 		Iterator<String> it = othersEventBusClassMap.keySet().iterator();
 		String key = it.next();
 		assertEquals( 1, othersEventBusClassMap.size() );
-		assertEquals( Modules.Module1.class.getCanonicalName(), key );
+		assertEquals( Modules.Module01.class.getCanonicalName(), key );
 		assertEquals( Events.EventBusForOtherModule.class.getCanonicalName(), othersEventBusClassMap.get( key ).getQualifiedSourceName() );
 	}
 
@@ -527,7 +511,7 @@ public class EventsAnnotationsLoaderTest {
 			loader.load( annotedClasses, configuration );
 		} catch ( Mvp4gAnnotationException e ) {
 			assertTrue( e.getMessage().contains(
-					"You can't have two child modules describing the same module: " + Modules.Module1.class.getCanonicalName() ) );
+					"You can't have two child modules describing the same module: " + Modules.Module01.class.getCanonicalName() ) );
 			throw e;
 		}
 	}
@@ -562,11 +546,11 @@ public class EventsAnnotationsLoaderTest {
 		assertEquals( 2, childModules.size() );
 
 		for ( ChildModuleElement child : childModules ) {
-			if ( Modules.Module1.class.getCanonicalName().equals( child.getClassName() ) ) {
+			if ( Modules.Module01.class.getCanonicalName().equals( child.getClassName() ) ) {
 				assertTrue( child.isAsync() );
 				assertTrue( child.isAutoDisplay() );
 				assertEquals( "event1", child.getEventToDisplayView() );
-			} else if ( Modules.ModuleWithParent.class.getCanonicalName().equals( child.getClassName() ) ) {
+			} else if ( Modules.ModuleWithParent01.class.getCanonicalName().equals( child.getClassName() ) ) {
 				assertFalse( child.isAsync() );
 				assertFalse( child.isAutoDisplay() );
 			} else {
@@ -584,13 +568,13 @@ public class EventsAnnotationsLoaderTest {
 			} else if ( "event2".equals( e.getType() ) ) {
 				modules = e.getForwardToModules();
 				assertEquals( 1, modules.size() );
-				assertEquals( Modules.Module1.class.getCanonicalName().replace( ".", "_" ), modules.get( 0 ) );
+				assertEquals( Modules.Module01.class.getCanonicalName().replace( ".", "_" ), modules.get( 0 ) );
 				assertFalse( e.hasForwardToParent() );
 			} else if ( "event3".equals( e.getType() ) ) {
 				modules = e.getForwardToModules();
 				assertEquals( 2, modules.size() );
-				assertEquals( Modules.ModuleWithParent.class.getCanonicalName().replace( ".", "_" ), modules.get( 0 ) );
-				assertEquals( Modules.Module1.class.getCanonicalName().replace( ".", "_" ), modules.get( 1 ) );
+				assertEquals( Modules.ModuleWithParent01.class.getCanonicalName().replace( ".", "_" ), modules.get( 0 ) );
+				assertEquals( Modules.Module01.class.getCanonicalName().replace( ".", "_" ), modules.get( 1 ) );
 				assertFalse( e.hasForwardToParent() );
 			} else if ( "event4".equals( e.getType() ) ) {
 				assertTrue( e.hasForwardToParent() );
@@ -624,12 +608,12 @@ public class EventsAnnotationsLoaderTest {
 			modules = e.getForwardToModules();
 			if ( "event1".equals( e.getType() ) ) {
 				assertEquals( 1, modules.size() );
-				assertEquals( Modules.Module1.class.getCanonicalName(), modules.get( 0 ) );
+				assertEquals( Modules.Module01.class.getCanonicalName(), modules.get( 0 ) );
 				assertFalse( e.hasForwardToParent() );
 			} else if ( "event2".equals( e.getType() ) ) {
 				assertEquals( 2, modules.size() );
-				assertEquals( Modules.ModuleWithParent.class.getCanonicalName(), modules.get( 0 ) );
-				assertEquals( Modules.Module1.class.getCanonicalName(), modules.get( 1 ) );				
+				assertEquals( Modules.ModuleWithParent01.class.getCanonicalName(), modules.get( 0 ) );
+				assertEquals( Modules.Module01.class.getCanonicalName(), modules.get( 1 ) );
 			} else {
 				fail( "Unknown event name" );
 			}
@@ -726,7 +710,7 @@ public class EventsAnnotationsLoaderTest {
 			annotedClasses.add( type );
 			loader.load( annotedClasses, configuration );
 		} catch ( Mvp4gAnnotationException e ) {
-			assertTrue( e.getMessage().contains( "No instance of " + Modules.ModuleWithParent.class.getCanonicalName() + " is defined." ) );
+			assertTrue( e.getMessage().contains( "No instance of " + Modules.ModuleWithParent01.class.getCanonicalName() + " is defined." ) );
 			throw e;
 		}
 	}
@@ -745,7 +729,7 @@ public class EventsAnnotationsLoaderTest {
 			loader.load( annotedClasses, configuration );
 		} catch ( Mvp4gAnnotationException e ) {
 			assertTrue( e.getMessage().contains(
-					"Module " + Modules.Module1.class.getCanonicalName() + ": you can't have two events to load this module view." ) );
+					"Module " + Modules.Module01.class.getCanonicalName() + ": you can't have two events to load this module view." ) );
 			throw e;
 		}
 	}
@@ -762,7 +746,7 @@ public class EventsAnnotationsLoaderTest {
 		annotedClasses.add( oracle.addClass( Events.EventBusForOtherModule.class ) );
 		annotedClasses.add( parentEventBus );
 
-		JClassType otherModule = oracle.addClass( Modules.Module1.class );
+		JClassType otherModule = oracle.addClass( Modules.Module01.class );
 		String otherModuleClassName = otherModule.getQualifiedSourceName();
 		configuration.setModule( otherModule );
 		loader.load( annotedClasses, configuration );

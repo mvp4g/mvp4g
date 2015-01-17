@@ -23,7 +23,7 @@ import com.mvp4g.rebind.test_tools.annotation.Presenters;
 import com.mvp4g.rebind.test_tools.annotation.events.EventBusOk;
 import com.mvp4g.rebind.test_tools.annotation.handlers.EventHandlerWithEvent;
 import com.mvp4g.rebind.test_tools.annotation.handlers.SimpleEventHandler;
-import com.mvp4g.rebind.test_tools.annotation.history_converters.SimpleHistoryConverter;
+import com.mvp4g.rebind.test_tools.annotation.history_converters.SimpleHistoryConverter01;
 import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter;
 import org.junit.Before;
 import org.junit.Test;
@@ -210,7 +210,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		assertOutput( getExpectedEventsWithToken(), false );
 
 		HistoryConverterElement hc = new HistoryConverterElement();
-		hc.setClassName( SimpleHistoryConverter.class.getCanonicalName() );
+		hc.setClassName( SimpleHistoryConverter01.class.getCanonicalName() );
 		hc.setName( "history" );
 		configuration.getHistoryConverters().add( hc );
 
@@ -271,11 +271,11 @@ public class Mvp4gConfigurationFileReaderTest {
 		c1.setClassName( ClearHistory.class.getCanonicalName() );
 		c1.setName( "clear" );
 		HistoryConverterElement c2 = new HistoryConverterElement();
-		c2.setClassName( SimpleHistoryConverter.class.getCanonicalName() );
+		c2.setClassName( SimpleHistoryConverter01.class.getCanonicalName() );
 		c2.setName( "history2" );
 		c2.setType( HistoryConverterType.NONE.name() );
 		HistoryConverterElement c3 = new HistoryConverterElement();
-		c3.setClassName( SimpleHistoryConverter.class.getCanonicalName() );
+		c3.setClassName( SimpleHistoryConverter01.class.getCanonicalName() );
 		c3.setName( "history3" );
 		c3.setType( HistoryConverterType.SIMPLE.name() );
 		configuration.getHistoryConverters().add( c1 );
@@ -853,7 +853,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	public void testWriteParent() {
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
 		configuration.setParentEventBus( oracle.addClass( EventBusWithLookup.class ) );
-		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
+		configuration.setModule( oracle.addClass( Modules.Module01.class ) );
 
 		assertOutput( new String[] { "private PlaceService placeService = null;" }, false );
 		assertOutput( getExpectedSetParent(), false );
@@ -865,7 +865,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	@Test
 	public void testWriteChildNoAsyncNoAutoLoad() {
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent01.class );
 		ChildModuleElement childModule = new ChildModuleElement();
 		childModule.setClassName( moduleType.getQualifiedSourceName() );
 		childModule.setName( "childModule" );
@@ -874,50 +874,50 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		configuration.getChildModules().add( childModule );
 
-		assertOutput( getExpectedChildModule( Modules.ModuleWithParent.class.getCanonicalName() ), false );
+		assertOutput( getExpectedChildModule( Modules.ModuleWithParent01.class.getCanonicalName() ), false );
 		assertOutput( getExpectedAsyncChildModule(), false );
 		assertOutput( getExpectedAutoDisplayChildModule(), false );
 		writer.writeConf();
-		assertOutput( getExpectedChildModule( Modules.ModuleWithParent.class.getCanonicalName() ), true );
+		assertOutput( getExpectedChildModule( Modules.ModuleWithParent01.class.getCanonicalName() ), true );
 		assertOutput( getExpectedAsyncChildModule(), false );
 		assertOutput( getExpectedAutoDisplayChildModule(), false );
 	}
 
-	@Test
-	public void testWriteChildWithParentAsyncNoAutoLoadNotGwt2() {
-		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		JClassType moduleType = oracle.addClass( Modules.Module1.class );
-		oracle.setGWT2( false );
-		ChildModuleElement childModule = new ChildModuleElement();
-		childModule.setClassName( moduleType.getQualifiedSourceName() );
-		childModule.setName( "childModule" );
-		childModule.setAutoDisplay( "false" );
-
-		EventElement event = new EventElement();
-		event.setType( "errorOnLoad" );
-		event.setEventObjectClass( new String[] { Throwable.class.getCanonicalName() } );
-		configuration.getEvents().add( event );
-
-		ChildModulesElement loadConfig = new ChildModulesElement();
-		loadConfig.setAfterEvent( "afterLoad" );
-		loadConfig.setBeforeEvent( "beforeLoad" );
-		loadConfig.setErrorEvent( "errorOnLoad" );
-		configuration.getChildModules().add( childModule );
-		configuration.setLoadChildConfig( loadConfig );
-
-		assertOutput( getExpectedChildModule( Modules.Module1.class.getCanonicalName() ), false );
-		assertOutput( getExpectedAsyncChildModule(), false );
-		assertOutput( getExpectedAutoDisplayChildModule(), false );
-		writer.writeConf();
-		assertOutput( getExpectedChildModule( Modules.Module1.class.getCanonicalName() ), true );
-		assertOutput( getExpectedAsyncChildModule(), false );
-		assertOutput( getExpectedAutoDisplayChildModule(), false );
-	}
+//	@Test
+//	public void testWriteChildWithParentAsyncNoAutoLoadNotGwt2() {
+//		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
+//		JClassType moduleType = oracle.addClass( Modules.Module01.class );
+//		oracle.setGWT2( false );
+//		ChildModuleElement childModule = new ChildModuleElement();
+//		childModule.setClassName( moduleType.getQualifiedSourceName() );
+//		childModule.setName( "childModule" );
+//		childModule.setAutoDisplay( "false" );
+//
+//		EventElement event = new EventElement();
+//		event.setType( "errorOnLoad" );
+//		event.setEventObjectClass( new String[] { Throwable.class.getCanonicalName() } );
+//		configuration.getEvents().add( event );
+//
+//		ChildModulesElement loadConfig = new ChildModulesElement();
+//		loadConfig.setAfterEvent( "afterLoad" );
+//		loadConfig.setBeforeEvent( "beforeLoad" );
+//		loadConfig.setErrorEvent( "errorOnLoad" );
+//		configuration.getChildModules().add( childModule );
+//		configuration.setLoadChildConfig( loadConfig );
+//
+//		assertOutput( getExpectedChildModule( Modules.Module01.class.getCanonicalName() ), false );
+//		assertOutput( getExpectedAsyncChildModule(), false );
+//		assertOutput( getExpectedAutoDisplayChildModule(), false );
+//		writer.writeConf();
+//		assertOutput( getExpectedChildModule( Modules.Module01.class.getCanonicalName() ), true );
+//		assertOutput( getExpectedAsyncChildModule(), false );
+//		assertOutput( getExpectedAutoDisplayChildModule(), false );
+//	}
 
 	@Test
 	public void testWriteChildWithParentAsyncNoAutoLoadErrorEmpty() {
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		JClassType moduleType = oracle.addClass( Modules.Module1.class );
+		JClassType moduleType = oracle.addClass( Modules.Module01.class );
 		ChildModuleElement childModule = new ChildModuleElement();
 		childModule.setClassName( moduleType.getQualifiedSourceName() );
 		childModule.setName( "childModule" );
@@ -934,11 +934,11 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.getChildModules().add( childModule );
 		configuration.setLoadChildConfig( loadConfig );
 
-		assertOutput( getExpectedChildModule( Modules.Module1.class.getCanonicalName() ), false );
+		assertOutput( getExpectedChildModule( Modules.Module01.class.getCanonicalName() ), false );
 		assertOutput( getExpectedAsyncChildModuleErrorEmpty(), false );
 		assertOutput( getExpectedAutoDisplayChildModule(), false );
 		writer.writeConf();
-		assertOutput( getExpectedChildModule( Modules.Module1.class.getCanonicalName() ), true );
+		assertOutput( getExpectedChildModule( Modules.Module01.class.getCanonicalName() ), true );
 		assertOutput( getExpectedAsyncChildModuleErrorEmpty(), true );
 		assertOutput( getExpectedAutoDisplayChildModule(), false );
 	}
@@ -946,7 +946,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	@Test
 	public void testWriteChildWithParentAsyncNoAutoLoad() {
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent01.class );
 
 		ChildModuleElement childModule = new ChildModuleElement();
 		childModule.setClassName( moduleType.getQualifiedSourceName() );
@@ -965,11 +965,11 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.getChildModules().add( childModule );
 		configuration.setLoadChildConfig( loadConfig );
 
-		assertOutput( getExpectedChildModule( Modules.ModuleWithParent.class.getCanonicalName() ), false );
+		assertOutput( getExpectedChildModule( Modules.ModuleWithParent01.class.getCanonicalName() ), false );
 		assertOutput( getExpectedAsyncChildModule(), false );
 		assertOutput( getExpectedAutoDisplayChildModule(), false );
 		writer.writeConf();
-		assertOutput( getExpectedChildModule( Modules.ModuleWithParent.class.getCanonicalName() ), true );
+		assertOutput( getExpectedChildModule( Modules.ModuleWithParent01.class.getCanonicalName() ), true );
 		assertOutput( getExpectedAsyncChildModule(), true );
 		assertOutput( getExpectedAutoDisplayChildModule(), false );
 	}
@@ -977,7 +977,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	@Test
 	public void testWriteChildWithParentAsyncoAutoLoad() {
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent01.class );
 
 		ChildModuleElement childModule = new ChildModuleElement();
 		childModule.setClassName( moduleType.getQualifiedSourceName() );
@@ -1001,11 +1001,11 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.getChildModules().add( childModule );
 		configuration.setLoadChildConfig( loadConfig );
 
-		assertOutput( getExpectedChildModule( Modules.ModuleWithParent.class.getCanonicalName() ), false );
+		assertOutput( getExpectedChildModule( Modules.ModuleWithParent01.class.getCanonicalName() ), false );
 		assertOutput( getExpectedAsyncChildModule(), false );
 		assertOutput( getExpectedAutoDisplayChildModule(), false );
 		writer.writeConf();
-		assertOutput( getExpectedChildModule( Modules.ModuleWithParent.class.getCanonicalName() ), true );
+		assertOutput( getExpectedChildModule( Modules.ModuleWithParent01.class.getCanonicalName() ), true );
 		assertOutput( getExpectedAsyncChildModule(), true );
 		assertOutput( getExpectedAutoDisplayChildModule(), true );
 	}
@@ -1016,14 +1016,14 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		Set<ChildModuleElement> children = configuration.getChildModules();
 
-		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent01.class );
 		ChildModuleElement childModule = new ChildModuleElement();
 		childModule.setClassName( moduleType.getQualifiedSourceName() );
 		childModule.setName( "childModule1" );
 		childModule.setAutoDisplay( "false" );
 		children.add( childModule );
 
-		moduleType = oracle.addClass( Modules.Module1.class );
+		moduleType = oracle.addClass( Modules.Module01.class );
 		childModule = new ChildModuleElement();
 		childModule.setClassName( moduleType.getQualifiedSourceName() );
 		childModule.setName( "childModule2" );
@@ -1048,7 +1048,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		loader.setClassName( loaderType.getQualifiedSourceName() );
 		configuration.getLoaders().add( loader );
 
-		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent01.class );
 		ChildModuleElement childModule = new ChildModuleElement();
 		childModule.setClassName( moduleType.getQualifiedSourceName() );
 		childModule.setName( "childModule1" );
@@ -1056,7 +1056,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		childModule.setAutoDisplay( "false" );
 		children.add( childModule );
 
-		moduleType = oracle.addClass( Modules.Module1.class );
+		moduleType = oracle.addClass( Modules.Module01.class );
 		childModule = new ChildModuleElement();
 		childModule.setClassName( moduleType.getQualifiedSourceName() );
 		childModule.setName( "childModule2" );
@@ -1076,7 +1076,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		configuration.setLoadChildConfig( new ChildModulesElement() );
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent01.class );
 
 		ChildModuleElement childModule = new ChildModuleElement();
 		childModule.setClassName( moduleType.getQualifiedSourceName() );
@@ -1099,7 +1099,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.getEvents().add( event1 );
 		configuration.getEvents().add( event2 );
 		configuration.getEvents().add( event3 );
-		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
+		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent01.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
 
 		assertOutput( getExpectedEventChildModuleLoad(), false );
 		writer.writeConf();
@@ -1108,10 +1108,9 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	@Test
 	public void testWriteChildPassiveEvent() {
-
 		configuration.setLoadChildConfig( new ChildModulesElement() );
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent01.class );
 
 		ChildModuleElement childModule = new ChildModuleElement();
 		childModule.setClassName( moduleType.getQualifiedSourceName() );
@@ -1137,7 +1136,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.getEvents().add( event1 );
 		configuration.getEvents().add( event2 );
 		configuration.getEvents().add( event3 );
-		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
+		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent01.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
 
 		assertOutput( getExpectedPassiveEventChildModuleLoad(), false );
 		writer.writeConf();
@@ -1164,7 +1163,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		configuration.setLoadChildConfig( new ChildModulesElement() );
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		String moduleType = oracle.addClass( Modules.ModuleWithParent.class ).getQualifiedSourceName();
+		String moduleType = oracle.addClass( Modules.ModuleWithParent01.class ).getQualifiedSourceName();
 
 		EventElement event1 = new EventElement();
 		event1.setType( "event1" );
@@ -1252,7 +1251,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	@Test
 	public void testWriteChildModuleMethods() {
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
+		configuration.setModule( oracle.addClass( Modules.Module01.class ) );
 		configuration.setParentEventBus( oracle.addClass( EventBusWithLookup.class ) );
 		configuration.setHistoryName( "child" );
 
@@ -1264,7 +1263,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	@Test
 	public void testWriteChildModuleMethodsNoHistory() {
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		configuration.setModule( oracle.addClass( Modules.Module1.class ) );
+		configuration.setModule( oracle.addClass( Modules.Module01.class ) );
 		configuration.setParentEventBus( oracle.addClass( EventBusWithLookup.class ) );
 
 		assertOutput( getExpectedChildMethodNoHistory(), false );
@@ -1276,7 +1275,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	public void testWriteParentHistory() {
 
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent01.class );
 
 		ChildModuleElement childModule = new ChildModuleElement();
 		childModule.setClassName( moduleType.getQualifiedSourceName() );
@@ -1290,7 +1289,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		event.setType( "test" );
 		event.setForwardToModules( new String[] { "child" } );
 		configuration.getEvents().add( event );
-		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
+		configuration.getOthersEventBusClassMap().put( Modules.ModuleWithParent01.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
 
 		assertOutput( getExpectedHistoryParent(), false );
 		writer.writeConf();
@@ -1524,7 +1523,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		configuration.setLoadChildConfig( new ChildModulesElement() );
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent01.class );
 
 		ChildModuleElement childModule = new ChildModuleElement();
 		childModule.setClassName( moduleType.getQualifiedSourceName() );
@@ -1788,7 +1787,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	@Test
 	public void testWriteMultipleImpl() {
 		TypeOracleStub oracle = (TypeOracleStub)configuration.getOracle();
-		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent.class );
+		JClassType moduleType = oracle.addClass( Modules.ModuleWithParent01.class );
 		ChildModuleElement childModule = new ChildModuleElement();
 		childModule.setClassName( moduleType.getQualifiedSourceName() );
 		childModule.setName( "childModule" );
@@ -2189,8 +2188,8 @@ public class Mvp4gConfigurationFileReaderTest {
 		return new String[] {
 				"public void loadChildModule(String childModuleClassName, String eventName, boolean passive, Mvp4gEventPasser passer){",
 				"Mvp4gModule childModule = modules.get(childModuleClassName);", "if((childModule != null) && (passer != null)){",
-				"passer.pass(childModule);", "else if(\"com.mvp4g.rebind.test_tools.Modules.ModuleWithParent\".equals(childModuleClassName)){",
-				"loadchildModule2(eventName, passer);", "else if(\"com.mvp4g.rebind.test_tools.Modules.Module1\".equals(childModuleClassName)){",
+				"passer.pass(childModule);", "else if(\"com.mvp4g.rebind.test_tools.Modules.ModuleWithParent01\".equals(childModuleClassName)){",
+				"loadchildModule2(eventName, passer);", "else if(\"com.mvp4g.rebind.test_tools.Modules.Module01\".equals(childModuleClassName)){",
 				"loadchildModule1(eventName, passer);",
 				"throw new Mvp4gException( \"ChildModule \" + childModuleClassName + \" not found. Is this module a sibling module?\" );" };
 	}
@@ -2233,15 +2232,15 @@ public class Mvp4gConfigurationFileReaderTest {
 
 	private String[] getExpectedEventSiblingLoad( boolean passive ) {
 		return new String[] {
-				"parentModule.loadChildModule(\"com.mvp4g.rebind.test_tools.Modules.ModuleWithParent\", \"event1\", " + passive
+				"parentModule.loadChildModule(\"com.mvp4g.rebind.test_tools.Modules.ModuleWithParent01\", \"event1\", " + passive
 						+ ", new Mvp4gEventPasser(){",
 				"public void pass(Mvp4gModule module){",
 				"com.mvp4g.rebind.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.rebind.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event1();",
-				"parentModule.loadChildModule(\"com.mvp4g.rebind.test_tools.Modules.ModuleWithParent\", \"event2\", " + passive
+				"parentModule.loadChildModule(\"com.mvp4g.rebind.test_tools.Modules.ModuleWithParent01\", \"event2\", " + passive
 						+ ", new Mvp4gEventPasser(new Object[]{attr0}){",
 				"eventBus.event2((java.lang.String) eventObjects[0]);",
-				"parentModule.loadChildModule(\"com.mvp4g.rebind.test_tools.Modules.ModuleWithParent\", \"event3\", " + passive
+				"parentModule.loadChildModule(\"com.mvp4g.rebind.test_tools.Modules.ModuleWithParent01\", \"event3\", " + passive
 						+ ", new Mvp4gEventPasser(new Object[]{attr0,attr1}){",
 				"eventBus.event3((java.lang.String) eventObjects[0],(java.lang.Object) eventObjects[1]);" };
 	}
@@ -2249,7 +2248,7 @@ public class Mvp4gConfigurationFileReaderTest {
 	private String[] getExpectedPassiveEventChildModuleLoad() {
 		return new String[] {
 				"Mvp4gModule module;",
-				"module = modules.get(\"com.mvp4g.rebind.test_tools.Modules.ModuleWithParent\");",
+				"module = modules.get(\"com.mvp4g.rebind.test_tools.Modules.ModuleWithParent01\");",
 				"if(module != null){",
 				"com.mvp4g.rebind.test_tools.annotation.events.EventBusOk eventBus = (com.mvp4g.rebind.test_tools.annotation.events.EventBusOk) module.getEventBus();",
 				"eventBus.event2(attr0);",
@@ -2355,7 +2354,7 @@ public class Mvp4gConfigurationFileReaderTest {
 				"com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter gethandler1();",
 				"com.mvp4g.rebind.test_tools.annotation.handlers.SimpleEventHandler gethandler3();",
 				"com.mvp4g.rebind.test_tools.annotation.handlers.EventHandlerWithEvent gethandler4();", "java.lang.String getview();",
-				"com.mvp4g.rebind.test_tools.annotation.history_converters.SimpleHistoryConverter gethistory();" };
+				"com.mvp4g.rebind.test_tools.annotation.history_converters.SimpleHistoryConverter01 gethistory();" };
 	}
 
 	private String[] getExpectedEventFiltersInstantiation() {
@@ -2397,7 +2396,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		HistoryConverterElement history = new HistoryConverterElement();
 		history.setName( "history" );
-		history.setClassName( SimpleHistoryConverter.class.getCanonicalName() );
+		history.setClassName( SimpleHistoryConverter01.class.getCanonicalName() );
 		configuration.getHistoryConverters().add( history );
 
 		PresenterElement p1 = new PresenterElement();

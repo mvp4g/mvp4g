@@ -48,7 +48,6 @@ public class ServicesAnnotationsLoaderTest extends AbstractMvp4gAnnotationLoader
 		return new ServiceAnnotationsLoader();
 	}
 
-	@SuppressWarnings( "unchecked" )
 	@Override
 	protected Set<ServiceElement> getSet() {
 		return configuration.getServices();
