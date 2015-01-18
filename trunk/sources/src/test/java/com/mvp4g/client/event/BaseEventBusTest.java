@@ -20,8 +20,8 @@ import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.test_tools.EventFilterStub;
 import com.mvp4g.client.test_tools.Mvp4gModuleStub;
 import com.mvp4g.rebind.test_tools.annotation.Presenters;
-import com.mvp4g.rebind.test_tools.annotation.handlers.SimpleEventHandler;
-import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter;
+import com.mvp4g.rebind.test_tools.annotation.handlers.SimpleEventHandler01;
+import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter01;
 import com.mvp4g.rebind.test_tools.annotation.views.SimpleInjectedView;
 
 public class BaseEventBusTest {
@@ -37,7 +37,7 @@ public class BaseEventBusTest {
 			@SuppressWarnings( "unchecked" )
 			@Override
 			protected <T extends EventHandlerInterface<?>> T createHandler( Class<T> handlerClass ) {
-				return (T)( ( SimplePresenter.class.equals( handlerClass ) ) ? new SimplePresenter() : null );
+				return (T)( ( SimplePresenter01.class.equals( handlerClass ) ) ? new SimplePresenter01() : null );
 			}
 
 			public void setNavigationConfirmation( NavigationConfirmationInterface navigationConfirmation ) {
@@ -226,41 +226,41 @@ public class BaseEventBusTest {
 
 	@Test
 	public void testAddRemoveHandler() {
-		List<SimplePresenter> list = bus.getHandlers( SimplePresenter.class );
+		List<SimplePresenter01> list = bus.getHandlers( SimplePresenter01.class );
 		assertNull( list );
 
-		SimplePresenter p = bus.addHandler( SimplePresenter.class );
-		list = bus.getHandlers( SimplePresenter.class );
+		SimplePresenter01 p = bus.addHandler( SimplePresenter01.class );
+		list = bus.getHandlers( SimplePresenter01.class );
 		assertTrue( list.size() == 1 );
 		assertEquals( list.get( 0 ), p );
 
 		bus.removeHandler( p );
-		list = bus.getHandlers( SimplePresenter.class );
+		list = bus.getHandlers( SimplePresenter01.class );
 		assertTrue( list.size() == 0 );
 
-		List<SimplePresenter> list2 = bus.getHandlers( SimplePresenter.class );
+		List<SimplePresenter01> list2 = bus.getHandlers( SimplePresenter01.class );
 		assertNotSame( list, list2 );
 		assertEquals( list, list2 );
 	}
 
 	@Test
 	public void testDefaultAddHandler() {
-		List<SimplePresenter> list = bus.getHandlers( SimplePresenter.class );
+		List<SimplePresenter01> list = bus.getHandlers( SimplePresenter01.class );
 
-		SimplePresenter p = bus.addHandler( SimplePresenter.class );
-		list = bus.getHandlers( SimplePresenter.class );
+		SimplePresenter01 p = bus.addHandler( SimplePresenter01.class );
+		list = bus.getHandlers( SimplePresenter01.class );
 		assertTrue( list.size() == 1 );
 		assertEquals( list.get( 0 ), p );
 		assertTrue( p.isBindCalled() );
 
-		p = bus.addHandler( SimplePresenter.class, true );
-		list = bus.getHandlers( SimplePresenter.class );
+		p = bus.addHandler( SimplePresenter01.class, true );
+		list = bus.getHandlers( SimplePresenter01.class );
 		assertTrue( list.size() == 2 );
 		assertEquals( list.get( 1 ), p );
 		assertTrue( p.isBindCalled() );
 
-		p = bus.addHandler( SimplePresenter.class, false );
-		list = bus.getHandlers( SimplePresenter.class );
+		p = bus.addHandler( SimplePresenter01.class, false );
+		list = bus.getHandlers( SimplePresenter01.class );
 		assertTrue( list.size() == 3 );
 		assertEquals( list.get( 2 ), p );
 		assertFalse( p.isBindCalled() );
@@ -288,14 +288,14 @@ public class BaseEventBusTest {
 
 	@Test
 	public void testSetPresenter() {
-		SimplePresenter presenter = new SimplePresenter();
+		SimplePresenter01 presenter = new SimplePresenter01();
 		SimpleInjectedView view = new SimpleInjectedView();
-		SimplePresenter presenter2 = BaseEventBus.setPresenter( false, presenter, view, bus );
+		SimplePresenter01 presenter2 = BaseEventBus.setPresenter( false, presenter, view, bus );
 		assertSame( presenter, presenter2 );
 		assertSame( presenter.getEventBus(), bus );
 		assertSame( presenter.getView(), view );
 
-		presenter = new SimplePresenter();
+		presenter = new SimplePresenter01();
 		view = new SimpleInjectedView();
 		presenter2 = BaseEventBus.setPresenter( true, presenter, view, bus );
 		assertSame( presenter, presenter2 );
@@ -306,8 +306,8 @@ public class BaseEventBusTest {
 
 	@Test
 	public void testSetEventHandler() {
-		SimpleEventHandler eventHandler = new SimpleEventHandler();
-		SimpleEventHandler eventHandler2 = BaseEventBus.setEventHandler( eventHandler, bus );
+		SimpleEventHandler01 eventHandler = new SimpleEventHandler01();
+		SimpleEventHandler01 eventHandler2 = BaseEventBus.setEventHandler( eventHandler, bus );
 		assertSame( eventHandler, eventHandler2 );
 		assertSame( eventHandler.getEventBus(), bus );
 	}

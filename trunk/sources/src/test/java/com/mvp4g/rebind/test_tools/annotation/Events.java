@@ -24,23 +24,23 @@ import com.mvp4g.rebind.test_tools.CustomPlaceService;
 import com.mvp4g.rebind.test_tools.Modules;
 import com.mvp4g.rebind.test_tools.annotation.gin.OneGinModule;
 import com.mvp4g.rebind.test_tools.annotation.presenters.PresenterWithName;
-import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter;
+import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter01;
 
 public class Events {
 
-	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter01.class )
 	public static class NotInterfaceEventBus {
 	}
 
-	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter01.class )
 	public static interface NotEventBus {
 	}
 
-	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter01.class )
 	public static interface SimpleEventBus extends EventBus {
 	}
 
-	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter01.class )
 	public static interface EventBusWithLookUp extends EventBusWithLookup {
 	}
 
@@ -48,17 +48,17 @@ public class Events {
 	public static interface EventBusWithStartName extends EventBus {
 	}
 
-	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class, startPresenterName = "name" )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter01.class, startPresenterName = "name" )
 	public static interface EventBusWithStartNameAndWrongClass extends EventBus {
 	}
 
-	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter01.class )
 	public static interface EventBusWithMethodAndNoAnnotation extends EventBus {
 
 		public void event( String obj );
 	}
 
-	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter01.class )
 	public static interface EventBusWithSameMethod extends EventBus {
 
 		@Event
@@ -117,7 +117,7 @@ public class Events {
 	}
 
 	@ChildModules( {} )
-	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter01.class )
 	public static interface EventBusUselessChildModules extends EventBus {
 
 	}
@@ -128,7 +128,7 @@ public class Events {
 	}
 
 	@ChildModules( { @ChildModule( moduleClass = Modules.Module01.class ), @ChildModule( moduleClass = Modules.Module01.class ) } )
-	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter.class )
+	@com.mvp4g.client.annotation.Events( startPresenter = SimplePresenter01.class )
 	public static interface EventBusWithSameChild extends EventBus {
 
 	}
