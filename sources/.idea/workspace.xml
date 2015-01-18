@@ -2,28 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="41c8ec7e-4034-4bce-ba92-9fcb22aea98e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/OneObject.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/handlers/SimpleEventHandler02.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/handlers/SimpleEventHandler03.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/handlers/SimpleEventHandler04.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter02.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter03.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter04.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/handlers/SimpleEventHandler.java" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/handlers/SimpleEventHandler01.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter.java" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter01.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/mvp4g/client/event/BaseEventBusTest.java" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/client/event/BaseEventBusTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/events/EventBusOk.java" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/events/EventBusOk.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/loader/annotation/EventHandlerAnnotationsLoaderTest.java" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/loader/annotation/EventHandlerAnnotationsLoaderTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/Events.java" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/Events.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/loader/annotation/EventsAnnotationsLoaderTest.java" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/loader/annotation/EventsAnnotationsLoaderTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/Modules.java" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/Modules.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/Mvp4gConfiguration.java" afterPath="$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/Mvp4gConfiguration.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/Mvp4gConfigurationFileReaderTest.java" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/Mvp4gConfigurationFileReaderTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/OneEvents.java" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/OneEvents.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/loader/annotation/PresenterAnnotationsLoaderTest.java" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/loader/annotation/PresenterAnnotationsLoaderTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/views/SimpleInjectedView.java" afterPath="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/views/SimpleInjectedView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/google/gwt/dev/javac/typemodel/TypeOracleStub.java" afterPath="$PROJECT_DIR$/src/test/java/com/google/gwt/dev/javac/typemodel/TypeOracleStub.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="mvp4g.iws" />
@@ -55,11 +36,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Mvp4gConfigurationTest.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Mvp4gConfigurationTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.332533" vertical-offset="30629" max-vertical-offset="51765">
-              <caret line="1818" column="0" selection-start-line="1818" selection-start-column="0" selection-end-line="1818" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="25483" max-vertical-offset="61115">
+              <caret line="1514" column="0" selection-start-line="1514" selection-start-column="0" selection-end-line="1514" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -67,91 +48,105 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OneObject.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/OneObject.java">
+      <file leaf-file-name="Mvp4gConfiguration.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/Mvp4gConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
-              <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="22899" max-vertical-offset="34901">
+              <caret line="1404" column="0" selection-start-line="1404" selection-start-column="0" selection-end-line="1404" selection-end-column="0" />
+              <folding>
+                <element signature="e#8938#8966#0" expanded="true" />
+                <element signature="e#26115#26143#0" expanded="true" />
+                <element signature="e#26208#26236#0" expanded="true" />
+                <element signature="e#26303#26331#0" expanded="true" />
+                <element signature="e#26396#26424#0" expanded="true" />
+                <element signature="e#26605#26637#0" expanded="true" />
+                <element signature="e#31677#31695#0" expanded="true" />
+                <element signature="e#51299#51327#0" expanded="true" />
+                <element signature="e#51397#51429#0" expanded="true" />
+                <element signature="e#58888#58908#0" expanded="true" />
+                <element signature="e#78753#78761#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6523256" vertical-offset="0" max-vertical-offset="3808">
+              <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Modules.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/Modules.java">
+      <file leaf-file-name="Mvp4gConfigurationFileReaderTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/Mvp4gConfigurationFileReaderTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1258">
-              <caret line="25" column="39" selection-start-line="25" selection-start-column="39" selection-end-line="25" selection-end-column="39" />
+            <state vertical-scroll-proportion="-4.232143" vertical-offset="30091" max-vertical-offset="41582">
+              <caret line="1784" column="0" selection-start-line="1784" selection-start-column="0" selection-end-line="1784" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Mvp4gAnnotationsLoader.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/loader/annotation/Mvp4gAnnotationsLoader.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="3536">
+              <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EventFilters.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/EventFilters.java">
+      <file leaf-file-name="EventsAnnotationsLoader.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/loader/annotation/EventsAnnotationsLoader.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="629">
-              <caret line="16" column="67" selection-start-line="16" selection-start-column="46" selection-end-line="16" selection-end-column="67" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="10200">
+              <caret line="99" column="0" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SimpleHistoryConverter01.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/history_converters/SimpleHistoryConverter01.java">
+      <file leaf-file-name="ParentRunner.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11-sources.jar!/org/junit/runners/ParentRunner.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
-              <caret line="6" column="32" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="32" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="3638" max-vertical-offset="5967">
+              <caret line="273" column="0" selection-start-line="273" selection-start-column="0" selection-end-line="273" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SimplePresenter03.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter03.java">
+      <file leaf-file-name="AssignabilityChecker.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/google/gwt/dev/javac/typemodel/AssignabilityChecker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="595" max-vertical-offset="3774">
+              <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SimplePresenter04.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter04.java">
+      <file leaf-file-name="ReflectiveCallable.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11-sources.jar!/org/junit/internal/runners/model/ReflectiveCallable.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="408">
+              <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SimpleEventHandler03.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/handlers/SimpleEventHandler03.java">
+      <file leaf-file-name="JClassType.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-dev/2.7.0/gwt-dev-2.7.0-sources.jar!/com/google/gwt/dev/javac/typemodel/JClassType.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="238">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimpleEventHandler01.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/handlers/SimpleEventHandler01.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="238">
-              <caret line="8" column="38" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="38" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimpleEventHandler02.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/handlers/SimpleEventHandler02.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="238">
-              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="6596" max-vertical-offset="10200">
+              <caret line="428" column="0" selection-start-line="428" selection-start-column="0" selection-end-line="428" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -170,7 +165,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/mvp4g/util/config/loader/annotation/Mvp4gAnnotationsLoader.java" />
         <option value="$PROJECT_DIR$/pomBack.txt" />
         <option value="$PROJECT_DIR$/src/main/java/com/google/gwt/dev/javac/typemodel/JClassType.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/google/gwt/dev/javac/typemodel/AssignabilityCheckerbackUp.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/google/gwt/dev/javac/typemodel/AssignabilityChecker.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/google/gwt/dev/javac/typemodel/TypeOracle.java" />
@@ -185,19 +179,30 @@
         <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/loader/annotation/ServicesAnnotationsLoaderTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/loader/annotation/PresenterAnnotationsLoaderTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/TestMvp4gGenerator.java" />
-        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/Mvp4gConfigurationFileReaderTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/com/google/gwt/dev/javac/typemodel/TypeOracleStub.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/Mvp4gConfiguration.java" />
-        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter.java" />
-        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter01.java" />
-        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter02.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/handlers/SimpleEventHandler02.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/handlers/SimpleEventHandler03.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/handlers/SimpleEventHandler04.java" />
-        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter03.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter04.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/Modules.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/views/SimpleView.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/views/SimpleView01.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/views/SimpleView02.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/views/SimpleView03.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/views/SimpleView04.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter01.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter02.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter03.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/views/SimpleInjectedView.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/google/gwt/dev/javac/typemodel/TypeOracleStub.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/bus/OneEventBus.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/bus/Child01EventBus.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/bus/Child02EventBus.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/events/EventBusOk.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/Mvp4gConfigurationFileReaderTest.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>
@@ -398,6 +403,186 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="test_tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rebind" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test_tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="annotation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rebind" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test_tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="annotation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rebind" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test_tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="annotation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="presenters" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mvp4g" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rebind" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test_tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="annotation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="events" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -806,20 +991,21 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="recentsLimit" value="5" />
-    <property name="LayoutCode.rearrangeEntriesJava" value="false" />
+    <property name="LayoutCode.rearrangeEntriesJava" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.mvp4g.rebind.test_tools.annotation.bus" />
       <recent name="com.mvp4g.rebind.test_tools.annotation.presenters" />
+      <recent name="com.mvp4g.rebind.test_tools.annotation.views" />
       <recent name="com.mvp4g.rebind.test_tools.annotation.handlers" />
       <recent name="com.mvp4g.rebind.test_tools.annotation.history_converters" />
-      <recent name="com.google.gwt.dev.javac.typemodel" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/com/mvp4g" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.Mvp4gConfigurationTest">
+  <component name="RunManager" selected="JUnit.Mvp4gConfigurationFileReaderTest.testWriteSplitterPassiveLoadingGenerate">
     <configuration default="false" name="Mvp4gConfigurationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -848,7 +1034,7 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="Mvp4gConfigurationTest.testHistoryWhenParent" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="Mvp4gConfigurationTest.testLoadAnnotation" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="com.mvp4g.rebind.config.*" />
@@ -860,7 +1046,103 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="com.mvp4g.rebind.config" />
       <option name="MAIN_CLASS_NAME" value="com.mvp4g.rebind.config.Mvp4gConfigurationTest" />
-      <option name="METHOD_NAME" value="testHistoryWhenParent" />
+      <option name="METHOD_NAME" value="testLoadAnnotation" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <ConfigurationWrapper RunnerId="Debug" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Mvp4gConfigurationTest.testForwardParentModule" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.mvp4g.rebind.config.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="mvp4g" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="com.mvp4g.rebind.config" />
+      <option name="MAIN_CLASS_NAME" value="com.mvp4g.rebind.config.Mvp4gConfigurationTest" />
+      <option name="METHOD_NAME" value="testForwardParentModule" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <ConfigurationWrapper RunnerId="Debug" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Mvp4gConfigurationTest.testForwardSiblingModule" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.mvp4g.rebind.config.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="mvp4g" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="com.mvp4g.rebind.config" />
+      <option name="MAIN_CLASS_NAME" value="com.mvp4g.rebind.config.Mvp4gConfigurationTest" />
+      <option name="METHOD_NAME" value="testForwardSiblingModule" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <ConfigurationWrapper RunnerId="Debug" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Mvp4gConfigurationFileReaderTest.testWriteSplitterPassiveLoadingGenerate" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="com.mvp4g.rebind.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="mvp4g" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="com.mvp4g.rebind" />
+      <option name="MAIN_CLASS_NAME" value="com.mvp4g.rebind.Mvp4gConfigurationFileReaderTest" />
+      <option name="METHOD_NAME" value="testWriteSplitterPassiveLoadingGenerate" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
@@ -880,102 +1162,6 @@
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Debug" />
       <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Mvp4gConfigurationTest.testEventHandlerWrongInjectedView" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="com.mvp4g.rebind.config.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="mvp4g" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="com.mvp4g.rebind.config" />
-      <option name="MAIN_CLASS_NAME" value="com.mvp4g.rebind.config.Mvp4gConfigurationTest" />
-      <option name="METHOD_NAME" value="testEventHandlerWrongInjectedView" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <ConfigurationWrapper RunnerId="Debug" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Mvp4gConfigurationTest.testSetterGetter" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="com.mvp4g.rebind.config.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="mvp4g" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="com.mvp4g.rebind.config" />
-      <option name="MAIN_CLASS_NAME" value="com.mvp4g.rebind.config.Mvp4gConfigurationTest" />
-      <option name="METHOD_NAME" value="testSetterGetter" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <ConfigurationWrapper RunnerId="Debug" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Mvp4gConfigurationTest.testActivateDeActivateMultiple" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="com.mvp4g.rebind.config.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="mvp4g" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="com.mvp4g.rebind.config" />
-      <option name="MAIN_CLASS_NAME" value="com.mvp4g.rebind.config.Mvp4gConfigurationTest" />
-      <option name="METHOD_NAME" value="testActivateDeActivateMultiple" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <ConfigurationWrapper RunnerId="Debug" />
       <method />
     </configuration>
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
@@ -1130,18 +1316,18 @@
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="JUnit.ServicesAnnotationsLoaderTest.testGeneratedClass" />
       <item index="1" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest.testHistoryWhenParent" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest.testEventHandlerWrongInjectedView" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest.testSetterGetter" />
-      <item index="5" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest.testActivateDeActivateMultiple" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest.testLoadAnnotation" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest.testForwardParentModule" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest.testForwardSiblingModule" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationFileReaderTest.testWriteSplitterPassiveLoadingGenerate" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest.testActivateDeActivateMultiple" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest.testEventHandlerWrongInjectedView" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest.testSetterGetter" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest.testHistoryWhenParent" />
+        <item index="0" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationFileReaderTest.testWriteSplitterPassiveLoadingGenerate" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest.testForwardSiblingModule" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest.testForwardParentModule" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.Mvp4gConfigurationTest.testLoadAnnotation" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
@@ -1162,7 +1348,8 @@
     </option>
   </component>
   <component name="StructureViewFactory">
-    <option name="ACTIVE_ACTIONS" value=",SHOW_PROPERTIES,SHOW_INHERITED,ALPHA_COMPARATOR" />
+    <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
+    <option name="ACTIVE_ACTIONS" value=",ALPHA_COMPARATOR,SHOW_PROPERTIES,SHOW_ANONYMOUS" />
   </component>
   <component name="SvnConfiguration" cleanupOnStartRun="true">
     <configuration>$USER_HOME$/.subversion</configuration>
@@ -1279,67 +1466,61 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>3011</line>
+          <line>3336</line>
           <properties />
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1312</line>
+          <line>1384</line>
           <properties />
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1365</line>
+          <line>1444</line>
           <properties />
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1364</line>
+          <line>1443</line>
           <properties />
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1352</line>
+          <line>1430</line>
           <properties />
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1375</line>
+          <line>1456</line>
           <properties />
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1380</line>
-          <properties />
-          <option name="timeStamp" value="32" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1799</line>
+          <line>1945</line>
           <properties />
           <option name="timeStamp" value="33" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1818</line>
+          <line>2118</line>
           <properties />
           <option name="timeStamp" value="36" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1817</line>
+          <line>1964</line>
           <properties />
           <option name="timeStamp" value="37" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1813</line>
+          <line>1960</line>
           <properties />
           <option name="timeStamp" value="38" />
         </line-breakpoint>
@@ -1350,12 +1531,6 @@
           <option name="timeStamp" value="39" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1389</line>
-          <properties />
-          <option name="timeStamp" value="41" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/Mvp4gConfiguration.java</url>
           <line>1447</line>
           <properties />
@@ -1363,21 +1538,9 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1418</line>
+          <line>1515</line>
           <properties />
           <option name="timeStamp" value="44" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1396</line>
-          <properties />
-          <option name="timeStamp" value="47" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>53</line>
-          <properties />
-          <option name="timeStamp" value="49" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/Mvp4gConfigurationFileReaderTest.java</url>
@@ -1429,48 +1592,156 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>2406</line>
+          <line>2607</line>
           <properties />
           <option name="timeStamp" value="61" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1567</line>
+          <line>1755</line>
           <properties />
           <option name="timeStamp" value="67" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1584</line>
+          <line>1715</line>
           <properties />
           <option name="timeStamp" value="68" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>476</line>
+          <line>521</line>
           <properties />
           <option name="timeStamp" value="69" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>2333</line>
+          <line>2523</line>
           <properties />
           <option name="timeStamp" value="70" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>1295</line>
+          <line>1366</line>
           <properties />
           <option name="timeStamp" value="71" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
-          <line>2061</line>
+          <line>2225</line>
           <properties />
           <option name="timeStamp" value="72" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
+          <line>2370</line>
+          <properties />
+          <option name="timeStamp" value="73" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
+          <line>495</line>
+          <properties />
+          <option name="timeStamp" value="74" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
+          <line>778</line>
+          <properties />
+          <option name="timeStamp" value="75" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/google/gwt/dev/javac/typemodel/TypeOracleStub.java</url>
+          <line>191</line>
+          <properties />
+          <option name="timeStamp" value="76" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
+          <line>2055</line>
+          <properties />
+          <option name="timeStamp" value="77" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
+          <line>418</line>
+          <properties />
+          <option name="timeStamp" value="80" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
+          <line>1348</line>
+          <properties />
+          <option name="timeStamp" value="81" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/Mvp4gConfiguration.java</url>
+          <line>1336</line>
+          <properties />
+          <option name="timeStamp" value="83" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/Mvp4gConfiguration.java</url>
+          <line>1404</line>
+          <properties />
+          <option name="timeStamp" value="84" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/Mvp4gConfiguration.java</url>
+          <line>1375</line>
+          <properties />
+          <option name="timeStamp" value="85" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/Mvp4gConfiguration.java</url>
+          <line>1349</line>
+          <properties />
+          <option name="timeStamp" value="86" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
+          <line>2109</line>
+          <properties />
+          <option name="timeStamp" value="87" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
+          <line>2113</line>
+          <properties />
+          <option name="timeStamp" value="89" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
+          <line>1628</line>
+          <properties />
+          <option name="timeStamp" value="90" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
+          <line>1464</line>
+          <properties />
+          <option name="timeStamp" value="91" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java</url>
+          <line>1501</line>
+          <properties />
+          <option name="timeStamp" value="92" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/Mvp4gConfigurationFileReaderTest.java</url>
+          <line>1631</line>
+          <properties />
+          <option name="timeStamp" value="93" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/Mvp4gConfigurationFileReaderTest.java</url>
+          <line>1779</line>
+          <properties />
+          <option name="timeStamp" value="95" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="73" />
+      <option name="time" value="97" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1479,108 +1750,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/history_converters/SimpleHistoryConverter02.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/loader/annotation/EventsAnnotationsLoaderTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="11750" max-vertical-offset="16932">
-          <caret line="712" column="89" selection-start-line="712" selection-start-column="89" selection-end-line="712" selection-end-column="89" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/element/ChildModuleElement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="544" max-vertical-offset="1496">
-          <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/Events.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="19" max-vertical-offset="5389">
-          <caret line="124" column="103" selection-start-line="124" selection-start-column="103" selection-end-line="124" selection-end-column="103" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mvp4g/client/Mvp4gModule.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2372093" vertical-offset="0" max-vertical-offset="1955">
-          <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/loader/annotation/Mvp4gAnnotationsLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2244" max-vertical-offset="3536">
-          <caret line="171" column="0" selection-start-line="171" selection-start-column="0" selection-end-line="171" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/google/gwt/dev/javac/typemodel/StubClassType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6749">
-          <caret line="11" column="45" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/loader/annotation/AbstractMvp4gAnnotationLoaderTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="512" max-vertical-offset="1530">
-          <caret line="64" column="42" selection-start-line="64" selection-start-column="42" selection-end-line="64" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/loader/annotation/AbstractMvp4gAnnotationsWithServiceLoaderTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1938">
-          <caret line="26" column="58" selection-start-line="26" selection-start-column="41" selection-end-line="26" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-dev/2.7.0/gwt-dev-2.7.0-sources.jar!/com/google/gwt/dev/util/Name.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3126" max-vertical-offset="3893">
-          <caret line="231" column="0" selection-start-line="231" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-dev/2.7.0/gwt-dev-2.7.0-sources.jar!/com/google/gwt/dev/util/collect/HashMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="7089" max-vertical-offset="13753">
-          <caret line="463" column="0" selection-start-line="463" selection-start-column="0" selection-end-line="463" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/Presenters.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1972">
-          <caret line="3" column="34" selection-start-line="3" selection-start-column="34" selection-end-line="3" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/HistoryConverters.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1700">
-          <caret line="3" column="34" selection-start-line="3" selection-start-column="34" selection-end-line="3" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/EventHandlers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="755" max-vertical-offset="1615">
-          <caret line="75" column="18" selection-start-line="75" selection-start-column="18" selection-end-line="75" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/element/Mvp4gWithServicesElementTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="765">
@@ -1625,6 +1794,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="1037">
           <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1666,22 +1836,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/Mvp4gConfigurationFileReaderTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="16561" max-vertical-offset="41072">
-          <caret line="1034" column="0" selection-start-line="1034" selection-start-column="0" selection-end-line="1034" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-dev/2.7.0/gwt-dev-2.7.0-sources.jar!/com/google/gwt/dev/javac/typemodel/JRealClassType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1156" max-vertical-offset="9418">
-          <caret line="107" column="0" selection-start-line="107" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-dev/2.7.0/gwt-dev-2.7.0-sources.jar!/com/google/gwt/dev/javac/typemodel/JGenericType.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="1819">
@@ -1718,81 +1872,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter01.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
-          <caret line="7" column="30" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter02.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/google/gwt/dev/javac/typemodel/TypeOracleStub.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1513" max-vertical-offset="3332">
-          <caret line="118" column="0" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11-sources.jar!/org/junit/runners/ParentRunner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3638" max-vertical-offset="5967">
-          <caret line="273" column="0" selection-start-line="273" selection-start-column="0" selection-end-line="273" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/google/gwt/dev/javac/typemodel/AssignabilityChecker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="595" max-vertical-offset="3774">
-          <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-dev/2.7.0/gwt-dev-2.7.0-sources.jar!/com/google/gwt/dev/javac/typemodel/JClassType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="6596" max-vertical-offset="10200">
-          <caret line="428" column="0" selection-start-line="428" selection-start-column="0" selection-end-line="428" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/Mvp4gConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="13515" max-vertical-offset="34901">
-          <caret line="878" column="0" selection-start-line="878" selection-start-column="0" selection-end-line="878" selection-end-column="0" />
-          <folding>
-            <element signature="e#8938#8966#0" expanded="true" />
-            <element signature="e#26115#26143#0" expanded="true" />
-            <element signature="e#26208#26236#0" expanded="true" />
-            <element signature="e#26303#26331#0" expanded="true" />
-            <element signature="e#26396#26424#0" expanded="true" />
-            <element signature="e#26605#26637#0" expanded="true" />
-            <element signature="e#31677#31695#0" expanded="true" />
-            <element signature="e#51299#51327#0" expanded="true" />
-            <element signature="e#51397#51429#0" expanded="true" />
-            <element signature="e#58888#58908#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11-sources.jar!/org/junit/internal/runners/model/ReflectiveCallable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="408">
-          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/handlers/SimpleEventHandler04.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="238">
@@ -1812,14 +1891,6 @@
     <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/handlers/SimpleEventHandler03.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="238">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter03.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
           <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
           <folding />
         </state>
@@ -1881,13 +1952,233 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/google/gwt/dev/javac/typemodel/StubClassType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.332533" vertical-offset="30629" max-vertical-offset="51765">
-          <caret line="1818" column="0" selection-start-line="1818" selection-start-column="0" selection-end-line="1818" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6749">
+          <caret line="11" column="45" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/views/SimpleView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="187">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/views/SimpleView01.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
+          <caret line="2" column="25" selection-start-line="2" selection-start-column="25" selection-end-line="3" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/views/SimpleView02.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
+          <caret line="3" column="23" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/views/SimpleView03.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
+          <caret line="3" column="23" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/views/SimpleView04.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
+          <caret line="3" column="23" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
+          <caret line="7" column="50" selection-start-line="7" selection-start-column="50" selection-end-line="7" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter01.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
+          <caret line="8" column="1" selection-start-line="6" selection-start-column="30" selection-end-line="8" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter02.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
+          <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/presenters/SimplePresenter03.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
+          <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/views/SimpleInjectedView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="374">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/element/ChildModuleElement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17790698" vertical-offset="0" max-vertical-offset="1496">
+          <caret line="23" column="9" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11-sources.jar!/org/junit/internal/runners/statements/ExpectException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="680">
+          <caret line="11" column="29" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/test_tools/annotation/events/EventBusOk.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="168" max-vertical-offset="1020">
+          <caret line="49" column="12" selection-start-line="49" selection-start-column="12" selection-end-line="49" selection-end-column="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/google/gwt/dev/javac/typemodel/TypeOracleStub.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="4930">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-dev/2.7.0/gwt-dev-2.7.0-sources.jar!/com/google/gwt/dev/javac/typemodel/JRealClassType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1717" max-vertical-offset="9418">
+          <caret line="140" column="0" selection-start-line="140" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/loader/annotation/Mvp4gAnnotationsLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="238" max-vertical-offset="3536">
+          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/google/gwt/dev/javac/typemodel/AssignabilityChecker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="595" max-vertical-offset="3774">
+          <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/gwt/gwt-dev/2.7.0/gwt-dev-2.7.0-sources.jar!/com/google/gwt/dev/javac/typemodel/JClassType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="6596" max-vertical-offset="10200">
+          <caret line="428" column="0" selection-start-line="428" selection-start-column="0" selection-end-line="428" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/loader/annotation/EventsAnnotationsLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="10200">
+          <caret line="99" column="0" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/config/Mvp4gConfigurationTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="25483" max-vertical-offset="61115">
+          <caret line="1514" column="0" selection-start-line="1514" selection-start-column="0" selection-end-line="1514" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/mvp4g/rebind/config/Mvp4gConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="22899" max-vertical-offset="34901">
+          <caret line="1404" column="0" selection-start-line="1404" selection-start-column="0" selection-end-line="1404" selection-end-column="0" />
+          <folding>
+            <element signature="e#8938#8966#0" expanded="true" />
+            <element signature="e#26115#26143#0" expanded="true" />
+            <element signature="e#26208#26236#0" expanded="true" />
+            <element signature="e#26303#26331#0" expanded="true" />
+            <element signature="e#26396#26424#0" expanded="true" />
+            <element signature="e#26605#26637#0" expanded="true" />
+            <element signature="e#31677#31695#0" expanded="true" />
+            <element signature="e#51299#51327#0" expanded="true" />
+            <element signature="e#51397#51429#0" expanded="true" />
+            <element signature="e#58888#58908#0" expanded="true" />
+            <element signature="e#78753#78761#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11-sources.jar!/org/junit/runners/ParentRunner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3638" max-vertical-offset="5967">
+          <caret line="273" column="0" selection-start-line="273" selection-start-column="0" selection-end-line="273" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11-sources.jar!/org/junit/internal/runners/model/ReflectiveCallable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="408">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/mvp4g/rebind/Mvp4gConfigurationFileReaderTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.232143" vertical-offset="30091" max-vertical-offset="41582">
+          <caret line="1784" column="0" selection-start-line="1784" selection-start-column="0" selection-end-line="1784" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6523256" vertical-offset="0" max-vertical-offset="3808">
+          <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>

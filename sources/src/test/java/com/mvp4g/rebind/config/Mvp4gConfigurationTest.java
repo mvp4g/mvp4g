@@ -1497,7 +1497,7 @@ public class Mvp4gConfigurationTest {
                        module);
 
     setEventBus();
-    configuration.setModule(oracle.findType(Mvp4gModule.class.getCanonicalName()));
+    configuration.setModule(oracle.findType(Modules.ModuleWithParent01.class.getCanonicalName()));
 
     List<ChildModuleElement> siblings = configuration.getSiblings();
     assertEquals(1,
@@ -1651,7 +1651,7 @@ public class Mvp4gConfigurationTest {
 
 
     setEventBus();
-//		configuration.setModule(oracle.addClass(Modules.Module01.class));
+		configuration.setModule(oracle.findType(Modules.ModuleWithParent01.class.getCanonicalName()));
 
     List<ChildModuleElement> siblings = configuration.getSiblings();
     assertEquals(0,
@@ -2091,38 +2091,38 @@ public class Mvp4gConfigurationTest {
   @Test
   public void testLoadAnnotation()
       throws Exception {
-    configuration.setModule(oracle.addClass(Modules.ModuleWithParentNoName.class));
+    configuration.setModule(oracle.findType(Mvp4gModule.class.getCanonicalName()));
 
-    List<JClassType> aPresenters = new ArrayList<JClassType>();
+    List<JClassType> aPresenters = new ArrayList<>();
     aPresenters.add(oracle.findType(SimplePresenter01.class.getName()));
     aPresenters.add(oracle.findType(PresenterWithName.class.getName()));
     configuration.loadPresenters(aPresenters);
     assertEquals(2,
                  presenters.size());
 
-    List<JClassType> aHC = new ArrayList<JClassType>();
+    List<JClassType> aHC = new ArrayList<>();
     aHC.add(oracle.findType(SimpleHistoryConverter01.class.getName()));
     aHC.add(oracle.findType(HistoryConverterForEvent.class.getName()));
     configuration.loadHistoryConverters(aHC);
     assertEquals(2,
                  historyConverters.size());
 
-    List<JClassType> aEvents = new ArrayList<JClassType>();
-    aEvents.add(oracle.findType(EventBusOk.class.getName()));
+    List<JClassType> aEvents = new ArrayList<>();
+    aEvents.add(oracle.addClass(EventBusOk.class));
     configuration.setStart(null);
     configuration.setHistory(null);
     configuration.loadEvents(aEvents);
     assertEquals(5,
                  events.size());
 
-    List<JClassType> aService = new ArrayList<JClassType>();
+    List<JClassType> aService = new ArrayList<>();
     aService.add(oracle.findType(SimpleService.class.getName()));
     aService.add(oracle.findType(ServiceWithName.class.getName()));
     configuration.loadServices(aService);
     assertEquals(2,
                  services.size());
 
-    List<JClassType> aEventHandlers = new ArrayList<JClassType>();
+    List<JClassType> aEventHandlers = new ArrayList<>();
     aEventHandlers.add(oracle.findType(SimpleEventHandler01.class.getName()));
     aEventHandlers.add(oracle.findType(EventHandlerWithEvent.class.getName()));
     configuration.loadEventHandlers(aEventHandlers);
