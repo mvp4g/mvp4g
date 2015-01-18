@@ -11,12 +11,8 @@
 	<!-- Specify the paths for translatable code                    -->
 	<source path='client'/>
 
-
 	<!-- Deferred binding rules                                     -->
 	<generate-with class="com.mvp4g.rebind.Mvp4gGenerator">
-		<when-type-assignable class="com.mvp4g.client.Mvp4gModule" />
-	</generate-with>
-	<generate-with class="com.mvp4g.rebind.Mvp4gRunAsyncGenerator">
-		<when-type-assignable class="com.mvp4g.client.Mvp4gRunAsync" />
+		<when-type-assignable class="org.gwt4e.mvp4g.application.client.Mvp4gApplication" />
 	</generate-with>
 </module>
