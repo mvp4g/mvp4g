@@ -473,7 +473,7 @@ public class Mvp4gConfiguration {
   void validateViews()
     throws UnknownConfigurationElementException {
 
-    Map<String, List<PresenterElement>> viewMap = new HashMap<String, List<PresenterElement>>();
+    Map<String, List<PresenterElement>> viewMap = new HashMap<>();
 
     List<PresenterElement> presenterList = null;
     String viewName = null;
@@ -481,7 +481,7 @@ public class Mvp4gConfiguration {
       viewName = presenter.getView();
       presenterList = viewMap.get(viewName);
       if (presenterList == null) {
-        presenterList = new ArrayList<PresenterElement>();
+        presenterList = new ArrayList<>();
         viewMap.put(viewName,
                     presenterList);
       }

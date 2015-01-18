@@ -5,7 +5,7 @@ import com.mvp4g.client.Mvp4gLoader;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.event.EventFilter;
 import com.mvp4g.client.history.HistoryConverter;
-import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter;
+import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter01;
 import com.mvp4g.rebind.test_tools.annotation.views.SimpleView;
 
 import java.lang.annotation.Annotation;
@@ -37,7 +37,7 @@ public class TypeOracleStub extends TypeOracle {
 	}
 
 	public JGenericType addClass(Class<?> c) {
-		JGenericType type = null;
+		JGenericType type;
 		if (!c.isArray()) {
 			JPackage p = getOrCreatePackage(c.getPackage()
 																			 .getName());
@@ -65,7 +65,7 @@ public class TypeOracleStub extends TypeOracle {
 				type.addImplementedInterface(implementedInterface);
 			}
 
-			Map<Class<? extends Annotation>, Annotation> annotations = new HashMap<Class<? extends Annotation>, Annotation>();
+			Map<Class<? extends Annotation>, Annotation> annotations = new HashMap<>();
 			for (Annotation a : c.getAnnotations()) {
 				annotations.put(a.annotationType(),
 												a);
@@ -75,10 +75,10 @@ public class TypeOracleStub extends TypeOracle {
 			if (c.getPackage()
 					 .getName()
 					 .contains("com.mvp4g.rebind.test_tools.annotation")) {
-				JMethod method = null;
+				JMethod method;
 				String returnType;
 				for (Method m : c.getDeclaredMethods()) {
-					annotations = new HashMap<Class<? extends Annotation>, Annotation>();
+					annotations = new HashMap<>();
 					for (Annotation a : m.getAnnotations()) {
 						annotations.put(a.annotationType(),
 														a);
@@ -101,7 +101,7 @@ public class TypeOracleStub extends TypeOracle {
 						method.addModifierBits(0x00000010);
 					}
 
-					Map<Class<? extends Annotation>, Annotation> declaredAnnotations = new HashMap<Class<? extends Annotation>, Annotation>();
+					Map<Class<? extends Annotation>, Annotation> declaredAnnotations = new HashMap<>();
 					for (Class<?> param : m.getParameterTypes()) {
 						new JParameter(method,
 													 findType(param.getName()),
@@ -120,7 +120,7 @@ public class TypeOracleStub extends TypeOracle {
 	}
 
 	private List<JClassType> getImplementedInterfaces( Class<?> c ) {
-		List<JClassType> interfaces = new ArrayList<JClassType>();
+		List<JClassType> interfaces = new ArrayList<>();
 		for ( Class<?> implementedInterface : c.getInterfaces() ) {
 			interfaces.add( new MyParameterizedType( (JGenericType)findType( implementedInterface.getName() ), null, new JClassType[0] ) );
 		}
@@ -165,7 +165,7 @@ public class TypeOracleStub extends TypeOracle {
 				method.setReturnType( findType( SimpleView.class.getCanonicalName() ) );
 			} else if ( "getPresenter".equals( name ) ) {
 				method = new JMethod( this.getBaseType(), name, new HashMap<Class<? extends Annotation>, Annotation>(), null );
-				method.setReturnType( findType( SimplePresenter.class.getCanonicalName() ) );
+				method.setReturnType( findType( SimplePresenter01.class.getCanonicalName() ) );
 			} else {
 				method = super.findMethod( name, paramTypes );
 			}
@@ -175,8 +175,8 @@ public class TypeOracleStub extends TypeOracle {
 
 		@Override
 		public JMethod[] getMethods() {
-			JMethod[] methods = null;
-			Map<Class<? extends Annotation>, Annotation> declaredAnnotations = new HashMap<Class<? extends Annotation>, Annotation>();
+			JMethod[] methods;
+			Map<Class<? extends Annotation>, Annotation> declaredAnnotations = new HashMap<>();
 			if ( isAssignableTo( findType( HistoryConverter.class.getName() ) ) ) {
 				JMethod method = new JMethod( this.getBaseType(), "convertFromToken", declaredAnnotations, null );
 				new JParameter( method, findType( String.class.getName() ), "eventType", declaredAnnotations, true );

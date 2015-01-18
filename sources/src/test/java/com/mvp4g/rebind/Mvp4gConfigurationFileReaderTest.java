@@ -22,9 +22,9 @@ import com.mvp4g.rebind.test_tools.annotation.EventFilters.EventFilter2;
 import com.mvp4g.rebind.test_tools.annotation.Presenters;
 import com.mvp4g.rebind.test_tools.annotation.events.EventBusOk;
 import com.mvp4g.rebind.test_tools.annotation.handlers.EventHandlerWithEvent;
-import com.mvp4g.rebind.test_tools.annotation.handlers.SimpleEventHandler;
+import com.mvp4g.rebind.test_tools.annotation.handlers.SimpleEventHandler01;
 import com.mvp4g.rebind.test_tools.annotation.history_converters.SimpleHistoryConverter01;
-import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter;
+import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter01;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,7 +55,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		configuration.getViews().add( view );
 
 		PresenterElement presenter = new PresenterElement();
-		presenter.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenter.setClassName( SimplePresenter01.class.getCanonicalName() );
 		presenter.setName( "startPresenter" );
 		presenter.setView( "startView" );
 		configuration.getPresenters().add( presenter );
@@ -1556,20 +1556,20 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		PresenterElement presenter = new PresenterElement();
 		presenter.setName( "presenter" );
-		presenter.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenter.setClassName( SimplePresenter01.class.getCanonicalName() );
 		presenter.setView( "view" );
 		configuration.getPresenters().add( presenter );
 		
 		PresenterElement presenterWithView = new PresenterElement();
 		presenterWithView.setName( "presenterWithView" );
-		presenterWithView.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenterWithView.setClassName( SimplePresenter01.class.getCanonicalName() );
 		presenterWithView.setView( "view" );
 		presenterWithView.setInverseView( "true" );
 		configuration.getPresenters().add( presenterWithView );		
 
 		EventHandlerElement eventHandler = new EventHandlerElement();
 		eventHandler.setName( "eventHandler" );
-		eventHandler.setClassName( SimpleEventHandler.class.getCanonicalName() );
+		eventHandler.setClassName( SimpleEventHandler01.class.getCanonicalName() );
 		configuration.getEventHandlers().add( eventHandler );
 
 		EventElement e1 = new EventElement();
@@ -1642,7 +1642,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		PresenterElement presenter = new PresenterElement();
 		presenter.setName( "presenter" );
-		presenter.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenter.setClassName( SimplePresenter01.class.getCanonicalName() );
 		presenter.setView( "view" );
 		presenter.setAsync( "Splitter" );
 		configuration.getPresenters().add( presenter );
@@ -1654,7 +1654,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		PresenterElement presenterWithView = new PresenterElement();
 		presenterWithView.setName( "presenterWithView" );
-		presenterWithView.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenterWithView.setClassName( SimplePresenter01.class.getCanonicalName() );
 		presenterWithView.setView( "view" );
 		presenterWithView.setInverseView( "true" );
 		configuration.getPresenters().add( presenterWithView );
@@ -1666,7 +1666,7 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		PresenterElement presenterMultiple = new PresenterElement();
 		presenterMultiple.setName( "presenterMultiple" );
-		presenterMultiple.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenterMultiple.setClassName( SimplePresenter01.class.getCanonicalName() );
 		presenterMultiple.setView( "viewMultiple" );
 		presenterMultiple.setMultiple( "true" );
 		presenter.setAsync( "Splitter" );
@@ -1674,7 +1674,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		
 		PresenterElement presenterMultipleWithView = new PresenterElement();
 		presenterMultipleWithView.setName( "presenterMultipleWithView" );
-		presenterMultipleWithView.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenterMultipleWithView.setClassName( SimplePresenter01.class.getCanonicalName() );
 		presenterMultipleWithView.setView( "viewMultiple" );
 		presenterMultipleWithView.setMultiple( "true" );
 		presenterMultipleWithView.setInverseView( "true" );
@@ -1683,13 +1683,13 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		EventHandlerElement eventHandler = new EventHandlerElement();
 		eventHandler.setName( "eventHandler" );
-		eventHandler.setClassName( SimpleEventHandler.class.getCanonicalName() );
+		eventHandler.setClassName( SimpleEventHandler01.class.getCanonicalName() );
 		presenter.setAsync( "Splitter" );
 		configuration.getEventHandlers().add( eventHandler );
 
 		EventHandlerElement eventHandlerMultiple = new EventHandlerElement();
 		eventHandlerMultiple.setName( "eventHandlerMultiple" );
-		eventHandlerMultiple.setClassName( SimpleEventHandler.class.getCanonicalName() );
+		eventHandlerMultiple.setClassName( SimpleEventHandler01.class.getCanonicalName() );
 		eventHandlerMultiple.setMultiple( "true" );
 		presenter.setAsync( "Splitter" );
 		configuration.getEventHandlers().add( eventHandlerMultiple );
@@ -1815,20 +1815,20 @@ public class Mvp4gConfigurationFileReaderTest {
 
 		PresenterElement presenter = new PresenterElement();
 		presenter.setName( "presenter" );
-		presenter.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenter.setClassName( SimplePresenter01.class.getCanonicalName() );
 		presenter.setView( "view" );
 		configuration.getPresenters().add( presenter );
 
 		PresenterElement presenterWithView = new PresenterElement();
 		presenterWithView.setName( "presenterWithView" );
-		presenterWithView.setClassName( SimplePresenter.class.getCanonicalName() );
+		presenterWithView.setClassName( SimplePresenter01.class.getCanonicalName() );
 		presenterWithView.setView( "view" );
 		presenterWithView.setInverseView( "true" );
 		configuration.getPresenters().add( presenterWithView );
 
 		EventHandlerElement eventHandler = new EventHandlerElement();
 		eventHandler.setName( "eventHandler" );
-		eventHandler.setClassName( SimpleEventHandler.class.getCanonicalName() );
+		eventHandler.setClassName( SimpleEventHandler01.class.getCanonicalName() );
 		configuration.getEventHandlers().add( eventHandler );
 
 		EventElement e1 = new EventElement();
@@ -2402,7 +2402,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		PresenterElement p1 = new PresenterElement();
 		p1.setName( "handler1" );
 		p1.setMultiple( Boolean.FALSE.toString() );
-		p1.setClassName( SimplePresenter.class.getCanonicalName() );
+		p1.setClassName( SimplePresenter01.class.getCanonicalName() );
 		p1.setView( "view" );
 		PresenterElement p2 = new PresenterElement();
 		p2.setName( "handler2" );
@@ -2415,7 +2415,7 @@ public class Mvp4gConfigurationFileReaderTest {
 		EventHandlerElement eh1 = new EventHandlerElement();
 		eh1.setName( "handler3" );
 		eh1.setMultiple( Boolean.FALSE.toString() );
-		eh1.setClassName( SimpleEventHandler.class.getCanonicalName() );
+		eh1.setClassName( SimpleEventHandler01.class.getCanonicalName() );
 		EventHandlerElement eh2 = new EventHandlerElement();
 		eh2.setName( "handler4" );
 		eh2.setMultiple( Boolean.TRUE.toString() );

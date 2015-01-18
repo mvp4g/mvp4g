@@ -13,6 +13,21 @@ public class Modules {
 
 	}
 
+	public static interface ChildModule01
+			extends Mvp4gModule {
+
+	}
+
+	public static interface ChildModule02
+			extends Mvp4gModule {
+
+	}
+
+	public static interface ChildModule03
+			extends Mvp4gModule {
+
+	}
+
 	@HistoryName( "moduleWithParent01" )
 	public static interface ModuleWithParent01 extends Mvp4gModule {
 

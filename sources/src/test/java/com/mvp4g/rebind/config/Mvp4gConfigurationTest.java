@@ -18,13 +18,11 @@ import com.mvp4g.rebind.test_tools.annotation.Events.EventBusWithNoStartPresente
 import com.mvp4g.rebind.test_tools.annotation.Presenters.PresenterWithService;
 import com.mvp4g.rebind.test_tools.annotation.events.EventBusOk;
 import com.mvp4g.rebind.test_tools.annotation.gin.OneGinModule;
-import com.mvp4g.rebind.test_tools.annotation.handlers.EventHandlerWithEvent;
-import com.mvp4g.rebind.test_tools.annotation.handlers.SimpleEventHandler;
+import com.mvp4g.rebind.test_tools.annotation.handlers.*;
 import com.mvp4g.rebind.test_tools.annotation.history_converters.HistoryConverterForEvent;
 import com.mvp4g.rebind.test_tools.annotation.history_converters.SimpleHistoryConverter01;
 import com.mvp4g.rebind.test_tools.annotation.history_converters.SimpleHistoryConverter02;
-import com.mvp4g.rebind.test_tools.annotation.presenters.PresenterWithName;
-import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter;
+import com.mvp4g.rebind.test_tools.annotation.presenters.*;
 import com.mvp4g.rebind.test_tools.annotation.services.ServiceWithName;
 import com.mvp4g.rebind.test_tools.annotation.services.SimpleService;
 import com.mvp4g.rebind.test_tools.annotation.views.SimpleInjectedView;
@@ -94,7 +92,8 @@ public class Mvp4gConfigurationTest {
 
 	@Test( expected = NonUniqueIdentifierException.class )
 	public void testUniquenessFailureOnPresenterAndViewConflict() throws NonUniqueIdentifierException {
-		presenters.add( newPresenter( "one" ) );
+		presenters.add( newPresenter(SimplePresenter01.class,
+																 "one") );
 		views.add( newView( "one" ) );
 
 		configuration.checkUniquenessOfAllElements();
@@ -102,7 +101,8 @@ public class Mvp4gConfigurationTest {
 
 	@Test( expected = NonUniqueIdentifierException.class )
 	public void testUniquenessFailureOnPresenterAndEventConflict() throws NonUniqueIdentifierException {
-		presenters.add( newPresenter( "one" ) );
+		presenters.add( newPresenter(SimplePresenter01.class,
+																 "one") );
 		events.add( newEvent( "one" ) );
 
 		configuration.checkUniquenessOfAllElements();
@@ -110,7 +110,8 @@ public class Mvp4gConfigurationTest {
 
 	@Test( expected = NonUniqueIdentifierException.class )
 	public void testUniquenessFailureOnPresenterAndServiceConflict() throws NonUniqueIdentifierException {
-		presenters.add( newPresenter( "one" ) );
+		presenters.add( newPresenter(SimplePresenter01.class,
+																 "one") );
 		services.add( newService( "one" ) );
 
 		configuration.checkUniquenessOfAllElements();
@@ -118,8 +119,10 @@ public class Mvp4gConfigurationTest {
 
 	@Test( expected = NonUniqueIdentifierException.class )
 	public void testUniquenessFailureOnPresenterAndHistoryConverterConflict() throws NonUniqueIdentifierException {
-		presenters.add( newPresenter( "one" ) );
-		historyConverters.add( newHistoryConverter01("one") );
+		presenters.add( newPresenter(SimplePresenter01.class,
+																 "one") );
+		historyConverters.add( newHistoryConverter(SimpleHistoryConverter01.class,
+																							 "one") );
 
 		configuration.checkUniquenessOfAllElements();
 	}
@@ -143,7 +146,8 @@ public class Mvp4gConfigurationTest {
 	@Test( expected = NonUniqueIdentifierException.class )
 	public void testUniquenessFailureOnViewAndHistoryConverterConflict() throws NonUniqueIdentifierException {
 		views.add( newView( "one" ) );
-		historyConverters.add( newHistoryConverter01("one") );
+		historyConverters.add( newHistoryConverter(SimpleHistoryConverter01.class,
+																							 "one") );
 
 		configuration.checkUniquenessOfAllElements();
 	}
@@ -159,7 +163,8 @@ public class Mvp4gConfigurationTest {
 	@Test( expected = NonUniqueIdentifierException.class )
 	public void testUniquenessFailureOnEventAndHistoryConverterConflict() throws NonUniqueIdentifierException {
 		events.add( newEvent( "one" ) );
-		historyConverters.add( newHistoryConverter01("one") );
+		historyConverters.add( newHistoryConverter(SimpleEventHandler01.class,
+																							 "one") );
 
 		configuration.checkUniquenessOfAllElements();
 	}
@@ -167,18 +172,21 @@ public class Mvp4gConfigurationTest {
 	@Test( expected = NonUniqueIdentifierException.class )
 	public void testUniquenessFailureOnServiceAndHistoryConverterConflict() throws NonUniqueIdentifierException {
 		services.add( newService( "one" ) );
-		historyConverters.add( newHistoryConverter01("one") );
+		historyConverters.add( newHistoryConverter(SimpleHistoryConverter01.class,
+																							 "one") );
 
 		configuration.checkUniquenessOfAllElements();
 	}
 
 	@Test
 	public void testUniquenessCheckPasses() throws NonUniqueIdentifierException {
-		presenters.add( newPresenter( "one" ) );
+		presenters.add( newPresenter(SimplePresenter01.class,
+																 "one") );
 		views.add( newView( "two" ) );
 		events.add( newEvent( "three" ) );
 		services.add( newService( "four" ) );
-		historyConverters.add( newHistoryConverter01("five") );
+		historyConverters.add( newHistoryConverter(SimpleHistoryConverter01.class,
+																							 "five") );
 
 		configuration.checkUniquenessOfAllElements();
 	}
@@ -224,7 +232,8 @@ public class Mvp4gConfigurationTest {
 		}
 
 		// checking that combination with broadcastTo and passive event don't lead to exception
-		PresenterElement presenter = newPresenter( "testPresenter" );
+		PresenterElement presenter = newPresenter(SimplePresenter01.class,
+																							"testPresenter");
 		presenter.setMultiple( "true" );
 		presenter.setView( "view" );
 		presenters.add( presenter );
@@ -266,7 +275,8 @@ public class Mvp4gConfigurationTest {
 		views.add( newView( "badHandler" ) );
 		services.add( newService( "badHandler" ) );
 		events.add( newEvent( "badHanlder" ) );
-		historyConverters.add( newHistoryConverter01("badHanlder") );
+		historyConverters.add( newHistoryConverter(SimpleHistoryConverter01.class,
+																							 "badHanlder") );
 
 		EventElement event = newEvent( "testEvent" );
 		event.setHandlers( new String[] { "badHandler" } );
@@ -303,7 +313,8 @@ public class Mvp4gConfigurationTest {
 		view.setClassName( String.class.getName() );
 		views.add( view );
 
-		PresenterElement presenter = newPresenter( "testHandler" );
+		PresenterElement presenter = newPresenter(SimplePresenter01.class,
+																							"testHandler");
 		presenter.setView( "view" );
 		presenters.add( presenter );
 
@@ -334,7 +345,8 @@ public class Mvp4gConfigurationTest {
 		configuration.validateEventHandlers();
 		assertTrue( presenters.size() == 0 );
 
-		EventHandlerElement eventHandler = newEventHandler( "testHandler" );
+		EventHandlerElement eventHandler = newEventHandler(SimpleEventHandler01.class,
+																											 "testHandler");
 		eventHandlers.add( eventHandler );
 
 		events.add( event );
@@ -367,7 +379,8 @@ public class Mvp4gConfigurationTest {
 		view.setClassName( Integer.class.getName() );
 		views.add( view );
 
-		PresenterElement presenter = newPresenter( "testHandler" );
+		PresenterElement presenter = newPresenter(SimplePresenter01.class,
+																							"testHandler");
 		presenter.setView( "view" );
 		presenters.add( presenter );
 
@@ -397,7 +410,8 @@ public class Mvp4gConfigurationTest {
 	@Test( expected = UnknownConfigurationElementException.class )
 	public void testEventHandlerViewMissing() throws InvalidMvp4gConfigurationException {
 
-		PresenterElement presenter = newPresenter( "testHandler" );
+		PresenterElement presenter = newPresenter(SimplePresenter01.class,
+																							"testHandler");
 		presenter.setView( "view" );
 		presenters.add( presenter );
 
@@ -416,7 +430,8 @@ public class Mvp4gConfigurationTest {
 		view.setClassName( SimpleView.class.getCanonicalName() );
 		views.add( view );
 
-		PresenterElement presenter = newPresenter( "testHandler" );
+		PresenterElement presenter = newPresenter(SimplePresenter01.class,
+																							"testHandler");
 		presenter.setView( "view" );
 		presenters.add( presenter );
 
@@ -440,7 +455,7 @@ public class Mvp4gConfigurationTest {
 
 		PresenterElement presenter = new PresenterElement();
 		presenter.setName( "testHandler" );
-		c = SimplePresenter.class;
+		c = SimplePresenter01.class;
 		presenter.setClassName( c.getCanonicalName() );
 		oracle.addClass( c );
 		presenter.setView( "view" );
@@ -483,7 +498,7 @@ public class Mvp4gConfigurationTest {
 			fail();
 		} catch ( InvalidTypeException e ) {
 			assertEquals(
-					"view view: Invalid Presenter. Can not convert com.mvp4g.rebind.test_tools.annotation.Presenters.MultiplePresenter to com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter",
+					"view view: Invalid Presenter. Can not convert com.mvp4g.rebind.test_tools.annotation.Presenters.MultiplePresenter to com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter01",
 					e.getMessage() );
 		}
 
@@ -498,34 +513,42 @@ public class Mvp4gConfigurationTest {
 		oracle.addClass( c );
 		views.add( view );
 
-		PresenterElement presenter1 = newPresenter( "presenter1" );
+		PresenterElement presenter1 = newPresenter(SimplePresenter01.class,
+																							 "presenter1");
 		presenter1.setView( "view" );
 		presenters.add( presenter1 );
 
-		PresenterElement presenter2 = newPresenter( "presenter2" );
+		PresenterElement presenter2 = newPresenter(SimplePresenter02.class,
+																							 "presenter2");
 		presenter2.setView( "view" );
 		presenters.add( presenter2 );
 
-		PresenterElement presenter3 = newPresenter( "presenter3" );
+		PresenterElement presenter3 = newPresenter(SimplePresenter03.class,
+																							 "presenter3");
 		presenter3.setView( "view" );
 		presenter3.setMultiple( "true" );
 		presenters.add( presenter3 );
 
-		PresenterElement presenter4 = newPresenter( "presenter4" );
+		PresenterElement presenter4 = newPresenter(SimplePresenter04.class,
+																							 "presenter4");
 		presenter4.setView( "view" );
 		presenters.add( presenter4 );
 
-		EventHandlerElement handler1 = newEventHandler( "handler1" );
+		EventHandlerElement handler1 = newEventHandler(SimpleEventHandler01.class,
+																									 "handler1");
 		eventHandlers.add( handler1 );
 
-		EventHandlerElement handler2 = newEventHandler( "handler2" );
+		EventHandlerElement handler2 = newEventHandler(SimpleEventHandler02.class,
+																									 "handler2");
 		eventHandlers.add( handler2 );
 
-		EventHandlerElement handler3 = newEventHandler( "handler3" );
+		EventHandlerElement handler3 = newEventHandler(SimpleEventHandler03.class,
+																									 "handler3");
 		handler3.setMultiple( "true" );
 		eventHandlers.add( handler3 );
 
-		EventHandlerElement handler4 = newEventHandler( "handler4" );
+		EventHandlerElement handler4 = newEventHandler(SimpleEventHandler04.class,
+																									 "handler4");
 		eventHandlers.add( handler4 );
 
 		EventElement event = newEvent( "testEvent" );
@@ -576,10 +599,13 @@ public class Mvp4gConfigurationTest {
 			NotFoundClassException {
 		events.add( newEvent( "badView" ) );
 		services.add( newService( "badView" ) );
-		presenters.add( newPresenter( "badView" ) );
-		historyConverters.add( newHistoryConverter01("badView") );
+		presenters.add( newPresenter(SimplePresenter01.class,
+																 "badView") );
+		historyConverters.add( newHistoryConverter(SimpleHistoryConverter01.class,
+																							 "badView") );
 
-		PresenterElement presenter = newPresenter( "testPresenter" );
+		PresenterElement presenter = newPresenter(SimplePresenter02.class,
+																							"testPresenter");
 		presenter.setView( "badView" );
 		presenters.add( presenter );
 
@@ -666,7 +692,7 @@ public class Mvp4gConfigurationTest {
 
 		PresenterElement presenter = new PresenterElement();
 		presenter.setName( "presenter1" );
-		c = SimplePresenter.class;
+		c = SimplePresenter01.class;
 		presenter.setClassName( c.getCanonicalName() );
 		oracle.addClass( c );
 		presenter.setView( "view1" );
@@ -706,7 +732,8 @@ public class Mvp4gConfigurationTest {
 			NotFoundClassException {
 		views.add( newView( "testView" ) );
 
-		PresenterElement presenter = newPresenter( "testPresenter" );
+		PresenterElement presenter = newPresenter(SimplePresenter01.class,
+																							"testPresenter");
 		presenter.setView( "testView" );
 		presenters.add( presenter );
 
@@ -722,7 +749,8 @@ public class Mvp4gConfigurationTest {
 		views.add( view2 );
 		views.add( view3 );
 
-		PresenterElement presenter = newPresenter( "testPresenter" );
+		PresenterElement presenter = newPresenter(SimplePresenter01.class,
+																							"testPresenter");
 		presenter.setView( "view1" );
 		presenters.add( presenter );
 
@@ -742,10 +770,13 @@ public class Mvp4gConfigurationTest {
 			InvalidClassException, NotFoundClassException {
 		events.add( newEvent( "badService" ) );
 		views.add( newView( "badService" ) );
-		presenters.add( newPresenter( "badService" ) );
-		historyConverters.add( newHistoryConverter01("badService") );
+		presenters.add( newPresenter(SimplePresenter01.class,
+																 "badService") );
+		historyConverters.add( newHistoryConverter(SimpleHistoryConverter01.class,
+																							 "badService") );
 
-		PresenterElement presenter = newPresenter( "testPresenter" );
+		PresenterElement presenter = newPresenter(SimplePresenter02.class,
+																							"testPresenter");
 		presenter.getInjectedServices().add( new InjectedElement( "badService", "setBadService" ) );
 		presenters.add( presenter );
 
@@ -757,10 +788,13 @@ public class Mvp4gConfigurationTest {
 			InvalidClassException, NotFoundClassException {
 		events.add( newEvent( "badService" ) );
 		views.add( newView( "badService" ) );
-		presenters.add( newPresenter( "badService" ) );
-		historyConverters.add( newHistoryConverter01("badService") );
+		presenters.add( newPresenter(SimplePresenter01.class,
+																 "badService") );
+		historyConverters.add( newHistoryConverter(SimpleHistoryConverter01.class,
+																							 "badService") );
 
-		HistoryConverterElement historyConverter = newHistoryConverter02("testHistoryConverter");
+		HistoryConverterElement historyConverter = newHistoryConverter(SimpleHistoryConverter02.class,
+																																	 "testHistoryConverter");
 		historyConverter.getInjectedServices().add( new InjectedElement( "badService", "setBadService" ) );
 		historyConverters.add( historyConverter );
 
@@ -771,11 +805,13 @@ public class Mvp4gConfigurationTest {
 	public void testInjectedServiceValidationSucceeds() throws UnknownConfigurationElementException {
 		services.add( newService( "testService" ) );
 
-		PresenterElement presenter = newPresenter( "testPresenter" );
+		PresenterElement presenter = newPresenter(SimplePresenter01.class,
+																							"testPresenter");
 		presenter.getInjectedServices().add( new InjectedElement( "testService", "setTestService" ) );
 		presenters.add( presenter );
 
-		HistoryConverterElement historyConverter = newHistoryConverter01("testHistoryConverter");
+		HistoryConverterElement historyConverter = newHistoryConverter(SimpleHistoryConverter01.class,
+																																	 "testHistoryConverter");
 		historyConverter.getInjectedServices().add( new InjectedElement( "testService", "setTestService" ) );
 		historyConverters.add( historyConverter );
 
@@ -794,15 +830,18 @@ public class Mvp4gConfigurationTest {
 		services.add( service3 );
 		services.add( service4 );
 
-		PresenterElement presenter = newPresenter( "testPresenter" );
+		PresenterElement presenter = newPresenter(SimplePresenter01.class,
+																							"testPresenter");
 		presenter.getInjectedServices().add( new InjectedElement( "service1", "setTestService" ) );
 		presenters.add( presenter );
 
-		HistoryConverterElement historyConverter = newHistoryConverter01("testHistoryConverter");
+		HistoryConverterElement historyConverter = newHistoryConverter(SimpleHistoryConverter01.class,
+																																	 "testHistoryConverter");
 		historyConverter.getInjectedServices().add( new InjectedElement( "service2", "setTestService" ) );
 		historyConverters.add( historyConverter );
 
-		EventHandlerElement eventHandlerElement = newEventHandler( "testEventHandler" );
+		EventHandlerElement eventHandlerElement = newEventHandler(SimpleEventHandler01.class,
+																															"testEventHandler");
 		eventHandlerElement.getInjectedServices().add( new InjectedElement( "service3", "setTestService" ) );
 		eventHandlers.add( eventHandlerElement );
 
@@ -824,7 +863,8 @@ public class Mvp4gConfigurationTest {
 
 		events.add( newEvent( "badHistoryConverter" ) );
 		services.add( newService( "badHistoryConverter" ) );
-		presenters.add( newPresenter( "badHistoryConverter" ) );
+		presenters.add( newPresenter(SimplePresenter01.class,
+																 "badHistoryConverter") );
 		views.add( newView( "badHistoryConverter" ) );
 
 		EventElement event = newEvent( "testEvent" );
@@ -880,8 +920,10 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testEventHistoryConverterRemove() throws InvalidMvp4gConfigurationException {
-		HistoryConverterElement hc1 = newHistoryConverter01("hc1");
-		HistoryConverterElement hc2 = newHistoryConverter01("hc2");
+		HistoryConverterElement hc1 = newHistoryConverter(SimpleHistoryConverter01.class,
+																											"hc1");
+		HistoryConverterElement hc2 = newHistoryConverter(SimpleHistoryConverter02.class,
+																											"hc2");
 		historyConverters.add( hc1 );
 		historyConverters.add( hc2 );
 
@@ -903,7 +945,8 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testEventHistoryConverterSucceeds() throws InvalidMvp4gConfigurationException {
-		historyConverters.add( newHistoryConverter01("testHistoryConverter") );
+		historyConverters.add( newHistoryConverter(SimpleHistoryConverter01.class,
+																							 "testHistoryConverter") );
 
 		EventElement event = newEvent( "testEvent" );
 		event.setHistory( "testHistoryConverter" );
@@ -916,9 +959,11 @@ public class Mvp4gConfigurationTest {
 	@Test( expected = UnknownConfigurationElementException.class )
 	public void testStartEventFails() throws InvalidMvp4gConfigurationException {
 		services.add( newService( "badEvent" ) );
-		presenters.add( newPresenter( "badEvent" ) );
-		views.add( newView( "badEvent" ) );
-		historyConverters.add( newHistoryConverter01("badEvent") );
+		presenters.add( newPresenter(SimplePresenter01.class,
+																 "badEvent") );
+		views.add( newView("badEvent") );
+		historyConverters.add( newHistoryConverter(SimpleHistoryConverter01.class,
+																							 "badEvent") );
 
 		configuration.getStart().setEventType( "badEvent" );
 
@@ -929,9 +974,11 @@ public class Mvp4gConfigurationTest {
 	@Test( expected = UnknownConfigurationElementException.class )
 	public void testHistoryInitEventFails() throws InvalidMvp4gConfigurationException {
 		services.add( newService( "badEvent" ) );
-		presenters.add( newPresenter( "badEvent" ) );
+		presenters.add( newPresenter(SimplePresenter01.class,
+																 "badEvent") );
 		views.add( newView( "badEvent" ) );
-		historyConverters.add( newHistoryConverter01("badEvent") );
+		historyConverters.add( newHistoryConverter(SimpleHistoryConverter01.class,
+																							 "badEvent") );
 
 		configuration.getHistory().setInitEvent( "badEvent" );
 
@@ -950,12 +997,14 @@ public class Mvp4gConfigurationTest {
 	@Test
 	public void testChildModulesRemove() throws InvalidMvp4gConfigurationException {
 
-		ChildModuleElement childModule1 = newChildModule( "child1" );
+		ChildModuleElement childModule1 = newChildModule(Modules.ChildModule01.class,
+																										 "child1" );
 		childModule1.setEventToDisplayView( "testEvent" );
 		childModules.add( childModule1 );
 		configuration.getOthersEventBusClassMap().put( Modules.Module01.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
 
-		ChildModuleElement childModule2 = newChildModule( "child2" );
+		ChildModuleElement childModule2 = newChildModule(Modules.ChildModule02.class,
+																										 "child2" );
 		childModules.add( childModule2 );
 
 		EventElement event = newEvent( "testEvent" );
@@ -986,7 +1035,8 @@ public class Mvp4gConfigurationTest {
 	@Test( expected = InvalidMvp4gConfigurationException.class )
 	public void testChildModulesNoStart() throws InvalidMvp4gConfigurationException {
 
-		ChildModuleElement childModule1 = newChildModule( "child1" );
+		ChildModuleElement childModule1 = newChildModule(Modules.ChildModule01.class,
+																										 "child1" );
 		childModule1.setEventToDisplayView( "testEvent" );
 		childModules.add( childModule1 );
 		configuration.getOthersEventBusClassMap()
@@ -1082,7 +1132,8 @@ public class Mvp4gConfigurationTest {
 	@Test
 	public void testAutoDisplay() throws InvalidMvp4gConfigurationException {
 
-		ChildModuleElement childModule1 = newChildModule( "child1" );
+		ChildModuleElement childModule1 = newChildModule(Modules.ChildModule01.class,
+																										 "child1" );
 		childModules.add( childModule1 );
 		assertTrue( childModule1.isAutoDisplay() );
 
@@ -1111,7 +1162,8 @@ public class Mvp4gConfigurationTest {
 	@Test( expected = UnknownConfigurationElementException.class )
 	public void testUnknownEventForAutoDisplay() throws InvalidMvp4gConfigurationException {
 
-		ChildModuleElement childModule1 = newChildModule( "child1" );
+		ChildModuleElement childModule1 = newChildModule(Modules.ChildModule01.class,
+																										 "child1" );
 		childModule1.setEventToDisplayView( "unknown" );
 		childModules.add( childModule1 );
 
@@ -1129,7 +1181,8 @@ public class Mvp4gConfigurationTest {
 	@Test( expected = InvalidMvp4gConfigurationException.class )
 	public void testEventWithNoObjectForAutoDisplay() throws InvalidMvp4gConfigurationException {
 
-		ChildModuleElement childModule1 = newChildModule( "child1" );
+		ChildModuleElement childModule1 = newChildModule(Modules.ChildModule01.class,
+																										 "child1" );
 		childModule1.setEventToDisplayView( "testEvent" );
 		childModules.add( childModule1 );
 
@@ -1152,7 +1205,8 @@ public class Mvp4gConfigurationTest {
 	@Test
 	public void testChildViewLoadEvent() throws InvalidMvp4gConfigurationException {
 
-		ChildModuleElement childModule = newChildModule( "child" );
+		ChildModuleElement childModule = newChildModule(Modules.ChildModule01.class,
+																										"child" );
 		childModule.setEventToDisplayView( "testEvent" );
 
 		configuration.getOthersEventBusClassMap().put( Modules.Module01.class.getCanonicalName(), oracle.addClass( EventBusOk.class ) );
@@ -1237,7 +1291,7 @@ public class Mvp4gConfigurationTest {
 		childModuleMap.put( currentModule, module );
 
 		setEventBus();
-		configuration.setModule( oracle.addClass( Modules.ModuleWithParent01.class ) );
+		configuration.setModule(oracle.findType(Mvp4gModule.class.getCanonicalName()));
 
 		List<ChildModuleElement> siblings = configuration.getSiblings();
 		assertEquals( 1, siblings.size() );
@@ -1514,6 +1568,7 @@ public class Mvp4gConfigurationTest {
 		historyConverters.add( new HistoryConverterElement() );
 
 		configuration.setModule( oracle.addClass( Modules.ModuleWithParent01.class ) );
+//		configuration.setModule( oracle.addClass( Modules.ModuleWithParent01.class ) );
 		setParentEventBus( Modules.ModuleWithParent01.class, EventBusOk.class );
 		configuration.loadParentModule();
 
@@ -1523,7 +1578,7 @@ public class Mvp4gConfigurationTest {
 			fail();
 		} catch ( InvalidMvp4gConfigurationException e ) {
 			assertEquals(
-					"Module com.mvp4g.rebind.test_tools.Modules.ModuleWithParent: History configuration (init, not found event and history parameter separator) should be set only for root module (only module with no parent)",
+					"Module com.mvp4g.rebind.test_tools.Modules.ModuleWithParent01: History configuration (init, not found event and history parameter separator) should be set only for root module (only module with no parent)",
 					e.getMessage() );
 		}
 
@@ -1535,7 +1590,7 @@ public class Mvp4gConfigurationTest {
 			fail();
 		} catch ( InvalidMvp4gConfigurationException e ) {
 			assertEquals(
-					"Module com.mvp4g.rebind.test_tools.Modules.ModuleWithParent: History configuration (init, not found event and history parameter separator) should be set only for root module (only module with no parent)",
+					"Module com.mvp4g.rebind.test_tools.Modules.ModuleWithParent01: History configuration (init, not found event and history parameter separator) should be set only for root module (only module with no parent)",
 					e.getMessage() );
 		}
 
@@ -1745,7 +1800,7 @@ public class Mvp4gConfigurationTest {
 		configuration.setModule( oracle.addClass( Modules.ModuleWithParentNoName.class ) );
 
 		List<JClassType> aPresenters = new ArrayList<JClassType>();
-		aPresenters.add( oracle.findType( SimplePresenter.class.getName() ) );
+		aPresenters.add( oracle.findType( SimplePresenter01.class.getName() ) );
 		aPresenters.add( oracle.findType( PresenterWithName.class.getName() ) );
 		configuration.loadPresenters( aPresenters );
 		assertEquals( 2, presenters.size() );
@@ -1770,7 +1825,7 @@ public class Mvp4gConfigurationTest {
 		assertEquals( 2, services.size() );
 
 		List<JClassType> aEventHandlers = new ArrayList<JClassType>();
-		aEventHandlers.add( oracle.findType( SimpleEventHandler.class.getName() ) );
+		aEventHandlers.add( oracle.findType( SimpleEventHandler01.class.getName() ) );
 		aEventHandlers.add( oracle.findType( EventHandlerWithEvent.class.getName() ) );
 		configuration.loadEventHandlers( aEventHandlers );
 		assertEquals( 2, aEventHandlers.size() );
@@ -1902,7 +1957,7 @@ public class Mvp4gConfigurationTest {
 		}
 
 		PresenterElement presenter = new PresenterElement();
-		Class<?> c = SimpleEventHandler.class;
+		Class<?> c = SimpleEventHandler01.class;
 		oracle.addClass( c );
 		presenter.setClassName( c.getCanonicalName() );
 		presenter.setName( "test" );
@@ -1940,10 +1995,14 @@ public class Mvp4gConfigurationTest {
 		event1.setDeactivate( new String[] { "deactivate1", "deactivate2" } );
 		events.add( event1 );
 
-		PresenterElement activate1 = newPresenter( "activate1" );
-		EventHandlerElement activate2 = newEventHandler( "activate2" );
-		PresenterElement deactivate1 = newPresenter( "deactivate1" );
-		EventHandlerElement deactivate2 = newEventHandler( "deactivate2" );
+		PresenterElement activate1 = newPresenter(SimplePresenter01.class,
+																							"activate1");
+		EventHandlerElement activate2 = newEventHandler(SimpleEventHandler01.class,
+																										"activate2");
+		PresenterElement deactivate1 = newPresenter(SimplePresenter02.class,
+																								"deactivate1");
+		EventHandlerElement deactivate2 = newEventHandler(SimpleEventHandler02.class,
+																											"deactivate2");
 
 		eventHandlers.add( activate1 );
 		eventHandlers.add( activate2 );
@@ -1974,10 +2033,14 @@ public class Mvp4gConfigurationTest {
 		event1.setDeactivate( new String[] { "deactivate1", "deactivate2" } );
 		events.add( event1 );
 
-		PresenterElement activate1 = newPresenter( "activate1" );
-		EventHandlerElement activate2 = newEventHandler( "activate2" );
-		PresenterElement deactivate1 = newPresenter( "deactivate1" );
-		EventHandlerElement deactivate2 = newEventHandler( "deactivate2" );
+		PresenterElement activate1 = newPresenter(SimplePresenter01.class,
+																							"activate1");
+		EventHandlerElement activate2 = newEventHandler(SimpleEventHandler01.class,
+																										"activate2");
+		PresenterElement deactivate1 = newPresenter(SimplePresenter02.class,
+																								"deactivate1");
+		EventHandlerElement deactivate2 = newEventHandler(SimpleEventHandler02.class,
+																											"deactivate2");
 
 		eventHandlers.add( activate1 );
 		eventHandlers.add( activate2 );
@@ -2004,10 +2067,14 @@ public class Mvp4gConfigurationTest {
 		event1.setDeactivate( new String[] { "deactivate1", "deactivate2" } );
 		events.add( event1 );
 
-		PresenterElement activate1 = newPresenter( "activate1" );
-		EventHandlerElement activate2 = newEventHandler( "activate2" );
-		PresenterElement deactivate1 = newPresenter( "deactivate1" );
-		EventHandlerElement deactivate2 = newEventHandler( "deactivate2" );
+		PresenterElement activate1 = newPresenter(SimplePresenter01.class,
+																							"activate1");
+		EventHandlerElement activate2 = newEventHandler(SimpleEventHandler01.class,
+																										"activate2");
+		PresenterElement deactivate1 = newPresenter(SimplePresenter02.class,
+																								"deactivate1");
+		EventHandlerElement deactivate2 = newEventHandler(SimpleEventHandler02.class,
+																											"deactivate2");
 
 		eventHandlers.add( activate1 );
 		eventHandlers.add( activate2 );
@@ -2065,9 +2132,11 @@ public class Mvp4gConfigurationTest {
 		view.setClassName( SimpleView.class.getCanonicalName() );
 		views.add( view );
 
-		PresenterElement generate1 = newPresenter( "generate1" );
+		PresenterElement generate1 = newPresenter(SimplePresenter01.class,
+																							"generate1");
 		generate1.setView( "view" );
-		EventHandlerElement generate2 = newEventHandler( "generate2" );
+		EventHandlerElement generate2 = newEventHandler(SimpleEventHandler01.class,
+																										"generate2");
 
 		presenters.add( generate1 );
 		eventHandlers.add( generate2 );
@@ -2101,9 +2170,11 @@ public class Mvp4gConfigurationTest {
 		view.setClassName( SimpleView.class.getCanonicalName() );
 		views.add( view );
 
-		PresenterElement generate1 = newPresenter( "generate1" );
+		PresenterElement generate1 = newPresenter(SimplePresenter01.class,
+																							"generate1");
 		generate1.setView( "view" );
-		EventHandlerElement generate2 = newEventHandler( "generate2" );
+		EventHandlerElement generate2 = newEventHandler(SimpleEventHandler01.class,
+																										"generate2");
 
 		presenters.add( generate1 );
 
@@ -2166,7 +2237,8 @@ public class Mvp4gConfigurationTest {
 
 		configuration.validateEventFilters();
 
-		eventFilters.add( newEventFilter( "filter" ) );
+		eventFilters.add( newEventFilter(EventFilters.EventFilter1.class,
+																		 "filter" ) );
 
 		configuration.validateEventFilters();
 
@@ -2178,7 +2250,6 @@ public class Mvp4gConfigurationTest {
 		configuration.setEventBus( eventBus );
 
 		EventFilterElement filter = new EventFilterElement();
-		oracle.addClass( Object.class );
 		filter.setClassName( Object.class.getName() );
 		eventFilters.add( filter );
 
@@ -2272,7 +2343,7 @@ public class Mvp4gConfigurationTest {
 		configuration.setEventBus( eventBus );
 		assertSame( eventBus, configuration.getEventBus() );
 
-		JClassType module = oracle.addClass( Mvp4gModule.class );
+		JClassType module = oracle.findType(Mvp4gModule.class.getCanonicalName());
 		configuration.setModule( module );
 		assertSame( module, configuration.getModule() );
 
@@ -2333,7 +2404,7 @@ public class Mvp4gConfigurationTest {
 
 	@Test
 	public void testRootModule() {
-		configuration.setModule( oracle.addClass( Mvp4gModule.class ) );
+		configuration.setModule(oracle.findType(Mvp4gModule.class.getCanonicalName()));
 		assertTrue( configuration.isRootModule() );
 
 		setEventBus();
@@ -2385,8 +2456,8 @@ public class Mvp4gConfigurationTest {
 	@Test
 	public void testDebug() throws NotFoundClassException, InvalidTypeException {
 		DebugElement debug = new DebugElement();
-		oracle.addClass( Object.class );
-		debug.setLogger( Object.class.getCanonicalName() );
+		oracle.addClass( OneObject.class );
+		debug.setLogger( OneObject.class.getCanonicalName() );
 		configuration.setDebug( debug );
 		try {
 			configuration.validateDebug();
@@ -2419,7 +2490,7 @@ public class Mvp4gConfigurationTest {
 		}
 
 		gin = new GinModuleElement();
-		oracle.addClass( Object.class );
+		oracle.addClass( OneObject.class );
 		gin.setModules( new String[] { Object.class.getCanonicalName() } );
 		configuration.setGinModule( gin );
 		try {
@@ -2547,7 +2618,8 @@ public class Mvp4gConfigurationTest {
 		event.setForwardToParent( "true" );
 		events.add( event );
 
-		HistoryConverterElement hc1 = newHistoryConverter01("history");
+		HistoryConverterElement hc1 = newHistoryConverter(SimpleHistoryConverter01.class,
+																											"history");
 		historyConverters.add( hc1 );
 
 		configuration.setModule( oracle.addClass( Modules.Module01.class ) );
@@ -2560,7 +2632,8 @@ public class Mvp4gConfigurationTest {
 	public void testValidateSplitterStartPresenter() {
 		setEventBus();
 
-		PresenterElement presenter = newPresenter( "presenter" );
+		PresenterElement presenter = newPresenter(SimplePresenter01.class,
+																							"presenter");
 		configuration.getStart().setPresenter( "presenter" );
 		presenter.setAsync( "true" );
 		presenters.add( presenter );
@@ -2584,20 +2657,24 @@ public class Mvp4gConfigurationTest {
 
 		String splitterName = oracle.addClass( Splitters.SimpleSplitter.class ).getQualifiedSourceName();
 
-		PresenterElement presenter = newPresenter( "presenter" );
+		PresenterElement presenter = newPresenter(SimplePresenter01.class,
+																							"presenter");
 		presenter.setAsync( splitterName );
 		presenters.add( presenter );
 
-		PresenterElement presenterMultiple = newPresenter( "presenterMultiple" );
+		PresenterElement presenterMultiple = newPresenter(SimplePresenter02.class,
+																											"presenterMultiple");
 		presenterMultiple.setAsync( splitterName );
 		presenterMultiple.setMultiple( "true" );
 		presenters.add( presenterMultiple );
 
-		EventHandlerElement eventHandler = newEventHandler( "eventHandler" );
+		EventHandlerElement eventHandler = newEventHandler(SimpleEventHandler01.class,
+																											 "eventHandler");
 		eventHandler.setAsync( splitterName );
 		eventHandlers.add( eventHandler );
 
-		EventHandlerElement eventHandlerMultiple = newEventHandler( "eventHandlerMultiple" );
+		EventHandlerElement eventHandlerMultiple = newEventHandler(SimpleEventHandler02.class,
+																															 "eventHandlerMultiple");
 		eventHandlerMultiple.setAsync( splitterName );
 		eventHandlerMultiple.setMultiple( "true" );
 		eventHandlers.add( eventHandlerMultiple );
@@ -2644,20 +2721,24 @@ public class Mvp4gConfigurationTest {
 	public void testValidateSplitterSingle() throws InvalidMvp4gConfigurationException {
 		setEventBus();
 
-		PresenterElement presenter = newPresenter( "presenter" );
+		PresenterElement presenter = newPresenter(SimplePresenter01.class,
+																							"presenter");
 		presenter.setAsync( SingleSplitter.class.getCanonicalName() );
 		presenters.add( presenter );
 
-		PresenterElement presenterMultiple = newPresenter( "presenterMultiple" );
+		PresenterElement presenterMultiple = newPresenter(SimplePresenter02.class,
+																											"presenterMultiple");
 		presenterMultiple.setAsync( SingleSplitter.class.getCanonicalName() );
 		presenterMultiple.setMultiple( "true" );
 		presenters.add( presenterMultiple );
 
-		EventHandlerElement eventHandler = newEventHandler( "eventHandler" );
+		EventHandlerElement eventHandler = newEventHandler(SimpleEventHandler01.class,
+																											 "eventHandler");
 		eventHandler.setAsync( SingleSplitter.class.getCanonicalName() );
 		eventHandlers.add( eventHandler );
 
-		EventHandlerElement eventHandlerMultiple = newEventHandler( "eventHandlerMultiple" );
+		EventHandlerElement eventHandlerMultiple = newEventHandler(SimpleEventHandler02.class,
+																															 "eventHandlerMultiple");
 		eventHandlerMultiple.setAsync( SingleSplitter.class.getCanonicalName() );
 		eventHandlerMultiple.setMultiple( "true" );
 		eventHandlers.add( eventHandlerMultiple );
@@ -2753,7 +2834,8 @@ public class Mvp4gConfigurationTest {
 		oracle.addClass( Loaders.Loader1.class );
 		oracle.addClass( Splitters.SplitterWithLoader.class );
 
-		PresenterElement presenter1 = newPresenter( "presenter1" );
+		PresenterElement presenter1 = newPresenter(SimplePresenter01.class,
+																							 "presenter1");
 		presenter1.setAsync( Splitters.SplitterWithLoader.class.getCanonicalName() );
 		presenters.add( presenter1 );
 
@@ -2779,15 +2861,18 @@ public class Mvp4gConfigurationTest {
 		oracle.addClass( Splitters.SplitterWithSameLoader1.class );
 		oracle.addClass( Splitters.SplitterWithSameLoader2.class );
 
-		PresenterElement presenter1 = newPresenter( "presenter1" );
+		PresenterElement presenter1 = newPresenter(SimplePresenter01.class,
+																							 "presenter1");
 		presenter1.setAsync( Splitters.SplitterWithLoader.class.getCanonicalName() );
 		presenters.add( presenter1 );
 
-		PresenterElement presenter2 = newPresenter( "presenter2" );
+		PresenterElement presenter2 = newPresenter(SimplePresenter02.class,
+																							 "presenter2");
 		presenter2.setAsync( Splitters.SplitterWithSameLoader1.class.getCanonicalName() );
 		presenters.add( presenter2 );
 
-		PresenterElement presenter3 = newPresenter( "presenter3" );
+		PresenterElement presenter3 = newPresenter(SimplePresenter03.class,
+																							 "presenter3");
 		presenter3.setAsync( Splitters.SplitterWithSameLoader2.class.getCanonicalName() );
 		presenters.add( presenter3 );
 
@@ -2852,7 +2937,7 @@ public class Mvp4gConfigurationTest {
 	
 	@Test
 	public void testGetSuffix(){
-		assertEquals( "", configuration.getSuffix( null ) );
+		assertEquals( "", configuration.getSuffix(null) );
 		assertEquals( "", configuration.getSuffix( new String[0] ) );
 		assertEquals( "2023092939", configuration.getSuffix( new String[]{"onevalue"} ) );
 		assertEquals( "A1211127213", configuration.getSuffix( new String[]{"onevalue", "valuetwo", "valuethree"} ) );
@@ -2873,30 +2958,32 @@ public class Mvp4gConfigurationTest {
 		}
 	}
 
-	private PresenterElement newPresenter( String name ) {
+//------------------------------------------------------------------------------
+
+	private PresenterElement newPresenter(Class<? extends BaseEventHandler<? extends EventBus>> c,
+																				String name) {
 		PresenterElement presenter = new PresenterElement();
-		presenter.setName( name );
-		Class<?> c = SimplePresenter.class;
+		presenter.setName(name);
 		oracle.addClass( c );
 		presenter.setClassName( c.getCanonicalName() );
 		return presenter;
 	}
 
-	private EventHandlerElement newEventHandler( String name ) {
+	private EventHandlerElement newEventHandler(Class<? extends BaseEventHandler<? extends EventBus>> c,
+																							String name) {
 		EventHandlerElement eventHandler = new EventHandlerElement();
 		eventHandler.setName( name );
-		Class<?> c = SimpleEventHandler.class;
 		oracle.addClass( c );
 		eventHandler.setClassName( c.getCanonicalName() );
 		return eventHandler;
 	}
 
-	private ChildModuleElement newChildModule( String name ) {
+	private ChildModuleElement newChildModule(Class<? extends Mvp4gModule> c,
+																						String name ) {
 		ChildModuleElement childModule = new ChildModuleElement();
 		childModule.setName( name );
-		Class<?> c = Modules.Module01.class;
 		oracle.addClass( c );
-		childModule.setClassName( c.getCanonicalName() );
+		childModule.setClassName(c.getCanonicalName());
 		return childModule;
 	}
 
@@ -2920,28 +3007,19 @@ public class Mvp4gConfigurationTest {
 		return service;
 	}
 
-	private HistoryConverterElement newHistoryConverter01(String name) {
+	private HistoryConverterElement newHistoryConverter(Class<?> c,
+																											String name) {
 		HistoryConverterElement historyConverter = new HistoryConverterElement();
 		historyConverter.setName( name );
-		Class<?> c = SimpleHistoryConverter01.class;
 		oracle.addClass( c );
 		historyConverter.setClassName(c.getCanonicalName());
 		return historyConverter;
 	}
 
-	private HistoryConverterElement newHistoryConverter02(String name) {
-		HistoryConverterElement historyConverter = new HistoryConverterElement();
-		historyConverter.setName( name );
-		Class<?> c = SimpleHistoryConverter02.class;
-		oracle.addClass( c );
-		historyConverter.setClassName( c.getCanonicalName() );
-		return historyConverter;
-	}
-
-	private EventFilterElement newEventFilter( String name ) {
+	private EventFilterElement newEventFilter(Class<? extends EventFilter<? extends EventBus>> c,
+																						String name ) {
 		EventFilterElement eventFilter = new EventFilterElement();
 		eventFilter.setName( name );
-		Class<?> c = EventFilters.EventFilter1.class;
 		oracle.addClass( c );
 		eventFilter.setClassName( c.getCanonicalName() );
 		return eventFilter;

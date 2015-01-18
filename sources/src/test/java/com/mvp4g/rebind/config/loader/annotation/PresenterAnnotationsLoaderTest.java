@@ -9,7 +9,7 @@ import com.mvp4g.rebind.test_tools.annotation.Presenters;
 import com.mvp4g.rebind.test_tools.annotation.Presenters.AsyncPresenter;
 import com.mvp4g.rebind.test_tools.annotation.Presenters.MultiplePresenter;
 import com.mvp4g.rebind.test_tools.annotation.presenters.PresenterWithName;
-import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter;
+import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter01;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -93,7 +93,7 @@ public class PresenterAnnotationsLoaderTest extends AbstractHandlerAnnotationsLo
 
 	@Override
 	protected Class<?> getSimpleClass() {
-		return SimplePresenter.class;
+		return SimplePresenter01.class;
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.rebind.config.element.EventHandlerElement;
 import com.mvp4g.rebind.exception.loader.Mvp4gAnnotationException;
 import com.mvp4g.rebind.test_tools.annotation.EventHandlers;
-import com.mvp4g.rebind.test_tools.annotation.handlers.SimpleEventHandler;
+import com.mvp4g.rebind.test_tools.annotation.handlers.SimpleEventHandler01;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -78,7 +78,7 @@ public class EventHandlerAnnotationsLoaderTest extends AbstractHandlerAnnotation
 
 	@Override
 	protected Class<?> getSimpleClass() {
-		return SimpleEventHandler.class;
+		return SimpleEventHandler01.class;
 	}
 
 	@Override

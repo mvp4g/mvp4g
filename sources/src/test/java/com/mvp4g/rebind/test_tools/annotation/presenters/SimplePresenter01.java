@@ -5,7 +5,8 @@ import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.presenter.BasePresenter;
 
 @Presenter( view = Object.class )
-public class SimplePresenter extends BasePresenter<Object, EventBus> {
+public class SimplePresenter01
+		extends BasePresenter<Object, EventBus> {
 
 	private boolean bindCalled = false;
 

@@ -9,7 +9,7 @@ import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.rebind.test_tools.annotation.history_converters.HistoryConverterForEvent;
 import com.mvp4g.rebind.test_tools.annotation.presenters.PresenterWithName;
-import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter;
+import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter01;
 
 @Events( startPresenter = PresenterWithName.class )
 public interface EventBusOk extends EventBus {
@@ -27,8 +27,8 @@ public interface EventBusOk extends EventBus {
 	@Event( activate = PresenterWithName.class, deactivate = PresenterWithName.class, generate = PresenterWithName.class, activateNames = "name", deactivateNames = "name", generateNames = "name" )
 	void event3();
 
-	@Event( activate = { PresenterWithName.class, SimplePresenter.class }, deactivate = { PresenterWithName.class, SimplePresenter.class }, generate = {
-			PresenterWithName.class, SimplePresenter.class }, activateNames = { "name", "name1" }, deactivateNames = { "name", "name1" }, generateNames = {
+	@Event( activate = { PresenterWithName.class, SimplePresenter01.class }, deactivate = { PresenterWithName.class, SimplePresenter01.class }, generate = {
+			PresenterWithName.class, SimplePresenter01.class }, activateNames = { "name", "name1" }, deactivateNames = { "name", "name1" }, generateNames = {
 			"name", "name1" } )
 	void event4();
 	
