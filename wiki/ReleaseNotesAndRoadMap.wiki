@@ -3,7 +3,7 @@
 = Release Notes =
 
 ==1.6.0-SNAPSHOT== 
- * maven build for mvp4g now will work with GWT 2.7.0 
+ * maven build now works with GWT 2.7.0 and older version of GWT (Issue 131)
 
 ==1.5.0 (08/04/14)==
  * Support IncrementalGenerator for SuperDevMod.
