@@ -1,17 +1,17 @@
 package com.mvp4g.rebind.test_tools.annotation.views;
 
 import com.mvp4g.client.view.ReverseViewInterface;
-import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter01;
+import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter;
 
-public class SimpleInjectedView extends SimpleView implements ReverseViewInterface<SimplePresenter01> {
+public class SimpleInjectedView extends SimpleView implements ReverseViewInterface<SimplePresenter> {
 
-	SimplePresenter01 presenter;
+	SimplePresenter presenter;
 
-	public SimplePresenter01 getPresenter() {
+	public SimplePresenter getPresenter() {
 		return presenter;
 	}
 
-	public void setPresenter(SimplePresenter01 presenter) {
+	public void setPresenter(SimplePresenter presenter) {
 		this.presenter = presenter;
 	}
 }
