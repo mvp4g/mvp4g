@@ -76,8 +76,7 @@ public class Mvp4gConfigurationFileWriter {
       sourceWriter.println(" logger;");
     }
     sourceWriter.print("protected ");
-    sourceWriter.print(configuration.getModule()
-                                    .getQualifiedSourceName());
+    sourceWriter.print(configuration.getModule().getQualifiedSourceName());
     sourceWriter.println(" itself = this;");
 
     writeLoaders(false);
@@ -94,27 +93,7 @@ public class Mvp4gConfigurationFileWriter {
 
     sourceWriter.println();
 
-    sourceWriter.println("public void createAndStartModule() {");
-    sourceWriter.indent();
-
-    sourceWriter.print("createModule();");
-    sourceWriter.print("startModule();");
-
-    sourceWriter.outdent();
-    sourceWriter.println("}");
-    sourceWriter.println();
-
-    writeCreateModule();
-    sourceWriter.println();
-
-    writeStartModule();
-    sourceWriter.println();
-
-    writeGetters();
-  }
-
-  private void writeCreateModule() {
-    sourceWriter.println("public void createModule() {");
+    sourceWriter.println("public void createAndStartModule(){");
     sourceWriter.indent();
 
     String injectorClassName = getGinjectorClassName();
@@ -125,52 +104,54 @@ public class Mvp4gConfigurationFileWriter {
     writeLoaders(true);
 
     writeViews();
+
     sourceWriter.println();
 
     writeLogger();
+
     sourceWriter.println();
 
     writeServices();
+
     sourceWriter.println();
 
     writeHistory();
+
     sourceWriter.println();
 
     writePresenters();
+
     sourceWriter.println();
 
     writeEventHandlers();
+
     sourceWriter.println();
 
     writeEventBus();
+
     sourceWriter.println();
 
     injectEventBus();
+
     sourceWriter.println();
 
     writeEventFilters();
-    sourceWriter.outdent();
-    sourceWriter.println("}");
-    sourceWriter.println();
-  }
 
-  private void writeStartModule() {
-    sourceWriter.println("public void startModule() {");
-    sourceWriter.indent();
+    sourceWriter.println();
 
     writeStartEvent();
     sourceWriter.outdent();
-
     sourceWriter.println("}");
-    sourceWriter.println();
+
+    writeGetters();
+
   }
 
   private void writeGetters() {
     sourceWriter.println("public Object getStartView(){");
     sourceWriter.indent();
 
-    if (configuration.getStart()
-                     .hasPresenter()) {
+    if (configuration.getStart().hasPresenter()) {
       sourceWriter.println("if (startPresenter != null) {");
       sourceWriter.indent();
       sourceWriter.println("startPresenter.setActivated(true);");
@@ -194,8 +175,7 @@ public class Mvp4gConfigurationFileWriter {
   private void writeParentEventBus() {
 
     if (!configuration.isRootModule()) {
-      String parentEventBusClass = configuration.getParentEventBus()
-                                                .getQualifiedSourceName();
+      String parentEventBusClass = configuration.getParentEventBus().getQualifiedSourceName();
       sourceWriter.print("private ");
       sourceWriter.print(Mvp4gModule.class.getCanonicalName());
       sourceWriter.println(" parentModule = null;");
@@ -401,7 +381,7 @@ public class Mvp4gConfigurationFileWriter {
       }
     }
     sourceWriter
-        .println("public void loadChildModule(String childModuleClassName, String eventName, boolean passive, Mvp4gEventPasser passer){");
+      .println("public void loadChildModule(String childModuleClassName, String eventName, boolean passive, Mvp4gEventPasser passer){");
     sourceWriter.indent();
     if (hasChildren) {
       sourceWriter.println("if (passive){");
@@ -432,7 +412,7 @@ public class Mvp4gConfigurationFileWriter {
       sourceWriter.println("else {");
       sourceWriter.indent();
       sourceWriter
-          .println("throw new Mvp4gException( \"ChildModule \" + childModuleClassName + \" not found. Is this module a sibling module?\" );");
+        .println("throw new Mvp4gException( \"ChildModule \" + childModuleClassName + \" not found. Is this module a sibling module?\" );");
       sourceWriter.outdent();
       sourceWriter.println("}");
     }
@@ -453,8 +433,7 @@ public class Mvp4gConfigurationFileWriter {
 
   private void writeGinInjector() {
     sourceWriter.print("@GinModules({");
-    List<String> modules = configuration.getGinModule()
-                                        .getModules();
+    List<String> modules = configuration.getGinModule().getModules();
     int modulesCount = modules.size() - 1;
     for (int i = 0; i < modulesCount; i++) {
       sourceWriter.print(modules.get(i));
@@ -463,10 +442,8 @@ public class Mvp4gConfigurationFileWriter {
     sourceWriter.print(modules.get(modulesCount));
     sourceWriter.println(".class})");
 
-    String moduleName = configuration.getModule()
-                                     .getQualifiedSourceName()
-                                     .replace(".",
-                                              "_");
+    String moduleName = configuration.getModule().getQualifiedSourceName().replace(".",
+                                                                                   "_");
     sourceWriter.print("public interface ");
     sourceWriter.print(moduleName);
     sourceWriter.println("Ginjector extends Ginjector {");
@@ -675,9 +652,8 @@ public class Mvp4gConfigurationFileWriter {
     DebugElement debug = configuration.getDebug();
     if (debug != null) {
       sourceWriter.print("logger = injector.get");
-      sourceWriter.print(debug.getLogger()
-                              .replace(".",
-                                       "_"));
+      sourceWriter.print(debug.getLogger().replace(".",
+                                                   "_"));
       sourceWriter.println("();");
     }
   }
@@ -855,8 +831,7 @@ public class Mvp4gConfigurationFileWriter {
 
         HistoryConverterElement historyConverterElement = getElement(history,
                                                                      configuration.getHistoryConverters());
-        if (ClearHistory.class.getCanonicalName()
-                              .equals(historyConverterElement.getClassName())) {
+        if (ClearHistory.class.getCanonicalName().equals(historyConverterElement.getClassName())) {
           sourceWriter.println("clearHistory(itself);");
         } else {
           writeEventHistoryConvertion(event,
@@ -1331,7 +1306,7 @@ public class Mvp4gConfigurationFileWriter {
     sourceWriter.println("{");
     sourceWriter.indent();
     sourceWriter
-        .println("throw new Mvp4gException( \"Event \" + eventType + \" doesn't exist. Have you forgotten to add it to your Mvp4g configuration file?\" );");
+      .println("throw new Mvp4gException( \"Event \" + eventType + \" doesn't exist. Have you forgotten to add it to your Mvp4g configuration file?\" );");
     sourceWriter.outdent();
     sourceWriter.println("}");
 
@@ -1548,8 +1523,7 @@ public class Mvp4gConfigurationFileWriter {
                             modules);
         eventObjectClasses = event.getEventObjectClass();
 
-        JClassType eventBusType = configuration.getOthersEventBusClassMap()
-                                               .get(module.getClassName());
+        JClassType eventBusType = configuration.getOthersEventBusClassMap().get(module.getClassName());
         String eventBusClass = eventBusType.getQualifiedSourceName();
 
         if (passive) {
@@ -1650,9 +1624,7 @@ public class Mvp4gConfigurationFileWriter {
       for (String moduleClassName : siblingsToLoad) {
         eventObjectClasses = event.getEventObjectClass();
 
-        eventBusClass = configuration.getOthersEventBusClassMap()
-                                     .get(moduleClassName)
-                                     .getQualifiedSourceName();
+        eventBusClass = configuration.getOthersEventBusClassMap().get(moduleClassName).getQualifiedSourceName();
 
         sourceWriter.print("parentModule.loadChildModule(\"");
         sourceWriter.print(moduleClassName);
@@ -1695,14 +1667,10 @@ public class Mvp4gConfigurationFileWriter {
       String eventObject = null;
       boolean toLoad;
       for (String splitter : splitters) {
-        // If the event is passive but we need to generate multiple handlers, we have to load it. 
+        // If the event is passive but we need to generate multiple handlers, we have to load it.
         toLoad = !event.isPassive()
-                 || (getElement(splitter,
-                                configuration.getSplitters()).getEvents()
-                                                             .get(event)
-                                                             .getGenerate()
-                                                             .size() > 0
-        );
+          || (getElement(splitter,
+                         configuration.getSplitters()).getEvents().get(event).getGenerate().size() > 0);
 
         if (!done && toLoad) {
           eventObjectClasses = event.getEventObjectClass();
@@ -1952,8 +1920,7 @@ public class Mvp4gConfigurationFileWriter {
           sourceWriter.print(" ");
           sourceWriter.print(handlerName);
           sourceWriter.println(";");
-          constructorBuilder.append(handlerName)
-                            .append(" = BaseEventBus.");
+          constructorBuilder.append(handlerName).append(" = BaseEventBus.");
           boolean isPresenter = eventHandler instanceof PresenterElement;
           if (isPresenter) {
             PresenterElement presenter = (PresenterElement) eventHandler;
@@ -1967,8 +1934,7 @@ public class Mvp4gConfigurationFileWriter {
             constructorBuilder.append("setEventHandler( injector.get");
             constructorBuilder.append(handlerName);
           }
-          constructorBuilder.append("(), eventBus);")
-                            .append('\n');
+          constructorBuilder.append("(), eventBus);").append('\n');
           for (InjectedElement service : eventHandler.getInjectedServices()) {
             sourceWriter.print(eventHandler.getName());
             sourceWriter.println("." + service.getSetterName() + "(" + service.getElementName() + ");");
@@ -2080,8 +2046,7 @@ public class Mvp4gConfigurationFileWriter {
                                                 Set<T> elements) {
     T eFound = null;
     for (T element : elements) {
-      if (element.getUniqueIdentifier()
-                 .equals(elementName)) {
+      if (element.getUniqueIdentifier().equals(elementName)) {
         eFound = element;
         break;
       }
@@ -2232,8 +2197,7 @@ public class Mvp4gConfigurationFileWriter {
       sourceWriter.print("logger.log(\"");
       sourceWriter.print(beforeText);
       sourceWriter.print("Module: ");
-      sourceWriter.print(configuration.getModule()
-                                      .getSimpleSourceName());
+      sourceWriter.print(configuration.getModule().getSimpleSourceName());
       sourceWriter.print(" || event: ");
       sourceWriter.print(type);
       int nbClasses = (objectClasses == null) ? 0 : objectClasses.length;
@@ -2256,8 +2220,7 @@ public class Mvp4gConfigurationFileWriter {
                                 boolean isBind) {
     DebugElement debug = configuration.getDebug();
 
-    if (debug != null && debug.getLogLevel()
-                              .equals(LogLevel.DETAILED.name())) {
+    if (debug != null && debug.getLogLevel().equals(LogLevel.DETAILED.name())) {
       sourceWriter.print("logger.log(");
       sourceWriter.print(handler);
       if (isBind) {
@@ -2273,8 +2236,7 @@ public class Mvp4gConfigurationFileWriter {
   private void writeEventFiltersLog(String type) {
     DebugElement debug = configuration.getDebug();
 
-    if (debug != null && debug.getLogLevel()
-                              .equals(LogLevel.DETAILED.name())) {
+    if (debug != null && debug.getLogLevel().equals(LogLevel.DETAILED.name())) {
       sourceWriter.print("logger.log(\"event ");
       sourceWriter.print(type);
       sourceWriter.println(" didn't pass filter(s)\", BaseEventBus.logDepth);");
@@ -2308,9 +2270,7 @@ public class Mvp4gConfigurationFileWriter {
   }
 
   private String getGinjectorClassName() {
-    return configuration.getModule()
-                        .getQualifiedSourceName()
-                        .replace(".",
-                                 "_") + "Ginjector";
+    return configuration.getModule().getQualifiedSourceName().replace(".",
+                                                                      "_") + "Ginjector";
   }
 }
