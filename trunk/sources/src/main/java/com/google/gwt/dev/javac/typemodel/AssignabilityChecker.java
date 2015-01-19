@@ -162,9 +162,7 @@ class AssignabilityChecker {
   }
 
   private boolean isAssignableFromRaw(JClassType from, JClassType to) {
-    // TODO hoss: patch start
-    if (isJavaLangObjectRawType(to)) {
-      // TODO hoss: patch end
+    if (isJavaLangObject(to)) {
       return true;
     }
 
@@ -188,14 +186,14 @@ class AssignabilityChecker {
   }
 
   // TODO hoss: patch start
-  private static boolean isJavaLangObjectRawType(JClassType rawType) {
-     return rawType == convertToRawIfGeneric(rawType.getOracle().getJavaLangObject());
+  private static boolean isJavaLangObject(JClassType type) {
+    if (type.isRawType() != null) {
+      return type == convertToRawIfGeneric(type.getOracle().getJavaLangObject());
+    } else {
+      return type == type.getOracle().getJavaLangObject();
+    }
   }
   // TODO hoss: patch end
-
-  private static boolean isJavaLangObject(JClassType type) {
-    return type == type.getOracle().getJavaLangObject();
-  }
 
   private static JClassType convertToRawIfGeneric(JClassType from) {
     return from.isGenericType() != null ? from.isGenericType().getRawType() : from;
