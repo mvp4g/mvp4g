@@ -31,7 +31,7 @@ public class TypeOracleStub
       type = super.findType(name);
       if (type == null) {
         try {
-          // java-lang-object special treatment
+          // do something special for String and Object classes
           if (name.contains("java.lang.Object") ||
               name.contains("java.lang.String")) {
             type = addRealClass(Class.forName(name));
