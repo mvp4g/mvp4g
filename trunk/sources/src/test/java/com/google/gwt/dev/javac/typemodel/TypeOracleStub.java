@@ -31,7 +31,13 @@ public class TypeOracleStub
       type = super.findType(name);
       if (type == null) {
         try {
-          type = addClass(Class.forName(name));
+          // java-lang-object special treatment
+          if (name.contains("java.lang.Object") ||
+              name.contains("java.lang.String")) {
+            type = addRealClass(Class.forName(name));
+          } else {
+            type = addClass(Class.forName(name));
+          }
         } catch (ClassNotFoundException e) {
           e.printStackTrace();
         }
@@ -50,7 +56,6 @@ public class TypeOracleStub
       if (enclosingClass != null) {
         enclosingType = findType(enclosingClass.getName());
       }
-
       type = new MyGenericType(this,
                                p,
                                (enclosingType == null) ? null : enclosingType.getSimpleSourceName(),
@@ -123,6 +128,33 @@ public class TypeOracleStub
     return type;
   }
 
+  public JRealClassType addRealClass(Class<?> c) {
+    JRealClassType type;
+    if (!c.isArray()) {
+      JPackage p = getOrCreatePackage(c.getPackage()
+                                       .getName());
+      Class<?> enclosingClass = c.getEnclosingClass();
+      JClassType enclosingType = null;
+      if (enclosingClass != null) {
+        enclosingType = findType(enclosingClass.getName());
+      }
+      type = new MyRealClassType(this,
+                               p,
+                               (enclosingType == null) ? null : enclosingType.getSimpleSourceName(),
+                               c.getSimpleName(),
+                               c.isInterface());
+
+      Class<?> superClass = c.getSuperclass();
+      if (superClass != null) {
+        type.setSuperclass(findType(superClass.getName()));
+      }
+    } else {
+      type = (JRealClassType) findType(Object.class.getCanonicalName());
+    }
+
+    return type;
+  }
+
   private List<JClassType> getImplementedInterfaces(Class<?> c) {
     List<JClassType> interfaces = new ArrayList<>();
     for (Class<?> implementedInterface : c.getInterfaces()) {
@@ -163,7 +195,22 @@ public class TypeOracleStub
                                                                   null,
                                                                   new JClassType[0]);
     }
+  }
 
+  private class MyRealClassType
+      extends JRealClassType {
+
+    MyRealClassType(TypeOracle arg0,
+                  JPackage arg1,
+                  String arg2,
+                  String arg3,
+                  boolean arg4) {
+      super(arg0,
+            arg1,
+            arg2,
+            arg3,
+            arg4);
+    }
   }
 
   private class MyParameterizedType
