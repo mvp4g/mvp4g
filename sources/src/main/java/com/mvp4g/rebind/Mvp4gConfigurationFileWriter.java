@@ -101,6 +101,26 @@ public class Mvp4gConfigurationFileWriter {
     sourceWriter.print(injectorClassName);
     sourceWriter.println(".class );");
 
+    sourceWriter.println();
+
+    sourceWriter.print("createModule();");
+    sourceWriter.print("startModule();");
+
+    sourceWriter.outdent();
+    sourceWriter.println("}");
+
+    writeCreateModule();
+
+    writeStartMNodule();
+
+    writeGetters();
+
+  }
+
+  private void writeCreateModule() {
+    sourceWriter.println("public void createModule(){");
+    sourceWriter.indent();
+
     writeLoaders(true);
 
     writeViews();
@@ -139,11 +159,37 @@ public class Mvp4gConfigurationFileWriter {
 
     sourceWriter.println();
 
-    writeStartEvent();
     sourceWriter.outdent();
+
+    StartElement start = configuration.getStart();
+    if (start.hasPresenter()) {
+      String startPresenter = start.getPresenter();
+      PresenterElement presenter = getElement(startPresenter,
+                                              configuration.getPresenters());
+      if (presenter.isMultiple()) {
+        sourceWriter.print("this.startPresenter = eventBus.addHandler(");
+        sourceWriter.print(presenter.getClassName());
+        sourceWriter.println(".class);");
+      } else {
+        sourceWriter.print("this.startPresenter = ");
+        sourceWriter.print(startPresenter);
+        sourceWriter.println(";");
+      }
+      sourceWriter.println("this.startView = startPresenter.getView();");
+    }
+
     sourceWriter.println("}");
 
-    writeGetters();
+  }
+
+  private void writeStartMNodule() {
+    sourceWriter.println("public void startModule(){");
+    sourceWriter.indent();
+
+    writeStartEvent();
+
+    sourceWriter.outdent();
+    sourceWriter.println("}");
 
   }
 
@@ -1332,23 +1378,23 @@ public class Mvp4gConfigurationFileWriter {
   private void writeStartEvent() {
 
     StartElement start = configuration.getStart();
-
-    // Start view
-    if (start.hasPresenter()) {
-      String startPresenter = start.getPresenter();
-      PresenterElement presenter = getElement(startPresenter,
-                                              configuration.getPresenters());
-      if (presenter.isMultiple()) {
-        sourceWriter.print("this.startPresenter = eventBus.addHandler(");
-        sourceWriter.print(presenter.getClassName());
-        sourceWriter.println(".class);");
-      } else {
-        sourceWriter.print("this.startPresenter = ");
-        sourceWriter.print(startPresenter);
-        sourceWriter.println(";");
-      }
-      sourceWriter.println("this.startView = startPresenter.getView();");
-    }
+// TODO
+//    // Start view
+//    if (start.hasPresenter()) {
+//      String startPresenter = start.getPresenter();
+//      PresenterElement presenter = getElement(startPresenter,
+//                                              configuration.getPresenters());
+//      if (presenter.isMultiple()) {
+//        sourceWriter.print("this.startPresenter = eventBus.addHandler(");
+//        sourceWriter.print(presenter.getClassName());
+//        sourceWriter.println(".class);");
+//      } else {
+//        sourceWriter.print("this.startPresenter = ");
+//        sourceWriter.print(startPresenter);
+//        sourceWriter.println(";");
+//      }
+//      sourceWriter.println("this.startView = startPresenter.getView();");
+//    }
 
     if (start.hasEventType()) {
       EventFiltersElement filterConf = configuration.getEventFilterConfiguration();
