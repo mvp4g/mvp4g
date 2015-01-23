@@ -37,7 +37,7 @@ To create a history converter, you have to:
 
 {{{
 @History
-public class CompanyHistoryConverter implements HistoryConverter<CompanyBean, CompanyEventBus> {...}
+public class CompanyHistoryConverter implements HistoryConverter<CompanyEventBus> {...}
 }}}
 
 You can also give a name to your converter thanks to the attribute "name" of @History annotation (it may be used, but not recommended, to associate a history converter to an event, [http://code.google.com/p/mvp4g/wiki/PlaceService#Associate_an_history_converter_to_an_event see next paragraph] ).
