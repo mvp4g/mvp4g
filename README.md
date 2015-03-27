@@ -5,3 +5,55 @@ GWT is a very powerful framework that allows you to build efficient applications
 - Dependency Injection
 - Model View Presenter
 - Place Service
+
+(see [http://code.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html for the video](http://code.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.htmlhttp://code.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html) or [http://extgwt-mvp4g-gae.blogspot.com/2009/10/gwt-app-architecture-best-practices.html](http://extgwt-mvp4g-gae.blogspot.com/2009/10/gwt-app-architecture-best-practices.html) for the text, thanks to Araik Minosian.)
+However, following these best practices is not always easy and you can end up with a project with a lot of boilerplate code that is hard to manage.
+
+That's why Mvp4g offers a solution to following these best practices using simple mechanisms that only need a few lines of code and a few annotations.
+
+This is all you need to create an event bus with four events:
+```
+@Events(startPresenter = CompanyListPresenter.class, module = CompanyModule.class) 
+public interface CompanyEventBus extends EventBus {          
+        @Event( handlers = CompanyEditPresenter.class )        
+        public void goToEdit( CompanyBean company );          
+        
+        @Event( handlers = CompanyDisplayPresenter.class )         
+        public void goToDisplay( CompanyBean company );          
+        
+        @Event( handlers = { CompanyListPresenter.class, CompanyDisplayPresenter.class } )         
+        public void companyCreated( CompanyBean newBean );          
+        
+        @Event( handlers = CompanyListPresenter.class )         
+        public void companyDeleted( CompanyBean newBean ); 
+}
+Eventbus:
+```
+create an event bus using a few annotations and one centralized interface where you can easily manage your events
+control your event flow thanks to event filtering, event logs, event broadcast, passive event
+have the same control of user's navigation as the GWT Activities/Place architecture thanks to Navigation Event
+MVP:
+
+create a presenter and inject a view with one annotation
+inject anything you want to your presenters/views thanks to GIN
+support for multiple instances of the same presenter
+easily implement the Reverse MVP (or View Delegate) pattern thanks to Reverse View feature
+easily control your presenter thanks to onBeforeEvent, onLoad and onUnload methods (thanks to the Cycle Presenter feature)
+History Management/Place Service:
+
+convert any event to history token thanks to simple history converters
+support for crawlable urls
+easily customize your place service
+support for hyperlink token
+Not only does Mvp4g help you follow the best practices, it also provides mechanisms to build fast applications:
+
+support for GWT code splitting feature: easily divide your applications into smaller modules thanks to Multi-Modules feature or (NEW) split one or a few presenters thanks to Splitter.
+support for lazy loading: build your presenters/views only when you need them. Useless presenters/views are also automatically removed.
+(NEW) easily develop your application for multiple application. Reuse most of your code for Android or Iphone/Ipad devices and just switch your GIN configuration.
+To understand how the framework works, you can look at the documentation, the tutorials or the examples.
+
+Mvp4g has been successfully used on several commercial projects, take a look at a few of them. You can also read and post feedback on the official GWT App Galery, GWT marketplace or Mvp4g forum.
+
+Any comments or ideas to improve the framework are more than welcome. If you want to help us improve it and contribute to this project, send me an email.
+
+To ensure quality, library code is covered by JUnit tests.
