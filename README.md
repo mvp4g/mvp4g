@@ -27,29 +27,29 @@ public interface CompanyEventBus extends EventBus {
         @Event( handlers = CompanyListPresenter.class )         
         public void companyDeleted( CompanyBean newBean ); 
 }
-Eventbus:
 ```
-create an event bus using a few annotations and one centralized interface where you can easily manage your events
-control your event flow thanks to event filtering, event logs, event broadcast, passive event
-have the same control of user's navigation as the GWT Activities/Place architecture thanks to Navigation Event
+Eventbus:
+- create an event bus using a few annotations and one centralized interface where you can easily manage your events
+- control your event flow thanks to event filtering, event logs, event broadcast, passive event
+- have the same control of user's navigation as the GWT Activities/Place architecture thanks to Navigation Event
+
 MVP:
+- create a presenter and inject a view with one annotation
+- inject anything you want to your presenters/views thanks to GIN
+- support for multiple instances of the same presenter
+- easily implement the Reverse MVP (or View Delegate) pattern thanks to Reverse View feature
+- easily control your presenter thanks to onBeforeEvent, onLoad and onUnload methods (thanks to the Cycle Presenter feature)
 
-create a presenter and inject a view with one annotation
-inject anything you want to your presenters/views thanks to GIN
-support for multiple instances of the same presenter
-easily implement the Reverse MVP (or View Delegate) pattern thanks to Reverse View feature
-easily control your presenter thanks to onBeforeEvent, onLoad and onUnload methods (thanks to the Cycle Presenter feature)
 History Management/Place Service:
+- convert any event to history token thanks to simple history converters
+- support for crawlable urls
+- easily customize your place service
+- support for hyperlink token
 
-convert any event to history token thanks to simple history converters
-support for crawlable urls
-easily customize your place service
-support for hyperlink token
 Not only does Mvp4g help you follow the best practices, it also provides mechanisms to build fast applications:
-
-support for GWT code splitting feature: easily divide your applications into smaller modules thanks to Multi-Modules feature or (NEW) split one or a few presenters thanks to Splitter.
-support for lazy loading: build your presenters/views only when you need them. Useless presenters/views are also automatically removed.
-(NEW) easily develop your application for multiple application. Reuse most of your code for Android or Iphone/Ipad devices and just switch your GIN configuration.
+- support for GWT code splitting feature: easily divide your applications into smaller modules thanks to Multi-Modules feature or (**NEW**) split one or a few presenters thanks to Splitter.
+- support for lazy loading: build your presenters/views only when you need them. Useless presenters/views are also automatically removed.
+- (**NEW**) easily develop your application for multiple application. Reuse most of your code for Android or Iphone/Ipad devices and just switch your GIN configuration.
 To understand how the framework works, you can look at the documentation, the tutorials or the examples.
 
 Mvp4g has been successfully used on several commercial projects, take a look at a few of them. You can also read and post feedback on the official GWT App Galery, GWT marketplace or Mvp4g forum.
