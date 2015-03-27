@@ -1,4 +1,4 @@
-# mvp4g
+# MVP4G
 GWT is a very powerful framework that allows you to build efficient applications, especially if you follow the best practices described by Ray Ryan at Google IO 2009:
 
 - Event Bus
@@ -50,10 +50,11 @@ Not only does Mvp4g help you follow the best practices, it also provides mechani
 - support for GWT code splitting feature: easily divide your applications into smaller modules thanks to Multi-Modules feature or (**NEW**) split one or a few presenters thanks to Splitter.
 - support for lazy loading: build your presenters/views only when you need them. Useless presenters/views are also automatically removed.
 - (**NEW**) easily develop your application for multiple application. Reuse most of your code for Android or Iphone/Ipad devices and just switch your GIN configuration.
-To understand how the framework works, you can look at the documentation, the tutorials or the examples.
 
-Mvp4g has been successfully used on several commercial projects, take a look at a few of them. You can also read and post feedback on the official GWT App Galery, GWT marketplace or Mvp4g forum.
+To understand how the framework works, you can look at the documentation, the [tutorials](https://github.com/FrankHossfeld/mvp4g/wiki/1.-Tutorials-and-Examples) or the [examples](https://github.com/FrankHossfeld/mvp4g-examples).
 
-Any comments or ideas to improve the framework are more than welcome. If you want to help us improve it and contribute to this project, send me an email.
+Mvp4g has been successfully used on several commercial projects, [take a look at a few of them](https://github.com/FrankHossfeld/mvp4g/wiki/1.-Tutorials-and-Examples). You can also read and post feedback on the official [GWT marketplace](http://www.gwtmarketplace.com/#mvp4g) or [Mvp4g forum](https://groups.google.com/forum/#!forum/mvp4g).
+
+Any comments or ideas to improve the framework are more than welcome. If you want to help us to improve and contribute to this project, feel free to do so.
 
 To ensure quality, library code is covered by JUnit tests.
