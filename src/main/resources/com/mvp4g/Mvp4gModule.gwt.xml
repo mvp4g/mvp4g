@@ -4,12 +4,19 @@
   <inherits name='com.google.gwt.user.User' />
 
   <!-- Other module inherits                                      -->
+  <inherits name="com.google.gwt.inject.Inject"/>
 
   <!-- Specify the app entry point class.                         -->
-  <entry-point class='com.mvp4g.client.Mvp4gModule' />
+  <!--<entry-point class='com.mvp4g.client.Mvp4gModule' />-->
+
+  <!-- Specify deferred binding rules                             -->
+  <generate-with class="com.mvp4g.rebind.Mvp4gGenerator">
+    <when-type-assignable class="com.mvp4g.client.Mvp4gModule" />
+  </generate-with>
+  <generate-with class="com.mvp4g.rebind.Mvp4gRunAsyncGenerator">
+    <when-type-assignable class="com.mvp4g.client.Mvp4gRunAsync" />
+  </generate-with>
 
   <!-- Specify the paths for translatable code                    -->
   <source path='client' />
-  <source path='shared' />
-
 </module>
