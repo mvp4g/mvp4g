@@ -32,22 +32,26 @@ public interface EventBusWithLookup
    * The event is stored in GWT History stack if possible (ie if an History Converter is
    * associated with the event) and needed (ie isHistoryStored() == true).
    *
-   * @param eventName name of the event to dispatch
-   * @param objects   objects to fire with the event
-   * @throws Mvp4gException exception thrown in case an error occurs while the event is dispatched.<br>
-   *                        The most common cases that this error could be thrown is in case:
-   *                        <ul>
-   *                        <li>the name of the event can't be handled by the event bus because no command is
-   *                        associated to it.</li>
-   *                        <li>the class type of the object to be used by the handler methods is different
-   *                        from the class type of the handlers method.</li>
-   *                        </ul>
-   *                        This exception shouldn't be caught. If this exception is raised, it means that
-   *                        there is an error in the application that needs to be fixed (most of the time, an
-   *                        error in the configuration file).
+   * @param eventName
+   *   name of the event to dispatch
+   * @param objects
+   *   objects to fire with the event
+   *
+   * @throws Mvp4gException
+   *   exception thrown in case an error occurs while the event is dispatched.<br>
+   *   The most common cases that this error could be thrown is in case:
+   *   <ul>
+   *   <li>the name of the event can't be handled by the event bus because no command is
+   *   associated to it.</li>
+   *   <li>the class type of the object to be used by the handler methods is different
+   *   from the class type of the handlers method.</li>
+   *   </ul>
+   *   This exception shouldn't be caught. If this exception is raised, it means that
+   *   there is an error in the application that needs to be fixed (most of the time, an
+   *   error in the configuration file).
    */
-  public void dispatch(String eventName,
-                       Object... objects);
+  void dispatch(String eventName,
+                Object... objects);
 
   /**
    * Call the method associated with the event name in order to trigger the presenters that can
@@ -58,20 +62,23 @@ public interface EventBusWithLookup
    * <br>
    * Calling dispatch(eventName) is equivalent to calling dispatch(eventName, null).
    *
-   * @param eventName name of the event to dispatch
-   * @throws Mvp4gException exception thrown in case an error occurs while the event is dispatched.<br>
-   *                        The most common cases that this error could be thrown is in case:
-   *                        <ul>
-   *                        <li>the name of the event can't be handled by the event bus because no command is
-   *                        associated to it.</li>
-   *                        <li>the class type of the object to be used by the handler methods is different
-   *                        from the class type of the handlers method.</li>
-   *                        </ul>
-   *                        This exception shouldn't be caught. If this exception is raised, it means that
-   *                        there is an error in the application that needs to be fixed (most of the time, an
-   *                        error in the configuration file).
+   * @param eventName
+   *   name of the event to dispatch
+   *
+   * @throws Mvp4gException
+   *   exception thrown in case an error occurs while the event is dispatched.<br>
+   *   The most common cases that this error could be thrown is in case:
+   *   <ul>
+   *   <li>the name of the event can't be handled by the event bus because no command is
+   *   associated to it.</li>
+   *   <li>the class type of the object to be used by the handler methods is different
+   *   from the class type of the handlers method.</li>
+   *   </ul>
+   *   This exception shouldn't be caught. If this exception is raised, it means that
+   *   there is an error in the application that needs to be fixed (most of the time, an
+   *   error in the configuration file).
    */
-  public void dispatch(String eventName);
+  void dispatch(String eventName);
 
   /**
    * Call the method associated with the event name in order to trigger the presenters that can
@@ -85,22 +92,28 @@ public interface EventBusWithLookup
    * Calling dispatch(enumEventName, form) is equivalent to calling
    * dispatch(enumEventName.toString(), form).
    *
-   * @param enumEventName name of the event to dispatch
-   * @param objects       objects to fire with the event
-   * @throws Mvp4gException exception thrown in case an error occurs while the event is dispatched.<br>
-   *                        The most common cases that this error could be thrown is in case:
-   *                        <ul>
-   *                        <li>the name of the event can't be handled by the event bus because no command is
-   *                        associated to it.</li>
-   *                        <li>the class type of the object to be used by the handler methods is different
-   *                        from the class type of the handlers method.</li>
-   *                        </ul>
-   *                        This exception shouldn't be caught. If this exception is raised, it means that
-   *                        there is an error in the application that needs to be fixed (most of the time, an
-   *                        error in the configuration file).
+   * @param enumEventName
+   *   name of the event to dispatch
+   * @param objects
+   *   objects to fire with the event
+   * @param <E>
+   *   name of the event
+   *
+   * @throws Mvp4gException
+   *   exception thrown in case an error occurs while the event is dispatched.<br>
+   *   The most common cases that this error could be thrown is in case:
+   *   <ul>
+   *   <li>the name of the event can't be handled by the event bus because no command is
+   *   associated to it.</li>
+   *   <li>the class type of the object to be used by the handler methods is different
+   *   from the class type of the handlers method.</li>
+   *   </ul>
+   *   This exception shouldn't be caught. If this exception is raised, it means that
+   *   there is an error in the application that needs to be fixed (most of the time, an
+   *   error in the configuration file).
    */
-  public <E extends Enum<E>> void dispatch(Enum<E> enumEventName,
-                                           Object... objects);
+  <E extends Enum<E>> void dispatch(Enum<E> enumEventName,
+                                    Object... objects);
 
   /**
    * Call the method associated with the event name in order to trigger the presenters that can
@@ -115,19 +128,24 @@ public interface EventBusWithLookup
    * Calling dispatch(enumEventName) is equivalent to calling dispatch(enumEventName.toString(),
    * null).
    *
-   * @param enumEventName name of the event to dispatch
-   * @throws Mvp4gException exception thrown in case an error occurs while the event is dispatched.<br>
-   *                        The most common cases that this error could be thrown is in case:
-   *                        <ul>
-   *                        <li>the name of the event can't be handled by the event bus because no command is
-   *                        associated to it.</li>
-   *                        <li>the class type of the object to be used by the handler methods is different
-   *                        from the class type of the handlers method.</li>
-   *                        </ul>
-   *                        This exception shouldn't be caught. If this exception is raised, it means that
-   *                        there is an error in the application that needs to be fixed (most of the time, an
-   *                        error in the configuration file).
+   * @param enumEventName
+   *   name of the event to dispatch
+   * @param <E>
+   *   name of the event
+   *
+   * @throws Mvp4gException
+   *   exception thrown in case an error occurs while the event is dispatched.<br>
+   *   The most common cases that this error could be thrown is in case:
+   *   <ul>
+   *   <li>the name of the event can't be handled by the event bus because no command is
+   *   associated to it.</li>
+   *   <li>the class type of the object to be used by the handler methods is different
+   *   from the class type of the handlers method.</li>
+   *   </ul>
+   *   This exception shouldn't be caught. If this exception is raised, it means that
+   *   there is an error in the application that needs to be fixed (most of the time, an
+   *   error in the configuration file).
    */
-  public <E extends Enum<E>> void dispatch(Enum<E> enumEventName);
+  <E extends Enum<E>> void dispatch(Enum<E> enumEventName);
 
 }

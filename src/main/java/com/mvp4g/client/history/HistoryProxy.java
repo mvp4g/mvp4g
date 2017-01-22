@@ -17,7 +17,9 @@ public interface HistoryProxy {
    * Adds a {@link com.google.gwt.event.logical.shared.ValueChangeEvent} handler to be informed of
    * changes to the browser's history stack.
    *
-   * @param handler the handler
+   * @param handler
+   *   the handler
+   *
    * @return the registration used to remove this value change handler
    */
   HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler);
@@ -60,7 +62,8 @@ public interface HistoryProxy {
    * {@link ValueChangeHandler#onValueChange(com.google.gwt.event.logical.shared.ValueChangeEvent)}
    * to be called as well.
    *
-   * @param historyToken the token to associate with the new history item
+   * @param historyToken
+   *   the token to associate with the new history item
    */
   void newItem(String historyToken);
 
@@ -70,10 +73,12 @@ public interface HistoryProxy {
    * {@link ValueChangeHandler#onValueChange(com.google.gwt.event.logical.shared.ValueChangeEvent)}
    * to be called as well if and only if issueEvent is true.
    *
-   * @param historyToken the token to associate with the new history item
-   * @param issueEvent   true if a
-   *                     {@link ValueChangeHandler#onValueChange(com.google.gwt.event.logical.shared.ValueChangeEvent)}
-   *                     event should be issued
+   * @param historyToken
+   *   the token to associate with the new history item
+   * @param issueEvent
+   *   true if a
+   *   {@link ValueChangeHandler#onValueChange(com.google.gwt.event.logical.shared.ValueChangeEvent)}
+   *   event should be issued
    */
   void newItem(String historyToken,
                boolean issueEvent);

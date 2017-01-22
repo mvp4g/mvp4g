@@ -15,9 +15,22 @@
  */
 package com.mvp4g.rebind;
 
+import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
-import com.google.gwt.core.ext.*;
+import com.google.gwt.core.ext.CachedGeneratorResult;
+import com.google.gwt.core.ext.GeneratorContext;
+import com.google.gwt.core.ext.IncrementalGenerator;
+import com.google.gwt.core.ext.RebindMode;
+import com.google.gwt.core.ext.RebindResult;
+import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JRealClassType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
@@ -31,12 +44,18 @@ import com.mvp4g.client.Mvp4gEventPasser;
 import com.mvp4g.client.Mvp4gException;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.Mvp4gRunAsync;
-import com.mvp4g.client.annotation.*;
+import com.mvp4g.client.annotation.EventHandler;
+import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.History;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.annotation.Service;
 import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventFilter;
 import com.mvp4g.client.event.EventHandlerInterface;
+import com.mvp4g.client.history.DefaultHistoryProxy;
 import com.mvp4g.client.history.HistoryConverter;
+import com.mvp4g.client.history.HistoryProxyProvider;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.PresenterInterface;
@@ -44,13 +63,6 @@ import com.mvp4g.rebind.config.Mvp4gConfiguration;
 import com.mvp4g.rebind.config.element.EventBusElement;
 import com.mvp4g.rebind.config.element.Mvp4gElement;
 import com.mvp4g.rebind.exception.InvalidMvp4gConfigurationException;
-
-import java.io.PrintWriter;
-import java.lang.annotation.Annotation;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Class uses to create the implementation class of Mvp4gStarter
@@ -68,7 +80,6 @@ public class Mvp4gGenerator
    * by a version of this generator with a different version id.
    */
   private static final long GENERATOR_VERSION_ID = 1L;
-
 
   @Override
   public RebindResult generateIncrementally(TreeLogger logger,
@@ -101,12 +112,10 @@ public class Mvp4gGenerator
                   moduleClass);
   }
 
-
   @Override
   public long getVersionId() {
     return GENERATOR_VERSION_ID;
   }
-
 
   private RebindResult create(TreeLogger logger,
                               GeneratorContext context,
@@ -128,26 +137,26 @@ public class Mvp4gGenerator
         throw new UnableToCompleteException();
       }
 
-      @SuppressWarnings("unchecked")
-      Map<Class<? extends Annotation>, List<JClassType>> scanResult = AnnotationScanner.scan(logger,
-                                                                                             typeOracle,
-                                                                                             new Class[] {Presenter.class,
-                                                                                               History.class,
-                                                                                               Events.class,
-                                                                                               Service.class,
-                                                                                               EventHandler.class}
-      );
+      @SuppressWarnings("unchecked") Map<Class<? extends Annotation>, List<JClassType>> scanResult = AnnotationScanner.scan(logger,
+                                                                                                                            typeOracle,
+                                                                                                                            new Class[] { Presenter.class,
+                                                                                                                                          History.class,
+                                                                                                                                          Events.class,
+                                                                                                                                          Service.class,
+                                                                                                                                          EventHandler.class });
 
       Mvp4gConfiguration configuration = new Mvp4gConfiguration(logger,
                                                                 context);
 
-      String suffix = "Impl" + configuration.load(module,
-                                                  scanResult);
+      String suffix = "Impl" +
+                      configuration.load(module,
+                                         scanResult);
 
       generatedClassQualifiedName = module.getParameterizedQualifiedSourceName() + suffix;
 
-      String packageName = module.getPackage().getName();
-      String originalClassName = module.getSimpleSourceName();
+      String packageName        = module.getPackage()
+                                        .getName();
+      String originalClassName  = module.getSimpleSourceName();
       String generatedClassName = originalClassName + suffix;
 
       // check weather there is a usual version or not.
@@ -205,6 +214,38 @@ public class Mvp4gGenerator
     }
   }
 
+  private boolean checkAlreadyGenerated(TreeLogger logger,
+                                        GeneratorContext ctx,
+                                        Mvp4gConfiguration configuration) {
+
+    CachedGeneratorResult lastRebindResult = ctx.getCachedGeneratorResult();
+
+    if (lastRebindResult == null || !ctx.isGeneratorResultCachingEnabled()) {
+      return false;
+    }
+
+    // Check whether all files are up to date
+    // EventBus
+    if (!this.checkEventBus(logger,
+                            ctx)) {
+      return false;
+    }
+    // Module
+    if (!this.checkModule(logger,
+                          ctx,
+                          configuration.getModule())) {
+      return false;
+    }
+    // ChildModuleElement
+    if (!this.checkSet(logger,
+                       ctx,
+                       configuration.getChildModules())) {
+      return false;
+    }
+    // everything ok!  -> use the old one ...
+    return true;
+  }
+
   private SourceWriter getSourceWriter(TreeLogger logger,
                                        GeneratorContext context,
                                        JClassType originalType,
@@ -236,76 +277,14 @@ public class Mvp4gGenerator
                                            printWriter);
   }
 
-  String[] getClassesToImport() {
-    return new String[] {com.mvp4g.client.history.PlaceService.class.getName(), GWT.class.getName(), com.google.gwt.user.client.History.class.getName(),
-      ServiceDefTarget.class.getName(), PresenterInterface.class.getName(), EventBus.class.getName(), Mvp4gException.class.getName(),
-      HistoryConverter.class.getName(), Mvp4gEventPasser.class.getName(), Mvp4gModule.class.getName(), GinModules.class.getName(),
-      Ginjector.class.getName(), BaseEventBus.class.getName(), EventFilter.class.getName(), EventHandlerInterface.class.getName(),
-      List.class.getName(), NavigationEventCommand.class.getName(), NavigationConfirmationInterface.class.getName(),
-      RunAsyncCallback.class.getName(), Mvp4gRunAsync.class.getName(), Command.class.getName()};
-  }
-
-  private boolean checkAlreadyGenerated(TreeLogger logger,
-                                        GeneratorContext ctx,
-                                        Mvp4gConfiguration configuration) {
-
-    CachedGeneratorResult lastRebindResult = ctx.getCachedGeneratorResult();
-
-    if (lastRebindResult == null || ! ctx.isGeneratorResultCachingEnabled()) {
-      return false;
-    }
-
-    // Check whether all files are up to date
-    // EventBus
-    if (! this.checkEventBus(logger,
-                             ctx)) {
-      return false;
-    }
-    // Module
-    if (! this.checkModule(logger,
-                           ctx,
-                           configuration.getModule())) {
-      return false;
-    }
-    // ChildModuleElement
-    if (! this.checkSet(logger,
-                        ctx,
-                        configuration.getChildModules())) {
-      return false;
-    }
-    // everything ok!  -> use the old one ...
-    return true;
-  }
-
-  private boolean checkSet(TreeLogger logger,
-                           GeneratorContext ctx,
-                           Set<? extends Mvp4gElement> setOfElements) {
-
-    long lastTimeGenerated = ctx.getCachedGeneratorResult().getTimeGenerated();
-
-    for (Mvp4gElement element : setOfElements) {
-      JClassType sourceType = ctx.getTypeOracle().findType(element.getProperty("class"));
-      if (sourceType == null) {
-        logger.log(TreeLogger.TRACE,
-                   "Found previously dependent type that's no longer present: " + element.getProperty("class"));
-        return false;
-      }
-      assert sourceType instanceof JRealClassType;
-      JRealClassType realClass = (JRealClassType) sourceType;
-      if (realClass == null ||
-        realClass.getLastModifiedTime() > lastTimeGenerated) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   private boolean checkEventBus(TreeLogger logger,
                                 GeneratorContext ctx) {
 
-    long lastTimeGenerated = ctx.getCachedGeneratorResult().getTimeGenerated();
+    long lastTimeGenerated = ctx.getCachedGeneratorResult()
+                                .getTimeGenerated();
 
-    JClassType sourceType = ctx.getTypeOracle().findType(EventBusElement.class.getName());
+    JClassType sourceType = ctx.getTypeOracle()
+                               .findType(EventBusElement.class.getName());
     if (sourceType == null) {
       logger.log(TreeLogger.TRACE,
                  "Found previously dependent type that's no longer present: " + EventBusElement.class.getName());
@@ -313,8 +292,7 @@ public class Mvp4gGenerator
     }
     assert sourceType instanceof JRealClassType;
     JRealClassType realClass = (JRealClassType) sourceType;
-    if (realClass == null ||
-      realClass.getLastModifiedTime() > lastTimeGenerated) {
+    if (realClass == null || realClass.getLastModifiedTime() > lastTimeGenerated) {
       return false;
     }
 
@@ -325,7 +303,8 @@ public class Mvp4gGenerator
                               GeneratorContext ctx,
                               JClassType module) {
 
-    long lastTimeGenerated = ctx.getCachedGeneratorResult().getTimeGenerated();
+    long lastTimeGenerated = ctx.getCachedGeneratorResult()
+                                .getTimeGenerated();
 
     if (module == null) {
       logger.log(TreeLogger.TRACE,
@@ -334,11 +313,60 @@ public class Mvp4gGenerator
     }
     assert module instanceof JRealClassType;
     JRealClassType realClass = (JRealClassType) module;
-    if (realClass == null ||
-      realClass.getLastModifiedTime() > lastTimeGenerated) {
+    if (realClass == null || realClass.getLastModifiedTime() > lastTimeGenerated) {
       return false;
     }
 
     return true;
+  }
+
+  private boolean checkSet(TreeLogger logger,
+                           GeneratorContext ctx,
+                           Set<? extends Mvp4gElement> setOfElements) {
+
+    long lastTimeGenerated = ctx.getCachedGeneratorResult()
+                                .getTimeGenerated();
+
+    for (Mvp4gElement element : setOfElements) {
+      JClassType sourceType = ctx.getTypeOracle()
+                                 .findType(element.getProperty("class"));
+      if (sourceType == null) {
+        logger.log(TreeLogger.TRACE,
+                   "Found previously dependent type that's no longer present: " + element.getProperty("class"));
+        return false;
+      }
+      assert sourceType instanceof JRealClassType;
+      JRealClassType realClass = (JRealClassType) sourceType;
+      if (realClass == null || realClass.getLastModifiedTime() > lastTimeGenerated) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  String[] getClassesToImport() {
+    return new String[] { com.mvp4g.client.history.PlaceService.class.getName(),
+                          GWT.class.getName(),
+                          com.google.gwt.user.client.History.class.getName(),
+                          ServiceDefTarget.class.getName(),
+                          PresenterInterface.class.getName(),
+                          EventBus.class.getName(),
+                          Mvp4gException.class.getName(),
+                          HistoryConverter.class.getName(),
+                          Mvp4gEventPasser.class.getName(),
+                          Mvp4gModule.class.getName(),
+                          GinModules.class.getName(),
+                          Ginjector.class.getName(),
+                          BaseEventBus.class.getName(),
+                          EventFilter.class.getName(),
+                          EventHandlerInterface.class.getName(),
+                          List.class.getName(),
+                          NavigationEventCommand.class.getName(),
+                          NavigationConfirmationInterface.class.getName(),
+                          RunAsyncCallback.class.getName(),
+                          Mvp4gRunAsync.class.getName(),
+                          Command.class.getName(),
+                          HistoryProxyProvider.class.getName(),
+                          DefaultHistoryProxy.class.getName() };
   }
 }

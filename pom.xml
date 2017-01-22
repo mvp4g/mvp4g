@@ -8,7 +8,7 @@
   <groupId>com.googlecode.mvp4g</groupId>
   <artifactId>mvp4g</artifactId>
   <packaging>jar</packaging>
-  <version>1.6.0-SNAPSHOT</version>
+  <version>1.5.1-SNAPSHOT</version>
   <name>MVP4G</name>
   <description>Model View Presenter with Event Bus For GWT</description>
   <url>https://github.com/FrankHossfeld/mvp4g</url>
@@ -117,13 +117,6 @@
     </dependency>
   </dependencies>
 
-
-
-
-
-
-
-
   <build>
     <!-- for use with maven 3 -->
     <extensions>
@@ -139,7 +132,18 @@
         <directory>src/main/java</directory>
         <includes>
           <include>**/client/**</include>
+          <include>**/rebind/**</include>
+          <include>**/processor/**</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/client/**</include>
+          <include>**/shared/**</include>
           <include>**/*.gwt.xml</include>
+          <include>**/*.html</include>
+          <include>**/public/**</include>
         </includes>
       </resource>
     </resources>
@@ -211,23 +215,23 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <version>1.6</version>
-        <configuration>
-          <useAgent>true</useAgent>
-        </configuration>
-        <executions>
-          <execution>
-            <id>sign-artifacts</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+      <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-gpg-plugin</artifactId>-->
+        <!--<version>1.6</version>-->
+        <!--<configuration>-->
+          <!--<useAgent>true</useAgent>-->
+        <!--</configuration>-->
+        <!--<executions>-->
+          <!--<execution>-->
+            <!--<id>sign-artifacts</id>-->
+            <!--<phase>verify</phase>-->
+            <!--<goals>-->
+              <!--<goal>sign</goal>-->
+            <!--</goals>-->
+          <!--</execution>-->
+        <!--</executions>-->
+      <!--</plugin>-->
     </plugins>
 
 

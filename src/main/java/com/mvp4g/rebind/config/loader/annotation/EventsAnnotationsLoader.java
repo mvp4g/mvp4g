@@ -15,22 +15,53 @@
  */
 package com.mvp4g.rebind.config.loader.annotation;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.inject.client.GinModule;
-import com.mvp4g.client.annotation.*;
-import com.mvp4g.client.annotation.module.*;
-import com.mvp4g.client.event.*;
+import com.mvp4g.client.annotation.Debug;
+import com.mvp4g.client.annotation.Event;
+import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.Filters;
+import com.mvp4g.client.annotation.Forward;
+import com.mvp4g.client.annotation.InitHistory;
+import com.mvp4g.client.annotation.NotFoundHistory;
+import com.mvp4g.client.annotation.PlaceService;
+import com.mvp4g.client.annotation.Start;
+import com.mvp4g.client.annotation.module.AfterLoadChildModule;
+import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
+import com.mvp4g.client.annotation.module.ChildModule;
+import com.mvp4g.client.annotation.module.ChildModules;
+import com.mvp4g.client.annotation.module.DisplayChildModuleView;
+import com.mvp4g.client.annotation.module.LoadChildModuleError;
+import com.mvp4g.client.event.BaseEventBus;
+import com.mvp4g.client.event.BaseEventBusWithLookUp;
+import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.event.EventBusWithLookup;
+import com.mvp4g.client.event.EventFilter;
+import com.mvp4g.client.event.EventHandlerInterface;
+import com.mvp4g.client.event.Mvp4gLogger;
 import com.mvp4g.client.presenter.NoStartPresenter;
 import com.mvp4g.rebind.config.Mvp4gConfiguration;
-import com.mvp4g.rebind.config.element.*;
+import com.mvp4g.rebind.config.element.ChildModuleElement;
+import com.mvp4g.rebind.config.element.ChildModulesElement;
+import com.mvp4g.rebind.config.element.DebugElement;
+import com.mvp4g.rebind.config.element.EventBusElement;
+import com.mvp4g.rebind.config.element.EventElement;
+import com.mvp4g.rebind.config.element.EventFilterElement;
+import com.mvp4g.rebind.config.element.EventFiltersElement;
+import com.mvp4g.rebind.config.element.EventHandlerElement;
+import com.mvp4g.rebind.config.element.GinModuleElement;
+import com.mvp4g.rebind.config.element.HistoryConverterElement;
+import com.mvp4g.rebind.config.element.HistoryElement;
+import com.mvp4g.rebind.config.element.PresenterElement;
+import com.mvp4g.rebind.config.element.StartElement;
 import com.mvp4g.rebind.exception.loader.Mvp4gAnnotationException;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * A class responsible for loading information contained in <code>Events</code> annotation.
@@ -39,6 +70,18 @@ import java.util.Set;
  */
 public class EventsAnnotationsLoader
   extends Mvp4gAnnotationsLoader<Events> {
+
+  /*
+   * (non-Javadoc)
+   *
+   * @see com.mvp4g.rebind.config.loader.annotation.Mvp4gAnnotationsLoader#controlType
+   * (com.google.gwt .core.ext.typeinfo.JClassType, com.google.gwt.core.ext.typeinfo.JClassType)
+   */
+  @Override
+  protected void controlType(JClassType c,
+                             JClassType s) {
+    // do nothing, control are done later.
+  }
 
   /*
    * (non-Javadoc)
@@ -53,11 +96,16 @@ public class EventsAnnotationsLoader
                              Mvp4gConfiguration configuration)
     throws Mvp4gAnnotationException {
 
-    if (annotation.module().getCanonicalName().equals(configuration.getModule().getQualifiedSourceName())) {
+    if (annotation.module()
+                  .getCanonicalName()
+                  .equals(configuration.getModule()
+                                       .getQualifiedSourceName())) {
 
       if (configuration.getEventBus() != null) {
-        String err = "You can define only one event bus by Mvp4g module. Do you already have another EventBus interface for the module "
-          + annotation.module().getCanonicalName() + "?";
+        String err = "You can define only one event bus by Mvp4g module. Do you already have another EventBus interface for the module " +
+                     annotation.module()
+                               .getCanonicalName() +
+                     "?";
         throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
                                            null,
                                            err);
@@ -92,26 +140,30 @@ public class EventsAnnotationsLoader
                   configuration);
         loadGinModule(annotation,
                       configuration);
+        loadHistoryProxy(annotation,
+                         configuration);
         loadHistoryConfiguration(c,
                                  configuration);
       } else {
-        String err = "this class must implement " + EventBus.class.getCanonicalName() + " since it is annoted with "
-          + Events.class.getSimpleName() + ".";
+        String err = "this class must implement " + EventBus.class.getCanonicalName() + " since it is annoted with " + Events.class.getSimpleName() + ".";
         throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
                                            null,
                                            err);
       }
     } else {
       // save event bus type of potentiel child module
-      configuration.getOthersEventBusClassMap().put(annotation.module().getCanonicalName(),
-                                                    c);
+      configuration.getOthersEventBusClassMap()
+                   .put(annotation.module()
+                                  .getCanonicalName(),
+                        c);
       ChildModules children = c.getAnnotation(ChildModules.class);
       if (children != null) {
         Map<String, ChildModuleElement> moduleParentEventBus = configuration.getModuleParentEventBusClassMap();
-        ChildModuleElement childElement;
-        String childClass;
+        ChildModuleElement              childElement;
+        String                          childClass;
         for (ChildModule child : children.value()) {
-          childClass = child.moduleClass().getCanonicalName();
+          childClass = child.moduleClass()
+                            .getCanonicalName();
           if (moduleParentEventBus.containsKey(childClass)) {
             String err = "Module " + childClass + "can only have 1 parent.";
             throw new Mvp4gAnnotationException(childClass,
@@ -121,7 +173,8 @@ public class EventsAnnotationsLoader
             childElement = new ChildModuleElement();
             childElement.setClassName(childClass);
             childElement.setParentEventBus(c);
-            childElement.setParentModuleClass(annotation.module().getCanonicalName());
+            childElement.setParentModuleClass(annotation.module()
+                                                        .getCanonicalName());
             childElement.setAutoDisplay(Boolean.toString(child.autoDisplay()));
             moduleParentEventBus.put(childClass,
                                      childElement);
@@ -134,8 +187,11 @@ public class EventsAnnotationsLoader
   /**
    * Build event bus element according to the implemented interface.
    *
-   * @param c             annoted class type
-   * @param configuration configuration containing loaded elements of the application
+   * @param c
+   *   annoted class type
+   * @param configuration
+   *   configuration containing loaded elements of the application
+   *
    * @return event bus corresponding to the implemented interface (null if none of the interfaces
    * are implemented)
    */
@@ -164,20 +220,20 @@ public class EventsAnnotationsLoader
     throws Mvp4gAnnotationException {
     Filters filters = c.getAnnotation(Filters.class);
     if (filters != null) {
-      boolean forceFilters = filters.forceFilters();
+      boolean                           forceFilters  = filters.forceFilters();
       Class<? extends EventFilter<?>>[] filterClasses = filters.filterClasses();
-      if (((filterClasses == null) || (filterClasses.length == 0)) && ! forceFilters) {
-        String err = "Useless "
-          + Filters.class.getSimpleName()
-          + " annotation. Don't use this annotation if your module doesn't have any event filters. If you plan on adding filters when the application runs, set the forceFilters option to true.";
+      if (((filterClasses == null) || (filterClasses.length == 0)) && !forceFilters) {
+        String err = "Useless " +
+                     Filters.class.getSimpleName() +
+                     " annotation. Don't use this annotation if your module doesn't have any event filters. If you plan on adding filters when the application runs, set the forceFilters option to true.";
         throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
                                            null,
                                            err);
       }
 
-      Set<EventFilterElement> filterElements = configuration.getEventFilters();
-      String filterClassName = null;
-      EventFilterElement filterElement = null;
+      Set<EventFilterElement> filterElements  = configuration.getEventFilters();
+      String                  filterClassName = null;
+      EventFilterElement      filterElement   = null;
       for (Class<? extends EventFilter<?>> filterClass : filterClasses) {
         filterClassName = filterClass.getCanonicalName();
         if (getElementName(filterElements,
@@ -214,21 +270,23 @@ public class EventsAnnotationsLoader
     if (childModules != null) {
       ChildModule[] children = childModules.value();
       if ((children == null) || (children.length == 0)) {
-        String err = "Useless " + ChildModules.class.getSimpleName()
-          + " annotation. Don't use this annotation if your module doesn't have any child module.";
+        String err = "Useless " + ChildModules.class.getSimpleName() + " annotation. Don't use this annotation if your module doesn't have any child module.";
         throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
                                            null,
                                            err);
       }
 
-      Set<ChildModuleElement> modules = configuration.getChildModules();
-      String moduleClass = null;
-      ChildModuleElement module = null;
+      Set<ChildModuleElement> modules     = configuration.getChildModules();
+      String                  moduleClass = null;
+      ChildModuleElement      module      = null;
       for (ChildModule child : children) {
-        moduleClass = child.moduleClass().getCanonicalName();
+        moduleClass = child.moduleClass()
+                           .getCanonicalName();
         if (getElementName(modules,
                            moduleClass) != null) {
-          String err = "You can't have two child modules describing the same module: " + child.moduleClass().getCanonicalName();
+          String err = "You can't have two child modules describing the same module: " +
+                       child.moduleClass()
+                            .getCanonicalName();
           throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
                                              null,
                                              err);
@@ -253,10 +311,15 @@ public class EventsAnnotationsLoader
   /**
    * Load information about the start view
    *
-   * @param c             annoted class
-   * @param annotation    Events annotation of the class
-   * @param configuration configuration containing loaded elements of the application
-   * @throws Mvp4gAnnotationException if no view with the given class and name exist
+   * @param c
+   *   annoted class
+   * @param annotation
+   *   Events annotation of the class
+   * @param configuration
+   *   configuration containing loaded elements of the application
+   *
+   * @throws Mvp4gAnnotationException
+   *   if no view with the given class and name exist
    */
   private void loadStartView(JClassType c,
                              Events annotation,
@@ -266,16 +329,16 @@ public class EventsAnnotationsLoader
     Set<PresenterElement> presenters        = configuration.getPresenters();
     String                presenterName     = annotation.startPresenterName();
     Class<?>              presenterClass    = annotation.startPresenter();
-    boolean               hasStartPresenter = ! NoStartPresenter.class.equals(presenterClass);
+    boolean               hasStartPresenter = !NoStartPresenter.class.equals(presenterClass);
     if (hasStartPresenter) {
       if ((presenterName != null) && (presenterName.length() > 0)) {
         boolean found = false;
         for (PresenterElement presenter : presenters) {
           if (presenterName.equals(presenter.getName())) {
-            TypeOracle oracle = configuration.getOracle();
+            TypeOracle oracle        = configuration.getOracle();
             JClassType presenterType = oracle.findType(presenter.getClassName());
-            JClassType startType = oracle.findType(presenterClass.getCanonicalName());
-            if (! presenterType.isAssignableTo(startType)) {
+            JClassType startType     = oracle.findType(presenterClass.getCanonicalName());
+            if (!presenterType.isAssignableTo(startType)) {
               String err = "There is no instance with name " + presenterName + " that extends " + presenterType;
               throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
                                                  null,
@@ -285,7 +348,7 @@ public class EventsAnnotationsLoader
             break;
           }
         }
-        if (! found) {
+        if (!found) {
           String err = "There is no presenter named " + presenterName;
           throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
                                              null,
@@ -296,8 +359,7 @@ public class EventsAnnotationsLoader
         presenterName = getElementName(presenters,
                                        presenterClass.getCanonicalName());
         if (presenterName == null) {
-          String err = "There is no instance of " + presenterClass.getCanonicalName()
-            + ". Have you forgotten to annotate it with @Presenter or @EventHander?";
+          String err = "There is no instance of " + presenterClass.getCanonicalName() + ". Have you forgotten to annotate it with @Presenter or @EventHander?";
           throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
                                              null,
                                              err);
@@ -311,16 +373,20 @@ public class EventsAnnotationsLoader
     }
     element.setHistory(Boolean.toString(annotation.historyOnStart()));
     configuration.setStart(element);
-
   }
 
   /**
    * Load events defined by this class
    *
-   * @param c             annoted class
-   * @param annotation    annotation of the class
-   * @param configuration configuration containing loaded elements of the application
-   * @throws Mvp4gAnnotationException if events are properly described
+   * @param c
+   *   annoted class
+   * @param annotation
+   *   annotation of the class
+   * @param configuration
+   *   configuration containing loaded elements of the application
+   *
+   * @throws Mvp4gAnnotationException
+   *   if events are properly described
    */
   private void loadEvents(JClassType c,
                           Events annotation,
@@ -334,16 +400,18 @@ public class EventsAnnotationsLoader
 
     JParameter[] params = null;
 
-    JClassType eventBusWithLookupType = configuration.getOracle().findType(EventBusWithLookup.class.getCanonicalName());
-    JClassType eventBusType           = configuration.getOracle().findType(EventBus.class.getCanonicalName());
-    JClassType enclosingType          = null;
+    JClassType eventBusWithLookupType = configuration.getOracle()
+                                                     .findType(EventBusWithLookup.class.getCanonicalName());
+    JClassType eventBusType = configuration.getOracle()
+                                           .findType(EventBus.class.getCanonicalName());
+    JClassType enclosingType = null;
     String     historyName;
     Class<?>   broadcast;
     for (JMethod method : c.getOverridableMethods()) {
       event = method.getAnnotation(Event.class);
       if (event == null) {
         enclosingType = method.getEnclosingType();
-        if (! (eventBusType.equals(enclosingType) || (eventBusWithLookupType.equals(enclosingType)))) {
+        if (!(eventBusType.equals(enclosingType) || (eventBusWithLookupType.equals(enclosingType)))) {
           String err = Event.class.getSimpleName() + " annotation missing.";
           throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
                                              method.getName(),
@@ -354,12 +422,13 @@ public class EventsAnnotationsLoader
       }
 
       params = method.getParameters();
-      int nbParams = params.length;
+      int      nbParams = params.length;
       String[] paramClasses;
       if (nbParams > 0) {
         paramClasses = new String[nbParams];
         for (int i = 0; i < nbParams; i++) {
-          paramClasses[i] = params[i].getType().getQualifiedSourceName();
+          paramClasses[i] = params[i].getType()
+                                     .getQualifiedSourceName();
         }
       } else {
         paramClasses = null;
@@ -402,16 +471,18 @@ public class EventsAnnotationsLoader
                                                           event.generateNames(),
                                                           configuration));
       element.setNavigationEvent(Boolean.toString(event.navigationEvent()));
-      element.setWithTokenGeneration(Boolean.toString(method.getReturnType().getQualifiedSourceName().equals(String.class.getName())));
+      element.setWithTokenGeneration(Boolean.toString(method.getReturnType()
+                                                            .getQualifiedSourceName()
+                                                            .equals(String.class.getName())));
       element.setPassive(Boolean.toString(event.passive()));
       broadcast = event.broadcastTo();
-      if (! Event.NoBroadcast.class.equals(broadcast)) {
+      if (!Event.NoBroadcast.class.equals(broadcast)) {
         element.setBroadcastTo(broadcast.getCanonicalName());
       }
       if (paramClasses != null) {
         element.setEventObjectClass(paramClasses);
       }
-      if (! Event.DEFAULT_NAME.equals(historyName)) {
+      if (!Event.DEFAULT_NAME.equals(historyName)) {
         element.setName(historyName);
       }
 
@@ -421,8 +492,10 @@ public class EventsAnnotationsLoader
                  method);
 
       if (method.getAnnotation(Start.class) != null) {
-        if (configuration.getStart().getEventType() == null) {
-          configuration.getStart().setEventType(method.getName());
+        if (configuration.getStart()
+                         .getEventType() == null) {
+          configuration.getStart()
+                       .setEventType(method.getName());
         } else {
           String err = "Duplicate value for Start event. It is already defined by another method.";
           throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
@@ -431,8 +504,10 @@ public class EventsAnnotationsLoader
         }
       }
       if (method.getAnnotation(Forward.class) != null) {
-        if (configuration.getStart().getForwardEventType() == null) {
-          configuration.getStart().setForwardEventType(method.getName());
+        if (configuration.getStart()
+                         .getForwardEventType() == null) {
+          configuration.getStart()
+                       .setForwardEventType(method.getName());
         } else {
           String err = "Duplicate value for Forward event. It is already defined by another method.";
           throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
@@ -459,16 +534,84 @@ public class EventsAnnotationsLoader
 
   }
 
+  private void loadDebug(JClassType c,
+                         Events annotation,
+                         Mvp4gConfiguration configuration)
+    throws Mvp4gAnnotationException {
+    Debug debug = c.getAnnotation(Debug.class);
+
+    if (debug != null) {
+      Class<? extends Mvp4gLogger> loggerClass = debug.logger();
+      DebugElement                 debugElem   = new DebugElement();
+      debugElem.setLogger(loggerClass.getCanonicalName());
+      debugElem.setLogLevel(debug.logLevel()
+                                 .name());
+
+      configuration.setDebug(debugElem);
+    }
+  }
+
+  private void loadGinModule(Events annotation,
+                             Mvp4gConfiguration configuration)
+    throws Mvp4gAnnotationException {
+    GinModuleElement             ginModule         = new GinModuleElement();
+    Class<? extends GinModule>[] modules           = annotation.ginModules();
+    int                          modulesCount      = modules.length;
+    String[]                     modulesClassNames = new String[modules.length];
+    for (int i = 0; i < modulesCount; i++) {
+      modulesClassNames[i] = modules[i].getCanonicalName();
+    }
+    ginModule.setModules(modulesClassNames);
+    ginModule.setModuleProperties(annotation.ginModuleProperties());
+
+    configuration.setGinModule(ginModule);
+  }
+
+  private void loadHistoryProxy(Events annotation,
+                                Mvp4gConfiguration configuration) {
+    HistoryElement history = configuration.getHistory();
+    if (history == null) {
+      history = new HistoryElement();
+      configuration.setHistory(history);
+    }
+    history.setHistoryProxyClass(annotation.historyProxy()
+                                           .getCanonicalName());
+  }
+
+  private void loadHistoryConfiguration(JClassType c,
+                                        Mvp4gConfiguration configuration)
+    throws Mvp4gAnnotationException {
+
+    PlaceService historyConfig = c.getAnnotation(PlaceService.class);
+    if (historyConfig != null) {
+      HistoryElement history = configuration.getHistory();
+      if (history == null) {
+        history = new HistoryElement();
+        configuration.setHistory(history);
+      }
+
+      history.setPlaceServiceClass(historyConfig.value()
+                                                .getCanonicalName());
+    }
+  }
+
   /**
    * Build handler of the events. If the class name of the handler is given, try to find if an
    * instance of this class exists, otherwise throw an error.
    *
-   * @param c             annoted class
-   * @param method        method that defines the event
-   * @param event         Event Annotation of the method
-   * @param configuration configuration containing loaded elements of the application
+   * @param c
+   *   annoted class
+   * @param method
+   *   method that defines the event
+   * @param event
+   *   Event Annotation of the method
+   * @param configuration
+   *   configuration containing loaded elements of the application
+   *
    * @return array of handlers' names
-   * @throws Mvp4gAnnotationException if no instance of a given handler class can be found
+   *
+   * @throws Mvp4gAnnotationException
+   *   if no instance of a given handler class can be found
    */
   private String[] buildPresentersAndEventHandlers(JClassType c,
                                                    JMethod method,
@@ -487,8 +630,7 @@ public class EventsAnnotationsLoader
       handlerName = getElementName(presentersAndEventHandlers,
                                    handler.getCanonicalName());
       if (handlerName == null) {
-        String err = "No instance of " + handler.getCanonicalName()
-          + " is defined. Have you forgotten to annotate your event handler with @Presenter or @EventHandler?";
+        String err = "No instance of " + handler.getCanonicalName() + " is defined. Have you forgotten to annotate your event handler with @Presenter or @EventHandler?";
         throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
                                            method.getName(),
                                            err);
@@ -531,42 +673,6 @@ public class EventsAnnotationsLoader
     return childModules;
   }
 
-  /**
-   * Build history converter of an event. If the converter class name is given, first it tries to
-   * find an instance of this class, and if none is found, create one.
-   *
-   * @param c             annoted class
-   * @param method        method that defines the event
-   * @param annotation    Event annotation
-   * @param element       Event element
-   * @param configuration configuration containing loaded elements of the application
-   * @throws Mvp4gAnnotationException
-   */
-  private void loadHistory(JClassType c,
-                           JMethod method,
-                           Event annotation,
-                           EventElement element,
-                           Mvp4gConfiguration configuration)
-    throws Mvp4gAnnotationException {
-    String   hcName  = annotation.historyConverterName();
-    Class<?> hcClass = annotation.historyConverter();
-    if ((hcName != null) && (hcName.length() > 0)) {
-      element.setHistory(hcName);
-    } else if (! Event.NoHistoryConverter.class.equals(hcClass)) {
-      String hcClassName = hcClass.getCanonicalName();
-      Set<HistoryConverterElement> historyConverters = configuration.getHistoryConverters();
-      hcName = getElementName(historyConverters,
-                              hcClassName);
-      if (hcName == null) {
-        String err = "No instance of " + hcClassName + " is defined. Have you forgotten to annotate your history converter with @History?";
-        throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
-                                           method.getName(),
-                                           err);
-      }
-      element.setHistory(hcName);
-    }
-  }
-
   private void loadHistoryEvent(JClassType c,
                                 JMethod method,
                                 Mvp4gConfiguration configuration)
@@ -605,20 +711,61 @@ public class EventsAnnotationsLoader
     }
   }
 
+  /**
+   * Build history converter of an event. If the converter class name is given, first it tries to
+   * find an instance of this class, and if none is found, create one.
+   *
+   * @param c
+   *   annoted class
+   * @param method
+   *   method that defines the event
+   * @param annotation
+   *   Event annotation
+   * @param element
+   *   Event element
+   * @param configuration
+   *   configuration containing loaded elements of the application
+   *
+   * @throws Mvp4gAnnotationException
+   */
+  private void loadHistory(JClassType c,
+                           JMethod method,
+                           Event annotation,
+                           EventElement element,
+                           Mvp4gConfiguration configuration)
+    throws Mvp4gAnnotationException {
+    String   hcName  = annotation.historyConverterName();
+    Class<?> hcClass = annotation.historyConverter();
+    if ((hcName != null) && (hcName.length() > 0)) {
+      element.setHistory(hcName);
+    } else if (!Event.NoHistoryConverter.class.equals(hcClass)) {
+      String                       hcClassName       = hcClass.getCanonicalName();
+      Set<HistoryConverterElement> historyConverters = configuration.getHistoryConverters();
+      hcName = getElementName(historyConverters,
+                              hcClassName);
+      if (hcName == null) {
+        String err = "No instance of " + hcClassName + " is defined. Have you forgotten to annotate your history converter with @History?";
+        throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
+                                           method.getName(),
+                                           err);
+      }
+      element.setHistory(hcName);
+    }
+  }
+
   private void loadEventToLoadChildModuleView(JClassType c,
                                               JMethod method,
                                               Mvp4gConfiguration configuration)
     throws Mvp4gAnnotationException {
     DisplayChildModuleView annotation = method.getAnnotation(DisplayChildModuleView.class);
     if (annotation != null) {
-      ChildModuleElement module = null;
+      ChildModuleElement      module       = null;
       Set<ChildModuleElement> childModules = configuration.getChildModules();
       for (Class<?> moduleClass : annotation.value()) {
         module = getElement(childModules,
                             moduleClass.getCanonicalName());
         if (module == null) {
-          String err = "No instance of " + moduleClass.getCanonicalName()
-            + " is defined.  Have you forgotten to add it to @ChildModules of your event bus interface?";
+          String err = "No instance of " + moduleClass.getCanonicalName() + " is defined.  Have you forgotten to add it to @ChildModules of your event bus interface?";
           throw new Mvp4gAnnotationException(c.getQualifiedSourceName(),
                                              method.getName(),
                                              err);
@@ -686,66 +833,6 @@ public class EventsAnnotationsLoader
       }
     }
 
-  }
-
-  private void loadDebug(JClassType c,
-                         Events annotation,
-                         Mvp4gConfiguration configuration)
-    throws Mvp4gAnnotationException {
-    Debug debug = c.getAnnotation(Debug.class);
-
-    if (debug != null) {
-      Class<? extends Mvp4gLogger> loggerClass = debug.logger();
-      DebugElement debugElem = new DebugElement();
-      debugElem.setLogger(loggerClass.getCanonicalName());
-      debugElem.setLogLevel(debug.logLevel().name());
-
-      configuration.setDebug(debugElem);
-    }
-  }
-
-  private void loadGinModule(Events annotation,
-                             Mvp4gConfiguration configuration)
-    throws Mvp4gAnnotationException {
-    GinModuleElement             ginModule         = new GinModuleElement();
-    Class<? extends GinModule>[] modules           = annotation.ginModules();
-    int                          modulesCount      = modules.length;
-    String[]                     modulesClassNames = new String[modules.length];
-    for (int i = 0; i < modulesCount; i++) {
-      modulesClassNames[i] = modules[i].getCanonicalName();
-    }
-    ginModule.setModules(modulesClassNames);
-    ginModule.setModuleProperties(annotation.ginModuleProperties());
-
-    configuration.setGinModule(ginModule);
-  }
-
-  private void loadHistoryConfiguration(JClassType c,
-                                        Mvp4gConfiguration configuration)
-    throws Mvp4gAnnotationException {
-
-    PlaceService historyConfig = c.getAnnotation(PlaceService.class);
-    if (historyConfig != null) {
-      HistoryElement history = configuration.getHistory();
-      if (history == null) {
-        history = new HistoryElement();
-        configuration.setHistory(history);
-      }
-
-      history.setPlaceServiceClass(historyConfig.value().getCanonicalName());
-    }
-  }
-
-  /*
-   * (non-Javadoc)
-   *
-   * @see com.mvp4g.rebind.config.loader.annotation.Mvp4gAnnotationsLoader#controlType
-   * (com.google.gwt .core.ext.typeinfo.JClassType, com.google.gwt.core.ext.typeinfo.JClassType)
-   */
-  @Override
-  protected void controlType(JClassType c,
-                             JClassType s) {
-    // do nothing, control are done later.
   }
 
   /*

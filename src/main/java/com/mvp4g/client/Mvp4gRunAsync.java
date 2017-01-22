@@ -27,7 +27,6 @@ import com.google.gwt.core.client.RunAsyncCallback;
  * Each Mvp4gRunAsync must be associated with its own RunAsynCallback implementation otherwise code
  * splitting is not working very well and some fragment can end up in the left-over.
  *
- * @param <T>
  * @author plcoirier
  */
 public interface Mvp4gRunAsync<T extends RunAsyncCallback> {

@@ -71,4 +71,12 @@ public class HistoryElement
                 notFoundEvent);
   }
 
+  public String getHistoryProxyClass() {
+    return getProperty("historyProxyClass");
+  }
+
+  public void setHistoryProxyClass(String historyProxyClass) {
+    setProperty("historyProxyClass",
+                historyProxyClass);
+  }
 }

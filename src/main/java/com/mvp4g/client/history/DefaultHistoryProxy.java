@@ -7,10 +7,7 @@ import com.google.gwt.user.client.History;
 public class DefaultHistoryProxy
   implements HistoryProxy {
 
-  public static final DefaultHistoryProxy INSTANCE = new DefaultHistoryProxy();
-
-  private DefaultHistoryProxy() {
-    //this class is a singleton
+  public DefaultHistoryProxy() {
   }
 
   public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {

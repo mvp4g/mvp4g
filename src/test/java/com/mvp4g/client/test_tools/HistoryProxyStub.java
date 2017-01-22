@@ -10,7 +10,12 @@ public class HistoryProxyStub implements HistoryProxy {
 	private boolean issueEvent = false;
 	private String token = null;
 
-	public HandlerRegistration addValueChangeHandler( ValueChangeHandler<String> handler ) {
+	@Override
+	public HistoryProxy get() {
+		return null;
+	}
+
+	public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler ) {
 		this.handler = handler;
 		return null;
 	}

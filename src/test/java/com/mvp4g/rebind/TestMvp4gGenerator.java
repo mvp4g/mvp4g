@@ -36,7 +36,9 @@ public class TestMvp4gGenerator {
                                             "com.mvp4g.client.history.NavigationConfirmationInterface",
                                             "com.google.gwt.core.client.RunAsyncCallback",
                                             "com.mvp4g.client.Mvp4gRunAsync",
-                                            "com.google.gwt.user.client.Command"};
+                                            "com.google.gwt.user.client.Command",
+                                            "com.mvp4g.client.history.HistoryProxyProvider",
+                                            "com.mvp4g.client.history.DefaultHistoryProxy"};
     assertArrayEquals(classesToImport,
                       generator.getClassesToImport());
   }

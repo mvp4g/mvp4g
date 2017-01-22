@@ -16,13 +16,15 @@
 
 package com.mvp4g.client.annotation;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import com.google.gwt.inject.client.GinModule;
 import com.mvp4g.client.DefaultMvp4gGinModule;
 import com.mvp4g.client.Mvp4gModule;
+import com.mvp4g.client.history.DefaultHistoryProxy;
+import com.mvp4g.client.history.HistoryProxy;
 import com.mvp4g.client.presenter.PresenterInterface;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 
 /**
  * This annotation indicates that the annotated interface should be used to define the event bus of
@@ -36,8 +38,9 @@ import java.lang.annotation.RetentionPolicy;
  * <li>module: class of the module for which the annotated interface should be used to generate the
  * event bus. If no module is specified, it means that the interface should be used to generate the
  * Root Module (first module to be loaded and only module without parent).</li>
- * <li>historyOnStart: if true, the current history state will be fired when the application starts.
- * </li>
+ * <li>historyOnStart: if true, the current history state will be fired when the application starts.</li>
+ * <li>historyProxy: history proxy implementation used by the mvp4g. if ca that no historyProxy is defined,
+ * the @see DefaultHistoryProxy will be used (which uses the History class)</li>
  * <li>ginModules: classes of the GIN modules the framework should use when generating presenters,
  * event handlers, history converters &amp; views. You can specify zero to severals GIN modules.</li>
  * <li>ginModuleProperties: deferred property names used to retrieve the class of the GIN modules.
@@ -57,6 +60,8 @@ public @interface Events {
   Class<? extends Mvp4gModule> module() default Mvp4gModule.class;
 
   boolean historyOnStart() default false;
+
+  Class<? extends HistoryProxy> historyProxy() default DefaultHistoryProxy.class;
 
   Class<? extends GinModule>[] ginModules() default DefaultMvp4gGinModule.class;
 

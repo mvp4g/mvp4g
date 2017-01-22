@@ -15,13 +15,13 @@
  */
 package com.mvp4g.client.history;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.mvp4g.client.Mvp4gEventPasser;
 import com.mvp4g.client.Mvp4gModule;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Place Service defines the connection between the application and the browser history.<br>
@@ -70,7 +70,7 @@ public class PlaceService
    * Build a <code>PlaceService</code>.
    */
   public PlaceService() {
-    this(DefaultHistoryProxy.INSTANCE);
+    this(HistoryProxyProvider.INSTANCE.get());
   }
 
   /**

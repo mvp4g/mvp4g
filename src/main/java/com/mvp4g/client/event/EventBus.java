@@ -31,7 +31,8 @@ public interface EventBus {
    * Set for all events of every modules if they should be stored or not in browser history when
    * possible (ie when associated with an history converter).
    *
-   * @param historyStored true if events should be stored
+   * @param historyStored
+   *   true if events should be stored
    */
   void setApplicationHistoryStored(boolean historyStored);
 
@@ -42,7 +43,8 @@ public interface EventBus {
    * This method should be called only right before sending an event that could be stored in
    * browser history.
    *
-   * @param historyStored true if events should be stored
+   * @param historyStored
+   *   true if events should be stored
    */
   void setHistoryStoredForNextOne(boolean historyStored);
 
@@ -58,7 +60,8 @@ public interface EventBus {
    * Set for all events of this module if they should be stored or not in browser history when
    * possible (ie when associated with an history converter).
    *
-   * @param historyStored true if events should be stored
+   * @param historyStored
+   *   true if events should be stored
    */
   void setHistoryStored(boolean historyStored);
 
@@ -68,7 +71,8 @@ public interface EventBus {
    * <br>
    * This method should be called only right before sending an event that could be filtered.
    *
-   * @param filteringEnabled true if events filters should be executed
+   * @param filteringEnabled
+   *   true if events filters should be executed
    */
   void setFilteringEnabledForNextOne(boolean filteringEnabled);
 
@@ -83,7 +87,8 @@ public interface EventBus {
    * Set whether or not the associated event filters should be executed before sending the event
    * to the associated event handlers.<br>
    *
-   * @param filteringEnabled true if events filters should be executed
+   * @param filteringEnabled
+   *   true if events filters should be executed
    */
   void setFilteringEnabled(boolean filteringEnabled);
 
@@ -92,10 +97,17 @@ public interface EventBus {
    * <br>
    * . Calling this method is equivalent to addHandler(handlerClass, true);
    *
-   * @param <T>          type of the handler created
-   * @param handlerClass class of the handler to create
+   * @param <E>
+   *   eventbus
+   * @param <T>
+   *   type of the handler created
+   * @param handlerClass
+   *   class of the handler to create
+   *
    * @return new instance of the handler created
-   * @throws Mvp4gException thrown if the instance of the handler can not be created by the event bus
+   *
+   * @throws Mvp4gException
+   *   thrown if the instance of the handler can not be created by the event bus
    */
   <E extends EventBus, T extends EventHandlerInterface<E>> T addHandler(Class<T> handlerClass)
     throws Mvp4gException;
@@ -109,11 +121,19 @@ public interface EventBus {
    * When binding the handler, you have to call the isActivated method. This method will be called
    * with eventName and parameters set to null.
    *
-   * @param <T>          type of the handler created
-   * @param handlerClass class of the handler to create
-   * @param bind         if true, bind the handler at creation, otherwise do nothing.
+   * @param <E>
+   *   eventbus
+   * @param <T>
+   *   type of the handler created
+   * @param handlerClass
+   *   class of the handler to create
+   * @param bind
+   *   if true, bind the handler at creation, otherwise do nothing.
+   *
    * @return new instance of the handler created
-   * @throws Mvp4gException thrown if the instance of the handler can not be created by the event bus
+   *
+   * @throws Mvp4gException
+   *   thrown if the instance of the handler can not be created by the event bus
    */
   <E extends EventBus, T extends EventHandlerInterface<E>> T addHandler(Class<T> handlerClass,
                                                                         boolean bind)
@@ -122,22 +142,26 @@ public interface EventBus {
   /**
    * Remove the instance of the handler from the event bus
    *
-   * @param <T>     type of the handler to remove
-   * @param handler handler to remove
+   * @param <T>
+   *   type of the handler to remove
+   * @param handler
+   *   handler to remove
    */
   <T extends EventHandlerInterface<?>> void removeHandler(T handler);
 
   /**
    * Add a new event filter
    *
-   * @param filter new event filter to add
+   * @param filter
+   *   new event filter to add
    */
   void addEventFilter(EventFilter<? extends EventBus> filter);
 
   /**
    * Remove event filter
    *
-   * @param filter event filter to remove
+   * @param filter
+   *   event filter to remove
    */
   void removeEventFilter(EventFilter<? extends EventBus> filter);
 
@@ -147,6 +171,7 @@ public interface EventBus {
    * only one navigationConfirmation for the whole application.
    *
    * @param navigationConfirmation
+   *   presenter which should be called in case of confirmation
    */
   void setNavigationConfirmation(NavigationConfirmationInterface navigationConfirmation);
 
@@ -154,6 +179,7 @@ public interface EventBus {
    * Method to manually ask if an action can occur
    *
    * @param event
+   *   event to be executed in case the presenter does not interrupt navigation
    */
   void confirmNavigation(NavigationEventCommand event);
 

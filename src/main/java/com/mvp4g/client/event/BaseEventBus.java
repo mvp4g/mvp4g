@@ -15,17 +15,17 @@
  */
 package com.mvp4g.client.event;
 
-import com.mvp4g.client.Mvp4gException;
-import com.mvp4g.client.Mvp4gModule;
-import com.mvp4g.client.history.DefaultHistoryProxy;
-import com.mvp4g.client.history.HistoryProxy;
-import com.mvp4g.client.presenter.PresenterInterface;
-import com.mvp4g.client.view.ReverseViewInterface;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.mvp4g.client.Mvp4gException;
+import com.mvp4g.client.Mvp4gModule;
+import com.mvp4g.client.history.HistoryProxy;
+import com.mvp4g.client.history.HistoryProxyProvider;
+import com.mvp4g.client.presenter.PresenterInterface;
+import com.mvp4g.client.view.ReverseViewInterface;
 
 /**
  * Base implementation of the event bus. It should only be used by the framework.
@@ -35,7 +35,7 @@ import java.util.Map;
 public abstract class BaseEventBus
   implements EventBus {
 
-  public static int                                           logDepth                         = - 1;
+  public static int                                           logDepth                         = -1;
   public        boolean                                       tokenMode                        = false;
   private       boolean                                       historyStored                    = true;
   private       boolean                                       changeHistoryStoredForNextOne    = false;
@@ -44,12 +44,6 @@ public abstract class BaseEventBus
   private       Map<Class<?>, List<EventHandlerInterface<?>>> handlersMap                      = new HashMap<Class<?>, List<EventHandlerInterface<?>>>();
 
   private List<EventFilter<?>> filters = new ArrayList<EventFilter<? extends EventBus>>();
-
-  public static <E extends EventBus, H extends EventHandlerInterface<? super E>> H setEventHandler(H eventHandler,
-                                                                                                   E eventBus) {
-    eventHandler.setEventBus(eventBus);
-    return eventHandler;
-  }
 
   @SuppressWarnings("unchecked")
   public static <V, E extends EventBus, P extends PresenterInterface<? super V, ? super E>> P setPresenter(boolean reverseView,
@@ -63,6 +57,24 @@ public abstract class BaseEventBus
       ((ReverseViewInterface<P>) view).setPresenter(presenter);
     }
     return presenter;
+  }
+
+  public static <E extends EventBus, H extends EventHandlerInterface<? super E>> H setEventHandler(H eventHandler,
+                                                                                                   E eventBus) {
+    eventHandler.setEventBus(eventBus);
+    return eventHandler;
+  }
+
+  /*
+   * (non-Javadoc)
+   *
+   * @see com.mvp4g.client.event.EventBus#setHistoryStoredForNextOne(boolean)
+   */
+  public void setHistoryStoredForNextOne(boolean historyStored) {
+    if (historyStored != this.historyStored) {
+      changeHistoryStoredForNextOne = true;
+      this.historyStored = historyStored;
+    }
   }
 
   /*
@@ -86,12 +98,12 @@ public abstract class BaseEventBus
   /*
    * (non-Javadoc)
    *
-   * @see com.mvp4g.client.event.EventBus#setHistoryStoredForNextOne(boolean)
+   * @see com.mvp4g.client.event.EventBus#setFilterEnabledForNextOne(boolean)
    */
-  public void setHistoryStoredForNextOne(boolean historyStored) {
-    if (historyStored != this.historyStored) {
-      changeHistoryStoredForNextOne = true;
-      this.historyStored = historyStored;
+  public void setFilteringEnabledForNextOne(boolean filteringEnabled) {
+    if (filteringEnabled != this.filteringEnabled) {
+      changeFilteringEnabledForNextOne = true;
+      this.filteringEnabled = filteringEnabled;
     }
   }
 
@@ -116,83 +128,45 @@ public abstract class BaseEventBus
   /*
    * (non-Javadoc)
    *
-   * @see com.mvp4g.client.event.EventBus#setFilterEnabledForNextOne(boolean)
+   * @see com.mvp4g.client.event.EventBus#addHandler(java.lang.Class, boolean)
    */
-  public void setFilteringEnabledForNextOne(boolean filteringEnabled) {
-    if (filteringEnabled != this.filteringEnabled) {
-      changeFilteringEnabledForNextOne = true;
-      this.filteringEnabled = filteringEnabled;
-    }
+  public <E extends EventBus, T extends EventHandlerInterface<E>> T addHandler(Class<T> handlerClass)
+    throws Mvp4gException {
+    return addHandler(handlerClass,
+                      true);
   }
 
-  /**
-   * Interact with place service when needed thanks to the module
+  /*
+   * (non-Javadoc)
    *
-   * @param module    module that knows the place service
-   * @param type      type of the event to store
-   * @param form      object of the event to store
-   * @param onlyToken if true, only the token will be generated and browser history won't change
-   * @return the generated token
+   * @see com.mvp4g.client.event.EventBus#addHandler(java.lang.Class, boolean)
    */
-  protected String place(Mvp4gModule module,
-                         String type,
-                         String form,
-                         boolean onlyToken) {
-    String token;
-    if (tokenMode) {
-      tokenMode = false;
-      token = module.place(type,
-                           form,
-                           onlyToken);
-    } else {
-      token = (historyStored) ? module.place(type,
-                                             form,
-                                             onlyToken) : null;
-      resetHistoryStored();
+  public <E extends EventBus, T extends EventHandlerInterface<E>> T addHandler(Class<T> handlerClass,
+                                                                               boolean bind)
+    throws Mvp4gException {
+    T handler = createHandler(handlerClass);
+    if (handler == null) {
+      throw new Mvp4gException("Handler with type " +
+                               handlerClass.getName() +
+                               " couldn't be created by the Mvp4g. Have you forgotten to set multiple attribute to true for this handler or are you trying to create an handler that belongs to another module (another type of event bus injected in this handler) or have you set a splitter for this handler?");
     }
-    return token;
+    finishAddHandler(handler,
+                     handlerClass,
+                     bind);
+    return handler;
   }
 
-  /**
-   * Interact with place service to clear history when needed thanks to the module
+  /*
+   * (non-Javadoc)
    *
-   * @param module module that knows the place service
+   * @see com.mvp4g.client.event.EventBus#removeHandler(com.mvp4g.client.event.
+   * EventHandlerInterface)
    */
-  protected void clearHistory(Mvp4gModule module) {
-    if (historyStored) {
-      module.clearHistory();
+  public <T extends EventHandlerInterface<?>> void removeHandler(T handler) {
+    List<EventHandlerInterface<?>> handlers = handlersMap.get(handler.getClass());
+    if (handlers != null) {
+      handlers.remove(handler);
     }
-    resetHistoryStored();
-  }
-
-  /**
-   * Change history stored flag value if needed
-   */
-  private void resetHistoryStored() {
-    if (changeHistoryStoredForNextOne) {
-      historyStored = ! historyStored;
-      changeHistoryStoredForNextOne = false;
-    }
-  }
-
-  /**
-   * If filtering is enabled, executes event filters associated with this event bus.
-   *
-   * @param eventName event's name
-   * @param params    event parameters for this event
-   */
-  protected boolean filterEvent(String eventName,
-                                Object... params) {
-    boolean ret = true;
-    if (filteringEnabled) {
-      ret = doFilterEvent(eventName,
-                          params);
-    }
-    if (changeFilteringEnabledForNextOne) {
-      filteringEnabled = ! filteringEnabled;
-      changeFilteringEnabledForNextOne = false;
-    }
-    return ret;
   }
 
   /*
@@ -213,69 +187,50 @@ public abstract class BaseEventBus
     filters.remove(filter);
   }
 
+  /*
+   * (non-Javadoc)
+   *
+   * @see com.mvp4g.client.event.EventBus#getHistory()
+   */
+  public HistoryProxy getHistory() {
+    return HistoryProxyProvider.INSTANCE.get();
+  }
+
+  /*
+   * (non-Javadoc)
+   *
+   * @see com.mvp4g.client.event.EventBus#setTokenGenerationModeForNextEvent()
+   */
+  public void setTokenGenerationModeForNextEvent() {
+    tokenMode = true;
+  }
+
   /**
-   * Performs the actual filtering by calling each associated event filter in turn. If any event
-   * filter returns false, then the event will be canceled.
+   * Create a new instance of the given handler class.
    *
-   * @param eventName event's name
-   * @param params    event parameters for this event
-   */
-  @SuppressWarnings("unchecked")
-  private boolean doFilterEvent(String eventName,
-                                Object[] params) {
-    int filterCount = filters.size();
-    @SuppressWarnings("rawtypes")
-    EventFilter filter;
-    for (int i = 0; i < filterCount; i++) {
-      filter = filters.get(i);
-      if (! filter.filterEvent(eventName,
-                               params,
-                               this)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  /*
-   * (non-Javadoc)
+   * @param <T>
+   *   type of the handler
+   * @param handlerClass
+   *   class of the handler
    *
-   * @see com.mvp4g.client.event.EventBus#addHandler(java.lang.Class, boolean)
+   * @return new instance created
    */
-  public <E extends EventBus, T extends EventHandlerInterface<E>> T addHandler(Class<T> handlerClass,
-                                                                               boolean bind)
-    throws Mvp4gException {
-    T handler = createHandler(handlerClass);
-    if (handler == null) {
-      throw new Mvp4gException(
-        "Handler with type "
-          + handlerClass.getName()
-          + " couldn't be created by the Mvp4g. Have you forgotten to set multiple attribute to true for this handler or are you trying to create an handler that belongs to another module (another type of event bus injected in this handler) or have you set a splitter for this handler?");
-    }
-    finishAddHandler(handler,
-                     handlerClass,
-                     bind);
-    return handler;
-  }
-
-  /*
-   * (non-Javadoc)
-   *
-   * @see com.mvp4g.client.event.EventBus#addHandler(java.lang.Class, boolean)
-   */
-  public <E extends EventBus, T extends EventHandlerInterface<E>> T addHandler(Class<T> handlerClass)
-    throws Mvp4gException {
-    return addHandler(handlerClass,
-                      true);
-  }
+  abstract protected <T extends EventHandlerInterface<?>> T createHandler(Class<T> handlerClass);
 
   /**
    * Utility method to finish adding a handler by adding it to the map and by binding it if
    * needed. It should only be used by the framework.
    *
-   * @param handler      New instance to add.
-   * @param handlerClass class of the handler to add.
-   * @param bind         if true, bind the handler at creation, otherwise do nothing.
+   * @param <E>
+   *   description @see EventBus
+   * @param <T>
+   *   description @see EventHandlerInterface
+   * @param handler
+   *   New instance to add.
+   * @param handlerClass
+   *   class of the handler to add.
+   * @param bind
+   *   if true, bind the handler at creation, otherwise do nothing.
    */
   public <E extends EventBus, T extends EventHandlerInterface<E>> void finishAddHandler(T handler,
                                                                                         Class<T> handlerClass,
@@ -293,56 +248,130 @@ public abstract class BaseEventBus
     handlers.add(handler);
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * Interact with place service when needed thanks to the module
    *
-   * @see com.mvp4g.client.event.EventBus#removeHandler(com.mvp4g.client.event.
-   * EventHandlerInterface)
+   * @param module
+   *   module that knows the place service
+   * @param type
+   *   type of the event to store
+   * @param form
+   *   object of the event to store
+   * @param onlyToken
+   *   if true, only the token will be generated and browser history won't change
+   *
+   * @return the generated token
    */
-  public <T extends EventHandlerInterface<?>> void removeHandler(T handler) {
-    List<EventHandlerInterface<?>> handlers = handlersMap.get(handler.getClass());
-    if (handlers != null) {
-      handlers.remove(handler);
+  protected String place(Mvp4gModule module,
+                         String type,
+                         String form,
+                         boolean onlyToken) {
+    String token;
+    if (tokenMode) {
+      tokenMode = false;
+      token = module.place(type,
+                           form,
+                           onlyToken);
+    } else {
+      token = (historyStored) ?
+              module.place(type,
+                           form,
+                           onlyToken) :
+              null;
+      resetHistoryStored();
+    }
+    return token;
+  }
+
+  /**
+   * Change history stored flag value if needed
+   */
+  private void resetHistoryStored() {
+    if (changeHistoryStoredForNextOne) {
+      historyStored = !historyStored;
+      changeHistoryStoredForNextOne = false;
     }
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * Interact with place service to clear history when needed thanks to the module
    *
-   * @see com.mvp4g.client.event.EventBus#getHistory()
+   * @param module
+   *   module that knows the place service
    */
-  public HistoryProxy getHistory() {
-    return DefaultHistoryProxy.INSTANCE;
+  protected void clearHistory(Mvp4gModule module) {
+    if (historyStored) {
+      module.clearHistory();
+    }
+    resetHistoryStored();
   }
 
-  /*
-   * (non-Javadoc)
+  /**
+   * If filtering is enabled, executes event filters associated with this event bus.
    *
-   * @see com.mvp4g.client.event.EventBus#setTokenGenerationModeForNextEvent()
+   * @param eventName
+   *   event's name
+   * @param params
+   *   event parameters for this event
+   *
+   * @return false if event should be stopped, true otherwise
    */
-  public void setTokenGenerationModeForNextEvent() {
-    tokenMode = true;
+  protected boolean filterEvent(String eventName,
+                                Object... params) {
+    boolean ret = true;
+    if (filteringEnabled) {
+      ret = doFilterEvent(eventName,
+                          params);
+    }
+    if (changeFilteringEnabledForNextOne) {
+      filteringEnabled = !filteringEnabled;
+      changeFilteringEnabledForNextOne = false;
+    }
+    return ret;
+  }
+
+  /**
+   * Performs the actual filtering by calling each associated event filter in turn. If any event
+   * filter returns false, then the event will be canceled.
+   *
+   * @param eventName
+   *   event's name
+   * @param params
+   *   event parameters for this event
+   *
+   * @return false if event should be stopped, true otherwise
+   */
+  @SuppressWarnings("unchecked")
+  private boolean doFilterEvent(String eventName,
+                                Object[] params) {
+    int                                       filterCount = filters.size();
+    @SuppressWarnings("rawtypes") EventFilter filter;
+    for (int i = 0; i < filterCount; i++) {
+      filter = filters.get(i);
+      if (!filter.filterEvent(eventName,
+                              params,
+                              this)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
    * Returns the list of handlers with the given class
    *
-   * @param <T>          type of the handlers
-   * @param handlerClass class of the handlers
+   * @param <T>
+   *   type of the handlers
+   * @param handlerClass
+   *   class of the handlers
+   *
    * @return list of handlers
    */
   @SuppressWarnings("unchecked")
   public <T extends EventHandlerInterface<?>> List<T> getHandlers(Class<T> handlerClass) {
     List<T> list = (List<T>) handlersMap.get(handlerClass);
-    return (list == null) ? null : new ArrayList<T>(list);
+    return (list == null) ?
+           null :
+           new ArrayList<T>(list);
   }
-
-  /**
-   * Create a new instance of the given handler class.
-   *
-   * @param <T>          type of the handler
-   * @param handlerClass class of the handler
-   * @return new instance created
-   */
-  abstract protected <T extends EventHandlerInterface<?>> T createHandler(Class<T> handlerClass);
 }

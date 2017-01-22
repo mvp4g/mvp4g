@@ -37,7 +37,8 @@ public interface EventHandlerInterface<E extends EventBus> {
   /**
    * Set an event bus to the event handler
    *
-   * @param eventBus event bus to set
+   * @param eventBus
+   *   event bus to set
    */
   void setEventBus(E eventBus);
 
@@ -63,7 +64,13 @@ public interface EventHandlerInterface<E extends EventBus> {
    * If the event is passive and the presenter hasn't been built, the presenter will be consider
    * as inactive (ie isActivated will return false).
    *
-   * @param passive indicate if it's a passive event or not
+   * @param passive
+   *   indicate if it's a passive event or not
+   * @param eventName
+   *   name of the event
+   * @param parameters
+   *   parameter of the event
+   *
    * @return true if the presenter is activated, false otherwise
    */
   boolean isActivated(boolean passive,
@@ -74,7 +81,8 @@ public interface EventHandlerInterface<E extends EventBus> {
    * Set if the event handler is activated or not. By default, an event handler should be
    * activated.
    *
-   * @param activated new activation parameter
+   * @param activated
+   *   new activation parameter
    */
   void setActivated(boolean activated);
 
