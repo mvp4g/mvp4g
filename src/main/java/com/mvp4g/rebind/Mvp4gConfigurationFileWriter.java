@@ -1454,7 +1454,7 @@ public class Mvp4gConfigurationFileWriter {
     }
 
     if (start.hasHistory()) {
-      sourceWriter.println("History.fireCurrentHistoryState();");
+      sourceWriter.println("HistoryProxyProvider.INSTANCE.get().fireCurrentHistoryState();");
     }
 
   }
