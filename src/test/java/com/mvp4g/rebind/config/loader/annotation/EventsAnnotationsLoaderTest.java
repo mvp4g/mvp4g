@@ -656,9 +656,9 @@ public class EventsAnnotationsLoaderTest {
                 configuration);
 
     Map<String, JClassType> othersEventBusClassMap = configuration.getOthersEventBusClassMap();
-    Iterator<String>        it                     = othersEventBusClassMap.keySet()
-                                                                           .iterator();
-    String                  key                    = it.next();
+    Iterator<String> it = othersEventBusClassMap.keySet()
+                                                .iterator();
+    String key = it.next();
     assertEquals(1,
                  othersEventBusClassMap.size());
     assertEquals(Modules.Module01.class.getCanonicalName(),
@@ -1249,10 +1249,10 @@ public class EventsAnnotationsLoaderTest {
     loader.load(annotedClasses,
                 configuration);
 
-    Iterator<EventElement> it    = configuration.getEvents()
-                                                .iterator();
-    int                    found = 0;
-    EventElement           event;
+    Iterator<EventElement> it = configuration.getEvents()
+                                             .iterator();
+    int          found = 0;
+    EventElement event;
     while (it.hasNext()) {
       event = it.next();
       if ("event1".equals(event.getType())) {

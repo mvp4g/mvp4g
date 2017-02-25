@@ -5,8 +5,11 @@ import com.mvp4g.client.annotation.Service;
 
 public class Services {
 
-	@Service( path = "path", name = "name", generatedClass = ServiceWithGeneratedClass.class )
-	public interface ServiceWithGeneratedClass extends RemoteService {
-	}
+  @Service(path = "path",
+           name = "name",
+           generatedClass = ServiceWithGeneratedClass.class)
+  public interface ServiceWithGeneratedClass
+    extends RemoteService {
+  }
 
 }

@@ -6,28 +6,37 @@ import com.mvp4g.client.event.EventFilter;
 
 public class EventFilters {
 
-	public static class EventFilter1 implements EventFilter<EventBus> {
+  public static class EventFilter1
+    implements EventFilter<EventBus> {
 
-		public boolean filterEvent( String eventType, Object[] params, EventBus eventBus ) {
-			return false;
-		}
+    public boolean filterEvent(String eventType,
+                               Object[] params,
+                               EventBus eventBus) {
+      return false;
+    }
 
-	}
+  }
 
-	public static class EventFilter2 implements EventFilter<EventBus> {
+  public static class EventFilter2
+    implements EventFilter<EventBus> {
 
-		public boolean filterEvent( String eventType, Object[] params, EventBus eventBus ) {
-			return false;
-		}
+    public boolean filterEvent(String eventType,
+                               Object[] params,
+                               EventBus eventBus) {
+      return false;
+    }
 
-	}
-	
-	public static class EventFilter3 implements EventFilter<EventBusWithLookup> {
+  }
 
-		public boolean filterEvent( String eventType, Object[] params, EventBusWithLookup eventBus ) {
-			return false;
-		}
+  public static class EventFilter3
+    implements EventFilter<EventBusWithLookup> {
 
-	}
+    public boolean filterEvent(String eventType,
+                               Object[] params,
+                               EventBusWithLookup eventBus) {
+      return false;
+    }
+
+  }
 
 }

@@ -1,67 +1,69 @@
 package com.mvp4g.client.presenter;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.view.LazyView;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class LazyPresenterTest {
 
-	private class LazyViewImpl implements LazyView {
+  @Test
+  public void testLazyBinding() {
+    LazyPresenterImpl presenter = new LazyPresenterImpl();
+    LazyViewImpl      view      = new LazyViewImpl();
+    presenter.setView(view);
 
-		private boolean created = false;
+    assertFalse(view.isCreated());
+    assertFalse(presenter.isCreated());
+    assertFalse(presenter.isBinded());
+    presenter.bind();
+    assertTrue(view.isCreated());
+    assertTrue(presenter.isCreated());
+    assertTrue(presenter.isBinded());
 
-		public void createView() {
-			created = true;
-		}
+  }
 
-		public boolean isCreated() {
-			return created;
-		}
+  private class LazyViewImpl
+    implements LazyView {
 
-	}
+    private boolean created = false;
 
-	private class LazyPresenterImpl extends LazyPresenter<LazyViewImpl, EventBus> {
+    public void createView() {
+      created = true;
+    }
 
-		private boolean created = false;
-		private boolean binded = false;
+    public boolean isCreated() {
+      return created;
+    }
 
-		@Override
-		public void createPresenter() {
-			created = true;
-		}
+  }
 
-		@Override
-		public void bindView() {
-			binded = true;
-		}
+  private class LazyPresenterImpl
+    extends LazyPresenter<LazyViewImpl, EventBus> {
 
-		public boolean isCreated() {
-			return created;
-		}
+    private boolean created = false;
+    private boolean binded  = false;
 
-		public boolean isBinded() {
-			return binded;
-		}
-	}
+    @Override
+    public void createPresenter() {
+      created = true;
+    }
 
-	@Test
-	public void testLazyBinding() {
-		LazyPresenterImpl presenter = new LazyPresenterImpl();
-		LazyViewImpl view = new LazyViewImpl();
-		presenter.setView( view );
+    @Override
+    public void bindView() {
+      binded = true;
+    }
 
-		assertFalse( view.isCreated() );
-		assertFalse( presenter.isCreated() );
-		assertFalse( presenter.isBinded() );
-		presenter.bind();
-		assertTrue( view.isCreated() );
-		assertTrue( presenter.isCreated() );
-		assertTrue( presenter.isBinded() );
+    public boolean isCreated() {
+      return created;
+    }
 
-	}
+    public boolean isBinded() {
+      return binded;
+    }
+  }
 
 }

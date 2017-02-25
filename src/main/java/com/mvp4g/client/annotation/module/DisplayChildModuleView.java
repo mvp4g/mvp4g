@@ -15,12 +15,12 @@
  */
 package com.mvp4g.client.annotation.module;
 
-import com.mvp4g.client.Mvp4gModule;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import com.mvp4g.client.Mvp4gModule;
 
 /**
  * This annotation can be used to annotate the method of an event in your EventBus interface. It

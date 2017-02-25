@@ -25,8 +25,10 @@ public interface Mvp4gLogger {
   /**
    * Add a log
    *
-   * @param message message to log
-   * @param depth   depth of the log
+   * @param message
+   *   message to log
+   * @param depth
+   *   depth of the log
    */
   public void log(String message,
                   int depth);

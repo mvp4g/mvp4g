@@ -15,10 +15,10 @@
  */
 package com.mvp4g.client.annotation.module;
 
-import com.mvp4g.client.Mvp4gModule;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import com.mvp4g.client.Mvp4gModule;
 
 /**
  * This annotation can be used as an attribute of the <code>ChildModules</code> annotation to add a

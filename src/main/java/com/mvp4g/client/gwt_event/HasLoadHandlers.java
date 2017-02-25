@@ -12,7 +12,9 @@ public interface HasLoadHandlers
   /**
    * Adds a {@link LoadEvent} handler.
    *
-   * @param handler the load handler
+   * @param handler
+   *   the load handler
+   *
    * @return {@link HandlerRegistration} used to remove this handler
    */
   HandlerRegistration addLoadHandler(LoadHandler handler);

@@ -31,7 +31,9 @@ public class HistoryConverterElement
 
   public String getType() {
     String type = getProperty("type");
-    return (type == null) ? HistoryConverterType.DEFAULT.name() : type;
+    return (type == null) ?
+           HistoryConverterType.DEFAULT.name() :
+           type;
   }
 
   public void setType(String type) {

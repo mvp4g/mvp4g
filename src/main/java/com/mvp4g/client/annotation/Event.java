@@ -15,15 +15,15 @@
  */
 package com.mvp4g.client.annotation;
 
-import com.mvp4g.client.Mvp4gModule;
-import com.mvp4g.client.event.EventBus;
-import com.mvp4g.client.event.EventHandlerInterface;
-import com.mvp4g.client.history.HistoryConverter;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import com.mvp4g.client.Mvp4gModule;
+import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.event.EventHandlerInterface;
+import com.mvp4g.client.history.HistoryConverter;
 
 /**
  * This annotation should be used to annotate methods of interfaces that extends

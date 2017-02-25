@@ -27,7 +27,8 @@ public abstract class NavigationEventCommand {
    * Execute the command by firing the event. Remove the NavigationConfirmation object before
    * firing the event if needed.
    *
-   * @param removeConfirmation if true, NavigationConfirmation is removed
+   * @param removeConfirmation
+   *   if true, NavigationConfirmation is removed
    */
   public void fireEvent(boolean removeConfirmation) {
     if (removeConfirmation) {

@@ -16,10 +16,10 @@
 
 package com.mvp4g.client.annotation;
 
-import com.mvp4g.client.event.EventFilter;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import com.mvp4g.client.event.EventFilter;
 
 /**
  * This annotation may be used to set event filters for the framework.<br>

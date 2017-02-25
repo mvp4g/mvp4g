@@ -1,32 +1,33 @@
 package com.mvp4g.rebind.config.element;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.Map;
 import java.util.Set;
 
-public class SplitterElementTest extends SimpleMvp4gElementTest {
+import static org.junit.Assert.assertTrue;
 
-	private static final String[] properties = SimpleMvp4gElementTest.addProperties( new String[] { "loader" } );
+public class SplitterElementTest
+  extends SimpleMvp4gElementTest {
 
-	@Override
-	protected String[] getProperties() {
-		return properties;
-	}
+  private static final String[] properties = SimpleMvp4gElementTest.addProperties(new String[] { "loader" });
 
-	public void testGetters() {
-		SplitterElement splitter = new SplitterElement();
+  @Override
+  protected String[] getProperties() {
+    return properties;
+  }
 
-		Set<EventHandlerElement> eventHandlers = splitter.getHandlers();
-		assertTrue( eventHandlers.size() == 0 );
+  public void testGetters() {
+    SplitterElement splitter = new SplitterElement();
 
-		Map<EventElement, EventAssociation<String>> events = splitter.getEvents();
-		assertTrue( events.size() == 0 );
-	}
-	
-	@Override
-	protected SimpleMvp4gElement newElement() {
-		return new SplitterElement();
-	}
+    Set<EventHandlerElement> eventHandlers = splitter.getHandlers();
+    assertTrue(eventHandlers.size() == 0);
+
+    Map<EventElement, EventAssociation<String>> events = splitter.getEvents();
+    assertTrue(events.size() == 0);
+  }
+
+  @Override
+  protected SimpleMvp4gElement newElement() {
+    return new SplitterElement();
+  }
 
 }

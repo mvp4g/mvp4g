@@ -29,8 +29,11 @@ import com.mvp4g.client.event.EventBus;
  * You should extend this class to create a presenter.<br>
  * <br>
  *
- * @param <V> Type of the view injected into the presenter
- * @param <E> Type of the event bus used by the presenter.
+ * @param <V>
+ *   Type of the view injected into the presenter
+ * @param <E>
+ *   Type of the event bus used by the presenter.
+ *
  * @author plcoirier
  */
 public class BasePresenter<V, E extends EventBus>
@@ -54,6 +57,5 @@ public class BasePresenter<V, E extends EventBus>
   public void setView(V view) {
     this.view = view;
   }
-
 
 }

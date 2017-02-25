@@ -80,7 +80,8 @@ public class PlaceService
    * GWT History class.<br>
    * It shouldn't be called otherwise.
    *
-   * @param history history proxy to inject
+   * @param history
+   *   history proxy to inject
    */
   protected PlaceService(HistoryProxy history) {
     this.history = history;
@@ -95,7 +96,8 @@ public class PlaceService
    * <br>
    * If token is equal to empty string, ask the event bus to dispatch an initEvent.
    *
-   * @param event event containing the new history token
+   * @param event
+   *   event containing the new history token
    */
   public void onValueChange(final ValueChangeEvent<String> event) {
 
@@ -112,7 +114,8 @@ public class PlaceService
   /**
    * Convert the token to an event
    *
-   * @param token the token to convert
+   * @param token
+   *   the token to convert
    */
   protected void convertToken(String token) {
     boolean toContinue = false;
@@ -125,8 +128,8 @@ public class PlaceService
 
     if (toContinue) {
       String[] result = parseToken(token);
-      if (! forwardToChildModuleIfNeeded(result[0],
-                                         result[1])) {
+      if (!forwardToChildModuleIfNeeded(result[0],
+                                        result[1])) {
         dispatchEvent(result[0],
                       result[1],
                       module);
@@ -140,15 +143,21 @@ public class PlaceService
    * Parse the token and return a string array. The first element of this array contains the event
    * name whereas the second element contains the parameters associated to the event.
    *
-   * @param token token to parse
+   * @param token
+   *   token to parse
+   *
    * @return array of string
    */
   protected String[] parseToken(String token) {
     String[] result = new String[2];
     int      index  = token.lastIndexOf(getParamSeparator());
-    result[0] = (index == - 1) ? token : token.substring(0,
-                                                         index);
-    result[1] = (index == - 1) ? null : token.substring(index + 1);
+    result[0] = (index == -1) ?
+                token :
+                token.substring(0,
+                                index);
+    result[1] = (index == -1) ?
+                null :
+                token.substring(index + 1);
     return result;
   }
 
@@ -156,8 +165,11 @@ public class PlaceService
    * Check if this event is a child's module event. If it's the case, forward the token to the
    * child module and return true.
    *
-   * @param eventName name of the event that was stored in the token
-   * @param param     parameters stored in the token
+   * @param eventName
+   *   name of the event that was stored in the token
+   * @param param
+   *   parameters stored in the token
+   *
    * @return true if this child module's event.
    */
   protected boolean forwardToChildModuleIfNeeded(final String eventName,
@@ -187,22 +199,24 @@ public class PlaceService
   /**
    * Dispatch the event thanks to the history converter.
    *
-   * @param historyName name of the event stored in the token
-   * @param param       parameters stored in the token
-   * @param module      module to which belongs the event
+   * @param historyName
+   *   name of the event stored in the token
+   * @param param
+   *   parameters stored in the token
+   * @param module
+   *   module to which belongs the event
    */
   @SuppressWarnings("unchecked")
   protected void dispatchEvent(String historyName,
                                String param,
                                Mvp4gModule module) {
     if (historyName != null) {
-      @SuppressWarnings("rawtypes")
-      HistoryConverter converter = converters.get(historyName);
+      @SuppressWarnings("rawtypes") HistoryConverter converter = converters.get(historyName);
       if (converter == null) {
         sendNotFoundEvent(module);
       } else {
-        String[] tab = historyName.split(MODULE_SEPARATOR);
-        String finalEventName = tab[tab.length - 1];
+        String[] tab            = historyName.split(MODULE_SEPARATOR);
+        String   finalEventName = tab[tab.length - 1];
         converter.convertFromToken(finalEventName,
                                    param,
                                    module.getEventBus());
@@ -215,27 +229,32 @@ public class PlaceService
   /**
    * Convert an event and its associated parameters to a token.<br>
    *
-   * @param eventName name of the event to store
-   * @param param     string representation of the objects associated with the event that needs to be
-   *                  stored in the token
-   * @param onlyToken if true, only the token will be generated and browser history won't change
+   * @param eventName
+   *   name of the event to store
+   * @param param
+   *   string representation of the objects associated with the event that needs to be
+   *   stored in the token
+   * @param onlyToken
+   *   if true, only the token will be generated and browser history won't change
+   *
    * @return the generated token
    */
   public String place(String eventName,
                       String param,
                       boolean onlyToken) {
 
-    if (! enabled && ! onlyToken) {
+    if (!enabled && !onlyToken) {
       return null;
     }
 
     String token = tokenize(eventName,
                             param);
 
-    if (converters.get(eventName).isCrawlable()) {
+    if (converters.get(eventName)
+                  .isCrawlable()) {
       token = CRAWLABLE + token;
     }
-    if (! onlyToken) {
+    if (!onlyToken) {
       history.newItem(token,
                       false);
     }
@@ -245,8 +264,11 @@ public class PlaceService
   /**
    * Transform an event and its parameters to a token
    *
-   * @param eventName event's name
-   * @param param     event's parameters
+   * @param eventName
+   *   event's name
+   * @param param
+   *   event's parameters
+   *
    * @return token to store in the history
    */
   public String tokenize(String eventName,
@@ -256,6 +278,13 @@ public class PlaceService
       token = token + getParamSeparator() + param;
     }
     return token;
+  }
+
+  /**
+   * @return separator used to differenciate the event's name and its parameters
+   */
+  protected String getParamSeparator() {
+    return "?";
   }
 
   /**
@@ -269,8 +298,10 @@ public class PlaceService
   /**
    * Add a converter for an event.
    *
-   * @param historyName name of the event to store in the token
-   * @param converter   converter associated with this event
+   * @param historyName
+   *   name of the event to store in the token
+   * @param converter
+   *   converter associated with this event
    */
   @SuppressWarnings("rawtypes")
   public void addConverter(String historyName,
@@ -280,14 +311,16 @@ public class PlaceService
   }
 
   /**
-   * @param module the module to set
+   * @param module
+   *   the module to set
    */
   public void setModule(Mvp4gModule module) {
     this.module = module;
   }
 
   /**
-   * @param navigationConfirmation the navigationConfirmation to set
+   * @param navigationConfirmation
+   *   the navigationConfirmation to set
    */
   public void setNavigationConfirmation(NavigationConfirmationInterface navigationConfirmation) {
     this.navigationConfirmation = navigationConfirmation;
@@ -298,9 +331,10 @@ public class PlaceService
    * event, but you can override the method if you want to call some
    * specific event for child module
    *
-   * @param module the last module where event wasn't found. If you will have
-   *               a correct historyName at the begin of url, then this will be a
-   *               child module, else rootModule.
+   * @param module
+   *   the last module where event wasn't found. If you will have
+   *   a correct historyName at the begin of url, then this will be a
+   *   child module, else rootModule.
    */
   protected void sendNotFoundEvent(Mvp4gModule module) {
     this.module.sendNotFoundEvent();
@@ -309,7 +343,8 @@ public class PlaceService
   /**
    * Ask for user's confirmation before firing an event
    *
-   * @param event event to confirm
+   * @param event
+   *   event to confirm
    */
   public void confirmEvent(NavigationEventCommand event) {
     if (navigationConfirmation == null) {
@@ -321,17 +356,11 @@ public class PlaceService
   }
 
   /**
-   * @param enabled the enabled to set
+   * @param enabled
+   *   the enabled to set
    */
   public void setEnabled(boolean enabled) {
     this.enabled = enabled;
-  }
-
-  /**
-   * @return separator used to differenciate the event's name and its parameters
-   */
-  protected String getParamSeparator() {
-    return "?";
   }
 
 }

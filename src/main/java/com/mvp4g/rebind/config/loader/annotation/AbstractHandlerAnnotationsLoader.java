@@ -15,6 +15,9 @@
  */
 package com.mvp4g.rebind.config.loader.annotation;
 
+import java.lang.annotation.Annotation;
+import java.util.Set;
+
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.mvp4g.client.Mvp4gSplitter;
 import com.mvp4g.client.annotation.NotAsync;
@@ -22,9 +25,6 @@ import com.mvp4g.rebind.config.Mvp4gConfiguration;
 import com.mvp4g.rebind.config.element.EventHandlerElement;
 import com.mvp4g.rebind.config.element.Mvp4gWithServicesElement;
 import com.mvp4g.rebind.exception.loader.Mvp4gAnnotationException;
-
-import java.lang.annotation.Annotation;
-import java.util.Set;
 
 /**
  * A class responsible for loading information contained in <code>EventHandler</code> annotation.
@@ -61,7 +61,7 @@ public abstract class AbstractHandlerAnnotationsLoader<A extends Annotation, T e
     eventHandler.setMultiple(Boolean.toString(isAnnotationMultiple(annotation)));
 
     Class<? extends Mvp4gSplitter> splitter = getAnnotationSplitter(annotation);
-    if (! splitter.equals(NotAsync.class)) {
+    if (!splitter.equals(NotAsync.class)) {
       eventHandler.setAsync(splitter.getCanonicalName());
     }
 
@@ -73,16 +73,16 @@ public abstract class AbstractHandlerAnnotationsLoader<A extends Annotation, T e
     return eventHandler;
   }
 
+  abstract protected String getAnnotationName(A annotation);
+
   abstract protected T loadHandler(JClassType c,
                                    A annotation,
                                    Mvp4gConfiguration configuration)
     throws Mvp4gAnnotationException;
 
-  abstract protected Set<T> getConfigList(Mvp4gConfiguration configuration);
-
-  abstract protected String getAnnotationName(A annotation);
+  abstract protected boolean isAnnotationMultiple(A annotation);
 
   abstract protected Class<? extends Mvp4gSplitter> getAnnotationSplitter(A annotation);
 
-  abstract protected boolean isAnnotationMultiple(A annotation);
+  abstract protected Set<T> getConfigList(Mvp4gConfiguration configuration);
 }

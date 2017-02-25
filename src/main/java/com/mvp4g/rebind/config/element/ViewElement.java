@@ -40,7 +40,8 @@ public class ViewElement
   }
 
   /**
-   * @param instantiateAtStart the instantiateAtStart to set
+   * @param instantiateAtStart
+   *   the instantiateAtStart to set
    */
   public void setInstantiateAtStart(boolean instantiateAtStart) {
     this.instantiateAtStart = instantiateAtStart;

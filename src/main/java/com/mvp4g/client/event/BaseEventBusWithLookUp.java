@@ -30,20 +30,20 @@ public abstract class BaseEventBusWithLookUp
   /*
    * (non-Javadoc)
    *
-   * @see com.mvp4g.client.event.EventBusWithLookup#dispatch(java.lang.String, java.lang.Object)
-   */
-  abstract public void dispatch(String eventName,
-                                Object... data);
-
-  /*
-   * (non-Javadoc)
-   *
    * @see com.mvp4g.client.event.EventBusWithLookup#dispatch(java.lang.String)
    */
   public void dispatch(String eventName) {
     dispatch(eventName,
              new Object[0]);
   }
+
+  /*
+   * (non-Javadoc)
+   *
+   * @see com.mvp4g.client.event.EventBusWithLookup#dispatch(java.lang.String, java.lang.Object)
+   */
+  abstract public void dispatch(String eventName,
+                                Object... data);
 
   /*
    * (non-Javadoc)
@@ -71,12 +71,16 @@ public abstract class BaseEventBusWithLookUp
    * by this class. If it's the case, then send an Mvp4gException to indicate that an object with
    * the wrong class type has been sent with the event.
    *
-   * @param e         ClassCastException thrown
-   * @param eventName name of the event dispatched while error is thrown
+   * @param e
+   *   ClassCastException thrown
+   * @param eventName
+   *   name of the event dispatched while error is thrown
    */
   protected void handleClassCastException(ClassCastException e,
                                           String eventName) {
-    if (e.getStackTrace()[0].getClassName().equals(this.getClass().getName())) {
+    if (e.getStackTrace()[0].getClassName()
+                            .equals(this.getClass()
+                                        .getName())) {
       throw new Mvp4gException("Class of the object sent with event " + eventName + " is incorrect.");
     }
     throw e;

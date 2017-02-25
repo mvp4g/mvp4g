@@ -40,7 +40,7 @@ public class DefaultMvp4gLogger
       return message;
     } else {
       StringBuilder indent = new StringBuilder(message.length() + depth * INDENT.length());
-      for (int i = 0; i < depth; ++ i) {
+      for (int i = 0; i < depth; ++i) {
         indent.append(INDENT);
       }
       indent.append(message);

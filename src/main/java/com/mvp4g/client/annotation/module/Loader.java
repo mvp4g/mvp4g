@@ -15,11 +15,11 @@
  */
 package com.mvp4g.client.annotation.module;
 
-import com.mvp4g.client.Mvp4gLoader;
-import com.mvp4g.client.event.EventBus;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import com.mvp4g.client.Mvp4gLoader;
+import com.mvp4g.client.event.EventBus;
 
 /**
  * This annotation may be used to set a loader for a child module or a splitter.<br>

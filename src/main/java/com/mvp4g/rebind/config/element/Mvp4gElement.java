@@ -39,27 +39,6 @@ public abstract class Mvp4gElement {
     this.tagName = tagName;
   }
 
-  /**
-   * Returns the name of the property that uniquely identifies this element.
-   * <br>
-   * The value associated with the property name returned by this method must be globally unique
-   * across the entire mvp4g configuration.
-   *
-   * @return attribute name used as unique identifier.
-   */
-  public abstract String getUniqueIdentifierName();
-
-  /**
-   * Returns the value uniquely identifying this element in the configuration.
-   *
-   * @return if defined, a value uniquely identifying the element, if not defined, an empty
-   * string.
-   */
-  public String getUniqueIdentifier() {
-    String uid = properties.getProperty(getUniqueIdentifierName());
-    return uid == null ? "" : uid;
-  }
-
   public String getProperty(String name) {
     return properties.getProperty(name);
   }
@@ -90,6 +69,19 @@ public abstract class Mvp4gElement {
     return values;
   }
 
+  public void setFlexibleValues(String name,
+                                String[] values) {
+    if (name != null && values != null) {
+      List<String> valuesList = new ArrayList<String>();
+      for (String value : values) {
+        valuesList.add(value);
+      }
+
+      flexibleMultiValueProperties.put(name,
+                                       valuesList);
+    }
+  }
+
   public void setValues(String name,
                         String[] values) {
 
@@ -104,20 +96,6 @@ public abstract class Mvp4gElement {
     }
   }
 
-  public void setFlexibleValues(String name,
-                                String[] values) {
-    if (name != null && values != null) {
-      List<String> valuesList = new ArrayList<String>();
-      for (String value : values) {
-        valuesList.add(value);
-      }
-
-      flexibleMultiValueProperties.put(name,
-                                       valuesList);
-    }
-  }
-
-
   public int totalProperties() {
     return properties.size();
   }
@@ -128,12 +106,37 @@ public abstract class Mvp4gElement {
 
   @Override
   public boolean equals(Object another) {
-    if (this.getClass().isInstance(another)) {
+    if (this.getClass()
+            .isInstance(another)) {
       Mvp4gElement that = (Mvp4gElement) another;
-      return this.getUniqueIdentifier().equals(that.getUniqueIdentifier());
+      return this.getUniqueIdentifier()
+                 .equals(that.getUniqueIdentifier());
     }
     return false;
   }
+
+  /**
+   * Returns the value uniquely identifying this element in the configuration.
+   *
+   * @return if defined, a value uniquely identifying the element, if not defined, an empty
+   * string.
+   */
+  public String getUniqueIdentifier() {
+    String uid = properties.getProperty(getUniqueIdentifierName());
+    return uid == null ?
+           "" :
+           uid;
+  }
+
+  /**
+   * Returns the name of the property that uniquely identifies this element.
+   * <br>
+   * The value associated with the property name returned by this method must be globally unique
+   * across the entire mvp4g configuration.
+   *
+   * @return attribute name used as unique identifier.
+   */
+  public abstract String getUniqueIdentifierName();
 
   @Override
   public int hashCode() {

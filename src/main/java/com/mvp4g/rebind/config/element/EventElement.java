@@ -32,6 +32,47 @@ public class EventElement
     super("event");
   }
 
+  public String getCalledMethod() {
+
+    String calledMethod = getProperty("calledMethod");
+    if ((calledMethod == null) || (calledMethod.length() == 0)) {
+      String type = getType();
+      if (type.length() > 1) {
+        type = type.substring(0,
+                              1)
+                   .toUpperCase() + type.substring(1);
+      } else {
+        type = type.toUpperCase();
+      }
+      calledMethod = "on" + type;
+    }
+
+    return calledMethod;
+  }
+
+  public String getType() {
+    return getProperty("type");
+  }
+
+  public void setType(String type) {
+    setProperty("type",
+                type);
+  }
+
+  public void setCalledMethod(String calledMethod) {
+    setProperty("calledMethod",
+                calledMethod);
+  }
+
+  public String[] getEventObjectClass() {
+    return getValues("eventObjectClass");
+  }
+
+  public void setEventObjectClass(String[] eventObjectClasses) {
+    setValues("eventObjectClass",
+              eventObjectClasses);
+  }
+
   @Override
   public void setValues(String name,
                         String[] values) {
@@ -56,44 +97,13 @@ public class EventElement
     }
   }
 
-  public String getType() {
-    return getProperty("type");
-  }
-
-  public void setType(String type) {
-    setProperty("type",
-                type);
-  }
-
-  public String getCalledMethod() {
-
-    String calledMethod = getProperty("calledMethod");
-    if ((calledMethod == null) || (calledMethod.length() == 0)) {
-      String type = getType();
-      if (type.length() > 1) {
-        type = type.substring(0,
-                              1).toUpperCase() + type.substring(1);
-      } else {
-        type = type.toUpperCase();
-      }
-      calledMethod = "on" + type;
+  private List<String> fillList(String[] values,
+                                String propertyName) {
+    List<String> newList = new ArrayList<String>();
+    for (String value : values) {
+      newList.add(value);
     }
-
-    return calledMethod;
-  }
-
-  public void setCalledMethod(String calledMethod) {
-    setProperty("calledMethod",
-                calledMethod);
-  }
-
-  public String[] getEventObjectClass() {
-    return getValues("eventObjectClass");
-  }
-
-  public void setEventObjectClass(String[] eventObjectClasses) {
-    setValues("eventObjectClass",
-              eventObjectClasses);
+    return newList;
   }
 
   public List<String> getHandlers() {
@@ -132,6 +142,10 @@ public class EventElement
                       siblingsToLoad);
   }
 
+  public boolean hasHistory() {
+    return getHistory() != null;
+  }
+
   public String getHistory() {
     return getProperty("history");
   }
@@ -139,10 +153,6 @@ public class EventElement
   public void setHistory(String history) {
     setProperty("history",
                 history);
-  }
-
-  public boolean hasHistory() {
-    return getHistory() != null;
   }
 
   public String getForwardToParent() {
@@ -155,7 +165,8 @@ public class EventElement
   }
 
   public boolean hasForwardToParent() {
-    return Boolean.TRUE.toString().equalsIgnoreCase(getProperty("forwardToParent"));
+    return Boolean.TRUE.toString()
+                       .equalsIgnoreCase(getProperty("forwardToParent"));
   }
 
   @Override
@@ -217,12 +228,13 @@ public class EventElement
                 name);
   }
 
-  public String getNavigationEvent() {
-    return getProperty("navigationEvent");
+  public boolean isNavigationEvent() {
+    return Boolean.TRUE.toString()
+                       .equalsIgnoreCase(getNavigationEvent());
   }
 
-  public boolean isNavigationEvent() {
-    return Boolean.TRUE.toString().equalsIgnoreCase(getNavigationEvent());
+  public String getNavigationEvent() {
+    return getProperty("navigationEvent");
   }
 
   public void setNavigationEvent(String navigationEvent) {
@@ -230,12 +242,13 @@ public class EventElement
                 navigationEvent);
   }
 
-  public String getWithTokenGeneration() {
-    return getProperty("withTokenGeneration");
+  public boolean isWithTokenGeneration() {
+    return Boolean.TRUE.toString()
+                       .equalsIgnoreCase(getWithTokenGeneration());
   }
 
-  public boolean isWithTokenGeneration() {
-    return Boolean.TRUE.toString().equalsIgnoreCase(getWithTokenGeneration());
+  public String getWithTokenGeneration() {
+    return getProperty("withTokenGeneration");
   }
 
   public void setWithTokenGeneration(String withTokenGeneration) {
@@ -243,12 +256,13 @@ public class EventElement
                 withTokenGeneration);
   }
 
-  public String getTokenGenerationFromParent() {
-    return getProperty("tokenGenerationFromParent");
+  public boolean isTokenGenerationFromParent() {
+    return Boolean.TRUE.toString()
+                       .equalsIgnoreCase(getTokenGenerationFromParent());
   }
 
-  public boolean isTokenGenerationFromParent() {
-    return Boolean.TRUE.toString().equalsIgnoreCase(getTokenGenerationFromParent());
+  public String getTokenGenerationFromParent() {
+    return getProperty("tokenGenerationFromParent");
   }
 
   public void setTokenGenerationFromParent(String tokenGenerationFromParent) {
@@ -256,12 +270,13 @@ public class EventElement
                 tokenGenerationFromParent);
   }
 
-  public String getPassive() {
-    return getProperty("passive");
+  public boolean isPassive() {
+    return Boolean.TRUE.toString()
+                       .equalsIgnoreCase(getPassive());
   }
 
-  public boolean isPassive() {
-    return Boolean.TRUE.toString().equalsIgnoreCase(getPassive());
+  public String getPassive() {
+    return getProperty("passive");
   }
 
   public void setPassive(String passive) {
@@ -276,15 +291,6 @@ public class EventElement
   public void setBroadcastTo(String broadcastTo) {
     setProperty("broadcastTo",
                 broadcastTo);
-  }
-
-  private List<String> fillList(String[] values,
-                                String propertyName) {
-    List<String> newList = new ArrayList<String>();
-    for (String value : values) {
-      newList.add(value);
-    }
-    return newList;
   }
 
 }

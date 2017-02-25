@@ -14,7 +14,6 @@
  * the License.
  */
 
-
 package com.mvp4g.client.annotation;
 
 import java.lang.annotation.ElementType;

@@ -8,87 +8,99 @@ import com.mvp4g.rebind.test_tools.annotation.history_converters.BaseHistoryConv
 import com.mvp4g.rebind.test_tools.annotation.services.SimpleService;
 import com.mvp4g.rebind.test_tools.annotation.services.SimpleServiceAsync;
 
-@SuppressWarnings( "deprecation" )
+@SuppressWarnings("deprecation")
 public class HistoryConverters {
 
-	@History( name = "name" )
-	public static class HistoryConverterWithName extends BaseHistoryConverter {
+  @History(name = "name")
+  public static class HistoryConverterWithName
+    extends BaseHistoryConverter {
 
-	}
+  }
 
-	@History
-	public static class HistoryConverterNotPublic extends BaseHistoryConverter {
+  @History
+  public static class HistoryConverterNotPublic
+    extends BaseHistoryConverter {
 
-		@InjectService
-		void setSthg( SimpleServiceAsync service ) {
-		}
+    @InjectService
+    void setSthg(SimpleServiceAsync service) {
+    }
 
-	}
+  }
 
-	@History
-	public static class HistoryConverterWithNoParameter extends BaseHistoryConverter {
+  @History
+  public static class HistoryConverterWithNoParameter
+    extends BaseHistoryConverter {
 
-		@InjectService
-		public void setSthg() {
-		}
+    @InjectService
+    public void setSthg() {
+    }
 
-	}
+  }
 
-	@History
-	public static class HistoryConverterWithMoreThanOneParameter extends BaseHistoryConverter {
+  @History
+  public static class HistoryConverterWithMoreThanOneParameter
+    extends BaseHistoryConverter {
 
-		@InjectService
-		public void setSthg( SimpleServiceAsync service, Boolean test ) {
-		}
+    @InjectService
+    public void setSthg(SimpleServiceAsync service,
+                        Boolean test) {
+    }
 
-	}
+  }
 
-	@History
-	public static class HistoryConverterNotAsync extends BaseHistoryConverter {
+  @History
+  public static class HistoryConverterNotAsync
+    extends BaseHistoryConverter {
 
-		@InjectService
-		public void setSthg( SimpleService service ) {
-		}
+    @InjectService
+    public void setSthg(SimpleService service) {
+    }
 
-	}
+  }
 
-	@History
-	public static class HistoryConverterWithService extends BaseHistoryConverter {
+  @History
+  public static class HistoryConverterWithService
+    extends BaseHistoryConverter {
 
-		@InjectService
-		public void setSthg( SimpleServiceAsync service ) {
-		}
+    @InjectService
+    public void setSthg(SimpleServiceAsync service) {
+    }
 
-	}
+  }
 
-	@History
-	public static class HistoryConverterWithSameService extends BaseHistoryConverter {
+  @History
+  public static class HistoryConverterWithSameService
+    extends BaseHistoryConverter {
 
-		@InjectService
-		public void setSthg( SimpleServiceAsync service ) {
-		}
+    @InjectService
+    public void setSthg(SimpleServiceAsync service) {
+    }
 
-	}
+  }
 
-	@History
-	public static class HistoryConverterWithServiceAndName extends BaseHistoryConverter {
+  @History
+  public static class HistoryConverterWithServiceAndName
+    extends BaseHistoryConverter {
 
-		@InjectService( serviceName = "name" )
-		public void setSthg( SimpleServiceAsync service ) {
-		}
+    @InjectService(serviceName = "name")
+    public void setSthg(SimpleServiceAsync service) {
+    }
 
-	}
+  }
 
-	@History
-	public static class HistoryConverterWithLookup implements HistoryConverter<EventBusWithLookup> {
+  @History
+  public static class HistoryConverterWithLookup
+    implements HistoryConverter<EventBusWithLookup> {
 
-		public void convertFromToken( String eventType, String param, EventBusWithLookup eventBus ) {
-		}
+    public void convertFromToken(String eventType,
+                                 String param,
+                                 EventBusWithLookup eventBus) {
+    }
 
-		public boolean isCrawlable() {
-			return false;
-		}
+    public boolean isCrawlable() {
+      return false;
+    }
 
-	}
+  }
 
 }

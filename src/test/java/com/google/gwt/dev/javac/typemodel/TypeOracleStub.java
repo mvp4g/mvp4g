@@ -1,13 +1,5 @@
 package com.google.gwt.dev.javac.typemodel;
 
-import com.google.gwt.core.ext.typeinfo.JType;
-import com.mvp4g.client.Mvp4gLoader;
-import com.mvp4g.client.event.EventBusWithLookup;
-import com.mvp4g.client.event.EventFilter;
-import com.mvp4g.client.history.HistoryConverter;
-import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter01;
-import com.mvp4g.rebind.test_tools.annotation.views.SimpleView;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -16,24 +8,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.core.ext.typeinfo.JType;
+import com.mvp4g.client.Mvp4gLoader;
+import com.mvp4g.client.event.EventBusWithLookup;
+import com.mvp4g.client.event.EventFilter;
+import com.mvp4g.client.history.HistoryConverter;
+import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter01;
+import com.mvp4g.rebind.test_tools.annotation.views.SimpleView;
+
 public class TypeOracleStub
-    extends TypeOracle {
+  extends TypeOracle {
 
   private boolean isGWT2 = true;
 
   @Override
   public JClassType findType(String name) {
     JClassType type;
-    if ( "com.google.gwt.core.client.RunAsyncCallback".equals( name ) ) {
+    if ("com.google.gwt.core.client.RunAsyncCallback".equals(name)) {
       // if GWT2, return any class as long as type is not null
-      type = ( isGWT2 ) ? findType( Object.class.getName() ) : null;
+      type = (isGWT2) ?
+             findType(Object.class.getName()) :
+             null;
     } else {
       type = super.findType(name);
       if (type == null) {
         try {
           // do something special for String and Object classes
-          if (name.contains("java.lang.Object") ||
-              name.contains("java.lang.String")) {
+          if (name.contains("java.lang.Object") || name.contains("java.lang.String")) {
             type = addRealClass(Class.forName(name));
           } else {
             type = addClass(Class.forName(name));
@@ -51,14 +52,16 @@ public class TypeOracleStub
     if (!c.isArray()) {
       JPackage p = getOrCreatePackage(c.getPackage()
                                        .getName());
-      Class<?> enclosingClass = c.getEnclosingClass();
-      JClassType enclosingType = null;
+      Class<?>   enclosingClass = c.getEnclosingClass();
+      JClassType enclosingType  = null;
       if (enclosingClass != null) {
         enclosingType = findType(enclosingClass.getName());
       }
       type = new MyGenericType(this,
                                p,
-                               (enclosingType == null) ? null : enclosingType.getSimpleSourceName(),
+                               (enclosingType == null) ?
+                               null :
+                               enclosingType.getSimpleSourceName(),
                                c.getSimpleName(),
                                c.isInterface(),
                                new JTypeParameter[0]);
@@ -85,7 +88,7 @@ public class TypeOracleStub
            .getName()
            .contains("com.mvp4g.rebind.test_tools.annotation")) {
         JMethod method;
-        String returnType;
+        String  returnType;
         for (Method m : c.getDeclaredMethods()) {
           annotations = new HashMap<>();
           for (Annotation a : m.getAnnotations()) {
@@ -133,16 +136,18 @@ public class TypeOracleStub
     if (!c.isArray()) {
       JPackage p = getOrCreatePackage(c.getPackage()
                                        .getName());
-      Class<?> enclosingClass = c.getEnclosingClass();
-      JClassType enclosingType = null;
+      Class<?>   enclosingClass = c.getEnclosingClass();
+      JClassType enclosingType  = null;
       if (enclosingClass != null) {
         enclosingType = findType(enclosingClass.getName());
       }
       type = new MyRealClassType(this,
-                               p,
-                               (enclosingType == null) ? null : enclosingType.getSimpleSourceName(),
-                               c.getSimpleName(),
-                               c.isInterface());
+                                 p,
+                                 (enclosingType == null) ?
+                                 null :
+                                 enclosingType.getSimpleSourceName(),
+                                 c.getSimpleName(),
+                                 c.isInterface());
 
       Class<?> superClass = c.getSuperclass();
       if (superClass != null) {
@@ -171,8 +176,16 @@ public class TypeOracleStub
     return interfaces;
   }
 
+  /**
+   * @param isGWT2
+   *   the isGWT2 to set
+   */
+  public void setGWT2(boolean isGWT2) {
+    this.isGWT2 = isGWT2;
+  }
+
   private class MyGenericType
-      extends JGenericType {
+    extends JGenericType {
 
     MyGenericType(TypeOracle arg0,
                   JPackage arg1,
@@ -191,20 +204,22 @@ public class TypeOracleStub
     @Override
     public JParameterizedType asParameterizationOf(com.google.gwt.core.ext.typeinfo.JGenericType type) {
       JParameterizedType superType = super.asParameterizationOf(type);
-      return (superType == null) ? null : new MyParameterizedType(this,
-                                                                  null,
-                                                                  new JClassType[0]);
+      return (superType == null) ?
+             null :
+             new MyParameterizedType(this,
+                                     null,
+                                     new JClassType[0]);
     }
   }
 
   private class MyRealClassType
-      extends JRealClassType {
+    extends JRealClassType {
 
     MyRealClassType(TypeOracle arg0,
-                  JPackage arg1,
-                  String arg2,
-                  String arg3,
-                  boolean arg4) {
+                    JPackage arg1,
+                    String arg2,
+                    String arg3,
+                    boolean arg4) {
       super(arg0,
             arg1,
             arg2,
@@ -214,7 +229,7 @@ public class TypeOracleStub
   }
 
   private class MyParameterizedType
-      extends JParameterizedType {
+    extends JParameterizedType {
 
     public MyParameterizedType(JGenericType baseType,
                                JClassType enclosingType,
@@ -257,7 +272,7 @@ public class TypeOracleStub
 
     @Override
     public JMethod[] getMethods() {
-      JMethod[] methods;
+      JMethod[]                                    methods;
       Map<Class<? extends Annotation>, Annotation> declaredAnnotations = new HashMap<>();
       if (isAssignableTo(findType(HistoryConverter.class.getName()))) {
         JMethod method = new JMethod(this.getBaseType(),
@@ -279,8 +294,8 @@ public class TypeOracleStub
                        "eventBus",
                        declaredAnnotations,
                        true);
-        methods = new JMethod[]{method,
-                                method};
+        methods = new JMethod[] { method,
+                                  method };
       } else if (isAssignableTo(findType(EventFilter.class.getName()))) {
         JMethod method = new JMethod(this.getBaseType(),
                                      "filterEvent",
@@ -301,8 +316,8 @@ public class TypeOracleStub
                        "eventBus",
                        declaredAnnotations,
                        true);
-        methods = new JMethod[]{method,
-                                method};
+        methods = new JMethod[] { method,
+                                  method };
       } else if (isAssignableTo(findType(Mvp4gLoader.class.getName()))) {
         JMethod method = new JMethod(this.getBaseType(),
                                      "preLoad",
@@ -313,19 +328,12 @@ public class TypeOracleStub
                        "eventBus",
                        declaredAnnotations,
                        true);
-        methods = new JMethod[]{method};
+        methods = new JMethod[] { method };
       } else {
         methods = super.getMethods();
       }
 
       return methods;
     }
-  }
-
-  /**
-   * @param isGWT2 the isGWT2 to set
-   */
-  public void setGWT2(boolean isGWT2) {
-    this.isGWT2 = isGWT2;
   }
 }

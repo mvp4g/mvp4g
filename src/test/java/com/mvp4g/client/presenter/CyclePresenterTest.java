@@ -1,7 +1,5 @@
 package com.mvp4g.client.presenter;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,105 +13,113 @@ import com.mvp4g.client.gwt_event.UnloadEvent;
 import com.mvp4g.client.gwt_event.UnloadHandler;
 import com.mvp4g.client.view.CycleView;
 
+import static org.junit.Assert.*;
+
 public class CyclePresenterTest {
 
-	private class TestCycleView implements CycleView {
+  private TestCycleView      view;
+  private TestCyclePresenter presenter;
 
-		private HandlerManager eventBus = new HandlerManager( this );
+  @Before
+  public void setUp() {
+    view = new TestCycleView();
+    presenter = new TestCyclePresenter();
+    presenter.setView(view);
+  }
 
-		public void createView() {
-			//nothing to do			
-		}
+  @Test
+  public void testLoadEvent() {
+    view.fireEvent(new LoadEvent());
+    assertTrue(presenter.isOnLoad());
+    assertFalse(presenter.isOnUnload());
+  }
 
-		public HandlerRegistration addLoadHandler( LoadHandler handler ) {
-			return eventBus.addHandler( LoadEvent.TYPE, handler );
-		}
+  @Test
+  public void testUnloadEvent() {
+    view.fireEvent(new UnloadEvent());
+    assertTrue(presenter.isOnUnload());
+    assertFalse(presenter.isOnLoad());
+  }
 
-		public void fireEvent( GwtEvent<?> event ) {
-			eventBus.fireEvent( event );
-		}
+  @Test
+  public void testBeforeEvent() {
+    presenter.setActivated(false);
+    presenter.isActivated(false,
+                          null);
+    assertFalse(presenter.isOnBeforeEvent());
 
-		public HandlerRegistration addUnloadHandler( UnloadHandler handler ) {
-			return eventBus.addHandler( UnloadEvent.TYPE, handler );
-		}
+    presenter.setActivated(true);
+    presenter.isActivated(false,
+                          null);
+    assertTrue(presenter.isOnBeforeEvent());
+  }
 
-	}
+  private class TestCycleView
+    implements CycleView {
 
-	private class TestCyclePresenter extends CyclePresenter<TestCycleView, EventBus> {
+    private HandlerManager eventBus = new HandlerManager(this);
 
-		private boolean onLoad, onUnload, onBeforeEvent;
+    public void createView() {
+      //nothing to do
+    }
 
-		public void onLoad() {
-			super.onLoad();
-			onLoad = true;
-		}
+    public HandlerRegistration addLoadHandler(LoadHandler handler) {
+      return eventBus.addHandler(LoadEvent.TYPE,
+                                 handler);
+    }
 
-		public void onUnload() {
-			super.onUnload();
-			onUnload = true;
-		}
+    public void fireEvent(GwtEvent<?> event) {
+      eventBus.fireEvent(event);
+    }
 
-		public void onBeforeEvent() {
-			super.onBeforeEvent();
-			onBeforeEvent = true;
-		}
+    public HandlerRegistration addUnloadHandler(UnloadHandler handler) {
+      return eventBus.addHandler(UnloadEvent.TYPE,
+                                 handler);
+    }
 
-		/**
-		 * @return the onLoad
-		 */
-		public boolean isOnLoad() {
-			return onLoad;
-		}
+  }
 
-		/**
-		 * @return the onUnload
-		 */
-		public boolean isOnUnload() {
-			return onUnload;
-		}
+  private class TestCyclePresenter
+    extends CyclePresenter<TestCycleView, EventBus> {
 
-		/**
-		 * @return the onBeforeEvent
-		 */
-		public boolean isOnBeforeEvent() {
-			return onBeforeEvent;
-		}
+    private boolean onLoad, onUnload, onBeforeEvent;
 
-	}
+    public void onLoad() {
+      super.onLoad();
+      onLoad = true;
+    }
 
-	private TestCycleView view;
-	private TestCyclePresenter presenter;
+    public void onUnload() {
+      super.onUnload();
+      onUnload = true;
+    }
 
-	@Before
-	public void setUp() {
-		view = new TestCycleView();
-		presenter = new TestCyclePresenter();
-		presenter.setView( view );
-	}
+    public void onBeforeEvent() {
+      super.onBeforeEvent();
+      onBeforeEvent = true;
+    }
 
-	@Test
-	public void testLoadEvent() {
-		view.fireEvent( new LoadEvent() );
-		assertTrue( presenter.isOnLoad() );
-		assertFalse( presenter.isOnUnload() );
-	}
+    /**
+     * @return the onLoad
+     */
+    public boolean isOnLoad() {
+      return onLoad;
+    }
 
-	@Test
-	public void testUnloadEvent() {
-		view.fireEvent( new UnloadEvent() );
-		assertTrue( presenter.isOnUnload() );
-		assertFalse( presenter.isOnLoad() );
-	}
+    /**
+     * @return the onUnload
+     */
+    public boolean isOnUnload() {
+      return onUnload;
+    }
 
-	@Test
-	public void testBeforeEvent() {
-		presenter.setActivated( false );
-		presenter.isActivated( false, null );
-		assertFalse( presenter.isOnBeforeEvent() );
+    /**
+     * @return the onBeforeEvent
+     */
+    public boolean isOnBeforeEvent() {
+      return onBeforeEvent;
+    }
 
-		presenter.setActivated( true );
-		presenter.isActivated( false, null );
-		assertTrue( presenter.isOnBeforeEvent() );
-	}
+  }
 
 }

@@ -27,6 +27,10 @@ public class ServiceElement
     super("service");
   }
 
+  public boolean hasPath() {
+    return getPath() != null;
+  }
+
   public String getPath() {
     return getProperty("path");
   }
@@ -34,10 +38,6 @@ public class ServiceElement
   public void setPath(String path) {
     setProperty("path",
                 path);
-  }
-
-  public boolean hasPath() {
-    return getPath() != null;
   }
 
   public String getGeneratedClassName() {

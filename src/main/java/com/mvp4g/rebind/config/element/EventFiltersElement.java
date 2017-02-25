@@ -15,7 +15,6 @@
  */
 package com.mvp4g.rebind.config.element;
 
-
 /**
  * @author plcoirier
  */
@@ -34,12 +33,13 @@ public class EventFiltersElement
     return EVENT_FILTERS_ELEMENT_ID;
   }
 
-  public String getAfterHistory() {
-    return getProperty("afterHistory");
+  public boolean isAfterHistory() {
+    return Boolean.TRUE.toString()
+                       .equalsIgnoreCase(getAfterHistory());
   }
 
-  public boolean isAfterHistory() {
-    return Boolean.TRUE.toString().equalsIgnoreCase(getAfterHistory());
+  public String getAfterHistory() {
+    return getProperty("afterHistory");
   }
 
   public void setAfterHistory(String afterHistory) {
@@ -47,12 +47,13 @@ public class EventFiltersElement
                 afterHistory);
   }
 
-  public String getFilterForward() {
-    return getProperty("filterForward");
+  public boolean isFilterForward() {
+    return !Boolean.FALSE.toString()
+                         .equalsIgnoreCase(getFilterForward());
   }
 
-  public boolean isFilterForward() {
-    return ! Boolean.FALSE.toString().equalsIgnoreCase(getFilterForward());
+  public String getFilterForward() {
+    return getProperty("filterForward");
   }
 
   public void setFilterForward(String filterForward) {
@@ -60,12 +61,13 @@ public class EventFiltersElement
                 filterForward);
   }
 
-  public String getFilterStart() {
-    return getProperty("filterStart");
+  public boolean isFilterStart() {
+    return !Boolean.FALSE.toString()
+                         .equalsIgnoreCase(getFilterStart());
   }
 
-  public boolean isFilterStart() {
-    return ! Boolean.FALSE.toString().equalsIgnoreCase(getFilterStart());
+  public String getFilterStart() {
+    return getProperty("filterStart");
   }
 
   public void setFilterStart(String filterStart) {
@@ -73,12 +75,13 @@ public class EventFiltersElement
                 filterStart);
   }
 
-  public String getForceFilters() {
-    return getProperty("forceFilters");
+  public boolean isForceFilters() {
+    return Boolean.TRUE.toString()
+                       .equalsIgnoreCase(getForceFilters());
   }
 
-  public boolean isForceFilters() {
-    return Boolean.TRUE.toString().equalsIgnoreCase(getForceFilters());
+  public String getForceFilters() {
+    return getProperty("forceFilters");
   }
 
   public void setForceFilters(String forceFilters) {

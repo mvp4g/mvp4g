@@ -156,6 +156,49 @@ public abstract class BaseEventBus
     return handler;
   }
 
+  /**
+   * Create a new instance of the given handler class.
+   *
+   * @param <T>
+   *   type of the handler
+   * @param handlerClass
+   *   class of the handler
+   *
+   * @return new instance created
+   */
+  abstract protected <T extends EventHandlerInterface<?>> T createHandler(Class<T> handlerClass);
+
+  /**
+   * Utility method to finish adding a handler by adding it to the map and by binding it if
+   * needed. It should only be used by the framework.
+   *
+   * @param <E>
+   *   description @see EventBus
+   * @param <T>
+   *   description @see EventHandlerInterface
+   * @param handler
+   *   New instance to add.
+   * @param handlerClass
+   *   class of the handler to add.
+   * @param bind
+   *   if true, bind the handler at creation, otherwise do nothing.
+   */
+  public <E extends EventBus, T extends EventHandlerInterface<E>> void finishAddHandler(T handler,
+                                                                                        Class<T> handlerClass,
+                                                                                        boolean bind) {
+    if (bind) {
+      handler.isActivated(false,
+                          null);
+    }
+    List<EventHandlerInterface<?>> handlers = handlersMap.get(handlerClass);
+    if (handlers == null) {
+      handlers = new ArrayList<EventHandlerInterface<?>>();
+      handlersMap.put(handlerClass,
+                      handlers);
+    }
+    handlers.add(handler);
+  }
+
   /*
    * (non-Javadoc)
    *
@@ -203,49 +246,6 @@ public abstract class BaseEventBus
    */
   public void setTokenGenerationModeForNextEvent() {
     tokenMode = true;
-  }
-
-  /**
-   * Create a new instance of the given handler class.
-   *
-   * @param <T>
-   *   type of the handler
-   * @param handlerClass
-   *   class of the handler
-   *
-   * @return new instance created
-   */
-  abstract protected <T extends EventHandlerInterface<?>> T createHandler(Class<T> handlerClass);
-
-  /**
-   * Utility method to finish adding a handler by adding it to the map and by binding it if
-   * needed. It should only be used by the framework.
-   *
-   * @param <E>
-   *   description @see EventBus
-   * @param <T>
-   *   description @see EventHandlerInterface
-   * @param handler
-   *   New instance to add.
-   * @param handlerClass
-   *   class of the handler to add.
-   * @param bind
-   *   if true, bind the handler at creation, otherwise do nothing.
-   */
-  public <E extends EventBus, T extends EventHandlerInterface<E>> void finishAddHandler(T handler,
-                                                                                        Class<T> handlerClass,
-                                                                                        boolean bind) {
-    if (bind) {
-      handler.isActivated(false,
-                          null);
-    }
-    List<EventHandlerInterface<?>> handlers = handlersMap.get(handlerClass);
-    if (handlers == null) {
-      handlers = new ArrayList<EventHandlerInterface<?>>();
-      handlersMap.put(handlerClass,
-                      handlers);
-    }
-    handlers.add(handler);
   }
 
   /**

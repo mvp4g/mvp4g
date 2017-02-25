@@ -34,7 +34,9 @@ public class DebugElement
 
   public String getLogLevel() {
     String logLevel = getProperty("logLevel");
-    return (logLevel == null) ? LogLevel.SIMPLE.name() : logLevel;
+    return (logLevel == null) ?
+           LogLevel.SIMPLE.name() :
+           logLevel;
   }
 
   public void setLogLevel(String logLevel) {
@@ -44,7 +46,9 @@ public class DebugElement
 
   public String getLogger() {
     String logger = getProperty("logger");
-    return (logger == null) ? DefaultMvp4gLogger.class.getCanonicalName() : logger;
+    return (logger == null) ?
+           DefaultMvp4gLogger.class.getCanonicalName() :
+           logger;
   }
 
   public void setLogger(String logger) {

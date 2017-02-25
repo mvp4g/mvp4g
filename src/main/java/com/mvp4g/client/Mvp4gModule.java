@@ -49,8 +49,10 @@ public interface Mvp4gModule {
   /**
    * Add a converter to the associate token
    *
-   * @param historyName event's name
-   * @param hc          converter to associate with the event
+   * @param historyName
+   *   event's name
+   * @param hc
+   *   converter to associate with the event
    */
   void addConverter(String historyName,
                     HistoryConverter<?> hc);
@@ -58,9 +60,13 @@ public interface Mvp4gModule {
   /**
    * Place an event and its associated object in the browser history
    *
-   * @param event     event to store
-   * @param form      object associated with the event
-   * @param onlyToken if true, only the token will be generated and browser history won't change
+   * @param event
+   *   event to store
+   * @param form
+   *   object associated with the event
+   * @param onlyToken
+   *   if true, only the token will be generated and browser history won't change
+   *
    * @return the generated token
    */
   String place(String event,
@@ -71,8 +77,10 @@ public interface Mvp4gModule {
    * Take care of the event received from browser history change or pass it to a child module if
    * needed.
    *
-   * @param token  token stored in the browse history (event type + ascendant modules history name)
-   * @param passer passer to execute the event.
+   * @param token
+   *   token stored in the browse history (event type + ascendant modules history name)
+   * @param passer
+   *   passer to execute the event.
    */
   void dispatchHistoryEvent(String token,
                             Mvp4gEventPasser passer);
@@ -83,17 +91,22 @@ public interface Mvp4gModule {
   void clearHistory();
 
   /**
-   * @param parentModule parent module to set
+   * @param parentModule
+   *   parent module to set
    */
   void setParentModule(Mvp4gModule parentModule);
 
   /**
    * load a child module and pass it an event
    *
-   * @param childModuleClassName class name of the child module to load
-   * @param eventName            Name of the event to forward.
-   * @param passive              True if the event to forward is passive.
-   * @param passer               Event to forward.
+   * @param childModuleClassName
+   *   class name of the child module to load
+   * @param eventName
+   *   Name of the event to forward.
+   * @param passive
+   *   True if the event to forward is passive.
+   * @param passer
+   *   Event to forward.
    */
   void loadChildModule(String childModuleClassName,
                        String eventName,

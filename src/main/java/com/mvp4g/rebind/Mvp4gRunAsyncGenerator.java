@@ -15,6 +15,9 @@
  */
 package com.mvp4g.rebind;
 
+import java.io.PrintWriter;
+import java.util.Date;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.core.ext.*;
@@ -23,9 +26,6 @@ import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-
-import java.io.PrintWriter;
-import java.util.Date;
 
 /**
  * Class uses to create the implementation class of Mvp4gStarter
@@ -76,12 +76,6 @@ public class Mvp4gRunAsyncGenerator
                   typeName);
   }
 
-  @Override
-  public long getVersionId() {
-    return GENERATOR_VERSION_ID;
-  }
-
-
   private RebindResult create(JClassType originalType,
                               TreeLogger logger,
                               GeneratorContext context,
@@ -90,7 +84,8 @@ public class Mvp4gRunAsyncGenerator
 
     Date start = new Date();
 
-    String packageName                 = originalType.getPackage().getName();
+    String packageName                 = originalType.getPackage()
+                                                     .getName();
     String originalClassName           = originalType.getSimpleSourceName();
     String generatedClassName          = originalClassName + "Impl";
     String generatedClassQualifiedName = packageName + "." + generatedClassName;
@@ -151,11 +146,16 @@ public class Mvp4gRunAsyncGenerator
 
     CachedGeneratorResult lastRebindResult = ctx.getCachedGeneratorResult();
 
-    if (lastRebindResult == null || ! ctx.isGeneratorResultCachingEnabled()) {
+    if (lastRebindResult == null || !ctx.isGeneratorResultCachingEnabled()) {
       return false;
     }
     /* it looks like we could use the existing one */
     return true;
+  }
+
+  String[] getClassesToImport() {
+    return new String[] { GWT.class.getName(),
+                          RunAsyncCallback.class.getName() };
   }
 
   void writeClass(SourceWriter sourceWriter,
@@ -169,17 +169,19 @@ public class Mvp4gRunAsyncGenerator
     sourceWriter.println("}");
   }
 
-  String[] getClassesToImport() {
-    return new String[] {GWT.class.getName(), RunAsyncCallback.class.getName()};
-  }
-
   String getRunAsync(JClassType originalType) {
     JMethod[] methods = originalType.getOverridableMethods();
     for (JMethod method : methods) {
       if ("load".equals(method.getName())) {
-        return method.getParameters()[0].getType().getQualifiedSourceName();
+        return method.getParameters()[0].getType()
+                                        .getQualifiedSourceName();
       }
     }
     return null;
+  }
+
+  @Override
+  public long getVersionId() {
+    return GENERATOR_VERSION_ID;
   }
 }

@@ -15,11 +15,11 @@
  */
 package com.mvp4g.client.annotation;
 
-import com.mvp4g.client.event.DefaultMvp4gLogger;
-import com.mvp4g.client.event.Mvp4gLogger;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import com.mvp4g.client.event.DefaultMvp4gLogger;
+import com.mvp4g.client.event.Mvp4gLogger;
 
 /**
  * This annotation should be used to activate the logs. It has the following attributes:
@@ -44,7 +44,8 @@ public @interface Debug {
   Class<? extends Mvp4gLogger> logger() default DefaultMvp4gLogger.class;
 
   public enum LogLevel {
-    SIMPLE, DETAILED
+    SIMPLE,
+    DETAILED
   }
 
 }

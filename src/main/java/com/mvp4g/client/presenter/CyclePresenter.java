@@ -11,8 +11,11 @@ import com.mvp4g.client.view.CycleView;
  * Presenter that receives from its view a {@link LoadEvent} when the view is attached to the DOM
  * and a {@link UnloadEvent} when the view is detached to the DOM.
  *
- * @param <V> Type of the view injected into the presenter. Must extends <code>CycleView</code>.
- * @param <E> Type of the event bus used by the presenter.
+ * @param <V>
+ *   Type of the view injected into the presenter. Must extends <code>CycleView</code>.
+ * @param <E>
+ *   Type of the event bus used by the presenter.
+ *
  * @author plcoirier
  */
 public class CyclePresenter<V extends CycleView, E extends EventBus>

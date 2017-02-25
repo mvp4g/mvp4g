@@ -112,11 +112,6 @@ public class Mvp4gGenerator
                   moduleClass);
   }
 
-  @Override
-  public long getVersionId() {
-    return GENERATOR_VERSION_ID;
-  }
-
   private RebindResult create(TreeLogger logger,
                               GeneratorContext context,
                               String moduleName)
@@ -154,8 +149,8 @@ public class Mvp4gGenerator
 
       generatedClassQualifiedName = module.getParameterizedQualifiedSourceName() + suffix;
 
-      String packageName        = module.getPackage()
-                                        .getName();
+      String packageName = module.getPackage()
+                                 .getName();
       String originalClassName  = module.getSimpleSourceName();
       String generatedClassName = originalClassName + suffix;
 
@@ -368,5 +363,10 @@ public class Mvp4gGenerator
                           Command.class.getName(),
                           HistoryProxyProvider.class.getName(),
                           DefaultHistoryProxy.class.getName() };
+  }
+
+  @Override
+  public long getVersionId() {
+    return GENERATOR_VERSION_ID;
   }
 }

@@ -10,88 +10,100 @@ import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.rebind.test_tools.annotation.services.SimpleService;
 import com.mvp4g.rebind.test_tools.annotation.services.SimpleServiceAsync;
 
-@SuppressWarnings( "deprecation" )
+@SuppressWarnings("deprecation")
 public class EventHandlers {
 
-	@EventHandler( multiple = true )
-	public static class MultipleEventHandler extends BaseEventHandler<EventBus> {
-	}
+  @EventHandler(multiple = true)
+  public static class MultipleEventHandler
+    extends BaseEventHandler<EventBus> {
+  }
 
-	@EventHandler( async = SingleSplitter.class )
-	public static class AsyncEventHandler extends BaseEventHandler<EventBus> {
-	}
+  @EventHandler(async = SingleSplitter.class)
+  public static class AsyncEventHandler
+    extends BaseEventHandler<EventBus> {
+  }
 
-	@EventHandler( name = "name" )
-	public static class EventHandlerWithName extends BaseEventHandler<EventBus> {
-	}
+  @EventHandler(name = "name")
+  public static class EventHandlerWithName
+    extends BaseEventHandler<EventBus> {
+  }
 
-	@EventHandler
-	public static class EventHandlerNotPublic extends BaseEventHandler<EventBus> {
+  @EventHandler
+  public static class EventHandlerNotPublic
+    extends BaseEventHandler<EventBus> {
 
-		@InjectService
-		void setSthg( SimpleServiceAsync service ) {
-		}
+    @InjectService
+    void setSthg(SimpleServiceAsync service) {
+    }
 
-	}
+  }
 
-	@EventHandler
-	public static class EventHandlerNoParameter extends BaseEventHandler<EventBus> {
+  @EventHandler
+  public static class EventHandlerNoParameter
+    extends BaseEventHandler<EventBus> {
 
-		@InjectService
-		public void setSthg() {
-		}
+    @InjectService
+    public void setSthg() {
+    }
 
-	}
+  }
 
-	@EventHandler
-	public static class EventHandlerWithMoreThanOneParameter extends BaseEventHandler<EventBus> {
+  @EventHandler
+  public static class EventHandlerWithMoreThanOneParameter
+    extends BaseEventHandler<EventBus> {
 
-		@InjectService
-		public void setSthg( SimpleServiceAsync service, Boolean test ) {
-		}
+    @InjectService
+    public void setSthg(SimpleServiceAsync service,
+                        Boolean test) {
+    }
 
-	}
+  }
 
-	@EventHandler
-	public static class EventHandlerNotAsync extends BaseEventHandler<EventBus> {
+  @EventHandler
+  public static class EventHandlerNotAsync
+    extends BaseEventHandler<EventBus> {
 
-		@InjectService
-		public void setSthg( SimpleService service ) {
-		}
+    @InjectService
+    public void setSthg(SimpleService service) {
+    }
 
-	}
+  }
 
-	@EventHandler
-	public static class EventHandlerWithService extends BaseEventHandler<EventBus> {
+  @EventHandler
+  public static class EventHandlerWithService
+    extends BaseEventHandler<EventBus> {
 
-		@InjectService
-		public void setSthg( SimpleServiceAsync service ) {
-		}
+    @InjectService
+    public void setSthg(SimpleServiceAsync service) {
+    }
 
-	}
+  }
 
-	@EventHandler
-	public static class EventHandlerWithSameService extends BaseEventHandler<EventBus> {
+  @EventHandler
+  public static class EventHandlerWithSameService
+    extends BaseEventHandler<EventBus> {
 
-		@InjectService
-		public void setSthg( SimpleServiceAsync service ) {
-		}
+    @InjectService
+    public void setSthg(SimpleServiceAsync service) {
+    }
 
-	}
+  }
 
-	@EventHandler
-	public static class EventHandlerWithServiceAndName extends BaseEventHandler<EventBus> {
+  @EventHandler
+  public static class EventHandlerWithServiceAndName
+    extends BaseEventHandler<EventBus> {
 
-		@InjectService( serviceName = "name" )
-		public void setSthg( SimpleServiceAsync service ) {
-		}
+    @InjectService(serviceName = "name")
+    public void setSthg(SimpleServiceAsync service) {
+    }
 
-	}
+  }
 
-	@Presenter( view = Object.class )
-	@EventHandler
-	public static class PresenterAndEventHandler extends BasePresenter<Object, EventBus> {
+  @Presenter(view = Object.class)
+  @EventHandler
+  public static class PresenterAndEventHandler
+    extends BasePresenter<Object, EventBus> {
 
-	}
+  }
 
 }

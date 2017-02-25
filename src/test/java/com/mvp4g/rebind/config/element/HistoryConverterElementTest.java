@@ -1,45 +1,50 @@
 package com.mvp4g.rebind.config.element;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 
-public class HistoryConverterElementTest extends Mvp4gWithServicesElementTest {
+import static org.junit.Assert.assertEquals;
 
-	private static final String[] properties = { "type" };
+public class HistoryConverterElementTest
+  extends Mvp4gWithServicesElementTest {
 
-	@Test
-	public void testDefaultConvertParams() {
-		HistoryConverterElement element = new HistoryConverterElement();
-		assertEquals( element.getType(), HistoryConverterType.DEFAULT.name() );
+  private static final String[] properties = { "type" };
 
-		element.setType( HistoryConverterType.DEFAULT.name() );
-		assertEquals( element.getType(), HistoryConverterType.DEFAULT.name() );
+  @Test
+  public void testDefaultConvertParams() {
+    HistoryConverterElement element = new HistoryConverterElement();
+    assertEquals(element.getType(),
+                 HistoryConverterType.DEFAULT.name());
 
-		element = new HistoryConverterElement();
-		element.setType( HistoryConverterType.SIMPLE.name() );
-		assertEquals( element.getType(), HistoryConverterType.SIMPLE.name() );
+    element.setType(HistoryConverterType.DEFAULT.name());
+    assertEquals(element.getType(),
+                 HistoryConverterType.DEFAULT.name());
 
-		element = new HistoryConverterElement();
-		element.setType( HistoryConverterType.NONE.name() );
-		assertEquals( element.getType(), HistoryConverterType.NONE.name() );
-	}
+    element = new HistoryConverterElement();
+    element.setType(HistoryConverterType.SIMPLE.name());
+    assertEquals(element.getType(),
+                 HistoryConverterType.SIMPLE.name());
 
-	@Override
-	protected String getTag() {
-		return "historyConverter";
-	}
+    element = new HistoryConverterElement();
+    element.setType(HistoryConverterType.NONE.name());
+    assertEquals(element.getType(),
+                 HistoryConverterType.NONE.name());
+  }
 
-	@Override
-	protected SimpleMvp4gElement newElement() {
-		return new HistoryConverterElement();
-	}
+  @Override
+  protected String getTag() {
+    return "historyConverter";
+  }
 
-	@Override
-	protected String[] getProperties() {
-		return properties;
-	}
+  @Override
+  protected SimpleMvp4gElement newElement() {
+    return new HistoryConverterElement();
+  }
+
+  @Override
+  protected String[] getProperties() {
+    return properties;
+  }
 
 }

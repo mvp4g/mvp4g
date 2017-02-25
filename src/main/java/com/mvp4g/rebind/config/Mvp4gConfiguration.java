@@ -1070,10 +1070,10 @@ public class Mvp4gConfiguration {
                                 JClassType handler)
     throws InvalidClassException, InvalidTypeException, NotFoundClassException {
 
-    boolean              keep = false;
-    Iterator<JClassType> it   = broadcastMap.keySet()
-                                            .iterator();
-    JClassType           type;
+    boolean keep = false;
+    Iterator<JClassType> it = broadcastMap.keySet()
+                                          .iterator();
+    JClassType type;
 
     String handlerName = eventHandler.getName();
 
@@ -1537,9 +1537,9 @@ public class Mvp4gConfiguration {
       findPossibleParentBroadcast(broadcastMap,
                                   currentModule,
                                   parentModuleClassName);
-      Iterator<String> it      = childModuleMap.keySet()
-                                               .iterator();
-      String           trueStr = Boolean.TRUE.toString();
+      Iterator<String> it = childModuleMap.keySet()
+                                          .iterator();
+      String trueStr = Boolean.TRUE.toString();
       if (it.hasNext()) {
         String moduleName = it.next();
         if (parentModuleClassName.equals(moduleName)) {
@@ -1572,8 +1572,8 @@ public class Mvp4gConfiguration {
 
     JClassType parentEventBus = findParentEventBus(module.getQualifiedSourceName());
     if (parentEventBus != null) {
-      Iterator<String>   it            = moduleParentEventBusClassMap.keySet()
-                                                                     .iterator();
+      Iterator<String> it = moduleParentEventBusClassMap.keySet()
+                                                        .iterator();
       String             currentModule = module.getQualifiedSourceName();
       ChildModuleElement childModule;
       while (it.hasNext()) {
@@ -1589,10 +1589,10 @@ public class Mvp4gConfiguration {
   boolean findPossibleModuleBroadcast(Map<JClassType, List<EventElement>> broadcastMap,
                                       ChildModuleElement childModuleElement,
                                       JClassType childModule) {
-    boolean              keep = false;
-    Iterator<JClassType> it   = broadcastMap.keySet()
-                                            .iterator();
-    JClassType           type;
+    boolean keep = false;
+    Iterator<JClassType> it = broadcastMap.keySet()
+                                          .iterator();
+    JClassType type;
 
     String moduleName = childModuleElement.getName();
 
@@ -1615,10 +1615,10 @@ public class Mvp4gConfiguration {
   boolean findPossibleSiblingBroadcast(Map<JClassType, List<EventElement>> broadcastMap,
                                        ChildModuleElement siblingElement)
     throws NotFoundClassException {
-    boolean              keep = false;
-    Iterator<JClassType> it   = broadcastMap.keySet()
-                                            .iterator();
-    JClassType           type;
+    boolean keep = false;
+    Iterator<JClassType> it = broadcastMap.keySet()
+                                          .iterator();
+    JClassType type;
 
     String siblingClass = siblingElement.getClassName();
     JClassType siblingType = getType(siblingElement,
@@ -1643,10 +1643,10 @@ public class Mvp4gConfiguration {
                                       ChildModuleElement currentElement,
                                       String parentClass)
     throws NotFoundClassException {
-    boolean              keep = false;
-    Iterator<JClassType> it   = broadcastMap.keySet()
-                                            .iterator();
-    JClassType           type;
+    boolean keep = false;
+    Iterator<JClassType> it = broadcastMap.keySet()
+                                          .iterator();
+    JClassType type;
 
     JClassType siblingType = getType(currentElement,
                                      parentClass);

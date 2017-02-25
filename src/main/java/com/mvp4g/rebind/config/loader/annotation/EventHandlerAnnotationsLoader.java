@@ -15,6 +15,8 @@
  */
 package com.mvp4g.rebind.config.loader.annotation;
 
+import java.util.Set;
+
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.mvp4g.client.Mvp4gSplitter;
 import com.mvp4g.client.annotation.EventHandler;
@@ -23,8 +25,6 @@ import com.mvp4g.client.event.EventHandlerInterface;
 import com.mvp4g.rebind.config.Mvp4gConfiguration;
 import com.mvp4g.rebind.config.element.EventHandlerElement;
 import com.mvp4g.rebind.exception.loader.Mvp4gAnnotationException;
-
-import java.util.Set;
 
 /**
  * A class responsible for loading information contained in <code>EventHandler</code> annotation.

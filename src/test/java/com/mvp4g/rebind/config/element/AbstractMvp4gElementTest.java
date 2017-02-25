@@ -1,10 +1,5 @@
 package com.mvp4g.rebind.config.element;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -12,248 +7,336 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+
 public abstract class AbstractMvp4gElementTest<T extends Mvp4gElement> {
 
-	protected T element;
+  protected T element;
 
-	@Before
-	public void setUp() {
-		element = newElement();
-	}
+  @Before
+  public void setUp() {
+    element = newElement();
+  }
 
-	@Test
-	public void testGetTag() {
-		assertEquals( getTag(), element.getTagName() );
-	}
+  abstract protected T newElement();
 
-	@Test
-	public void testUniqueIdentifierName() {
-		assertEquals( getUniqueIdentifierName(), element.getUniqueIdentifierName() );
-	}
+  @Test
+  public void testGetTag() {
+    assertEquals(getTag(),
+                 element.getTagName());
+  }
 
-	@Test
-	public void testEquals() {
-		T same = newElement();
-		T different = newElement();
-		element.setProperty( element.getUniqueIdentifierName(), "id1" );
-		same.setProperty( element.getUniqueIdentifierName(), "id1" );
-		different.setProperty( element.getUniqueIdentifierName(), "id2" );
-		assertEquals( element, same );
-		assertFalse( element.equals( different ) );
-		assertFalse( element.equals( new Object() ) );
+  abstract protected String getTag();
 
-	}
+  @Test
+  public void testUniqueIdentifierName() {
+    assertEquals(getUniqueIdentifierName(),
+                 element.getUniqueIdentifierName());
+  }
 
-	@Test
-	public void testSetAndGetProperties() {
-		assertPropertiesSize( 0 );
-		assertSetProperty( "first", "first value" );
-		assertSetProperty( "second", "second value" );
-		assertPropertiesSize( 2 );
-	}
+  abstract protected String getUniqueIdentifierName();
 
-	@Test
-	public void testSetAndGetValues() {
-		String[] english = { "one", "two", "three" };
-		String[] french = { "un", "deux", "trois" };
-		assertMultiValuesSize( 0 );
-		assertSetMultiValues( "english", english );
-		assertSetMultiValues( "values", french );
-		assertMultiValuesSize( 2 );
-	}
+  @Test
+  public void testEquals() {
+    T same      = newElement();
+    T different = newElement();
+    element.setProperty(element.getUniqueIdentifierName(),
+                        "id1");
+    same.setProperty(element.getUniqueIdentifierName(),
+                     "id1");
+    different.setProperty(element.getUniqueIdentifierName(),
+                          "id2");
+    assertEquals(element,
+                 same);
+    assertFalse(element.equals(different));
+    assertFalse(element.equals(new Object()));
 
-	@Test
-	public void testGetValuesWhenNameNotFound() {
-		assertArrayEquals( null, element.getValues( "nonExistent" ) );
-	}
+  }
 
-	@Test
-	public void testSetValuesWithEmptyArray() {
-		String[] emptyArray = { "" };
-		element.setValues( "test", emptyArray );
-		assertArrayEquals( new String[] {}, element.getValues( "test" ) );
-	}
+  @Test
+  public void testSetAndGetProperties() {
+    assertPropertiesSize(0);
+    assertSetProperty("first",
+                      "first value");
+    assertSetProperty("second",
+                      "second value");
+    assertPropertiesSize(2);
+  }
 
-	@Test
-	public void testHashCode() {
-		element.setProperty( getUniqueIdentifierName(), "test" );
-		assertEquals( element.hashCode(), element.getUniqueIdentifier().hashCode() );
-	}
+  private void assertPropertiesSize(int expectedSize) {
+    assertEquals(expectedSize,
+                 element.totalProperties());
+  }
 
-	@Test
-	public void testEmptyProperties() {
-		assertEquals( "", element.getUniqueIdentifier() );
-	}
+  private void assertSetProperty(String name,
+                                 String value) {
+    assertNull(element.getProperty(name));
+    element.setProperty(name,
+                        value);
+    assertEquals(value,
+                 element.getProperty(name));
+  }
 
-	/**
-	 * For each element, test each property getter and setter specific to this loader.<br>
-	 * <br>
-	 * For example, verify that getName() == getProperty("name")<br>
-	 * and setName(name) == setProperty("name", name)
-	 * 
-	 * @throws Exception
-	 */
-	@Test
-	public void testPropertiesSetterAndGetter() throws Exception {
+  @Test
+  public void testSetAndGetValues() {
+    String[] english = { "one",
+                         "two",
+                         "three" };
+    String[] french  = { "un",
+                         "deux",
+                         "trois" };
+    assertMultiValuesSize(0);
+    assertSetMultiValues("english",
+                         english);
+    assertSetMultiValues("values",
+                         french);
+    assertMultiValuesSize(2);
+  }
 
-		String val = "val";
+  private void assertMultiValuesSize(int expectedSize) {
+    assertEquals(expectedSize,
+                 element.totalMultiValues());
+  }
 
-		String[] properties = getProperties();
-		String setMethodName = null;
-		String getMethodName = null;
-		Method getter = null;
-		Method setter = null;
+  private void assertSetMultiValues(String name,
+                                    String[] values) {
+    assertNull(element.getProperty(name));
+    element.setValues(name,
+                      values);
+    assertArrayEquals(values,
+                      element.getValues(name));
+  }
 
-		Object[] noArg = new Object[0];
-		Class<?>[] noParam = new Class[0];
+  @Test
+  public void testGetValuesWhenNameNotFound() {
+    assertArrayEquals(null,
+                      element.getValues("nonExistent"));
+  }
 
-		for ( String property : properties ) {
-			setMethodName = "set" + property.substring( 0, 1 ).toUpperCase() + property.substring( 1 );
-			getMethodName = "get" + property.substring( 0, 1 ).toUpperCase() + property.substring( 1 );
+  @Test
+  public void testSetValuesWithEmptyArray() {
+    String[] emptyArray = { "" };
+    element.setValues("test",
+                      emptyArray);
+    assertArrayEquals(new String[] {},
+                      element.getValues("test"));
+  }
 
-			getter = element.getClass().getMethod( getMethodName, noParam );
-			setter = element.getClass().getMethod( setMethodName, String.class );
+  @Test
+  public void testHashCode() {
+    element.setProperty(getUniqueIdentifierName(),
+                        "test");
+    assertEquals(element.hashCode(),
+                 element.getUniqueIdentifier()
+                        .hashCode());
+  }
 
-			setter.invoke( element, val );
-			assertEquals( val, getter.invoke( element, noArg ) );
-			assertEquals( val, element.getProperty( property ) );
+  @Test
+  public void testEmptyProperties() {
+    assertEquals("",
+                 element.getUniqueIdentifier());
+  }
 
-		}
-	}
+  /**
+   * For each element, test each property getter and setter specific to this loader.<br>
+   * <br>
+   * For example, verify that getName() == getProperty("name")<br>
+   * and setName(name) == setProperty("name", name)
+   *
+   * @throws Exception
+   */
+  @Test
+  public void testPropertiesSetterAndGetter()
+    throws Exception {
 
-	/**
-	 * For each element, test each value getter and setter specific to this loader.<br>
-	 * <br>
-	 * For example, verify that getHandlers() == getProperty("handlers")<br>
-	 * and setHandlers(handlers) == setProperty("handlers", handlers)
-	 * 
-	 * @throws Exception
-	 */
-	@Test
-	public void testValuesSetterAndGetter() throws Exception {
+    String val = "val";
 
-		String[] val = { "val" };
+    String[] properties    = getProperties();
+    String   setMethodName = null;
+    String   getMethodName = null;
+    Method   getter        = null;
+    Method   setter        = null;
 
-		String[] values = getValues();
+    Object[]   noArg   = new Object[0];
+    Class<?>[] noParam = new Class[0];
 
-		String setMethodName = null;
-		String getMethodName = null;
-		Method getter = null;
-		Method setter = null;
+    for (String property : properties) {
+      setMethodName = "set" +
+                      property.substring(0,
+                                         1)
+                              .toUpperCase() +
+                      property.substring(1);
+      getMethodName = "get" +
+                      property.substring(0,
+                                         1)
+                              .toUpperCase() +
+                      property.substring(1);
 
-		Object[] noArg = new Object[0];
-		Class<?>[] noParam = new Class[0];
+      getter = element.getClass()
+                      .getMethod(getMethodName,
+                                 noParam);
+      setter = element.getClass()
+                      .getMethod(setMethodName,
+                                 String.class);
 
-		for ( String value : values ) {
-			setMethodName = "set" + value.substring( 0, 1 ).toUpperCase() + value.substring( 1 );
-			getMethodName = "get" + value.substring( 0, 1 ).toUpperCase() + value.substring( 1 );
+      setter.invoke(element,
+                    val);
+      assertEquals(val,
+                   getter.invoke(element,
+                                 noArg));
+      assertEquals(val,
+                   element.getProperty(property));
 
-			getter = element.getClass().getMethod( getMethodName, noParam );
-			setter = element.getClass().getMethod( setMethodName, String[].class );
+    }
+  }
 
-			setter.invoke( element, (Object)val );
-			assertArrayEquals( val, (String[])getter.invoke( element, noArg ) );
-			assertArrayEquals( val, element.getValues( value ) );
+  /**
+   * @return List of properties to test for a specific loader
+   */
+  abstract protected String[] getProperties();
 
-		}
-	}
+  /**
+   * For each element, test each value getter and setter specific to this loader.<br>
+   * <br>
+   * For example, verify that getHandlers() == getProperty("handlers")<br>
+   * and setHandlers(handlers) == setProperty("handlers", handlers)
+   *
+   * @throws Exception
+   */
+  @Test
+  public void testValuesSetterAndGetter()
+    throws Exception {
 
-	/**
-	 * For each element, test each value getter and setter specific to this loader.<br>
-	 * <br>
-	 * For example, verify that getHandlers() == getProperty("handlers")<br>
-	 * and setHandlers(handlers) == setProperty("handlers", handlers)
-	 * 
-	 * @throws Exception
-	 */
-	@SuppressWarnings( "unchecked" )
-	@Test
-	public void testFlexibleValuesSetterAndGetter() throws Exception {
+    String[] val = { "val" };
 
-		String[] val = { "val" };
+    String[] values = getValues();
 
-		List<String> valList = Arrays.asList( val );
+    String setMethodName = null;
+    String getMethodName = null;
+    Method getter        = null;
+    Method setter        = null;
 
-		String[] flexibleValues = getFlexibleValues();
+    Object[]   noArg   = new Object[0];
+    Class<?>[] noParam = new Class[0];
 
-		String setMethodName = null;
-		String getMethodName = null;
-		Method getter = null;
-		Method setter = null;
+    for (String value : values) {
+      setMethodName = "set" +
+                      value.substring(0,
+                                      1)
+                           .toUpperCase() +
+                      value.substring(1);
+      getMethodName = "get" +
+                      value.substring(0,
+                                      1)
+                           .toUpperCase() +
+                      value.substring(1);
 
-		Object[] noArg = new Object[0];
-		Class<?>[] noParam = new Class[0];
+      getter = element.getClass()
+                      .getMethod(getMethodName,
+                                 noParam);
+      setter = element.getClass()
+                      .getMethod(setMethodName,
+                                 String[].class);
 
-		for ( String value : flexibleValues ) {
-			setMethodName = "set" + value.substring( 0, 1 ).toUpperCase() + value.substring( 1 );
-			getMethodName = "get" + value.substring( 0, 1 ).toUpperCase() + value.substring( 1 );
+      setter.invoke(element,
+                    (Object) val);
+      assertArrayEquals(val,
+                        (String[]) getter.invoke(element,
+                                                 noArg));
+      assertArrayEquals(val,
+                        element.getValues(value));
 
-			getter = element.getClass().getMethod( getMethodName, noParam );
-			setter = element.getClass().getMethod( setMethodName, String[].class );
+    }
+  }
 
-			setter.invoke( element, (Object)val );
-			assertListEquals( valList, (List<String>)getter.invoke( element, noArg ) );
-			assertListEquals( valList, element.getFlexibleValues( value ) );
+  /**
+   * By default return an empty tab.
+   *
+   * @return List of values to test for a specific loader
+   */
+  protected String[] getValues() {
+    return new String[0];
+  }
 
-		}
-	}
+  /**
+   * For each element, test each value getter and setter specific to this loader.<br>
+   * <br>
+   * For example, verify that getHandlers() == getProperty("handlers")<br>
+   * and setHandlers(handlers) == setProperty("handlers", handlers)
+   *
+   * @throws Exception
+   */
+  @SuppressWarnings("unchecked")
+  @Test
+  public void testFlexibleValuesSetterAndGetter()
+    throws Exception {
 
-	private void assertPropertiesSize( int expectedSize ) {
-		assertEquals( expectedSize, element.totalProperties() );
-	}
+    String[] val = { "val" };
 
-	private void assertSetProperty( String name, String value ) {
-		assertNull( element.getProperty( name ) );
-		element.setProperty( name, value );
-		assertEquals( value, element.getProperty( name ) );
-	}
+    List<String> valList = Arrays.asList(val);
 
-	private void assertMultiValuesSize( int expectedSize ) {
-		assertEquals( expectedSize, element.totalMultiValues() );
-	}
+    String[] flexibleValues = getFlexibleValues();
 
-	private void assertSetMultiValues( String name, String[] values ) {
-		assertNull( element.getProperty( name ) );
-		element.setValues( name, values );
-		assertArrayEquals( values, element.getValues( name ) );
-	}
+    String setMethodName = null;
+    String getMethodName = null;
+    Method getter        = null;
+    Method setter        = null;
 
-	private <Y> void assertListEquals( List<Y> expected, List<Y> actual ) {
-		int size = expected.size();
-		assertEquals( size, actual.size() );
+    Object[]   noArg   = new Object[0];
+    Class<?>[] noParam = new Class[0];
 
-		for ( int i = 0; i < size; i++ ) {
-			assertEquals( expected.get( i ), actual.get( i ) );
-		}
-	}
+    for (String value : flexibleValues) {
+      setMethodName = "set" +
+                      value.substring(0,
+                                      1)
+                           .toUpperCase() +
+                      value.substring(1);
+      getMethodName = "get" +
+                      value.substring(0,
+                                      1)
+                           .toUpperCase() +
+                      value.substring(1);
 
-	/**
-	 * By default return an empty tab.
-	 * 
-	 * @return List of values to test for a specific loader
-	 */
-	protected String[] getValues() {
-		return new String[0];
-	}
+      getter = element.getClass()
+                      .getMethod(getMethodName,
+                                 noParam);
+      setter = element.getClass()
+                      .getMethod(setMethodName,
+                                 String[].class);
 
-	/**
-	 * By default return an empty tab.
-	 * 
-	 * @return List of flexible values to test for a specific loader
-	 */
-	protected String[] getFlexibleValues() {
-		return new String[0];
-	}
+      setter.invoke(element,
+                    (Object) val);
+      assertListEquals(valList,
+                       (List<String>) getter.invoke(element,
+                                                    noArg));
+      assertListEquals(valList,
+                       element.getFlexibleValues(value));
 
-	/**
-	 * @return List of properties to test for a specific loader
-	 */
-	abstract protected String[] getProperties();
+    }
+  }
 
-	abstract protected String getTag();
+  /**
+   * By default return an empty tab.
+   *
+   * @return List of flexible values to test for a specific loader
+   */
+  protected String[] getFlexibleValues() {
+    return new String[0];
+  }
 
-	abstract protected String getUniqueIdentifierName();
+  private <Y> void assertListEquals(List<Y> expected,
+                                    List<Y> actual) {
+    int size = expected.size();
+    assertEquals(size,
+                 actual.size());
 
-	abstract protected T newElement();
+    for (int i = 0; i < size; i++) {
+      assertEquals(expected.get(i),
+                   actual.get(i));
+    }
+  }
 
 }

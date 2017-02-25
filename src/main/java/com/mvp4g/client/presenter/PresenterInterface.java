@@ -25,8 +25,11 @@ import com.mvp4g.client.event.EventHandlerInterface;
  * <br>
  * It is recommended to use directly <code>BasePresenter</code>.
  *
- * @param <V> Type of the view injected into the presenter
- * @param <E> Type of the event bus used by the presenter.
+ * @param <V>
+ *   Type of the view injected into the presenter
+ * @param <E>
+ *   Type of the event bus used by the presenter.
+ *
  * @author plcoirier
  */
 public interface PresenterInterface<V, E extends EventBus>
@@ -42,7 +45,8 @@ public interface PresenterInterface<V, E extends EventBus>
   /**
    * Sets the view associated with the presenter.
    *
-   * @param view view to set
+   * @param view
+   *   view to set
    */
   public void setView(V view);
 

@@ -32,8 +32,11 @@ import com.mvp4g.client.view.LazyView;
  * <code>LazyView</code>. This type of presenter will automatically call the createView method of
  * the <code>LazyView</code> when its bind method is called.
  *
- * @param <V> Type of the view injected into the presenter. Must extends <code>LazyView</code>.
- * @param <E> Type of the event bus used by the presenter.
+ * @param <V>
+ *   Type of the view injected into the presenter. Must extends <code>LazyView</code>.
+ * @param <E>
+ *   Type of the event bus used by the presenter.
+ *
  * @author plcoirier
  */
 public class LazyPresenter<V extends LazyView, E extends EventBus>
@@ -53,16 +56,16 @@ public class LazyPresenter<V extends LazyView, E extends EventBus>
   }
 
   /**
-   * Bind the view to the presenter once both elements have been created.
+   * Called when presenter needs to be built.
    */
-  public void bindView() {
+  public void createPresenter() {
 
   }
 
   /**
-   * Called when presenter needs to be built.
+   * Bind the view to the presenter once both elements have been created.
    */
-  public void createPresenter() {
+  public void bindView() {
 
   }
 

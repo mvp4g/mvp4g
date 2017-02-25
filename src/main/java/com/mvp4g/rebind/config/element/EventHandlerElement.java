@@ -31,12 +31,13 @@ public class EventHandlerElement
     super(tagName);
   }
 
-  public String getMultiple() {
-    return getProperty("multiple");
+  public boolean isMultiple() {
+    return Boolean.TRUE.toString()
+                       .equalsIgnoreCase(getMultiple());
   }
 
-  public boolean isMultiple() {
-    return Boolean.TRUE.toString().equalsIgnoreCase(getMultiple());
+  public String getMultiple() {
+    return getProperty("multiple");
   }
 
   public void setMultiple(String multiple) {
@@ -44,12 +45,12 @@ public class EventHandlerElement
                 multiple);
   }
 
-  public String getAsync() {
-    return getProperty("async");
-  }
-
   public boolean isAsync() {
     return (getAsync() != null);
+  }
+
+  public String getAsync() {
+    return getProperty("async");
   }
 
   public void setAsync(String async) {

@@ -55,7 +55,7 @@ public class ServiceAnnotationsLoader
     if ((path != null) && (path.length() > 0)) {
       service.setPath(annotation.path());
     }
-    if (! Void.class.equals(generatedClass)) {
+    if (!Void.class.equals(generatedClass)) {
       service.setGeneratedClassName(generatedClass.getCanonicalName());
     }
 

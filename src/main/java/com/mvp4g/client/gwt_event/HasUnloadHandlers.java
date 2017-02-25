@@ -13,7 +13,9 @@ public interface HasUnloadHandlers
   /**
    * Adds a {@link UnloadEvent} handler.
    *
-   * @param handler the unload handler
+   * @param handler
+   *   the unload handler
+   *
    * @return {@link HandlerRegistration} used to remove this handler
    */
   HandlerRegistration addUnloadHandler(UnloadHandler handler);

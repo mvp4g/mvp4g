@@ -33,12 +33,13 @@ public class Mvp4gException
   /**
    *
    */
-  private static final long serialVersionUID = - 6357990791906431745L;
+  private static final long serialVersionUID = -6357990791906431745L;
 
   /**
    * Build a Mvp4gException
    *
-   * @param message message describing the error
+   * @param message
+   *   message describing the error
    */
   public Mvp4gException(String message) {
     super(message);

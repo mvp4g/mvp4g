@@ -52,21 +52,6 @@ public class Mvp4gWithServicesElement
     }
   }
 
-  public List<InjectedElement> getInjectedServices() {
-    return injectedServices;
-  }
-
-  /**
-   * Returns the supplied name with its first letter in upper case.
-   *
-   * @param name the name to be capitalized.
-   */
-    /* package */
-  String capitalized(String name) {
-    return name.substring(0,
-                          1).toUpperCase() + name.substring(1);
-  }
-
   private void setServices(String[] services) {
 
     for (String service : services) {
@@ -76,5 +61,22 @@ public class Mvp4gWithServicesElement
       }
     }
 
+  }
+
+  /**
+   * Returns the supplied name with its first letter in upper case.
+   *
+   * @param name
+   *   the name to be capitalized.
+   */
+    /* package */
+  String capitalized(String name) {
+    return name.substring(0,
+                          1)
+               .toUpperCase() + name.substring(1);
+  }
+
+  public List<InjectedElement> getInjectedServices() {
+    return injectedServices;
   }
 }

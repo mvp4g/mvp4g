@@ -15,7 +15,6 @@
  */
 package com.mvp4g.rebind.config.element;
 
-
 /**
  * An Mvp4g Presenter configuration element.<br>
  *
@@ -37,6 +36,11 @@ public class PresenterElement
                 view);
   }
 
+  public boolean hasInverseView() {
+    return Boolean.TRUE.toString()
+                       .equalsIgnoreCase(getInverseView());
+  }
+
   public String getInverseView() {
     return getProperty("inverseView");
   }
@@ -44,10 +48,6 @@ public class PresenterElement
   public void setInverseView(String inverseView) {
     setProperty("inverseView",
                 inverseView);
-  }
-
-  public boolean hasInverseView() {
-    return Boolean.TRUE.toString().equalsIgnoreCase(getInverseView());
   }
 
 }

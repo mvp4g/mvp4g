@@ -1,70 +1,73 @@
 package com.mvp4g.rebind.config.element;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 
-public class SimpleMvp4gElementTest extends AbstractMvp4gElementTest<SimpleMvp4gElement> {
+import static org.junit.Assert.assertEquals;
 
-	protected static final String[] properties = { "name" };
+public class SimpleMvp4gElementTest
+  extends AbstractMvp4gElementTest<SimpleMvp4gElement> {
 
-	@Test
-	public void testSetClassName() {
+  protected static final String[] properties = { "name" };
 
-		String className = "Test";
+  protected static String[] addProperties(String[] otherProperties) {
 
-		element.setClassName( className );
-		assertEquals( element.getProperty( "class" ), className );
-	}
+    int      pSize         = properties.length;
+    int      size          = pSize + otherProperties.length;
+    String[] newProperties = new String[size];
 
-	@Test
-	public void testToString() {
-		String name = "test";
-		String className = "com.test.Test";
+    int i;
+    for (i = 0; i < pSize; i++) {
+      newProperties[i] = properties[i];
+    }
 
-		element.setName( name );
-		element.setClassName( className );
+    for (i = pSize; i < size; i++) {
+      newProperties[i] = otherProperties[i - pSize];
+    }
 
-		assertEquals( "[" + name + " : " + className + "]", element.toString() );
-	}
+    return newProperties;
 
-	@Override
-	protected String[] getProperties() {
-		return properties;
-	}
+  }
 
-	@Override
-	protected String getTag() {
-		return "simple";
-	}
+  @Test
+  public void testSetClassName() {
 
-	@Override
-	protected String getUniqueIdentifierName() {
-		return "name";
-	}
+    String className = "Test";
 
-	@Override
-	protected SimpleMvp4gElement newElement() {
-		return new SimpleMvp4gElement();
-	}
+    element.setClassName(className);
+    assertEquals(element.getProperty("class"),
+                 className);
+  }
 
-	protected static String[] addProperties( String[] otherProperties ) {
+  @Test
+  public void testToString() {
+    String name      = "test";
+    String className = "com.test.Test";
 
-		int pSize = properties.length;
-		int size = pSize + otherProperties.length;
-		String[] newProperties = new String[size];
+    element.setName(name);
+    element.setClassName(className);
 
-		int i;
-		for ( i = 0; i < pSize; i++ ) {
-			newProperties[i] = properties[i];
-		}
+    assertEquals("[" + name + " : " + className + "]",
+                 element.toString());
+  }
 
-		for ( i = pSize; i < size; i++ ) {
-			newProperties[i] = otherProperties[i - pSize];
-		}
+  @Override
+  protected String[] getProperties() {
+    return properties;
+  }
 
-		return newProperties;
+  @Override
+  protected String getTag() {
+    return "simple";
+  }
 
-	}
+  @Override
+  protected String getUniqueIdentifierName() {
+    return "name";
+  }
+
+  @Override
+  protected SimpleMvp4gElement newElement() {
+    return new SimpleMvp4gElement();
+  }
 
 }

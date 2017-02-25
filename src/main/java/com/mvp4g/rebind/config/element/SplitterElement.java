@@ -1,10 +1,10 @@
 package com.mvp4g.rebind.config.element;
 
-import com.google.gwt.dev.util.collect.HashMap;
-
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import com.google.gwt.dev.util.collect.HashMap;
 
 public class SplitterElement
   extends SimpleMvp4gElement {

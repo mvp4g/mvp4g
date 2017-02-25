@@ -5,12 +5,13 @@ import com.mvp4g.client.event.BaseEventHandler;
 import com.mvp4g.client.event.EventBus;
 
 @EventHandler
-public class EventHandlerWithEvent extends BaseEventHandler<EventBus> {
+public class EventHandlerWithEvent
+  extends BaseEventHandler<EventBus> {
 
-	public void onEvent1( String form ) {
-	}
+  public void onEvent1(String form) {
+  }
 
-	public void onEvent2() {
-	}
+  public void onEvent2() {
+  }
 
 }

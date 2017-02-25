@@ -38,6 +38,11 @@ public class SimpleMvp4gElement
     super(tagName);
   }
 
+  @Override
+  public String toString() {
+    return "[" + getName() + " : " + getClassName() + "]";
+  }
+
   public String getName() {
     return getProperty("name");
   }
@@ -54,11 +59,6 @@ public class SimpleMvp4gElement
   public void setClassName(String className) {
     setProperty("class",
                 className);
-  }
-
-  @Override
-  public String toString() {
-    return "[" + getName() + " : " + getClassName() + "]";
   }
 
   @Override

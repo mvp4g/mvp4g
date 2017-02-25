@@ -15,6 +15,8 @@
  */
 package com.mvp4g.rebind.config.loader.annotation;
 
+import java.util.Set;
+
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.mvp4g.client.Mvp4gSplitter;
 import com.mvp4g.client.annotation.Presenter;
@@ -23,8 +25,6 @@ import com.mvp4g.rebind.config.Mvp4gConfiguration;
 import com.mvp4g.rebind.config.element.PresenterElement;
 import com.mvp4g.rebind.config.element.ViewElement;
 import com.mvp4g.rebind.exception.loader.Mvp4gAnnotationException;
-
-import java.util.Set;
 
 /**
  * A class responsible for loading information contained in <code>Presenter</code> annotation.
@@ -49,7 +49,8 @@ public class PresenterAnnotationsLoader
     presenter.setView(viewName);
 
     ViewElement view = new ViewElement();
-    view.setClassName(annotation.view().getCanonicalName());
+    view.setClassName(annotation.view()
+                                .getCanonicalName());
     view.setName(viewName);
 
     addElement(configuration.getViews(),

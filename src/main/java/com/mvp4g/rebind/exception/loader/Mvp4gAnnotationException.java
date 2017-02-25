@@ -23,7 +23,7 @@ public class Mvp4gAnnotationException
   /**
    *
    */
-  private static final long   serialVersionUID = - 2933352484580972114L;
+  private static final long   serialVersionUID = -2933352484580972114L;
   private              String className        = null;
   private              String methodName       = null;
 

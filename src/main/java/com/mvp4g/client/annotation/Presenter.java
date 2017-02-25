@@ -15,10 +15,10 @@
  */
 package com.mvp4g.client.annotation;
 
-import com.mvp4g.client.Mvp4gSplitter;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import com.mvp4g.client.Mvp4gSplitter;
 
 /**
  * This annotation allows to define a presenter for the framework.<br>

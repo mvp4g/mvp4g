@@ -15,7 +15,6 @@
  */
 package com.mvp4g.rebind.config.element;
 
-
 /**
  * @author javier
  */
@@ -34,13 +33,8 @@ public class StartElement
     return START_ELEMENT_ID;
   }
 
-  public String getPresenter() {
-    return getProperty("presenter");
-  }
-
-  public void setPresenter(String presenter) {
-    setProperty("presenter",
-                presenter);
+  public boolean hasEventType() {
+    return getEventType() != null;
   }
 
   public String getEventType() {
@@ -52,8 +46,9 @@ public class StartElement
                 eventType);
   }
 
-  public boolean hasEventType() {
-    return getEventType() != null;
+  public boolean hasHistory() {
+    return Boolean.TRUE.toString()
+                       .equalsIgnoreCase(getHistory());
   }
 
   public String getHistory() {
@@ -65,8 +60,8 @@ public class StartElement
                 history);
   }
 
-  public boolean hasHistory() {
-    return Boolean.TRUE.toString().equalsIgnoreCase(getHistory());
+  public boolean hasForwardEventType() {
+    return getForwardEventType() != null;
   }
 
   public String getForwardEventType() {
@@ -78,12 +73,17 @@ public class StartElement
                 forwardEventType);
   }
 
-  public boolean hasForwardEventType() {
-    return getForwardEventType() != null;
-  }
-
   public boolean hasPresenter() {
     return (getPresenter() != null);
+  }
+
+  public String getPresenter() {
+    return getProperty("presenter");
+  }
+
+  public void setPresenter(String presenter) {
+    setProperty("presenter",
+                presenter);
   }
 
 }

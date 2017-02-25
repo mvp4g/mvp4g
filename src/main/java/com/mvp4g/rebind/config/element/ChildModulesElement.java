@@ -15,7 +15,6 @@
  */
 package com.mvp4g.rebind.config.element;
 
-
 public class ChildModulesElement
   extends Mvp4gElement {
 

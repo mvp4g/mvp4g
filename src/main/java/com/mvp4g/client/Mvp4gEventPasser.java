@@ -27,14 +27,16 @@ public abstract class Mvp4gEventPasser {
   /**
    * Build a passer object by passing a list of objects associated with an event.
    *
-   * @param eventObjects objects associated with an event
+   * @param eventObjects
+   *   objects associated with an event
    */
   public Mvp4gEventPasser(Object... eventObjects) {
     this.eventObjects = eventObjects;
   }
 
   /**
-   * @param eventObjects objects associated with an event
+   * @param eventObjects
+   *   objects associated with an event
    */
   public void setEventObject(Object... eventObjects) {
     this.eventObjects = eventObjects;
@@ -50,7 +52,8 @@ public abstract class Mvp4gEventPasser {
   /**
    * Method call to execute the event of the sendee.
    *
-   * @param module module of the receiver
+   * @param module
+   *   module of the receiver
    */
   public abstract void pass(Mvp4gModule module);
 

@@ -9,390 +9,404 @@ import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.mvp4g.rebind.test_tools.Mvp4gRunAsyncCallbackStub;
 
-public class StubClassType extends JClassType {
+public class StubClassType
+  extends JClassType {
 
-	TypeOracle oracle;
+  TypeOracle oracle;
 
-	public StubClassType( TypeOracle oracle ) {
-		this.oracle = oracle;
-	}
+  public StubClassType(TypeOracle oracle) {
+    this.oracle = oracle;
+  }
 
-	@Override
-	public JMethod[] getOverridableMethods() {
-		Map<Class<? extends Annotation>, Annotation> declaredAnnotations = new HashMap<Class<? extends Annotation>, Annotation>();
-		JMethod method = new JMethod( this, "load", declaredAnnotations, null );
-		new JParameter( method, oracle.findType( Mvp4gRunAsyncCallbackStub.class.getCanonicalName() ), "callback", declaredAnnotations, true);
-		return new JMethod[] { method };
-	}
+  @Override
+  public JMethod[] getOverridableMethods() {
+    Map<Class<? extends Annotation>, Annotation> declaredAnnotations = new HashMap<Class<? extends Annotation>, Annotation>();
+    JMethod                                      method              = new JMethod(this,
+                                                                                   "load",
+                                                                                   declaredAnnotations,
+                                                                                   null);
+    new JParameter(method,
+                   oracle.findType(Mvp4gRunAsyncCallbackStub.class.getCanonicalName()),
+                   "callback",
+                   declaredAnnotations,
+                   true);
+    return new JMethod[] { method };
+  }
 
-	@Override
-	public JConstructor findConstructor( JType[] paramTypes ) {
+  @Override
+  public JConstructor findConstructor(JType[] paramTypes) {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JField findField( String name ) {
+  @Override
+  public JField findField(String name) {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JMethod findMethod( String name, JType[] paramTypes ) {
+  @Override
+  public JMethod findMethod(String name,
+                            JType[] paramTypes) {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JClassType findNestedType( String typeName ) {
+  @Override
+  public JClassType findNestedType(String typeName) {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public <T extends Annotation> T getAnnotation( Class<T> annotationClass ) {
+  @Override
+  public <T extends Annotation> T getAnnotation(Class<T> annotationClass) {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public Annotation[] getAnnotations() {
+  @Override
+  public Annotation[] getAnnotations() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JConstructor getConstructor( JType[] paramTypes ) throws NotFoundException {
+  @Override
+  public JConstructor getConstructor(JType[] paramTypes)
+    throws NotFoundException {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JConstructor[] getConstructors() {
+  @Override
+  public JConstructor[] getConstructors() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public Annotation[] getDeclaredAnnotations() {
+  @Override
+  public Annotation[] getDeclaredAnnotations() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JClassType getEnclosingType() {
+  @Override
+  public JClassType getEnclosingType() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JClassType getErasedType() {
+  @Override
+  public JClassType getErasedType() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JField getField( String name ) {
+  @Override
+  public JField getField(String name) {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JField[] getFields() {
+  @Override
+  public JField[] getFields() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JClassType[] getImplementedInterfaces() {
+  @Override
+  public JClassType[] getImplementedInterfaces() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JMethod[] getInheritableMethods() {
+  @Override
+  public JMethod[] getInheritableMethods() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public String getJNISignature() {
+  @Override
+  public String getJNISignature() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JMethod getMethod( String name, JType[] paramTypes ) throws NotFoundException {
+  @Override
+  public JMethod getMethod(String name,
+                           JType[] paramTypes)
+    throws NotFoundException {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JMethod[] getMethods() {
+  @Override
+  public JMethod[] getMethods() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public String getName() {
+  @Override
+  public String getName() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JClassType getNestedType( String typeName ) throws NotFoundException {
+  @Override
+  public JClassType getNestedType(String typeName)
+    throws NotFoundException {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JClassType[] getNestedTypes() {
+  @Override
+  public JClassType[] getNestedTypes() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public TypeOracle getOracle() {
+  @Override
+  public TypeOracle getOracle() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JMethod[] getOverloads( String name ) {
+  @Override
+  public JMethod[] getOverloads(String name) {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JPackage getPackage() {
+  @Override
+  public JPackage getPackage() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public String getQualifiedBinaryName() {
+  @Override
+  public String getQualifiedBinaryName() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public String getQualifiedSourceName() {
+  @Override
+  public String getQualifiedSourceName() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public String getSimpleSourceName() {
+  @Override
+  public String getSimpleSourceName() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JClassType[] getSubtypes() {
+  @Override
+  public JClassType[] getSubtypes() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public JClassType getSuperclass() {
+  @Override
+  public JClassType getSuperclass() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public boolean isAbstract() {
+  @Override
+  void setSuperclass(JClassType type) {
 
-		return false;
-	}
+  }
 
-	@Override
-	public boolean isAnnotationPresent( Class<? extends Annotation> annotationClass ) {
+  @Override
+  public boolean isAbstract() {
 
-		return false;
-	}
+    return false;
+  }
 
-	@Override
-	public JArrayType isArray() {
+  @Override
+  public boolean isAnnotationPresent(Class<? extends Annotation> annotationClass) {
 
-		return null;
-	}
+    return false;
+  }
 
-	@Override
-	public JClassType isClass() {
+  @Override
+  public JArrayType isArray() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public boolean isDefaultInstantiable() {
+  @Override
+  public JClassType isClass() {
 
-		return false;
-	}
+    return null;
+  }
 
-	@Override
-	public JEnumType isEnum() {
+  @Override
+  public boolean isDefaultInstantiable() {
 
-		return null;
-	}
+    return false;
+  }
 
-	@Override
-	public boolean isFinal() {
+  @Override
+  public JEnumType isEnum() {
 
-		return false;
-	}
+    return null;
+  }
 
-	@Override
-	public JGenericType isGenericType() {
+  @Override
+  public boolean isFinal() {
 
-		return null;
-	}
+    return false;
+  }
 
-	@Override
-	public JClassType isInterface() {
+  @Override
+  public JGenericType isGenericType() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public boolean isMemberType() {
+  @Override
+  public JClassType isInterface() {
 
-		return false;
-	}
+    return null;
+  }
 
-	@Override
-	public JParameterizedType isParameterized() {
+  @Override
+  public boolean isMemberType() {
 
-		return null;
-	}
+    return false;
+  }
 
-	@Override
-	public JPrimitiveType isPrimitive() {
+  @Override
+  public JParameterizedType isParameterized() {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public boolean isPrivate() {
+  @Override
+  public JPrimitiveType isPrimitive() {
 
-		return false;
-	}
+    return null;
+  }
 
-	@Override
-	public boolean isProtected() {
+  @Override
+  public boolean isPrivate() {
 
-		return false;
-	}
+    return false;
+  }
 
-	@Override
-	public boolean isPublic() {
+  @Override
+  public boolean isProtected() {
 
-		return false;
-	}
+    return false;
+  }
 
-	@Override
-	public JRawType isRawType() {
+  @Override
+  public boolean isPublic() {
 
-		return null;
-	}
+    return false;
+  }
 
-	@Override
-	public boolean isStatic() {
+  @Override
+  public JRawType isRawType() {
 
-		return false;
-	}
+    return null;
+  }
 
-	@Override
-	public JWildcardType isWildcard() {
+  @Override
+  public boolean isStatic() {
 
-		return null;
-	}
+    return false;
+  }
 
-	@Override
-	protected void acceptSubtype( JClassType me ) {
+  @Override
+  public JWildcardType isWildcard() {
 
-	}
+    return null;
+  }
 
-	@Override
-	protected void getInheritableMethodsOnSuperclassesAndThisClass( Map<String, JMethod> methodsBySignature ) {
+  @Override
+  protected void acceptSubtype(JClassType me) {
 
-	}
+  }
 
-	@Override
-	protected void getInheritableMethodsOnSuperinterfacesAndMaybeThisInterface( Map<String, JMethod> methodsBySignature ) {
+  @Override
+  protected void getInheritableMethodsOnSuperclassesAndThisClass(Map<String, JMethod> methodsBySignature) {
 
-	}
+  }
 
-	@Override
-	protected int getModifierBits() {
+  @Override
+  protected void getInheritableMethodsOnSuperinterfacesAndMaybeThisInterface(Map<String, JMethod> methodsBySignature) {
 
-		return 0;
-	}
+  }
 
-	@Override
-	protected void notifySuperTypesOf( JClassType me ) {
+  @Override
+  protected int getModifierBits() {
 
-	}
+    return 0;
+  }
 
-	@Override
-	protected void removeSubtype( JClassType me ) {
+  @Override
+  protected void notifySuperTypesOf(JClassType me) {
 
-	}
+  }
 
-	@Override
-	void addConstructor( JConstructor ctor ) {
+  @Override
+  protected void removeSubtype(JClassType me) {
 
-	}
+  }
 
-	@Override
-	void addField( JField field ) {
+  @Override
+  void addConstructor(JConstructor ctor) {
 
-	}
+  }
 
-	@Override
-	void addImplementedInterface( JClassType intf ) {
+  @Override
+  void addField(JField field) {
 
-	}
+  }
 
-	@Override
-	void addMethod( JMethod method ) {
+  @Override
+  void addImplementedInterface(JClassType intf) {
 
-	}
+  }
 
-	@Override
-	void addModifierBits( int bits ) {
+  @Override
+  void addMethod(JMethod method) {
 
-	}
+  }
 
-	@Override
-	void addNestedType( JClassType type ) {
+  @Override
+  void addModifierBits(int bits) {
 
-	}
+  }
 
-	@Override
-	JClassType findNestedTypeImpl( String[] typeName, int index ) {
+  @Override
+  void addNestedType(JClassType type) {
 
-		return null;
-	}
+  }
 
-	@Override
-	JClassType getSubstitutedType( JParameterizedType parameterizedType ) {
+  @Override
+  JClassType findNestedTypeImpl(String[] typeName,
+                                int index) {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	void notifySuperTypes() {
+  @Override
+  JClassType getSubstitutedType(JParameterizedType parameterizedType) {
 
-	}
+    return null;
+  }
 
-	@Override
-	void removeFromSupertypes() {
+  @Override
+  void notifySuperTypes() {
 
-	}
+  }
 
-	@Override
-	void setSuperclass( JClassType type ) {
+  @Override
+  void removeFromSupertypes() {
 
-	}
+  }
 
 }

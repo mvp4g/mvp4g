@@ -38,12 +38,13 @@ public class NotFoundClassException
 
   private static String getErrorMessage(Mvp4gElement element,
                                         String classNotFound) {
-    return (element == null) ? String.format(MESSAGE_WITHOUT,
-                                             classNotFound) : String.format(MESSAGE,
-                                                                            element.getTagName(),
-                                                                            element
-                                                                              .getUniqueIdentifier(),
-                                                                            classNotFound);
+    return (element == null) ?
+           String.format(MESSAGE_WITHOUT,
+                         classNotFound) :
+           String.format(MESSAGE,
+                         element.getTagName(),
+                         element.getUniqueIdentifier(),
+                         classNotFound);
   }
 
 }

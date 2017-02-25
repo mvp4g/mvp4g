@@ -4,6 +4,6 @@ import com.mvp4g.client.annotation.History;
 
 @History
 public class SimpleHistoryConverter01
-    extends BaseHistoryConverter {
+  extends BaseHistoryConverter {
 
 }

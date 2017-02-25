@@ -6,5 +6,5 @@ import com.mvp4g.client.event.EventBus;
 
 @EventHandler
 public class SimpleEventHandler03
-    extends BaseEventHandler<EventBus> {
+  extends BaseEventHandler<EventBus> {
 }

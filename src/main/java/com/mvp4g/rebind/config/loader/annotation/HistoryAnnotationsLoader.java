@@ -49,7 +49,8 @@ public class HistoryAnnotationsLoader
     String historyName = buildElementNameIfNeeded(annotation.name(),
                                                   className,
                                                   "");
-    String type = annotation.type().name();
+    String type = annotation.type()
+                            .name();
 
     HistoryConverterElement historyConverter = new HistoryConverterElement();
     historyConverter.setName(historyName);

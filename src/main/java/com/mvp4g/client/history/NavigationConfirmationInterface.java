@@ -14,7 +14,8 @@ public interface NavigationConfirmationInterface {
    * By default, when the event is confirmed, the NavigationConfirmation is removed from the
    * application.
    *
-   * @param event command representation of the event to confirm or stop
+   * @param event
+   *   command representation of the event to confirm or stop
    */
   void confirm(NavigationEventCommand event);
 

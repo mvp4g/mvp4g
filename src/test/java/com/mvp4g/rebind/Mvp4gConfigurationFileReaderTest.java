@@ -1880,9 +1880,9 @@ public class Mvp4gConfigurationFileReaderTest {
     String passiveStr = Boolean.toString(passive);
 
     configuration.setLoadChildConfig(new ChildModulesElement());
-    TypeOracleStub oracle     = (TypeOracleStub) configuration.getOracle();
-    String         moduleType = oracle.addClass(Modules.ModuleWithParent01.class)
-                                      .getQualifiedSourceName();
+    TypeOracleStub oracle = (TypeOracleStub) configuration.getOracle();
+    String moduleType = oracle.addClass(Modules.ModuleWithParent01.class)
+                              .getQualifiedSourceName();
 
     EventElement event1 = new EventElement();
     event1.setType("event1");

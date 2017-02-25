@@ -15,13 +15,13 @@
  */
 package com.mvp4g.rebind;
 
+import java.lang.annotation.Annotation;
+import java.util.*;
+
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JPackage;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
-
-import java.lang.annotation.Annotation;
-import java.util.*;
 
 public class AnnotationScanner {
 
@@ -44,7 +44,8 @@ public class AnnotationScanner {
       for (JClassType type : pack.getTypes()) {
         for (Class<? extends Annotation> c : annotationClasses) {
           if (type.getAnnotation(c) != null) {
-            annotationMap.get(c).add(type);
+            annotationMap.get(c)
+                         .add(type);
           }
 
         }

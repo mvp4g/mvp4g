@@ -35,14 +35,17 @@ public class ChildModuleElement
                 eventToDisplayView);
   }
 
+  public boolean isAsync() {
+    return Boolean.TRUE.toString()
+                       .equalsIgnoreCase(getAsync());
+  }
+
   public String getAsync() {
     String async = getProperty("async");
     // By default it's true
-    return (async == null) ? "true" : getProperty("async");
-  }
-
-  public boolean isAsync() {
-    return Boolean.TRUE.toString().equalsIgnoreCase(getAsync());
+    return (async == null) ?
+           "true" :
+           getProperty("async");
   }
 
   public void setAsync(String async) {
@@ -50,14 +53,17 @@ public class ChildModuleElement
                 async);
   }
 
+  public boolean isAutoDisplay() {
+    return Boolean.TRUE.toString()
+                       .equalsIgnoreCase(getAutoDisplay());
+  }
+
   public String getAutoDisplay() {
     String autoDisplay = getProperty("autoDisplay");
     // By default it's true
-    return (autoDisplay == null) ? "true" : getProperty("autoDisplay");
-  }
-
-  public boolean isAutoDisplay() {
-    return Boolean.TRUE.toString().equalsIgnoreCase(getAutoDisplay());
+    return (autoDisplay == null) ?
+           "true" :
+           getProperty("autoDisplay");
   }
 
   public void setAutoDisplay(String autoDisplay) {

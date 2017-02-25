@@ -22,7 +22,9 @@ package com.mvp4g.client.event;
  * You should extend this class to create a presenter.<br>
  * <br>
  *
- * @param <E> Type of the event bus used by the event handler.
+ * @param <E>
+ *   Type of the event bus used by the event handler.
+ *
  * @author Dan Persa
  */
 public class BaseEventHandler<E extends EventBus>
@@ -55,6 +57,53 @@ public class BaseEventHandler<E extends EventBus>
   /*
    * (non-Javadoc)
    *
+   * @see com.mvp4g.client.event.EventHandlerInterface#isActivated()
+   */
+  public final boolean isActivated(boolean passive,
+                                   String eventName,
+                                   Object... parameters) {
+    boolean activated = this.activated &&
+                        pass(eventName,
+                             parameters);
+    if (activated) {
+      if (passive) {
+        return binded;
+      } else {
+        onBeforeEvent();
+        if (!binded) {
+          bind();
+          binded = true;
+        }
+      }
+    }
+    return activated;
+  }
+
+  /**
+   * This method allows to prevent handler to handle a specific event.
+   *
+   * @param eventName
+   *   name of the event to filter
+   * @param parameters
+   *   parameters associated to the event to filter
+   *
+   * @return true if the handler can handle this event, false otherwise
+   */
+  protected boolean pass(String eventName,
+                         Object... parameters) {
+    return true;
+  }
+
+  /**
+   * Method called before each time an handler has to handle an event.
+   */
+  public void onBeforeEvent() {
+
+  }
+
+  /*
+   * (non-Javadoc)
+   *
    * @see com.mvp4g.client.event.EventHandlerInterface#bind()
    */
   public void bind() {
@@ -67,53 +116,10 @@ public class BaseEventHandler<E extends EventBus>
   /*
    * (non-Javadoc)
    *
-   * @see com.mvp4g.client.event.EventHandlerInterface#isActivated()
-   */
-  public final boolean isActivated(boolean passive,
-                                   String eventName,
-                                   Object... parameters) {
-    boolean activated = this.activated && pass(eventName,
-                                               parameters);
-    if (activated) {
-      if (passive) {
-        return binded;
-      } else {
-        onBeforeEvent();
-        if (! binded) {
-          bind();
-          binded = true;
-        }
-      }
-    }
-    return activated;
-  }
-
-  /**
-   * This method allows to prevent handler to handle a specific event.
-   *
-   * @param eventName  name of the event to filter
-   * @param parameters parameters associated to the event to filter
-   * @return true if the handler can handle this event, false otherwise
-   */
-  protected boolean pass(String eventName,
-                         Object... parameters) {
-    return true;
-  }
-
-  /*
-   * (non-Javadoc)
-   *
    * @see com.mvp4g.client.event.EventHandlerInterface#setActivated(boolean)
    */
   public void setActivated(boolean activated) {
     this.activated = activated;
-  }
-
-  /**
-   * Method called before each time an handler has to handle an event.
-   */
-  public void onBeforeEvent() {
-
   }
 
   /**

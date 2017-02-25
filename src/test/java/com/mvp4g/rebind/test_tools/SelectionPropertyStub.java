@@ -7,37 +7,39 @@ import java.util.TreeSet;
 
 import com.google.gwt.core.ext.SelectionProperty;
 
-public class SelectionPropertyStub implements SelectionProperty {
+public class SelectionPropertyStub
+  implements SelectionProperty {
 
-	private String name, value;
+  private String name, value;
 
-	public SelectionPropertyStub( String name, String value ) {
-		super();
-		this.name = name;
-		this.value = value;
-	}
+  public SelectionPropertyStub(String name,
+                               String value) {
+    super();
+    this.name = name;
+    this.value = value;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public String getCurrentValue() {
-		return value;
-	}
+  public String getCurrentValue() {
+    return value;
+  }
 
-	public String getFallbackValue() {
-		return value;
-	}
-	
-	public SortedSet<String> getPossibleValues() {
-		SortedSet<String> set = new TreeSet<String>();
-		set.add( value );
-		return set;
-	}
+  public String getFallbackValue() {
+    return value;
+  }
 
-	public List<? extends Set<String>> getFallbackValues(String value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  public SortedSet<String> getPossibleValues() {
+    SortedSet<String> set = new TreeSet<String>();
+    set.add(value);
+    return set;
+  }
+
+  public List<? extends Set<String>> getFallbackValues(String value) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
 }

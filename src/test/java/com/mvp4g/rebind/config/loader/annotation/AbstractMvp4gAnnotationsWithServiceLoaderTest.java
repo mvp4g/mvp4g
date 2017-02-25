@@ -1,9 +1,5 @@
 package com.mvp4g.rebind.config.loader.annotation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,107 +14,146 @@ import com.mvp4g.rebind.config.element.ServiceElement;
 import com.mvp4g.rebind.exception.loader.Mvp4gAnnotationException;
 import com.mvp4g.rebind.test_tools.annotation.services.SimpleService;
 
-public abstract class AbstractMvp4gAnnotationsWithServiceLoaderTest<A extends Annotation, L extends Mvp4gAnnotationsWithServiceLoader<A>> extends AbstractMvp4gAnnotationLoaderTest<A, L> {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
-	@Test( expected = Mvp4gAnnotationException.class )
-	public void testNotPublicMethod() throws Mvp4gAnnotationException {
-		try {
-			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			JClassType type = oracle.addClass( getClassNotPublic() );
-			annotedClasses.add( type );
-			loader.load( annotedClasses, configuration );
-		} catch ( Mvp4gAnnotationException e ) {
-			assertTrue( e.getMessage().contains( "Only public setter method can be used to inject a service." ) );
-			throw e;
-		}
-	}
+public abstract class AbstractMvp4gAnnotationsWithServiceLoaderTest<A extends Annotation, L extends Mvp4gAnnotationsWithServiceLoader<A>>
+  extends AbstractMvp4gAnnotationLoaderTest<A, L> {
 
-	@Test( expected = Mvp4gAnnotationException.class )
-	public void testWithNoParameter() throws Mvp4gAnnotationException {
-		try {
-			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			JClassType type = oracle.addClass( getClassWithNoParameter() );
-			annotedClasses.add( type );
-			loader.load( annotedClasses, configuration );
-		} catch ( Mvp4gAnnotationException e ) {
-			assertTrue( e.getMessage().contains( "Only setter method with one parameter can be used to inject a service" ) );
-			throw e;
-		}
-	}
+  @Test(expected = Mvp4gAnnotationException.class)
+  public void testNotPublicMethod()
+    throws Mvp4gAnnotationException {
+    try {
+      List<JClassType> annotedClasses = new ArrayList<JClassType>();
+      JClassType       type           = oracle.addClass(getClassNotPublic());
+      annotedClasses.add(type);
+      loader.load(annotedClasses,
+                  configuration);
+    } catch (Mvp4gAnnotationException e) {
+      assertTrue(e.getMessage()
+                  .contains("Only public setter method can be used to inject a service."));
+      throw e;
+    }
+  }
 
-	@Test( expected = Mvp4gAnnotationException.class )
-	public void testWithMoreThanOneParameter() throws Mvp4gAnnotationException {
-		try {
-			List<JClassType> annotedClasses = new ArrayList<JClassType>();
-			JClassType type = oracle.addClass( getClassWithMoreThanOne() );
-			annotedClasses.add( type );
-			loader.load( annotedClasses, configuration );
-		} catch ( Mvp4gAnnotationException e ) {
-			assertTrue( e.getMessage().contains( "Only setter method with one parameter can be used to inject a service" ) );
-			throw e;
-		}
-	}
+  abstract protected Class<?> getClassNotPublic();
 
-	@Test
-	public void testServicesWithName() throws Mvp4gAnnotationException {
-		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		JClassType type = oracle.addClass( getServiceWithName() );
-		annotedClasses.add( type );
-		loader.load( annotedClasses, configuration );
-		Set<Mvp4gWithServicesElement> elements = getSet();
-		List<InjectedElement> injectedServices = elements.iterator().next().getInjectedServices();
-		InjectedElement injectedService = injectedServices.get( 0 );
-		assertEquals( injectedServices.size(), 1 );
-		assertEquals( injectedService.getSetterName(), "setSthg" );
-		assertEquals( injectedService.getElementName(), "name" );
-		assertEquals( configuration.getServices().size(), 0 );
-	}
+  @Test(expected = Mvp4gAnnotationException.class)
+  public void testWithNoParameter()
+    throws Mvp4gAnnotationException {
+    try {
+      List<JClassType> annotedClasses = new ArrayList<JClassType>();
+      JClassType       type           = oracle.addClass(getClassWithNoParameter());
+      annotedClasses.add(type);
+      loader.load(annotedClasses,
+                  configuration);
+    } catch (Mvp4gAnnotationException e) {
+      assertTrue(e.getMessage()
+                  .contains("Only setter method with one parameter can be used to inject a service"));
+      throw e;
+    }
+  }
 
-	@Test
-	public void testServices() throws Mvp4gAnnotationException {
-		List<JClassType> annotedClasses = new ArrayList<JClassType>();
-		JClassType type = oracle.addClass( getService() );
-		annotedClasses.add( type );
-		loader.load( annotedClasses, configuration );
-		Set<Mvp4gWithServicesElement> elements = getSet();
+  abstract protected Class<?> getClassWithNoParameter();
 
-		String serviceClass = SimpleService.class.getCanonicalName();
-		String serviceName = serviceClass.replace( '.', '_' );
+  @Test(expected = Mvp4gAnnotationException.class)
+  public void testWithMoreThanOneParameter()
+    throws Mvp4gAnnotationException {
+    try {
+      List<JClassType> annotedClasses = new ArrayList<JClassType>();
+      JClassType       type           = oracle.addClass(getClassWithMoreThanOne());
+      annotedClasses.add(type);
+      loader.load(annotedClasses,
+                  configuration);
+    } catch (Mvp4gAnnotationException e) {
+      assertTrue(e.getMessage()
+                  .contains("Only setter method with one parameter can be used to inject a service"));
+      throw e;
+    }
+  }
 
-		List<InjectedElement> injectedServices = elements.iterator().next().getInjectedServices();
-		InjectedElement injectedService = injectedServices.get( 0 );
-		assertEquals( injectedServices.size(), 1 );
-		assertEquals( injectedService.getSetterName(), "setSthg" );
-		assertEquals( injectedService.getElementName(), serviceName + "Async" );
+  abstract protected Class<?> getClassWithMoreThanOne();
 
-		Set<ServiceElement> services = configuration.getServices();
-		assertEquals( services.size(), 1 );
-		ServiceElement service = services.iterator().next();
-		assertEquals( service.getName(), serviceName + "Async" );
-		assertEquals( service.getClassName(), serviceClass );
+  @Test
+  public void testServicesWithName()
+    throws Mvp4gAnnotationException {
+    List<JClassType> annotedClasses = new ArrayList<JClassType>();
+    JClassType       type           = oracle.addClass(getServiceWithName());
+    annotedClasses.add(type);
+    loader.load(annotedClasses,
+                configuration);
+    Set<Mvp4gWithServicesElement> elements         = getSet();
+    List<InjectedElement>         injectedServices = elements.iterator()
+                                                             .next()
+                                                             .getInjectedServices();
+    InjectedElement               injectedService  = injectedServices.get(0);
+    assertEquals(injectedServices.size(),
+                 1);
+    assertEquals(injectedService.getSetterName(),
+                 "setSthg");
+    assertEquals(injectedService.getElementName(),
+                 "name");
+    assertEquals(configuration.getServices()
+                              .size(),
+                 0);
+  }
 
-		annotedClasses.clear();
-		type = oracle.addClass( getSameService() );
-		annotedClasses.add( type );
-		loader.load( annotedClasses, configuration );
-		assertEquals( services.size(), 1 );
+  abstract protected Class<?> getServiceWithName();
 
-		ServiceElement service2 = services.iterator().next();
-		assertSame( service, service2 );
-	}
+  @Test
+  public void testServices()
+    throws Mvp4gAnnotationException {
+    List<JClassType> annotedClasses = new ArrayList<JClassType>();
+    JClassType       type           = oracle.addClass(getService());
+    annotedClasses.add(type);
+    loader.load(annotedClasses,
+                configuration);
+    Set<Mvp4gWithServicesElement> elements = getSet();
 
-	abstract protected Class<?> getClassNotPublic();
+    String serviceClass = SimpleService.class.getCanonicalName();
+    String serviceName  = serviceClass.replace('.',
+                                               '_');
 
-	abstract protected Class<?> getClassWithNoParameter();
+    List<InjectedElement> injectedServices = elements.iterator()
+                                                     .next()
+                                                     .getInjectedServices();
+    InjectedElement       injectedService  = injectedServices.get(0);
+    assertEquals(injectedServices.size(),
+                 1);
+    assertEquals(injectedService.getSetterName(),
+                 "setSthg");
+    assertEquals(injectedService.getElementName(),
+                 serviceName + "Async");
 
-	abstract protected Class<?> getClassWithMoreThanOne();
+    Set<ServiceElement> services = configuration.getServices();
+    assertEquals(services.size(),
+                 1);
+    ServiceElement service = services.iterator()
+                                     .next();
+    assertEquals(service.getName(),
+                 serviceName + "Async");
+    assertEquals(service.getClassName(),
+                 serviceClass);
 
-	abstract protected Class<?> getClassNotAsync();
+    annotedClasses.clear();
+    type = oracle.addClass(getSameService());
+    annotedClasses.add(type);
+    loader.load(annotedClasses,
+                configuration);
+    assertEquals(services.size(),
+                 1);
 
-	abstract protected Class<?> getServiceWithName();
+    ServiceElement service2 = services.iterator()
+                                      .next();
+    assertSame(service,
+               service2);
+  }
 
-	abstract protected Class<?> getService();
+  abstract protected Class<?> getService();
 
-	abstract protected Class<?> getSameService();
+  abstract protected Class<?> getSameService();
+
+  abstract protected Class<?> getClassNotAsync();
 
 }

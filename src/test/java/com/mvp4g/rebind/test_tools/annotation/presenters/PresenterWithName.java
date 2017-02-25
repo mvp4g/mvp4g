@@ -4,6 +4,8 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.presenter.BasePresenter;
 
-@Presenter( view = Object.class, name = "name" )
-public class PresenterWithName extends BasePresenter<Object, EventBus> {
+@Presenter(view = Object.class,
+           name = "name")
+public class PresenterWithName
+  extends BasePresenter<Object, EventBus> {
 }
