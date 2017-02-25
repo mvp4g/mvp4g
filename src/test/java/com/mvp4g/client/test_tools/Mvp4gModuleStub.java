@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2009 - 2017 - Pierre-Laurent Coirer, Frank Hossfeld
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
 package com.mvp4g.client.test_tools;
 
 import com.mvp4g.client.Mvp4gEventPasser;
@@ -22,27 +38,26 @@ public class Mvp4gModuleStub
     this.eventBus = eventBus;
   }
 
-  public void addConverter(String token,
-                           HistoryConverter<?> hc) {
-
-  }
-
   public void createAndStartModule() {
 
   }
 
-  public void dispatchHistoryEvent(String eventType,
-                                   Mvp4gEventPasser passer) {
-    this.eventType = eventType;
-    this.passer = passer;
+  public void onForward() {
+    // TODO Auto-generated method stub
+
+  }
+
+  public Object getStartView() {
+    return null;
   }
 
   public EventBus getEventBus() {
     return eventBus;
   }
 
-  public Object getStartView() {
-    return null;
+  public void addConverter(String token,
+                           HistoryConverter<?> hc) {
+
   }
 
   public String place(String token,
@@ -52,6 +67,38 @@ public class Mvp4gModuleStub
     this.form = form;
     this.tokenOnly = tokenOnly;
     return TOKEN;
+  }
+
+  public void dispatchHistoryEvent(String eventType,
+                                   Mvp4gEventPasser passer) {
+    this.eventType = eventType;
+    this.passer = passer;
+  }
+
+  public void clearHistory() {
+    this.eventType = null;
+    this.form = null;
+  }
+
+  public void setParentModule(Mvp4gModule parentModule) {
+    // TODO Auto-generated method stub
+
+  }
+
+  public void loadChildModule(String childModuleClassName,
+                              String eventName,
+                              boolean passive,
+                              Mvp4gEventPasser passer) {
+    // TODO Auto-generated method stub
+
+  }
+
+  public void sendInitEvent() {
+    historyInit = true;
+  }
+
+  public void sendNotFoundEvent() {
+    historyNotFound = true;
   }
 
   /**
@@ -89,21 +136,6 @@ public class Mvp4gModuleStub
 
   }
 
-  public void clearHistory() {
-    this.eventType = null;
-    this.form = null;
-  }
-
-  public void onForward() {
-    // TODO Auto-generated method stub
-
-  }
-
-  public void setParentModule(Mvp4gModule parentModule) {
-    // TODO Auto-generated method stub
-
-  }
-
   public void confirmEvent(NavigationEventCommand event) {
     // TODO Auto-generated method stub
 
@@ -112,22 +144,6 @@ public class Mvp4gModuleStub
   public void setNavigationConfirmation(NavigationConfirmationInterface navigationConfirmation) {
     // TODO Auto-generated method stub
 
-  }
-
-  public void loadChildModule(String childModuleClassName,
-                              String eventName,
-                              boolean passive,
-                              Mvp4gEventPasser passer) {
-    // TODO Auto-generated method stub
-
-  }
-
-  public void sendInitEvent() {
-    historyInit = true;
-  }
-
-  public void sendNotFoundEvent() {
-    historyNotFound = true;
   }
 
   public boolean isHistoryNotFound() {

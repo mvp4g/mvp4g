@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Pierre-Laurent Coirier
+ * Copyright (c) 2009 - 2017 - Pierre-Laurent Coirer, Frank Hossfeld
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of

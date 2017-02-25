@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 Google Inc.
+ * Copyright (c) 2009 - 2017 - Pierre-Laurent Coirer, Frank Hossfeld
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -46,11 +46,6 @@ public class UnitTestTreeLogger
                         isLoggable(type));
       loggableTypes.add(type);
     }
-  }
-
-  @Override
-  public boolean isLoggable(Type type) {
-    return loggableTypes.contains(type);
   }
 
   /**
@@ -121,6 +116,11 @@ public class UnitTestTreeLogger
         msg,
         caught);
     return this;
+  }
+
+  @Override
+  public boolean isLoggable(Type type) {
+    return loggableTypes.contains(type);
   }
 
   @Override
@@ -232,15 +232,6 @@ public class UnitTestTreeLogger
     private final String                     msg;
     private final Type                       type;
 
-    public LogEntry(TreeLogger.Type type,
-                    String msg,
-                    Class<? extends Throwable> caught) {
-      assert (type != null);
-      this.type = type;
-      this.msg = msg;
-      this.caught = caught;
-    }
-
     public LogEntry(Type type,
                     String msg,
                     Throwable caught) {
@@ -249,6 +240,15 @@ public class UnitTestTreeLogger
            (caught == null) ?
            null :
            caught.getClass());
+    }
+
+    public LogEntry(TreeLogger.Type type,
+                    String msg,
+                    Class<? extends Throwable> caught) {
+      assert (type != null);
+      this.type = type;
+      this.msg = msg;
+      this.caught = caught;
     }
 
     public Type getType() {

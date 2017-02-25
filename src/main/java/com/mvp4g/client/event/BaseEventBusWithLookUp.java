@@ -1,12 +1,12 @@
 /*
- * Copyright 2009 Pierre-Laurent Coirier
- * 
+ * Copyright (c) 2009 - 2017 - Pierre-Laurent Coirer, Frank Hossfeld
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -27,7 +27,25 @@ public abstract class BaseEventBusWithLookUp
   extends BaseEventBus
   implements EventBusWithLookup {
 
-  /*
+  /**
+   * When a ClassCastException is thrown while executing dispatch method, verify if it is thrown
+   * by this class. If it's the case, then send an Mvp4gException to indicate that an object with
+   * the wrong class type has been sent with the event.
+   *
+   * @param e
+   *   ClassCastException thrown
+   * @param eventName
+   *   name of the event dispatched while error is thrown
+   */
+  protected void handleClassCastException(ClassCastException e,
+                                          String eventName) {
+    if (e.getStackTrace()[0].getClassName()
+                            .equals(this.getClass()
+                                        .getName())) {
+      throw new Mvp4gException("Class of the object sent with event " + eventName + " is incorrect.");
+    }
+    throw e;
+  }  /*
    * (non-Javadoc)
    *
    * @see com.mvp4g.client.event.EventBusWithLookup#dispatch(java.lang.String)
@@ -66,24 +84,6 @@ public abstract class BaseEventBusWithLookUp
                   new Object[0]);
   }
 
-  /**
-   * When a ClassCastException is thrown while executing dispatch method, verify if it is thrown
-   * by this class. If it's the case, then send an Mvp4gException to indicate that an object with
-   * the wrong class type has been sent with the event.
-   *
-   * @param e
-   *   ClassCastException thrown
-   * @param eventName
-   *   name of the event dispatched while error is thrown
-   */
-  protected void handleClassCastException(ClassCastException e,
-                                          String eventName) {
-    if (e.getStackTrace()[0].getClassName()
-                            .equals(this.getClass()
-                                        .getName())) {
-      throw new Mvp4gException("Class of the object sent with event " + eventName + " is incorrect.");
-    }
-    throw e;
-  }
+
 
 }

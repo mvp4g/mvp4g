@@ -1,12 +1,12 @@
 /*
- * Copyright 2010 Pierre-Laurent Coirier
- * 
+ * Copyright (c) 2009 - 2017 - Pierre-Laurent Coirer, Frank Hossfeld
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -20,7 +20,13 @@ import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
-import com.google.gwt.core.ext.*;
+import com.google.gwt.core.ext.CachedGeneratorResult;
+import com.google.gwt.core.ext.GeneratorContext;
+import com.google.gwt.core.ext.IncrementalGenerator;
+import com.google.gwt.core.ext.RebindMode;
+import com.google.gwt.core.ext.RebindResult;
+import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
@@ -84,8 +90,8 @@ public class Mvp4gRunAsyncGenerator
 
     Date start = new Date();
 
-    String packageName                 = originalType.getPackage()
-                                                     .getName();
+    String packageName = originalType.getPackage()
+                                     .getName();
     String originalClassName           = originalType.getSimpleSourceName();
     String generatedClassName          = originalClassName + "Impl";
     String generatedClassQualifiedName = packageName + "." + generatedClassName;

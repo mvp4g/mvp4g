@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2009 - 2017 - Pierre-Laurent Coirer, Frank Hossfeld
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
 package com.mvp4g.rebind.config.element;
 
 import java.util.Map;
@@ -15,6 +31,11 @@ public class SplitterElementTest
     return properties;
   }
 
+  @Override
+  protected SimpleMvp4gElement newElement() {
+    return new SplitterElement();
+  }
+
   public void testGetters() {
     SplitterElement splitter = new SplitterElement();
 
@@ -23,11 +44,6 @@ public class SplitterElementTest
 
     Map<EventElement, EventAssociation<String>> events = splitter.getEvents();
     assertTrue(events.size() == 0);
-  }
-
-  @Override
-  protected SimpleMvp4gElement newElement() {
-    return new SplitterElement();
   }
 
 }

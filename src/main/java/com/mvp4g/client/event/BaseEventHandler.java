@@ -1,12 +1,12 @@
 /*
- * Copyright 2010 Pierre-Laurent Coirier
- * 
+ * Copyright (c) 2009 - 2017 - Pierre-Laurent Coirer, Frank Hossfeld
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -52,6 +52,30 @@ public class BaseEventHandler<E extends EventBus>
    */
   public void setEventBus(E eventBus) {
     this.eventBus = eventBus;
+  }
+
+  /**
+   * Set the event bus in token generation mode and return it. When the event bus is in token
+   * generation mode, for the next call to an event method, it won't fire the event and forward it
+   * to handlers but instead, it will generate the event token.
+   *
+   * @return the event bus in token generation mode.
+   */
+  public E getTokenGenerator() {
+    eventBus.setTokenGenerationModeForNextEvent();
+    return eventBus;
+  }
+
+  /*
+   * (non-Javadoc)
+   *
+   * @see com.mvp4g.client.event.EventHandlerInterface#bind()
+   */
+  public void bind() {
+        /*
+     * Default implementation does nothing: extensions are responsible for (optionally) defining
+		 * binding specifics.
+		 */
   }
 
   /*
@@ -104,33 +128,9 @@ public class BaseEventHandler<E extends EventBus>
   /*
    * (non-Javadoc)
    *
-   * @see com.mvp4g.client.event.EventHandlerInterface#bind()
-   */
-  public void bind() {
-        /*
-     * Default implementation does nothing: extensions are responsible for (optionally) defining
-		 * binding specifics.
-		 */
-  }
-
-  /*
-   * (non-Javadoc)
-   *
    * @see com.mvp4g.client.event.EventHandlerInterface#setActivated(boolean)
    */
   public void setActivated(boolean activated) {
     this.activated = activated;
-  }
-
-  /**
-   * Set the event bus in token generation mode and return it. When the event bus is in token
-   * generation mode, for the next call to an event method, it won't fire the event and forward it
-   * to handlers but instead, it will generate the event token.
-   *
-   * @return the event bus in token generation mode.
-   */
-  public E getTokenGenerator() {
-    eventBus.setTokenGenerationModeForNextEvent();
-    return eventBus;
   }
 }

@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2009 - 2017 - Pierre-Laurent Coirer, Frank Hossfeld
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
 package com.mvp4g.rebind.config.loader.annotation;
 
 import java.util.Set;
@@ -16,13 +32,13 @@ public class HistoryAnnotationsLoaderTest
   }
 
   @Override
-  protected Set<HistoryConverterElement> getSet() {
-    return configuration.getHistoryConverters();
+  protected Class<?> getSimpleClass() {
+    return SimpleHistoryConverter01.class;
   }
 
   @Override
-  protected Class<?> getSimpleClass() {
-    return SimpleHistoryConverter01.class;
+  protected Set<HistoryConverterElement> getSet() {
+    return configuration.getHistoryConverters();
   }
 
   @Override
@@ -31,8 +47,8 @@ public class HistoryAnnotationsLoaderTest
   }
 
   @Override
-  protected Class<?> getClassNotAsync() {
-    return HistoryConverters.HistoryConverterNotAsync.class;
+  protected Class<?> getWrongInterface() {
+    return Object.class;
   }
 
   @Override
@@ -41,18 +57,13 @@ public class HistoryAnnotationsLoaderTest
   }
 
   @Override
-  protected Class<?> getClassWithMoreThanOne() {
-    return HistoryConverters.HistoryConverterWithMoreThanOneParameter.class;
-  }
-
-  @Override
   protected Class<?> getClassWithNoParameter() {
     return HistoryConverters.HistoryConverterWithNoParameter.class;
   }
 
   @Override
-  protected Class<?> getService() {
-    return HistoryConverters.HistoryConverterWithService.class;
+  protected Class<?> getClassWithMoreThanOne() {
+    return HistoryConverters.HistoryConverterWithMoreThanOneParameter.class;
   }
 
   @Override
@@ -61,13 +72,18 @@ public class HistoryAnnotationsLoaderTest
   }
 
   @Override
+  protected Class<?> getService() {
+    return HistoryConverters.HistoryConverterWithService.class;
+  }
+
+  @Override
   protected Class<?> getSameService() {
     return HistoryConverters.HistoryConverterWithSameService.class;
   }
 
   @Override
-  protected Class<?> getWrongInterface() {
-    return Object.class;
+  protected Class<?> getClassNotAsync() {
+    return HistoryConverters.HistoryConverterNotAsync.class;
   }
 
 }

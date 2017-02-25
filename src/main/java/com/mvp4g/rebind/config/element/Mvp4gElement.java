@@ -1,12 +1,12 @@
 /*
- * Copyright 2009 Pierre-Laurent Coirier
- * 
+ * Copyright (c) 2009 - 2017 - Pierre-Laurent Coirer, Frank Hossfeld
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -15,7 +15,11 @@
  */
 package com.mvp4g.rebind.config.element;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * A representation of an Mvp4g configuration element.
@@ -105,6 +109,11 @@ public abstract class Mvp4gElement {
   }
 
   @Override
+  public int hashCode() {
+    return getUniqueIdentifier().hashCode();
+  }
+
+  @Override
   public boolean equals(Object another) {
     if (this.getClass()
             .isInstance(another)) {
@@ -137,9 +146,4 @@ public abstract class Mvp4gElement {
    * @return attribute name used as unique identifier.
    */
   public abstract String getUniqueIdentifierName();
-
-  @Override
-  public int hashCode() {
-    return getUniqueIdentifier().hashCode();
-  }
 }
