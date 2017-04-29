@@ -15,12 +15,6 @@
  */
 package com.mvp4g.rebind;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -33,43 +27,27 @@ import com.mvp4g.client.event.BaseEventBus;
 import com.mvp4g.client.history.ClearHistory;
 import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.rebind.config.Mvp4gConfiguration;
-import com.mvp4g.rebind.config.element.ChildModuleElement;
-import com.mvp4g.rebind.config.element.ChildModulesElement;
-import com.mvp4g.rebind.config.element.DebugElement;
-import com.mvp4g.rebind.config.element.EventAssociation;
-import com.mvp4g.rebind.config.element.EventBusElement;
-import com.mvp4g.rebind.config.element.EventElement;
-import com.mvp4g.rebind.config.element.EventFilterElement;
-import com.mvp4g.rebind.config.element.EventFiltersElement;
-import com.mvp4g.rebind.config.element.EventHandlerElement;
-import com.mvp4g.rebind.config.element.HistoryConverterElement;
-import com.mvp4g.rebind.config.element.HistoryElement;
-import com.mvp4g.rebind.config.element.InjectedElement;
-import com.mvp4g.rebind.config.element.LoaderElement;
-import com.mvp4g.rebind.config.element.Mvp4gElement;
-import com.mvp4g.rebind.config.element.PresenterElement;
-import com.mvp4g.rebind.config.element.ServiceElement;
-import com.mvp4g.rebind.config.element.SplitterElement;
-import com.mvp4g.rebind.config.element.StartElement;
-import com.mvp4g.rebind.config.element.ViewElement;
+import com.mvp4g.rebind.config.element.*;
 import com.mvp4g.rebind.exception.InvalidMvp4gConfigurationException;
+
+import java.util.*;
 
 /**
  * @author plcoirier
  */
-public class Mvp4gConfigurationFileWriter {
+class Mvp4gConfigurationFileWriter {
 
   private SourceWriter sourceWriter = null;
 
   private Mvp4gConfiguration configuration = null;
 
-  public Mvp4gConfigurationFileWriter(SourceWriter sourceWriter,
-                                      Mvp4gConfiguration configuration) {
+  Mvp4gConfigurationFileWriter(SourceWriter sourceWriter,
+                               Mvp4gConfiguration configuration) {
     this.sourceWriter = sourceWriter;
     this.configuration = configuration;
   }
 
-  public void writeConf() {
+  void writeConf() {
 
     sourceWriter.indent();
 
@@ -121,7 +99,7 @@ public class Mvp4gConfigurationFileWriter {
 //    sourceWriter.println(" GWT.log(\"mvp4g version ==> mvp4g-1.5.1-SNAPSHOT\");");
     if (configuration.getHistory() != null) {
       sourceWriter.print("HistoryProxyProvider.INSTANCE.set(new ");
-      sourceWriter.print(configuration.getHistory()
+      sourceWriter.print(configuration.getHistoryProxy()
                                       .getHistoryProxyClass());
       sourceWriter.println("());");
     } else {

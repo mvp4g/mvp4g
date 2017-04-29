@@ -15,36 +15,17 @@
  */
 package com.mvp4g.rebind.config;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.gwt.core.ext.BadPropertyValueException;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.PropertyOracle;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.TreeLogger.Type;
-import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JGenericType;
-import com.google.gwt.core.ext.typeinfo.JMethod;
-import com.google.gwt.core.ext.typeinfo.JParameterizedType;
-import com.google.gwt.core.ext.typeinfo.JType;
-import com.google.gwt.core.ext.typeinfo.NotFoundException;
-import com.google.gwt.core.ext.typeinfo.TypeOracle;
+import com.google.gwt.core.ext.typeinfo.*;
 import com.google.gwt.inject.client.GinModule;
 import com.mvp4g.client.Mvp4gLoader;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.SingleSplitter;
-import com.mvp4g.client.annotation.EventHandler;
-import com.mvp4g.client.annotation.Events;
-import com.mvp4g.client.annotation.History;
-import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.annotation.Service;
+import com.mvp4g.client.annotation.*;
 import com.mvp4g.client.annotation.module.HistoryName;
 import com.mvp4g.client.annotation.module.Loader;
 import com.mvp4g.client.event.EventFilter;
@@ -56,39 +37,13 @@ import com.mvp4g.client.history.PlaceService;
 import com.mvp4g.client.presenter.NoStartPresenter;
 import com.mvp4g.client.presenter.PresenterInterface;
 import com.mvp4g.client.view.ReverseViewInterface;
-import com.mvp4g.rebind.config.element.ChildModuleElement;
-import com.mvp4g.rebind.config.element.ChildModulesElement;
-import com.mvp4g.rebind.config.element.DebugElement;
-import com.mvp4g.rebind.config.element.EventAssociation;
-import com.mvp4g.rebind.config.element.EventBusElement;
-import com.mvp4g.rebind.config.element.EventElement;
-import com.mvp4g.rebind.config.element.EventFilterElement;
-import com.mvp4g.rebind.config.element.EventFiltersElement;
-import com.mvp4g.rebind.config.element.EventHandlerElement;
-import com.mvp4g.rebind.config.element.GinModuleElement;
-import com.mvp4g.rebind.config.element.HistoryConverterElement;
-import com.mvp4g.rebind.config.element.HistoryElement;
-import com.mvp4g.rebind.config.element.InjectedElement;
-import com.mvp4g.rebind.config.element.LoaderElement;
-import com.mvp4g.rebind.config.element.Mvp4gElement;
-import com.mvp4g.rebind.config.element.Mvp4gWithServicesElement;
-import com.mvp4g.rebind.config.element.PresenterElement;
-import com.mvp4g.rebind.config.element.ServiceElement;
-import com.mvp4g.rebind.config.element.SplitterElement;
-import com.mvp4g.rebind.config.element.StartElement;
-import com.mvp4g.rebind.config.element.ViewElement;
-import com.mvp4g.rebind.config.loader.annotation.EventHandlerAnnotationsLoader;
-import com.mvp4g.rebind.config.loader.annotation.EventsAnnotationsLoader;
-import com.mvp4g.rebind.config.loader.annotation.HistoryAnnotationsLoader;
-import com.mvp4g.rebind.config.loader.annotation.PresenterAnnotationsLoader;
-import com.mvp4g.rebind.config.loader.annotation.ServiceAnnotationsLoader;
-import com.mvp4g.rebind.exception.InvalidClassException;
-import com.mvp4g.rebind.exception.InvalidMvp4gConfigurationException;
-import com.mvp4g.rebind.exception.InvalidTypeException;
-import com.mvp4g.rebind.exception.NonUniqueIdentifierException;
-import com.mvp4g.rebind.exception.NotFoundClassException;
-import com.mvp4g.rebind.exception.UnknownConfigurationElementException;
+import com.mvp4g.rebind.config.element.*;
+import com.mvp4g.rebind.config.loader.annotation.*;
+import com.mvp4g.rebind.exception.*;
 import com.mvp4g.rebind.exception.loader.Mvp4gAnnotationException;
+
+import java.lang.annotation.Annotation;
+import java.util.*;
 
 /**
  * An in-memory representation of all elements in the configuration file and in the annotations.
@@ -146,6 +101,7 @@ public class Mvp4gConfiguration {
   private Set<LoaderElement>              loaders                      = new HashSet<LoaderElement>();
   private StartElement                    start                        = null;
   private HistoryElement                  history                      = null;
+  private HistoryProxyElement             historyProxy                 = null;
   private EventBusElement                 eventBus                     = null;
   private JClassType                      module                       = null;
   private ChildModulesElement             loadChildConfig              = null;
@@ -168,10 +124,8 @@ public class Mvp4gConfiguration {
   /**
    * Contruct a Mvp4gConfiguration object
    *
-   * @param logger
-   *   logger of the GWT compiler
-   * @param context
-   *   context of the GWT compiler
+   * @param logger  logger of the GWT compiler
+   * @param context context of the GWT compiler
    */
   public Mvp4gConfiguration(TreeLogger logger,
                             GeneratorContext context) {
@@ -183,8 +137,7 @@ public class Mvp4gConfiguration {
   /**
    * For test purpose only
    *
-   * @param logger
-   *   logger to set
+   * @param logger logger to set
    */
   void setLogger(TreeLogger logger) {
     this.logger = logger;
@@ -204,15 +157,10 @@ public class Mvp4gConfiguration {
    * and view references are checked for existence. Validity elements class is also checked.</li>
    * </ol>
    *
-   * @param module
-   *   module to load
-   * @param scanResult
-   *   Map of classes associated with an annotation
-   *
+   * @param module     module to load
+   * @param scanResult Map of classes associated with an annotation
    * @return suffix from gin module
-   *
-   * @throws InvalidMvp4gConfigurationException
-   *   this exception is thrown where a configuration error occurs.
+   * @throws InvalidMvp4gConfigurationException this exception is thrown where a configuration error occurs.
    */
   public String load(JClassType module,
                      Map<Class<? extends Annotation>, List<JClassType>> scanResult)
@@ -338,8 +286,7 @@ public class Mvp4gConfiguration {
   }
 
   /**
-   * @param start
-   *   the start to set
+   * @param start the start to set
    */
   public void setStart(StartElement start) {
     this.start = start;
@@ -353,11 +300,24 @@ public class Mvp4gConfiguration {
   }
 
   /**
-   * @param history
-   *   the history to set
+   * @param history the history to set
    */
   public void setHistory(HistoryElement history) {
     this.history = history;
+  }
+
+  /**
+   * @return the HistoryProxy element loaded.
+   */
+  public HistoryProxyElement getHistoryProxy() {
+    return historyProxy;
+  }
+
+  /**
+   * @param historyProxy the historyProxy to set
+   */
+  public void setHistoryProxy(HistoryProxyElement historyProxy) {
+    this.historyProxy = historyProxy;
   }
 
   /**
@@ -368,8 +328,7 @@ public class Mvp4gConfiguration {
   }
 
   /**
-   * @param eventBus
-   *   the eventBus to set
+   * @param eventBus the eventBus to set
    */
   public void setEventBus(EventBusElement eventBus) {
     this.eventBus = eventBus;
@@ -392,8 +351,7 @@ public class Mvp4gConfiguration {
   /**
    * Should be used only for test
    *
-   * @param module
-   *   the module to set
+   * @param module the module to set
    */
   public void setModule(JClassType module) {
     this.module = module;
@@ -421,8 +379,7 @@ public class Mvp4gConfiguration {
   }
 
   /**
-   * @param loadChildConfig
-   *   the loadChildConfig to set
+   * @param loadChildConfig the loadChildConfig to set
    */
   public void setLoadChildConfig(ChildModulesElement loadChildConfig) {
     this.loadChildConfig = loadChildConfig;
@@ -445,8 +402,7 @@ public class Mvp4gConfiguration {
   /**
    * Should be used only for test
    *
-   * @param parentEventBus
-   *   the parentEventBus to set
+   * @param parentEventBus the parentEventBus to set
    */
   public void setParentEventBus(JClassType parentEventBus) {
     this.parentEventBus = parentEventBus;
@@ -462,8 +418,7 @@ public class Mvp4gConfiguration {
   /**
    * Should be used only for test
    *
-   * @param historyName
-   *   the historyName to set
+   * @param historyName the historyName to set
    */
   public void setHistoryName(String historyName) {
     this.historyName = historyName;
@@ -477,8 +432,7 @@ public class Mvp4gConfiguration {
   }
 
   /**
-   * @param debug
-   *   the debug to set
+   * @param debug the debug to set
    */
   public void setDebug(DebugElement debug) {
     this.debug = debug;
@@ -492,8 +446,7 @@ public class Mvp4gConfiguration {
   }
 
   /**
-   * @param ginModule
-   *   the ginModule to set
+   * @param ginModule the ginModule to set
    */
   public void setGinModule(GinModuleElement ginModule) {
     this.ginModule = ginModule;
@@ -507,8 +460,7 @@ public class Mvp4gConfiguration {
   }
 
   /**
-   * @param eventFilterConfiguration
-   *   the eventFilterConfiguration to set
+   * @param eventFilterConfiguration the eventFilterConfiguration to set
    */
   public void setEventFilterConfiguration(EventFiltersElement eventFilterConfiguration) {
     this.eventFilterConfiguration = eventFilterConfiguration;
@@ -531,8 +483,7 @@ public class Mvp4gConfiguration {
    * Checks that all injected views correspond to a configured mvp4g element. Remove views that
    * aren't injected into a presenter or loaded at start.<br>
    *
-   * @throws UnknownConfigurationElementException
-   *   if a view reference cannot be found among the configured elements.
+   * @throws UnknownConfigurationElementException if a view reference cannot be found among the configured elements.
    */
   void validateViews()
     throws UnknownConfigurationElementException {
@@ -540,7 +491,7 @@ public class Mvp4gConfiguration {
     Map<String, List<PresenterElement>> viewMap = new HashMap<String, List<PresenterElement>>();
 
     List<PresenterElement> presenterList = null;
-    String                 viewName      = null;
+    String viewName = null;
     for (PresenterElement presenter : presenters) {
       viewName = presenter.getView();
       presenterList = viewMap.get(viewName);
@@ -581,8 +532,7 @@ public class Mvp4gConfiguration {
    * a configured mvp4g element. Remove all services that aren't injected into a presenter or an
    * history converter.<br>
    *
-   * @throws UnknownConfigurationElementException
-   *   if a service cannot be found among the configured elements.
+   * @throws UnknownConfigurationElementException if a service cannot be found among the configured elements.
    */
   void validateServices()
     throws UnknownConfigurationElementException {
@@ -641,10 +591,10 @@ public class Mvp4gConfiguration {
 
     Map<String, List<EventElement>> historyConverterMap = new HashMap<String, List<EventElement>>();
 
-    List<EventElement> eventList    = null;
-    String             hcName       = null;
-    String             historyName;
-    List<String>       historyNames = new ArrayList<String>();
+    List<EventElement> eventList = null;
+    String hcName = null;
+    String historyName;
+    List<String> historyNames = new ArrayList<String>();
     for (EventElement event : events) {
       if (event.hasHistory()) {
         hcName = event.getHistory();
@@ -689,10 +639,10 @@ public class Mvp4gConfiguration {
     String clearHistoryClassName = ClearHistory.class.getCanonicalName();
     JClassType clearHistoryType = getType(null,
                                           clearHistoryClassName);
-    JClassType              hcType               = null;
-    JClassType              eventBusParam        = null;
-    JMethod[]               methods              = null;
-    JParameterizedType      genHC                = null;
+    JClassType hcType = null;
+    JClassType eventBusParam = null;
+    JMethod[] methods = null;
+    JParameterizedType genHC = null;
     HistoryConverterElement clearHistoryToRemove = null;
 
     Set<HistoryConverterElement> toRemove = new HashSet<HistoryConverterElement>();
@@ -767,18 +717,18 @@ public class Mvp4gConfiguration {
     throws InvalidMvp4gConfigurationException {
 
     Map<String, List<EventElement>> presenterAndEventHandlerMap = new HashMap<String, List<EventElement>>();
-    Map<String, List<EventElement>> activateMap                 = new HashMap<String, List<EventElement>>();
-    Map<String, List<EventElement>> deactivateMap               = new HashMap<String, List<EventElement>>();
-    Map<String, List<EventElement>> generateMap                 = new HashMap<String, List<EventElement>>();
+    Map<String, List<EventElement>> activateMap = new HashMap<String, List<EventElement>>();
+    Map<String, List<EventElement>> deactivateMap = new HashMap<String, List<EventElement>>();
+    Map<String, List<EventElement>> generateMap = new HashMap<String, List<EventElement>>();
     // binds map validates in the same rules as presenters and event
     // handlers and added to the same map
     Map<JClassType, List<EventElement>> broadcastMap = new HashMap<JClassType, List<EventElement>>();
 
     // Add presenter that handles event
     List<EventElement> eventList;
-    List<String>       activates, deactivates, handlers, binds, generates;
-    String             broadcast;
-    JClassType         type;
+    List<String> activates, deactivates, handlers, binds, generates;
+    String broadcast;
+    JClassType type;
     for (EventElement event : events) {
       handlers = event.getHandlers();
       activates = event.getActivate();
@@ -877,8 +827,8 @@ public class Mvp4gConfiguration {
       }
     }
 
-    boolean hasStartView   = start.hasPresenter();
-    String  startPresenter = start.getPresenter();
+    boolean hasStartView = start.hasPresenter();
+    String startPresenter = start.getPresenter();
     JGenericType presenterGenType = getType(null,
                                             PresenterInterface.class.getCanonicalName()).isGenericType();
     JGenericType eventHandlerGenType = getType(null,
@@ -887,15 +837,15 @@ public class Mvp4gConfiguration {
                                               ReverseViewInterface.class.getCanonicalName()).isGenericType();
     JClassType eventBusType = getType(null,
                                       eventBus.getInterfaceClassName());
-    JType[]               noParam              = new JType[0];
-    JClassType            presenterType, viewParam, presenterParam, viewType;
-    ViewElement           view                 = null;
-    JParameterizedType    genPresenter, genView;
-    boolean               hasPossibleBroadcast = (broadcastMap.size() > 0);
-    Set<PresenterElement> toRemove             = new HashSet<PresenterElement>();
-    String                viewName, name;
-    boolean               toKeep, notDirectHandler;
-    List<EventElement>    eventDeactivateList, eventActivateList, eventGenerateList;
+    JType[] noParam = new JType[0];
+    JClassType presenterType, viewParam, presenterParam, viewType;
+    ViewElement view = null;
+    JParameterizedType genPresenter, genView;
+    boolean hasPossibleBroadcast = (broadcastMap.size() > 0);
+    Set<PresenterElement> toRemove = new HashSet<PresenterElement>();
+    String viewName, name;
+    boolean toKeep, notDirectHandler;
+    List<EventElement> eventDeactivateList, eventActivateList, eventGenerateList;
     for (PresenterElement presenter : presenters) {
       name = presenter.getName();
       eventList = presenterAndEventHandlerMap.remove(name);// binds presenters are checking as handlers
@@ -1146,7 +1096,7 @@ public class Mvp4gConfiguration {
     JClassType eventBusType = getType(null,
                                       eventBus.getInterfaceClassName());
     Map<String, SplitterElement> splitterMap = new HashMap<String, SplitterElement>();
-    int                          singleIndex = 0;
+    int singleIndex = 0;
     for (EventHandlerElement eventHandler : eventHandlers) {
       addSplitterHandler(eventHandler,
                          singleIndex,
@@ -1165,7 +1115,7 @@ public class Mvp4gConfiguration {
       singleIndex++;
     }
 
-    splitters = new HashSet<SplitterElement>(splitterMap.values());
+    splitters = new HashSet<>(splitterMap.values());
   }
 
   private <K, V> EventAssociation<V> getEventAssociation(Map<K, EventAssociation<V>> eventAssociationMap,
@@ -1285,7 +1235,7 @@ public class Mvp4gConfiguration {
                                          EventFilter.class.getCanonicalName()).isGenericType();
     JClassType eventBusType = getType(null,
                                       eventBus.getInterfaceClassName());
-    JClassType         filterType, eventBusParam;
+    JClassType filterType, eventBusParam;
     JParameterizedType genEventFilter;
     for (EventFilterElement filter : eventFilters) {
       filterType = getType(filter,
@@ -1320,15 +1270,10 @@ public class Mvp4gConfiguration {
    * @param eventHandler
    * @param eventHandlerGenType
    * @param eventBusType
-   *
    * @return true if no error, false if the presenter has to be ignored.
-   *
-   * @throws InvalidClassException
-   *   throws if the handler event bus is not compatible
-   * @throws InvalidTypeException
-   *   throws if the handler event bus is not compatible
-   * @throws NotFoundClassException
-   *   throws if the handler event bus is not compatible
+   * @throws InvalidClassException  throws if the handler event bus is not compatible
+   * @throws InvalidTypeException   throws if the handler event bus is not compatible
+   * @throws NotFoundClassException throws if the handler event bus is not compatible
    */
   private boolean controlEventBus(EventHandlerElement eventHandler,
                                   JGenericType eventHandlerGenType,
@@ -1388,14 +1333,14 @@ public class Mvp4gConfiguration {
   void validateChildModules()
     throws InvalidMvp4gConfigurationException {
 
-    Map<String, List<EventElement>>     childModuleMap = new HashMap<String, List<EventElement>>();
-    Map<JClassType, List<EventElement>> broadcastMap   = new HashMap<JClassType, List<EventElement>>();
+    Map<String, List<EventElement>> childModuleMap = new HashMap<String, List<EventElement>>();
+    Map<JClassType, List<EventElement>> broadcastMap = new HashMap<JClassType, List<EventElement>>();
 
     // Add presenter that handles event
     List<EventElement> eventList = null;
-    List<String>       modulesToLoad;
-    String             broadcast;
-    JClassType         type;
+    List<String> modulesToLoad;
+    String broadcast;
+    JClassType type;
     for (EventElement event : events) {
       modulesToLoad = event.getForwardToModules();
       broadcast = event.getBroadcastTo();
@@ -1427,14 +1372,14 @@ public class Mvp4gConfiguration {
                                           Mvp4gModule.class.getCanonicalName());
     JClassType moduleType = null;
 
-    String       eventName           = null;
-    EventElement eventElt            = null;
-    String[]     eventObjClasses     = null;
-    String       childModuleClass    = null;
-    JClassType   childEventBus       = null;
-    JClassType   startPresenterType  = null;
-    JClassType   startViewType       = null;
-    String       startPresenterClass = null;
+    String eventName = null;
+    EventElement eventElt = null;
+    String[] eventObjClasses = null;
+    String childModuleClass = null;
+    JClassType childEventBus = null;
+    JClassType startPresenterType = null;
+    JClassType startViewType = null;
+    String startPresenterClass = null;
     JGenericType presenterGenType = getType(null,
                                             PresenterInterface.class.getCanonicalName()).isGenericType();
     JType[] noParam = new JType[0];
@@ -1512,8 +1457,8 @@ public class Mvp4gConfiguration {
     }
 
     List<ChildModuleElement> siblings = getSiblings();
-    List<String>             siblingsToLoad;
-    String                   siblingClassName;
+    List<String> siblingsToLoad;
+    String siblingClassName;
     for (ChildModuleElement sibling : siblings) {
       siblingClassName = sibling.getClassName();
       eventList = childModuleMap.remove(siblingClassName);
@@ -1574,7 +1519,7 @@ public class Mvp4gConfiguration {
     if (parentEventBus != null) {
       Iterator<String> it = moduleParentEventBusClassMap.keySet()
                                                         .iterator();
-      String             currentModule = module.getQualifiedSourceName();
+      String currentModule = module.getQualifiedSourceName();
       ChildModuleElement childModule;
       while (it.hasNext()) {
         childModule = moduleParentEventBusClassMap.get(it.next());
@@ -1680,9 +1625,9 @@ public class Mvp4gConfiguration {
       }
     }
 
-    String       event;
+    String event;
     EventElement eventElt;
-    String[]     objClasses;
+    String[] objClasses;
 
     if (start.hasForwardEventType()) {
       if (isRootModule()) {
@@ -1719,7 +1664,10 @@ public class Mvp4gConfiguration {
             ((objClasses.length > 1) ||
              ((objClasses.length == 1) &&
               (!Throwable.class.getName()
-                               .equals(objClasses[0]))))) {
+                               .equals(objClasses[0])
+              )
+             )
+            )) {
           throw new InvalidMvp4gConfigurationException(String.format(WRONG_EVENT_OBJ,
                                                                      loadChildConfig.getTagName(),
                                                                      "Error",
@@ -1763,8 +1711,7 @@ public class Mvp4gConfiguration {
   /**
    * Validate that if history converters are used, init history event is defined
    *
-   * @throws InvalidMvp4gConfigurationException
-   *   if history init event is not defined but history converters are used
+   * @throws InvalidMvp4gConfigurationException if history init event is not defined but history converters are used
    */
   void validateHistory()
     throws InvalidMvp4gConfigurationException {
@@ -1785,7 +1732,8 @@ public class Mvp4gConfiguration {
         if ((history == null) ||
             (history.getInitEvent() == null) ||
             (history.getInitEvent()
-                    .length() == 0)) {
+                    .length() == 0
+            )) {
           throw new InvalidMvp4gConfigurationException(HISTORY_INIT_MISSING);
         }
       }
@@ -1795,8 +1743,7 @@ public class Mvp4gConfiguration {
   /**
    * Validates that every mvp4g element has a globally unique identifier.<br>
    *
-   * @throws NonUniqueIdentifierException
-   *   if two or more elements have the same textual identifier.
+   * @throws NonUniqueIdentifierException if two or more elements have the same textual identifier.
    */
   void checkUniquenessOfAllElements()
     throws NonUniqueIdentifierException {
@@ -1822,8 +1769,7 @@ public class Mvp4gConfiguration {
   /**
    * Validate start element
    *
-   * @throws InvalidMvp4gConfigurationException
-   *   thrown if no view to load at start has been defined.
+   * @throws InvalidMvp4gConfigurationException thrown if no view to load at start has been defined.
    */
   void validateStart()
     throws InvalidMvp4gConfigurationException {
@@ -1891,7 +1837,7 @@ public class Mvp4gConfiguration {
     if (properties != null) {
       int size = properties.length;
       propertiesValue = new String[size];
-      String       moduleClassName;
+      String moduleClassName;
       List<String> modules = ginModule.getModules();
       if (modules == null) {
         ginModule.setModules(new String[0]);
@@ -1928,11 +1874,8 @@ public class Mvp4gConfiguration {
   /**
    * Pre-loads information contained in Presenter annotations.
    *
-   * @param annotedClasses
-   *   classes with the Presenter annotation
-   *
-   * @throws Mvp4gAnnotationException
-   *   thrown if presenter class associated with the annotation is not correct
+   * @param annotedClasses classes with the Presenter annotation
+   * @throws Mvp4gAnnotationException thrown if presenter class associated with the annotation is not correct
    */
   void loadPresenters(List<JClassType> annotedClasses)
     throws Mvp4gAnnotationException {
@@ -1944,11 +1887,8 @@ public class Mvp4gConfiguration {
   /**
    * Pre-loads information contained in EventHandler annotations.
    *
-   * @param annotedClasses
-   *   classes with the EventHandler annotation
-   *
-   * @throws Mvp4gAnnotationException
-   *   thrown if event handler class associated with the annotation is not correct
+   * @param annotedClasses classes with the EventHandler annotation
+   * @throws Mvp4gAnnotationException thrown if event handler class associated with the annotation is not correct
    */
   void loadEventHandlers(List<JClassType> annotedClasses)
     throws Mvp4gAnnotationException {
@@ -1960,11 +1900,8 @@ public class Mvp4gConfiguration {
   /**
    * Pre-loads information contained in Service annotations.
    *
-   * @param annotedClasses
-   *   classes with the Service annotation
-   *
-   * @throws Mvp4gAnnotationException
-   *   thrown if service class associated with the annotation is not correct
+   * @param annotedClasses classes with the Service annotation
+   * @throws Mvp4gAnnotationException thrown if service class associated with the annotation is not correct
    */
   void loadServices(List<JClassType> annotedClasses)
     throws Mvp4gAnnotationException {
@@ -1977,11 +1914,8 @@ public class Mvp4gConfiguration {
    * Pre-loads all Events contained in the class of the Events annotation. Build eventBus element
    * if needed
    *
-   * @param annotedClasses
-   *   classes with the Events annotation
-   *
-   * @throws Mvp4gAnnotationException
-   *   thrown if events class associated with the annotation is not correct
+   * @param annotedClasses classes with the Events annotation
+   * @throws Mvp4gAnnotationException thrown if events class associated with the annotation is not correct
    */
   void loadEvents(List<JClassType> annotedClasses)
     throws Mvp4gAnnotationException {
@@ -1993,11 +1927,8 @@ public class Mvp4gConfiguration {
   /**
    * Pre-loads information contained in History annotations.
    *
-   * @param annotedClasses
-   *   classes with the History annotation
-   *
-   * @throws Mvp4gAnnotationException
-   *   thrown if history converter class associated with the annotation is not correct
+   * @param annotedClasses classes with the History annotation
+   * @throws Mvp4gAnnotationException thrown if history converter class associated with the annotation is not correct
    */
   void loadHistoryConverters(List<JClassType> annotedClasses)
     throws Mvp4gAnnotationException {
@@ -2028,15 +1959,10 @@ public class Mvp4gConfiguration {
   /**
    * Verify that id of elements contained in the set isn't already contained in the ids set.
    *
-   * @param <E>
-   *   type of elements contained in the set
-   * @param subset
-   *   set of elements to test
-   * @param ids
-   *   set containing the ids
-   *
-   * @throws NonUniqueIdentifierException
-   *   if id of an element is already contained in the ids set.
+   * @param <E>    type of elements contained in the set
+   * @param subset set of elements to test
+   * @param ids    set containing the ids
+   * @throws NonUniqueIdentifierException if id of an element is already contained in the ids set.
    */
   private <E extends Mvp4gElement> void checkUniquenessOf(Set<E> subset,
                                                           Set<String> ids)
@@ -2052,15 +1978,10 @@ public class Mvp4gConfiguration {
   /**
    * Retrieve an element exists in a set thanks to its unique identifier
    *
-   * @param <T>
-   *   type of the elements in the set
-   * @param elementName
-   *   value of the unique identifier of the element to find
-   * @param elements
-   *   set of elemets
-   *
+   * @param <T>         type of the elements in the set
+   * @param elementName value of the unique identifier of the element to find
+   * @param elements    set of elemets
    * @return element if found, null otherwise
-   *
    * @throws UnknownConfigurationElementException
    */
   private <T extends Mvp4gElement> T getElement(String elementName,
@@ -2092,12 +2013,9 @@ public class Mvp4gConfiguration {
   /**
    * Remove all elements of the useless set from the set
    *
-   * @param <T>
-   *   type of the elements to remove
-   * @param set
-   *   set where elements need to be removed
-   * @param toRemove
-   *   set of elements to remove
+   * @param <T>      type of the elements to remove
+   * @param set      set where elements need to be removed
+   * @param toRemove set of elements to remove
    */
   private <T extends Mvp4gElement> void removeUselessElements(Set<T> set,
                                                               Set<T> toRemove) {
@@ -2113,15 +2031,10 @@ public class Mvp4gConfiguration {
   /**
    * Retrieve a type from the oracle.
    *
-   * @param element
-   *   element that asks to retrieve the class (can be null)
-   * @param className
-   *   name of the class to retrieve
-   *
+   * @param element   element that asks to retrieve the class (can be null)
+   * @param className name of the class to retrieve
    * @return type of the class
-   *
-   * @throws NotFoundClassException
-   *   if the class can not be found
+   * @throws NotFoundClassException if the class can not be found
    */
   private JClassType getType(Mvp4gElement element,
                              String className)
@@ -2143,10 +2056,10 @@ public class Mvp4gConfiguration {
 
   void findChildModuleHistoryNameAndLoader()
     throws InvalidMvp4gConfigurationException {
-    JClassType   childType;
-    HistoryName  hName;
+    JClassType childType;
+    HistoryName hName;
     List<String> historyNames = new ArrayList<String>();
-    String       moduleClassName;
+    String moduleClassName;
     JClassType eventBusType = getType(null,
                                       eventBus.getInterfaceClassName());
     for (ChildModuleElement childModule : childModules) {
@@ -2189,7 +2102,7 @@ public class Mvp4gConfiguration {
                               JClassType eventBus,
                               Mvp4gElement element)
     throws NotFoundClassException, InvalidTypeException {
-    String name             = null;
+    String name = null;
     Loader loaderAnnotation = moduleType.getAnnotation(Loader.class);
     if (loaderAnnotation != null) {
       JClassType loaderType = getType(element,
@@ -2197,8 +2110,8 @@ public class Mvp4gConfiguration {
                                                       .getCanonicalName());
       JGenericType loaderGenType = getType(null,
                                            Mvp4gLoader.class.getCanonicalName()).isGenericType();
-      JParameterizedType genLoader     = loaderType.asParameterizationOf(loaderGenType);
-      JClassType         eventBusParam = (JClassType) genLoader.getMethods()[0].getParameters()[0].getType();
+      JParameterizedType genLoader = loaderType.asParameterizationOf(loaderGenType);
+      JClassType eventBusParam = (JClassType) genLoader.getMethods()[0].getParameters()[0].getType();
       if (!eventBus.isAssignableTo(eventBusParam)) {
         throw new InvalidTypeException(element,
                                        "Loader, event bus not compatible",
@@ -2224,8 +2137,8 @@ public class Mvp4gConfiguration {
   boolean checkIfParentEventReturnsString(EventElement e) {
     if (parentEventBus != null) {
       try {
-        String     eventType = e.getType();
-        JClassType string    = oracle.getType(String.class.getName());
+        String eventType = e.getType();
+        JClassType string = oracle.getType(String.class.getName());
         for (JMethod m : parentEventBus.getOverridableMethods()) {
           if (eventType.equals(m.getName())) {
             return m.getReturnType()

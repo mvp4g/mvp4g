@@ -16,15 +16,6 @@
 
 package com.mvp4g.rebind.config.loader.annotation;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.dev.javac.typemodel.TypeOracleStub;
 import com.mvp4g.client.DefaultMvp4gGinModule;
@@ -37,14 +28,7 @@ import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.DefaultMvp4gLogger;
 import com.mvp4g.client.history.DefaultHistoryProxy;
 import com.mvp4g.rebind.config.Mvp4gConfiguration;
-import com.mvp4g.rebind.config.element.ChildModuleElement;
-import com.mvp4g.rebind.config.element.ChildModulesElement;
-import com.mvp4g.rebind.config.element.EventBusElement;
-import com.mvp4g.rebind.config.element.EventElement;
-import com.mvp4g.rebind.config.element.EventFilterElement;
-import com.mvp4g.rebind.config.element.EventFiltersElement;
-import com.mvp4g.rebind.config.element.HistoryElement;
-import com.mvp4g.rebind.config.element.StartElement;
+import com.mvp4g.rebind.config.element.*;
 import com.mvp4g.rebind.exception.loader.Mvp4gAnnotationException;
 import com.mvp4g.rebind.test_tools.CustomPlaceService;
 import com.mvp4g.rebind.test_tools.GeneratorContextStub;
@@ -59,13 +43,12 @@ import com.mvp4g.rebind.test_tools.annotation.gin.OneGinModule;
 import com.mvp4g.rebind.test_tools.annotation.history_converters.HistoryConverterForEvent;
 import com.mvp4g.rebind.test_tools.annotation.presenters.PresenterWithName;
 import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter01;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 public class EventsAnnotationsLoaderTest {
 
@@ -1301,9 +1284,7 @@ public class EventsAnnotationsLoaderTest {
                 configuration);
 
     HistoryElement historyConfig = configuration.getHistory();
-    assertNotNull(historyConfig);
-    assertEquals(DefaultHistoryProxy.class.getCanonicalName(),
-                 historyConfig.getHistoryProxyClass());
+    assertNull(historyConfig);
   }
 
   @Test
@@ -1323,6 +1304,10 @@ public class EventsAnnotationsLoaderTest {
     HistoryElement historyConfig = configuration.getHistory();
     assertEquals(CustomPlaceService.class.getCanonicalName(),
                  historyConfig.getPlaceServiceClass());
+
+    HistoryProxyElement historyProxyConfig = configuration.getHistoryProxy();
+    assertEquals(DefaultHistoryProxy.class.getCanonicalName(),
+                 historyProxyConfig.getHistoryProxyClass());
 
   }
 

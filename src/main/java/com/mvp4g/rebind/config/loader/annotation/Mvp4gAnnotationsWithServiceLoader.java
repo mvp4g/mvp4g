@@ -15,8 +15,6 @@
  */
 package com.mvp4g.rebind.config.loader.annotation;
 
-import java.lang.annotation.Annotation;
-
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
@@ -26,6 +24,8 @@ import com.mvp4g.rebind.config.element.InjectedElement;
 import com.mvp4g.rebind.config.element.Mvp4gWithServicesElement;
 import com.mvp4g.rebind.config.element.ServiceElement;
 import com.mvp4g.rebind.exception.loader.Mvp4gAnnotationException;
+
+import java.lang.annotation.Annotation;
 
 /**
  * Class responsible for loading information contained in annotations from classes where methods can
@@ -115,7 +115,7 @@ public abstract class Mvp4gAnnotationsWithServiceLoader<T extends Annotation>
    *
    * @param configuration
    *   configuration containing loaded elements of the application
-   * @param serviceClassName
+   * @param generatedClassName
    *   class name of the service element
    *
    * @return name of the service element (either found or create)

@@ -16,11 +16,6 @@
 
 package com.mvp4g.rebind;
 
-import java.util.Set;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.dev.javac.typemodel.TypeOracleStub;
@@ -35,33 +30,10 @@ import com.mvp4g.client.event.BaseEventBusWithLookUp;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.mvp4g.client.history.ClearHistory;
+import com.mvp4g.client.history.DefaultHistoryProxy;
 import com.mvp4g.rebind.config.Mvp4gConfiguration;
-import com.mvp4g.rebind.config.element.ChildModuleElement;
-import com.mvp4g.rebind.config.element.ChildModulesElement;
-import com.mvp4g.rebind.config.element.DebugElement;
-import com.mvp4g.rebind.config.element.EventAssociation;
-import com.mvp4g.rebind.config.element.EventBusElement;
-import com.mvp4g.rebind.config.element.EventElement;
-import com.mvp4g.rebind.config.element.EventFilterElement;
-import com.mvp4g.rebind.config.element.EventFiltersElement;
-import com.mvp4g.rebind.config.element.EventHandlerElement;
-import com.mvp4g.rebind.config.element.GinModuleElement;
-import com.mvp4g.rebind.config.element.HistoryConverterElement;
-import com.mvp4g.rebind.config.element.HistoryElement;
-import com.mvp4g.rebind.config.element.InjectedElement;
-import com.mvp4g.rebind.config.element.LoaderElement;
-import com.mvp4g.rebind.config.element.PresenterElement;
-import com.mvp4g.rebind.config.element.ServiceElement;
-import com.mvp4g.rebind.config.element.SplitterElement;
-import com.mvp4g.rebind.config.element.StartElement;
-import com.mvp4g.rebind.config.element.ViewElement;
-import com.mvp4g.rebind.test_tools.CustomPlaceService;
-import com.mvp4g.rebind.test_tools.GeneratorContextStub;
-import com.mvp4g.rebind.test_tools.Loaders;
-import com.mvp4g.rebind.test_tools.Modules;
-import com.mvp4g.rebind.test_tools.OneGinModule;
-import com.mvp4g.rebind.test_tools.OneLogger;
-import com.mvp4g.rebind.test_tools.SourceWriterTestStub;
+import com.mvp4g.rebind.config.element.*;
+import com.mvp4g.rebind.test_tools.*;
 import com.mvp4g.rebind.test_tools.annotation.EventFilters.EventFilter1;
 import com.mvp4g.rebind.test_tools.annotation.EventFilters.EventFilter2;
 import com.mvp4g.rebind.test_tools.annotation.Presenters;
@@ -70,6 +42,10 @@ import com.mvp4g.rebind.test_tools.annotation.handlers.EventHandlerWithEvent;
 import com.mvp4g.rebind.test_tools.annotation.handlers.SimpleEventHandler01;
 import com.mvp4g.rebind.test_tools.annotation.history_converters.SimpleHistoryConverter01;
 import com.mvp4g.rebind.test_tools.annotation.presenters.SimplePresenter01;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -1320,6 +1296,10 @@ public class Mvp4gConfigurationFileReaderTest {
     history.setNotFoundEvent("notFound");
     configuration.setHistory(history);
 
+    HistoryProxyElement historyProxy = new HistoryProxyElement();
+    historyProxy.setHistoryProxyClass(DefaultHistoryProxy.class.getCanonicalName());
+    configuration.setHistoryProxy(historyProxy);
+
     assertOutput(getExpectedDefaultHistory(),
                  false);
     assertOutput(getExpectedWithHistory(),
@@ -1384,6 +1364,10 @@ public class Mvp4gConfigurationFileReaderTest {
     HistoryElement history = new HistoryElement();
     history.setPlaceServiceClass(CustomPlaceService.class.getCanonicalName());
     configuration.setHistory(history);
+
+    HistoryProxyElement historyProxy = new HistoryProxyElement();
+    historyProxy.setHistoryProxyClass(DefaultHistoryProxy.class.getCanonicalName());
+    configuration.setHistoryProxy(historyProxy);
 
     assertOutput(getExpectedHistoryWithConfig(),
                  false);
