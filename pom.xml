@@ -24,7 +24,7 @@
   <groupId>com.googlecode.mvp4g</groupId>
   <artifactId>mvp4g</artifactId>
   <packaging>jar</packaging>
-  <version>1.5.3-RC</version>
+  <version>1.5.3-RC-1</version>
   <name>MVP4G</name>
   <description>Model View Presenter with Event Bus For GWT</description>
   <url>https://github.com/mvp4g/mvp4g</url>
