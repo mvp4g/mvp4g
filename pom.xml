@@ -1,25 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!--
+  ~ Copyright (c) 2009 - 2017 - Pierre-Laurent Coirer, Frank Hossfeld
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License"); you may not
+  ~ use this file except in compliance with the License. You may obtain a copy of
+  ~ the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  ~ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing permissions and limitations under
+  ~ the License.
+  ~
+  -->
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
+  <groupId>com.googlecode.mvp4g</groupId>
+  <artifactId>mvp4g</artifactId>
+  <packaging>jar</packaging>
+  <version>1.5.3-RC-1</version>
+  <name>MVP4G</name>
+  <description>Model View Presenter with Event Bus For GWT</description>
+  <url>https://github.com/mvp4g/mvp4g</url>
 
-  <groupId>de.gishmo.gwt</groupId>
-  <artifactId>mvp4g2-parent</artifactId>
-  <version>1.0-alpha-1</version>
-  <packaging>pom</packaging>
+  <developers>
+    <developer>
+      <name>Pierre-Laurent Coirier</name>
+    </developer>
+    <developer>
+      <name>Frank Hossfeld</name>
+    </developer>
+  </developers>
 
-  <name>MVP4G 2 parent - Implementation of mvp4g for GWT 2 + 3</name>
-  <description>Model View Presenter with Event Bus For GWT 2 + 3 based on APT</description>
-  <url>https://github.com/mvp4g/mvp4g2</url>
-
-  <modules>
-    <module>mvp4g2</module>
-    <module>mvp4g2-processor</module>
-  </modules>
-
-  <inceptionYear>2017</inceptionYear>
+  <contributors>
+    <contributor>
+      <name>Javier Sandino</name>
+    </contributor>
+    <contributor>
+      <name>Izzet Mustafayev</name>
+    </contributor>
+    <contributor>
+      <name>Nick Hebner</name>
+    </contributor>
+    <contributor>
+      <name>Harald Schilly</name>
+    </contributor>
+    <contributor>
+      <name>Lukasz Dywicky</name>
+    </contributor>
+    <contributor>
+      <name>Lukas Schmidt</name>
+    </contributor>
+    <contributor>
+      <name>Sergey Shvets</name>
+    </contributor>
+  </contributors>
 
   <licenses>
     <license>
@@ -28,129 +69,240 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
   <scm>
-    <connection>scm:git:https://github.com/mvp4g/mvp4g2</connection>
-    <developerConnection>scm:git:https://github.com/mvp4g/mvp4g2</developerConnection>
-    <url>scm:git:https://github.com/mvp4g/mvp4g2</url>
-    <tag>HEAD</tag>
+    <connection>scm:git:https://github.com/mvp4g/mvp4g</connection>
+    <developerConnection>scm:git:https://github.com/mvp4g/mvp4g</developerConnection>
+    <url>scm:git:https://github.com/mvp4g/mvp4g</url>
   </scm>
 
-  <issueManagement>
-    <system>GitHub</system>
-    <url>https://github.com/mvp4g/mvp4g2/issues</url>
-  </issueManagement>
-
-  <developers>
-    <developer>
-      <name>Frank Hossfeld</name>
-      <id>frankhossfeld</id>
-      <email>hossfeld@hossfeld-solutions.de</email>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
-  </developers>
-
-  <prerequisites>
-    <maven>3</maven>
-  </prerequisites>
-
   <properties>
+    <gwt.version>2.8.2</gwt.version>
+    <gin.version>2.1.2</gin.version>
+
+    <!-- GWT needs at least java 1.6 -->
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- github server corresponds to entry in ~/.m2/settings.xml -->
+    <github.global.server>github-mvp4g</github.global.server>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.google.gwt</groupId>
+        <artifactId>gwt</artifactId>
+        <version>${gwt.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
-    <!--<dependency>-->
-      <!--<groupId>com.google.auto</groupId>-->
-      <!--<artifactId>auto-common</artifactId>-->
-      <!--<version>${autocommon.version}</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>com.google.auto.service</groupId>-->
-      <!--<artifactId>auto-service</artifactId>-->
-      <!--<version>${autoservice.version}</version>-->
-      <!--<optional>true</optional>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>com.google.elemental2</groupId>-->
-      <!--<artifactId>elemental2-dom</artifactId>-->
-      <!--<version>${elemental2.version}</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>com.squareup</groupId>-->
-      <!--<artifactId>javapoet</artifactId>-->
-      <!--<version>${javapoet.version}</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>junit</groupId>-->
-      <!--<artifactId>junit</artifactId>-->
-      <!--<version>4.12</version>-->
-      <!--<scope>test</scope>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>com.google.testing.compile</groupId>-->
-      <!--<artifactId>compile-testing</artifactId>-->
-      <!--<version>0.7</version>-->
-      <!--<scope>test</scope>-->
-    <!--</dependency>-->
-    <!--&lt;!&ndash;<dependency>&ndash;&gt;-->
-    <!--&lt;!&ndash;<groupId>org.mockito</groupId>&ndash;&gt;-->
-    <!--&lt;!&ndash;<artifactId>mockito-core</artifactId>&ndash;&gt;-->
-    <!--&lt;!&ndash;<version>1.10.19</version>&ndash;&gt;-->
-    <!--&lt;!&ndash;<scope>test</scope>&ndash;&gt;-->
-    <!--&lt;!&ndash;</dependency>&ndash;&gt;-->
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-servlet</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-dev</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.gwt.inject</groupId>
+      <artifactId>gin</artifactId>
+      <version>${gin.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
+  <distributionManagement>
+    <repository>
+      <id>internal.repo</id>
+      <name>Temporary Staging Repository</name>
+      <url>file://${project.build.directory}/mvn-repo</url>
+    </repository>
+  </distributionManagement>
 
   <build>
+    <!-- for use with maven 3 -->
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-webdav-jackrabbit</artifactId>
+        <version>2.8</version>
+      </extension>
+    </extensions>
+
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**/client/**</include>
+          <include>**/rebind/**</include>
+          <include>**/processor/**</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/client/**</include>
+          <include>**/shared/**</include>
+          <include>**/*.gwt.xml</include>
+          <include>**/*.html</include>
+          <include>**/public/**</include>
+        </includes>
+      </resource>
+    </resources>
+
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.2</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+          <meminitial>128m</meminitial>
+          <maxmem>1024m</maxmem>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <compilerArgs>
+            <arg>-Xlint</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+
       <!--<plugin>-->
         <!--<groupId>org.apache.maven.plugins</groupId>-->
-        <!--<artifactId>maven-compiler-plugin</artifactId>-->
-        <!--<version>3.6.1</version>-->
+        <!--<artifactId>maven-eclipse-plugin</artifactId>-->
+        <!--<version>2.9</version>-->
         <!--<configuration>-->
-          <!--<source>${maven.compiler.source}</source>-->
-          <!--<target>${maven.compiler.target}</target>-->
-          <!--<showWarnings>true</showWarnings>-->
-          <!--<showDeprecation>true</showDeprecation>-->
-          <!--<meminitial>128m</meminitial>-->
-          <!--<maxmem>1024m</maxmem>-->
-          <!--<encoding>${project.build.sourceEncoding}</encoding>-->
-          <!--<compilerArgs>-->
-            <!--<compilerArgument>-Xlint:all</compilerArgument>-->
-          <!--</compilerArgs>-->
+          <!--<downloadSources>true</downloadSources>-->
         <!--</configuration>-->
-        <!--<executions>-->
-          <!--<execution>-->
-            <!--<id>process-annotations</id>-->
-            <!--<phase>generate-sources</phase>-->
-            <!--<goals>-->
-              <!--<goal>compile</goal>-->
-            <!--</goals>-->
-            <!--<configuration>-->
-              <!--<proc>only</proc>-->
-              <!--<annotationProcessors>-->
-                <!--<annotationProcessor>com.google.auto.service.processor.AutoServiceProcessor</annotationProcessor>-->
-              <!--</annotationProcessors>-->
-            <!--</configuration>-->
-          <!--</execution>-->
-          <!--<execution>-->
-            <!--<id>default-compile</id> &lt;!&ndash; using an id of default-compile will override the default execution &ndash;&gt;-->
-            <!--<phase>compile</phase>-->
-            <!--<goals>-->
-              <!--<goal>compile</goal>-->
-            <!--</goals>-->
-            <!--<configuration>-->
-              <!--<compilerArgs>-->
-                <!--<arg>-proc:none</arg>-->
-              <!--</compilerArgs>-->
-            <!--</configuration>-->
-          <!--</execution>-->
-        <!--</executions>-->
       <!--</plugin>-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.7</version>
+        <configuration>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <attach>true</attach>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.9.1</version>
+        <executions>
+          <execution>
+            <id>attach-javadoc</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.6</version>
+        <configuration>
+          <useAgent>true</useAgent>
+        </configuration>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.8.1</version>
+        <configuration>
+          <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.12</version>
+        <configuration>
+          <server>github-mvp4g</server>
+          <userName>mvp4g</userName>
+          <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
+          <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
+          <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
+          <branch>refs/heads/mvn-repo</branch>                       <!-- remote branch name -->
+          <includes>
+            <include>**/*</include>
+          </includes>
+          <repositoryName>mvp4g</repositoryName>      <!-- github repo name -->
+          <repositoryOwner>mvp4g</repositoryOwner>    <!-- github username  -->
+        </configuration>
+        <executions>
+          <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+          <execution>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>deploy</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.3</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>false</autoReleaseAfterClose>
+        </configuration>
+       </plugin>
     </plugins>
   </build>
 </project>
