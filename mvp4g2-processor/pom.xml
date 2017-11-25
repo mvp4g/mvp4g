@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>de.gishmo.gwt</groupId>
+    <artifactId>mvp4g2-parent</artifactId>
+    <version>1.0-alpha-1</version>
+  </parent>
+
+  <artifactId>mvp4g2-processor</artifactId>
+  <packaging>jar</packaging>
+  <description>Model View Presenter with Event Bus For GWT 2 + 3 based on APT</description>
+
+  <properties>
+    <autocommon.version>0.8</autocommon.version>
+
+    <mvp4g2.version>1.0-alpha-1</mvp4g2.version>
+    <autoservice.version>1.0-rc3</autoservice.version>
+    <javapoet.version>1.9.0</javapoet.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>de.gishmo.gwt</groupId>
+      <artifactId>mvp4g2</artifactId>
+      <version>${mvp4g2.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.auto</groupId>
+      <artifactId>auto-common</artifactId>
+      <version>${autocommon.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.auto.service</groupId>
+      <artifactId>auto-service</artifactId>
+      <version>${autoservice.version}</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup</groupId>
+      <artifactId>javapoet</artifactId>
+      <version>${javapoet.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.testing.compile</groupId>
+      <artifactId>compile-testing</artifactId>
+      <version>0.7</version>
+      <scope>test</scope>
+    </dependency>
+    <!--<dependency>-->
+    <!--<groupId>org.mockito</groupId>-->
+    <!--<artifactId>mockito-core</artifactId>-->
+    <!--<version>1.10.19</version>-->
+    <!--<scope>test</scope>-->
+    <!--</dependency>-->
+  </dependencies>
+
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.6.1</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+          <showWarnings>true</showWarnings>
+          <showDeprecation>true</showDeprecation>
+          <meminitial>128m</meminitial>
+          <maxmem>1024m</maxmem>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <compilerArgs>
+            <compilerArgument>-Xlint:all</compilerArgument>
+          </compilerArgs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>process-annotations</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <proc>only</proc>
+              <annotationProcessors>
+                <annotationProcessor>com.google.auto.service.processor.AutoServiceProcessor</annotationProcessor>
+              </annotationProcessors>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-compile</id> <!-- using an id of default-compile will override the default execution -->
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <compilerArgs>
+                <arg>-proc:none</arg>
+              </compilerArgs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
