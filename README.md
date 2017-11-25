@@ -6,7 +6,7 @@ GWT is a very powerful framework that allows you to build efficient applications
 - Model View Presenter
 - Place Service
 
-(see [http://code.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html for the video](http://code.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.htmlhttp://code.google.com/events/io/2009/sessions/GoogleWebToolkitBestPractices.html) or [http://extgwt-mvp4g-gae.blogspot.com/2009/10/gwt-app-architecture-best-practices.html](http://extgwt-mvp4g-gae.blogspot.com/2009/10/gwt-app-architecture-best-practices.html) for the text, thanks to Araik Minosian.)
+(see [https://www.youtube.com/watch?v=PDuhR18-EdM for the video](https://www.youtube.com/watch?v=PDuhR18-EdM) or [http://extgwt-mvp4g-gae.blogspot.com/2009/10/gwt-app-architecture-best-practices.html](http://extgwt-mvp4g-gae.blogspot.com/2009/10/gwt-app-architecture-best-practices.html) for the text, thanks to Araik Minosian.)
 However, following these best practices is not always easy and you can end up with a project with a lot of boilerplate code that is hard to manage.
 
 That's why Mvp4g offers a solution to following these best practices using simple mechanisms that only need a few lines of code and a few annotations.
