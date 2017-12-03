@@ -58,3 +58,10 @@ Mvp4g has been successfully used on several commercial projects, [take a look at
 Any comments or ideas to improve the framework are more than welcome. If you want to help us to improve and contribute to this project, feel free to do so.
 
 To ensure quality, library code is covered by JUnit tests.
+
+## Mvp4g - version 2
+We have started working on the next version of mvp4g. The new version will be called mvp4g2, uses APT instead of GWT generators and has no dependencies to GWT and GIN. 
+
+Removing hte deoendencies to GWT and GIN lets you use mvp4g2 with GWT 2 (version > 2.7.0) and in J2CL/GWT 3 once it is available.
+
+MVP4G2 can be found [here](https://github.com/mvp4g/mvp4g2).
