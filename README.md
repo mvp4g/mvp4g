@@ -59,7 +59,7 @@ Any comments or ideas to improve the framework are more than welcome. If you wan
 
 To ensure quality, library code is covered by JUnit tests.
 
-## Mvp4g - version 2
+## MVP4G version 2 = MVP4G2
 We have started working on the next version of mvp4g. The new version will be called mvp4g2, uses APT instead of GWT generators and has no dependencies to GWT and GIN. 
 
 Removing hte deoendencies to GWT and GIN lets you use mvp4g2 with GWT 2 (version > 2.7.0) and in J2CL/GWT 3 once it is available.
