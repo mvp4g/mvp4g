@@ -1,0 +1,8 @@
+title: Mvp4g
+description: A framework to build a gwt application the right way
+google_analytics: UA-66331586-1
+show_downloads: true
+theme: jekyll-theme-slate
+
+gems:
+  - jekyll-mentions
