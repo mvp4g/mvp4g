@@ -64,4 +64,9 @@ To ensure quality, library code is covered by JUnit tests.
 You can @mention a GitHub username to generate a link to their profile. The resulting `<a>` element will link to the contributor’s GitHub Profile. For example: In 2007, Chris Wanstrath (@defunkt), PJ Hyett (@pjhyett), and Tom Preston-Werner (@mojombo) founded GitHub.
 -->
 ### Support or Contact
-Having trouble using MVP4G? Check out our [documentation](https://github.com/mvp4g/mvp4g/wiki) or [use the mvp4g google group](https://groups.google.com/forum/#!forum/mvp4g).
+Having trouble using MVP4G? Check out our [documentation](https://github.com/mvp4g/mvp4g/wiki), [use the mvp4g google group](https://groups.google.com/forum/#!forum/mvp4g) or the [MVP4G Gitter room](https://gitter.im/mvp4g/mvp4g).
+
+### MVP4G version 2 => MVP4G
+We have started working on the next version of mvp4g. The new version will be called mvp4g2, uses APT instead of GWT generators and has no dependencies to GWT and GIN. Removing the dependencies to GWT and GIN lets you use mvp4g2 with GWT 2 (version > 2.8.0) and with J2CL/GWT 3 once it is available.
+
+MVP4G2 can be found [here](https://github.com/mvp4g/mvp4g2).
