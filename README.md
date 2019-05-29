@@ -68,4 +68,6 @@ If you are planning to update your project and make it j2cl ready, you have two 
 1. switch to [mvp4g2](https://github.com/mvp4g/mvp4g2)
 2. switch to [Nalu](https://github.com/NaluKit/nalu) 
 
+Both frameworks have been tested with j2cl!
+
 In case you are uncertain, which one of the frameworks to choose, ask inside the [Nalu Gitter room](https://gitter.im/Nalukit42/Lobby).
