@@ -65,7 +65,7 @@ Mvp4g uses heavily generators. Also it has a dependency to GIN, which is at leas
 Of course mvp4g will be maintained in the future. Bugs will be fixed, etc. But, you will not see any no features, etc. 
 
 If you are planning to update your project and make it j2cl ready, you have two opportunities:
-1. switch to [mvp4g2](https://github.com/mvp4g/mvp4g2))
+1. switch to [mvp4g2](https://github.com/mvp4g/mvp4g2)
 2. switch to [Nalu](https://github.com/NaluKit/nalu) 
 
 In case you are uncertain, which one of the framewokrs to choose, ask inside the [Nalu Gitter rrom](https://gitter.im/Nalukit42/Lobby).
