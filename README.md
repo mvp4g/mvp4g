@@ -60,7 +60,7 @@ Any comments or ideas to improve the framework are more than welcome. If you wan
 To ensure quality, library code is covered by JUnit tests.
 
 # Note 
-Mvp4g uses heavily generators. Also it has a dependency to GIN, which is at least end of life. That are some of the reasons why mvp4g will never work with j2cl. To clearify: a project based on mvp4g will never work with j2cl/GWT 3!
+Mvp4g uses heavily generators. Also it has a dependency to GIN, which is at least end of life. That are some of the reasons why mvp4g will never work with j2cl/GWT 3!
 
 Of course mvp4g will be maintained in the future. Bugs will be fixed, etc. But, you will not see any no features, etc. 
 
@@ -68,4 +68,4 @@ If you are planning to update your project and make it j2cl ready, you have two 
 1. switch to [mvp4g2](https://github.com/mvp4g/mvp4g2)
 2. switch to [Nalu](https://github.com/NaluKit/nalu) 
 
-In case you are uncertain, which one of the framewokrs to choose, ask inside the [Nalu Gitter room](https://gitter.im/Nalukit42/Lobby).
+In case you are uncertain, which one of the frameworks to choose, ask inside the [Nalu Gitter room](https://gitter.im/Nalukit42/Lobby).
