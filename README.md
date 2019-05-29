@@ -59,9 +59,13 @@ Any comments or ideas to improve the framework are more than welcome. If you wan
 
 To ensure quality, library code is covered by JUnit tests.
 
-## MVP4G version 2 => MVP4G2
-We have started working on the next version of mvp4g. The new version will be called mvp4g2, uses APT instead of GWT generators and has no dependencies to GWT and GIN. 
+# Note 
+Mvp4g uses heavily generators. Also it has a dependency to GIN, which is at least end of life. That are some of the reasons why mvp4g will never work with j2cl. To clearify: a project based on mvp4g will never work with j2cl/GWT 3!
 
-Removing the dependencies to GWT and GIN lets you use mvp4g2 with GWT 2 (version > 2.7.0) and with J2CL/GWT 3 once it is available.
+Of course mvp4g will be maintained in the future. Bugs will be fixed, etc. But, you will not see any no features, etc. 
 
-MVP4G2 can be found [here](https://github.com/mvp4g/mvp4g2).
+If you are planning to update your project and make it j2cl ready, you have two opportunities:
+1. switch to [mvp4g2](https://github.com/mvp4g/mvp4g2))
+2. switch to [Nalu](https://github.com/NaluKit/nalu) 
+
+In case you are uncertain, which one of the framewokrs to choose, ask inside the [Nalu Gitter rrom](https://gitter.im/Nalukit42/Lobby).
