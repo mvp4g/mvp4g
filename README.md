@@ -1,3 +1,4 @@
+
 # MVP4G
 GWT is a very powerful framework that allows you to build efficient applications, especially if you follow the best practices described by Ray Ryan at Google IO 2009:
 
@@ -71,3 +72,7 @@ If you are planning to update your project and make it j2cl ready, you have two 
 Both frameworks have been tested with j2cl!
 
 In case you are uncertain, which one of the frameworks to choose, ask inside the [Nalu Gitter room](https://gitter.im/Nalukit42/Lobby).
+
+
+## Inportant Notice
+Starting with version v1.6.0 mvp4g will use GWT 2.9.0!
